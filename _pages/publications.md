@@ -5,9 +5,12 @@ permalink: /publications/
 author_profile: true
 ---
 
-HELLO
+My papers can be found on Google Scholar and DBLP:
 
-{{author.googlescholar}}
+![Google Scholar](https://scholar.google.com/citations?user=YIwiAAsAAAAJ)
+![DBLP](https://dblp.org/pid/s/ClaudioTSilva.html)
+
+
 
 
 {% if author.googlescholar %}
