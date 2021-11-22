@@ -5,7 +5,7 @@ permalink: /publications/
 author_profile: true
 ---
 
-My papers can be found on Google Scholar and DBLP:
+Essentially all my papers can be found on Google Scholar and DBLP:
 
 - [Google Scholar](https://scholar.google.com/citations?user=YIwiAAsAAAAJ)
 - [DBLP](https://dblp.org/pid/s/ClaudioTSilva.html)
