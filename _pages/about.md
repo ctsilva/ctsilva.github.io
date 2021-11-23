@@ -8,7 +8,9 @@ redirect_from:
   - /about.html
 ---
 
-I am Professor of Computer Science and Engineering and Data Science at New York University. I joined NYU 10+ years ago, and helped to start the [Center for Data Science (CDS)](http://cds.nyu.edu) and the [Center for Urban Science and Progress (CUSP)](http://cusp.nyu.edu).
+I am Professor of Computer Science and Engineering and Data Science at New York University. I was a co-founder of the [Center for Data Science (CDS)](http://cds.nyu.edu) and the [Center for Urban Science and Progress (CUSP)](http://cusp.nyu.edu).
 
-My research group is part of the [Visualization, Imaging and Data Analysis (VIDA) Center](http://vida.engineering.nyu.edu), and it is located in the 11th floor of 370 Jay Street in Brooklyn, NY. 
+I Co-Direct the [Visualization, Imaging and Data Analysis (VIDA) Center](http://vida.engineering.nyu.edu). We are located in the 11th floor of 370 Jay Street in Brooklyn, NY. 
+
+I am also part of [ai@nyu](https://cims.nyu.edu/ai/).
 
