@@ -25,6 +25,7 @@ Past
 * [Jorge Piazentin Ono](https://vgc.poly.edu/~jhenrique/) (Bosch Research)
 * [Fabio Miranda](https://fmiranda.me/) (Assistant Professor at the University of Illinois at Chicago)
 * [Marcos Lage](http://www.ic.uff.br/~mlage/) ((Associate Professor at Federal Fluminense University)
+* [Alexander Bock](http://alexanderbock.eu/) (Assistant Professor at Linköping University)
 * [Bowen Yu](http://bowenyu.me/) (Quantitative Software Engineer at Gotham Asset Management)
 * [Aritra Dasgupta](https://aedeegee.github.io/) (Assistant Professor at NJIT) 
 * [Nivan Ferreira](https://www.cin.ufpe.br/~nivan/) (Assistant Professor at Federal University of Pernanbuco)
@@ -37,4 +38,5 @@ Past
 * [Emanuele Santos](https://emanueles.github.io/) (Associate Professor at Universidade Federal do Ceará)
 * [David Koop](http://faculty.cs.niu.edu/~dakoop/) (Assistant Professor at Northern Illinois University) 
 * [Carlos Scheidegger](https://cscheid.net/) (Associate Professor at University of Arizona)
+* [Steven Callhan](http://www.sci.utah.edu/~stevec/Home.html) (Project Lead at University of Utah)
 * [Louis Bavoil](https://developer.nvidia.com/blog/author/louisbavoil/) (NVIDIA)
