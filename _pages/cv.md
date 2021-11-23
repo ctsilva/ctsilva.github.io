@@ -28,6 +28,6 @@ Professional Experience
 Awards
 ======
 * IEEE Visualization Academy, 2019
-* Technology \& Engineering Emmy Award "for MLB Advanced Media's Statcast player tracking system", National Academy of Television Arts & Sciences (NATAS), 2018
+* Technology & Engineering Emmy Award "for MLB Advanced Media's Statcast player tracking system", National Academy of Television Arts & Sciences (NATAS), 2018
 * IEEE VGTC Visualization Technical Achievement Award, 2014
 * IEEE Fellow, 2013
