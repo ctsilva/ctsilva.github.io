@@ -13,8 +13,9 @@ Current
 ======
 * [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/)
 * [Peter Xenopoulos](http://www.peterxeno.com/)
+* [Guan-de Wu](https://www.gdwu.xyz/)
 * Shaoyu Chen
-* Guan-de Wu
+* Shuya Zhao
 * Joao Rullf
 * Yurii Piadyk
 
