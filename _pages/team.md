@@ -15,12 +15,14 @@ Current
 * Shaoyu Chen
 * Guan-de Wu
 * Joao Rullf
+* Yurii Piadyk
 
 Past
 ======
 * [Gromit Yeuk-Yin Chan](http://gromitchan.com/) (Adobe Research)
 * [Jorge Piazentin Ono](https://vgc.poly.edu/~jhenrique/) (Bosch Research)
 * [Fabio Miranda](https://fmiranda.me/) (Assistant Professor at the University of Illinois at Chicago)
+* [Marcos Lage](http://www.ic.uff.br/~mlage/) ((Associate Professor at Federal Fluminense University)
 * [Bowen Yu](http://bowenyu.me/) (Quantitative Software Engineer at Gotham Asset Management)
 * [Aritra Dasgupta](https://aedeegee.github.io/) (Assistant Professor at NJIT) 
 * [Nivan Ferreira](https://www.cin.ufpe.br/~nivan/) (Assistant Professor at Federal University of Pernanbuco)
