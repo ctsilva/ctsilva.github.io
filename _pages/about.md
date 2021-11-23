@@ -14,3 +14,13 @@ I am Co-Director of the [Visualization, Imaging and Data Analysis (VIDA) Center]
 
 I am also part of [ai@nyu](https://cims.nyu.edu/ai/).
 
+Current major projects:
+
+- [DARPA Perceptually-enabled Task Guidance (PTG)](https://www.darpa.mil/program/perceptually-enabled-task-guidance)
+
+- [OpenSpace](https://www.openspaceproject.com) (funded by NASA)
+
+- [Sounds of New York City](https://wp.nyu.edu/sonyc) (funded by NSF)
+
+- Explainable AI (as part of an active collaboration with the Center for Machine Learning at Capital One)
+
