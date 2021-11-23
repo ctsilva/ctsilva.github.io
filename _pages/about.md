@@ -22,5 +22,7 @@ Current major projects:
 
 - [Sounds of New York City](https://wp.nyu.edu/sonyc) (funded by NSF)
 
-- Explainable AI (as part of an active collaboration with the Center for Machine Learning at Capital One)
+- Explainable AI (in collaboration with the Center for Machine Learning at Capital One)
+
+On top of the areas above, I am also active in sports analytics. I started work in this area as a Technology Consultant for [MLB Advanced Media's Statcast system](https://www.newsweek.com/2014/09/12/can-baseball-get-more-interesting-watch-big-data-267590.html), but my interests in this area have grown substantially since then.
 
