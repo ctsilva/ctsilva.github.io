@@ -11,6 +11,7 @@ Here are some current and past team members:
 
 Current
 ======
+* [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/)
 * [Peter Xenopoulos](http://www.peterxeno.com/)
 * Shaoyu Chen
 * Guan-de Wu
