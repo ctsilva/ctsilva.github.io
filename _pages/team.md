@@ -11,7 +11,7 @@ Here are some current and past team members:
 
 Current
 ======
-* [Peter Xenopoulos] (http://www.peterxeno.com/) (PhD student)
+* [Peter Xenopoulos](http://www.peterxeno.com/) (PhD student)
 * Shaoyu Chen
 * Guan-de Wu
 * Joao Rullf
