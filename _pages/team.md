@@ -38,5 +38,6 @@ Past
 * [Emanuele Santos](https://emanueles.github.io/) (Associate Professor at Universidade Federal do Ceará)
 * [David Koop](http://faculty.cs.niu.edu/~dakoop/) (Assistant Professor at Northern Illinois University) 
 * [Carlos Scheidegger](https://cscheid.net/) (Associate Professor at University of Arizona)
-* [Steven Callhan](http://www.sci.utah.edu/~stevec/Home.html) (Project Lead at University of Utah)
+* [Steven Callahan](http://www.sci.utah.edu/~stevec/Home.html) (Project Lead at University of Utah)
 * [Louis Bavoil](https://developer.nvidia.com/blog/author/louisbavoil/) (NVIDIA)
+* [Wagner Correa](https://www.linkedin.com/in/wagnertcorrea/) (Principal Engineer at Chicago Trading Company)
