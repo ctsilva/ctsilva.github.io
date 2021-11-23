@@ -26,4 +26,4 @@ Past
 * [Jorge Poco](https://vgc.poly.edu/~jpocom/) (Associate Professor at Fundação Getulio Vargas)
 * [Huy Vo](https://hvo.github.io/) (Assistant Professor at City University of New York)
 * [Harish Doraiswamy](http://www.harishd.com/home/) (Principal Researcher at Microsoft Research India)
-* [Carlos Scheidegger](https://cscheid.net/) (Associate Professor, University of Arizona)
+* [Carlos Scheidegger](https://cscheid.net/) (Associate Professor at University of Arizona)

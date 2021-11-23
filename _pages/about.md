@@ -24,4 +24,4 @@ Current major projects:
 
 - Explainable AI (in collaboration with the Center for Machine Learning at Capital One)
 
-I am also active in sports analytics. I started work in this area as a Technology Consultant for [MLB Advanced Media's Statcast system](https://www.newsweek.com/2014/09/12/can-baseball-get-more-interesting-watch-big-data-267590.html), but my interests have grown substantially since then.
+I am also active in sports analytics. I started work in this area as a Technology Consultant for [MLB Advanced Media's Statcast system](https://www.newsweek.com/2014/09/12/can-baseball-get-more-interesting-watch-big-data-267590.html), but my interests have expanded beyond baseball.
