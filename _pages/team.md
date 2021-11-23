@@ -22,6 +22,7 @@ Past
 * [Jorge Piazentin Ono](https://vgc.poly.edu/~jhenrique/) (Bosch Research)
 * [Fabio Miranda](https://fmiranda.me/) (Assistant Professor at the University of Illinois at Chicago)
 * [Bowen Yu](http://bowenyu.me/) (Quantitative Software Engineer at Gotham Asset Management)
+* [Aritra Dasgupta](https://aedeegee.github.io/) (Assistant Professor at NJIT) 
 * [Nivan Ferreira](https://www.cin.ufpe.br/~nivan/) (Assistant Professor at Federal University of Pernanbuco)
 * [Jorge Poco](https://vgc.poly.edu/~jpocom/) (Associate Professor at Fundação Getulio Vargas)
 * [Harish Doraiswamy](http://www.harishd.com/home/) (Principal Researcher at Microsoft Research India)
