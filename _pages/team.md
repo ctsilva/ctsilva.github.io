@@ -16,7 +16,7 @@ Current
 * [Guan-de Wu](https://www.gdwu.xyz/)
 * Shaoyu Chen
 * Shuya Zhao
-* Joao Rullf
+* Joao Rulff
 * Yurii Piadyk
 
 Past

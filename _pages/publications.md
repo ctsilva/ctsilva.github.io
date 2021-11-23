@@ -5,10 +5,10 @@ permalink: /publications/
 author_profile: true
 ---
 
-My current teaching rotation includes:
+My papers can be found on Google Scholar and DBLP. 
 
-* Interactive Computer Graphics
-* Visualization for Machine Learning
+- [Google Scholar](https://scholar.google.com/citations?user=YIwiAAsAAAAJ)
+- [DBLP](https://dblp.org/pid/s/ClaudioTSilva.html)
 
 <!-- {% if author.googlescholar %}
   You can also find my articles on <u><a href="{{author.googlescholar}}">my Google Scholar profile</a>.</u>
