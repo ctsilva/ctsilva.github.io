@@ -5,6 +5,8 @@ permalink: /portfolio/
 author_profile: true
 ---
 
+Although I started as a mathematician, I am most passionate for developing software systems. I am particularly interested in systems with a strong interaction component.
+
 
 Current Projects
 ======
