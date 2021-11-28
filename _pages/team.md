@@ -16,7 +16,7 @@ Current
 * [Guan-de Wu](https://www.gdwu.xyz/)
 * Shaoyu Chen
 * Shuya Zhao
-* Joao Rullf
+* Joao Rulff
 * Yurii Piadyk
 
 Past
@@ -24,7 +24,7 @@ Past
 * [Gromit Yeuk-Yin Chan](http://gromitchan.com/) (Adobe Research)
 * [Jorge Piazentin Ono](https://vgc.poly.edu/~jhenrique/) (Bosch Research)
 * [Fabio Miranda](https://fmiranda.me/) (Assistant Professor at the University of Illinois at Chicago)
-* [Marcos Lage](http://www.ic.uff.br/~mlage/) ((Associate Professor at Federal Fluminense University)
+* [Marcos Lage](http://www.ic.uff.br/~mlage/) (Associate Professor at Federal Fluminense University)
 * [Alexander Bock](http://alexanderbock.eu/) (Assistant Professor at Linköping University)
 * [Bowen Yu](http://bowenyu.me/) (Quantitative Software Engineer at Gotham Asset Management)
 * [Aritra Dasgupta](https://aedeegee.github.io/) (Assistant Professor at NJIT)
@@ -32,7 +32,7 @@ Past
 * [Jorge Poco](https://vgc.poly.edu/~jpocom/) (Associate Professor at Fundação Getulio Vargas)
 * [Harish Doraiswamy](http://www.harishd.com/home/) (Principal Researcher at Microsoft Research India)
 * [Tiago Etiene](https://www.linkedin.com/in/tiagoetiene) (Senior Applied Scientist at Amazon)
-* [Matt Berger](https://matthewberger.github.io/) (Assistant Professor at Vanderbilt University)
+* [Matthew Berger](https://matthewberger.github.io/) (Assistant Professor at Vanderbilt University)
 * [Huy Vo](https://hvo.github.io/) (Assistant Professor at City University of New York)
 * [Erik Anderson](https://www.linkedin.com/in/erik-anderson-05996b7a/) (Head Data Scientist at Novartis)
 * [Lauro Lins](https://www.linkedin.com/in/lauro-lins-8aa592216/) (Principal Inventive Scientist at AT&T Labs)
