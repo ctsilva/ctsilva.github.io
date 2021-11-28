@@ -14,6 +14,8 @@ Current
 * [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/)
 * [Peter Xenopoulos](http://www.peterxeno.com/)
 * [Guan-de Wu](https://www.gdwu.xyz/)
+* [Jianzhe Lin](https://jianzhelin.github.io/)
+* [Ylva Selling](https://www.linkedin.com/in/ylvaselling/)
 * Shaoyu Chen
 * Shuya Zhao
 * Joao Rulff
