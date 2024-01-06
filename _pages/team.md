@@ -11,18 +11,19 @@ Here are some current and past team members:
 
 Current
 ======
+
+* [Erin McGowan](https://scholar.google.com/citations?user=nDlP51AAAAAJ&hl=en)
 * [Guan-de Wu](https://www.gdwu.xyz/)
-* [Jianzhe Lin](https://jianzhelin.github.io/)
-* [Ylva Selling](https://www.linkedin.com/in/ylvaselling/)
 * Shaoyu Chen
-* Shuya Zhao
 * Joao Rulff
-* Yurii Piadyk
 
 Past
 ======
+* Yurii Piadyk (Postdoc at NYU)
 * [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/) (Postdoc at MIT)
-* [Peter Xenopoulos](http://www.peterxeno.com/) (Novig)
+* [Peter Xenopoulos](http://www.peterxeno.com/) (Quantitative Researcher at Novig)
+* [Jianzhe Lin](https://www.linkedin.com/in/jianzhe-peter-lin-a4135baa/?originalSubdomain=ca) (Senior Applied Scientist at Microsoft Research)
+* [Shuya Zhao](https://www.linkedin.com/in/shuya-zhao-485670139/) (Machine Learning Engineer at NotCo)
 * [Gromit Yeuk-Yin Chan](http://gromitchan.com/) (Research Scientist at Adobe Research)
 * [Jorge Piazentin Ono](https://vgc.poly.edu/~jhenrique/) (Research Scientist at Bosch Research)
 * [Fabio Miranda](https://fmiranda.me/) (Assistant Professor at the University of Illinois at Chicago)
