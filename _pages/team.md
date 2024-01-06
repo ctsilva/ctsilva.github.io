@@ -11,8 +11,6 @@ Here are some current and past team members:
 
 Current
 ======
-* [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/)
-* [Peter Xenopoulos](http://www.peterxeno.com/)
 * [Guan-de Wu](https://www.gdwu.xyz/)
 * [Jianzhe Lin](https://jianzhelin.github.io/)
 * [Ylva Selling](https://www.linkedin.com/in/ylvaselling/)
@@ -23,8 +21,10 @@ Current
 
 Past
 ======
-* [Gromit Yeuk-Yin Chan](http://gromitchan.com/) (Adobe Research)
-* [Jorge Piazentin Ono](https://vgc.poly.edu/~jhenrique/) (Bosch Research)
+* [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/) (Postdoc at MIT)
+* [Peter Xenopoulos](http://www.peterxeno.com/) (Novig)
+* [Gromit Yeuk-Yin Chan](http://gromitchan.com/) (Research Scientist at Adobe Research)
+* [Jorge Piazentin Ono](https://vgc.poly.edu/~jhenrique/) (Research Scientist at Bosch Research)
 * [Fabio Miranda](https://fmiranda.me/) (Assistant Professor at the University of Illinois at Chicago)
 * [Marcos Lage](http://www.ic.uff.br/~mlage/) (Associate Professor at Federal Fluminense University)
 * [Alexander Bock](http://alexanderbock.eu/) (Assistant Professor at Linköping University)
