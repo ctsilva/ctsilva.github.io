@@ -25,9 +25,11 @@ Professional Experience
 * Member of Technical Staff, AT&T Labs-Research, 1999-2002
 * Research Staff Member, IBM Research, 1997-1999
 
-Awards
+Select Awards and Honors
 ======
+* [IEEE VIS 2023 Test of Time Award](https://ieeevis.org/year/2023/info/awards/test-of-time-awards) for 
+the [TaxiVis paper](https://ieeexplore.ieee.org/document/6634127)
 * IEEE Visualization Academy, 2019
-* Technology & Engineering Emmy Award for MLB Advanced Media's Statcast player tracking system, National Academy of Television Arts & Sciences (NATAS), 2017. ["A Three Dimensional Doppler Radar System to Track and Display Fast Moving Pitched and Hit Balls"](https://theemmys.tv/tech-69th-award-recipients/)
+* Technology & Engineering Emmy Award for MLB Advanced Media's Statcast player tracking system, National Academy of Television Arts & Sciences (NATAS), 2017. Listed as ["A Three Dimensional Doppler Radar System to Track and Display Fast Moving Pitched and Hit Balls"](https://theemmys.tv/tech-69th-award-recipients/).
 * IEEE VGTC Visualization Technical Achievement Award, 2014
 * IEEE Fellow, 2013
