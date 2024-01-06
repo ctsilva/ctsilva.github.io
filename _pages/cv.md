@@ -15,7 +15,6 @@ Education
 * M.S., Computer Science, State University of New York at Stony Brook, 1993
 * B.S., Mathematics, Universidade Federal do Ceara (Brazil), 1990
 
-
 Professional Experience
 ======
 * Professor, New York University, 2011-Present
