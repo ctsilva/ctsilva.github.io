@@ -12,14 +12,20 @@ Here are some current and past team members:
 Current
 ======
 
+* Vitoria Guardieiro
+* Fabio Felix
+* Suemy Inagaki
+* Felipe de Oliveira
+* Parikshit Solunke
 * [Erin McGowan](https://scholar.google.com/citations?user=nDlP51AAAAAJ&hl=en)
 * [Guan-de Wu](https://www.gdwu.xyz/)
-* Shaoyu Chen
 * Joao Rulff
+* Shaoyu Chen
 
 Past
 ======
-* Yurii Piadyk (Postdoc at NYU)
+* Ethan Brewer
+* [Yurii Piadyk](https://ypiadyk.github.io/) (Postdoc at NYU)
 * [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/) (Postdoc at MIT)
 * [Peter Xenopoulos](http://www.peterxeno.com/) (Quantitative Researcher at Novig)
 * [Jianzhe Lin](https://www.linkedin.com/in/jianzhe-peter-lin-a4135baa/?originalSubdomain=ca) (Senior Applied Scientist at Microsoft Research)
