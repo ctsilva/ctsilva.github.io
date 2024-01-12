@@ -12,6 +12,7 @@ Here are some current and past team members:
 Current
 ======
 
+* [Jing Qian](https://www.jingq.org/) 
 * Vitoria Guardieiro
 * Fabio Felix
 * Suemy Inagaki
