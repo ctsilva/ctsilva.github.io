@@ -1,4 +1,8 @@
-# Visualization for Machine Learning - Spring 2024
+---
+title: "Visualization for Machine Learning - Spring 2024"
+permalink: /2024-VisML-CDS/
+author_profile: true
+---
 
 [Syllabus](/2024-VisML-CDS/DS-GA-3001---Spring-2024.pdf)
 
@@ -16,5 +20,5 @@
 
 ## Labs
 
-- [Lab 1](/2024-VisML-CDS/VisML-Lab-Week1-Recap.md)
-- [Lab 2](/2024-VisML-CDS/VisML-Lab-Week2-recap.md)
+- [Lab 1](/2024-VisML-CDS/VisML-Lab-Week1-Recap)
+- [Lab 2](/2024-VisML-CDS/VisML-Lab-Week2-recap)
