@@ -21,6 +21,10 @@ author_profile: true
 
 - [Model Assessment slides](/2024-VisML-CDS/slides/model_assessment)
 
+**[02/22]** Lecture 4: Visualization for White-box Machine Learning Models
+
+- [White Box slides](/2024-VisML-CDS/slides/white_box)
+
 ## Labs
 
 **[01/26]** [Lab 1](/2024-VisML-CDS/VisML-Lab-Week1-Recap)
