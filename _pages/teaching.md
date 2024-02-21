@@ -9,6 +9,9 @@ My current teaching rotation includes:
 
 * Interactive Computer Graphics (Fall)
 * Visualization for Machine Learning (Spring)
+    * [Spring 2024](/2024-VisML-CDS/)
+
+
 
 In the past, I have taught courses on Urban Informatics, Scientific Visualization, Information Visualization, Geometric Computing, and Algorithms. 
 
