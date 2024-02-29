@@ -26,7 +26,7 @@ Fridays 10:15am-11:05am
 
 Classroom: 31 Washington Pl (Silver Ctr) Room 520
 
-Class Discord: 
+Class Discord: (emailed to students)
 
 ## Course Prerequisites
 
