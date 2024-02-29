@@ -6,7 +6,7 @@ author_profile: true
 
 [Syllabus](/2024-VisML-CDS/DS-GA-3001---Spring-2024.pdf)
 
-[Syllabus](/2024-VisML-CDS/DS-GA-3001---Spring-2024)
+[Syllabus](/2024-VisML-CDS/syllabus)
 
 ## Classes
 
