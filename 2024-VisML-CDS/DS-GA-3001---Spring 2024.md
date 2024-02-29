@@ -1,13 +1,3 @@
----
-format:
-  html: 
-    code-fold: true
-    html-math-method: katex
-  pdf:
-    geometry: 
-      - top=30mm
-      - left=30mm
----
 # Special Topics: Visualization for Machine Learning 
 
 # Spring 2024
