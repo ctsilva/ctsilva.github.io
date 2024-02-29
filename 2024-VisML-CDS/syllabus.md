@@ -1,6 +1,4 @@
-# Special Topics: Visualization for Machine Learning 
-
-# Spring 2024
+## Special Topics: Visualization for Machine Learning -- Spring 2024
 
 Instructor: Claudio Silva (csilva@nyu.edu); [webpage](https://ctsilva.github.io)
 
