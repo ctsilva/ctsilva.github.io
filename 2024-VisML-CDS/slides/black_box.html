@@ -525,8 +525,134 @@
 <section id="shap-shapley-additive-explanations" class="slide level2">
 <h2>SHAP (SHapley Additive exPlanations)</h2>
 <p>Examples and materials from Molnar’s new book: https://christophmolnar.com/books/shap/</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><img data-src="figs/shap-example.jpg"></p>
+</div><div class="column" style="width:40%;">
+<p>SHAP (Lundberg and Lee 2017a) is a game-theory-inspired method created to explain predictions made by machine learning models. SHAP generates one value per input feature (also known as SHAP values) that indicates how the feature contributes to the prediction of the specified data point.</p>
+</div>
+</div>
+</section>
+<section id="a-short-history-of-shapley-values-and-shap" class="slide level2">
+<h2>A Short History of Shapley Values and SHAP</h2>
+<ul>
+<li>1953: The introduction of Shapley values in game theory (by Lloyd Shapley).</li>
+<li>2010: The initial steps toward applying Shapley values in machine learning
+<ul>
+<li>original paper contained NO code!</li>
+</ul></li>
+<li>2017: The advent of SHAP (by Lundberg and Lee), a turning point in machine learning.</li>
+</ul>
+</section>
+<section id="theory-of-shapley-values" class="slide level2">
+<h2>Theory of Shapley Values</h2>
+<p>Who’s going to pay for that taxi?</p>
+<p>Alice, Bob, and Charlie have dinner together and share a taxi ride home. The total cost is $51. The question is, how should they divide the costs fairly?</p>
 
-<img src="figs/vida.jpg" class="slide-logo r-stretch"><div class="footer footer-default">
+<img data-src="figs/shap-taxi.jpg" class="r-stretch"></section>
+<section id="theory-of-shapley-values-1" class="slide level2">
+<h2>Theory of Shapley Values</h2>
+<p>The <strong>marginal contribution</strong> of a player to a coalition is the value of the coali- tion with the player minus the value of the coalition without the player. In the taxi example, the value of a coalition is equal to the cost of the ride as detailed in the above table. Therefore, the marginal contribution of, for instance, Charlie to a taxi already containing Bob is the cost of the taxi with Bob and Charlie, minus the cost of the taxi with Bob alone.</p>
+</section>
+<section id="theory-of-shapley-values-2" class="slide level2">
+<h2>Theory of Shapley Values</h2>
+
+<img data-src="figs/shap-marginal-contribution.jpg" class="r-stretch"></section>
+<section id="theory-of-shapley-values-3" class="slide level2">
+<h2>Theory of Shapley Values</h2>
+<p>How to average these marginal contributions per passenger?</p>
+<p>One way to answer this question is by considering all possible permutations of Alice, Bob, and Charlie. There are 3! = 3 * 2 * 1 = 6 possible permutations of passengers:</p>
+<ul>
+<li>Alice, Bob, Charlie</li>
+<li>Alice, Charlie, Bob</li>
+<li>Bob, Alice, Charlie</li>
+<li>Charlie, Alice, Bob</li>
+<li>Bob, Charlie, Alice</li>
+<li>Charlie, Bob, Alice</li>
+</ul>
+<p>We can use these permutations to form coalitions, for example, for Alice.</p>
+</section>
+<section id="theory-of-shapley-values-4" class="slide level2">
+<h2>Theory of Shapley Values</h2>
+<p>In two of these cases, Alice was added to an empty taxi, and in one case, she was added to a taxi with only Bob. By weighting the marginal contributions accordingly, we calculate the following weighted average marginal contribution for Alice, abbreviating Alice, Bob, and Charlie to A, B, and C:</p>
+
+<img data-src="figs/shap-marginal-alice.jpg" class="r-stretch"></section>
+<section id="theory-of-shapley-values-5" class="slide level2">
+<h2>Theory of Shapley Values</h2>
+<p>for Bob:</p>
+<p><img data-src="figs/shap-marginal-bob.jpg"></p>
+<p>for Charlie:</p>
+<p><img data-src="figs/shap-marginal-charlie.jpg"></p>
+</section>
+<section id="calculating-shapley-values" class="slide level2">
+<h2>Calculating Shapley values</h2>
+
+<img data-src="figs/shap-general-formation.jpg" class="r-stretch"><p><strong>The Shapley value is the weighted average of a player’s marginal contribu- tions to all possible coalitions.</strong></p>
+</section>
+<section id="the-axioms-behind-shapley-values" class="slide level2">
+<h2>The axioms behind Shapley values</h2>
+<ul>
+<li><p>Efficiency: The sum of the contributions must precisely add up to the payout.</p></li>
+<li><p>Symmetry: If two players are identical, they should receive equal contributions.</p></li>
+<li><p>Dummy or Null Player: The value of a player who doesn’t contribute to any coalition is zero.</p></li>
+<li><p>Additivity: In a game with two value functions, the Shapley values for the sum can be expressed as the sum of the Shapley values.</p></li>
+</ul>
+<p><strong>These four axioms ensure the uniqueness of the Shapley values.</strong></p>
+</section>
+<section id="from-shapley-values-to-shap" class="slide level2">
+<h2>From Shapley Values to SHAP</h2>
+<p>Consider the following scenario: You have trained a machine learning model <span class="math inline">\(f\)</span> to predict apartment prices.</p>
+
+<img data-src="figs/shap-apartment-example.jpg" class="r-stretch"></section>
+<section id="from-shapley-values-to-shap-1" class="slide level2">
+<h2>From Shapley Values to SHAP</h2>
+<p>We want to evaluate the effort of cat-banned</p>
+
+<img data-src="figs/shap-cat-banned.jpg" class="r-stretch"></section>
+<section id="from-shapley-values-to-shap-2" class="slide level2">
+<h2>From Shapley Values to SHAP</h2>
+<p>We want to evaluate the effort of cat-banned</p>
+
+<img data-src="figs/shap-cat-banned-2.jpg" class="r-stretch"></section>
+<section id="interpreting-shap-values" class="slide level2">
+<h2>Interpreting SHAP values</h2>
+<p>The Shapley value can be misinterpreted. The Shapley value of a feature value is not the difference of the predicted value after removing the feature from the model training. The interpretation of the Shapley value is: <strong>Given the current set of feature values, the contribution of a feature value to the difference between the actual prediction and the mean prediction is the estimated Shapley value.</strong></p>
+<p>The Shapley value is the wrong explanation method if you seek sparse explanations (explanations that contain few features). Explanations created with the Shapley value method <strong>always use all the features.</strong> Humans prefer selective explanations, such as those produced by LIME. LIME might be the better choice for explanations lay-persons have to deal with.</p>
+</section>
+<section id="shap-shapley-additive-explanations-1" class="slide level2">
+<h2>SHAP (SHapley Additive exPlanations)</h2>
+<div class="fragment">
+<p><strong>Pros</strong></p>
+<ul>
+<li><p>Fairly distributed feature importance to a prediction</p></li>
+<li><p>Contrastive explanations (can compare an instance to a subset or even to a single data point)</p></li>
+<li><p>Solid theory</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Cons</strong></p>
+<ul>
+<li>A lot of computing time</li>
+<li>Not sparse explanations (every feature is important)</li>
+</ul>
+</div>
+</section>
+<section id="shap-shapley-additive-explanations-2" class="slide level2">
+<h2>SHAP (SHapley Additive exPlanations)</h2>
+
+<img data-src="figs/shap-figure-waterfall.jpg" class="r-stretch"></section>
+<section id="shap-limitations" class="slide level2">
+<h2>SHAP limitations</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><img data-src="figs/shap-problems.jpg"></p>
+<p>http://proceedings.mlr.press/v119/kumar20e/kumar20e.pdf</p>
+</div><div class="column" style="width:40%;">
+
+</div>
+</div>
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
 <p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
 </div>
 </section></section>
