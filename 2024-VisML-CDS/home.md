@@ -29,12 +29,14 @@ author_profile: true
 
 ## Labs
 
-**[01/26]** [Lab 1](/2024-VisML-CDS/VisML-Lab-Week1-Recap)
+**[01/26]** [Lab 1](/2024-VisML-CDS/Labs/VisML-Lab-Week1-Recap): Intro to Observable and D3
 
-**[02/02]** [Lab 2](/2024-VisML-CDS/VisML-Lab-Week2-recap)
+**[02/02]** [Lab 2](/2024-VisML-CDS/Labs/VisML-Lab-Week2-recap): Data Types, Graphical Marks,  Visual Encoding Channels, and Gestalt Principles
 
-**[02/09]** [Lab 3](https://docs.google.com/presentation/d/1YLWW3KScCOVOLZrrH9RIMLsEsdHLEu58s_rNZ57pCF4/edit?usp=sharing) 
+**[02/09]** [Lab 3](/2024-VisML-CDS/Labs/VisML-Lab-Week3-recap): JS and D3 Functions for Data Transformations, Selections and Joins, Linked Views
 
-**[02/16]** [Lab 4](https://docs.google.com/presentation/d/1jiZGZeD5lte06PGNJDuubpIYsJdt534bkNdw8XXPr2M/edit?usp=sharing)
+**[02/16]** [Lab 4](/2024-VisML-CDS/Labs/VisML-Lab-Week4-recap): Model Understanding with notebookJS
 
-**[02/23]** [Lab 5](https://docs.google.com/presentation/d/1DdW_sMBWPBS0_y4IwiODC6-_XAGWOOeUbBz1o1pLpzs/edit?usp=sharing)
+**[02/23]** [Lab 5](/2024-VisML-CDS/Labs/VisML-Lab-Week5-recap): Interpreting White-Box Models
+
+**[03/01]** [Lab 6](/2024-VisML-CDS/Labs/VisML-Lab-Week6-recap): Interpreting Black-Box Models

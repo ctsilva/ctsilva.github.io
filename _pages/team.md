@@ -18,7 +18,7 @@ Current
 * Suemy Inagaki
 * Felipe de Oliveira
 * Parikshit Solunke
-* [Erin McGowan](https://scholar.google.com/citations?user=nDlP51AAAAAJ&hl=en)
+* [Erin McGowan](https://egm68.github.io/)
 * [Guan-de Wu](https://www.gdwu.xyz/)
 * Joao Rulff
 * Shaoyu Chen
