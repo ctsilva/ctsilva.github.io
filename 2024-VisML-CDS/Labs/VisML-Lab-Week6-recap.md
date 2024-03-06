@@ -2,6 +2,6 @@
 
 ### Slides
 
-The slides I showed this week can be found [here](2024-VisML-CDS/VisML-Lab-Week6-slides.qmd). 
+The slides I showed this week can be found [here](VisML-Lab-Week6-slides.qmd). 
 
 ### Miscellaneous Notes 
