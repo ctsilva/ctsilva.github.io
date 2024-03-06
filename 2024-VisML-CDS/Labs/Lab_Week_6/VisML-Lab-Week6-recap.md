@@ -1,5 +1,3 @@
-## Lab 6 Recap: Interpreting Black Box Models with LIME AND SHAP
-
 ### Slides
 
 The slides I showed this week can be found [here](https://ctsilva.github.io/2024-VisML-CDS/Labs/VisML-Lab-Week6-slides). 
