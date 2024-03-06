@@ -1,6 +1,6 @@
 ### Slides
 
-The slides I showed this week can be found [here](https://ctsilva.github.io/2024-VisML-CDS/Labs/VisML-Lab-Week6-slides). 
+The slides I showed this week can be found [here](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_6/VisML-Lab-Week6-slides). 
 
 ### Miscellaneous Notes 
 
