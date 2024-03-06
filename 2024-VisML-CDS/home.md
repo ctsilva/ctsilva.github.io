@@ -27,6 +27,10 @@ author_profile: true
 
 - [White Box slides](/2024-VisML-CDS/slides/white_box)
 
+**[02/29]** Lecture 5: Visualization for Black-box Machine Learning Models
+
+- [Black Box slides](/2024-VisML-CDS/slides/black_box)
+
 ## Labs
 
 **[01/26]** [Lab 1](/2024-VisML-CDS/Labs/VisML-Lab-Week1-Recap): Intro to Observable and D3
