@@ -44,3 +44,5 @@ author_profile: true
 **[02/23]** [Lab 5](/2024-VisML-CDS/Labs/VisML-Lab-Week5-recap): Interpreting White-Box Models
 
 **[03/01]** [Lab 6](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_6/VisML-Lab-Week6-recap/): Interpreting Black-Box Models
+
+**[03/07]** [Lab 7](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_7/VisML-Lab-Week7-recap/): Dimensionality Reduction
