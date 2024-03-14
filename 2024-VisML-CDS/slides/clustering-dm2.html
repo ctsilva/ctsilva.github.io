@@ -352,16 +352,145 @@
 
  -->
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
+<section id="digression-point-set-surfaces" class="slide level2">
+<h2>Digression: Point Set Surfaces</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/pss.jpg"></p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figs/pss-h.jpg"></p>
+</div>
+</div>
+</section>
+<section id="wattenberg-viégas-and-johnson-2016" class="slide level2">
+<h2>Wattenberg, Viégas, and Johnson, 2016</h2>
 
 <img data-src="figs/using-tsne.jpg" class="r-stretch"><p>https://distill.pub/2016/misread-tsne/</p>
 </section>
-<section id="section-1" class="slide level2">
+<section id="t-sne" class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>Wattenberg et al writes “A popular method for exploring high-dimensional data is something called t-SNE… it has an almost magical ability to create compelling two-dimensonal “maps” from data with hundreds or even thousands of dimensions. Although impressive, these images can be tempting to misread.”</p></li>
+<li><p>Wattenberg: “The algorithm is <strong>non-linear</strong> and adapts to the underlying data, performing <strong>different transformations on different regions</strong>. Those differences can be a major source of confusion.”</p></li>
+<li><p>Watternberg: “A second feature of t-SNE is a tuneable parameter, <strong>“perplexity,”</strong> which says (loosely) how to balance attention between local and global aspects of your data. The parameter is, in a sense, a guess about the number of close neighbors each point has. The perplexity value has a complex effect on the resulting pictures.”</p></li>
+</ul>
+</section>
+<section id="t-sne-1" class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li>“Those hyperparameters really matter”</li>
+</ul>
+
+<img data-src="figs/tsneperplexity.jpg" class="r-stretch"><ul>
+<li>“The image for perplexity 100, with merged clusters, illustrates a pitfall: for the algorithm to operate properly, the perplexity really should be smaller than the number of points.”</li>
+</ul>
+</section>
+<section id="t-sne-2" class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li>“Each of the plots above was made with 5,000 iterations with a learning rate (often called “epsilon”) of 10, and had reached a point of stability by step 5,000. How much of a difference do those values make?”</li>
+</ul>
+
+<img data-src="figs/tsnesteps.jpg" class="r-stretch"></section>
+<section id="t-sne-3" class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li>“Cluster sizes in a t-SNE plot mean nothing”</li>
+</ul>
+
+<img data-src="figs/tsneclustersizes.jpg" class="r-stretch"><ul>
+<li><p>“By size we mean bounding box measurements, not number of points.”</p></li>
+<li><p>“The t-SNE algorithm adapts its notion of “distance” to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes.”</p></li>
+</ul>
+</section>
+<section id="t-sne-4" class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>“Distances between clusters might not mean anything”</p></li>
+<li><p>“The next diagrams show three Gaussians of 50 points each, one pair being 5 times as far apart as another pair.”</p></li>
+</ul>
+
+<img data-src="figs/tsneclusterdistances.jpg" class="r-stretch"></section>
+<section id="t-sne-5" class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>“Random noise doesn’t always look random.”</p></li>
+<li><p>“The next diagrams show genuinely random data, 500 points drawn from a unit Gaussian distribution in 100 dimensions. The left image is a projection onto the first two coordinates.”</p></li>
+</ul>
+
+<img data-src="figs/tsnerandom.jpg" class="r-stretch"></section>
+<section id="t-sne-6" class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>“For topology, you may need more than one plot”</p></li>
+<li><p>“The plots below show two groups of 75 points in 50 dimensional space. Both are sampled from symmetric Gaussian distributions centered at the origin, but one is 50 times more tightly dispersed than the other. The “small” distribution is in effect contained in the large one.”</p></li>
+</ul>
+
+<img data-src="figs/tsnetopology.jpg" class="r-stretch"></section>
+<section id="topomap-doraiswamy-et-al" class="slide level2">
+<h2>Topomap (Doraiswamy et al)</h2>
+
+<img data-src="figs/topomap.jpg" class="r-stretch"><ul>
+<li>Topomap preserves the 0-dimensional persistence diagram of the Rips filtration of the high-dimensional data.</li>
+</ul>
+</section>
+<section id="section" class="slide level2">
 <h2></h2>
 
 <img data-src="figs/understanding-umap.jpg" class="r-stretch"><p>https://pair-code.github.io/understanding-umap/</p>
 </section>
+<section id="umap" class="slide level2">
+<h2>UMAP</h2>
+<ul>
+<li>Coenen and Pearce: “UMAP is fast, scaling well in terms of both dataset size and dimensionality. … UMAP can project the 784-dimensional, 70,000-point MNIST dataset in less than 3 minutes, compared to 45 minutes for scikit-learn’s t-SNE implementation. Additionally, UMAP tends to better preserve the global structure of the data.”</li>
+</ul>
+
+<img data-src="figs/umapvstsne.jpg" class="r-stretch"></section>
+<section id="umap-1" class="slide level2">
+<h2>UMAP</h2>
+<ul>
+<li>“UMAP, at its core, works very similarly to t-SNE - both use graph layout algorithms to arrange data in low-dimensional space.”</li>
+</ul>
+
+<img data-src="figs/umapfuzzygraph.jpg" class="r-stretch"></section>
+<section id="umap-parameters" class="slide level2">
+<h2>UMAP parameters</h2>
+<ul>
+<li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
+<li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
+</ul>
+</section>
+<section id="umap-parameters-1" class="slide level2">
+<h2>UMAP parameters</h2>
+<ul>
+<li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
+<li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
+</ul>
+
+<img data-src="figs/umapmindist-0.jpg" class="r-stretch"></section>
+<section id="umap-parameters-2" class="slide level2">
+<h2>UMAP parameters</h2>
+<ul>
+<li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
+<li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
+</ul>
+
+<img data-src="figs/umapmindist-0.8.jpg" class="r-stretch"></section>
+<section id="umap-2" class="slide level2">
+<h2>UMAP</h2>
+<ul>
+<li><p>“However, it’s important to note that, because UMAP and t-SNE both necessarily warp the high-dimensional shape of the data when projecting to lower dimensions, <strong>any given axis or distance in lower dimensions still isn’t directly interpretable in the way of techniques such as PCA.</strong>”</p></li>
+<li><p>Suggested reading: https://pair-code.github.io/understanding-umap/supplement.html</p>
+<ul>
+<li>“Most dimensionality reduction algorithms fit into either one of two broad categories: Matrix factorization (such as PCA) or Graph layout (such as t-SNE).”</li>
+<li>“At its core, UMAP is a graph layout algorithm, very similar to t-SNE, but with a number of key theoretical underpinnings that give the algorithm a more solid footing.”</li>
+</ul></li>
+</ul>
+</section>
+<section id="umap-3" class="slide level2">
+<h2>UMAP</h2>
+
+<img data-src="figs/umapvstsne-param.jpg" class="r-stretch"></section>
 <section id="what-about-user-interaction" class="slide level2">
 <h2>What about user interaction?</h2>
 <p><img data-src="figs/projections.jpg"></p>
