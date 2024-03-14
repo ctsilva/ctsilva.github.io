@@ -33,8 +33,7 @@ author_profile: true
 
 **[03/07]** Lecture 6:  Clustering and Dimensionality Reduction
 
-- [Clustering and Dimensionality Reduction slides]
-(/2024-VisML-CDS/slides/clustering-dm)
+- [Clustering and Dimensionality Reduction slides](/2024-VisML-CDS/slides/clustering-dm)
 
 **[03/14]** Lecture 7: Project Discussion
 
