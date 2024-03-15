@@ -31,6 +31,15 @@ author_profile: true
 
 - [Black Box slides](/2024-VisML-CDS/slides/black_box)
 
+**[03/07]** Lecture 6:  Clustering and Dimensionality Reduction
+
+- [Clustering and Dimensionality Reduction slides](/2024-VisML-CDS/slides/clustering-dm)
+
+**[03/14]** Lecture 7: Project Discussion
+
+- [Project Discussion slides](/2024-VisML-CDS/slides/project)
+
+
 ## Labs
 
 **[01/26]** [Lab 1](/2024-VisML-CDS/Labs/VisML-Lab-Week1-Recap): Intro to Observable and D3
