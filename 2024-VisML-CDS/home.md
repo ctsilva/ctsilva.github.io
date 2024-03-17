@@ -39,6 +39,7 @@ author_profile: true
 
 - [Project Discussion slides](/2024-VisML-CDS/slides/project)
 
+- [Clustering and Dimensionality Reduction (extra) slides](/2024-VisML-CDS/slides/clustering-dm2)
 
 ## Labs
 
