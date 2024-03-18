@@ -2,11 +2,7 @@
 
 ### Description of StreetAware dataset
 
-While researchers try to better understand the dynamics of urban environemnts, novel methods and datasets 
-
-Description of StreetAware
-
-[StreetAware](https://drive.google.com/drive/u/1/folders/1BPtiIF8gBOoZANAGkwDjJUYakpCUYHM1)
+While researchers try to better understand the dynamics of urban environemnts, novel datasets can aid this tasks by providing extensive and detailed information regarding a multitude of objects interacting in these scenarios. [StreetAware](https://drive.google.com/drive/u/1/folders/1BPtiIF8gBOoZANAGkwDjJUYakpCUYHM1) is a high-resolution synchronized multimodal urban scene dataset containing more than 8 hours of recordings of busy intersections in Brooklyn, NY. 
 
 ### Project suggestions:
 
