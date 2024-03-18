@@ -41,6 +41,20 @@ author_profile: true
 
 - [Clustering and Dimensionality Reduction (extra) slides](/2024-VisML-CDS/slides/clustering-dm2)
 
+**[03/21]** Spring Break (no classes)
+
+**[03/28]**
+
+**[04/04]**
+
+**[04/11]**
+
+**[04/18]**
+
+**[04/25]**
+
+**[05/02]** Project Presentations
+
 ## Labs
 
 **[01/26]** [Lab 1](/2024-VisML-CDS/Labs/VisML-Lab-Week1-Recap): Intro to Observable and D3
@@ -56,3 +70,4 @@ author_profile: true
 **[03/01]** [Lab 6](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_6/VisML-Lab-Week6-recap/): Interpreting Black-Box Models
 
 **[03/07]** [Lab 7](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_7/VisML-Lab-Week7-recap/): Dimensionality Reduction
+
