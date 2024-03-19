@@ -4,7 +4,7 @@
 
 While researchers try to better understand the dynamics of urban environemnts, novel datasets can aid these tasks by providing extensive and detailed information regarding a multitude of objects interacting in these scenarios. [StreetAware](https://drive.google.com/drive/u/1/folders/1BPtiIF8gBOoZANAGkwDjJUYakpCUYHM1) is a high-resolution synchronized multimodal urban scene dataset containing more than 8 hours of recordings of busy intersections in Brooklyn, NY. See [StreetAware Paper](https://www.mdpi.com/1424-8220/23/7/3710) for more details about the data.
 
-Your high level goal is to use this data to better understand city dynamics.
+**Your high level goal is to use this data to better understand city dynamics through visualization and machine learning!**
 
 ### Some ideas to get started:
 
@@ -21,3 +21,4 @@ Your high level goal is to use this data to better understand city dynamics.
 6. **Dangerous Interactions** Are you able to discover dangerous interactions between pedestrians and cars? What about bikes? 
 
 
+Further ideas: It might also be very interesting to explore how new LLM models that support multimodal input might be able to help to analyze such scenes. Recently, Claude 3 and Gemini have been upgraded with advanced vision capabilities. Determining their usefulness or limitations might be an interesting endeavor.
