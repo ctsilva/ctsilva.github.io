@@ -1,8 +1,8 @@
-# Final Project
+# Default Final Project
 
 ### Description of StreetAware dataset
 
-While researchers try to better understand the dynamics of urban environemnts, novel datasets can aid these tasks by providing extensive and detailed information regarding a multitude of objects interacting in these scenarios. [StreetAware](https://drive.google.com/drive/u/1/folders/1BPtiIF8gBOoZANAGkwDjJUYakpCUYHM1) is a high-resolution synchronized multimodal urban scene dataset containing more than 8 hours of recordings of busy intersections in Brooklyn, NY. See [StreetAware Paper](https://www.mdpi.com/1424-8220/23/7/3710) for more details about the data.
+While researchers try to better understand the dynamics of urban environemnts, novel datasets can aid these tasks by providing extensive and detailed information regarding a multitude of objects interacting in these scenarios. [StreetAware](https://drive.google.com/drive/u/1/folders/1BPtiIF8gBOoZANAGkwDjJUYakpCUYHM1) is a high-resolution synchronized multimodal urban scene dataset containing more than 8 hours of recordings of busy intersections in Brooklyn, NY. Here is a paper [StreetAware](https://www.mdpi.com/1424-8220/23/7/3710) with details about the data, including the acquisition process, and some sample applications.
 
 **Your high level goal is to use this data to better understand city dynamics through visualization and machine learning!**
 
