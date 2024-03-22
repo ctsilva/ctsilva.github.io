@@ -16,7 +16,7 @@ While researchers try to better understand the dynamics of urban environemnts, n
 
 4. **Gait Estimation/Ability Estimation** The videos acquired contain a large number of people walking. Can you develop techniques that find their catacaristists, for instance, approximate age, height; but also how fast or slow the person crosses the street? Are you able to cluster people along groups with similar "abilities"? 
 
-5. **Car Pose Estimation** Can you track car movements?
+5. **Car Pose Estimation** Can you track car movements? Can you compute their speed, breaking behavior, steadiness on the road, and other desirable or undesirable properties?
 
 6. **Dangerous Interactions** Are you able to discover dangerous interactions between pedestrians and cars? What about bikes? 
 
