@@ -39,6 +39,21 @@ author_profile: true
 
 - [Project Discussion slides](/2024-VisML-CDS/slides/project)
 
+- [Clustering and Dimensionality Reduction (extra) slides](/2024-VisML-CDS/slides/clustering-dm2)
+
+**[03/21]** Spring Break (no classes)
+
+**[03/28]**
+
+**[04/04]**
+
+**[04/11]**
+
+**[04/18]**
+
+**[04/25]**
+
+**[05/02]** Project Presentations
 
 ## Labs
 
