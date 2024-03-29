@@ -9,7 +9,5 @@ The slides I showed this week can be found [here](https://ctsilva.github.io/2024
 * Homework 3 is due TONIGHT (3/15) at 11:59pm
 * Homework 2 grades have been posted, please direct any questions about your specific grade to Rithwick ([rg4361@nyu.edu](rg4361@nyu.edu))
 
-### Final Project Brainstorming
-
 
 

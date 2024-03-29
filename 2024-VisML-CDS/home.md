@@ -55,3 +55,9 @@ author_profile: true
 **[03/01]** [Lab 6](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_6/VisML-Lab-Week6-recap/): Interpreting Black-Box Models
 
 **[03/07]** [Lab 7](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_7/VisML-Lab-Week7-recap/): Dimensionality Reduction
+
+**[03/15]** [Lab 8](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_8/VisML-Lab-Week8-recap/): Project Workshop 
+
+**[03/22]** No lab, spring break
+
+**[03/29]** [Lab 9](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_9/VisML-Lab-Week9-recap/): Topological Data Analysis
