@@ -8,7 +8,7 @@
 <link href="tda_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="tda_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="tda_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.549">
+  <meta name="generator" content="quarto-1.4.551">
 
   <title>Visualization for Machine Learning</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -663,8 +663,8 @@ The point <span class="math inline">\(x\)</span> is a peak if the <strong>persis
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="distance-between-pesistence-diagrams" class="slide level2">
-<h2>Distance between pesistence diagrams</h2>
+<section id="distance-between-persistence-diagrams" class="slide level2">
+<h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
 <p style="text-align: center;">
@@ -675,8 +675,8 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="distance-between-pesistence-diagrams-1" class="slide level2">
-<h2>Distance between pesistence diagrams</h2>
+<section id="distance-between-persistence-diagrams-1" class="slide level2">
+<h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
 <div class="columns">
@@ -694,8 +694,8 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="distance-between-pesistence-diagrams-2" class="slide level2">
-<h2>Distance between pesistence diagrams</h2>
+<section id="distance-between-persistence-diagrams-2" class="slide level2">
+<h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
 <div class="columns">
@@ -714,8 +714,8 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="distance-between-pesistence-diagrams-3" class="slide level2">
-<h2>Distance between pesistence diagrams</h2>
+<section id="distance-between-persistence-diagrams-3" class="slide level2">
+<h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
 <div class="columns">
@@ -1584,6 +1584,24 @@ If we have more than one persistence diagram, how do we measure the distance bet
         // clear code selection
         e.clearSelection();
       });
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
       function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
@@ -1620,7 +1638,11 @@ If we have more than one persistence diagram, how do we measure the distance bet
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {
