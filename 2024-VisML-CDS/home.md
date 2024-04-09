@@ -76,3 +76,5 @@ author_profile: true
 **[03/22]** No lab, spring break
 
 **[03/29]** [Lab 9](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_9/VisML-Lab-Week9-recap/): Topological Data Analysis
+
+**[04/05]** [Lab 10](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_10/VisML-Lab-Week10-recap/): Mountaineer Presentation by Parikshit Solunke (Topological Data Analysis Part 2)
