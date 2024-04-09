@@ -43,9 +43,13 @@ author_profile: true
 
 **[03/21]** Spring Break (no classes)
 
-**[03/28]**
+**[03/28]** Lecture 8: Invited Lecture - [Peter Xenopoulos](https://www.peterxeno.com/)
 
-**[04/04]**
+- [Prediction in Competitive Environments slides](https://docs.google.com/presentation/d/1c2HEF1pWe9MD65V1NbHk8OCeGYUSzwo0ctAnN503YCI/edit#slide=id.p)
+
+**[04/04]** Lecture 9: Topological Data Analysis
+
+- [Topological Data Analysis slides](/2024-VisML-CDS/slides/tda)
 
 **[04/11]**
 
