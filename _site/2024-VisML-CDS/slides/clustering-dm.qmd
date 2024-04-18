@@ -1,0 +1,837 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>Visualization for Machine Learning - Claudio Silva</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="Claudio Silva">
+<meta property="og:title" content="Visualization for Machine Learning">
+
+
+  <link rel="canonical" href="http://localhost:4000/2024-VisML-CDS/slides/clustering-dm.qmd">
+  <meta property="og:url" content="http://localhost:4000/2024-VisML-CDS/slides/clustering-dm.qmd">
+
+
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Claudio Silva",
+      "url" : "http://localhost:4000",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Claudio Silva Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+    
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="57x57" href="http://localhost:4000/images/apple-touch-icon-57x57.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="60x60" href="http://localhost:4000/images/apple-touch-icon-60x60.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="76x76" href="http://localhost:4000/images/apple-touch-icon-76x76.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="120x120" href="http://localhost:4000/images/apple-touch-icon-120x120.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="152x152" href="http://localhost:4000/images/apple-touch-icon-152x152.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:4000/images/apple-touch-icon-180x180.png?v=M44lzPylqQ">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16">
+<link rel="manifest" href="http://localhost:4000/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="http://localhost:4000/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="http://localhost:4000/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="http://localhost:4000/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/academicons.css"/>
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Claudio Silva</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/publications/">Publications</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/team/">Research Team</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/teaching/">Teaching</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/portfolio/">Portfolio</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/cv/">CV</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/markdown/">Guide</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    
+    	<img src="http://localhost:4000/images/claudiosilva.jpg" class="author__avatar" alt="Claudio Silva">
+    
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name">Claudio Silva</h3>
+    <p class="author__bio">Institute Professor, New York University</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> New York, NY</li>
+      
+      
+      
+      
+        <li><a href="mailto:csilva@nyu.edu"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> Email</a></li>
+      
+      
+       
+      
+        <li><a href="https://twitter.com/csilvanyc"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+      
+      
+      
+      
+        <li><a href="https://www.linkedin.com/in/claudio-silva-839634"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+      
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/ctsilva"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        <li><a href="https://scholar.google.com/citations?user=YIwiAAsAAAAJ"><i class="fas fa-fw fa-graduation-cap"></i> Google Scholar</a></li>
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Visualization for Machine Learning">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Visualization for Machine Learning
+</h1>
+          
+        
+        
+        
+        
+             
+        
+    
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        ## Agenda
+
+\
+
+1. Clustering
+2. Dimensionality Reduction
+
+<!-- Examples and materials from... -->
+
+## Clustering
+
+Etienne Bernard: "... the goal of clustering is to separate a set of examples into groups called clusters"
+
+![](figs/iris.jpg)
+
+## IRIS
+
+``` python
+# Code source: Gaël Varoquaux
+# Modified for documentation by Jaques Grobler
+# License: BSD 3 clause
+#
+import matplotlib.pyplot as plt
+
+from sklearn import datasets
+iris = datasets.load_iris()
+
+_, ax = plt.subplots()
+scatter = ax.scatter(iris.data[:, 2], iris.data[:, 1])
+ax.set(xlabel=iris.feature_names[2], ylabel=iris.feature_names[1])
+_ = ax.legend(
+    scatter.legend_elements()[0], iris.target_names, loc="lower right", title="Classes"
+)
+```
+
+## IRIS
+
+```{python}
+import matplotlib.pyplot as plt
+
+from sklearn import datasets
+iris = datasets.load_iris()
+
+_, ax = plt.subplots()
+scatter = ax.scatter(iris.data[:, 2], iris.data[:, 1])
+ax.set(xlabel=iris.feature_names[2], ylabel=iris.feature_names[1])
+_ = ax.legend(
+    scatter.legend_elements()[0], iris.target_names, loc="lower right", title="Classes"
+)
+```
+
+## IRIS -- another look (Bernard)
+
+![](figs/iris-bernard.jpg)
+
+## IRIS -- clustering
+
+![](figs/iris-bernard-clustering.jpg)
+
+## IRIS -- k-means
+
+![](figs/iris-bernard-clustering-kmeans.jpg)
+
+## Wolfram Mathematica FindClusters
+
+![](figs/findclusters-methods.jpg)
+
+## Wolfram Mathematica FindClusters
+
+![](figs/findclusters-methods-examples.jpg)
+
+
+## IRIS - classes
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{python}
+import matplotlib.pyplot as plt
+
+from sklearn import datasets
+iris = datasets.load_iris()
+
+_, ax = plt.subplots()
+scatter = ax.scatter(iris.data[:, 2], iris.data[:, 1], c=iris.target)
+ax.set(xlabel=iris.feature_names[2], ylabel=iris.feature_names[1])
+_ = ax.legend(
+    scatter.legend_elements()[0], iris.target_names, loc="lower right", title="Classes"
+)
+```
+
+:::
+
+::: {.column width="50%"}
+![](figs/iris-bernard-clustering-kmeans-crop.jpg)
+:::
+
+::::
+
+## Recommended reading
+
+* **Required** https://www.wolfram.com/language/introduction-machine-learning/clustering/ [link](https://www.wolfram.com/language/introduction-machine-learning/clustering/)
+
+* https://en.wikipedia.org/wiki/Cluster_analysis
+
+* https://en.wikipedia.org/wiki/K-means_clustering
+
+* https://en.wikipedia.org/wiki/DBSCAN
+
+
+## Dimensionality Reduction
+
+* Input data may have thousands or millions of dimensions!
+
+* **Dimensionality Reduction** represents data with fewer dimensions
+  - easier learning -- fewer parameters
+  - visualization -- show high-dimensional data in 2D or 3D
+  - discover "intrinsic dimensionality" of the data
+
+## Dimensionality Reduction (Yi Zhang)
+
+* Assumption: data lies on a lower dimensional space
+
+![](figs/dm-data-is-low-dimensional.jpg)
+
+
+## Dimensionality Reduction (Bishop)
+
+* Supposed a dataset of "3s" perturbed in various ways
+
+![](figs/perturbed-3.jpg)
+
+* What operations did we perform? What's the intrinsic dimensionality?
+
+* Here the underlying **manifold** is **non-linear**
+
+## Digits
+
+``` python
+from sklearn.datasets import load_digits
+
+digits = load_digits(n_class=6)
+X, y = digits.data, digits.target
+```
+
+## Digits - 0
+
+```{python}
+from sklearn.datasets import load_digits
+
+digits = load_digits(n_class=6)
+digits.images[0]
+```
+
+## Digits - 1
+
+```{python}
+from sklearn.datasets import load_digits
+
+digits = load_digits(n_class=6)
+digits.images[1]
+```
+
+## Digits
+
+```{python}
+from sklearn.datasets import load_digits
+
+digits = load_digits(n_class=6)
+X, y = digits.data, digits.target
+n_samples, n_features = X.shape
+n_neighbors = 30
+
+import matplotlib.pyplot as plt
+
+fig, axs = plt.subplots(nrows=10, ncols=10, figsize=(6, 6))
+for idx, ax in enumerate(axs.ravel()):
+    ax.imshow(X[idx].reshape((8, 8)), cmap=plt.cm.binary)
+    ax.axis("off")
+_ = fig.suptitle("A selection from the 64-dimensional digits dataset", fontsize=16)
+```
+
+## Digits
+```{python}
+
+import numpy as np
+from matplotlib import offsetbox
+
+from sklearn.preprocessing import MinMaxScaler
+
+def plot_embedding(X, title):
+    _, ax = plt.subplots()
+    X = MinMaxScaler().fit_transform(X)
+
+    for digit in digits.target_names:
+        ax.scatter(
+            *X[y == digit].T,
+            marker=f"${digit}$",
+            s=60,
+            color=plt.cm.Dark2(digit),
+            alpha=0.425,
+            zorder=2,
+        )
+    shown_images = np.array([[1.0, 1.0]])  # just something big
+    for i in range(X.shape[0]):
+        # plot every digit on the embedding
+        # show an annotation box for a group of digits
+        dist = np.sum((X[i] - shown_images) ** 2, 1)
+        if np.min(dist) < 4e-3:
+            # don't show points that are too close
+            continue
+        shown_images = np.concatenate([shown_images, [X[i]]], axis=0)
+        imagebox = offsetbox.AnnotationBbox(
+            offsetbox.OffsetImage(digits.images[i], cmap=plt.cm.gray_r), X[i]
+        )
+        imagebox.set(zorder=1)
+        ax.add_artist(imagebox)
+
+    ax.set_title(title)
+    ax.axis("off")
+
+from sklearn.decomposition import TruncatedSVD
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.ensemble import RandomTreesEmbedding
+from sklearn.manifold import (
+    MDS,
+    TSNE,
+    Isomap,
+    LocallyLinearEmbedding,
+    SpectralEmbedding,
+)
+from sklearn.neighbors import NeighborhoodComponentsAnalysis
+from sklearn.pipeline import make_pipeline
+from sklearn.random_projection import SparseRandomProjection
+
+embeddings = {
+    "Random projection embedding": SparseRandomProjection(
+        n_components=2, random_state=42
+    ),
+    "Truncated SVD embedding": TruncatedSVD(n_components=2),
+    "Linear Discriminant Analysis embedding": LinearDiscriminantAnalysis(
+        n_components=2
+    ),
+    "Isomap embedding": Isomap(n_neighbors=n_neighbors, n_components=2),
+    "Standard LLE embedding": LocallyLinearEmbedding(
+        n_neighbors=n_neighbors, n_components=2, method="standard"
+    ),
+    "Modified LLE embedding": LocallyLinearEmbedding(
+        n_neighbors=n_neighbors, n_components=2, method="modified"
+    ),
+    "Hessian LLE embedding": LocallyLinearEmbedding(
+        n_neighbors=n_neighbors, n_components=2, method="hessian"
+    ),
+    "LTSA LLE embedding": LocallyLinearEmbedding(
+        n_neighbors=n_neighbors, n_components=2, method="ltsa"
+    ),
+    "MDS embedding": MDS(n_components=2, n_init=1, max_iter=120, n_jobs=2),
+    "Random Trees embedding": make_pipeline(
+        RandomTreesEmbedding(n_estimators=200, max_depth=5, random_state=0),
+        TruncatedSVD(n_components=2),
+    ),
+    "Spectral embedding": SpectralEmbedding(
+        n_components=2, random_state=0, eigen_solver="arpack"
+    ),
+    "t-SNE embedding": TSNE(
+        n_components=2,
+        n_iter=500,
+        n_iter_without_progress=150,
+        n_jobs=2,
+        random_state=0,
+    ),
+    "NCA embedding": NeighborhoodComponentsAnalysis(
+        n_components=2, init="pca", random_state=0
+    ),
+}
+
+from time import time
+
+projections, timing = {}, {}
+for name, transformer in embeddings.items():
+    if name.startswith("Linear Discriminant Analysis"):
+        data = X.copy()
+        data.flat[:: X.shape[1] + 1] += 0.01  # Make X invertible
+    else:
+        data = X
+
+    print(f"Computing {name}...")
+    start_time = time()
+    projections[name] = transformer.fit_transform(data, y)
+    timing[name] = time() - start_time
+
+for name in timing:
+  if name=="t-SNE embedding":
+    title = f"{name} (time {timing[name]:.3f}s)"
+    plot_embedding(projections[name], title)
+
+plt.show()
+```
+
+
+## Principal Component Analysis (Luis Gustavo Nonato)
+
+
+::: incremental
+-   PCA is directly related to the eigenvectors and eigenvalues of covariance matrices.
+-   Lets so make a quick review of eigenvectors, eigenvalues, and covariance matrices.
+:::
+
+## Eigenvectors and Eigenvalues
+
+Given a $d \times d$ matrix $A$, a pair $(\lambda, u)$ that satisfies
+
+$A u = \lambda u$
+
+is called eigenvalue $\lambda$ and corresponding eigenvector $u$ of $A$.
+
+## Symmetric Matrices
+
+- $\lambda \in \mathbb{R}$ and $u \in \mathbb{R}^d$ (no complex numbers involved)
+- The eigenvectors are orthogonal
+
+
+![](figs/pca-spectral-decomposition.jpg)
+
+## Covariance Matrix
+
+![](figs/covariance-matrix.jpg)
+
+## Covariance Matrix
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](figs/large-covariance.jpg)
+:::
+
+::: {.column width="50%"}
+![](figs/zero-convariance.jpg)
+:::
+
+::::
+
+## Covariance Matrix
+
+![](figs/covariance-summary.jpg)
+
+## Principal Component Analysis:  intuition
+
+![](figs/pca-intuition.jpg)
+
+## Principal Component Analysis:  intuition
+
+![](figs/pca-intuition2.jpg)
+
+
+## Principal Component Analysis
+
+![](figs/pca-description.jpg)
+
+## Principal Component Analysis
+
+![](figs/pca-filtering.jpg)
+
+## PCA of digits  
+
+```{python}
+
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+data, labels = load_digits(return_X_y=True)
+reduced_data=pca.fit_transform(data)
+plt.scatter(reduced_data[:, 0], reduced_data[:, 1])
+plt.show()
+```
+
+## PCA of digits
+
+```{python}
+
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+data, labels = load_digits(return_X_y=True)
+reduced_data=pca.fit_transform(data)
+plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=labels)
+plt.show()
+```
+
+## Scaling Up
+
+* Covariance matrix can be really big!
+  - $\Sigma$ is $n$ by $n$
+  - 10000 features are not uncommon
+  - computing eigenvectors is slow...
+
+* Solution: Singular Value Decomposition (SVD)
+  - Finds the $k$ largest eigenvectors
+  - Widely implemented robustly in major packages
+
+
+## Singular Value Decomposition (SVD)
+
+* https://en.wikipedia.org/wiki/Singular_value_decomposition
+
+![](figs/svd.jpg)
+
+## Dimensionality Reduction Techniques
+
+* https://en.wikipedia.org/wiki/Dimensionality_reduction
+  - Principal component analysis (PCA)
+  - Non-negative matrix factorization (NMF)
+  - Linear discriminant analysis (LDA)
+  - t-SNE
+  - UMAP
+  - **many others**
+
+## Local Linear Embedding
+
+![](figs/lle.jpg)
+
+## Preserving Local Manifold Neighborhoods
+
+![](figs/preserving-local-neighborhoods.jpg)
+
+## LLE
+
+![](figs/lle-algorithm.jpg)
+
+https://www.science.org/doi/10.1126/science.290.5500.2323
+
+
+## PCA vs LLE
+
+![](figs/pca-vs-lle.jpg){height="600"}
+
+
+## Graph Layout using force based approach
+
+[video link](https://www.youtube.com/watch?v=_Oidv5M-fuw)
+
+## SNE and t-SNE
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](figs/sne.jpg)
+:::
+
+::: {.column width="40%"}
+![](figs/tsne.jpg)
+:::
+
+::::
+
+
+HERE is an excellent talk by t-SNE creator: 
+[video link](https://www.youtube.com/watch?v=RJVL80Gg3lA&list=UUtXKDgv1AVoG88PLl8nGXmw)
+
+
+<!-- ##
+
+ -->
+
+
+## 
+
+![](figs/using-tsne.jpg)
+
+https://distill.pub/2016/misread-tsne/
+
+## 
+
+![](figs/understanding-umap.jpg)
+
+https://pair-code.github.io/understanding-umap/
+
+
+## What about user interaction?
+
+![](figs/projections.jpg)
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+
+      </footer>
+
+      
+
+      
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+<a href="/sitemap/">Sitemap</a>
+<!-- end custom footer snippets -->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/ctsilva"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Claudio Silva. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+  </body>
+</html>
+

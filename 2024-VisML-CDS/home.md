@@ -53,7 +53,8 @@ author_profile: true
 
 **[04/11]**
 
-**[04/18]**
+**[04/18]** Lecture 11: Visualization for NLP
+- [Visualization for NLP slides](/2024-VisML-CDS/slides/vis4nlp)
 
 **[04/25]**
 
