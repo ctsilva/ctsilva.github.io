@@ -84,3 +84,5 @@ author_profile: true
 **[04/05]** [Lab 10](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_10/VisML-Lab-Week10-recap/): Mountaineer Presentation by Parikshit Solunke (Topological Data Analysis Part 2)
 
 **[04/12]** [Lab 11](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_11/VisML-Lab-Week11-recap/): Deep Learning 
+
+**[04/19]** [Lab 12](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_12/VisML-Lab-Week12-recap/): Visualization for NLP 
