@@ -1,0 +1,508 @@
+## Miscellaneous 
+
+* Homework 2 due TONIGHT at 11:59pm
+* Homework 1 grades released - ask Rithwick ([rg4361@nyu.edu](rg4361@nyu.edu)) any questions about grades 
+
+## Interpreting Black Box Models
+
+* Not as intuitive as white box models, can be hard to define a model’s decision boundary in a human-understandable manner
+* However there are ways to analyze what factors affect model outputs!
+  * LIME
+  * SHAP
+
+## Local Interpretable Model-Agnostic Explanations (LIME)
+
+* What is LIME?
+  * LIME is a python library that explains the prediction of any classifier by learning an interpretable model locally around the prediction
+
+
+## LIME
+* Why is LIME a good model explainer?
+  * Interpretable by non-experts
+  * Local fidelity (replicates the model’s behavior in the vicinity of the instance being predicted)
+  * Model agnostic (does not make any assumptions about the model) 
+  * Global perspective (when used on a representative set, LIME can provide a global intuition of the model)
+
+::: footer
+Ref: @Sharma_2020
+:::
+
+## LIME
+
+* How does LIME work?
+  * For an in depth explanation of the math, see @Sharma_2020
+* Fidelity-Interpretability Tradoff
+  * We want an explainer that is faithful (replicates our model’s behavior locally) and interpretable. To achieve this, LIME minimizes 
+
+![](lime_eqn.png)
+
+::: footer
+Ref: @Sharma_2020
+:::
+
+## LIME
+
+![](lime_eqn.png){fig-align="center"}
+
+<span style="font-size:0.5em;"><b>f:</b> an original predictor</br>
+<b>x:</b> original features</br>
+<b>g:</b> explanation model which could be a linear model, decision tree, or falling rule lists</br>
+<b>Pi:</b> proximity measure between an instance of z to x to define locality around x. It weighs z’ (perturbed instances) depending upon their distance from x.</br>
+<b>First Term:</b> the measure of the unfaithfulness of g in approximating f in the locality defined by Pi. This is termed as locality-aware loss in the original paper</br>
+<b>Last term:</b> a measure of model complexity of explanation g (e.g. if your explanation model is a decision tree it can be the depth of the tree)</span>
+
+::: footer
+Ref: @Sharma_2020
+:::
+
+## LIME Example in Python
+
+We first import the relevant libraries:
+
+``` {python}
+import pandas as pd, numpy as np
+from sklearn import datasets
+from sklearn.decomposition import PCA
+from matplotlib import pyplot as plt
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.model_selection import train_test_split
+import lime, lime.lime_tabular, shap
+```
+
+## LIME Example in Python
+
+Recall the Iris dataset, which contains flowers that can be sorted into 3 subspecies classes based on 4 features: 
+
+``` {python}
+data = datasets.load_iris()
+
+X = pd.DataFrame(data.data, columns=data.feature_names)
+y = data.target
+
+X[0:3]
+```
+
+## LIME Example in Python
+
+We ignore Class 0 for now (we will see why shortly), and split the data into a training set (80%) and test set (20%):
+
+``` {python}
+#Ignoring one of the three classes
+
+X = X[y != 0]
+y = y[y != 0]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+```
+
+## LIME Example in Python
+
+We train a random forest classifier on our training set, and generate predictions for our test set:
+
+``` {python}
+classifier = RandomForestClassifier(random_state=42)
+
+classifier.fit(X_train, y_train)
+
+predicted = classifier.predict(X_test)
+
+pre  = precision_score(y_test, predicted)
+rec  = recall_score(y_test, predicted)
+acc = accuracy_score(y_test, predicted)
+
+print("Precision: ", pre)
+print("Recall: ", rec)
+print("Accuracy: ", acc)
+```
+
+## LIME Example in Python
+
+We use lime to create an explainer based on our training set, and generate an explanation for the 10th sample in our test set:
+
+``` {python}
+explainer1 = lime.lime_tabular.LimeTabularExplainer(X_train.values,
+                                                   feature_names=X_train.columns.values.tolist(),
+                                                   class_names=['class 1', 'class 2'],
+                                                   verbose=True,
+                                                   mode='classification',
+                                                   random_state=42)
+
+lime_values = explainer1.explain_instance(X_test.values[10], classifier.predict_proba, num_features=4)
+##some lime_values properties intercept, local_pred, score
+```
+
+## LIME Example in Python
+
+<ul >
+<li style="font-size:30px";>We see that this explanation has three parts:
+  <ul>
+    <li style="font-size:25px";>On the left, we see that the classifier estimated there was a 78% chance the sample was from Class 1, and a 22% chance the sample was from Class 2</li>
+    <li style="font-size:25px";>In the center, we see that petal length and width increased the proability that the sample was from Class 1, while sepal length and width increased the proability that the sample was from Class 2. Petal length and width also had greater influence on their respective increase than sepal length and width</li>
+    <li style="font-size:25px";>On the right, we see the actual LIME values for each feature. The color of each row corresponds to the class that feature is "voting for"</li>
+   </ul>
+</li>
+</ul>
+
+``` {python}
+
+lime_values.show_in_notebook()
+```
+
+## Shapley Values (SHAP)
+
+* A method from coalitional game theory that tells us how to fairly distribute the “payout” among the features
+  * The “game” is the prediction task for a single instance of the dataset
+  * The “gain” is the actual prediction for this instance minus the average prediction for all instances
+  * The “players” are the feature values of the instance that collaborate to receive the gain (= predict a certain value)
+* Useful for debugging models, explaining individual model predictions, and data 
+
+::: footer
+Refs: @Molnar_2023, @ADataOdyssey_2023
+:::
+
+## SHAP Example
+
+* Suppose the HR dept of your company has asked you to build a model that predicts the annual bonus for each of the company’s employees 
+* We are given a dataset with 1000 employees and the following 5 features:
+  * Experience (continuous) 
+  * Degree (binary) 
+  * Sales (continuous) 
+  * Performance (continuous) 
+  * Days Late (continuous) 
+
+::: footer
+Ref: @ADataOdyssey_2023
+:::
+
+## SHAP Example
+
+:::: {.columns}
+
+::: {.column width="40%"}
+ 
+  <span style="font-size:0.75em;">We can use feature importance to understand how important each feature is to model predictions in general, but it cannot tell us 
+  <br />
+  1. Feature affect on individual predictions <br />
+  2. If a feature tends to increase or decrease the prediction 
+  <br />
+  3. (For classification) if a feature changes the probability of a positive prediction</span>
+
+:::
+
+::: {.column width="60%"}
+
+![](feature_importance.png)
+:::
+
+::::
+
+::: footer
+Ref: @ADataOdyssey_2023
+:::
+
+## SHAP Example (Waterfall Plot)
+ 
+![](SHAP_waterfall.png)
+
+<ul style="font-size:20px";>“When an employee has a degree, the predicted bonus is $16.91 higher than the average.” = “Degree has increased the prediction”</ul>
+
+::: footer
+Ref: @ADataOdyssey_2023
+:::
+
+## SHAP Example (Classification) 
+
+:::: {.columns}
+
+::: {.column width="28%"}
+
+<ul >
+<li style="font-size:30px";>Suppose we have a classification model that predicts whether mushrooms are poisonous (class 1) or edible (class 0)<ul>
+    <li style="font-size:25px";>Use log odds (the logarithm of the odds ratio - odds are likelihood ratios, and tell us how likely it is that an event will happen)</li>
+   </ul>
+</li>
+</ul>
+  
+:::
+
+::: {.column width="72%"}
+
+![](SHAP_waterfall_2.png)
+:::
+
+::::
+
+::: footer
+Ref: @ADataOdyssey_2023
+:::
+
+
+## Other SHAP Plots (for model as a whole) 
+
+![](SHAP_overall.png)
+
+::: footer
+Ref: @ADataOdyssey_2023
+:::
+
+## SHAP Examples in Python
+
+We create a SHAP explainer and generate SHAP values for our test set:
+
+``` {python}
+
+explainer2 = shap.TreeExplainer(classifier)
+
+shap_values = explainer2.shap_values(X_test)
+```
+
+## SHAP Examples in Python
+
+<ul >
+<li style="font-size:30px";>We can visualize these SHAP values as a beeswarm plot:
+  <ul>
+    <li style="font-size:25px";>Each dot is a row of the dataset</li>
+    <li style="font-size:25px";>Features (y-axis) are ranked from top to bottom by their mean absolute SHAP values for the entire dataset</li>
+    <li style="font-size:25px";>X-axis position corresponds to each dot's SHAP value</li>
+    <li style="font-size:25px";>Color corresponds to the raw feature value</li>
+   </ul>
+</li>
+</ul>
+
+``` {python}
+
+class_idx  = 0
+shap.summary_plot(shap_values[class_idx], X_test, plot_type="dot") 
+
+```
+
+## SHAP Examples in Python
+
+<ul >
+<li style="font-size:16px";>Dependence plots show the relationship between SHAP and raw values for a specific feature
+  <ul>
+    <li style="font-size:14px";>Vertical dispersion in SHAP values seen for fixed variable values is due to interaction effects with other features</li>
+    <li style="font-size:14px";>Dependence plots are often coloured by the values of a strongly interacting feature (in this case, sepal width)</li>
+   </ul>
+</li>
+</ul>
+
+``` {python}
+
+feature_name = "petal length (cm)" 	
+interaction  = "sepal width (cm)"	  
+shap.dependence_plot(feature_name, shap_values[class_idx], X_test, interaction_index=interaction)
+
+```
+
+## SHAP Examples in Python
+
+Finally, force plots can be thought of as a condensed waterfall plot:
+
+``` {python}
+shap.initjs()
+sample_idx = 10
+shap.force_plot(explainer2.expected_value[class_idx], shap_values[class_idx][sample_idx], X_test.values[sample_idx])
+```
+
+## SHAP Examples in Python
+
+``` {python}
+shap.initjs()
+class_idx  = 1
+shap.force_plot(explainer2.expected_value[class_idx], shap_values[class_idx][sample_idx], X_test.values[sample_idx])
+```
+
+## Further SHAP Reading
+
+See [this article](https://www.aidancooper.co.uk/a-non-technical-guide-to-interpreting-shap-analyses/) for a more in-depth breakdown of how to read each type of SHAP plot.
+
+::: footer
+Ref: @Cooper_2023
+:::
+
+## Principal Component Analysis (PCA)
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+<ul >
+<li style="font-size:30px";>Dimensionality reduction technique that allows us to find clusters of similar data points based on many features (which we boil down to two “principal components” PC1 and PC2)</li>
+<li style="font-size:30px";>PC1 and PC2 represent the directions in the data space with the highest and second-highest variances, respectively
+  <ul>
+    <li style="font-size:25px";>Way to bring out strong patterns from large and complex datasets</li>
+   </ul>
+</li>
+</ul>
+  
+:::
+
+::: {.column width="60%"}
+
+![](PCA_iris.png)
+:::
+
+::::
+
+::: footer
+Ref: @Team_2018a
+:::
+
+## Video Intro
+
+
+
+::: footer
+Ref: @Starmer_2017
+:::
+
+## PCA Example 
+
+:::: {.columns}
+
+::: {.column width="40%"}
+ 
+<ul >
+<li style="font-size:30px";>Suppose we have a dataset that measures the expression of 15 genes from 60 mice
+  <ul>
+    <li style="font-size:25px";>How do you know which mice are similar to one another, and which ones are different?</li>
+    <li style="font-size:25px";>How do you know which genes are responsible for such similarities or differences?</li>
+   </ul>
+</li>
+<li style="font-size:30px";>Let’s start by plotting the data for two genes against each other:
+  <ul>
+    <li style="font-size:25px";>Each dot  = 1 mouse</li>
+   </ul>
+</li>
+</ul>
+
+:::
+
+::: {.column width="60%"}
+
+![](PCA_mice_1.png)
+:::
+
+::::
+
+
+::: footer
+Ref: @Team_2018a
+:::
+
+## PCA Example
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+<ul >
+<li style="font-size:28px";>The first principal component is the line of best fit for this data. It is a line that, if you project the original dots on it, two things happen:
+  <ul>
+    <li style="font-size:20px";>The total distance among the projected points is maximized. This means they can be distinguished from one another as clearly as possible.</li>
+    <li style="font-size:20px";>The total distance from the original points to their corresponding projected points is minimized. This means we have a representation that is as close to the original data as possible.</li>
+   </ul>
+</li>
+<li style="font-size:28px";>AKA PC1 must convey the maximum variation among data points AND contain minimum error (these are actually achieved at the same time)</li>
+</ul>
+
+:::
+
+::: {.column width="60%"}
+
+![](PCA_mice_2.png)
+:::
+
+::::
+
+::: footer
+Ref: @Team_2018a
+:::
+
+## PCA Example
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+<ul >
+<li style="font-size:30px";>But we have more than 2 genes! And we can’t reasonably make a plot with 15 axes</li>
+<li style="font-size:30px";>To create PC1 for all 15 genes,
+  <ul>
+    <li style="font-size:25px";>A line is anchored at the center of the 15-D cloud of dots and rotated in 15 directions, all the while acting as a “mirror,” on which the original 60 dots are projected</li>
+    <li style="font-size:25px";>This rotation continues until the total distance among projected points is maximum</li>
+    <li style="font-size:25px";>The rotating line now describes the most variation among 60 mice, and is fit to be PC1</li>
+   </ul>
+</li>
+</ul>
+
+:::
+::: {.column width="40%"}
+
+
+:::
+
+::::
+
+::: footer
+Ref: @Team_2018a
+:::
+
+## PCA Example
+
+:::: {.columns}
+
+::: {.column width="40%"}
+ 
+* PC2 is the second line that meets PC1, perpendicularly, at the center of the cloud, and describes the second most variation in the data
+
+:::
+
+::: {.column width="60%"}
+
+![](PCA_mice_4.png)
+:::
+
+::::
+
+::: footer
+Ref: @Team_2018a
+:::
+
+## PCA Example
+
+<ul >
+<li style="font-size:40px";>If PCA is suitable for your data, just the first 2 or 3 principal components should convey most of the information of the data already. This is nice because:
+  <ul>
+    <li style="font-size:30px";>Principal components help reduce the number of dimensions down to 2 or 3, making it possible to see strong patterns.</li>
+    <li style="font-size:30px";>Yet we didn’t have to throw away any genes in doing so. Principal components take all dimensions and data points into account.</li>
+    <li style="font-size:30px";>Since PC1 and PC2 are perpendicular to each other, we can rotate them and make them straight. These are the axes of our PCA plot.</li>
+   </ul>
+</li>
+</ul>
+
+::: footer
+Ref: @Team_2018a
+:::
+
+## PCA Example in Python
+
+``` {python}
+data = datasets.load_iris()
+X = pd.DataFrame(data.data, columns=data.feature_names)
+y = data.target
+pca  = PCA(n_components = 2)
+projection = pca.fit_transform(X)
+plt.xticks([])
+plt.yticks([])
+plt.scatter(projection[:, 0], projection[:, 1], c = y)
+```
+
+## Code from Today
+
+[This Jupyter notebook](https://colab.research.google.com/drive/1naKHMtKmXsy-BAtmCWTUZpWrD39T1HuY?usp=sharing ) collates the code from today's lab. 
+
+
+## References
