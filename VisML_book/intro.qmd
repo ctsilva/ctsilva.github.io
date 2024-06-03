@@ -1,0 +1,94 @@
+# Introduction to Visualization
+
+
+
+## Lab Exercises
+
+This activity is a modified version of [this](https://observablehq.com/@nyuvis/fundamental-graphs?collection=@nyuvis/guides-and-examples) guide - but try to do it yourself first!
+
+In this activity you will practice using D3.js by creating a scatterplot. We will be using a standard example dataset, [Iris flower measurements](https://archive.ics.uci.edu/ml/datasets/Iris), to create a plot like this:
+
+PUT SCATTERPLOT IMAGE HERE
+
+### How to approach writing your code
+
+Let's say you have a sketch of a visualization that you want to make. How can you approach implementing it with D3? Here is a general approach that you can take:
+
+* Think carefully about your graphical encoding.
+    * What are your marks?
+    * What data objects do those marks represent?
+    * What are your channels?
+    * How are you mapping from your data to your channels?
+* Do your data transformation
+    * Take a look at the dataset that you have. Figure out how you need to transform your data in order to get it into a format that your visualization needs.
+* For the visualization, start with the basics:
+    * Create your SVG element.
+    * Set up your margins.
+* Next, figure out your scales.
+    * Your mapping from data attributes to channels will tell you what scales you need.
+    * Your scales will inform what axes and legends you need.
+* Determine if you need additional data transformation to draw more "complex" marks.
+    * For lines, areas, stacked areas/bars, pie charts, etc. consult the [d3-shape](https://github.com/d3/d3-shape#areas) API documentation and examples.
+* Now you're ready to draw the marks.
+    * If you have groups of marks, first create and position your groups, then add marks to the groups.
+    * Use joins to create one mark (or group) for each object in your data.
+    * Use your scales to set the visual attributes of the marks or groups.
+
+### Loading the Data
+
+First, let's load the Iris dataset from the attached file and use \`d3.autoType\` to automatically convert the appropriate fields to numbers:`
+
+```{ojs}
+iris = d3.csvParse(await FileAttachment("iris-1.csv").text(), d3.autoType)
+Inputs.table(iris)
+```
+
+We want to plot sepal length against sepal width. We will need an axis for each. We also want to color each dot by class. But first we need to define the width, height, and margins of our plot:
+
+```{ojs}
+margin = {return {top: 50, right: 120, bottom: 50, left: 120};}
+visWidth = 400;
+visHeight = 400;
+```
+
+Now we need to define x and y scales that will map our sepal lengths and widths to the proper location on the scatterplot:
+
+```{ojs}
+x = d3.scaleLinear()
+    .domain(d3.extent(iris, d => d["sepal-length"])).nice()
+    .range([0, visWidth]);
+```
+
+
+```{ojs}
+y = d3.scaleLinear()
+    .domain(d3.extent(iris, d => d["sepal-width"])).nice()
+    .range([visHeight, 0]);
+```
+
+
+Now we can define a function for the x Axis based upon our x scale, and a function for the y Axis based upon our y scale:
+
+```{ojs}
+xAxis = d3.axisBottom(x);
+```
+
+```{ojs}
+yAxis = d3.axisLeft(y);
+```
+
+Next, we want to indicate which class each flower belongs to by coloring its corresponding dot. We do this by first creating an array containing all of the unique class labels in our CSV file:
+
+(Hint: start with the Javascript "map" function)
+
+```{ojs}
+classes = //TO DO
+```
+
+Next, we create a function that maps each of the classes to a D3 color scheme:
+
+(Hint: see [d3.scaleOrdinal()](https://d3js.org/d3-scale/ordinal) and [D3 Categorical Color Schemes](https://d3js.org/d3-scale-chromatic/categorical))
+
+```{ojs}
+irisColor = //TO DO
+```

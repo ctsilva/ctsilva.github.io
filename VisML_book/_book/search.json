@@ -1,0 +1,62 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Visualization for Machine Learning",
+    "section": "",
+    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction to Visualization",
+    "section": "",
+    "text": "1.1 Lab Exercises\nThis activity is a modified version of this guide - but try to do it yourself first!\nIn this activity you will practice using D3.js by creating a scatterplot. We will be using a standard example dataset, Iris flower measurements, to create a plot like this:\nPUT SCATTERPLOT IMAGE HERE",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Visualization</span>"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "3  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "intro.html#introduction-subsection",
+    "href": "intro.html#introduction-subsection",
+    "title": "1  Introduction to Visualization",
+    "section": "",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Visualization</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#lab-exercises",
+    "href": "intro.html#lab-exercises",
+    "title": "1  Introduction to Visualization",
+    "section": "",
+    "text": "1.1.1 How to approach writing your code\nLet’s say you have a sketch of a visualization that you want to make. How can you approach implementing it with D3? Here is a general approach that you can take:\n\nThink carefully about your graphical encoding.\n\nWhat are your marks?\nWhat data objects do those marks represent?\nWhat are your channels?\nHow are you mapping from your data to your channels?\n\nDo your data transformation\n\nTake a look at the dataset that you have. Figure out how you need to transform your data in order to get it into a format that your visualization needs.\n\nFor the visualization, start with the basics:\n\nCreate your SVG element.\nSet up your margins.\n\nNext, figure out your scales.\n\nYour mapping from data attributes to channels will tell you what scales you need.\nYour scales will inform what axes and legends you need.\n\nDetermine if you need additional data transformation to draw more “complex” marks.\n\nFor lines, areas, stacked areas/bars, pie charts, etc. consult the d3-shape API documentation and examples.\n\nNow you’re ready to draw the marks.\n\nIf you have groups of marks, first create and position your groups, then add marks to the groups.\nUse joins to create one mark (or group) for each object in your data.\nUse your scales to set the visual attributes of the marks or groups.\n\n\n\n\n1.1.2 Loading the Data\nFirst, let’s load the Iris dataset from the attached file and use `d3.autoType` to automatically convert the appropriate fields to numbers:`\n\niris = d3.csvParse(await FileAttachment(\"iris-1.csv\").text(), d3.autoType)\nInputs.table(iris)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWe want to plot sepal length against sepal width. We will need an axis for each. We also want to color each dot by class. But first we need to define the width, height, and margins of our plot:\n\nmargin = {return {top: 50, right: 120, bottom: 50, left: 120};}\nvisWidth = 400;\nvisHeight = 400;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNow we need to define x and y scales that will map our sepal lengths and widths to the proper location on the scatterplot:\n\nx = d3.scaleLinear()\n    .domain(d3.extent(iris, d =&gt; d[\"sepal-length\"])).nice()\n    .range([0, visWidth]);\n\n\n\n\n\n\n\ny = d3.scaleLinear()\n    .domain(d3.extent(iris, d =&gt; d[\"sepal-width\"])).nice()\n    .range([visHeight, 0]);\n\n\n\n\n\n\nNow we can define a function for the x Axis based upon our x scale, and a function for the y Axis based upon our y scale:\n\nxAxis = d3.axisBottom(x);\n\n\n\n\n\n\n\nyAxis = d3.axisLeft(y);\n\n\n\n\n\n\nNext, we want to indicate which class each flower belongs to by coloring its corresponding dot. We do this by first creating an array containing all of the unique class labels in our CSV file:\n(Hint: start with the Javascript “map” function)\n\n```{ojs}\nclasses = //TO DO\n```\n\n\n\n\n\n\n\nOJS Syntax Error (line 86, column 1)Unexpected end of input\n\n\n\n\n\n\n\n\nNext, we create a function that maps each of the classes to a D3 color scheme:\n(Hint: see d3.scaleOrdinal() and D3 Categorical Color Schemes)\n\n```{ojs}\nirisColor = //TO DO\n```\n\n\n\n\n\n\n\nOJS Syntax Error (line 94, column 1)Unexpected end of input",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to Visualization</span>"
+    ]
+  }
+]
