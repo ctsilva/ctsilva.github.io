@@ -89,3 +89,5 @@ author_profile: true
 **[04/19]** [Lab 12](https://ctsilva.github.io/2024-VisML-CDS/Labs/Lab_Week_12/VisML-Lab-Week12-recap/): Visualization for NLP 
 
 **[04/26]** NO LAB! Erin will be holding office hours on Zoom instead. Please stop by with any questions/concerns about your final project. 
+
+[Textbook](VisML_book/index.qmd)
