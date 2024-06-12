@@ -90,4 +90,4 @@ author_profile: true
 
 **[04/26]** NO LAB! Erin will be holding office hours on Zoom instead. Please stop by with any questions/concerns about your final project. 
 
-[Textbook](VisML_book/index.html)
+[Textbook](VisML_book/_book/intro.html)
