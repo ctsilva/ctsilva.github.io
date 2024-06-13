@@ -1,95 +1,354 @@
 # Introduction to Visualization
 
+The content of this section is based on material from Professor [Enrico Bertini](https://www.khoury.northeastern.edu/people/enrico-bertini/). 
+
+What is information visualization? Why do we use it? According to the experts, information visualization is “the use of computer-supported, interacive, visual representations of abstract data to amplify cognition” (@book). In this course, we will explore the creation and analysis of interactive, computer-based visual representations of data, often abstract data, that help to amplify the viewer's cognition and enhance their understanding of the data. Let's break down this statement. 
+
+*Abstract data* is data with no obvious or natural visual representation. 
+
+::: {.column width="50%"}
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/spreadsheet.jpg)
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/deepwork.jpg)
+:::
+
+::: {.column width="40%"}
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/chest.jpg)
+:::
+
+A visualization is *interactive* if users can change what is visualized and how it is visualized.
+
+
+{{< video https://ctsilva.github.io/2024-VisML-CDS/slides/figs/taxivis.mp4 >}}
+
+We want to amplify the cognition of the user interacting with our data visualizations. This means we want the visualization to help them solve problems with data with less effort, in a shorter time, and more accurately. This could even mean helping them to do things that would be impossible to do without a computer and a graphical representation.
+
+*Cognitive artifacts* are tools that help us think! For example, try to multiply 34 x 72 using exclusively your mind, without writing anything down. Now do it again using pen and paper. You likely found it easier to solve this multiplication problem using the pen and paper. But *why* is it easier? Because we can store intermediary results in the paper rather than keeping the information in mind. That is, part of the memory is in the world rather than in your head.
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/multiplication.jpg)
+
+
+Let’s play the “game of 15.” The rules are straightforward: the "pieces" for the game are the nine digits: 1, 2, 3, 4, 5, 6, 7, 8, 9. Each player takes a digit in turn. Once a digit is taken, it 
+cannot be used by the other player. The first player to get three digits that sum to 15 wins.
+
+Here is a sample game: Player A takes 8. Player B takes 2. Then A  takes 4, and B takes 3. A takes 5. Suppose you are now to step in and play for B. What move would you make?
+
+Let's play a different game: tic-tac-toe. If you aren't already familiar with the rules, players alternately place an O or a X in one of nine spaces arranged in a rectangular array. Once a space has been taken, it cannot be changed by either player. The first player to get three symbols in a straight line wins. Suppose player A is X and B is O, and the game has reached the state on the right. Suppose you are now to step in and play an O for B. What move would you make?
+:::
+
+::: {.column width="20%"}
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/tictactoe.jpg)
+:::
+
+:::
+
+Problem Isomorphs [Herbert Simon](https://en.wikipedia.org/wiki/Herbert_A._Simon)
+
+
+* The two problems are equivalent!
+
+## Why use visualization?
+
+Aside from generally "amplifying cognition," there are a wide array of reasons to visualize data. These typically fall under one of three categories: (1) explanatory visualization, (2) exploratory visualization, and (3) confirmatory visualization. 
+
+
+Why use a graphical representation?
+
+* Large parts of our brain are devoted to spatial processing
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/visualbrain.jpg)
+
+
+Why use a computer to visualize data?
+- faster, easier, allows for more complex applications
+
+
+Why use interaction?
+
+* Each visualization can only answer a subset of questions.
+
+* With interaction the user can change what is visualized and how to answer a multitude of questions.
+
+* Also one cannot visualize everything at once.
+
+
+How do you assess the quality of a visualization?
+
+* Isn’t it subjective? Some people like A, whereas some others like B.
+
+::: incremental
+* Some visual representations are better than others at solving particular problems ...
+:::
+
+
+## Graphical Perception
+
+::: columns
+::: {.column width="50%"}
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/cleveland-book-cover.jpg)
+
+:::
+
+::: {.column width="50%"}
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/cleveland-mcgill-paper.jpg)
+:::
+
+:::
+
+Graphical Perception Experiment
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/cleveland-mcgill-a-vs-b-examples.jpg)
+
+
+Graphical Perception Results
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/cleveland-mcgill-a-vs-b-examples.jpg)
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/cleveland-mcgill-a-vs-b-results.jpg)
+
+
+Designing effective visualizations requires
+
+::: incremental
+* Knowing the design space
+* Being able to compare the solutions
+* … in turn comparing the solutions requires understanding human perception.
+:::
+
+## Data Types
+
+The first ingredient in effective visualization is the input data. Data values can represent different forms of measurement. It is important to keep in mind what kinds of comparisons each of these measurements supports, as well as what kinds of visual encodings then support these comparisons, when creating a data visualization. 
+
+#### Nominal Data {.unnumbered} 
+
+The first data type is *nominal* data — also called categorical data. This type of data consists of category names. With nominal data we can compare the equality of values: is value A the same or different than value B? (A = B), supporting statements like “A is equal to B” or “A is not equal to B”. 
+
+When visualizing nominal data we should readily perceive if values are the same or different: position, color hue (blue, red, green, etc.), and shape are all reasonable options for representing this data type. 
+
+#### Ordinal Data {.unnumbered}
+
+*Ordinal* data consists of values that have a specific order. With ordinal data we can compare the rank-ordering of values: does value A come before or after value B? (A < B), supporting statements like “A is less than B” or “A is greater than B”. 
+
+When visualizing ordinal data, we should perceive a sense of rank-order. Position, size, or color value (brightness) might be appropriate, whereas color hue (which is not perceptually ordered) would be less appropriate.
+
+#### Quantitative Data {.unnumbered}
+
+*Quantitative* data allows us to measure numerical differences among values. There are multiple sub-types of quantitative data:
+  - For interval data we can measure the distance between points: (A - B).
+  - For ratio data we can also measure proportions or scale factors: (A / B).
+
+Quantitative values can be visualized using position, size, or color value, among other channels. An axis with a zero baseline is essential for proportional comparisons of ratio values, but can be safely omitted for interval comparisons.
+
+#### Temporal Data {.unnumbered}
+
+*Temporal* data values measure time points or intervals. This type is a special case of quantitative values (timestamps) with rich semantics and conventions (i.e., the Gregorian calendar).
+
+Example temporal values include date strings such as “2019-01-04” and “Jan 04 2019”, as well as standardized date-times such as the ISO date-time format: “2019-01-04T17:50:35.643Z”. There are no temporal values in our global development dataset above, as the year field is encoded as an integer.
+
+#### Spatial Data {.unnumbered}
+
+*Spatial* data is data that can be shown in a map. This is also known as geospatial data, which refers to information that identifies the geographic location and characteristics of natural or constructed features and boundaries on the Earth. [https://atlan.com/spatial-data/](https://atlan.com/spatial-data/)
+
+
+It is crucial to note thats these data types are *not* mutually exclusive, but rather form a hierarchy: ordinal data support nominal (equality) comparisons, while quantitative data support ordinal (rank-order) comparisons. Moreover, these data types do not provide a fixed categorization. For example, just because a data field is represented using a number doesn't mean we have to treat it as a quantitative type! We might interpret a set of ages (10 years old, 20 years old, etc.) as nominal (underage or overage), ordinal (grouped by year), or quantitative (calculate average age).
+
+
+## Fundamental Charts
+
+You are likely familiar with a variety of fundamental charts, even if you do not yet have the technical language to describe them. These simple building block s of visualization wre widely adopted, effective, and useful as they are able to solve very large percentage of visualization problems. They also serve as our training ground before construction more sophisticated graphs. The fundamental charts we cover in this course are described below. 
+
+### Bar Chart {.unnumbered}
+
+*Bar charts* visualize how a quantity distributes across a set of categories. Their simplest form consists of two axes, one of which represents categorical variables. The quantity of each of these variables are represented by the bars:
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/barchart.jpg)
+
+
+### Line Chart {.unnumbered}
+
+*Line charts* visualize how a quantity changes in relation to another quantity (typically time).
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/linechart.jpg)
+
+
+### Scatter Plot {.unnumbered}
+
+*Scatter plots* visualize how a quantity relate to another quantity.
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/scatterplot.jpg)
+
+
+scatter plot without faceting (left) versus scatter plot with faceting (right) 
+
+::: columns
+::: {.column width="20%"}
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/scatterplot-simple.jpg)
+:::
+
+::: {.column width="80%"}
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/scatterplot-facet.jpg)
+:::
+
+:::
+
+### Matrix {.unnumbered}
+
+* Visualize how a quantity distributes across two categories.
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/matrixchart.jpg)
+
+
+### Symbol Map {.unnumbered}
+
+*Symbol maps* visualize how a quantity distributes across two spatial coordinates.
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/symbolmap.jpg)
+
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/plots-vs-datatypes.jpg)
+
+
+### Tidy Data 
+
+In order to create effective visualizations, we must have not only the right *type* of data, but also well-organized data. 
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/tidydata-paper.jpg)
+
+[link to paper](https://vita.had.co.nz/papers/tidy-data.pdf)
+
+
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/td-table-typical.jpg)
+
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/td-table-alternative.jpg)
+
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/td-table-tidy.jpg)
+
+
+In tidy data:
+
+* Each variable forms a column.
+
+* Each observation forms a row.
+
+* Each type of observational unit forms a table.
+
+
+For example, 
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/td-table-example.jpg)
+
+
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/td-table-towards-tidy.jpg)
+
+
+For example, 
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/td-table-before-tidy.jpg)
+
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/td-table-after-tidy.jpg)
+
+
+## Graphical Encoding
+
+Every visualization can be described in terms of its basic graphical components and the mapping strategy between the data and the visualization's graphics. More precisely, we can think of this as a set of mappings between (1) data items and visual marks as well as (2) data attributes and visual channels. 
+
+### Marks and Channels
+
+Graphical Marks 
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/marks.jpg)
+
+
+Visual Encoding Channels
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/channels.jpg)
+
+
+Visualization Decoding
+
+* Marks --- Data Items
+
+* Channels --- Data Attributes
+
+
+For example, 
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/usainboltnyt.jpg)
+
+[NYT link](http://www.nytimes.com/interactive/2012/08/05/sports/olympics/the-100-meter-dash-one-race-every-medalist-ever.html?_r=0)
+
+
+### Expressiveness Principle
+
+The visual representation should express the type of information that exists in the data. 
+
+* Ordered data should not appear as unordered.
+* Unordered data should not appear as ordered.
+
+Relevance of information should match the effectiveness of the channels used.
+
+- Represent important information with more effective channels
+
+### Effectiveness Effect
+
+![](https://ctsilva.github.io/2024-VisML-CDS/slides/figs/effectiveness.jpg)
+
+
+## Further Reading
+
+Great Explanatory Visualizations:
+
+* NYT: https://flowingdata.com/tag/new-york-times/
+
+* Washington Post: http://postgraphics.tumblr.com/
+
+* Gregor Aisch: https://driven-by-data.net/
+
+* Nicky Case/Explorable Explanations: http://explorabl.es/
+
+* Polygraph: http://polygraph.cool/ & https://pudding.cool/
+
+* ProPublica: https://www.propublica.org/
+
+Neo: Interactive Confusion Matrices - great example of research in VisML!
+
+[video link](https://www.youtube.com/watch?v=LmsJJDHfGlI)
+
+---
+
+{{< video https://www.youtube.com/watch?v=LmsJJDHfGlI "width=100%" "height=100%" >}}
+
+## Lab - Introduction to Observable and D3.js
+
+This section is adapted from the following notebooks:
+
+* [Introduction to Observable](https://observablehq.com/@jlrulff/introduction-to-observable) by Joao Rulff
+* [Introduction to Web](https://observablehq.com/@jlrulff/introduction-to-web-html-css-js) by Joao Rulff
+* [Introduction to D3](https://observablehq.com/@jlrulff/introduction-to-d3) by Joao Rulff
+
+### Observable {.unnumbered}
+In this course, we will use Observable notebooks to learn how to create visualizations. Like Jupyter notebooks, Observable are computational notebooks where you can collaboratively explore, analyze, visualize, and communicate with data on the web. They allow users to write code in JavaScript, HTML, Markdown and Latex. 
+
+An Observable *notebook* is composed of *cells*. These cells contain blocks of code. You can edit a cell by clicking the dropdown arrow to the left of the cell. It is crucial to note that **the order of cells does not matter**! This sets Observable notebooks apart from their Jupyter counterpart. In an Observable notebook, you can define your variables in each order you want and Observable uses a dependency graph to update the references accordingly. This in effort to solve a common problem in Jupyter notebooks: *hidden states*, which may lead to inconsistent or confusing variable values. 
+
+[Observable tutorials](https://observablehq.com/tutorials) 
+
+### Introduction to HTML, CSS, and JavaScript {.unnumbered}
+
+### Data Visualization with D3.js {.unnumbered}
+
+D3.js is a JavaScript library for manipulating documents based on data. D3 helps you bring data to life using HTML, SVG, and CSS. D3’s emphasis on web standards gives you the full capabilities of modern browsers without tying yourself to a proprietary framework, combining powerful visualization components and a data-driven approach to DOM manipulation. It was created by [Mike Bostock](https://medium.com/@mbostock), and the original version was a paper presented at InfoVis 2011 titled [D3: Data-Driven Documents](http://idl.cs.washington.edu/papers/d3). D3.js is also [Opensource](https://github.com/d3/d3).
+
 
 
 ## Lab Exercises
 
-This activity is a modified version of [this](https://observablehq.com/@nyuvis/fundamental-graphs?collection=@nyuvis/guides-and-examples) guide - but try to do it yourself first!
+The following activity is a modified version of [this](https://observablehq.com/@nyuvis/fundamental-graphs?collection=@nyuvis/guides-and-examples) guide (but try to do it yourself first!)
 
 In this activity you will practice using D3.js by creating a scatterplot. We will be using a standard example dataset, [Iris flower measurements](https://archive.ics.uci.edu/ml/datasets/Iris), to create a plot like this:
 
-PUT SCATTERPLOT IMAGE HERE
-
-### How to approach writing your code
-
-Let's say you have a sketch of a visualization that you want to make. How can you approach implementing it with D3? Here is a general approach that you can take:
-
-* Think carefully about your graphical encoding.
-    * What are your marks?
-    * What data objects do those marks represent?
-    * What are your channels?
-    * How are you mapping from your data to your channels?
-* Do your data transformation
-    * Take a look at the dataset that you have. Figure out how you need to transform your data in order to get it into a format that your visualization needs.
-* For the visualization, start with the basics:
-    * Create your SVG element.
-    * Set up your margins.
-* Next, figure out your scales.
-    * Your mapping from data attributes to channels will tell you what scales you need.
-    * Your scales will inform what axes and legends you need.
-* Determine if you need additional data transformation to draw more "complex" marks.
-    * For lines, areas, stacked areas/bars, pie charts, etc. consult the [d3-shape](https://github.com/d3/d3-shape#areas) API documentation and examples.
-* Now you're ready to draw the marks.
-    * If you have groups of marks, first create and position your groups, then add marks to the groups.
-    * Use joins to create one mark (or group) for each object in your data.
-    * Use your scales to set the visual attributes of the marks or groups.
-
-### Loading the Data
-
-First, let's load the Iris dataset from the attached file and use \`d3.autoType\` to automatically convert the appropriate fields to numbers:`
-
-```{ojs}
-iris = d3.csvParse(await FileAttachment("iris-1.csv").text(), d3.autoType)
-Inputs.table(iris)
-```
-
-We want to plot sepal length against sepal width. We will need an axis for each. We also want to color each dot by class. But first we need to define the width, height, and margins of our plot:
-
-```{ojs}
-margin = {return {top: 50, right: 120, bottom: 50, left: 120};}
-visWidth = 400;
-visHeight = 400;
-```
-
-Now we need to define x and y scales that will map our sepal lengths and widths to the proper location on the scatterplot:
-
-```{ojs}
-x = d3.scaleLinear()
-    .domain(d3.extent(iris, d => d["sepal-length"])).nice()
-    .range([0, visWidth]);
-```
-
-
-```{ojs}
-y = d3.scaleLinear()
-    .domain(d3.extent(iris, d => d["sepal-width"])).nice()
-    .range([visHeight, 0]);
-```
-
-
-Now we can define a function for the x Axis based upon our x scale, and a function for the y Axis based upon our y scale:
-
-```{ojs}
-xAxis = d3.axisBottom(x);
-```
-
-```{ojs}
-yAxis = d3.axisLeft(y);
-```
-
-Next, we want to indicate which class each flower belongs to by coloring its corresponding dot. We do this by first creating an array containing all of the unique class labels in our CSV file:
-
-
-(Hint: start with the Javascript "map" function)
-
-```{ojs}
-classes = //TO DO
-```
-
-Next, we create a function that maps each of the classes to a D3 color scheme:
-
-(Hint: see [d3.scaleOrdinal()](https://d3js.org/d3-scale/ordinal) and [D3 Categorical Color Schemes](https://d3js.org/d3-scale-chromatic/categorical))
-
-```{ojs}
-irisColor = //TO DO
-```
+![](https://ctsilva.github.io/2024-VisML-CDS/VisML_book/scatterplot_iris.png)
