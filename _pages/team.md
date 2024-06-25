@@ -12,8 +12,11 @@ Here are some current and past team members:
 Current
 ======
 
+* Carlos David Melo
+* Priscylla Maria Da Silva Sousa
+* Michael Middleton
+* Sonia Castelo
 * [Jing Qian](https://www.jingq.org/) 
-* Vitoria Guardieiro
 * Fabio Felix
 * Suemy Inagaki
 * Felipe de Oliveira
@@ -21,14 +24,15 @@ Current
 * [Erin McGowan](https://egm68.github.io/)
 * [Guan-de Wu](https://www.gdwu.xyz/)
 * Joao Rulff
-* Shaoyu Chen
 
 Past
 ======
-* Ethan Brewer
+* Vitoria Guardieiro (PhD student at University of Pennsylvania)
+* Shaoyu Chen (Meta)
+* Ethan Brewer (Senior Scientist at Spectral Sciences, Inc.)
 * [Yurii Piadyk](https://ypiadyk.github.io/) (Postdoc at NYU)
 * [Maryam Hosseini](https://www.linkedin.com/in/maryam-hosseini-81623157/) (Postdoc at MIT)
-* [Peter Xenopoulos](http://www.peterxeno.com/) (Quantitative Researcher at Novig)
+* [Peter Xenopoulos](http://www.peterxeno.com/) (Research Scientist at NVIDIA)
 * [Jianzhe Lin](https://www.linkedin.com/in/jianzhe-peter-lin-a4135baa/?originalSubdomain=ca) (Senior Applied Scientist at Microsoft Research)
 * [Shuya Zhao](https://www.linkedin.com/in/shuya-zhao-485670139/) (Machine Learning Engineer at NotCo)
 * [Gromit Yeuk-Yin Chan](http://gromitchan.com/) (Research Scientist at Adobe Research)
