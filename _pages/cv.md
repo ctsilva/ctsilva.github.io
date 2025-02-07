@@ -26,7 +26,7 @@ Professional Experience
 
 Select Awards and Honors
 ======
-* ACM Fellow, 2024
+* [ACM Fellow, 2024](https://www.acm.org/media-center/2025/january/fellows-2024)
 * [IEEE VIS 2023 Test of Time Award](https://ieeevis.org/year/2023/info/awards/test-of-time-awards) for 
 the [TaxiVis paper](https://ieeexplore.ieee.org/document/6634127)
 * IEEE Visualization Academy, 2019
