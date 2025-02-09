@@ -16,9 +16,15 @@ I am also part of [ai@nyu](https://cims.nyu.edu/ai/).
 
 Current major projects:
 
-- [DARPA Perceptually-enabled Task Guidance (PTG)](https://www.darpa.mil/program/perceptually-enabled-task-guidance)
-
 - [OpenSpace](https://www.openspaceproject.com) (funded by NASA)
+
+- [OSCUR: Open-Source Cyberinfrastructure for Urban Computing](https://oscur.org/)
+
+- [ARPA-H Biomedical Data Fabric Toolbox] (https://arpa-h.gov/explore-funding/programs/arpa-h-bdf-toolbox)
+
+Recent projects:
+
+- [DARPA Perceptually-enabled Task Guidance (PTG)](https://www.darpa.mil/program/perceptually-enabled-task-guidance)
 
 - [Sounds of New York City](https://wp.nyu.edu/sonyc) (funded by NSF)
 
