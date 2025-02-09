@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a Professor of Computer Science and Engineering and Data Science at New York University. I was a co-founder of the [Center for Data Science (CDS)](http://cds.nyu.edu) and the [Center for Urban Science and Progress (CUSP)](http://cusp.nyu.edu).
+I am a Professor of Computer Science and Data Science at New York University. I was a co-founder of the [Center for Data Science (CDS)](http://cds.nyu.edu) and the [Center for Urban Science and Progress (CUSP)](http://cusp.nyu.edu).
 
 I am Co-Director of the [Visualization, Imaging and Data Analysis (VIDA) Center](http://vida.engineering.nyu.edu). We are located in the 11th floor of 370 Jay Street in Brooklyn, NY. 
 
@@ -18,9 +18,9 @@ Current major projects:
 
 - [OpenSpace](https://www.openspaceproject.com) (funded by NASA)
 
-- [OSCUR: Open-Source Cyberinfrastructure for Urban Computing](https://oscur.org/)
+- [OSCUR: Open-Source Cyberinfrastructure for Urban Computing](https://oscur.org/) (funded by NSF)
 
-- [ARPA-H Biomedical Data Fabric Toolbox] (https://arpa-h.gov/explore-funding/programs/arpa-h-bdf-toolbox)
+- [ARPA-H Biomedical Data Fabric Toolbox](https://arpa-h.gov/explore-funding/programs/arpa-h-bdf-toolbox)
 
 Recent projects:
 
