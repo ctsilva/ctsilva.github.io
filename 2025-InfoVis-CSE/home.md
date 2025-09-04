@@ -47,7 +47,7 @@ author_profile: true
 
 ## Quick Links
 
-- **Discord:** TBD
+- **Discord:** [Join Course Discord](https://discord.gg/sTEv3PnP)
 - **Brightspace:** [Course materials and submissions]
 - **Observable:** [Create account at observablehq.com]
 - **Office Hours:** TBD

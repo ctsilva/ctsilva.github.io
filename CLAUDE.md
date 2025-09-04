@@ -86,6 +86,8 @@ The repository includes complete course websites as subdirectories:
   - Uses reveal.js format with custom NYU branding
   - Includes VIDA lab logo (figs/vida.jpg) on all slides
   - Custom SCSS styling in custom.scss
+- **labs/**: Lab materials and presentations
+- **Discord**: https://discord.gg/sTEv3PnP
 
 #### Content Creation Guide for TAs
 
@@ -222,3 +224,4 @@ Key plugins enabled (via github-pages gem):
 
 ## Deployment
 The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
+- to memorize

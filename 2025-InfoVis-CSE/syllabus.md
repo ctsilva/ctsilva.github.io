@@ -25,7 +25,7 @@ author_profile: true
 - Make-up Day: November 26 (Wednesday - Friday classes meet this day)
 - Thanksgiving: November 28 (no class)
 
-**Discord:** TBD
+**Discord:** [Join Course Discord](https://discord.gg/sTEv3PnP)
 
 ## Course Prerequisites
 

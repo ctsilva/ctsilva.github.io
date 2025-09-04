@@ -96,7 +96,7 @@ author_profile: true
 
 ## Getting Help
 
-- **Course Discord:** TBD
+- **Course Discord:** [Join Course Discord](https://discord.gg/sTEv3PnP)
 - **Office Hours:** TBD
 - **Stack Overflow:** Use tags `d3.js`, `vega-lite`, `observable`
 - **Observable Forum:** [talk.observablehq.com](https://talk.observablehq.com/)
