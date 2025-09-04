@@ -5,6 +5,7 @@ author_profile: true
 ---
 
 **Instructor:** Claudio Silva (csilva@nyu.edu)  
+**TA (Labs):** Ryan Kim ([rkim.dev](https://www.rkim.dev))  
 **Meeting Times:** Fridays 11:00 AM - 1:30 PM  
 **Classroom:** Jacobs Hall, Room 215, Brooklyn Campus
 
@@ -17,6 +18,7 @@ author_profile: true
 ## Upcoming Classes
 
 ### Week 1 (Sept 5) - Introduction and Evaluation
+- **Slides:** [Course Introduction & Syllabus](/2025-InfoVis-CSE/slides/week1-syllabus.html) | [Lab: Observable & Vega-Lite](/2025-InfoVis-CSE/labs/week1-lab.html)
 - **Topics:** Course overview, What is visualization?, Evaluation frameworks
 - **Lab:** Setup Observable accounts, Create first Vega-Lite charts
 - **Assignment:** Exercise 1 - Visualization critique and basic Vega-Lite charts (due Sept 11)

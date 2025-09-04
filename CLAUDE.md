@@ -89,6 +89,8 @@ The repository includes complete course websites as subdirectories:
 
 #### Content Creation Guide for TAs
 
+**Current TA for Fall 2025:** Ryan Kim ([rkim.dev](https://www.rkim.dev))
+
 ##### Creating New Lecture Slides
 1. **Create a new .qmd file** in `2025-InfoVis-CSE/slides/`
 2. **Use this template structure:**

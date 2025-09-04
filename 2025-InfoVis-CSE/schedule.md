@@ -13,7 +13,7 @@ author_profile: true
 ### **Week 1** (Sept 5) - Introduction and Evaluation
 **Learning Objectives:** Understand what visualization is, when to use it, and how to evaluate effectiveness
 
-**Lecture:** 
+**Lecture:** [Week 1 - Course Introduction & Syllabus](/2025-InfoVis-CSE/slides/week1-syllabus.html)
 - Course overview and expectations
 - What is information visualization? 
 - Visualization taxonomy and design space
@@ -27,7 +27,7 @@ author_profile: true
 **Optional Reading:**
 - [Decision to Launch the Challenger](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/value/Tufte-Challenger.pdf), in Visual Explanations. Edward Tufte.
 
-**Lab:** 
+**Lab:** [Week 1 Lab - Introduction to Observable and Vega-Lite](/2025-InfoVis-CSE/labs/week1-lab.html)
 - Setup Observable accounts
 - Create first basic charts in Vega-Lite
 - Explore provided datasets
