@@ -89,6 +89,10 @@ The repository includes complete course websites as subdirectories:
 - **labs/**: Lab materials and presentations
 - **Discord**: https://discord.gg/sTEv3PnP
 
+#### Important Notes
+- **Reveal.js Dependencies**: The `.gitignore` has been configured to allow `*_files/` directories for course materials, ensuring reveal.js presentations work correctly on GitHub Pages
+- **Week 1 Status**: Ready for Sept 5, 2025 class with Ryan Kim as TA and Discord channel active
+
 #### Content Creation Guide for TAs
 
 **Current TA for Fall 2025:** Ryan Kim ([rkim.dev](https://www.rkim.dev))
@@ -166,14 +170,16 @@ These notes are only visible in presenter mode
 cd 2025-InfoVis-CSE/slides/
 
 # Render a specific slide deck
-quarto render week2-data-transformation.qmd
+quarto render week1-syllabus.qmd
 
 # Render all .qmd files in directory
 quarto render
 
 # Preview with live reload (auto-updates on save)
-quarto preview week2-data-transformation.qmd
+quarto preview week1-syllabus.qmd
 ```
+
+**Important:** After rendering, make sure to commit the generated `*_files/` directories containing reveal.js dependencies. These are needed for presentations to work on GitHub Pages.
 
 ##### Adding Lab Materials
 1. Create a `labs/` directory if needed: `mkdir -p 2025-InfoVis-CSE/labs/`
