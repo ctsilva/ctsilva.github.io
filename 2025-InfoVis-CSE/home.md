@@ -1,0 +1,52 @@
+---
+title: "CS-GY 6313: Information Visualization - Fall 2025"
+permalink: /2025-InfoVis-CSE/
+author_profile: true
+---
+
+**Instructor:** Claudio Silva (csilva@nyu.edu)  
+**Meeting Times:** Fridays 11:00 AM - 1:30 PM  
+**Classroom:** Jacobs Hall, Room 215, Brooklyn Campus
+
+[Course Syllabus](/2025-InfoVis-CSE/syllabus) | [Detailed Schedule](/2025-InfoVis-CSE/schedule) | [Resources](/2025-InfoVis-CSE/resources)
+
+## Announcements
+
+*Course materials will be posted as the semester progresses*
+
+## Upcoming Classes
+
+### Week 1 (Sept 5) - Introduction and Evaluation
+- **Topics:** Course overview, What is visualization?, Evaluation frameworks
+- **Lab:** Setup Observable accounts, Create first Vega-Lite charts
+- **Assignment:** Exercise 1 - Visualization critique and basic Vega-Lite charts (due Sept 11)
+
+### Week 2 (Sept 12) - Analytical Questions and Data Transformation
+- **Topics:** Visual queries, Data types, Transformation operations
+- **Lab:** Vega-Lite data transformations, Working with real datasets
+- **Assignment:** Exercise 2 - Data questions and transformations (due Sept 18)
+
+## Assignments
+
+### Exercises (35% of grade)
+- Exercise 1: Visualization critique and basic Vega-Lite charts - *Due Sept 11*
+- Exercise 2: Data questions and transformations - *Due Sept 18*
+- More exercises TBA
+
+### Mini-Projects (35% of grade)
+- Mini-Project 1: Geographic data visualization - *Details TBA*
+- Mini-Project 2: Temporal data visualization - *Details TBA*
+- Mini-Project 3: Network data visualization - *Details TBA*
+
+### Group Project (25% of grade)
+- Team formation - *Week 3*
+- Project milestones - *Throughout semester*
+- Final presentations - *Weeks 14-15*
+
+## Quick Links
+
+- **Discord:** TBD
+- **Brightspace:** [Course materials and submissions]
+- **Observable:** [Create account at observablehq.com]
+- **Office Hours:** TBD
+
