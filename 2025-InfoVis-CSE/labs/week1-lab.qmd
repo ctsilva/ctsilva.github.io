@@ -1,0 +1,360 @@
+---
+title: "Week 1 Lab: Introduction to Observable and Vega-Lite"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Teaching Assistant"
+institute: "New York University"
+date: "September 5, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+---
+
+## Week 1 Lab Overview
+
+### Today's Lab Activities
+
+1. **Setup**
+   - Create Observable account
+   - Explore the interface
+   - Fork a starter notebook
+
+2. **First Visualizations**
+   - Create basic Vega-Lite charts
+   - Explore different mark types
+   - Modify visual encodings
+
+3. **Data Exploration**
+   - Load sample datasets
+   - Transform data
+   - Create multiple views
+
+## Setting Up Observable
+
+### Creating Your Account
+
+1. Go to [observablehq.com](https://observablehq.com)
+2. Sign up with your NYU email
+3. Verify your email address
+4. Complete your profile
+
+### Understanding the Interface
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Key Features
+- Interactive notebooks
+- Live code execution
+- Built-in datasets
+- Version control
+:::
+
+::: {.column width="50%"}
+#### Navigation
+- Home: Your notebooks
+- Explore: Community notebooks
+- Documentation: Help & tutorials
+- Search: Find examples
+:::
+::::
+
+## Your First Vega-Lite Chart
+
+### Basic Structure
+
+```javascript
+viewof chart = {
+  const spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url": "data/cars.json"},
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+    }
+  };
+  return embed(spec);
+}
+```
+
+### Key Components
+- **Data**: Source of your visualization
+- **Mark**: Visual representation (point, bar, line, etc.)
+- **Encoding**: Map data to visual properties
+
+## Vega-Lite Mark Types
+
+### Common Marks
+
+:::: {.columns}
+::: {.column width="33%"}
+#### Points & Lines
+- `point`: Scatterplots
+- `line`: Line charts
+- `area`: Area charts
+- `trail`: Connected points
+:::
+
+::: {.column width="33%"}
+#### Bars & Rectangles
+- `bar`: Bar charts
+- `rect`: Heatmaps
+- `square`: Equal-width rectangles
+:::
+
+::: {.column width="33%"}
+#### Other
+- `circle`: Fixed-size circles
+- `text`: Text labels
+- `tick`: Tick marks
+- `arc`: Pie charts
+:::
+::::
+
+## Visual Encodings
+
+### Encoding Channels
+
+| Channel | Use Case | Data Types |
+|---------|----------|------------|
+| `x`, `y` | Position | Quantitative, Ordinal, Temporal |
+| `color` | Category distinction | Nominal, Ordinal, Quantitative |
+| `size` | Magnitude | Quantitative |
+| `shape` | Category distinction | Nominal |
+| `opacity` | Emphasis/de-emphasis | Quantitative |
+| `tooltip` | Details on demand | Any |
+
+### Data Types
+- **Quantitative**: Numerical measurements
+- **Temporal**: Dates and times
+- **Ordinal**: Ordered categories
+- **Nominal**: Unordered categories
+
+## Loading and Exploring Data
+
+### Available Datasets
+
+```javascript
+// Vega datasets
+data = await d3.json("https://vega.github.io/vega-datasets/data/cars.json")
+
+// CSV files
+data = await d3.csv("path/to/your/data.csv")
+
+// Your own data
+data = [
+  {x: 1, y: 2, category: "A"},
+  {x: 2, y: 4, category: "B"},
+  // ...
+]
+```
+
+### Exploring Data Structure
+
+```javascript
+// View first few rows
+data.slice(0, 5)
+
+// Check column names
+Object.keys(data[0])
+
+// Summary statistics
+d3.mean(data, d => d.value)
+```
+
+## Data Transformations
+
+### Common Transformations
+
+```javascript
+{
+  "transform": [
+    // Filter data
+    {"filter": "datum.year > 2000"},
+    
+    // Calculate new fields
+    {"calculate": "datum.price * datum.quantity", "as": "total"},
+    
+    // Aggregate data
+    {
+      "aggregate": [{"op": "mean", "field": "price", "as": "avg_price"}],
+      "groupby": ["category"]
+    }
+  ]
+}
+```
+
+## Interactive Features
+
+### Adding Interactivity
+
+```javascript
+{
+  "selection": {
+    "highlight": {
+      "type": "single",
+      "on": "mouseover",
+      "empty": "none"
+    }
+  },
+  "mark": "point",
+  "encoding": {
+    "opacity": {
+      "condition": {"selection": "highlight", "value": 1},
+      "value": 0.3
+    }
+  }
+}
+```
+
+### Types of Interactions
+- Hover effects
+- Click selection
+- Brush selection
+- Zoom and pan
+
+## Exercise 1: Basic Scatterplot
+
+### Task
+Create a scatterplot using the cars dataset showing:
+- Horsepower on x-axis
+- Miles per gallon on y-axis
+- Color by origin
+
+### Starter Code
+```javascript
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "https://vega.github.io/vega-datasets/data/cars.json"},
+  "mark": "?",
+  "encoding": {
+    "x": {"field": "?", "type": "?"},
+    "y": {"field": "?", "type": "?"},
+    "color": {"field": "?", "type": "?"}
+  }
+}
+```
+
+## Exercise 2: Bar Chart
+
+### Task
+Create a bar chart showing:
+- Average miles per gallon by origin
+- Sorted by value
+- Different colors for each bar
+
+### Hints
+- Use `"aggregate"` in encoding
+- Add `"sort"` property
+- Set `"type": "nominal"` for origin
+
+## Exercise 3: Multiple Views
+
+### Task
+Create two linked visualizations:
+1. Scatterplot of horsepower vs mpg
+2. Histogram of mpg distribution
+
+### Using Concatenation
+```javascript
+{
+  "hconcat": [
+    {
+      // First chart specification
+    },
+    {
+      // Second chart specification
+    }
+  ]
+}
+```
+
+## Assignment 1 Preview
+
+### Exercise 1: Visualization Critique & Basic Charts
+**Due: September 11**
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Part A: Critique
+- Find a visualization online
+- Analyze effectiveness
+- Suggest improvements
+- Apply design principles
+:::
+
+::: {.column width="50%"}
+#### Part B: Create
+- Build 3 Vega-Lite charts
+- Use different mark types
+- Explore encodings
+- Document design choices
+:::
+::::
+
+### Submission
+- Submit via Brightspace
+- Include Observable notebook link
+- PDF export of critique
+
+## Tips for Success
+
+### Best Practices
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Do's ✅
+- Start with simple charts
+- Test incrementally
+- Read error messages
+- Use Observable examples
+- Ask questions early
+:::
+
+::: {.column width="50%"}
+#### Don'ts ❌
+- Don't overcomplicate
+- Don't ignore data types
+- Don't forget axis labels
+- Don't use too many colors
+- Don't skip documentation
+:::
+::::
+
+## Resources for This Week
+
+### Documentation
+- [Vega-Lite Documentation](https://vega.github.io/vega-lite/)
+- [Observable Documentation](https://observablehq.com/documentation/)
+- [Example Gallery](https://vega.github.io/vega-lite/examples/)
+
+### Useful Observable Notebooks
+- [Introduction to Vega-Lite](https://observablehq.com/@uwdata/introduction-to-vega-lite)
+- [Data Types and Encoding Channels](https://observablehq.com/@uwdata/data-types-graphical-marks-encoding-channels)
+
+### Getting Help
+- Course Discord channel
+- Office hours (TBD)
+- Lab time Q&A
+
+## Questions?
+
+### Let's start coding!
+
+- Open [observablehq.com](https://observablehq.com)
+- Create a new notebook
+- Start with Exercise 1
+- Ask questions as you go
+
+### Remember
+- This is a learning environment
+- Mistakes are part of the process
+- Collaboration is encouraged (but cite your sources!)
