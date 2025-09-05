@@ -82,11 +82,14 @@ The repository includes complete course websites as subdirectories:
 - **syllabus.md**: Full course syllabus with policies and grading
 - **schedule.md**: Detailed weekly schedule with readings and assignments
 - **resources.md**: Links to tools, datasets, and learning materials
-- **slides/**: Quarto presentations for lectures
+- **slides/**: Quarto presentations for lectures (instructor content)
   - Uses reveal.js format with custom NYU branding
   - Includes VIDA lab logo (figs/vida.jpg) on all slides
   - Custom SCSS styling in custom.scss
-- **labs/**: Lab materials and presentations
+- **labs/**: Lab session materials and exercises (TA content)
+  - Separate Quarto presentations for lab activities
+  - Hands-on exercises and tutorials
+  - Clear separation from lecture content
 - **Discord**: https://discord.gg/sTEv3PnP
 
 #### Important Notes
@@ -179,12 +182,39 @@ quarto render
 quarto preview week1-syllabus.qmd
 ```
 
-**Important:** After rendering, make sure to commit the generated `*_files/` directories containing reveal.js dependencies. These are needed for presentations to work on GitHub Pages.
+**Important:** After rendering, make sure to commit both the generated HTML files and `*_files/` directories containing reveal.js dependencies:
+```bash
+git add week1-syllabus.html week1-syllabus_files/
+git commit -m "Add/update Week 1 slides"
+```
+
+The HTML files are **not ignored** by git so they're accessible to students at:
+`https://ctsilva.github.io/2025-InfoVis-CSE/slides/[filename].html`
 
 ##### Adding Lab Materials
-1. Create a `labs/` directory if needed: `mkdir -p 2025-InfoVis-CSE/labs/`
-2. Create markdown files for lab instructions
-3. Include Observable notebook links and exercises
+1. Lab materials go in `2025-InfoVis-CSE/labs/` directory
+2. Create Quarto slides for lab sessions using same template as lectures
+3. Path adjustments for labs:
+   - Logo: `logo: ../slides/figs/vida.jpg`
+   - Theme: `theme: [default, ../slides/custom.scss]`
+4. Include Observable notebook links and exercises
+5. Keep lab content separate from lecture slides for clear ownership
+
+Example lab slide header:
+```markdown
+---
+title: "Week X Lab: Topic"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Teaching Assistant"
+institute: "New York University"
+date: "Month Day, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    logo: ../slides/figs/vida.jpg
+    # ... other settings
+---
+```
 
 ##### Updating Course Pages
 1. **home.md**: Update with weekly announcements and assignment deadlines
@@ -208,9 +238,15 @@ Content in markdown...
 - Reference in Quarto: `![[Alt text]](figs/image.png){width="50%"}`
 
 ##### Linking to Materials
-- From course pages: `/2025-InfoVis-CSE/slides/week1-syllabus.html`
-- From home page: `[Week 1 Slides](/2025-InfoVis-CSE/slides/week1-syllabus.html)`
-- External links: `[Observable](https://observablehq.com)`
+- **Lecture slides:** `/2025-InfoVis-CSE/slides/week1-syllabus.html`
+- **Lab slides:** `/2025-InfoVis-CSE/labs/week1-lab.html`
+- **Course pages (MD):** `/2025-InfoVis-CSE/syllabus`
+- **Example links:** 
+  - `[Week 1 Lecture](/2025-InfoVis-CSE/slides/week1-syllabus.html)`
+  - `[Week 1 Lab](/2025-InfoVis-CSE/labs/week1-lab.html)`
+- **External links:** `[Observable](https://observablehq.com)`
+
+Note: Link to `.html` for rendered slides, but omit extension for Jekyll pages
 
 ##### Testing Changes Locally
 ```bash
