@@ -98,7 +98,7 @@ vl.markCircle()                        // Make a scatter chart
 - **Data**: The data source to render
 - **Encoding**: Map data to visual properties
 
-## Step 3a. Vega-Lite Mark Types
+## Vega-Lite Mark Types
 
 ### Common Marks
 
@@ -127,45 +127,7 @@ vl.markCircle()                        // Make a scatter chart
 :::
 ::::
 
-## Exercise 1: Changing Chart Types
-
-### Task
-Replace `markCircle()` to generate different scatter plots using point, square, and tick.
-
-### Starter Code
-```javascript
-vl.markCircle() // TO-DO: Change this to show point, square and tick plots instead.
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),
-    vl.y().fieldQ("Miles_per_Gallon"),
-    vl.tooltip().fieldN("Name")
-  )
-  .render()
-```
-## Step 3b. Data Types
-
-|Data Type|API Equivalent|Description|Examples|
-|:--|:--|:--|:--|
-|Quantitative|\`fieldQ()\`| numerical magnitudes | 1, 1.2, 3, 4, $1,230.60|
-|Temporal|\`fieldT()\`| corresponding to Date values | 2019-01-02T00:01:23Z, 1996|
-|Nominal|\`fieldN()\`| unordered, categorical data | Audi, Ford, Hyundai, Tesla|
-|Ordinal|\`fieldO()\`| like nominal, but with an inherent order | small, medium, large|
-
-
-```javascript
-vl.markCircle()
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),        // This is a Quantitative type
-    vl.y().fieldQ("Miles_per_Gallon"),  // This is a Quantitative type
-    vl.tooltip().fieldN("Name")         // This is a Nominal type
-  )
-  .render()
-```
-
-
-## Step 3c. Visual Encodings
+## Visual Encodings
 
 ### Encoding Channels
 
@@ -178,54 +140,178 @@ vl.markCircle()
 | `opacity` | Emphasis/de-emphasis | Quantitative |
 | `tooltip` | Details on demand | Any |
 
+### Data Types
+- **Quantitative**: Numerical measurements
+- **Temporal**: Dates and times
+- **Ordinal**: Ordered categories
+- **Nominal**: Unordered categories
+
+## Loading and Exploring Data
+
+### Available Datasets
+
+```javascript
+// Vega datasets
+data = await d3.json("https://vega.github.io/vega-datasets/data/cars.json")
+
+// CSV files
+data = await d3.csv("path/to/your/data.csv")
+
+// Your own data
+data = [
+  {x: 1, y: 2, category: "A"},
+  {x: 2, y: 4, category: "B"},
+  // ...
+]
+```
+
+### Exploring Data Structure
+
+```javascript
+// View first few rows
+data.slice(0, 5)
+
+// Check column names
+Object.keys(data[0])
+
+// Summary statistics
+d3.mean(data, d => d.value)
+```
+
+## Data Transformations
+
+### Common Transformations
+
+```javascript
+{
+  "transform": [
+    // Filter data
+    {"filter": "datum.year > 2000"},
+    
+    // Calculate new fields
+    {"calculate": "datum.price * datum.quantity", "as": "total"},
+    
+    // Aggregate data
+    {
+      "aggregate": [{"op": "mean", "field": "price", "as": "avg_price"}],
+      "groupby": ["category"]
+    }
+  ]
+}
+```
+
+## Interactive Features
+
+### Adding Interactivity
+
+```javascript
+{
+  "selection": {
+    "highlight": {
+      "type": "single",
+      "on": "mouseover",
+      "empty": "none"
+    }
+  },
+  "mark": "point",
+  "encoding": {
+    "opacity": {
+      "condition": {"selection": "highlight", "value": 1},
+      "value": 0.3
+    }
+  }
+}
+```
+
+### Types of Interactions
+- Hover effects
+- Click selection
+- Brush selection
+- Zoom and pan
+
+## Exercise 1: Basic Scatterplot
+
+### Task
+Create a scatterplot using the cars dataset showing:
+- Horsepower on x-axis
+- Miles per gallon on y-axis
+- Color by origin
+
+### Starter Code
+```javascript
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "https://vega.github.io/vega-datasets/data/cars.json"},
+  "mark": "?",
+  "encoding": {
+    "x": {"field": "?", "type": "?"},
+    "y": {"field": "?", "type": "?"},
+    "color": {"field": "?", "type": "?"}
+  }
+}
+```
 
 ## Exercise 2: Bar Chart
 
 ### Task
-Modify the code below in the following ways:
+Create a bar chart showing:
+- Average miles per gallon by origin
+- Sorted by value
+- Different colors for each bar
 
-1. Modify the x-axis to display "Year".
-2. Modify the y-axis to display "Horsepower".
-3. Modify the tooltip to display "Origin" instead of "Name".
+### Hints
+- Use `"aggregate"` in encoding
+- Add `"sort"` property
+- Set `"type": "nominal"` for origin
 
-### Starter Code
-```javascript
-vl.markCircle()
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),        // TO-DO: Change this to represent "Year"
-    vl.y().fieldQ("Miles_per_Gallon"),  // TO-DO: Change this to represent "Horsepower"
-    vl.tooltip().fieldN("Name")         // TO-DO: Change this to represent "Origin"
-  )
-  .render()
-```
-
-## Step 3c. Render Settings
-
-**Vega-Lite** offers some different rendering options.
-
-- **Rendering as SVG**: Rather than rendering the chart as an HTML <canvas> element, the chart is rendered as an SVG image. This produces sharp images, but doesn't work well with large datasets
-- **Rendering as an Object**: For compatibility with **Vega-Lite** as a JavaScript library, you can also render the code into a JavaScript object.
-
-## Exercise 3: Render Settings
+## Exercise 3: Multiple Views
 
 ### Task
-Try the following individually:
+Create two linked visualizations:
+1. Scatterplot of horsepower vs mpg
+2. Histogram of mpg distribution
 
-1. Add `{ renderer: "svg" }` inside of the `render()` method.
-2. Replace `render()` with `toObject()` instead.
-
-### Starter Code
+### Using Concatenation
 ```javascript
-vl.markCircle()
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),
-    vl.y().fieldQ("Miles_per_Gallon"),
-    vl.tooltip().fieldN("Name")
-  )
-  .render()   // TO-DO: Replace this line to either render as an SVG or as an JavaScript Object
+{
+  "hconcat": [
+    {
+      // First chart specification
+    },
+    {
+      // Second chart specification
+    }
+  ]
+}
 ```
+
+## Assignment 1 Preview
+
+### Exercise 1: Visualization Critique & Basic Charts
+**Due: September 11**
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Part A: Critique
+- Find a visualization online
+- Analyze effectiveness
+- Suggest improvements
+- Apply design principles
+:::
+
+::: {.column width="50%"}
+#### Part B: Create
+- Build 3 Vega-Lite charts
+- Use different mark types
+- Explore encodings
+- Document design choices
+:::
+::::
+
+### Submission
+- Submit via Brightspace
+- Include Observable notebook link
+- PDF export of critique
 
 ## Tips for Success
 
@@ -251,7 +337,6 @@ vl.markCircle()
 :::
 ::::
 
-
 ## Resources for This Week
 
 ### Documentation
@@ -266,4 +351,18 @@ vl.markCircle()
 ### Getting Help
 - Course Discord channel
 - Office hours (TBD)
+- Lab time Q&A
 
+## Questions?
+
+### Let's start coding!
+
+- Open [observablehq.com](https://observablehq.com)
+- Create a new notebook
+- Start with Exercise 1
+- Ask questions as you go
+
+### Remember
+- This is a learning environment
+- Mistakes are part of the process
+- Collaboration is encouraged (but cite your sources!)

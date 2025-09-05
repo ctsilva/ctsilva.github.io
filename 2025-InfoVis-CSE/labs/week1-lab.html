@@ -212,6 +212,22 @@ Ryan Kim
 </section>
 <section class="slide level2">
 <h2>Week 1 Lab Overview</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">User Interface</th>
+<th style="text-align: left;">Graphics Library</th>
+<th style="text-align: left;">Notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://observablehq.com">observablehq.com</a></td>
+<td style="text-align: left;"><a href="https://vega.github.io/vega-lite/">Vega-Lite</a></td>
+<td style="text-align: left;"><a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-1-lab">Week 1 Lab Notebook</a></td>
+</tr>
+</tbody>
+</table>
 <h3>Today’s Lab Activities</h3>
 <ol type="1">
 <li><strong>Setup</strong>
@@ -225,17 +241,12 @@ Ryan Kim
 <li>Create basic Vega-Lite charts</li>
 <li>Explore different mark types</li>
 <li>Modify visual encodings</li>
-</ul></li>
-<li><strong>Data Exploration</strong>
-<ul>
-<li>Load sample datasets</li>
-<li>Transform data</li>
-<li>Create multiple views</li>
+<li>Talk about Tidy Data</li>
 </ul></li>
 </ol>
 </section>
 <section class="slide level2">
-<h2>Setting Up Observable</h2>
+<h2>Step 1: Setting Up Observable</h2>
 <h3>Creating Your Account</h3>
 <ol type="1">
 <li>Go to <a href="https://observablehq.com">observablehq.com</a></li>
@@ -264,29 +275,36 @@ Ryan Kim
 </div></div>
 </section>
 <section class="slide level2">
-<h2>Your First Vega-Lite Chart</h2>
+<h2>Step 2: Forking Notebooks, Data</h2>
+<h3>About Forking</h3>
+<p>Forking is a key function provided by <strong>Observable</strong> and is essential when working with different notebooks. We’ve made an <strong>Observable</strong> notebook specifically for this week’s lab! Let’s fork it.</p>
+<ol type="1">
+<li>Navigate to <a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-1-lab">Week 1 Lab Notebook</a></li>
+<li>Scroll to the top-right of the notebook. You should see some function buttons, such as “Share” and “Fork this notebook”.</li>
+<li>Select “Fork this notebook”, and save it into as your own <strong>Observable</strong> notebook.</li>
+</ol>
+<p>Once your fork the notebook, you are free to start making any and all adjustments as you prefer!</p>
+</section>
+<section class="slide level2">
+<h2>Step 3: Understanding Charts</h2>
 <h3>Basic Structure</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href=""></a>viewof chart <span class="op">=</span> {</span>
-<span id="cb1-2"><a href=""></a>  <span class="kw">const</span> spec <span class="op">=</span> {</span>
-<span id="cb1-3"><a href=""></a>    <span class="st">"$schema"</span><span class="op">:</span> <span class="st">"https://vega.github.io/schema/vega-lite/v5.json"</span><span class="op">,</span></span>
-<span id="cb1-4"><a href=""></a>    <span class="st">"data"</span><span class="op">:</span> {<span class="st">"url"</span><span class="op">:</span> <span class="st">"data/cars.json"</span>}<span class="op">,</span></span>
-<span id="cb1-5"><a href=""></a>    <span class="st">"mark"</span><span class="op">:</span> <span class="st">"point"</span><span class="op">,</span></span>
-<span id="cb1-6"><a href=""></a>    <span class="st">"encoding"</span><span class="op">:</span> {</span>
-<span id="cb1-7"><a href=""></a>      <span class="st">"x"</span><span class="op">:</span> {<span class="st">"field"</span><span class="op">:</span> <span class="st">"Horsepower"</span><span class="op">,</span> <span class="st">"type"</span><span class="op">:</span> <span class="st">"quantitative"</span>}<span class="op">,</span></span>
-<span id="cb1-8"><a href=""></a>      <span class="st">"y"</span><span class="op">:</span> {<span class="st">"field"</span><span class="op">:</span> <span class="st">"Miles_per_Gallon"</span><span class="op">,</span> <span class="st">"type"</span><span class="op">:</span> <span class="st">"quantitative"</span>}</span>
-<span id="cb1-9"><a href=""></a>    }</span>
-<span id="cb1-10"><a href=""></a>  }<span class="op">;</span></span>
-<span id="cb1-11"><a href=""></a>  <span class="cf">return</span> <span class="fu">embed</span>(spec)<span class="op">;</span></span>
-<span id="cb1-12"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href=""></a>vl<span class="op">.</span><span class="fu">markCircle</span>()                        <span class="co">// Make a scatter chart</span></span>
+<span id="cb1-2"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(cars)                          <span class="co">// Using the cars data (below)</span></span>
+<span id="cb1-3"><a href=""></a>  <span class="op">.</span><span class="fu">encode</span>(</span>
+<span id="cb1-4"><a href=""></a>    vl<span class="op">.</span><span class="fu">x</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Horsepower"</span>)<span class="op">,</span>       <span class="co">// For x, use the Horsepower field</span></span>
+<span id="cb1-5"><a href=""></a>    vl<span class="op">.</span><span class="fu">y</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Miles_per_Gallon"</span>)<span class="op">,</span> <span class="co">// For y, use the Miles_per_Gallon field</span></span>
+<span id="cb1-6"><a href=""></a>    vl<span class="op">.</span><span class="fu">tooltip</span>()<span class="op">.</span><span class="fu">fieldN</span>(<span class="st">"Name"</span>)        <span class="co">// For tooltips, show the Name field</span></span>
+<span id="cb1-7"><a href=""></a>  )</span>
+<span id="cb1-8"><a href=""></a>  <span class="op">.</span><span class="fu">render</span>()                            <span class="co">// Draw the chart</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <h3>Key Components</h3>
 <ul>
-<li><strong>Data</strong>: Source of your visualization</li>
-<li><strong>Mark</strong>: Visual representation (point, bar, line, etc.)</li>
+<li><strong>mark&lt;MARK TYPE&gt;</strong>: Visual representation (point, bar, line, etc.)</li>
+<li><strong>Data</strong>: The data source to render</li>
 <li><strong>Encoding</strong>: Map data to visual properties</li>
 </ul>
 </section>
 <section class="slide level2">
-<h2>Vega-Lite Mark Types</h2>
+<h2>Step 3a. Vega-Lite Mark Types</h2>
 <h3>Common Marks</h3>
 <div class="columns">
 <div class="column" style="width:33%;">
@@ -315,7 +333,74 @@ Ryan Kim
 </div></div>
 </section>
 <section class="slide level2">
-<h2>Visual Encodings</h2>
+<h2>Exercise 1: Changing Chart Types</h2>
+<h3>Task</h3>
+<p>Replace <code>markCircle()</code> to generate different scatter plots using point, square, and tick.</p>
+<h3>Starter Code</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href=""></a>vl<span class="op">.</span><span class="fu">markCircle</span>() <span class="co">// TO-DO: Change this to show point, square and tick plots instead.</span></span>
+<span id="cb2-2"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(cars)</span>
+<span id="cb2-3"><a href=""></a>  <span class="op">.</span><span class="fu">encode</span>(</span>
+<span id="cb2-4"><a href=""></a>    vl<span class="op">.</span><span class="fu">x</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Horsepower"</span>)<span class="op">,</span></span>
+<span id="cb2-5"><a href=""></a>    vl<span class="op">.</span><span class="fu">y</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Miles_per_Gallon"</span>)<span class="op">,</span></span>
+<span id="cb2-6"><a href=""></a>    vl<span class="op">.</span><span class="fu">tooltip</span>()<span class="op">.</span><span class="fu">fieldN</span>(<span class="st">"Name"</span>)</span>
+<span id="cb2-7"><a href=""></a>  )</span>
+<span id="cb2-8"><a href=""></a>  <span class="op">.</span><span class="fu">render</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section class="slide level2">
+<h2>Step 3b. Data Types</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">API Equivalent</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Quantitative</td>
+<td style="text-align: left;">`fieldQ()`</td>
+<td style="text-align: left;">numerical magnitudes</td>
+<td style="text-align: left;">1, 1.2, 3, 4, $1,230.60</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Temporal</td>
+<td style="text-align: left;">`fieldT()`</td>
+<td style="text-align: left;">corresponding to Date values</td>
+<td style="text-align: left;">2019-01-02T00:01:23Z, 1996</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nominal</td>
+<td style="text-align: left;">`fieldN()`</td>
+<td style="text-align: left;">unordered, categorical data</td>
+<td style="text-align: left;">Audi, Ford, Hyundai, Tesla</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ordinal</td>
+<td style="text-align: left;">`fieldO()`</td>
+<td style="text-align: left;">like nominal, but with an inherent order</td>
+<td style="text-align: left;">small, medium, large</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href=""></a>vl<span class="op">.</span><span class="fu">markCircle</span>()</span>
+<span id="cb3-2"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(cars)</span>
+<span id="cb3-3"><a href=""></a>  <span class="op">.</span><span class="fu">encode</span>(</span>
+<span id="cb3-4"><a href=""></a>    vl<span class="op">.</span><span class="fu">x</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Horsepower"</span>)<span class="op">,</span>        <span class="co">// This is a Quantitative type</span></span>
+<span id="cb3-5"><a href=""></a>    vl<span class="op">.</span><span class="fu">y</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Miles_per_Gallon"</span>)<span class="op">,</span>  <span class="co">// This is a Quantitative type</span></span>
+<span id="cb3-6"><a href=""></a>    vl<span class="op">.</span><span class="fu">tooltip</span>()<span class="op">.</span><span class="fu">fieldN</span>(<span class="st">"Name"</span>)         <span class="co">// This is a Nominal type</span></span>
+<span id="cb3-7"><a href=""></a>  )</span>
+<span id="cb3-8"><a href=""></a>  <span class="op">.</span><span class="fu">render</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section class="slide level2">
+<h2>Step 3c. Visual Encodings</h2>
 <h3>Encoding Channels</h3>
 <table class="caption-top">
 <thead>
@@ -358,156 +443,53 @@ Ryan Kim
 </tr>
 </tbody>
 </table>
-<h3>Data Types</h3>
-<ul>
-<li><strong>Quantitative</strong>: Numerical measurements</li>
-<li><strong>Temporal</strong>: Dates and times</li>
-<li><strong>Ordinal</strong>: Ordered categories</li>
-<li><strong>Nominal</strong>: Unordered categories</li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Loading and Exploring Data</h2>
-<h3>Available Datasets</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href=""></a><span class="co">// Vega datasets</span></span>
-<span id="cb2-2"><a href=""></a>data <span class="op">=</span> <span class="cf">await</span> d3<span class="op">.</span><span class="fu">json</span>(<span class="st">"https://vega.github.io/vega-datasets/data/cars.json"</span>)</span>
-<span id="cb2-3"><a href=""></a></span>
-<span id="cb2-4"><a href=""></a><span class="co">// CSV files</span></span>
-<span id="cb2-5"><a href=""></a>data <span class="op">=</span> <span class="cf">await</span> d3<span class="op">.</span><span class="fu">csv</span>(<span class="st">"path/to/your/data.csv"</span>)</span>
-<span id="cb2-6"><a href=""></a></span>
-<span id="cb2-7"><a href=""></a><span class="co">// Your own data</span></span>
-<span id="cb2-8"><a href=""></a>data <span class="op">=</span> [</span>
-<span id="cb2-9"><a href=""></a>  {<span class="dt">x</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">category</span><span class="op">:</span> <span class="st">"A"</span>}<span class="op">,</span></span>
-<span id="cb2-10"><a href=""></a>  {<span class="dt">x</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> <span class="dt">category</span><span class="op">:</span> <span class="st">"B"</span>}<span class="op">,</span></span>
-<span id="cb2-11"><a href=""></a>  <span class="co">// ...</span></span>
-<span id="cb2-12"><a href=""></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<h3>Exploring Data Structure</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href=""></a><span class="co">// View first few rows</span></span>
-<span id="cb3-2"><a href=""></a>data<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">5</span>)</span>
-<span id="cb3-3"><a href=""></a></span>
-<span id="cb3-4"><a href=""></a><span class="co">// Check column names</span></span>
-<span id="cb3-5"><a href=""></a><span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])</span>
-<span id="cb3-6"><a href=""></a></span>
-<span id="cb3-7"><a href=""></a><span class="co">// Summary statistics</span></span>
-<span id="cb3-8"><a href=""></a>d3<span class="op">.</span><span class="fu">mean</span>(data<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">value</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section class="slide level2">
-<h2>Data Transformations</h2>
-<h3>Common Transformations</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href=""></a>{</span>
-<span id="cb4-2"><a href=""></a>  <span class="st">"transform"</span><span class="op">:</span> [</span>
-<span id="cb4-3"><a href=""></a>    <span class="co">// Filter data</span></span>
-<span id="cb4-4"><a href=""></a>    {<span class="st">"filter"</span><span class="op">:</span> <span class="st">"datum.year &gt; 2000"</span>}<span class="op">,</span></span>
-<span id="cb4-5"><a href=""></a>    </span>
-<span id="cb4-6"><a href=""></a>    <span class="co">// Calculate new fields</span></span>
-<span id="cb4-7"><a href=""></a>    {<span class="st">"calculate"</span><span class="op">:</span> <span class="st">"datum.price * datum.quantity"</span><span class="op">,</span> <span class="st">"as"</span><span class="op">:</span> <span class="st">"total"</span>}<span class="op">,</span></span>
-<span id="cb4-8"><a href=""></a>    </span>
-<span id="cb4-9"><a href=""></a>    <span class="co">// Aggregate data</span></span>
-<span id="cb4-10"><a href=""></a>    {</span>
-<span id="cb4-11"><a href=""></a>      <span class="st">"aggregate"</span><span class="op">:</span> [{<span class="st">"op"</span><span class="op">:</span> <span class="st">"mean"</span><span class="op">,</span> <span class="st">"field"</span><span class="op">:</span> <span class="st">"price"</span><span class="op">,</span> <span class="st">"as"</span><span class="op">:</span> <span class="st">"avg_price"</span>}]<span class="op">,</span></span>
-<span id="cb4-12"><a href=""></a>      <span class="st">"groupby"</span><span class="op">:</span> [<span class="st">"category"</span>]</span>
-<span id="cb4-13"><a href=""></a>    }</span>
-<span id="cb4-14"><a href=""></a>  ]</span>
-<span id="cb4-15"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section class="slide level2">
-<h2>Interactive Features</h2>
-<h3>Adding Interactivity</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href=""></a>{</span>
-<span id="cb5-2"><a href=""></a>  <span class="st">"selection"</span><span class="op">:</span> {</span>
-<span id="cb5-3"><a href=""></a>    <span class="st">"highlight"</span><span class="op">:</span> {</span>
-<span id="cb5-4"><a href=""></a>      <span class="st">"type"</span><span class="op">:</span> <span class="st">"single"</span><span class="op">,</span></span>
-<span id="cb5-5"><a href=""></a>      <span class="st">"on"</span><span class="op">:</span> <span class="st">"mouseover"</span><span class="op">,</span></span>
-<span id="cb5-6"><a href=""></a>      <span class="st">"empty"</span><span class="op">:</span> <span class="st">"none"</span></span>
-<span id="cb5-7"><a href=""></a>    }</span>
-<span id="cb5-8"><a href=""></a>  }<span class="op">,</span></span>
-<span id="cb5-9"><a href=""></a>  <span class="st">"mark"</span><span class="op">:</span> <span class="st">"point"</span><span class="op">,</span></span>
-<span id="cb5-10"><a href=""></a>  <span class="st">"encoding"</span><span class="op">:</span> {</span>
-<span id="cb5-11"><a href=""></a>    <span class="st">"opacity"</span><span class="op">:</span> {</span>
-<span id="cb5-12"><a href=""></a>      <span class="st">"condition"</span><span class="op">:</span> {<span class="st">"selection"</span><span class="op">:</span> <span class="st">"highlight"</span><span class="op">,</span> <span class="st">"value"</span><span class="op">:</span> <span class="dv">1</span>}<span class="op">,</span></span>
-<span id="cb5-13"><a href=""></a>      <span class="st">"value"</span><span class="op">:</span> <span class="fl">0.3</span></span>
-<span id="cb5-14"><a href=""></a>    }</span>
-<span id="cb5-15"><a href=""></a>  }</span>
-<span id="cb5-16"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<h3>Types of Interactions</h3>
-<ul>
-<li>Hover effects</li>
-<li>Click selection</li>
-<li>Brush selection</li>
-<li>Zoom and pan</li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Exercise 1: Basic Scatterplot</h2>
-<h3>Task</h3>
-<p>Create a scatterplot using the cars dataset showing: - Horsepower on x-axis - Miles per gallon on y-axis - Color by origin</p>
-<h3>Starter Code</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href=""></a>{</span>
-<span id="cb6-2"><a href=""></a>  <span class="st">"$schema"</span><span class="op">:</span> <span class="st">"https://vega.github.io/schema/vega-lite/v5.json"</span><span class="op">,</span></span>
-<span id="cb6-3"><a href=""></a>  <span class="st">"data"</span><span class="op">:</span> {<span class="st">"url"</span><span class="op">:</span> <span class="st">"https://vega.github.io/vega-datasets/data/cars.json"</span>}<span class="op">,</span></span>
-<span id="cb6-4"><a href=""></a>  <span class="st">"mark"</span><span class="op">:</span> <span class="st">"?"</span><span class="op">,</span></span>
-<span id="cb6-5"><a href=""></a>  <span class="st">"encoding"</span><span class="op">:</span> {</span>
-<span id="cb6-6"><a href=""></a>    <span class="st">"x"</span><span class="op">:</span> {<span class="st">"field"</span><span class="op">:</span> <span class="st">"?"</span><span class="op">,</span> <span class="st">"type"</span><span class="op">:</span> <span class="st">"?"</span>}<span class="op">,</span></span>
-<span id="cb6-7"><a href=""></a>    <span class="st">"y"</span><span class="op">:</span> {<span class="st">"field"</span><span class="op">:</span> <span class="st">"?"</span><span class="op">,</span> <span class="st">"type"</span><span class="op">:</span> <span class="st">"?"</span>}<span class="op">,</span></span>
-<span id="cb6-8"><a href=""></a>    <span class="st">"color"</span><span class="op">:</span> {<span class="st">"field"</span><span class="op">:</span> <span class="st">"?"</span><span class="op">,</span> <span class="st">"type"</span><span class="op">:</span> <span class="st">"?"</span>}</span>
-<span id="cb6-9"><a href=""></a>  }</span>
-<span id="cb6-10"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section class="slide level2">
 <h2>Exercise 2: Bar Chart</h2>
 <h3>Task</h3>
-<p>Create a bar chart showing: - Average miles per gallon by origin - Sorted by value - Different colors for each bar</p>
-<h3>Hints</h3>
+<p>Modify the code below in the following ways:</p>
+<ol type="1">
+<li>Modify the x-axis to display “Year”.</li>
+<li>Modify the y-axis to display “Horsepower”.</li>
+<li>Modify the tooltip to display “Origin” instead of “Name”.</li>
+</ol>
+<h3>Starter Code</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href=""></a>vl<span class="op">.</span><span class="fu">markCircle</span>()</span>
+<span id="cb4-2"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(cars)</span>
+<span id="cb4-3"><a href=""></a>  <span class="op">.</span><span class="fu">encode</span>(</span>
+<span id="cb4-4"><a href=""></a>    vl<span class="op">.</span><span class="fu">x</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Horsepower"</span>)<span class="op">,</span>        <span class="co">// TO-DO: Change this to represent "Year"</span></span>
+<span id="cb4-5"><a href=""></a>    vl<span class="op">.</span><span class="fu">y</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Miles_per_Gallon"</span>)<span class="op">,</span>  <span class="co">// TO-DO: Change this to represent "Horsepower"</span></span>
+<span id="cb4-6"><a href=""></a>    vl<span class="op">.</span><span class="fu">tooltip</span>()<span class="op">.</span><span class="fu">fieldN</span>(<span class="st">"Name"</span>)         <span class="co">// TO-DO: Change this to represent "Origin"</span></span>
+<span id="cb4-7"><a href=""></a>  )</span>
+<span id="cb4-8"><a href=""></a>  <span class="op">.</span><span class="fu">render</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section class="slide level2">
+<h2>Step 3c. Render Settings</h2>
+<p><strong>Vega-Lite</strong> offers some different rendering options.</p>
 <ul>
-<li>Use <code>"aggregate"</code> in encoding</li>
-<li>Add <code>"sort"</code> property</li>
-<li>Set <code>"type": "nominal"</code> for origin</li>
+<li><strong>Rendering as SVG</strong>: Rather than rendering the chart as an HTML
+<canvas>
+element, the chart is rendered as an SVG image. This produces sharp images, but doesn’t work well with large datasets</canvas></li>
+<li><strong>Rendering as an Object</strong>: For compatibility with <strong>Vega-Lite</strong> as a JavaScript library, you can also render the code into a JavaScript object.</li>
 </ul>
 </section>
 <section class="slide level2">
-<h2>Exercise 3: Multiple Views</h2>
+<h2>Exercise 3: Render Settings</h2>
 <h3>Task</h3>
-<p>Create two linked visualizations: 1. Scatterplot of horsepower vs mpg 2. Histogram of mpg distribution</p>
-<h3>Using Concatenation</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><a href=""></a>{</span>
-<span id="cb7-2"><a href=""></a>  <span class="st">"hconcat"</span><span class="op">:</span> [</span>
-<span id="cb7-3"><a href=""></a>    {</span>
-<span id="cb7-4"><a href=""></a>      <span class="co">// First chart specification</span></span>
-<span id="cb7-5"><a href=""></a>    }<span class="op">,</span></span>
-<span id="cb7-6"><a href=""></a>    {</span>
-<span id="cb7-7"><a href=""></a>      <span class="co">// Second chart specification</span></span>
-<span id="cb7-8"><a href=""></a>    }</span>
-<span id="cb7-9"><a href=""></a>  ]</span>
-<span id="cb7-10"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section class="slide level2">
-<h2>Assignment 1 Preview</h2>
-<h3>Exercise 1: Visualization Critique &amp; Basic Charts</h3>
-<p><strong>Due: September 11</strong></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h4>Part A: Critique</h4>
-<ul>
-<li>Find a visualization online</li>
-<li>Analyze effectiveness</li>
-<li>Suggest improvements</li>
-<li>Apply design principles</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h4>Part B: Create</h4>
-<ul>
-<li>Build 3 Vega-Lite charts</li>
-<li>Use different mark types</li>
-<li>Explore encodings</li>
-<li>Document design choices</li>
-</ul>
-</div></div>
-<h3>Submission</h3>
-<ul>
-<li>Submit via Brightspace</li>
-<li>Include Observable notebook link</li>
-<li>PDF export of critique</li>
-</ul>
+<p>Try the following individually:</p>
+<ol type="1">
+<li>Add <code>{ renderer: "svg" }</code> inside of the <code>render()</code> method.</li>
+<li>Replace <code>render()</code> with <code>toObject()</code> instead.</li>
+</ol>
+<h3>Starter Code</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href=""></a>vl<span class="op">.</span><span class="fu">markCircle</span>()</span>
+<span id="cb5-2"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(cars)</span>
+<span id="cb5-3"><a href=""></a>  <span class="op">.</span><span class="fu">encode</span>(</span>
+<span id="cb5-4"><a href=""></a>    vl<span class="op">.</span><span class="fu">x</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Horsepower"</span>)<span class="op">,</span></span>
+<span id="cb5-5"><a href=""></a>    vl<span class="op">.</span><span class="fu">y</span>()<span class="op">.</span><span class="fu">fieldQ</span>(<span class="st">"Miles_per_Gallon"</span>)<span class="op">,</span></span>
+<span id="cb5-6"><a href=""></a>    vl<span class="op">.</span><span class="fu">tooltip</span>()<span class="op">.</span><span class="fu">fieldN</span>(<span class="st">"Name"</span>)</span>
+<span id="cb5-7"><a href=""></a>  )</span>
+<span id="cb5-8"><a href=""></a>  <span class="op">.</span><span class="fu">render</span>()   <span class="co">// TO-DO: Replace this line to either render as an SVG or as an JavaScript Object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section class="slide level2">
 <h2>Tips for Success</h2>
@@ -550,23 +532,6 @@ Ryan Kim
 <ul>
 <li>Course Discord channel</li>
 <li>Office hours (TBD)</li>
-<li>Lab time Q&amp;A</li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Questions?</h2>
-<h3>Let’s start coding!</h3>
-<ul>
-<li>Open <a href="https://observablehq.com">observablehq.com</a></li>
-<li>Create a new notebook</li>
-<li>Start with Exercise 1</li>
-<li>Ask questions as you go</li>
-</ul>
-<h3>Remember</h3>
-<ul>
-<li>This is a learning environment</li>
-<li>Mistakes are part of the process</li>
-<li>Collaboration is encouraged (but cite your sources!)</li>
 </ul>
 
 </section>
