@@ -74,8 +74,9 @@ The `markdown_generator/` directory contains Python scripts and Jupyter notebook
 
 ### Course Websites
 The repository includes complete course websites as subdirectories:
-- **2024-VisML-CDS**: VisML (Visualization for Machine Learning) course website (taught in 2024)
-- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025)
+- **2024-VisML-CDS**: VisML (Visualization for Machine Learning) course website (Spring 2024, NYU CDS)
+- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon)
+- **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon)
 
 #### InfoVis Course Structure
 - **home.md**: Main landing page with course announcements and upcoming classes
@@ -263,6 +264,18 @@ Key plugins enabled (via github-pages gem):
 - jekyll-gist
 - jekyll-feed
 - jekyll-redirect-from
+
+#### VisML Course Structure (2025-VisML-CSE)
+- **Course:** CS-GY 9223 Section N - Selected Topics in CS
+- **Term:** Fall 2025 (Sept 2 - Dec 11, 2025)
+- **Schedule:** Mondays 5:00 PM - 7:30 PM, Jacobs Hall Room 473
+- **Make-up Class:** Tuesday October 14 (for Fall Break)
+- **Structure:** Similar to InfoVis with combined lecture/lab format
+- **home.md**: Course homepage with announcements
+- **syllabus.md**: Full syllabus with CS-GY 9223 details
+- **schedule.md**: Weekly schedule adapted for Monday evenings
+- **resources.md**: ML visualization tools and datasets
+- **slides/**: Migrated from 2024 course with updated headers
 
 ## Deployment
 The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
