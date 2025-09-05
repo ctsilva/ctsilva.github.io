@@ -10,8 +10,9 @@ My current teaching rotation includes:
 * Information Visualization (Fall)
     * [Fall 2025](/2025-InfoVis-CSE/)
 * Interactive Computer Graphics (Fall)
-* Visualization for Machine Learning (Spring)
-    * [Spring 2024](/2024-VisML-CDS/)
+* Visualization for Machine Learning (Fall/Spring)
+    * [Fall 2025](/2025-VisML-CSE/) - CS-GY 9223 at NYU Tandon
+    * [Spring 2024](/2024-VisML-CDS/) - DS-GA 3001 at NYU CDS
 
 
 
