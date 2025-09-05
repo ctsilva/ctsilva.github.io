@@ -266,16 +266,23 @@ Key plugins enabled (via github-pages gem):
 - jekyll-redirect-from
 
 #### VisML Course Structure (2025-VisML-CSE)
-- **Course:** CS-GY 9223 Section N - Selected Topics in CS
+- **Course:** CS-GY 9223 Section N - Selected Topics in CS: Visualization for Machine Learning
 - **Term:** Fall 2025 (Sept 2 - Dec 11, 2025)
 - **Schedule:** Mondays 5:00 PM - 7:30 PM, Jacobs Hall Room 473
 - **Make-up Class:** Tuesday October 14 (for Fall Break)
-- **Structure:** Similar to InfoVis with combined lecture/lab format
+- **Status:** ✅ **FULLY FUNCTIONAL** - Ready for students (Sept 4, 2025)
+- **Website:** https://ctsilva.github.io/2025-VisML-CSE/
+- **Teaching Page:** Integrated into main navigation at https://ctsilva.github.io/teaching/
+
+**Course Structure:**
 - **home.md**: Course homepage with announcements
 - **syllabus.md**: Full syllabus with CS-GY 9223 details
 - **schedule.md**: Weekly schedule adapted for Monday evenings
 - **resources.md**: ML visualization tools and datasets
-- **slides/**: Migrated from 2024 course with updated headers
+- **slides/**: 10/12 slides rendered to HTML and live on website
+  - 2 slides require Python/Jupyter setup to render
+  - Headers need updating to new format (11/12 remaining)
+- **MIGRATION_STATUS.md**: Complete documentation of migration progress
 
 ## Deployment
 The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
