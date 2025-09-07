@@ -76,36 +76,42 @@ The `markdown_generator/` directory contains Python scripts and Jupyter notebook
 The repository includes complete course websites as subdirectories:
 - **2024-VisML-CDS**: VisML (Visualization for Machine Learning) course website (Spring 2024, NYU CDS) - ARCHIVE
 - **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon) - CS-GY 6313
-- **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon) - CS-GY 9223 🎉 **100% COMPLETE**
+- **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon) - CS-GY 9223 🎉 **100% READY**
 
 #### VisML Course Structure (2025-VisML-CSE)
 - **Course Code**: CS-GY 9223 Section N - Selected Topics in CS: Visualization for Machine Learning
 - **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
 - **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
 - **Make-up Class**: Tuesday, October 14 (for Fall Break)
-- **Status**: 🎉 **100% COMPLETE** - All course materials ready for Fall 2025
+- **Status**: ✅ **Week 2 COMPLETE** - All materials prepared for Sept 8, 2025 class
 - **Discord**: https://discord.gg/dyHSFN65
 
-##### Complete Course Structure:
-- **home.md**: Course landing page with announcements and schedule
-- **syllabus.md**: Complete syllabus with grading and policies  
-- **schedule.md**: 15-week detailed schedule adapted for Monday evenings
-- **resources.md**: ML visualization tools, datasets, and references
-- **slides/**: 12 Quarto presentations (weeks 2-11) with CS-GY 9223 branding
-  - All slides updated to Fall 2025 format with NYU Tandon branding
-  - Rendered HTML files accessible at ctsilva.github.io/2025-VisML-CSE/slides/
-  - Uses 'urban' conda environment for Python/Jupyter dependencies
-- **labs/**: 12 weeks of lab materials (weeks 1-12) 
-  - 6 full lab directories with slides, recaps, and supporting assets
-  - All materials updated to CS-GY 9223 Fall 2025 format
-  - Integrated for Monday evening 2.5-hour format
-- **assignments/**: Complete assignment suite
-  - 6 programming exercises with detailed rubrics and requirements
-  - Progressive difficulty building practical ML visualization skills
-  - Professional submission guidelines and evaluation criteria
-- **projects/**: Final project materials
-  - StreetAware dataset analysis project with multiple track options
-  - Updated for Fall 2025 with modern ML/LLM integration possibilities
+##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
+- **week2-intro.qmd/html**: Course introduction, syllabus, logistics (363 lines)
+  - Course overview and policies
+  - Assessment structure and timeline  
+  - Academic integrity and AI policy
+  - All syntax issues resolved, renders without warnings
+- **week2-infovis.qmd/html**: Information visualization fundamentals (730+ lines)
+  - Complete InfoVis theory with Power of Visualization examples
+  - All 31 required figures copied and verified
+  - Data types, encodings, tidy data principles
+  - Graphical perception and effectiveness principles
+- **week2-lab.qmd/html**: Vega-Lite hands-on lab activities
+  - Observable notebooks and development environment setup
+  - Basic visualization creation exercises
+- **figs/**: Complete figure collection (34 total)
+  - All Cleveland McGill research examples
+  - Complete chart gallery (bar, line, scatter, matrix, symbol maps)  
+  - Tidy data transformation examples
+  - Visual encoding channels and marks
+  - Historical examples (Snow cholera, Minard Napoleon, NYT dialect)
+
+##### Content Sources and Figure Locations:
+- **InfoVis fundamentals**: Migrated from 2025-InfoVis-CSE with complete figure set
+- **Course logistics**: Adapted from previous VisML courses with Fall 2025 updates
+- **Figure assets**: Collected from 2025-InfoVis-CSE and 2024-VisML-CDS repositories
+- **Lab materials**: Adapted from InfoVis Vega-Lite exercises
 
 #### InfoVis Course Structure (2025-InfoVis-CSE)
 - **home.md**: Main landing page with course announcements and upcoming classes
@@ -293,25 +299,6 @@ Key plugins enabled (via github-pages gem):
 - jekyll-gist
 - jekyll-feed
 - jekyll-redirect-from
-
-#### VisML Course Structure (2025-VisML-CSE)
-- **Course:** CS-GY 9223 Section N - Selected Topics in CS: Visualization for Machine Learning
-- **Term:** Fall 2025 (Sept 2 - Dec 11, 2025)
-- **Schedule:** Mondays 5:00 PM - 7:30 PM, Jacobs Hall Room 473
-- **Make-up Class:** Tuesday October 14 (for Fall Break)
-- **Status:** ✅ **FULLY FUNCTIONAL** - Ready for students (Sept 4, 2025)
-- **Website:** https://ctsilva.github.io/2025-VisML-CSE/
-- **Teaching Page:** Integrated into main navigation at https://ctsilva.github.io/teaching/
-
-**Course Structure:**
-- **home.md**: Course homepage with announcements
-- **syllabus.md**: Full syllabus with CS-GY 9223 details
-- **schedule.md**: Weekly schedule adapted for Monday evenings
-- **resources.md**: ML visualization tools and datasets
-- **slides/**: 10/12 slides rendered to HTML and live on website
-  - 2 slides require Python/Jupyter setup to render
-  - Headers need updating to new format (11/12 remaining)
-- **MIGRATION_STATUS.md**: Complete documentation of migration progress
 
 ## Deployment
 The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
