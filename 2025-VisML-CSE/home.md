@@ -23,15 +23,16 @@ author_profile: true
 ### Week 1 (Sept 2) - Labor Day
 - **No Class** - Labor Day Holiday
 
-### Week 2 (Sept 8) - Course Introduction & Visualization Fundamentals
-- **Topics:** Course overview, What is visualization for ML?, InfoVis basics
-- **Lab:** Setup development environment, D3.js introduction
-- **Assignment:** Exercise 1 - Visualization critique (due Sept 15)
+### Week 2 (Sept 8) - Course Introduction
+- **Topics:** Course syllabus and logistics 
+- **Materials:** [Week 2 Introduction Slides](/2025-VisML-CSE/slides/week2-intro.html) (Part I - Course logistics)
 
-### Week 3 (Sept 15) - Perception and Color
-- **Topics:** Human visual perception, Color theory for data visualization
-- **Lab:** Implementing effective color schemes in D3
-- **Assignment:** Exercise 2 - Color palette design (due Sept 22)
+### Week 3 (Sept 15) - Tomorrow's Class ⭐
+- **Topics:** Course syllabus review, Introduction to Visualization, Hands-on Vega-Lite
+- **Materials for Tomorrow:** 
+  - [Course Introduction & Syllabus](/2025-VisML-CSE/slides/week2-intro.html) 
+  - [Vega-Lite Lab](/2025-VisML-CSE/labs/week2-lab.html)
+- **Assignment:** TBD
 
 ## Assignments
 

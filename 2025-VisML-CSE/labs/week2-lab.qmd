@@ -1,0 +1,334 @@
+---
+title: "Week 2 Lab: Introduction to Observable and Vega-Lite"
+subtitle: "CS-GY 9223 - Visualization for Machine Learning"
+author: "Teaching Assistant"
+institute: "NYU Tandon School of Engineering"
+date: "September 15, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    footer: <https://engineering.nyu.edu>
+---
+
+## Welcome to VisML Lab Session!
+
+### Today: Hands-on Visualization for Machine Learning
+
+We'll start with Vega-Lite fundamentals that will be essential for ML visualizations later in the course.
+
+## Week 2 Lab Overview
+
+|User Interface|Graphics Library|Purpose|
+|:--|:--|:--|
+|[observablehq.com](https://observablehq.com)|[Vega-Lite](https://vega.github.io/vega-lite/)|Foundation for ML data visualization|
+
+### Today's Lab Activities
+
+1. **Setup**
+   - Create Observable account
+   - Explore the interface
+   - Fork a starter notebook
+
+2. **First Visualizations**
+   - Create basic Vega-Lite charts
+   - Explore different mark types
+   - Modify visual encodings
+   - Talk about Tidy Data
+
+## Step 1: Setting Up Observable
+
+### Creating Your Account
+
+1. Go to [observablehq.com](https://observablehq.com)
+2. Sign up with your NYU email
+3. Verify your email address
+4. Complete your profile
+
+### Understanding the Interface
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Key Features
+- Interactive notebooks
+- Live code execution
+- Built-in datasets
+- Version control
+:::
+
+::: {.column width="50%"}
+#### Navigation
+- Home: Your notebooks
+- Explore: Community notebooks
+- Documentation: Help & tutorials
+- Search: Find examples
+:::
+::::
+
+## Step 2: Forking Notebooks, Data
+
+### About Forking
+
+Forking is a key function provided by **Observable** and is essential when working with different notebooks. We've made an **Observable** notebook specifically for this week's lab! Let's fork it.
+
+1. Navigate to [Week 1 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-1-lab)
+2. Scroll to the top-right of the notebook. You should see some function buttons, such as "Share" and "Fork this notebook".
+3. Select "Fork this notebook", and save it into as your own **Observable** notebook.
+
+Once your fork the notebook, you are free to start making any and all adjustments as you prefer!
+
+## Step 3: Understanding Charts
+
+### Basic Structure
+
+```javascript
+vl.markCircle()                        // Make a scatter chart
+  .data(cars)                          // Using the cars data (below)
+  .encode(
+    vl.x().fieldQ("Horsepower"),       // For x, use the Horsepower field
+    vl.y().fieldQ("Miles_per_Gallon"), // For y, use the Miles_per_Gallon field
+    vl.tooltip().fieldN("Name")        // For tooltips, show the Name field
+  )
+  .render()                            // Draw the chart
+```
+
+### Key Components
+- **mark\<MARK TYPE\>**: Visual representation (point, bar, line, etc.)
+- **Data**: The data source to render
+- **Encoding**: Map data to visual properties
+
+## Step 3a. Vega-Lite Mark Types
+
+### Common Marks
+
+:::: {.columns}
+::: {.column width="33%"}
+#### Points & Lines
+- `point`: Scatterplots
+- `line`: Line charts
+- `area`: Area charts
+- `trail`: Connected points
+:::
+
+::: {.column width="33%"}
+#### Bars & Rectangles
+- `bar`: Bar charts
+- `rect`: Heatmaps
+- `square`: Equal-width rectangles
+:::
+
+::: {.column width="33%"}
+#### Other
+- `circle`: Fixed-size circles
+- `text`: Text labels
+- `tick`: Tick marks
+- `arc`: Pie charts
+:::
+::::
+
+## Exercise 1: Changing Chart Types
+
+### Task
+Replace `markCircle()` to generate different scatter plots using point, square, and tick.
+
+### Starter Code
+```javascript
+vl.markCircle() // TO-DO: Change this to show point, square and tick plots instead.
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),
+    vl.y().fieldQ("Miles_per_Gallon"),
+    vl.tooltip().fieldN("Name")
+  )
+  .render()
+```
+## Step 3b. Data Types
+
+|Data Type|API Equivalent|Description|Examples|
+|:--|:--|:--|:--|
+|Quantitative|\`fieldQ()\`| numerical magnitudes | 1, 1.2, 3, 4, $1,230.60|
+|Temporal|\`fieldT()\`| corresponding to Date values | 2019-01-02T00:01:23Z, 1996|
+|Nominal|\`fieldN()\`| unordered, categorical data | Audi, Ford, Hyundai, Tesla|
+|Ordinal|\`fieldO()\`| like nominal, but with an inherent order | small, medium, large|
+
+
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),        // This is a Quantitative type
+    vl.y().fieldQ("Miles_per_Gallon"),  // This is a Quantitative type
+    vl.tooltip().fieldN("Name")         // This is a Nominal type
+  )
+  .render()
+```
+
+
+## Step 3c. Visual Encodings
+
+### Encoding Channels
+
+| Channel | Use Case | Data Types |
+|---------|----------|------------|
+| `x`, `y` | Position | Quantitative, Ordinal, Temporal |
+| `color` | Category distinction | Nominal, Ordinal, Quantitative |
+| `size` | Magnitude | Quantitative |
+| `shape` | Category distinction | Nominal |
+| `opacity` | Emphasis/de-emphasis | Quantitative |
+| `tooltip` | Details on demand | Any |
+
+
+## Exercise 2: Bar Chart
+
+### Task
+Modify the code below in the following ways:
+
+1. Modify the x-axis to display "Year".
+2. Modify the y-axis to display "Horsepower".
+3. Modify the tooltip to display "Origin" instead of "Name".
+
+### Starter Code
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),        // TO-DO: Change this to represent "Year"
+    vl.y().fieldQ("Miles_per_Gallon"),  // TO-DO: Change this to represent "Horsepower"
+    vl.tooltip().fieldN("Name")         // TO-DO: Change this to represent "Origin"
+  )
+  .render()
+```
+
+## Step 3c. Render Settings
+
+**Vega-Lite** offers some different rendering options.
+
+- **Rendering as SVG**: Rather than rendering the chart as an HTML \<canvas\> element, the chart is rendered as an SVG image. This produces sharp images, but doesn't work well with large datasets
+- **Rendering as an Object**: For compatibility with **Vega-Lite** as a JavaScript library, you can also render the code into a JavaScript object.
+
+## Exercise 3: Render Settings
+
+### Task
+Try the following individually:
+
+1. Add `{ renderer: "svg" }` inside of the `render()` method.
+2. Replace `render()` with `toObject()` instead.
+
+### Starter Code
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),
+    vl.y().fieldQ("Miles_per_Gallon"),
+    vl.tooltip().fieldN("Name")
+  )
+  .render()   // TO-DO: Replace this line to either render as an SVG or as an JavaScript Object
+```
+
+## Step 4. A note on Tidy Data
+
+### The 3 Rules of Tidy Data
+
+- Each variable is a column; each column is a variable.
+- Each observation is a row; each row is an observation.
+- Each value is a cell; each cell is a single value.
+
+### Why Tidy?
+
+The _"shape"_ of your data is incredibly important! It helps with data transfer between different **Observable** notebooks, and even working with different environments altogether (e.g. **R**, **Tableau**).
+
+_Learn more here: [https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)_
+
+## Step 5: Coloring Charts
+
+Two ways to color charts:
+
+- Coloring all data points with a manually-designated color
+- Coloring based on a data feature / column.
+
+Coloration helps with visual communication of core relationships between data groups, or adding a 3rd dimension to data that is hard to capture in 2D graphs.
+
+### Code Sample
+
+```javascript
+vl.markCircle()
+  ...
+  .encode(
+    ...
+    vl.color().\<METHOD\>
+    ...
+  )
+  .render()
+```
+
+## Exercise 4: Color Charts
+
+Color the chart two ways:
+
+- Manually set a color "red" across all data points.
+- Coloring points based on the "Origin" data feature.
+
+### Starter Code
+
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),
+    vl.y().fieldQ("Miles_per_Gallon"),
+    // TO-DO: Add color options for coloring either all points or coloring points by "Origin"
+    vl.tooltip().fieldN("Name")
+  )
+  .render()
+```
+
+
+## Tips for Success
+
+### Best Practices
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Do's ✅
+- Start with simple charts
+- Test incrementally
+- Read error messages
+- Use Observable examples
+- Ask questions early
+:::
+
+::: {.column width="50%"}
+#### Don'ts ❌
+- Don't overcomplicate
+- Don't ignore data types
+- Don't forget axis labels
+- Don't use too many colors
+- Don't skip documentation
+:::
+::::
+
+
+## Resources for This Week
+
+### Documentation
+- [Vega-Lite Documentation](https://vega.github.io/vega-lite/)
+- [Observable Documentation](https://observablehq.com/documentation/)
+- [Example Gallery](https://vega.github.io/vega-lite/examples/)
+
+### Useful Observable Notebooks
+- [Introduction to Vega-Lite](https://observablehq.com/@uwdata/introduction-to-vega-lite)
+- [Data Types and Encoding Channels](https://observablehq.com/@uwdata/data-types-graphical-marks-encoding-channels)
+
+### Getting Help
+- Course Discord channel
+- Office hours (TBD)
+

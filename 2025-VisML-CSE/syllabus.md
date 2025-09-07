@@ -96,6 +96,7 @@ Here are supplemental readings to be used as reference material:
 3. Interpretable Machine Learning: A Guide for Making Black Box Models Explainable, Christoph Molnar, [link](https://christophm.github.io/interpretable-ml-book/)
 4. Introduction to Machine Learning, Etienne Bernard, [link](https://www.wolfram.com/language/introduction-machine-learning/)
 5. Deep Learning, Ian Goodfellow, Yoshua Bengio and Aaron Courville, MIT Press, 2016 [link](http://www.deeplearningbook.org/)
+6. Understanding Deep Learning, Simon J.D. Prince, MIT Press, 2023 [link](https://udlbook.github.io/udlbook/)
 
 ## Research Project
 

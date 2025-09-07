@@ -41,25 +41,28 @@ author_profile: true
 ---
 
 ### Week 3: September 15
-## Perception and Color Theory
+## Course Introduction & Visualization Fundamentals
 
 **Lecture Topics:**
-- Human visual perception principles
-- Pre-attentive processing
-- Color theory for data visualization
-- Designing for accessibility
+- Course syllabus and logistics review
+- What is Information Visualization?
+- The Power of Visualization (Discovery, Storytelling, Exploration)
+- Key concepts: Abstract data, Interaction, Amplifying cognition
 
 **Lab Session:**
-- Implementing color scales in D3
-- Creating perceptually uniform palettes
-- Accessibility testing tools
+- Introduction to Observable and Vega-Lite
+- Setting up accounts and development environment
+- Creating first visualizations
+- Understanding tidy data principles
+
+**Materials:**
+- [Course Introduction Slides](/2025-VisML-CSE/slides/week2-intro.html)
+- [Vega-Lite Lab](/2025-VisML-CSE/labs/week2-lab.html)
 
 **Readings:**
-- Ware, "Information Visualization", Chapters 3-4
-- Healey & Enns, "Attention and Visual Memory" (2012)
+- Munzner, "Visualization Analysis and Design", Chapter 1 (recommended)
 
-**Due:** Exercise 1  
-**Assignment Released:** Exercise 2 - Color Design
+**Assignment:** TBD
 
 ---
 
