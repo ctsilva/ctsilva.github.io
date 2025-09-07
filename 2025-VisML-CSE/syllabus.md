@@ -4,32 +4,66 @@ permalink: /2025-VisML-CSE/syllabus
 author_profile: true
 ---
 
-## Course Information
+# Selected Topics in CS: Visualization for Machine Learning 
 
-**Course Title:** CS-GY 9223: Selected Topics in CS - Visualization for Machine Learning  
-**Course Number:** CS-GY 9223 Section N  
-**Semester:** Fall 2025 (September 2 - December 11, 2025)  
-**Credits:** 3 credits
+# Fall 2025
 
-**Meeting Time:** Mondays 5:00 PM - 7:30 PM  
-**Location:** Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus  
+**Instructor:** Claudio Silva (csilva@nyu.edu); [webpage](https://ctsilva.github.io)
+
+**Teaching Assistant:** TBD (TBD@nyu.edu)
+
+**Grader:** TBD (TBD@nyu.edu)
+
+**Instruction Mode:** In-Person
+
+**Dates:** Fall 2025 (September 2 - December 11, 2025)
+
+**Meeting Time:** CS-GY 9223 Section N  
+Mondays 5:00 PM - 7:30 PM
+
+**Classroom:** Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
+
 **Make-up Class:** Tuesday, October 14, 5:00 PM - 7:30 PM (for Fall Break)
 
-## Instructor Information
+**Class Discord:** TBD
 
-**Instructor:** Claudio Silva  
-**Email:** csilva@nyu.edu  
-**Office:** 370 Jay Street, Room 1154  
-**Office Hours:** TBD or by appointment  
-**Website:** [https://ctsilva.github.io](https://ctsilva.github.io)
+## Course Prerequisites
 
-**Teaching Assistant:** TBD  
-**Email:** TBA  
-**Office Hours:** TBA
+You should have solid programming expertise, of the level expected from a first-year graduate student in computer science or data science.
 
-## Course Description
+The coursework includes extensive programming with JavaScript, the D3.js library, and web technologies (CSS, SVG, etc.). While previous knowledge of these technologies is not required, being proficient and comfortable with extensive programming is a fundamental prerequisite for this course. If you are not comfortable with programming please contact the instructor before enrolling.
 
-This course explores the synergy between visualization and machine learning, teaching students how to leverage visual analytics to understand, debug, and improve machine learning models. Students will learn to design and implement visualization systems for model assessment, feature analysis, and result interpretation. The course covers both theoretical foundations and practical applications, with extensive hands-on programming using modern web-based visualization tools.
+We will also expect students to be able to program in Python.
+
+We expect that you have a solid foundation in *either* data visualization or machine learning. If you have no knowledge of machine learning, this course might not be appropriate for you.
+
+## Course Description 
+
+The material for this course is part of a fast-changing field of computing. It is a research-oriented course on topics related to visualization for machine learning, and all students will be expected to work on a guided research project.
+
+Our course is based on foundations of visual analytics, which is an area of data visualization that is concerned with improving a human analytic process, or how one makes sense of data for a given problem: understanding, reasoning, and making decisions about a provided dataset, and a given problem domain. Visual analytics is concerned with combining automated processes with human-driven processes that are built around data visualization: visual representations of data, and ways to interact with data. Given the rapid growth in machine learning in the last decade, research in visual analytics has witnessed similar growth in leveraging machine learning in a variety of ways.
+
+## Course History
+
+This course started as a variation of the Visual Analytics and Machine Learning course designed by Professor Matthew Berger (Vanderbilt University). We first offered it at Tandon CSE on Spring 2020.
+
+For the second offering in Spring 2021, the content of the course was updated quite substantially, in particular with more practical material aimed at enabling students to experience data analysis tasks through visualization.
+
+The course offered in Spring 2022 was a further refinement of the material. Borrowing ideas from Professor Chris Manning (Stanford) in his course Natural Language Processing with Deep Learning, we provided *default* projects to help those students that are not already engaged in research. Also, we limited the assignments to the first part of the course before the project-related deadlines start.
+
+The Spring 2023 was based on the Spring 2022 course, with updated materials and lectures.
+
+The Spring 2024 offering was taught at NYU CDS as DS-GA 3001, with further refinements and updates.
+
+**Fall 2025** marks the return of this course to NYU Tandon as CS-GY 9223, incorporating lessons learned from all previous offerings.
+
+### Acknowledgments
+
+The development of this course has been a collaborative effort. Many members of our research group have contributed to creating materials over the years, including João Rulff, Erin McGowan, Vitória Guardieiro, Peter Xenopoulos, and Jorge Piazentin Ono. Their contributions have been instrumental in shaping this course into its current form.
+
+## Course Objectives 
+
+This course is designed to sharpen a student's knowledge of visualization and machine learning, and how the two areas interact. It is expected that the student will be a more effective data scientist by being fluent on the connections between the two areas. It is also designed around a major project, which will help the student develop research skills.
 
 ### Learning Objectives
 
@@ -43,160 +77,137 @@ By the end of this course, students will be able to:
 6. **Critique** existing visualization approaches for ML
 7. **Develop** novel visualization techniques for emerging ML challenges
 
-## Prerequisites
+## Course Structure 
 
-- **Required:** Strong programming skills (Python and JavaScript)
-- **Required:** Basic understanding of machine learning concepts
-- **Recommended:** Familiarity with web technologies (HTML, CSS, SVG)
-- **Recommended:** Experience with data analysis and statistics
+The course includes lectures and hands-on programming sessions within the 2.5-hour weekly block. We will strive to have practical sessions to complement theoretical materials.
 
-Students without ML background should consult with the instructor before enrolling.
+The course starts with a short primer on visualization. We will introduce machine learning concepts as they are needed in the class. We will cover visualizations for model assessment, white-box and black-box machine learning explainers. After that, we will continue with dimensionality reduction (clustering) techniques (e.g., PCA, t-SNE, UMAP).
 
-## Course Materials
+After this initial set of lectures, we will continue with more advanced and specialized topics. We will cover Topological Data Analysis, followed by multiple lectures on visualizing deep neural networks.
 
-### Required Textbook
-- No required textbook. Readings will be from research papers and online resources.
+## Reading Material
 
-### Recommended Books
-- "Visualization Analysis and Design" by Tamara Munzner
-- "The Grammar of Graphics" by Leland Wilkinson
-- "Interactive Data Visualization for the Web" by Scott Murray
+There is no textbook for the course - most lectures will be based on recent technical papers, which have not yet been incorporated into textbooks. We will have suggested reading materials for each class. It is expected that, prior to the lecture, you have read the corresponding papers.
 
-### Software Requirements
+Here are supplemental readings to be used as reference material:
+
+1. Data Visualization Curriculum, Jeff Heer, [link](https://observablehq.com/@uwdata/data-visualization-curriculum)
+2. A Course in Machine Learning, Hal Daumé III, [link](http://ciml.info/dl/v0_99/ciml-v0_99-all.pdf)
+3. Interpretable Machine Learning: A Guide for Making Black Box Models Explainable, Christoph Molnar, [link](https://christophm.github.io/interpretable-ml-book/)
+4. Introduction to Machine Learning, Etienne Bernard, [link](https://www.wolfram.com/language/introduction-machine-learning/)
+5. Deep Learning, Ian Goodfellow, Yoshua Bengio and Aaron Courville, MIT Press, 2016 [link](http://www.deeplearningbook.org/)
+
+## Research Project
+
+This course includes a substantial research project. Please see the project section of the course for more details. As part of the project, you will be expected to reproduce prior work or implement a proposed research idea of your choosing (requirement details will be forthcoming and discussed in class). Moreover, you will be expected to demonstrate both the prior work, and your final research project, to the class during lectures. Projects are expected to be pursued in groups of 2-3, although you can optionally pursue your project by yourself. Once the group is finalized, students cannot change or separate their groups throughout the semester.
+
+## Course Assessment
+
+* **Assignments:** 50%
+* **Project Proposal** (4-page writeup): 10%
+* **Project Updates** (1-page writeup): 10%
+* **Full Project** (8-page writeup): 25%
+* **Class Participation:** 5%
+
+### Assignment Schedule
+
+Weekly programming assignments will be given for the first half of the semester, focusing on implementing visualization techniques for ML. These assignments are designed to build the technical skills needed for the final project.
+
+### Project Timeline
+
+- **Week 3:** Team formation
+- **Week 5:** Project proposal due (4 pages)
+- **Week 8:** Mid-term project update due (1 page)
+- **Weeks 14-15:** Final project presentations
+- **December 11:** Final project report due (8 pages)
+
+## Late Submissions
+
+Late submissions of assignments will be penalized as follows:
+- A standard deduction rate of 20% per day.
+
+It means that after 5 days of being late, your assignment will have a maximum grade of 0 (zero).
+
+## Course Schedule (tentative)
+
+The course schedule is tentative and might need to be adjusted along the way.
+
+**Lecture 1 (Sept 8):** Introduction to Visualization -- Part I
+
+**Lecture 2 (Sept 15):** Introduction to Visualization -- Part II
+
+**Lecture 3 (Sept 22):** Model Assessment
+
+**Lecture 4 (Sept 29):** White Box Methods
+
+**Lecture 5 (Oct 6):** Black Box Methods
+
+**Lecture 6 (Oct 20):** Dimensionality Reduction
+
+**Lecture 7 (Oct 14, Tuesday Make-up):** Deep Learning Visualization
+
+**Lecture 8 (Oct 27):** Clustering Visualization  
+
+**Lecture 9 (Nov 3):** Topological Data Analysis
+
+**Lecture 10 (Nov 10):** NLP and Text Visualization
+
+**Lecture 11 (Nov 17):** Time Series and Advanced Topics
+
+**Lecture 12 (Nov 24):** Interpretable ML and Fairness
+
+**Lectures 13-14 (Dec 1 & 8):** Project Presentations
+
+## Software Requirements
+
 - Modern web browser (Chrome/Firefox recommended)
 - Text editor or IDE (VS Code recommended)
-- Python 3.8+ with standard ML libraries
+- Python 3.8+ with standard ML libraries (NumPy, Pandas, Scikit-learn, etc.)
 - Node.js for JavaScript development
 - Git for version control
 
-## Grading
+## Moses Center Statement of Disability
 
-| Component | Percentage | Description |
-|-----------|------------|-------------|
-| Exercises | 35% | Weekly programming assignments |
-| Mini-Projects | 35% | Three in-depth visualization projects |
-| Final Project | 25% | Group project with presentation |
-| Participation | 5% | Class engagement and discussions |
+If you are a student with a disability who is requesting accommodations, please contact New York University's Moses Center for Students with Disabilities (CSD) at 212-998-4980 or mosescsd@nyu.edu. You must be registered with CSD to receive accommodations. Information about the Moses Center can be found at www.nyu.edu/csd. The Moses Center is located at 726 Broadway on the 3rd floor.
 
-### Grading Scale
-- A: 93-100%
-- A-: 90-92%
-- B+: 87-89%
-- B: 83-86%
-- B-: 80-82%
-- C+: 77-79%
-- C: 73-76%
-- C-: 70-72%
-- D: 60-69%
-- F: Below 60%
+## Academic Integrity
 
-## Course Schedule
+All students are expected to do their own work. Students may discuss assignments with each other, as well as with the course staff. Any discussion with others must be noted on a student's submitted assignment. Excessive collaboration (i.e., beyond discussing the assignment) will be considered a violation of academic integrity. Questions regarding acceptable collaboration should be directed to the class instructor prior to the collaboration. It is a violation of the honor code to copy or derive solutions from other students (or anyone at all), textbooks, previous instances of this course, or other courses covering the same topics. Copying solutions from other students, or from students who previously took a similar course, is also clearly a violation of the honor code. Finally, a good point to keep in mind is that you must be able to explain and/or re-derive anything that you submit. This is particularly important if you should adapt solutions from online sources.
 
-### Part I: Foundations (Weeks 1-4)
-- Week 1 (Sept 2): No Class - Labor Day
-- Week 2 (Sept 8): Introduction to Visualization for ML
-- Week 3 (Sept 15): Perception and Color Theory
-- Week 4 (Sept 22): Model Assessment and Performance Metrics
+Here is a [link to the NYU Tandon Statement on Academic Integrity](https://engineering.nyu.edu/campus-and-community/student-life/office-student-affairs/policies/student-code-conduct).
 
-### Part II: Model Visualization (Weeks 5-7)
-- Week 5 (Sept 29): White-box Model Visualization
-- Week 6 (Oct 6): Black-box Model Interpretation
-- Week 7 (Oct 13): No Class - Fall Break
-- Make-up (Oct 14): Deep Learning Visualization
+## AI Policy
 
-### Part III: Data Analysis (Weeks 8-10)
-- Week 8 (Oct 20): Clustering Visualization
-- Week 9 (Oct 27): Dimensionality Reduction
-- Week 10 (Nov 3): Topological Data Analysis
+We live in the age of viable generative AI. Banning these tools is neither realistic, nor desirable. In fact, learning to use these tools is an emerging skill. Note that AI tools do not always produce correct or accurate results. In addition, it is unwise to rely on them too much. There are situations where you won't have access to these tools, for instance during technical interviews. In addition, there are also skills someone with an advanced degree in Data Science is just expected to have on tap - without AI assistance or looking anything up. To integrate both considerations, you can use generative AI tools to do the assignments in this class. If you use an AI to guide you in completing an assignment, you have to disclose which parts were generated by the AI.
 
-### Part IV: Advanced Topics (Weeks 11-13)
-- Week 11 (Nov 10): NLP and Text Visualization
-- Week 12 (Nov 17): Time Series and Streaming Data
-- Week 13 (Nov 24): Interpretable ML and Fairness
+## NYU Academic Calendar
 
-### Part V: Projects (Weeks 14-15)
-- Week 14 (Dec 1): Project Presentations I
-- Week 15 (Dec 8): Project Presentations II
+[Link to NYU Academic Calendar](https://www.nyu.edu/students/student-information-and-resources/registration-records-and-graduation/academic-calendar.html?semester=Fall%202025)
 
-## Assignments and Projects
+This course does not have a final exam.
 
-### Weekly Exercises (35%)
-- Short programming assignments focusing on specific techniques
-- Due one week after assignment
-- Implement visualizations using D3.js and Python
-- Graded on correctness, design, and code quality
-
-### Mini-Projects (35%)
-Three substantial projects throughout the semester:
-1. **Model Performance Dashboard** - Visualizing classifier performance
-2. **Feature Analysis System** - Understanding feature importance
-3. **Neural Network Explorer** - Deep learning architecture visualization
-
-### Final Project (25%)
-- Groups of 3-4 students
-- Novel visualization system for ML application
-- Proposal due Week 5
-- Mid-term presentation Week 8
-- Final presentation Weeks 14-15
-- Written report and code submission
-
-### Class Participation (5%)
-- Active engagement in discussions
-- Peer feedback on projects
-- Discord participation
-
-## Course Policies
-
-### Attendance Policy
-- Attendance is expected for all classes
-- Notify instructor in advance of planned absences
-- Recordings available for documented emergencies
-
-### Late Assignment Policy
-- 10% penalty per day late
-- Maximum 3 days late accepted
-- One "free late" pass per semester (3 days)
-
-### Academic Integrity
-All work must be original. Collaboration is encouraged, but code and written work must be your own. Cite all sources and inspirations. Violations will be reported to the Office of Academic Affairs.
-
-### Disability Services
-Students with disabilities should register with Moses Center for Student Accessibility (212-998-4980, mosescsd@nyu.edu) and provide documentation to the instructor.
-
-### Inclusion Statement
-This course values diversity and seeks to create an inclusive learning environment. All students, regardless of background, are welcome and encouraged to participate fully.
-
-## Resources
-
-### Course Website
-- [https://ctsilva.github.io/2025-VisML-CSE/](https://ctsilva.github.io/2025-VisML-CSE/)
-- All materials, slides, and assignments posted here
-
-### Communication
-- **Discord:** Primary communication channel (link TBA)
-- **Email:** For private matters only
-- **Brightspace:** For assignment submission
-
-### Technical Support
-- TA office hours for programming help
-- Discord channel for peer support
-- Tutorial materials on course website
+Also, please pay attention to notable dates such as Add/Drop, Withdrawal, etc.
 
 ## Important Dates
 
 - **Sept 2:** Labor Day - No Class
 - **Sept 8:** First Class
-- **Oct 13:** Fall Break - No Class
+- **Oct 13:** Fall Break - No Monday Class
 - **Oct 14:** Make-up Class (Tuesday)
-- **Nov 27:** Thanksgiving Week - Check for updates
+- **Nov 25-29:** Thanksgiving Week - Check for updates
 - **Dec 8:** Last Class
 - **Dec 11:** Final Project Reports Due
 
-## Acknowledgments
+## Contact Information
 
-This course builds upon materials from:
-- Previous offerings of DS-GA 3001 at NYU CDS
-- Visualization courses at other institutions
-- Research from the VIDA Lab at NYU
+**Course Website:** [https://ctsilva.github.io/2025-VisML-CSE/](https://ctsilva.github.io/2025-VisML-CSE/)
+
+**Discord:** TBD (Primary communication channel)
+
+**Email:** For private matters only
+
+**Office Hours:** Will be posted on Discord
+
+---
 
 *This syllabus is subject to change. Students will be notified of any modifications.*
