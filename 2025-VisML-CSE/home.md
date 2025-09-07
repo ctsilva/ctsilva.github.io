@@ -34,6 +34,14 @@ author_profile: true
   - [Vega-Lite Lab](/2025-VisML-CSE/labs/week2-lab.html)
 - **Assignment:** TBD
 
+## Today's Class Materials
+
+### Course Introduction & Syllabus
+<iframe src="/2025-VisML-CSE/slides/week2-intro.html" width="100%" height="400px" style="border: 1px solid #ccc;"></iframe>
+
+### Vega-Lite Lab
+<iframe src="/2025-VisML-CSE/labs/week2-lab.html" width="100%" height="400px" style="border: 1px solid #ccc;"></iframe>
+
 ## Assignments
 
 ### Weekly Assignments (50% of grade)
