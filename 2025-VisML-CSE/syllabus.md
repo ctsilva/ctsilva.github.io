@@ -59,7 +59,7 @@ The Spring 2024 offering was taught at NYU CDS as DS-GA 3001, with further refin
 
 ### Acknowledgments
 
-The development of this course has been a collaborative effort. Many members of our research group have contributed to creating materials over the years, including João Rulff, Erin McGowan, Vitória Guardieiro, Peter Xenopoulos, and Jorge Piazentin Ono. Their contributions have been instrumental in shaping this course into its current form.
+The development of this course has been a collaborative effort. Many members of our research group have contributed to creating materials over the years, including João Rulff, Erin McGowan, Vitória Guardieiro, Peter Xenopoulos, Jorge Piazentin Ono, and Guande Wu. Their contributions have been instrumental in shaping this course into its current form.
 
 ## Course Objectives 
 
