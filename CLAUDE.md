@@ -100,6 +100,7 @@ The repository includes complete course websites as subdirectories:
 - **week2-lab.qmd/html**: Vega-Lite hands-on lab activities
   - Observable notebooks and development environment setup
   - Basic visualization creation exercises
+  - **Projector-optimized**: Light code backgrounds for classroom visibility
 - **figs/**: Complete figure collection (34 total)
   - All Cleveland McGill research examples
   - Complete chart gallery (bar, line, scatter, matrix, symbol maps)  
@@ -112,6 +113,21 @@ The repository includes complete course websites as subdirectories:
 - **Course logistics**: Adapted from previous VisML courses with Fall 2025 updates
 - **Figure assets**: Collected from 2025-InfoVis-CSE and 2024-VisML-CDS repositories
 - **Lab materials**: Adapted from InfoVis Vega-Lite exercises
+
+##### Design Principles for Sustainable Course Materials:
+- **Date-neutral language**: All content uses specific dates (e.g., "Sept 8") rather than relative terms ("Today", "Next Week")
+  - **Rationale**: Avoids outdated language as semester progresses, maintains professional appearance
+  - **Implementation**: Replaced "Today's Class" → "Week 2 (Sept 8)", "Today's Lab Activities" → "Lab Activities"
+- **Evergreen content**: Materials remain accurate regardless of current date
+- **Projector-friendly design**: Light backgrounds for code blocks ensure classroom visibility
+- **Professional presentation**: Consistent, timeless language maintains quality over time
+- **Future-proof structure**: Content can be reused in future semesters without modification
+
+##### Assignment Integration:
+- **Observable Homework 1**: https://observablehq.com/d/aa2a22499278e4c1
+  - NYC transportation data visualization with D3.js fundamentals
+  - Student fork-and-complete model for hands-on learning
+  - Integrates with week2-lab.qmd Observable setup tutorial
 
 #### InfoVis Course Structure (2025-InfoVis-CSE)
 - **home.md**: Main landing page with course announcements and upcoming classes
