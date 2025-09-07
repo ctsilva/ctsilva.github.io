@@ -33,27 +33,22 @@ author_profile: true
 
 ## Assignments
 
-### Exercises (35% of grade)
+### Weekly Assignments (50% of grade)
 - Exercise 1: Visualization critique - *Due Sept 15*
 - Exercise 2: Color palette design - *Due Sept 22*
-- More exercises TBA
+- More programming assignments throughout first half of semester
 
-### Mini-Projects (35% of grade)
-- Mini-Project 1: Model performance visualization - *Details TBA*
-- Mini-Project 2: Feature importance visualization - *Details TBA*
-- Mini-Project 3: Neural network visualization - *Details TBA*
-
-### Group Project (25% of grade)
-- Team formation - *Week 3*
-- Project proposal - *Week 5*
-- Mid-term presentation - *Week 8*
-- Final presentations - *Weeks 14-15*
+### Research Project (45% of grade)
+- **Team formation** - *Week 3*
+- **Project Proposal** (4-page writeup) - *Week 5* - 10%
+- **Project Updates** (1-page writeup) - *Week 8* - 10% 
+- **Final Project** (8-page writeup + presentation) - *Weeks 14-15* - 25%
 
 ### Class Participation (5% of grade)
 
 ## Quick Links
 
-- **Discord:** [Join Course Discord] (TBA)
+- **Discord:** [Join Course Discord](https://discord.gg/dyHSFN65)
 - **Brightspace:** [Course materials and submissions]
 - **Office Hours:** TBD
 
