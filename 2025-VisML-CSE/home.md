@@ -31,6 +31,7 @@ author_profile: true
 - **Topics:** Course syllabus review, Introduction to Visualization, Hands-on Vega-Lite
 - **Materials for Tomorrow:** 
   - [Course Introduction & Syllabus](/2025-VisML-CSE/slides/week2-intro.html) 
+  - [Information Visualization Introduction](/2025-VisML-CSE/slides/week2-infovis.html)
   - [Vega-Lite Lab](/2025-VisML-CSE/labs/week2-lab.html)
 - **Assignment:** TBD
 
@@ -38,6 +39,9 @@ author_profile: true
 
 ### Course Introduction & Syllabus
 <iframe src="/2025-VisML-CSE/slides/week2-intro.html" width="100%" height="400px" style="border: 1px solid #ccc;"></iframe>
+
+### Information Visualization Introduction
+<iframe src="/2025-VisML-CSE/slides/week2-infovis.html" width="100%" height="400px" style="border: 1px solid #ccc;"></iframe>
 
 ### Vega-Lite Lab
 <iframe src="/2025-VisML-CSE/labs/week2-lab.html" width="100%" height="400px" style="border: 1px solid #ccc;"></iframe>
