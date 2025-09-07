@@ -202,7 +202,7 @@ Also, please pay attention to notable dates such as Add/Drop, Withdrawal, etc.
 
 **Course Website:** [https://ctsilva.github.io/2025-VisML-CSE/](https://ctsilva.github.io/2025-VisML-CSE/)
 
-**Discord:** TBD (Primary communication channel)
+**Discord:** [https://discord.gg/dyHSFN65](https://discord.gg/dyHSFN65) (Primary communication channel)
 
 **Email:** For private matters only
 

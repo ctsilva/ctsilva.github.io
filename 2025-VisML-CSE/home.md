@@ -14,6 +14,8 @@ author_profile: true
 
 ## Announcements
 
+⚠️ **Please Note:** Course schedule, assignments, and materials are **tentative** and subject to updates during the semester. Students will be notified of any changes via Discord and course announcements.
+
 *Course materials will be posted as the semester progresses*
 
 ## Upcoming Classes

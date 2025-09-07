@@ -6,6 +6,8 @@ author_profile: true
 
 ## Weekly Schedule
 
+⚠️ **Important:** This schedule is **tentative** and may be updated during the semester. Check course announcements and Discord for any changes.
+
 *All classes meet Mondays 5:00 PM - 7:30 PM in Jacobs Hall Room 473, unless otherwise noted*
 
 ---

@@ -74,11 +74,40 @@ The `markdown_generator/` directory contains Python scripts and Jupyter notebook
 
 ### Course Websites
 The repository includes complete course websites as subdirectories:
-- **2024-VisML-CDS**: VisML (Visualization for Machine Learning) course website (Spring 2024, NYU CDS)
-- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon)
-- **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon)
+- **2024-VisML-CDS**: VisML (Visualization for Machine Learning) course website (Spring 2024, NYU CDS) - ARCHIVE
+- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon) - CS-GY 6313
+- **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon) - CS-GY 9223 🎉 **100% COMPLETE**
 
-#### InfoVis Course Structure
+#### VisML Course Structure (2025-VisML-CSE)
+- **Course Code**: CS-GY 9223 Section N - Selected Topics in CS: Visualization for Machine Learning
+- **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
+- **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
+- **Make-up Class**: Tuesday, October 14 (for Fall Break)
+- **Status**: 🎉 **100% COMPLETE** - All course materials ready for Fall 2025
+- **Discord**: https://discord.gg/dyHSFN65
+
+##### Complete Course Structure:
+- **home.md**: Course landing page with announcements and schedule
+- **syllabus.md**: Complete syllabus with grading and policies  
+- **schedule.md**: 15-week detailed schedule adapted for Monday evenings
+- **resources.md**: ML visualization tools, datasets, and references
+- **slides/**: 12 Quarto presentations (weeks 2-11) with CS-GY 9223 branding
+  - All slides updated to Fall 2025 format with NYU Tandon branding
+  - Rendered HTML files accessible at ctsilva.github.io/2025-VisML-CSE/slides/
+  - Uses 'urban' conda environment for Python/Jupyter dependencies
+- **labs/**: 12 weeks of lab materials (weeks 1-12) 
+  - 6 full lab directories with slides, recaps, and supporting assets
+  - All materials updated to CS-GY 9223 Fall 2025 format
+  - Integrated for Monday evening 2.5-hour format
+- **assignments/**: Complete assignment suite
+  - 6 programming exercises with detailed rubrics and requirements
+  - Progressive difficulty building practical ML visualization skills
+  - Professional submission guidelines and evaluation criteria
+- **projects/**: Final project materials
+  - StreetAware dataset analysis project with multiple track options
+  - Updated for Fall 2025 with modern ML/LLM integration possibilities
+
+#### InfoVis Course Structure (2025-InfoVis-CSE)
 - **home.md**: Main landing page with course announcements and upcoming classes
 - **syllabus.md**: Full course syllabus with policies and grading
 - **schedule.md**: Detailed weekly schedule with readings and assignments

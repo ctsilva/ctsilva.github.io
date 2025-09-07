@@ -1,0 +1,154 @@
+---
+title: "VisML Lab Week 9"
+subtitle: "CS-GY 9223 - Fall 2025 - Topological Data Analysis"
+author: "TBD - Teaching Assistant"
+institute: "NYU Tandon School of Engineering"
+date: "October 27, 2025"
+format:
+  revealjs:
+    theme: [default, ../../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    footer: <https://engineering.nyu.edu>
+  html:
+    code-fold: true
+resources:
+  - demo.pdf
+execute:
+  echo: true
+jupyter: python3
+---
+
+## Lab Overview
+
+* Today: Topological Data Analysis (TDA)
+* Understanding data shape and topology
+* Mapper algorithm and persistent homology
+* Applications to visualization 
+
+## Topological Data Analysis (TDA)
+- Data has shape, and that shape matters when we analyze it
+- A way of extracting meaning from high dimensional data 
+- Slides adapted from Shaw Talebi's [TDA video trilogy](https://www.youtube.com/watch?v=fpL5fMmJHqk&list=PLzERW_Obpmv_UW7RgbZW4Ebhw87BcoXc7&ab_channel=ShawTalebi).
+
+## The Seven Bridges of Königsberg
+![](seven_bridges.png)
+
+## The Seven Bridges of Königsberg
+![](seven_bridges_2.png)
+
+## General TDA Pipeline
+![](TDA_pipeline.png)
+
+## Real World Applications of TDA
+![](TDA_real_world_examples.png)
+
+## Mapper Algorithm
+![](mapper_1.png)
+
+## Mapper Algorithm
+![](mapper_2.png)
+
+## Mapper Algorithm
+![](mapper_3.png)
+
+## Mapper Algorithm
+![](mapper_4.png)
+
+## Mapper Algorithm
+![](mapper_5.png)
+
+## Mapper Algorithm
+![](mapper_6.png)
+
+## Mapper Algorithm
+![](mapper_7.png)
+
+## Example on Real Data in Python
+
+{{< video https://youtu.be/NlMrvCYlOOQ?list=PLzERW_Obpmv_UW7RgbZW4Ebhw87BcoXc7&t=363 width="1000" height="650" start="363" >}}
+
+## Persistent Homology
+- TDA is about looking at the shape of data 
+- All polygons can be broken down into the simplest shape - a triangle
+- If we want to analyze the shape of our data, we can break it down into triangles - this is the idea behind persistent homology 
+![](ph_1.png)
+
+## Persistent Homology
+- But most datasets have more than two dimensions, so 2D triangles would not capture them
+- Instead we use simplexes - triangles generalized to any number of dimensions
+![](ph_2.png)
+
+## Persistent Homology
+- We can use collections of simplexes (simplicial complexes) to describe our data
+![](ph_3.png)
+
+## Persistent Homology
+- How do we compare these complex shapes?
+
+## Persistent Homology
+- How do we compare these complex shapes?
+- These shapes can be characterized by their holes - we can compare them by counting their holes
+![](ph_4.png)
+
+## Persistent Homology
+- The concept of "hole" can also be generalized to any dimension:
+![](ph_5.png)
+
+## Persistent Homology
+- The concept of "hole" can also be generalized to any dimension (in 1 dimension we count connected components):
+![](ph_6.png)
+
+## Persistent Homology
+- To perform persistent homology, we first draw n-dimensional circles around each point:
+![](ph_7.png)
+
+## Persistent Homology
+- We can then create 1-simplexes by connecting the data points whose circles overlap:
+![](ph_8.png)
+
+## Persistent Homology
+- Now we have two shapes: our initial 0-simplex (point cloud) and a shape made of 0- and 1-simplexes
+![](ph_8.png)
+
+## Persistent Homology
+- We can compare their homologies by counting the number of connected components:
+![](ph_9.png)
+
+## Persistent Homology
+- We repeat this step, increasing the radius of the circles
+- We see 2-simplexes start to appear and the number of connected components decreases:
+![](ph_10.png)
+
+## Persistent Homology
+- We can do this for every choice of radius between 0 and the radius which yields only one connected component:
+![](ph_11.png)
+
+## Persistent Homology
+- This allows us to analyze which topological features of our data are significant based on how long they "persist" during the circle-growing process (longer persistence = more significant)
+![](ph_11.png)
+
+## Persistence Diagram
+- Points close to y=x are noise, points far from y=x are significant
+![](ph_12.png)
+
+
+## Example on Real Data in Python
+{{< video https://www.youtube.com/watch?v=5ezFcy9CIWE&list=PLzERW_Obpmv_UW7RgbZW4Ebhw87BcoXc7&index=3&ab_channel=ShawTalebi width="1000" height="650" >}}
+
+## Further Reading
+
+- The original [Mapper paper](https://research.math.osu.edu/tgda/mapperPBG.pdf)
+
+- [Course notes](https://raphaeltinarrage.github.io/files/EMAp/SummerCourseTDA.pdf) for the 2021 EMAp summer course Topological Data Analysis with Persistent Homology
+
+- Rami Kraft's [Illustrations of Data Analysis Using the Mapper Algorithm and Persistent Homology](https://www.diva-portal.org/smash/get/diva2:900997/FULLTEXT01.pdf)
+
+- Shaw Talebi's [TDA video trilogy](https://www.youtube.com/watch?v=fpL5fMmJHqk&list=PLzERW_Obpmv_UW7RgbZW4Ebhw87BcoXc7&ab_channel=ShawTalebi) (this is a good starting point if you're confused about anything)

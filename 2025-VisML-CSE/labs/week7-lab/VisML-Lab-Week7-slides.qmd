@@ -1,0 +1,542 @@
+---
+title: "VisML Lab Week 7"
+subtitle: "CS-GY 9223 - Fall 2025 - Clustering and Dimensionality Reduction"
+author: "TBD - Teaching Assistant"
+institute: "NYU Tandon School of Engineering"
+date: "October 13, 2025"
+format:
+  revealjs:
+    theme: [default, ../../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    footer: <https://engineering.nyu.edu>
+  html:
+    code-fold: true
+resources:
+  - demo.pdf
+execute:
+  echo: true
+jupyter: python3
+bibliography: lab_references.bib
+---
+
+## Lab Overview
+
+* Today: Clustering and Dimensionality Reduction
+* Various methods of projecting data into low-dimensional space
+* Next week: Deep Learning Visualization
+
+## Dimensionality Reduction
+
+* Various methods of projecting data into a low-dimensional space while preserving the clusters from the high-dimensional space
+    * Principal Component Analysis (PCA)
+    * Multidimensional Scaling (MDS)
+    * Sparse Random Projection
+    * Locally Linear Embedding
+    * t-Distributed Stochastic Neighbor Embedding (t-SNE)
+    * Uniform Manifold Approximation and Projection (UMAP) 
+
+## MNIST Dataset
+
+* Dataset of 28x28 pixel images of handwritten digits
+
+![](MNIST_nums.png)
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## MNIST Dataset
+
+<ul >
+<li style="font-size:25px";>Every MNIST image can be thought of as a 28x28 array of numbers describing how dark each pixel is:
+</li>
+</ul>
+![](MNIST_arr.png)
+<ul >
+<li style="font-size:25px";>We can flatten each array into a 28 * 28 = 784 dimensional vector, where each component of the vector is a value between zero and one describing the intensity of the pixel
+</li>
+<li style="font-size:25px";>We can think of MNIST as a collection of 784-dimensional vectors
+</li>
+</ul>
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## MNIST Dataset
+
+* But not all vectors in this 784-dimensional space are MNIST digits! Typical points in this space are very different 
+* To get a sense of what a typical point looks like, we can randomly pick a few random 28x28 images – each pixel is randomly black, white or some shade of gray. These random points look like noise:
+
+![](MNIST_noise.png)
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## MNIST Dataset
+
+<ul >
+<li style="font-size:30px";>28x28 images that look like MNIST digits are very rare - they make up a very small subspace of 784-dimensional space 
+<ul>
+<li style="font-size:25px";>With some slightly harder arguments, we can see that they occupy a lower (than 748) dimensional subspace</li>
+</ul>
+</li>
+<li style="font-size:30px";>Many theories about lower-dimensional structure of MNIST (and similar data)
+  <ul>
+    <li style="font-size:25px";>Manifold hypothesis (popular among ML researchers): MNIST is a low dimensional manifold curving through its high-dimensional embedding space</li>
+    <li style="font-size:25px";>Another hypothesis (rooted in topological data analysis) is that data like MNIST consists of blobs with tentacle-like protrusions sticking out into the surrounding space</li>
+    <li style="font-size:25px";>But no one actually knows for sure!</li>
+   </ul>
+</li>
+</ul>
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## MNIST Cube
+
+<ul>
+  <li style="font-size:30px";>Imagine the MNIST data points as points suspended in a 784-dimensional cube
+  <ul>
+    <li style="font-size:25px";>Each dimension of the cube corresponds to a particular pixel</li>
+    <li style="font-size:25px";>The data points range from zero to one according to pixel intensity</li>
+    <li style="font-size:25px";>On one side of the dimension, there are images where that pixel is white. On the other side of the dimension, there are images where it is black. In between, there are images where it is gray.</li>
+   </ul>
+</li>
+<li style="font-size:30px";>What does this cube look like if we look at a particular two-dimensional face? Let's look at Olah's visualizations.
+</li>
+</ul>
+
+![](MNIST_Cube.png)
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## MNIST Cube
+
+* What qualities would the ‘perfect’ visualization of MNIST have? What should our goal be?
+* What is the best way to cluster MNIST data?
+* We can try what we learned last week...
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## Principal Component Analysis Recap
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+<ul >
+<li style="font-size:30px";>Dimensionality reduction technique that allows us to find clusters of similar data points based on many features (which we boil down to two “principal components” PC1 and PC2)</li>
+<li style="font-size:30px";>PC1 and PC2 represent the directions in the data space with the highest and second-highest variances, respectively
+  <ul>
+    <li style="font-size:25px";>Way to bring out strong patterns from large and complex datasets</li>
+   </ul>
+</li>
+</ul>
+  
+:::
+
+::: {.column width="60%"}
+
+![](PCA_iris.png)
+:::
+
+::::
+
+::: footer
+Ref: @Team_2018a
+:::
+
+## PCA on MNIST
+
+Import libraries:
+
+``` {python}
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn
+from sklearn.datasets import load_digits
+from sklearn.decomposition import TruncatedSVD
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.ensemble import RandomTreesEmbedding
+from sklearn.manifold import (Isomap, LocallyLinearEmbedding, MDS, SpectralEmbedding, TSNE)
+from sklearn.neighbors import NeighborhoodComponentsAnalysis
+from sklearn.pipeline import make_pipeline
+from sklearn.random_projection import SparseRandomProjection
+from sklearn.decomposition import PCA
+import plotly.graph_objects as go
+from umap import UMAP
+```
+
+## PCA on MNIST 
+
+Define helper functions for visualizing clusters in 2D and 3D:
+
+``` {python}
+# Authors: Gael Varoquaux
+# License: BSD 3 clause (C) INRIA 2014
+def plot_clustering(X_red, labels, title=None):
+    x_min, x_max = np.min(X_red, axis=0), np.max(X_red, axis=0)
+    X_red = (X_red - x_min) / (x_max - x_min)
+
+    plt.figure(figsize=(6, 6))
+    for digit in digits.target_names:
+        plt.scatter(
+            *X_red[y == digit].T,
+            marker=f"${digit}$",
+            s=50,
+            # c=plt.cm.nipy_spectral(labels[y == digit] / 10),
+            alpha=0.5,
+        )
+
+    plt.xticks([])
+    plt.yticks([])
+    if title is not None:
+        plt.title(title, size=17)
+    plt.axis("off")
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+```
+
+## PCA on MNIST 
+
+Define helper functions for visualizing clusters in 2D and 3D:
+
+``` {python}
+def plot_3d_clustering(X_red, labels, title=None):
+    component0 = X_red[:, 0]
+    component1 = X_red[:, 1]
+    component2 = X_red[:, 2]
+    indices =  list(range(X_red.shape[0]))
+    labels = list (map(lambda x: "label:" + str(y[x]) + ", id:" + str(x),indices))
+
+    fig = go.Figure(data=[go.Scatter3d(
+        x=component0,
+        y=component1,
+        z=component2,
+        mode='markers',
+        marker=dict(
+            size=10,
+            color=y,                # set color to an array/list of desired values
+            colorscale='Rainbow',   # choose a colorscale
+            opacity=1,
+            line_width=1,
+        ),
+        text = labels
+
+    )])
+# tight layout
+    fig.update_layout(margin=dict(l=50,r=50,b=50,t=50),width=520,height=520)
+    fig.layout.template = 'plotly_dark'
+
+    fig.show()
+```
+
+## PCA on MNIST
+
+Load the MNIST dataset:
+``` {python}
+digits = load_digits(n_class=6)
+X, y = digits.data, digits.target
+n_samples, n_features = X.shape
+n_neighbors = 30
+
+print("Samples: " + str(n_samples))
+print("Features: " + str(n_features))
+```
+
+## PCA on MNIST 
+
+Peform PCA:
+
+``` {python}
+pca = PCA(n_components=2)
+pca.fit(X)
+X_trans = pca.transform(X)
+print("Singular values: " + str(pca.singular_values_))
+```
+
+## PCA on MNIST 
+
+<ul style="font-size:25px";>
+We see that we are able to reasonbly cluster the data by digit using PCA:
+</ul>
+
+``` {python}
+plt.scatter(X_trans[:,0],X_trans[:,1])
+```
+
+## PCA on MNIST 
+
+<ul style="font-size:25px";>
+We see that we are able to reasonbly cluster the data by digit using PCA:
+</ul>
+
+``` {python}
+plot_clustering(X_trans, "", "PCA")
+```
+
+## PCA on MNIST 
+
+<ul style="font-size:25px";>
+We can also visualize this in 3D:
+</ul>
+
+``` {python}
+pca_3d = PCA(n_components=3)
+X_trans_3d = pca_3d.fit_transform(X)
+plot_3d_clustering(X_trans_3d, "", "PCA")
+```
+
+## Optimization-Based Dimensionality Reduction
+
+<ul >
+<li style="font-size:30px";>What if the distances between points in our visualization were the same as the distances between points in the original space?
+<ul>
+    <li style="font-size:25px";>This captures the global geometry of the data</li>
+   </ul>
+</li>
+<li style="font-size:30px";>In this case, we say that for any two MNIST data points, x<sub>i</sub> and x<sub>j</sub>, there are two notions of distance between them: 
+  <ul>
+    <li style="font-size:25px";>d<sup>*</sup><sub>i,j</sub> denotes the distance between x<sub>i</sub> and x<sub>j</sub> in the original space</li>
+    <li style="font-size:25px";>d<sub>i,j</sub> denotes the distance between x<sub>i</sub> and x<sub>j</sub> in our visualization.</li>
+   </ul>
+</li>
+<li style="font-size:30px">Now we can define a cost:</li>
+</ul>
+
+![](MDS_cost.png)
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## Multidimensional Scaling (MDS)
+
+![](MDS_cost.png)
+
+* If these distances are similar, the cost is low (and vice versa). So a cost of zero is optimal (though we can never actually reach this)
+* We can solve this as an optimization problem - we start with a random point and apply gradient descent 
+* This is called multidimensional scaling (MDS) 
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## MDS on MNIST
+
+``` {python}
+mds = MDS(n_components=2, n_init=1, max_iter=120, n_jobs=2)
+X_mds = mds.fit_transform(X)
+plot_clustering(X_mds, "", "MDS")
+```
+
+## MDS on MNIST
+
+``` {python}
+mds_3d = MDS(n_components=3, n_init=1, max_iter=120, n_jobs=2)
+mds_3d.fit(X)
+X_mds_3d = mds_3d.fit_transform(X)
+plot_3d_clustering(X_mds_3d, "", "MDS")
+```
+
+## Sammon's Mapping
+
+<ul >
+<li style="font-size:30px";>There are many variations of MDS
+  <ul>
+    <li style="font-size:25px";>Common theme is to use a cost function that emphasizes local structure as more important to maintain than global structure</li>
+    <li style="font-size:25px";>One version of this is Sammon's Mapping, which uses the cost function:</li>
+   </ul>
+</li>
+</ul>
+![](Sammons_Mapping_Cost.png)
+<ul >
+<li style="font-size:30px";>In Sammon’s mapping, we try harder to preserve the distances between nearby points than between those which are far apart. If two points are twice as close in the original space as two others, it is twice as important to maintain the distance between them.</li>
+</ul>
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## Sparse Random Projection
+
+<ul >
+<li style="font-size:30px";>Reduces the dimensionality by projecting the original input space using a sparse random matrix
+  <ul>
+    <li style="font-size:25px";>Alternative to dense Gaussian random projection matrix - guarantees similar embedding quality while being much more memory efficient and allowing faster computation of the projected data</li>
+   </ul>
+</li>
+<li style="font-size:30px";>If we define s = 1 / density, the elements of the random matrix are drawn from</li>
+</ul>
+![](sparse_random_projection.png){width=50%}
+<ul style="font-size:25px"> where n<sub>components</sub> is the size of the projected subspace. 
+<li style="font-size:30px";>By default the density of nonzero elements is set to the minimum density as recommended by Ping Li et al: 1 / <SQRT>(n<sub>features</sub>)</SQRT></li>
+</ul>
+
+::: footer
+Ref: @scikit
+:::
+
+## Sparse Random Projection on MNIST 
+
+``` {python}
+srp=SparseRandomProjection(n_components=2, random_state=42)
+X_srp=srp.fit_transform(X)
+plot_clustering(X_srp, "", "Sparse Random Projection")
+```
+
+## Sparse Random Projection on MNIST 
+
+``` {python}
+srp_3d=SparseRandomProjection(n_components=3, random_state=42)
+X_srp_3d=srp_3d.fit(X)
+X_srp_3d=srp_3d.fit_transform(X)
+plot_3d_clustering(X_srp_3d, "", "Sparse Random Projection")
+```
+
+## Locally Linear Embedding
+
+* First we find the k-nearest neighbors of each data point
+  * One advantage of the LLE algorithm is that there is only one parameter to tune (K). If K is chosen to be too small or too large, it will not be able to accomodate the geometry of the original data. Here, for each data point that we have we compute the K nearest neighbours.
+* Next, we approximate each data vector as a weighted linear combination of its k-nearest neighbors to construct new points. We try to minimize the cost function, where j’th nearest neighbour for point X<sub>i</sub>.
+
+![](LLE_1.png){width=50%}
+
+::: footer
+Ref: @Mihir_2024
+:::
+
+## Locally Linear Embedding
+
+* Finally, it computes the weights that best reconstruct the vectors from its neighbors, then produce the low-dimensional vectors best reconstructed by these weights. 
+  * In other words, we define the new vector space Y such that we minimize the cost for Y as the new points:
+
+::: footer
+Ref: @Mihir_2024
+:::
+
+## Locally Linear Embedding
+
+![](LLE_2.png)
+
+::: footer
+Ref: @Mihir_2024
+:::
+
+## LLE on MNIST
+
+``` {python}
+lle=LocallyLinearEmbedding(n_neighbors=5, n_components=2, method="standard")
+X_lle=lle.fit(X)
+X_lle=lle.fit_transform(X)
+plot_clustering(X_lle, "", "LLE")
+```
+
+## LLE on MNIST
+
+``` {python}
+lle_3d=LocallyLinearEmbedding(n_neighbors=n_neighbors, n_components=3, method="standard")
+X_lle_3d=lle_3d.fit(X)
+X_lle_3d=lle_3d.fit_transform(X)
+plot_3d_clustering(X_lle_3d, "", "LLE")
+```
+
+## t-Distributed Stochastic Neighbor Embedding (t-SNE)
+
+* Very popular for deep learning
+* Tries to optimize for preserving the topology of the data
+* For every point, t-SNE constructs a notion of which other points are its ‘neighbors,’ trying to make all points have the same number of neighbors. Then it tries to embed them so that those points all have the same number of neighbors.
+
+::: footer
+Ref: @Olah_2014
+:::
+
+## t-SNE
+
+{{< video https://www.youtube.com/watch?v=NEaUSP4YerM&ab_channel=StatQuestwithJoshStarmer width="1000" height="700" >}}
+
+::: footer
+Ref: @Starmer_2017a
+:::
+
+## t-SNE on MNIST
+
+``` {python}
+tsne = sklearn.manifold.TSNE()
+X_tsne = tsne.fit_transform(X)
+plot_clustering(X_tsne, "", "T-SNE")
+```
+
+## t-SNE on MNIST
+
+``` {python}
+tsne_3d = sklearn.manifold.TSNE(3)
+X_tsne_3d = tsne_3d.fit_transform(X)
+plot_3d_clustering(X_tsne_3d, "", "T-SNE")
+```
+
+## Using t-SNE Effectively
+* t-SNE plots are popular and can be useful, but only if you avoid common misreadings
+  * Beware of hyperparameter values
+  * Remember cluster sizes in a t-SNE plot mean nothing
+  * Know that distances BETWEEN clusters may not mean anything either
+  * Random noise doesn't always look random
+  * You may need multiple plots for topology
+* See @Wattenberg_Viégas_Johnson_2016 for more details
+
+::: footer
+Ref: @Wattenberg_Viégas_Johnson_2016
+:::
+
+## Uniform Manifold Approximation and Projection (UMAP)
+
+* Similar to t-SNE, but with some advantages:
+  * Increased speed 
+  * Better preservation of the data's global structure
+
+::: footer
+Ref: @Coenen_Pearce
+:::
+
+## Uniform Manifold Approximation and Projection (UMAP)
+<ul >
+<li style="font-size:30px";>UMAP constructs a high dimensional graph representation of the data then optimizes a low-dimensional graph to be as structurally similar as possible
+  <ul>
+    <li style="font-size:25px";>Starts with "fuzzy simplicial complex," a representation of a weighted graph with edge weights representing the likelihood that two points are connected.</li>
+    <li style="font-size:25px";>To determine connectedness, UMAP extends a radius outwards from each point, connecting points when those radii overlap.</li>
+    <li style="font-size:25px";>Choice of radius matters! Too small = small, isolated clusters. Too large = everything is connected. UMAP overcomes this challenge by choosing a radius locally, based on the distance to each point's n<sup>th</sup> nearest neighbor.</li>
+    <li style="font-size:25px";>The graph is made "fuzzy" by decreasing the likelihood of connection as the radius grows</li>
+    <li style="font-size:25px";>By stipulating that each point must be connected to at least its closest neighbor, UMAP ensures that local structure is preserved in balance with global structure</li>
+   </ul>
+</li>
+</ul>
+
+::: footer
+Ref: @Coenen_Pearce
+:::
+
+## UMAP on MNIST
+
+``` {python}
+ump=UMAP()
+ump.fit(X)
+X_umap=ump.fit_transform(X)
+plot_clustering(X_umap, "not used", "UMAP")
+```
+
+## References (Good for Further Reading)
+
