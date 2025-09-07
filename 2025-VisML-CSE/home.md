@@ -23,17 +23,17 @@ author_profile: true
 ### Week 1 (Sept 2) - Labor Day
 - **No Class** - Labor Day Holiday
 
-### Week 2 (Sept 8) - Course Introduction
-- **Topics:** Course syllabus and logistics 
-- **Materials:** [Week 2 Introduction Slides](/2025-VisML-CSE/slides/week2-intro.html) (Part I - Course logistics)
-
-### Week 3 (Sept 15) - Tomorrow's Class ⭐
-- **Topics:** Course syllabus review, Introduction to Visualization, Hands-on Vega-Lite
-- **Materials for Tomorrow:** 
+### Week 2 (Sept 8) - Today's Class ⭐
+- **Topics:** Course Introduction, Syllabus, Introduction to Visualization, Hands-on Vega-Lite
+- **Materials for Today:** 
   - [Course Introduction & Syllabus](/2025-VisML-CSE/slides/week2-intro.html) 
   - [Information Visualization Introduction](/2025-VisML-CSE/slides/week2-infovis.html)
   - [Vega-Lite Lab](/2025-VisML-CSE/labs/week2-lab.html)
 - **Assignment:** TBD
+
+### Week 3 (Sept 15) - Next Week
+- **Topics:** TBD
+- **Materials:** TBD
 
 ## Today's Class Materials
 
