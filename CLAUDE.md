@@ -146,11 +146,13 @@ The repository includes complete course websites as subdirectories:
 
 #### Important Notes
 - **Reveal.js Dependencies**: The `.gitignore` has been configured to allow `*_files/` directories for course materials, ensuring reveal.js presentations work correctly on GitHub Pages
-- **Week 1 Status**: Ready for Sept 5, 2025 class with Ryan Kim as TA and Discord channel active
+- **Week 1 Status**: Ready for Sept 5, 2025 class with Discord channel active
 
 #### Content Creation Guide for TAs
 
-**Current TA for Fall 2025:** Ryan Kim ([rkim.dev](https://www.rkim.dev))
+**Current TAs for Fall 2025:**
+- **CS-GY 9223 (VisML):** Parikshit Solunke ([parisolunke.github.io](https://parisolunke.github.io)) - pss442@nyu.edu
+- **CS-GY 6313 (InfoVis):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
 
 ##### Creating New Lecture Slides
 1. **Create a new .qmd file** in `2025-InfoVis-CSE/slides/`

@@ -5,7 +5,7 @@ author_profile: true
 ---
 
 **Instructor:** Claudio Silva (csilva@nyu.edu)  
-**Teaching Assistant:** TBD  
+**Teaching Assistant:** Parikshit Solunke (pss442@nyu.edu)  
 **Meeting Time:** Mondays 5:00 PM - 7:30 PM  
 **Classroom:** Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus  
 **Make-up Class:** Tuesday, October 14 (for Fall Break)

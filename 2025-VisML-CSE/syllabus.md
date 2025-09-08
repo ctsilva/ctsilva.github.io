@@ -10,7 +10,7 @@ author_profile: true
 
 **Instructor:** Claudio Silva (csilva@nyu.edu); [webpage](https://ctsilva.github.io)
 
-**Teaching Assistant:** TBD (TBD@nyu.edu)
+**Teaching Assistant:** Parikshit Solunke (pss442@nyu.edu) - [parisolunke.github.io](https://parisolunke.github.io)
 
 **Grader:** TBD (TBD@nyu.edu)
 
