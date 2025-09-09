@@ -56,6 +56,14 @@ The site uses Jekyll collections for organizing content:
 - **_posts**: Blog posts
 - **_pages**: Static pages (about, cv, etc.)
 
+#### Publications Management
+The publications are maintained in `_pages/publications.md` with the following structure:
+- **Selected Recent Publications (2023-2025)**: Highlight reel of recent work with full links
+- **Award-Winning Publications**: Chronologically organized by year (2024→1996) with comprehensive link coverage
+- **Consistent formatting**: All journal extensions use "Invited journal extension of [Original Award]" terminology
+- **Complete link coverage**: IEEE Xplore, ResearchGate, NYU Scholars, arXiv, PDFs, and other academic sources
+- **Proper chronological ordering**: Publications flow from newest (2024) to oldest (1996) without duplicates
+
 ### Key Configuration
 - **_config.yml**: Main Jekyll configuration with site metadata, author info, and collection settings
 - **_config.dev.yml**: Development-specific configuration overrides

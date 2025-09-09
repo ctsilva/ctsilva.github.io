@@ -49,7 +49,7 @@ My papers can be found on Google Scholar and DBLP.
 - **ARPOV: Expanding Visualization of Object Detection in AR with Panoramic Mosaic Stitching**  
   Erin McGowan, Ethan Brewer, Cláudio T. Silva  
   *SIBGRAPI 2024: 37th Conference on Graphics, Patterns and Images*, pp. 1-6, 2024  
-  **🏆 Honorable Mention on Computer Graphics/Visualization in the Main Track**
+  **🏆 SIBGRAPI 2024 Best Paper Honorable Mention**
 
 ### 2023
 
@@ -126,7 +126,7 @@ My papers can be found on Google Scholar and DBLP.
   Linh K. Ha, Jens H. Krüger, João Luiz Dihl Comba, Cláudio T. Silva, Sarang C. Joshi  
   *IEEE Transactions on Visualization and Computer Graphics* 18(6), 838-851, 2012  
   [[IEEE Xplore]](https://ieeexplore.ieee.org/document/6144060/) [[ResearchGate]](https://www.researchgate.net/publication/221792558_ISP_An_Optimal_Out-of-Core_Image-Set_Processing_Streaming_Architecture_for_Parallel_Heterogeneous_Systems) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/isp-an-optimal-out-of-core-image-set-processing-streaming-archite) [[PubMed]](https://pubmed.ncbi.nlm.nih.gov/22291156/)  
-  **🏆 Journal version of ACM EGPGV 2011 Best Paper Award**
+  **🏆 Invited journal extension of ACM EGPGV 2011 Best Paper Award**
 
 - **Connectivity oblivious merging of triangulations**  
   Luís F. Silva, Luiz F. Scheidegger, Tiago Etiene, João Luiz Dihl Comba, Luis Gustavo Nonato, and Claudio T. Silva  
@@ -160,7 +160,7 @@ My papers can be found on Google Scholar and DBLP.
   Hao Wang, Carlos Eduardo Scheidegger, Cláudio T. Silva  
   *IEEE Transactions on Visualization and Computer Graphics* 15(4), 572-582, 2009  
   [[IEEE Xplore]](https://ieeexplore.ieee.org/document/4745637/) [[PDF]](https://vgc.poly.edu/~csilva/papers/band_mls_tvcg.pdf)  
-  **🏆 Journal version of IEEE SMI 2008 Best Paper Award**
+  **🏆 Invited journal extension of IEEE SMI 2008 Best Paper Award**
 
 ### 2008
 
@@ -177,21 +177,6 @@ My papers can be found on Google Scholar and DBLP.
   [[IEEE Xplore]](https://ieeexplore.ieee.org/document/4376187/)  
   **🏆 IEEE Visualization 2007 Best Paper Award**
 
-### 1997
-
-- **The Lazy Sweep Ray Casting Algorithm for Rendering Irregular Grids**  
-  Cláudio T. Silva, Joseph S. B. Mitchell  
-  *IEEE Transactions on Visualization and Computer Graphics* 3(2), 142-157, 1997  
-  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/597797) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/the-lazy-sweep-ray-casting-algorithm-for-rendering-irregular-grid) [[Semantic Scholar]](https://www.semanticscholar.org/paper/The-Lazy-Sweep-Ray-Casting-Algorithm-for-Rendering-Silva-Mitchell/a9810e7e660aa03ad440d2651bf049e7a511063c)  
-  **🏆 Invited journal extension of IEEE VolVis 1996 Best Paper Finalist**
-
-### 1996
-
-- **Fast Rendering of Irregular Grids**  
-  Claudio T. Silva, Joseph S. B. Mitchell, and Arie E. Kaufman  
-  *Proceeding of the 1996 Symposium on Volume Visualization, VVS 1996, San Francisco, California, USA, October 28-29, 1996*  
-  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/565068) [[ResearchGate]](https://www.researchgate.net/publication/3628917_Fast_rendering_of_irregular_grids) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/fast-rendering-of-irregular-grids)  
-  **🏆 IEEE VolVis 1996 Best Paper Finalist**
 
 ### 2003
 
@@ -215,7 +200,7 @@ My papers can be found on Google Scholar and DBLP.
   James T. Klosowski, Cláudio T. Silva  
   *IEEE Transactions on Visualization and Computer Graphics* 6(2), 108-123, 2000  
   [[IEEE Xplore]](https://ieeexplore.ieee.org/document/856993/) [[Semantic Scholar]](https://www.semanticscholar.org/paper/The-Prioritized-Layered-Projection-Algorithm-for-Klosowski-Silva/cc08423ca14d0f1533ca507db6d613d7c1a32d2a) [[PDF]](https://vgc.poly.edu/~csilva/papers/tvcg2000.pdf)  
-  **🏆 Journal version of IEEE VIS 1999 Best Paper Finalist**
+  **🏆 Invited journal extension of IEEE VIS 1999 Best Paper Finalist**
 
 ### 1999
 
@@ -225,12 +210,20 @@ My papers can be found on Google Scholar and DBLP.
   [[IEEE Xplore]](https://ieeexplore.ieee.org/document/809875) [[ResearchGate]](https://www.researchgate.net/publication/2804950_Rendering_on_a_Budget_A_Framework_for_Time-Critical_Rendering) [[PDF]](https://vgc.poly.edu/~csilva/papers/vis99b.pdf)  
   **🏆 IEEE VIS 1999 Best Paper Finalist**
 
+### 1997
+
+- **The Lazy Sweep Ray Casting Algorithm for Rendering Irregular Grids**  
+  Cláudio T. Silva, Joseph S. B. Mitchell  
+  *IEEE Transactions on Visualization and Computer Graphics* 3(2), 142-157, 1997  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/597797) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/the-lazy-sweep-ray-casting-algorithm-for-rendering-irregular-grid) [[Semantic Scholar]](https://www.semanticscholar.org/paper/The-Lazy-Sweep-Ray-Casting-Algorithm-for-Rendering-Silva-Mitchell/a9810e7e660aa03ad440d2651bf049e7a511063c)  
+  **🏆 Invited journal extension of IEEE VolVis 1996 Best Paper Finalist**
+
 ### 1996
 
-- **Fast rendering of irregular grids**  
+- **Fast Rendering of Irregular Grids**  
   Claudio T. Silva, Joseph S. B. Mitchell, and Arie E. Kaufman  
   *Proceeding of the 1996 Symposium on Volume Visualization, VVS 1996, San Francisco, California, USA, October 28-29, 1996*  
-  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/558038) [[ResearchGate]](https://www.researchgate.net/publication/3671325_Fast_rendering_of_irregular_grids) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/fast-rendering-of-irregular-grids)  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/565068) [[ResearchGate]](https://www.researchgate.net/publication/3628917_Fast_rendering_of_irregular_grids) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/fast-rendering-of-irregular-grids)  
   **🏆 IEEE VolVis 1996 Best Paper Finalist**
 
 <!-- {% if author.googlescholar %}
