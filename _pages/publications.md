@@ -37,12 +37,24 @@ My papers can be found on Google Scholar and DBLP.
   *IEEE Transactions on Visualization and Computer Graphics* 30 (1), 1313-1323, 2024  
   [[Paper]](https://pubmed.ncbi.nlm.nih.gov/37917526/) [[arXiv]](https://arxiv.org/abs/2308.06246) [[PDF]](https://arxiv.org/pdf/2308.06246) **(IEEE VIS 2023 Honorable Mention)**
 
+- **ARPOV: Expanding Visualization of Object Detection in AR with Panoramic Mosaic Stitching**  
+  Erin McGowan, Ethan Brewer, Cláudio T. Silva  
+  *SIBGRAPI 2024: 37th Conference on Graphics, Patterns and Images*, pp. 1-6, 2024  
+  **🏆 Honorable Mention on Computer Graphics/Visualization in the Main Track**
+
 - **Mapping the walk: A scalable computer vision approach for generating sidewalk network datasets from aerial imagery**  
   M Hosseini, A Sevtsuk, F Miranda, RM Cesar Jr, CT Silva  
   *Computers, Environment and Urban Systems* 101, 101950, 2023  
   [[Paper]](https://www.sciencedirect.com/science/article/abs/pii/S0198971523000133) [[ResearchGate]](https://www.researchgate.net/publication/360040812_Mapping_the_Walk_A_Scalable_Computer_Vision_Approach_for_Generating_Sidewalk_Network_Datasets_from_Aerial_Imagery) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/mapping-the-walk-a-scalable-computer-vision-approach-for-generati) [[Code]](https://github.com/VIDA-NYU/tile2net)
 
 ## Award-Winning Publications
+
+### 2024
+
+- **ARPOV: Expanding Visualization of Object Detection in AR with Panoramic Mosaic Stitching**  
+  Erin McGowan, Ethan Brewer, Cláudio T. Silva  
+  *SIBGRAPI 2024: 37th Conference on Graphics, Patterns and Images*, pp. 1-6, 2024  
+  **🏆 Honorable Mention on Computer Graphics/Visualization in the Main Track**
 
 ### 2023
 
@@ -123,6 +135,7 @@ My papers can be found on Google Scholar and DBLP.
 - **A user study of visualization effectiveness using EEG and cognitive load**  
   Erik W. Anderson, Kristin C. Potter, Laura E. Matzen, Jason F. Shepherd, Gilbert Preston, and Claudio T. Silva  
   *Computer Graphics Forum* 30 (3), 791–800, 2011  
+  [[Wiley Online Library]](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-8659.2011.01928.x) [[ResearchGate]](https://www.researchgate.net/publication/220506363_A_User_Study_of_Visualization_Effectiveness_Using_EEG_and_Cognitive_Load)  
   **🏆 EuroVis 2011 Best Paper Award (2nd Prize)**
 
 - **Optimal multi-image processing streaming framework on parallel heterogeneous systems**  
@@ -146,10 +159,35 @@ My papers can be found on Google Scholar and DBLP.
 
 ### 2007
 
-- **Best paper award, IEEE Visualization (SciVis) 2007**  
-  Huy T. Vo, Steven P. Callahan, Nathan Smith, Claudio T. Silva, William Martin, David Owen, and David Weinstein  
-  *IEEE Visualization 2007*  
+- **Querying and Creating Visualizations by Analogy**  
+  Carlos Eduardo Scheidegger, Huy T. Vo, David Koop, Juliana Freire, Cláudio T. Silva  
+  *IEEE Transactions on Visualization and Computer Graphics* 13(6), 1560-1567, 2007  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/4376187/)  
   **🏆 IEEE Visualization 2007 Best Paper Award**
+
+### 1997
+
+- **The Lazy Sweep Ray Casting Algorithm for Rendering Irregular Grids**  
+  Cláudio T. Silva, Joseph S. B. Mitchell  
+  *IEEE Transactions on Visualization and Computer Graphics* 3(2), 142-157, 1997  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/597797) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/the-lazy-sweep-ray-casting-algorithm-for-rendering-irregular-grid) [[Semantic Scholar]](https://www.semanticscholar.org/paper/The-Lazy-Sweep-Ray-Casting-Algorithm-for-Rendering-Silva-Mitchell/a9810e7e660aa03ad440d2651bf049e7a511063c)  
+  **🏆 Invited journal extension of IEEE VolVis 1996 Best Paper Finalist**
+
+### 1996
+
+- **Fast Rendering of Irregular Grids**  
+  Claudio T. Silva, Joseph S. B. Mitchell, and Arie E. Kaufman  
+  *Proceeding of the 1996 Symposium on Volume Visualization, VVS 1996, San Francisco, California, USA, October 28-29, 1996*  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/565068) [[ResearchGate]](https://www.researchgate.net/publication/3628917_Fast_rendering_of_irregular_grids) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/fast-rendering-of-irregular-grids)  
+  **🏆 IEEE VolVis 1996 Best Paper Finalist**
+
+### 2003
+
+- **Computing and Rendering Point Set Surfaces**  
+  Marc Alexa, Johannes Behr, Daniel Cohen-Or, Shachar Fleishman, David Levin, and Cláudio T. Silva  
+  *IEEE Transactions on Visualization and Computer Graphics* 9(1), 3-15, 2003  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/1175093/) [[ResearchGate]](https://www.researchgate.net/publication/3410981_Computing_and_Rendering_Point_Set_Surfaces) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/computing-and-rendering-point-set-surfaces)  
+  **🏆 Invited journal extension of IEEE VIS 2001 Best Paper Finalist**
 
 ### 2001
 
@@ -158,6 +196,14 @@ My papers can be found on Google Scholar and DBLP.
   *12th IEEE Visualization Conference, IEEE Vis 2001, San Diego, CA, USA, October 24-26, 2001*  
   [[IEEE Xplore]](https://ieeexplore.ieee.org/document/964503) [[ResearchGate]](https://www.researchgate.net/publication/220944090_Point_Set_Surfaces) [[Semantic Scholar]](https://www.semanticscholar.org/paper/Computing-and-Rendering-Point-Set-Surfaces-Alexa-Behr/b7e0ebc678153eb2c341702247d2fafb872f0465)  
   **🏆 IEEE VIS 2001 Best Paper Finalist**
+
+### 2000
+
+- **The Prioritized-Layered Projection Algorithm for Visible Set Estimation**  
+  James T. Klosowski, Cláudio T. Silva  
+  *IEEE Transactions on Visualization and Computer Graphics* 6(2), 108-123, 2000  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/856993/) [[Semantic Scholar]](https://www.semanticscholar.org/paper/The-Prioritized-Layered-Projection-Algorithm-for-Klosowski-Silva/cc08423ca14d0f1533ca507db6d613d7c1a32d2a) [[PDF]](https://vgc.poly.edu/~csilva/papers/tvcg2000.pdf)  
+  **🏆 Journal version of IEEE VIS 1999 Best Paper Finalist**
 
 ### 1999
 
