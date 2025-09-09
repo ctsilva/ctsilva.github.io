@@ -20,27 +20,160 @@ My papers can be found on Google Scholar and DBLP.
 - **Design and Implementation of the Transparent, Interpretable, and Multimodal (TIM) AR Personal Assistant**  
   E McGowan, J Rulff, S Castelo, G Wu, S Chen, R Lopez, B Steers, IR Roman, FF Dias, J Qian, P Solunke, M Middleton, R McKendrick, CT Silva  
   *IEEE Computer Graphics and Applications* 45 (1), 28-42, 2025  
-  [[IEEE]](https://ieeexplore.ieee.org/document/10919075/) [[arXiv]](https://arxiv.org/abs/2504.02197)
+  [[IEEE]](https://ieeexplore.ieee.org/document/10919075/) [[arXiv]](https://arxiv.org/abs/2504.02197) [[PDF]](https://arxiv.org/pdf/2504.02197)
 
 - **PaleoScan: Low-Cost Easy-to-use High-Volume Fossil Scanning**  
   CT Silva, Y Piadyk, J Rulff, D Panozzo, MB Silva, AAF Saraiva, NC Oliveira, RAM Bantim, FJ de Lima, OJF Gomes, A Watanabe  
   *CHI '24: Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems*, Article 313, pp. 1-20, 2024  
-  [[Paper]](https://dl.acm.org/doi/10.1145/3613904.3642020) [[Press]](https://engineering.nyu.edu/news/nyu-tandon-researchers-help-bring-fossil-record-digital-age-low-cost-3d-scanning)
+  [[Paper]](https://dl.acm.org/doi/10.1145/3613904.3642020) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/paleoscan-low-cost-easy-to-use-high-volume-fossil-scanning) [[Press]](https://engineering.nyu.edu/news/nyu-tandon-researchers-help-bring-fossil-record-digital-age-low-cost-3d-scanning)
 
 - **ARTiST: Automated text simplification for task guidance in augmented reality**  
   G Wu, J Qian, S Castelo, S Chen, J Rulff, CT Silva  
   *CHI '24: Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems*, Article 772, pp. 1-19, 2024  
-  [[Paper]](https://dl.acm.org/doi/10.1145/3613904.3642772) [[arXiv]](https://arxiv.org/abs/2402.18797) [[Code]](https://github.com/VIDA-NYU/artist)
+  [[Paper]](https://dl.acm.org/doi/10.1145/3613904.3642772) [[arXiv]](https://arxiv.org/abs/2402.18797) [[PDF]](https://arxiv.org/pdf/2402.18797) [[Code]](https://github.com/VIDA-NYU/artist)
 
 - **ARGUS: Visualization of AI-Assisted Task Guidance in AR**  
   S Castelo, J Rulff, E McGowan, B Steers, G Wu, S Chen, IR Roman, R Lopez, E Brewer, C Zhao, J Qian, K Cho, H He, Q Sun, H Vo, J Bello, M Krone, CT Silva  
   *IEEE Transactions on Visualization and Computer Graphics* 30 (1), 1313-1323, 2024  
-  [[Paper]](https://pubmed.ncbi.nlm.nih.gov/37917526/) [[arXiv]](https://arxiv.org/abs/2308.06246) **(IEEE VIS 2023 Honorable Mention)**
+  [[Paper]](https://pubmed.ncbi.nlm.nih.gov/37917526/) [[arXiv]](https://arxiv.org/abs/2308.06246) [[PDF]](https://arxiv.org/pdf/2308.06246) **(IEEE VIS 2023 Honorable Mention)**
 
 - **Mapping the walk: A scalable computer vision approach for generating sidewalk network datasets from aerial imagery**  
   M Hosseini, A Sevtsuk, F Miranda, RM Cesar Jr, CT Silva  
   *Computers, Environment and Urban Systems* 101, 101950, 2023  
-  [[Paper]](https://www.sciencedirect.com/science/article/abs/pii/S0198971523000133) [[Code]](https://github.com/VIDA-NYU/tile2net)
+  [[Paper]](https://www.sciencedirect.com/science/article/abs/pii/S0198971523000133) [[ResearchGate]](https://www.researchgate.net/publication/360040812_Mapping_the_Walk_A_Scalable_Computer_Vision_Approach_for_Generating_Sidewalk_Network_Datasets_from_Aerial_Imagery) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/mapping-the-walk-a-scalable-computer-vision-approach-for-generati) [[Code]](https://github.com/VIDA-NYU/tile2net)
+
+## Award-Winning Publications
+
+### 2023
+
+- **ARGUS: Visualization of AI-Assisted Task Guidance in AR**  
+  S Castelo, J Rulff, E McGowan, B Steers, G Wu, S Chen, IR Roman, R Lopez, E Brewer, C Zhao, J Qian, K Cho, H He, Q Sun, H Vo, J Bello, M Krone, CT Silva  
+  *IEEE Transactions on Visualization and Computer Graphics* 30 (1), 1313-1323, 2024  
+  [[Paper]](https://pubmed.ncbi.nlm.nih.gov/37917526/) [[arXiv]](https://arxiv.org/abs/2308.06246) [[PDF]](https://arxiv.org/pdf/2308.06246)  
+  **🏆 IEEE VIS 2023 Best Paper Honorable Mention**
+
+- **Visual analytics for profiling land use changes**  
+  Claudio Santos, Maryam Hosseini, João Rulff, Fabio Miranda, Luc Wilson, Claudio T. Silva, Nivan Ferreira, and Marcos Lage  
+  *36th SIBGRAPI Conference on Graphics, Patterns and Images, SIBGRAPI 2023, Rio Grande, RS, Brazil, November 6-9, 2023*, pages 31–36. IEEE, 2023  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/10347138/) [[arXiv]](https://arxiv.org/abs/2112.06122) [[PDF]](https://arxiv.org/pdf/2112.06122)  
+  **🏆 SIBGRAPI 2023 Best Paper Honorable Mention**
+
+### 2019
+
+- **HistoryTracker: Minimizing human interactions in baseball game annotation**  
+  Jorge Piazentin Ono, Arvi Gjoka, Justin Salamon, Carlos A. Dietrich, and Claudio T. Silva  
+  *Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems* CHI 2019, pp. 1-13, 2019  
+  [[PDF]](https://www.justinsalamon.com/uploads/4/3/9/4/4394963/ono_baseballhistorytracker_chi_2019.pdf)  
+  **🏆 ACM CHI 2019 Best Paper Honorable Mention**
+
+- **FlowSense: A natural language interface for visual data exploration within a dataflow system**  
+  Bowen Yu and Claudio T. Silva  
+  *IEEE Transactions on Visualization and Computer Graphics* 26 (1), 1-11, 2020  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/8807265/) [[arXiv]](https://arxiv.org/abs/1908.00681) [[PDF]](https://arxiv.org/pdf/1908.00681) [[Code]](https://github.com/yubowenok/flowsense)  
+  **🏆 IEEE VAST 2019 Best Paper Award**
+
+### 2018
+
+- **Interactive visual exploration of spatio-temporal urban data sets using urbane**  
+  Harish Doraiswamy, Eleni Tzirita Zacharatou, Fabio Miranda, Marcos Lage, Anastasia Ailamaki, Claudio T. Silva, and Juliana Freire  
+  *Proceedings of the 2018 International Conference on Management of Data* SIGMOD 2018, pp. 1693–1696, 2018  
+  [[ACM Digital Library]](https://dl.acm.org/doi/10.1145/3183713.3193559) [[ResearchGate]](https://www.researchgate.net/publication/324223567_Interactive_Visual_Exploration_of_Spatio-Temporal_Urban_Data_Sets_using_Urbane)  
+  **🏆 ACM SIGMOD 2018 Best Demo Paper Award**
+
+- **Baseball timeline: Summarizing baseball plays into a static visualization**  
+  Jorge Piazentin Ono, Carlos A. Dietrich, and Claudio T. Silva  
+  *Computer Graphics Forum* 37 (3), 491–501, 2018  
+  **🏆 EuroVis 2018 Best Paper Honorable Mention**
+
+### 2017
+
+- **A hierarchical network simplification via non-negative matrix factorization**  
+  Markus Diego Dias, Moussa Reda Mansour, Fabio Dias, Fabiano Petronetto, Claudio Teixeira Silva, and Luis Gustavo Nonato  
+  *30th SIBGRAPI Conference on Graphics, Patterns and Images* SIBGRAPI 2017, pp. 119–126, 2017  
+  **🏆 SIBGRAPI 2017 Best Paper Honorable Mention**
+
+- **Querying and exploring polygamous relationships in urban spatio-temporal data sets**  
+  Yeuk-Yin Chan, Fernando Chirigati, Harish Doraiswamy, Claudio T. Silva, and Juliana Freire  
+  *Proceedings of the 2017 ACM International Conference on Management of Data* SIGMOD 2017, pp. 1643–1646, 2017  
+  **🏆 ACM SIGMOD 2017 Best Demo Paper Honorable Mention**
+
+### 2016
+
+- **Anonymizing NYC taxi data: Does it matter?**  
+  Marie Douriez, Harish Doraiswamy, Juliana Freire, and Claudio T. Silva  
+  *2016 IEEE International Conference on Data Science and Advanced Analytics* DSAA 2016, pp. 140–148, 2016  
+  **🏆 IEEE Data Science and Advanced Analytics 2016 Best Paper Honorable Mention**
+
+### 2013
+
+- **Vector field k-means: Clustering trajectories by fitting multiple vector fields**  
+  Nivan Ferreira, James T. Klosowski, Carlos Eduardo Scheidegger, and Claudio T. Silva  
+  *Computer Graphics Forum* 32 (3), 201–210, 2013  
+  **🏆 EuroVis 2013 Best Paper Honorable Mention**
+
+### 2012
+
+- **Connectivity oblivious merging of triangulations**  
+  Luís F. Silva, Luiz F. Scheidegger, Tiago Etiene, João Luiz Dihl Comba, Luis Gustavo Nonato, and Claudio T. Silva  
+  *25th SIBGRAPI Conference on Graphics, Patterns and Images* SIBGRAPI 2012, pp. 118–125, 2012  
+  **🏆 SIBGRAPI 2012 Best Paper Award**
+
+### 2011
+
+- **A user study of visualization effectiveness using EEG and cognitive load**  
+  Erik W. Anderson, Kristin C. Potter, Laura E. Matzen, Jason F. Shepherd, Gilbert Preston, and Claudio T. Silva  
+  *Computer Graphics Forum* 30 (3), 791–800, 2011  
+  **🏆 EuroVis 2011 Best Paper Award (2nd Prize)**
+
+- **Optimal multi-image processing streaming framework on parallel heterogeneous systems**  
+  Linh K. Ha, Jens H. Krüger, João Comba, Sarang C. Joshi, and Claudio T. Silva  
+  *11th Eurographics Symposium on Parallel Graphics and Visualization* EGPGV 2011, pp. 1–10, 2011  
+  **🏆 ACM Eurographics Symposium on Parallel Graphics and Visualization 2011 Best Paper Award**
+
+### 2010
+
+- **Using vistrails and provenance for teaching scientific visualization**  
+  Claudio T. Silva, Erik W. Anderson, Emanuele Santos, and Juliana Freire  
+  *31st Annual Conference of the European Association for Computer Graphics* Eurographics 2010 - Education Papers, pp. 63–70, 2010  
+  **🏆 EuroGraphics Educator Program 2010 Best Paper Award**
+
+### 2008
+
+- **Optimal bandwidth selection for MLS surfaces**  
+  Hao Wang, Carlos Eduardo Scheidegger, and Claudio T. Silva  
+  *2008 International Conference on Shape Modeling and Applications* SMI 2008, pp. 111–120, 2008  
+  **🏆 IEEE Shape Modeling International 2008 Best Paper Award**
+
+### 2007
+
+- **Best paper award, IEEE Visualization (SciVis) 2007**  
+  Huy T. Vo, Steven P. Callahan, Nathan Smith, Claudio T. Silva, William Martin, David Owen, and David Weinstein  
+  *IEEE Visualization 2007*  
+  **🏆 IEEE Visualization 2007 Best Paper Award**
+
+### 2001
+
+- **Point set surfaces**  
+  Marc Alexa, Johannes Behr, Daniel Cohen-Or, Shachar Fleishman, David Levin, and Claudio T. Silva  
+  *12th IEEE Visualization Conference, IEEE Vis 2001, San Diego, CA, USA, October 24-26, 2001*  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/964503) [[ResearchGate]](https://www.researchgate.net/publication/220944090_Point_Set_Surfaces) [[Semantic Scholar]](https://www.semanticscholar.org/paper/Computing-and-Rendering-Point-Set-Surfaces-Alexa-Behr/b7e0ebc678153eb2c341702247d2fafb872f0465)  
+  **🏆 IEEE VIS 2001 Best Paper Finalist**
+
+### 1999
+
+- **Rendering on a budget: A framework for time-critical rendering**  
+  James T. Klosowski and Claudio T. Silva  
+  *10th IEEE Visualization Conference, IEEE Vis 1999, San Francisco, CA, USA, October 24-29, 1999*  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/809875) [[ResearchGate]](https://www.researchgate.net/publication/2804950_Rendering_on_a_Budget_A_Framework_for_Time-Critical_Rendering) [[PDF]](https://vgc.poly.edu/~csilva/papers/vis99b.pdf)  
+  **🏆 IEEE VIS 1999 Best Paper Finalist**
+
+### 1996
+
+- **Fast rendering of irregular grids**  
+  Claudio T. Silva, Joseph S. B. Mitchell, and Arie E. Kaufman  
+  *Proceeding of the 1996 Symposium on Volume Visualization, VVS 1996, San Francisco, California, USA, October 28-29, 1996*  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/558038) [[ResearchGate]](https://www.researchgate.net/publication/3671325_Fast_rendering_of_irregular_grids) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/fast-rendering-of-irregular-grids)  
+  **🏆 IEEE VolVis 1996 Best Paper Finalist**
 
 <!-- {% if author.googlescholar %}
   You can also find my articles on <u><a href="{{author.googlescholar}}">my Google Scholar profile</a>.</u>
