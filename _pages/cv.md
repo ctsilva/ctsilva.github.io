@@ -18,6 +18,7 @@ Education
 Professional Experience
 ======
 * Professor, New York University, 2011-Present
+* Visiting Professor/Researcher, Institut National de Recherche en Informatique et en Automatique (INRIA), AVIZ Research Team, 2018-2019
 * Technology Consultant, Major League Baseball (MLB) Advanced Media, 2012-2017
 * Professor, University of Utah, 2003-2011
 * Faculty Scholar, Lawrence Livermore National Laboratory, 2003
@@ -30,6 +31,7 @@ Select Awards and Honors
 * [IEEE VIS 2023 Test of Time Award](https://ieeevis.org/year/2023/info/awards/test-of-time-awards) for 
 the [TaxiVis paper](https://ieeexplore.ieee.org/document/6634127)
 * IEEE Visualization Academy, 2019
+* Chair of IEEE Technical Committee on Visualization and Computer Graphics, 2015–2018
 * Technology & Engineering Emmy Award for MLB Advanced Media's Statcast player tracking system, National Academy of Television Arts & Sciences (NATAS), 2017. Listed as ["A Three Dimensional Doppler Radar System to Track and Display Fast Moving Pitched and Hit Balls"](https://theemmys.tv/tech-69th-award-recipients/).
 * IEEE VGTC Visualization Technical Achievement Award, 2014
 * IEEE Fellow, 2013
