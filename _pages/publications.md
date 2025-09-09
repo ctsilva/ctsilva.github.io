@@ -37,11 +37,6 @@ My papers can be found on Google Scholar and DBLP.
   *IEEE Transactions on Visualization and Computer Graphics* 30 (1), 1313-1323, 2024  
   [[Paper]](https://pubmed.ncbi.nlm.nih.gov/37917526/) [[arXiv]](https://arxiv.org/abs/2308.06246) [[PDF]](https://arxiv.org/pdf/2308.06246) **(IEEE VIS 2023 Honorable Mention)**
 
-- **ARPOV: Expanding Visualization of Object Detection in AR with Panoramic Mosaic Stitching**  
-  Erin McGowan, Ethan Brewer, Cláudio T. Silva  
-  *SIBGRAPI 2024: 37th Conference on Graphics, Patterns and Images*, pp. 1-6, 2024  
-  **🏆 Honorable Mention on Computer Graphics/Visualization in the Main Track**
-
 - **Mapping the walk: A scalable computer vision approach for generating sidewalk network datasets from aerial imagery**  
   M Hosseini, A Sevtsuk, F Miranda, RM Cesar Jr, CT Silva  
   *Computers, Environment and Urban Systems* 101, 101950, 2023  
@@ -95,6 +90,7 @@ My papers can be found on Google Scholar and DBLP.
 - **Baseball timeline: Summarizing baseball plays into a static visualization**  
   Jorge Piazentin Ono, Carlos A. Dietrich, and Claudio T. Silva  
   *Computer Graphics Forum* 37 (3), 491–501, 2018  
+  [[Wiley]](https://onlinelibrary.wiley.com/doi/10.1111/cgf.13436) [[PDF]](https://vgc.poly.edu/~jhenrique/files/2018_baseball_timeline_submitted.pdf)  
   **🏆 EuroVis 2018 Best Paper Honorable Mention**
 
 ### 2017
@@ -121,9 +117,16 @@ My papers can be found on Google Scholar and DBLP.
 - **Vector field k-means: Clustering trajectories by fitting multiple vector fields**  
   Nivan Ferreira, James T. Klosowski, Carlos Eduardo Scheidegger, and Claudio T. Silva  
   *Computer Graphics Forum* 32 (3), 201–210, 2013  
+  [[arXiv]](https://arxiv.org/abs/1208.5801) [[ResearchGate]](https://www.researchgate.net/publication/230756903_Vector_Field_k-Means_Clustering_Trajectories_by_Fitting_Multiple_VectorFields) [[PDF]](https://vgc.poly.edu/~nivan/pdfs/vfkm.pdf) [[Eurographics]](https://diglib.eg.org/items/eb192c76-ead7-4ec8-9552-2b824ae49c2a) [[ACM]](https://dl.acm.org/doi/10.1111/cgf.12107)  
   **🏆 EuroVis 2013 Best Paper Honorable Mention**
 
 ### 2012
+
+- **ISP: An Optimal Out-of-Core Image-Set Processing Streaming Architecture for Parallel Heterogeneous Systems**  
+  Linh K. Ha, Jens H. Krüger, João Luiz Dihl Comba, Cláudio T. Silva, Sarang C. Joshi  
+  *IEEE Transactions on Visualization and Computer Graphics* 18(6), 838-851, 2012  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/6144060/) [[ResearchGate]](https://www.researchgate.net/publication/221792558_ISP_An_Optimal_Out-of-Core_Image-Set_Processing_Streaming_Architecture_for_Parallel_Heterogeneous_Systems) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/isp-an-optimal-out-of-core-image-set-processing-streaming-archite) [[PubMed]](https://pubmed.ncbi.nlm.nih.gov/22291156/)  
+  **🏆 Journal version of ACM EGPGV 2011 Best Paper Award**
 
 - **Connectivity oblivious merging of triangulations**  
   Luís F. Silva, Luiz F. Scheidegger, Tiago Etiene, João Luiz Dihl Comba, Luis Gustavo Nonato, and Claudio T. Silva  
@@ -145,10 +148,19 @@ My papers can be found on Google Scholar and DBLP.
 
 ### 2010
 
-- **Using vistrails and provenance for teaching scientific visualization**  
-  Claudio T. Silva, Erik W. Anderson, Emanuele Santos, and Juliana Freire  
-  *31st Annual Conference of the European Association for Computer Graphics* Eurographics 2010 - Education Papers, pp. 63–70, 2010  
+- **Using VisTrails and Provenance for Teaching Scientific Visualization**  
+  Cláudio T. Silva, Erik W. Anderson, Emanuele Santos, Juliana Freire  
+  *Computer Graphics Forum* 30(1), 75-84, 2011  
+  [[Academia.edu]](https://www.academia.edu/11029328/Using_VisTrails_and_Provenance_for_Teaching_Scientific_Visualization) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/using-vistrails-and-provenance-for-teaching-scientific-visualizat) [[Semantic Scholar]](https://www.semanticscholar.org/paper/Using-VisTrails-and-Provenance-for-Teaching-Silva-Anderson/0060c6cea26b820736ebee7826b0da314c417493) [[Eurographics]](https://diglib.eg.org/handle/10.2312/eged.20101017.063-070)  
   **🏆 EuroGraphics Educator Program 2010 Best Paper Award**
+
+### 2009
+
+- **Bandwidth Selection and Reconstruction Quality in Point-Based Surfaces**  
+  Hao Wang, Carlos Eduardo Scheidegger, Cláudio T. Silva  
+  *IEEE Transactions on Visualization and Computer Graphics* 15(4), 572-582, 2009  
+  [[IEEE Xplore]](https://ieeexplore.ieee.org/document/4745637/) [[PDF]](https://vgc.poly.edu/~csilva/papers/band_mls_tvcg.pdf)  
+  **🏆 Journal version of IEEE SMI 2008 Best Paper Award**
 
 ### 2008
 
