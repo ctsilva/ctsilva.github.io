@@ -10,7 +10,7 @@ My papers can be found on Google Scholar and DBLP.
 - [Google Scholar](https://scholar.google.com/citations?user=YIwiAAsAAAAJ)
 - [DBLP](https://dblp.org/pid/s/ClaudioTSilva.html)
 
-## Selected Recent Publications (2024-2025)
+## Selected Recent Publications (2023-2024)
 
 - **The state of the art in visual analytics for 3D urban data**  
   F Miranda, T Ortner, G Moreira, M Hosseini, M Vuckovic, F Biljecki, CT Silva, M Lage, N Ferreira  
