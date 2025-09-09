@@ -10,7 +10,7 @@ My papers can be found on Google Scholar and DBLP.
 - [Google Scholar](https://scholar.google.com/citations?user=YIwiAAsAAAAJ)
 - [DBLP](https://dblp.org/pid/s/ClaudioTSilva.html)
 
-## Selected Recent Publications (2023-2024)
+## Selected Recent Publications (2023-2025)
 
 - **The state of the art in visual analytics for 3D urban data**  
   F Miranda, T Ortner, G Moreira, M Hosseini, M Vuckovic, F Biljecki, CT Silva, M Lage, N Ferreira  
@@ -19,7 +19,7 @@ My papers can be found on Google Scholar and DBLP.
 
 - **Design and Implementation of the Transparent, Interpretable, and Multimodal (TIM) AR Personal Assistant**  
   E McGowan, J Rulff, S Castelo, G Wu, S Chen, R Lopez, B Steers, IR Roman, FF Dias, J Qian, P Solunke, M Middleton, R McKendrick, CT Silva  
-  *IEEE Computer Graphics and Applications*, 2024  
+  *IEEE Computer Graphics and Applications* 45 (1), 28-42, 2025  
   [[IEEE]](https://ieeexplore.ieee.org/document/10919075/) [[arXiv]](https://arxiv.org/abs/2504.02197)
 
 - **PaleoScan: Low-Cost Easy-to-use High-Volume Fossil Scanning**  
