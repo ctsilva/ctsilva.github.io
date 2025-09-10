@@ -61,7 +61,7 @@ From 2012-2017, I was the senior technology consultant for MLB Advanced Media's 
   [[Project Website]](https://wp.nyu.edu/sonyc) [[NSF Award]](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1544753) [[CACM Article]](https://cacm.acm.org/research/sonyc/)  
   Comprehensive urban noise pollution monitoring system deploying low-cost acoustic sensor networks and machine learning software for real-time sound source identification. Includes citizen science mobile apps and data visualization tools to help urban residents and city agencies address noise pollution.
 
-- **Explainable AI for Financial Services**  
+- **Explainable AI**
   *Capital One Center for Machine Learning* (2019-2023)  
   Developing interpretable machine learning methods for financial decision-making systems in collaboration with Capital One's research team.
 
@@ -70,7 +70,7 @@ From 2012-2017, I was the senior technology consultant for MLB Advanced Media's 
 - **MLB Advanced Media Statcast System**  
   *Senior Technology Consultant* (2012-2017)  
   [[2018 Technology Emmy Award]](https://www.newsweek.com/2014/09/12/can-baseball-get-more-interesting-watch-big-data-267590.html)  
-  Pioneered player tracking and visualization systems for Major League Baseball, now deployed in all 30 MLB stadiums. Work expanded to include basketball, soccer, and other sports analytics research.
+  Pioneered player tracking and visualization systems for Major League Baseball, now deployed in all 30 MLB stadiums. Work expanded to include other sports analytics research.
 
 ## Contact
 
