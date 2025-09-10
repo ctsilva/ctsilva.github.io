@@ -58,7 +58,7 @@ From 2012-2017, I was the senior technology consultant for MLB Advanced Media's 
 
 - **Sounds of New York City (SONYC)**  
   *National Science Foundation* (2016-2023, $4.6M)  
-  [[Project Website]](https://wp.nyu.edu/sonyc) [[NSF Award]](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1544753) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/sonyc-a-system-for-monitoring-analyzing-and-mitigating-urban-nois) [[CACM Article]](https://cacm.acm.org/research/sonyc/)  
+  [[Project Website]](https://wp.nyu.edu/sonyc) [[NSF Award]](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1544753) [[CACM Article]](https://cacm.acm.org/research/sonyc/)  
   Comprehensive urban noise pollution monitoring system deploying low-cost acoustic sensor networks and machine learning software for real-time sound source identification. Includes citizen science mobile apps and data visualization tools to help urban residents and city agencies address noise pollution.
 
 - **Explainable AI for Financial Services**  
