@@ -35,7 +35,7 @@ From 2012-2017, I was the senior technology consultant for MLB Advanced Media's 
 ### Current Projects
 
 - **OpenSpace: Interactive Visualization of the Known Universe**  
-  *NASA Science Mission Directorate* (2017-2025, $6.3M)  
+  *NASA Science Mission Directorate* (2017-2025, $10M+ all institutions)  
   [[Project Website]](https://www.openspaceproject.com) [[GitHub]](https://github.com/OpenSpace/OpenSpace) [[NASA Science]](https://science.nasa.gov/sciact-team/openspace-project/)  
   Open-source interactive data visualization software for space exploration, deployed in 17+ planetariums worldwide. Enables real-time visualization of NASA missions, astronomical data, and simulations for research and public education.
 
