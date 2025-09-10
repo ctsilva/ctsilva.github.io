@@ -25,7 +25,7 @@ My papers can be found on Google Scholar and DBLP.
 - **PaleoScan: Low-Cost Easy-to-use High-Volume Fossil Scanning**  
   CT Silva, Y Piadyk, J Rulff, D Panozzo, MB Silva, AAF Saraiva, NC Oliveira, RAM Bantim, FJ de Lima, OJF Gomes, A Watanabe  
   *CHI '24: Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems*, Article 313, pp. 1-20, 2024  
-  [[Paper]](https://dl.acm.org/doi/10.1145/3613904.3642020) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/paleoscan-low-cost-easy-to-use-high-volume-fossil-scanning) [[Press]](https://engineering.nyu.edu/news/nyu-tandon-researchers-help-bring-fossil-record-digital-age-low-cost-3d-scanning)
+  [[Paper]](https://dl.acm.org/doi/10.1145/3613904.3642020) [[Video]](https://cims.nyu.edu/gcl/papers/2024-paleo.mp4) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/paleoscan-low-cost-easy-to-use-high-volume-fossil-scanning) [[Press]](https://engineering.nyu.edu/news/nyu-tandon-researchers-help-bring-fossil-record-digital-age-low-cost-3d-scanning)
 
 - **ARTiST: Automated text simplification for task guidance in augmented reality**  
   G Wu, J Qian, S Castelo, S Chen, J Rulff, CT Silva  
