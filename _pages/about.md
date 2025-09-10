@@ -41,7 +41,7 @@ From 2012-2017, I was the senior technology consultant for MLB Advanced Media's 
 
 - **OSCUR: Open-Source Cyberinfrastructure for Urban Computing**  
   *National Science Foundation* (2024-2029, $5M)  
-  [[Project Website]](https://oscur.org/) [[Hugging Face]](https://huggingface.co/oscur) [[Urban Toolkit]](https://urbantk.org/2024/08/oscur-funded-by-the-national-science-foundation/) [[Press]](https://engineering.nyu.edu/news/urban-computing-get-boost-new-open-source-platform-funded-national-science-foundation)  
+  [[Project Website]](https://oscur.org/) [[Hugging Face]](https://huggingface.co/oscur) [[Urban Toolkit]](https://urbantk.org/) [[Press]](https://engineering.nyu.edu/news/urban-computing-get-boost-new-open-source-platform-funded-national-science-foundation)  
   Developing comprehensive tools for urban data collection and analysis, addressing climate change, walkability, bikeability, and urban accessibility. Collaboration with University of Washington and University of Illinois Chicago.
 
 - **ARPA-H Biomedical Data Fabric (BDF) Toolbox**  
