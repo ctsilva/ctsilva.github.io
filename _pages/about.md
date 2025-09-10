@@ -8,9 +8,11 @@ redirect_from:
   - /about.html
 ---
 
+## About Me
+
 I am Institute Professor of Computer Science and Engineering and Data Science at New York University. Born in Brazil, I've been in the United States for over 30 years, bringing a global perspective to my research and teaching.
 
-My research interests are broad and inherently interdisciplinary. Within computer science, I focus on visualization, visual analytics, machine learning, reproducibility and provenance, geometric computing, urban computing, computer graphics, and computer vision. I particularly enjoy working at the intersection of different fields, recently collaborating with paleontologists, urban scientists, and sports scientists. I take great satisfaction in building tools that others can use to advance their own research and solve real-world problems.
+My research interests are broad and inherently interdisciplinary. Within computer science, I focus on visualization, visual analytics, machine learning, reproducibility and provenance, geometric computing, urban computing, computer graphics, and computer vision. I particularly enjoy working at the intersection of different fields, recently collaborating with paleontologists, urban scientists, and sports scientists. I enjoy building tools that others can use to advance their own research and solve real-world problems.
 
 ## Academic Background
 
