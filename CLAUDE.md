@@ -54,7 +54,7 @@ The site uses Jekyll collections for organizing content:
 - **_teaching**: Teaching materials
 - **_portfolio**: Project portfolio items
 - **_posts**: Blog posts
-- **_pages**: Static pages (about, cv, etc.)
+- **_pages**: Static pages (about, cv, news, etc.)
 
 #### Publications Management
 The publications are maintained in `_pages/publications.md` with the following structure:
@@ -63,6 +63,15 @@ The publications are maintained in `_pages/publications.md` with the following s
 - **Consistent formatting**: All journal extensions use "Invited journal extension of [Original Award]" terminology
 - **Complete link coverage**: IEEE Xplore, ResearchGate, NYU Scholars, arXiv, PDFs, and other academic sources
 - **Proper chronological ordering**: Publications flow from newest (2024) to oldest (1996) without duplicates
+
+#### Media Coverage Management
+The media coverage is maintained in `_pages/news.md` with the following structure:
+- **Chronological organization**: Coverage from 2024 → 2015 with clear year sections
+- **Resilient linking strategy**: Multiple access methods including original URLs, archive links, and search guidance
+- **Featured highlights**: Key stories prominently displayed on main page (PaleoScan, Statcast 10-year, NYC shadows, SONYC)
+- **Comprehensive coverage**: Major outlets including NYT, Smithsonian, The Economist, Forbes, etc.
+- **Search fallbacks**: Each entry includes search terms to help users find articles even if URLs change
+- **Future-proof approach**: Designed to handle link decay and media website changes over time
 
 ### Key Configuration
 - **_config.yml**: Main Jekyll configuration with site metadata, author info, and collection settings
@@ -83,7 +92,7 @@ The `markdown_generator/` directory contains Python scripts and Jupyter notebook
 ### Course Websites
 The repository includes complete course websites as subdirectories:
 - **2024-VisML-CDS**: VisML (Visualization for Machine Learning) course website (Spring 2024, NYU CDS) - ARCHIVE
-- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon) - CS-GY 6313
+- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon) - CS-GY 6313 ✅ **Week 2 READY**
 - **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon) - CS-GY 9223 🎉 **100% READY**
 
 #### VisML Course Structure (2025-VisML-CSE)
@@ -138,23 +147,52 @@ The repository includes complete course websites as subdirectories:
   - Integrates with week2-lab.qmd Observable setup tutorial
 
 #### InfoVis Course Structure (2025-InfoVis-CSE)
+- **Course Code**: CS-GY 6313 - Information Visualization
+- **Schedule**: Fridays 11:00 AM - 1:30 PM, Fall 2025 (Sept 5 - Dec 13)
+- **Location**: Jacobs Hall, Room 215, Brooklyn Campus  
+- **Status**: ✅ **Week 2 COMPLETE** - Analytical Questions and Data Transformation ready for Sept 12, 2025
+- **Discord**: https://discord.gg/sTEv3PnP
+
+##### Course Materials:
 - **home.md**: Main landing page with course announcements and upcoming classes
 - **syllabus.md**: Full course syllabus with policies and grading
 - **schedule.md**: Detailed weekly schedule with readings and assignments
 - **resources.md**: Links to tools, datasets, and learning materials
+- **refs/**: Required readings with direct PDF links (Shneiderman, Wickham, Card & Mackinlay)
 - **slides/**: Quarto presentations for lectures (instructor content)
   - Uses reveal.js format with custom NYU branding
   - Includes VIDA lab logo (figs/vida.jpg) on all slides
-  - Custom SCSS styling in custom.scss
+  - Custom SCSS styling + projector-friendly code blocks
 - **labs/**: Lab session materials and exercises (TA content)
   - Separate Quarto presentations for lab activities
   - Hands-on exercises and tutorials
   - Clear separation from lecture content
-- **Discord**: https://discord.gg/sTEv3PnP
+
+##### Week 2 Materials (Sept 12, 2025) - COMPLETE:
+- **week2-data-transformation.qmd/html**: Analytical Questions and Data Transformation (40+ slides)
+  - Domain-to-data question translation with flight data and Vision Zero examples
+  - Complete SQL operations (Project, Filter, Aggregate) with proper table formatting
+  - Roll-up and drill-down operations with visual cube representations  
+  - Comprehensive tidy data section with Hadley Wickham examples
+  - Data transformation pipeline and wrangling concepts
+  - **Critical fixes**: Broken table formatting resolved, projector-friendly code styling
+- **figs/**: Complete visual asset library (40+ images)
+  - Domain question translation examples (flight data, Vision Zero)
+  - SQL operation before/after table visualizations
+  - Roll-up/drill-down cube diagrams and SQL examples
+  - Complete tidy data transformation workflow images
+  - Data abstraction and pipeline diagrams
+- **lab-light-theme.css**: Projector-optimized code styling for classroom visibility
+
+##### Content Integration:
+- **Homepage updates**: Week 2 lecture link added with required readings
+- **PDF readings**: Direct links to Shneiderman (1996), Wickham (2014), Card & Mackinlay (1999)
+- **Quality assurance**: Comprehensive review resolved formatting issues and content gaps
 
 #### Important Notes
 - **Reveal.js Dependencies**: The `.gitignore` has been configured to allow `*_files/` directories for course materials, ensuring reveal.js presentations work correctly on GitHub Pages
-- **Week 1 Status**: Ready for Sept 5, 2025 class with Discord channel active
+- **Week 1 & 2 Status**: Both weeks ready for Fall 2025 semester with complete materials
+- **Projector-Ready**: Code blocks use light backgrounds for classroom visibility
 
 #### Content Creation Guide for TAs
 
@@ -328,4 +366,34 @@ Key plugins enabled (via github-pages gem):
 
 ## Deployment
 The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
+
+## Future Enhancements
+
+### Portfolio Expansion
+- **Code repositories**: Highlight key GitHub projects (OpenSpace, OSCUR, PaleoScan, etc.)
+- **Interactive demos**: Link to live visualizations or web-based tools
+- **Project galleries**: Screenshots/videos of major systems in action
+- **Technical documentation**: API docs, user guides for your tools
+
+### Publications Organization
+- **Research categories**: Visualization, Urban Computing, Sports Analytics, Machine Learning, etc.
+- **Topic filters**: Allow visitors to browse by research area
+- **Impact highlights**: Feature most-cited papers or award winners
+- **Collaboration networks**: Show key co-authors and institutions
+- **Timeline view**: Chronological research evolution
+- **Audience-specific guides**: 
+  - "New to visualization" → foundational papers
+  - "Sports analytics researchers" → Statcast and related work
+  - "Urban computing" → SONYC, shadow mapping, etc.
+
+### Metrics Integration (Currently Commented Out)
+- **Sidebar metrics**: h-index: 78, i10-index: 323, Citations: 29,427, Publications: 400+
+- **Location**: `_includes/author-profile.html` (lines 118-125)
+- **To enable**: Remove `{% comment %}` and `{% endcomment %}` tags
+
+### Technical Notes
+- **Academic Pages Template**: Base template provides solid foundation for future enhancements
+- **Jekyll Collections**: Ready for additional content types and categorization
+- **Responsive Design**: All additions should maintain mobile-friendly design
+- **Search Optimization**: Consider adding site search functionality for larger content volumes
 - to memorize
