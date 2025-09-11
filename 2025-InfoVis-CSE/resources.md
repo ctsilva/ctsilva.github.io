@@ -97,6 +97,7 @@ author_profile: true
 ## Getting Help
 
 - **Course Discord:** [Join Course Discord](https://discord.gg/sTEv3PnP)
-- **Office Hours:** TBD
+- **Office Hours:** 
+    - **Ryan Kim (TA)**: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn (also [Online @ Zoom](https://nyu.zoom.us/j/92815268504))
 - **Stack Overflow:** Use tags `d3.js`, `vega-lite`, `observable`
 - **Observable Forum:** [talk.observablehq.com](https://talk.observablehq.com/)

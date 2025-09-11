@@ -53,5 +53,7 @@ author_profile: true
 - **Discord:** [Join Course Discord](https://discord.gg/sTEv3PnP)
 - **Brightspace:** [Course materials and submissions]
 - **Observable:** [Create account at observablehq.com]
-- **Office Hours:** TBD
+- **Office Hours:**
+    - **Ryan Kim**:
+        - **Ryan Kim (TA)**: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn (also [Online @ Zoom](https://nyu.zoom.us/j/92815268504))
 
