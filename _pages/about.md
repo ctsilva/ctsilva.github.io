@@ -28,7 +28,14 @@ A significant part of my career has been dedicated to mentoring the next generat
 
 I am a Fellow of both the ACM (2024) and IEEE (2013), and have received the IEEE Visualization Technical Achievement Award. I served as the elected Chair of the IEEE Technical Committee on Visualization and Computer Graphics from 2015–2018.
 
-From 2012-2017, I was the senior technology consultant for MLB Advanced Media's Statcast player tracking system, which received a 2018 Technology & Engineering Emmy Award from the National Academy of Television Arts & Sciences (NATAS). Our lab's work has been featured in major media outlets including The New York Times, The Economist, Smithsonian Magazine, and ESPN. Recent highlights include [PaleoScan fossil scanning](https://www.smithsonianmag.com/science-nature/this-innovative-fossil-scanner-could-help-paleontologists-in-south-america-180984826/) (Smithsonian 2024), [Statcast at 10 years](https://www.nytimes.com/athletic/5627303/2024/07/10/mlb-statcast-10-year-anniversary/) (NYT Athletic 2024), [NYC shadow mapping](https://www.nytimes.com/interactive/2016/12/21/upshot/Mapping-the-Shadows-of-New-York-City.html) (NYT 2016), and the [SONYC urban noise project](/news/#2017) (NYT 2017). See [media coverage](/news/).
+From 2012-2017, I was the senior technology consultant for MLB Advanced Media's Statcast player tracking system, which received a 2018 Technology & Engineering Emmy Award from the National Academy of Television Arts & Sciences (NATAS). 
+
+Our lab's work has been featured in major media outlets including The New York Times, The Economist, Smithsonian Magazine, and ESPN. Recent highlights include [PaleoScan fossil scanning](https://www.smithsonianmag.com/science-nature/this-innovative-fossil-scanner-could-help-paleontologists-in-south-america-180984826/) (Smithsonian 2024), [Statcast at 10 years](https://www.nytimes.com/athletic/5627303/2024/07/10/mlb-statcast-10-year-anniversary/) (NYT Athletic 2024), [NYC shadow mapping](https://www.nytimes.com/interactive/2016/12/21/upshot/Mapping-the-Shadows-of-New-York-City.html) (NYT 2016), and the [SONYC urban noise project](/news/#2017) (NYT 2017). See [media coverage](/news/).
+
+## Funding
+
+My research has been generously supported by the National Science Foundation (NSF), DARPA, Advanced Research Projects Agency for Health (ARPA-H), National Institutes of Health (NIH), NASA, U.S. Department of Energy, U.S. Department of Defense, the Moore-Sloan Data Science Environment at NYU, 
+Capital One, MLB Advanced Media, C2SMART US DOT Tier-1 University Transportation Center, NVIDIA, IBM, Adobe, ExxonMobil, Kitware, McGraw-Hill Education, and NEC Research.
 
 ## Research Projects
 
