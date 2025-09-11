@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week2-data-transformation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week2-data-transformation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week2-data-transformation_files/libs/quarto-html/popper.min.js"></script>
+<script src="week2-data-transformation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week2-data-transformation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week2-data-transformation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week2-data-transformation_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.34">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2025-09-12">
+  <title>Week 2: Analytical Questions and Data Transformation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week2-data-transformation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week2-data-transformation_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="week2-data-transformation_files/libs/revealjs/dist/theme/quarto-495a6a6110b82aac69f506856e9beb96.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
+  <link href="week2-data-transformation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week2-data-transformation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week2-data-transformation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week2-data-transformation_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="week2-data-transformation_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="week2-data-transformation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Week 2: Analytical Questions and Data Transformation</h1>
+  <p class="subtitle">CS-GY 6313 Information Visualization</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+        <p class="quarto-title-affiliation">
+            New York University
+          </p>
+    </div>
+</div>
+
+  <p class="date">2025-09-12</p>
+</section>
+<section class="slide level2">
+<h2>Acknowledgments</h2>
+<p>This lecture incorporates materials from:</p>
+<ul>
+<li><strong>Prof.&nbsp;Jeffrey Heer</strong> (University of Washington)
+<ul>
+<li>CSE 512: Data Visualization course materials</li>
+<li>Data transformation and wrangling concepts</li>
+<li><em>Used consistent with standard academic practice</em></li>
+</ul></li>
+<li><strong>Prof.&nbsp;Enrico Bertini</strong> (NYU)
+<ul>
+<li>Data abstraction and analytical questions materials</li>
+<li><em>Used with permission</em></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Today’s Agenda</h2>
+<h3>Four Main Parts</h3>
+<ol type="1">
+<li class="fragment"><strong>Recapitulation:</strong> Data Fundamentals</li>
+<li class="fragment"><strong>Part 1:</strong> Analytical Questions<br>
+</li>
+<li class="fragment"><strong>Part 2:</strong> Data Transformation</li>
+<li class="fragment"><strong>Part 3:</strong> Data Wrangling &amp; Profiling</li>
+</ol>
+</section>
+<section class="slide level2">
+<h2>Detailed Agenda</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Recapitulation &amp; Part 1</h3>
+<ul>
+<li>What is data? (Interactive discussion)</li>
+<li>Data abstraction: Items + Attributes</li>
+<li>Dataset and attribute types</li>
+<li>Domain vs.&nbsp;data questions</li>
+<li>Task taxonomies for visualization</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Parts 2 &amp; 3</h3>
+<ul>
+<li>SQL operations and relational algebra</li>
+<li>Roll-up and drill-down operations</li>
+<li>Tidy data principles</li>
+<li>Real-world data challenges</li>
+<li>Transformation pipelines and tools</li>
+</ul>
+</div></div>
+</section>
+<section class="slide level2">
+
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Recapitulation: Data Fundamentals</h1>
+
+</section>
+<section class="slide level2">
+<h2>What Is Data?</h2>
+
+<img data-src="figs/data-definition.png" style="width:70.0%" class="r-stretch"><ul>
+<li class="fragment"><strong>Definition</strong>: Facts and statistics collected together for reference or analysis</li>
+<li class="fragment"><strong>Examples</strong>: Census data, stock prices, sensor readings, survey responses, click streams</li>
+<li class="fragment"><strong>Characteristics</strong>: Can be structured/unstructured, quantitative/qualitative, temporal/static</li>
+</ul>
+<aside class="notes">
+<p>Interactive discussion - students provide examples and we build definition together</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Data in Visualization</h2>
+
+<img data-src="figs/data-viz-pipeline.png" style="width:80.0%" class="r-stretch"><h3>The Visualization Pipeline (Card et al., 1999)</h3>
+<ol type="1">
+<li class="fragment"><strong>Collection</strong>: Raw data from various sources</li>
+<li class="fragment"><strong>Transformation</strong>: Data tables, cleaning, structuring</li>
+<li class="fragment"><strong>Visualization</strong>: Visual structures and views</li>
+</ol>
+<aside class="notes">
+<p>Complete this together - what happens at each stage?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Data Abstraction</h2>
+<h3>Data Abstraction as a Visualization Design Tool</h3>
+</section>
+<section class="slide level2">
+
+
+<img data-src="figs/data-abstraction-definition.png" style="width:80.0%" class="r-stretch"><h3>From Reality to Representation</h3>
+<ul>
+<li class="fragment"><strong>Real-world phenomena</strong>: Events, objects, processes</li>
+<li class="fragment"><strong>Measurements/observations</strong>: Sensors, surveys, records</li>
+<li class="fragment"><strong>Abstract data model</strong>: Tables, networks, fields</li>
+<li class="fragment"><strong>Visualization encoding</strong>: Visual mappings and representations</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Datasets = Items + Attributes</h2>
+
+<img data-src="figs/dataset-definition.png" style="width:90.0%" class="r-stretch"></section>
+<section class="slide level2">
+
+
+<img data-src="figs/items-attributes-definition.png" style="width:90.0%" class="r-stretch"><h3>Complete the Framework</h3>
+<p><strong>Items</strong> (also called records, cases, objects): - Definition: Objects/entities you want to visualize - Examples:</p>
+<p><strong>Attributes</strong> (also called variables, dimensions, fields): - Definition: Properties of these objects/entities - Examples:</p>
+<aside class="notes">
+<p>Students fill in definitions and provide examples from their own domains</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Dataset Types</h2>
+<h3>Munzner’s Classification (2014)</h3>
+<p><em>From “Visualization Analysis and Design”, Chapter 2</em></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Fill in examples for each type:</p>
+<ul>
+<li><strong>Tables</strong>:</li>
+<li><strong>Networks</strong>:</li>
+<li><strong>Fields</strong>:</li>
+<li><strong>Geometry</strong>:</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/table-structure.png" style="width:90.0%"></p>
+</div></div>
+<aside class="notes">
+<p>Have students think of examples from their research/work experience</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Attribute Types</h2>
+<h3>Why is it useful to identify attribute types?</h3>
+</section>
+<section class="slide level2">
+
+<h3>Guidance in selecting appropriate graphical encoding strategies…</h3>
+</section>
+<section class="slide level2">
+<h2>Stevens’ Levels of Measurement (1946)</h2>
+<p><em>From “On the Theory of Scales of Measurement” in Science</em></p>
+<p>Complete the table with examples:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Operations</th>
+<th>Your Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Nominal</strong></td>
+<td>=, ≠</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Ordinal</strong></td>
+<td>=, ≠, &lt;, &gt;</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>Quantitative</strong></td>
+<td>=, ≠, &lt;, &gt;, +, -</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Visualization Examples by Attribute Type</h2>
+<h3>Line Charts: Appropriate for Ordered Data</h3>
+
+<img data-src="figs/line-charts-inappropriate.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3>Categorical Data: Arbitrary Sorting</h3>
+
+<img data-src="figs/categorical-arbitrary-sorting.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3>Spatial Attributes: Use Spatial Metaphors</h3>
+
+<img data-src="figs/spatial-metaphors.png" style="width:90.0%" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3>Quantitative Data: Divergent Color Scales</h3>
+
+<img data-src="figs/divergent-color-scale.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Part 1: Analytical Questions</h1>
+
+</section>
+<section class="slide level2">
+<h2>Visualization as a Tool to Answer Questions with Data</h2>
+
+<img data-src="figs/domain-to-data-intro.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Domain Questions vs.&nbsp;Data Questions</h2>
+
+<img data-src="figs/domain-vs-data-table.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>From Domain to Data Questions</h2>
+
+<img data-src="figs/flight-data-intro.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Example: NYC Flight Delays Data</h2>
+
+<img data-src="figs/flight-data-table.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Domain Questions: Flight Data</h2>
+
+<img data-src="figs/flight-data-domain-questions.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Visualization Answers All Questions</h2>
+
+<img data-src="figs/flight-data-visualization.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Example: Vision Zero Initiative</h2>
+
+<img data-src="figs/vision-zero-example1.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Multiple Data Questions from One Domain Question</h2>
+
+<img data-src="figs/vision-zero-example2.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Key Insight: Specificity Matters</h2>
+<p><strong>One domain question can lead to many data questions:</strong></p>
+<ul>
+<li class="fragment"><strong>Temporal granularity:</strong> Weekly vs.&nbsp;monthly vs.&nbsp;yearly</li>
+<li class="fragment"><strong>Temporal scope:</strong> 5 years vs.&nbsp;10 years vs.&nbsp;since implementation</li>
+<li class="fragment"><strong>Spatial scope:</strong> Citywide vs.&nbsp;by borough vs.&nbsp;by intersection</li>
+<li class="fragment"><strong>Measure definition:</strong> Total injuries vs.&nbsp;serious injuries vs.&nbsp;fatalities</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Key Characteristics</h2>
+
+<img data-src="figs/domain-vs-data-comparison.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Assessment Questions Throughout the Pipeline</h2>
+
+<img data-src="figs/viz-pipeline-assessment2.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>What Can We Ask of Data?</h2>
+<h3>Shneiderman’s Information Seeking Tasks (1996)</h3>
+<ul>
+<li class="fragment"><strong>Overview</strong>: What does the data look like?</li>
+<li class="fragment"><strong>Zoom</strong>: Focus on items of interest</li>
+<li class="fragment"><strong>Filter</strong>: Show me something conditionally</li>
+<li class="fragment"><strong>Details-on-demand</strong>: Show me more when I need it</li>
+<li class="fragment"><strong>Relate</strong>: How are items connected?</li>
+<li class="fragment"><strong>History</strong>: What has changed?</li>
+<li class="fragment"><strong>Extract</strong>: Let me save what I find</li>
+</ul>
+<aside class="notes">
+<p>Shneiderman’s Visual Information Seeking Mantra: Overview first, zoom and filter, then details-on-demand</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Types of Analytical Tasks</h2>
+<h3>Low-level Tasks (Amar et al., 2005)</h3>
+<p><em>“Low-Level Components of Analytic Activity in Information Visualization”</em></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Value Tasks</strong></p>
+<ul>
+<li><strong>Retrieve Value</strong>: What is the value of attribute X for case Y?</li>
+<li><strong>Filter</strong>: Which cases satisfy condition C?</li>
+<li><strong>Compute Derived Value</strong>: What is the value of function F given attribute X?</li>
+<li><strong>Find Extremum</strong>: What is the max/min value of attribute X?</li>
+<li><strong>Sort</strong>: What is the ordering of cases by attribute X?</li>
+<li><strong>Determine Range</strong>: What is the span of values of attribute X?</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Pattern Tasks</strong></p>
+<ul>
+<li><strong>Find Anomalies</strong>: Which cases are exceptional given their relation to others?</li>
+<li><strong>Cluster</strong>: Which cases are similar in value for attributes X, Y, Z?</li>
+<li><strong>Correlate</strong>: What is the relationship between attributes X and Y?</li>
+<li><strong>Characterize Distribution</strong>: What is the distribution of values of attribute X?</li>
+</ul>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>High-level Questions</h2>
+<h3>According to Bertin (1983)</h3>
+<ol type="1">
+<li class="fragment"><strong>Elementary</strong>: What is the value of X for element Y?</li>
+<li class="fragment"><strong>Intermediate</strong>: What elements have value X?</li>
+<li class="fragment"><strong>Overall</strong>: What are the relationships among all elements?</li>
+</ol>
+<h3>Modern Task Frameworks</h3>
+<ul>
+<li><strong>Brehmer &amp; Munzner (2013)</strong>: Why - What - How</li>
+<li><strong>Schulz et al.&nbsp;(2013)</strong>: Goals - Means - Characteristics</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Part 2: Data Transformation</h1>
+
+</section>
+<section class="slide level2">
+<h2>Transformation Pipeline Example</h2>
+
+<img data-src="figs/transformation-pipeline-example.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Data Models vs Conceptual Models</h2>
+<h3>Data models are formal descriptions</h3>
+<ul>
+<li>Math: sets with operations on them</li>
+<li>Example: integers with + and × operators</li>
+</ul>
+<h3>Conceptual models are mental constructions</h3>
+<ul>
+<li>Include semantics and support reasoning</li>
+</ul>
+<h3>Examples (data vs.&nbsp;conceptual)</h3>
+<ul>
+<li>1D floats vs.&nbsp;temperatures</li>
+<li>3D vector of floats vs.&nbsp;spatial location</li>
+</ul>
+<aside class="notes">
+<p>From Jeff Heer’s materials on distinguishing between formal data models and conceptual understanding</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Types of Variables</h2>
+<h3>Physical Types</h3>
+<ul>
+<li>Characterized by storage format</li>
+<li>Characterized by machine operations</li>
+<li><em>Example</em>: bool, int32, float, double, string</li>
+</ul>
+<h3>Abstract Types</h3>
+<ul>
+<li>Provide descriptions of the data</li>
+<li>May be characterized by methods/attributes</li>
+<li>May be organized into a hierarchy</li>
+<li><em>Example</em>: plants, animals, metazoans</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Taxonomy of Data Types</h2>
+<h3>Shneiderman’s Classification (1996)</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>1D</strong> (sets and sequences)</li>
+<li><strong>Temporal</strong></li>
+<li><strong>2D</strong> (maps)</li>
+<li><strong>3D</strong> (shapes)</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>nD</strong> (relational)</li>
+<li><strong>Trees</strong> (hierarchies)</li>
+<li><strong>Networks</strong> (graphs)</li>
+</ul>
+</div></div>
+<p><em>“The eyes have it: A task by data type taxonomy for information visualization”</em></p>
+</section>
+<section class="slide level2">
+<h2>Stevens’ Levels of Measurement (1946)</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 30%">
+<col style="width: 28%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>Description</th>
+<th>Operations</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Nominal</strong></td>
+<td>Categories, no order</td>
+<td>=, ≠</td>
+<td>Colors, names, IDs</td>
+</tr>
+<tr class="even">
+<td><strong>Ordinal</strong></td>
+<td>Ordered categories</td>
+<td>=, ≠, &lt;, &gt;</td>
+<td>Rankings, grades</td>
+</tr>
+<tr class="odd">
+<td><strong>Interval</strong></td>
+<td>Numeric, no true zero</td>
+<td>=, ≠, &lt;, &gt;, -</td>
+<td>Temperature (°C), dates</td>
+</tr>
+<tr class="even">
+<td><strong>Ratio</strong></td>
+<td>Numeric, true zero</td>
+<td>=, ≠, &lt;, &gt;, -, %</td>
+<td>Height, weight, count</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>From Data Model to N, O, Q</h2>
+<h3>Example: Temperature Data</h3>
+<p><strong>Data Model</strong> - 32.5, 54.0, -17.3, … - Floating point numbers</p>
+<p><strong>Conceptual Model</strong> - Temperature (°C)</p>
+<p><strong>Data Type</strong> - Burned vs.&nbsp;Not-Burned (N) - Hot, Warm, Cold (O) - Temperature Value (Q-interval)</p>
+</section>
+<section class="slide level2">
+<h2>Dimensions &amp; Measures</h2>
+<h3>Dimensions (~ independent variables)</h3>
+<ul>
+<li>Often discrete variables describing data (N, O)</li>
+<li>Categories, dates, binned quantities</li>
+</ul>
+<h3>Measures (~ dependent variables)</h3>
+<ul>
+<li>Data values that can be aggregated (Q)</li>
+<li>Numbers to be analyzed</li>
+<li>Aggregate as sum, count, avg, std. dev</li>
+</ul>
+<p><em>Not a strict distinction. The same variable may be treated either way depending on the task.</em></p>
+</section>
+<section class="slide level2">
+<h2>Relational Data Model</h2>
+<h3>Represent data as a <strong>table</strong> (or relation)</h3>
+<ul>
+<li>Each <strong>row</strong> (or tuple) represents a record
+<ul>
+<li>Each record is a fixed-length tuple</li>
+</ul></li>
+<li>Each <strong>column</strong> (or field) represents a variable
+<ul>
+<li>Each field has a name and a data type</li>
+</ul></li>
+<li>A table’s <strong>schema</strong> is the set of names and types</li>
+<li>A <strong>database</strong> is a collection of tables (relations)</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Relational Algebra / SQL</h2>
+<h3>Operations on Data Tables: table(s) in, table out</h3>
+<ul>
+<li><strong>Project</strong> (<code>SELECT</code>): select a set of columns</li>
+<li><strong>Filter</strong> (<code>WHERE</code>): remove unwanted rows</li>
+<li><strong>Sort</strong> (<code>ORDER BY</code>): order records</li>
+<li><strong>Aggregate</strong> (<code>GROUP BY</code>, <code>SUM</code>, <code>MIN</code>, <code>MAX</code>): partition rows into groups + summarize</li>
+<li><strong>Combine</strong> (<code>JOIN</code>, <code>UNION</code>): integrate data from multiple tables</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>SQL Operations: Project</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href=""></a><span class="kw">SELECT</span> <span class="dt">day</span>, stock <span class="kw">FROM</span> prices</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><strong>Input:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>day</th>
+<th>stock</th>
+<th>price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10/3</td>
+<td>AMZN</td>
+<td>957.10</td>
+</tr>
+<tr class="even">
+<td>10/3</td>
+<td>MSFT</td>
+<td>74.26</td>
+</tr>
+<tr class="odd">
+<td>10/4</td>
+<td>AMZN</td>
+<td>965.45</td>
+</tr>
+<tr class="even">
+<td>10/4</td>
+<td>MSFT</td>
+<td>74.69</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:10%;">
+<p>→</p>
+</div><div class="column" style="width:45%;">
+<p><strong>Output:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>day</th>
+<th>stock</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10/3</td>
+<td>AMZN</td>
+</tr>
+<tr class="even">
+<td>10/3</td>
+<td>MSFT</td>
+</tr>
+<tr class="odd">
+<td>10/4</td>
+<td>AMZN</td>
+</tr>
+<tr class="even">
+<td>10/4</td>
+<td>MSFT</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>SQL Operations: Filter</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> prices <span class="kw">WHERE</span> price <span class="op">&gt;</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><strong>Input:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>day</th>
+<th>stock</th>
+<th>price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10/3</td>
+<td>AMZN</td>
+<td>957.10</td>
+</tr>
+<tr class="even">
+<td>10/3</td>
+<td>MSFT</td>
+<td>74.26</td>
+</tr>
+<tr class="odd">
+<td>10/4</td>
+<td>AMZN</td>
+<td>965.45</td>
+</tr>
+<tr class="even">
+<td>10/4</td>
+<td>MSFT</td>
+<td>74.69</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:10%;">
+<p>→</p>
+</div><div class="column" style="width:45%;">
+<p><strong>Output:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>day</th>
+<th>stock</th>
+<th>price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10/3</td>
+<td>AMZN</td>
+<td>957.10</td>
+</tr>
+<tr class="even">
+<td>10/4</td>
+<td>AMZN</td>
+<td>965.45</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>SQL Operations: Aggregate</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href=""></a><span class="kw">SELECT</span> stock, <span class="fu">MIN</span>(price) </span>
+<span id="cb3-2"><a href=""></a><span class="kw">FROM</span> prices </span>
+<span id="cb3-3"><a href=""></a><span class="kw">GROUP</span> <span class="kw">BY</span> stock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><strong>Input:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>day</th>
+<th>stock</th>
+<th>price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10/3</td>
+<td>AMZN</td>
+<td>957.10</td>
+</tr>
+<tr class="even">
+<td>10/3</td>
+<td>MSFT</td>
+<td>74.26</td>
+</tr>
+<tr class="odd">
+<td>10/4</td>
+<td>AMZN</td>
+<td>965.45</td>
+</tr>
+<tr class="even">
+<td>10/4</td>
+<td>MSFT</td>
+<td>74.69</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:10%;">
+<p>→</p>
+</div><div class="column" style="width:45%;">
+<p><strong>Output:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>stock</th>
+<th>min(price)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AMZN</td>
+<td>957.10</td>
+</tr>
+<tr class="even">
+<td>MSFT</td>
+<td>74.26</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>Roll-Up and Drill-Down</h2>
+
+<img data-src="figs/rollup-drilldown-sql1.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Roll-Up and Drill-Down: Adding Dimensions</h2>
+
+<img data-src="figs/rollup-drilldown-sql2.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Data Cube Visualization: Aggregation Operations</h2>
+
+<img data-src="figs/rollup-drilldown-cube1.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Roll-Up vs.&nbsp;Drill-Down Operations</h2>
+
+<img data-src="figs/rollup-drilldown-cube2.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Tidy Data: Organizing Data for Visualization</h2>
+<p><strong>Goal:</strong> Structuring data to make visualization and analysis easier</p>
+
+<img data-src="figs/td-table-typical.jpg" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Alternative Data Structures</h2>
+
+<img data-src="figs/td-table-alternative.jpg" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>The Tidy Data Solution</h2>
+
+<img data-src="figs/td-table-tidy.jpg" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Tidy Data Definition</h2>
+<p>In tidy data:</p>
+<ul>
+<li class="fragment"><strong>Each variable forms a column</strong></li>
+<li class="fragment"><strong>Each observation forms a row</strong><br>
+</li>
+<li class="fragment"><strong>Each type of observational unit forms a table</strong></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Tidy Data Example #1</h2>
+
+<img data-src="figs/td-table-example.jpg" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Transforming to Tidy Format</h2>
+
+<img data-src="figs/td-table-towards-tidy.jpg" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Tidy Data Example #2: Before</h2>
+
+<img data-src="figs/td-table-before-tidy.jpg" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Tidy Data Example #2: After</h2>
+
+<img data-src="figs/td-table-after-tidy.jpg" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Part 3: Data Wrangling &amp; Profiling</h1>
+
+</section>
+<section class="slide level2">
+<h2>The Reality of Data Work</h2>
+<blockquote>
+<p>“I spend more than half of my time integrating, cleansing and transforming data without doing any actual analysis. Most of the time I’m lucky if I get to do any ‘analysis’ at all.”</p>
+<p>— Anonymous Data Scientist (2012 interview study)</p>
+</blockquote>
+</section>
+<section class="slide level2">
+<h2>Visualization Reveals Data Problems</h2>
+<blockquote>
+<p>“The first sign that a visualization is good is that it shows you a problem in your data. Every successful visualization that I’ve been involved with has had this stage where you realize, ‘Oh my God, this data is not what I thought it would be!’ So already, you’ve discovered something.”</p>
+<p>— Martin Wattenberg (ACM Queue ’09)</p>
+</blockquote>
+</section>
+<section class="slide level2">
+<h2>Common Data Quality Issues</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Missing Data</h3>
+<ul>
+<li>Null values</li>
+<li>Empty strings</li>
+<li>Placeholder values (999, -1)</li>
+<li>Incomplete records</li>
+</ul>
+<h3>Inconsistent Data</h3>
+<ul>
+<li>Different formats</li>
+<li>Duplicate records</li>
+<li>Conflicting values</li>
+<li>Unit mismatches</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Incorrect Data</h3>
+<ul>
+<li>Data entry errors</li>
+<li>Outliers</li>
+<li>Wrong data types</li>
+<li>Invalid relationships</li>
+</ul>
+<h3>Structural Issues</h3>
+<ul>
+<li>Denormalized data</li>
+<li>Wrong granularity</li>
+<li>Mixed semantics</li>
+<li>Schema violations</li>
+</ul>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>Data Transformation Pipeline</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource mermaid number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href=""></a>graph LR</span>
+<span id="cb4-2"><a href=""></a>    A[Raw Data] --&gt; B[Clean]</span>
+<span id="cb4-3"><a href=""></a>    B --&gt; C[Transform]</span>
+<span id="cb4-4"><a href=""></a>    C --&gt; D[Aggregate]</span>
+<span id="cb4-5"><a href=""></a>    D --&gt; E[Visualize]</span>
+<span id="cb4-6"><a href=""></a>    </span>
+<span id="cb4-7"><a href=""></a>    B --&gt; B1[Handle missing]</span>
+<span id="cb4-8"><a href=""></a>    B --&gt; B2[Fix errors]</span>
+<span id="cb4-9"><a href=""></a>    </span>
+<span id="cb4-10"><a href=""></a>    C --&gt; C1[Derive attributes]</span>
+<span id="cb4-11"><a href=""></a>    C --&gt; C2[Normalize]</span>
+<span id="cb4-12"><a href=""></a>    </span>
+<span id="cb4-13"><a href=""></a>    D --&gt; D1[Group by]</span>
+<span id="cb4-14"><a href=""></a>    D --&gt; D2[Summarize]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section class="slide level2">
+<h2>Common Transformation Operations</h2>
+<h3>1. Aggregation</h3>
+<ul>
+<li><strong>Purpose</strong>: Summarize groups of data</li>
+<li><strong>Methods</strong>: Sum, mean, median, count, min, max</li>
+<li><strong>Example</strong>: Daily sales → Monthly totals</li>
+</ul>
+<h3>2. Filtering</h3>
+<ul>
+<li><strong>Purpose</strong>: Focus on relevant subset</li>
+<li><strong>Types</strong>: Range, categorical, conditional</li>
+</ul>
+<h3>3. Binning</h3>
+<ul>
+<li><strong>Purpose</strong>: Convert continuous to discrete</li>
+<li><strong>Methods</strong>: Equal width, equal frequency, custom</li>
+</ul>
+<h3>4. Normalization</h3>
+<ul>
+<li><strong>Purpose</strong>: Enable fair comparison</li>
+<li><strong>Methods</strong>: Min-max, z-score, percentage</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Creating Derived Attributes</h2>
+<h3>Calculated Fields</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="co"># Examples of derived attributes</span></span>
+<span id="cb5-2"><a href=""></a>df[<span class="st">'profit_margin'</span>] <span class="op">=</span> df[<span class="st">'profit'</span>] <span class="op">/</span> df[<span class="st">'revenue'</span>]</span>
+<span id="cb5-3"><a href=""></a>df[<span class="st">'year'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'date'</span>]).dt.year</span>
+<span id="cb5-4"><a href=""></a>df[<span class="st">'is_profitable'</span>] <span class="op">=</span> df[<span class="st">'profit'</span>] <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb5-5"><a href=""></a>df[<span class="st">'age_group'</span>] <span class="op">=</span> pd.cut(df[<span class="st">'age'</span>], </span>
+<span id="cb5-6"><a href=""></a>                         bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">18</span>, <span class="dv">65</span>, <span class="dv">100</span>],</span>
+<span id="cb5-7"><a href=""></a>                         labels<span class="op">=</span>[<span class="st">'child'</span>, <span class="st">'adult'</span>, <span class="st">'senior'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h3>Feature Engineering</h3>
+<ul>
+<li>Ratios and percentages</li>
+<li>Time-based features (day of week, season)</li>
+<li>Categorical encoding (one-hot, ordinal)</li>
+<li>Text processing (word counts, sentiment)</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Tools for Data Transformation</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3>Programming</h3>
+<ul>
+<li><strong>Python</strong>: pandas, numpy</li>
+<li><strong>R</strong>: dplyr, tidyr</li>
+<li><strong>SQL</strong>: CTEs, window functions</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3>Visual Tools</h3>
+<ul>
+<li><strong>Tableau Prep</strong></li>
+<li><strong>Power Query</strong></li>
+<li><strong>OpenRefine</strong></li>
+<li><strong>Trifacta</strong></li>
+</ul>
+</div><div class="column" style="width:34%;">
+<h3>Big Data</h3>
+<ul>
+<li><strong>Apache Spark</strong></li>
+<li><strong>dbt</strong></li>
+<li><strong>Alteryx</strong></li>
+<li><strong>Apache Beam</strong></li>
+</ul>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>Best Practices</h2>
+<h3>Data Transformation Guidelines</h3>
+<ol type="1">
+<li class="fragment"><strong>Document transformations</strong>: Keep track of all changes</li>
+<li class="fragment"><strong>Preserve raw data</strong>: Never modify original source</li>
+<li class="fragment"><strong>Validate results</strong>: Check for unexpected values</li>
+<li class="fragment"><strong>Test edge cases</strong>: Handle nulls, zeros, outliers</li>
+<li class="fragment"><strong>Consider performance</strong>: Optimize for large datasets</li>
+<li class="fragment"><strong>Make it reproducible</strong>: Script or save workflows</li>
+<li class="fragment"><strong>Think about updates</strong>: Design for new data</li>
+</ol>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Examples &amp; Practice</h1>
+
+</section>
+<section class="slide level2">
+<h2>Data to Visualization Examples</h2>
+<h3>Categories → Bar Chart</h3>
+
+<img data-src="figs/categories-to-barchart.png" style="width:90.0%" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3>Spatial Information → Map</h3>
+
+<img data-src="figs/spatial-to-map.png" style="width:90.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Example: U.S. Census Data</h2>
+<h3>Data Schema</h3>
+<ul>
+<li><strong>Year</strong>: 1850-2000 (every decade)</li>
+<li><strong>Age</strong>: 0-90+</li>
+<li><strong>Sex</strong>: Male, Female</li>
+<li><strong>Marital Status</strong>: Single, Married, Divorced, Widowed</li>
+<li><strong>People Count</strong>: Number in group</li>
+</ul>
+<h3>Questions to Explore</h3>
+<ul>
+<li>How has population age distribution changed?</li>
+<li>What are marriage patterns by age and year?</li>
+<li>How do we handle the changing categories over time?</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Interactive Exercise: NYC Taxi Data</h2>
+<h3>Dataset Description</h3>
+<p>Raw taxi trip data with these fields:</p>
+<ul>
+<li class="fragment"><strong>pickup_datetime, dropoff_datetime</strong></li>
+<li class="fragment"><strong>pickup_location, dropoff_location</strong><br>
+</li>
+<li class="fragment"><strong>trip_distance, fare_amount</strong></li>
+<li class="fragment"><strong>passenger_count</strong></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Your Design Tasks</h2>
+<p>Work in small groups to design a transformation pipeline:</p>
+<ol type="1">
+<li class="fragment"><strong>What derived attributes would be useful?</strong></li>
+<li class="fragment"><strong>How would you aggregate for daily patterns?</strong></li>
+<li class="fragment"><strong>What filtering might reveal insights?</strong></li>
+<li class="fragment"><strong>How would you handle outliers?</strong></li>
+</ol>
+<aside class="notes">
+<p>Give groups 5-7 minutes, then discuss solutions</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Common Data Formats</h2>
+<h3>Text Formats</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource csv number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href=""></a># CSV: Comma-Separated Values</span>
+<span id="cb6-2"><a href=""></a>year,age,marital_status,sex,people</span>
+<span id="cb6-3"><a href=""></a>1850,0,0,1,1483789</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb7-1"><a href=""></a><span class="er">//</span> <span class="er">JSON:</span> <span class="er">JavaScript</span> <span class="er">Object</span> <span class="er">Notation</span></span>
+<span id="cb7-2"><a href=""></a><span class="ot">[</span></span>
+<span id="cb7-3"><a href=""></a>  <span class="fu">{</span><span class="dt">"year"</span><span class="fu">:</span><span class="dv">1850</span><span class="fu">,</span><span class="dt">"age"</span><span class="fu">:</span><span class="dv">0</span><span class="fu">,</span><span class="dt">"marital_status"</span><span class="fu">:</span><span class="dv">0</span><span class="fu">,</span><span class="dt">"sex"</span><span class="fu">:</span><span class="dv">1</span><span class="fu">,</span><span class="dt">"people"</span><span class="fu">:</span><span class="dv">1483789</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-4"><a href=""></a>  <span class="fu">{</span><span class="dt">"year"</span><span class="fu">:</span><span class="dv">1850</span><span class="fu">,</span><span class="dt">"age"</span><span class="fu">:</span><span class="dv">5</span><span class="fu">,</span><span class="dt">"marital_status"</span><span class="fu">:</span><span class="dv">0</span><span class="fu">,</span><span class="dt">"sex"</span><span class="fu">:</span><span class="dv">1</span><span class="fu">,</span><span class="dt">"people"</span><span class="fu">:</span><span class="dv">1411067</span><span class="fu">}</span></span>
+<span id="cb7-5"><a href=""></a><span class="ot">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h3>Binary Formats</h3>
+<ul>
+<li><strong>Arrow</strong>: Columnar memory format</li>
+<li><strong>Parquet</strong>: Compressed columnar storage</li>
+<li><strong>HDF5</strong>: Hierarchical data format</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section class="slide level2">
+<h2>Key Takeaways</h2>
+<h3>Analytical Questions</h3>
+<ul>
+<li>Different levels of questions require different visualizations</li>
+<li>Tasks range from elementary lookups to pattern discovery</li>
+<li>Visual queries enable interactive exploration</li>
+</ul>
+<h3>Data Models &amp; Types</h3>
+<ul>
+<li>Distinguish between data models and conceptual models</li>
+<li>Type (N/O/Q) determines appropriate encodings</li>
+<li>Dimensions vs measures depends on analytical task</li>
+</ul>
+<h3>Data Transformation</h3>
+<ul>
+<li>SQL/relational algebra provides fundamental operations</li>
+<li>Tidy data principles enable consistent analysis</li>
+<li>Roll-up and drill-down for multidimensional exploration</li>
+</ul>
+<h3>Data Wrangling</h3>
+<ul>
+<li>Most time spent on data preparation, not analysis</li>
+<li>Visualization helps identify data quality issues</li>
+<li>Document and automate transformation pipelines</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Next Week</h2>
+<h3>Week 3: Marks, Channels, and Perception</h3>
+<ul>
+<li>Visual encoding principles</li>
+<li>Perceptual effectiveness</li>
+<li>Design guidelines</li>
+</ul>
+<h3>Reading</h3>
+<ul>
+<li>Munzner Ch. 4-5</li>
+<li>Cleveland &amp; McGill (1984)</li>
+</ul>
+<h3>Lab (Sept 13)</h3>
+<ul>
+<li>Hands-on data transformation with pandas</li>
+<li>Creating tidy datasets</li>
+<li>Building transformation pipelines</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Questions?</h2>
+<h3>Resources</h3>
+<ul>
+<li><a href="https://www.jstatsoft.org/article/view/v059i10">Tidy Data Paper</a></li>
+<li><a href="https://pandas.pydata.org/">pandas Documentation</a></li>
+<li><a href="https://dplyr.tidyverse.org/">Data Transformation with dplyr</a></li>
+<li><a href="https://courses.cs.washington.edu/courses/cse512/">Jeff Heer’s CSE 512 Course</a></li>
+<li><strong>Amar, R., Eagan, J., &amp; Stasko, J.</strong> (2005). Low-level components of analytic activity in information visualization. <em>IEEE Symposium on Information Visualization</em>, 111-117.</li>
+<li><strong>Card, S. K., Mackinlay, J. D., &amp; Shneiderman, B.</strong> (1999). <em>Readings in Information Visualization: Using Vision to Think</em>. Morgan Kaufmann.</li>
+<li><strong>Munzner, T.</strong> (2014). <em>Visualization Analysis and Design</em>. CRC Press.</li>
+<li><strong>Shneiderman, B.</strong> (1996). The eyes have it: A task by data type taxonomy for information visualization. <em>Proceedings 1996 IEEE Symposium on Visual Languages</em>, 336-343.</li>
+<li><strong>Stevens, S. S.</strong> (1946). On the Theory of Scales of Measurement. <em>Science</em>, 103(2684), 677-680.</li>
+</ul>
+<h3>Discord</h3>
+<ul>
+<li>Join our class Discord: https://discord.gg/sTEv3PnP</li>
+</ul>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week2-data-transformation_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week2-data-transformation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

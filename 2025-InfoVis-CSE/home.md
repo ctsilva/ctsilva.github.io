@@ -22,11 +22,14 @@ author_profile: true
 - **Topics:** Course overview, What is visualization?, Evaluation frameworks
 - **Lab:** Setup Observable accounts, Create first Vega-Lite charts
 - **Assignment:** Exercise 1 - Visualization critique and basic Vega-Lite charts (due Sept 11)
+- **Readings:** [Card & Mackinlay (1999) - Using Vision to Think](/2025-InfoVis-CSE/refs/Card_Mackinlay_Shneiderman_1999_Using_Vision_to_Think_Chapter1.pdf)
 
 ### Week 2 (Sept 12) - Analytical Questions and Data Transformation
+- **Slides:** [Analytical Questions and Data Transformation](/2025-InfoVis-CSE/slides/week2-data-transformation.html)
 - **Topics:** Visual queries, Data types, Transformation operations
 - **Lab:** Vega-Lite data transformations, Working with real datasets
 - **Assignment:** Exercise 2 - Data questions and transformations (due Sept 18)
+- **Readings:** [Shneiderman (1996) - The Eyes Have It](/2025-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf); [Wickham (2014) - Tidy Data](/2025-InfoVis-CSE/refs/Wickham_2014_Tidy_Data.pdf)
 
 ## Assignments
 

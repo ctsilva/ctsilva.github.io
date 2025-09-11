@@ -1,0 +1,927 @@
+---
+title: "Week 2: Analytical Questions and Data Transformation"
+subtitle: "CS-GY 6313 Information Visualization"
+author: "Claudio Silva"
+institute: "New York University"
+date: "September 12, 2025"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    chalkboard: true
+    controls: true
+    controls-layout: bottom-right
+    navigation-mode: linear
+    css: lab-light-theme.css
+---
+
+## Acknowledgments
+
+This lecture incorporates materials from:
+
+- **Prof. Jeffrey Heer** (University of Washington)
+  - CSE 512: Data Visualization course materials
+  - Data transformation and wrangling concepts
+  - *Used consistent with standard academic practice*
+  
+- **Prof. Enrico Bertini** (NYU)
+  - Data abstraction and analytical questions materials
+  - *Used with permission*
+  
+## Today's Agenda
+
+### Four Main Parts
+
+::: {.incremental}
+1. **Recapitulation:** Data Fundamentals
+2. **Part 1:** Analytical Questions  
+3. **Part 2:** Data Transformation
+4. **Part 3:** Data Wrangling & Profiling
+:::
+
+---
+
+## Detailed Agenda
+
+:::: {.columns}
+::: {.column width="50%"}
+### Recapitulation & Part 1
+- What is data? (Interactive discussion)
+- Data abstraction: Items + Attributes
+- Dataset and attribute types
+- Domain vs. data questions
+- Task taxonomies for visualization
+:::
+
+::: {.column width="50%"}
+### Parts 2 & 3
+- SQL operations and relational algebra
+- Roll-up and drill-down operations
+- Tidy data principles
+- Real-world data challenges
+- Transformation pipelines and tools
+:::
+::::
+
+---
+
+# Recapitulation: Data Fundamentals
+
+## What Is Data?
+
+![](figs/data-definition.png){width="70%"}
+
+::: {.incremental}
+- **Definition**: Facts and statistics collected together for reference or analysis
+- **Examples**: Census data, stock prices, sensor readings, survey responses, click streams
+- **Characteristics**: Can be structured/unstructured, quantitative/qualitative, temporal/static
+:::
+
+::: {.notes}
+Interactive discussion - students provide examples and we build definition together
+:::
+
+## Data in Visualization
+
+![](figs/data-viz-pipeline.png){width="80%"}
+
+### The Visualization Pipeline (Card et al., 1999)
+
+::: {.incremental}
+1. **Collection**: Raw data from various sources
+2. **Transformation**: Data tables, cleaning, structuring
+3. **Visualization**: Visual structures and views
+:::
+
+::: {.notes}
+Complete this together - what happens at each stage?
+:::
+
+## Data Abstraction
+
+### Data Abstraction as a Visualization Design Tool
+
+---
+
+![](figs/data-abstraction-definition.png){width="80%"}
+
+### From Reality to Representation
+
+::: {.incremental}
+- **Real-world phenomena**: Events, objects, processes
+- **Measurements/observations**: Sensors, surveys, records
+- **Abstract data model**: Tables, networks, fields
+- **Visualization encoding**: Visual mappings and representations
+:::
+
+## Datasets = Items + Attributes
+
+![](figs/dataset-definition.png){width="90%"}
+
+---
+
+![](figs/items-attributes-definition.png){width="90%"}
+
+### Complete the Framework
+
+**Items** (also called records, cases, objects):
+- Definition: Objects/entities you want to visualize
+- Examples: 
+
+**Attributes** (also called variables, dimensions, fields):
+- Definition: Properties of these objects/entities
+- Examples: 
+
+::: {.notes}
+Students fill in definitions and provide examples from their own domains
+:::
+
+## Dataset Types
+
+### Munzner's Classification (2014)
+
+*From "Visualization Analysis and Design", Chapter 2*
+
+:::: {.columns}
+::: {.column width="50%"}
+Fill in examples for each type:
+
+- **Tables**: 
+- **Networks**: 
+- **Fields**: 
+- **Geometry**: 
+:::
+
+::: {.column width="50%"}
+![](figs/table-structure.png){width="90%"}
+:::
+::::
+
+::: {.notes}
+Have students think of examples from their research/work experience
+:::
+
+## Attribute Types
+
+### Why is it useful to identify attribute types?
+
+---
+
+### Guidance in selecting appropriate graphical encoding strategies...
+
+## Stevens' Levels of Measurement (1946)
+
+*From "On the Theory of Scales of Measurement" in Science*
+
+Complete the table with examples:
+
+| Type | Operations | Your Examples |
+|------|------------|---------------|
+| **Nominal** | =, ≠ | |
+| **Ordinal** | =, ≠, <, > | |
+| **Quantitative** | =, ≠, <, >, +, - | |
+
+## Visualization Examples by Attribute Type
+
+### Line Charts: Appropriate for Ordered Data
+![](figs/line-charts-inappropriate.png){width="100%"}
+
+---
+
+### Categorical Data: Arbitrary Sorting
+![](figs/categorical-arbitrary-sorting.png){width="100%"}
+
+---
+
+### Spatial Attributes: Use Spatial Metaphors
+![](figs/spatial-metaphors.png){width="90%"}
+
+---
+
+### Quantitative Data: Divergent Color Scales
+![](figs/divergent-color-scale.png){width="100%"}
+
+---
+
+# Part 1: Analytical Questions
+
+## Visualization as a Tool to Answer Questions with Data
+
+![](figs/domain-to-data-intro.png){width="100%"}
+
+---
+
+## Domain Questions vs. Data Questions
+
+![](figs/domain-vs-data-table.png){width="100%"}
+
+---
+
+## From Domain to Data Questions
+
+![](figs/flight-data-intro.png){width="100%"}
+
+---
+
+## Example: NYC Flight Delays Data
+
+![](figs/flight-data-table.png){width="100%"}
+
+---
+
+## Domain Questions: Flight Data
+
+![](figs/flight-data-domain-questions.png){width="100%"}
+
+---
+
+## Visualization Answers All Questions
+
+![](figs/flight-data-visualization.png){width="100%"}
+
+---
+
+## Example: Vision Zero Initiative
+
+![](figs/vision-zero-example1.png){width="100%"}
+
+---
+
+## Multiple Data Questions from One Domain Question
+
+![](figs/vision-zero-example2.png){width="100%"}
+
+---
+
+## Key Insight: Specificity Matters
+
+**One domain question can lead to many data questions:**
+
+::: {.incremental}
+- **Temporal granularity:** Weekly vs. monthly vs. yearly
+- **Temporal scope:** 5 years vs. 10 years vs. since implementation
+- **Spatial scope:** Citywide vs. by borough vs. by intersection
+- **Measure definition:** Total injuries vs. serious injuries vs. fatalities
+:::
+
+---
+
+## Key Characteristics
+
+![](figs/domain-vs-data-comparison.png){width="100%"}
+
+---
+
+## Assessment Questions Throughout the Pipeline
+
+![](figs/viz-pipeline-assessment2.png){width="100%"}
+
+---
+
+## What Can We Ask of Data?
+
+### Shneiderman's Information Seeking Tasks (1996)
+
+::: {.incremental}
+- **Overview**: What does the data look like?
+- **Zoom**: Focus on items of interest
+- **Filter**: Show me something conditionally
+- **Details-on-demand**: Show me more when I need it
+- **Relate**: How are items connected?
+- **History**: What has changed?
+- **Extract**: Let me save what I find
+:::
+
+::: {.notes}
+Shneiderman's Visual Information Seeking Mantra: Overview first, zoom and filter, then details-on-demand
+:::
+
+## Types of Analytical Tasks
+
+### Low-level Tasks (Amar et al., 2005)
+
+*"Low-Level Components of Analytic Activity in Information Visualization"*
+
+:::: {.columns}
+::: {.column width="50%"}
+**Value Tasks**
+
+- **Retrieve Value**: What is the value of attribute X for case Y?
+- **Filter**: Which cases satisfy condition C?
+- **Compute Derived Value**: What is the value of function F given attribute X?
+- **Find Extremum**: What is the max/min value of attribute X?
+- **Sort**: What is the ordering of cases by attribute X?
+- **Determine Range**: What is the span of values of attribute X?
+:::
+
+::: {.column width="50%"}
+**Pattern Tasks**
+
+- **Find Anomalies**: Which cases are exceptional given their relation to others?
+- **Cluster**: Which cases are similar in value for attributes X, Y, Z?
+- **Correlate**: What is the relationship between attributes X and Y?
+- **Characterize Distribution**: What is the distribution of values of attribute X?
+:::
+::::
+
+## High-level Questions
+
+### According to Bertin (1983)
+
+::: {.incremental}
+1. **Elementary**: What is the value of X for element Y?
+2. **Intermediate**: What elements have value X?
+3. **Overall**: What are the relationships among all elements?
+:::
+
+### Modern Task Frameworks
+
+- **Brehmer & Munzner (2013)**: Why - What - How
+- **Schulz et al. (2013)**: Goals - Means - Characteristics
+
+---
+
+# Part 2: Data Transformation
+
+## Transformation Pipeline Example
+
+![](figs/transformation-pipeline-example.png){width="100%"}
+
+## Data Models vs Conceptual Models
+
+### Data models are formal descriptions
+- Math: sets with operations on them
+- Example: integers with + and × operators
+
+### Conceptual models are mental constructions
+- Include semantics and support reasoning
+
+### Examples (data vs. conceptual)
+- 1D floats vs. temperatures
+- 3D vector of floats vs. spatial location
+
+::: {.notes}
+From Jeff Heer's materials on distinguishing between formal data models and conceptual understanding
+:::
+
+## Types of Variables
+
+### Physical Types
+- Characterized by storage format
+- Characterized by machine operations
+- *Example*: bool, int32, float, double, string
+
+### Abstract Types
+- Provide descriptions of the data
+- May be characterized by methods/attributes
+- May be organized into a hierarchy
+- *Example*: plants, animals, metazoans
+
+## Taxonomy of Data Types
+
+### Shneiderman's Classification (1996)
+
+:::: {.columns}
+::: {.column width="50%"}
+- **1D** (sets and sequences)
+- **Temporal**
+- **2D** (maps)
+- **3D** (shapes)
+:::
+
+::: {.column width="50%"}
+- **nD** (relational)
+- **Trees** (hierarchies)
+- **Networks** (graphs)
+:::
+::::
+
+*"The eyes have it: A task by data type taxonomy for information visualization"*
+
+## Stevens' Levels of Measurement (1946)
+
+| Level | Description | Operations | Examples |
+|-------|-------------|------------|----------|
+| **Nominal** | Categories, no order | =, ≠ | Colors, names, IDs |
+| **Ordinal** | Ordered categories | =, ≠, <, > | Rankings, grades |
+| **Interval** | Numeric, no true zero | =, ≠, <, >, - | Temperature (°C), dates |
+| **Ratio** | Numeric, true zero | =, ≠, <, >, -, % | Height, weight, count |
+
+## From Data Model to N, O, Q
+
+### Example: Temperature Data
+
+**Data Model**
+- 32.5, 54.0, -17.3, ...
+- Floating point numbers
+
+**Conceptual Model**
+- Temperature (°C)
+
+**Data Type**
+- Burned vs. Not-Burned (N)
+- Hot, Warm, Cold (O)
+- Temperature Value (Q-interval)
+
+## Dimensions & Measures
+
+### Dimensions (~ independent variables)
+- Often discrete variables describing data (N, O)
+- Categories, dates, binned quantities
+
+### Measures (~ dependent variables)
+- Data values that can be aggregated (Q)
+- Numbers to be analyzed
+- Aggregate as sum, count, avg, std. dev
+
+*Not a strict distinction. The same variable may be treated either way depending on the task.*
+
+---
+
+## Relational Data Model
+
+### Represent data as a **table** (or relation)
+
+- Each **row** (or tuple) represents a record
+  - Each record is a fixed-length tuple
+  
+- Each **column** (or field) represents a variable
+  - Each field has a name and a data type
+
+- A table's **schema** is the set of names and types
+- A **database** is a collection of tables (relations)
+
+## Relational Algebra / SQL
+
+### Operations on Data Tables: table(s) in, table out
+
+- **Project** (`SELECT`): select a set of columns
+- **Filter** (`WHERE`): remove unwanted rows
+- **Sort** (`ORDER BY`): order records
+- **Aggregate** (`GROUP BY`, `SUM`, `MIN`, `MAX`): partition rows into groups + summarize
+- **Combine** (`JOIN`, `UNION`): integrate data from multiple tables
+
+## SQL Operations: Project
+
+```sql
+SELECT day, stock FROM prices
+```
+
+:::: {.columns}
+::: {.column width="45%"}
+**Input:**
+
+| day  | stock | price  |
+|------|-------|--------|
+| 10/3 | AMZN  | 957.10 |
+| 10/3 | MSFT  | 74.26  |
+| 10/4 | AMZN  | 965.45 |
+| 10/4 | MSFT  | 74.69  |
+:::
+
+::: {.column width="10%"}
+→
+:::
+
+::: {.column width="45%"}
+**Output:**
+
+| day  | stock |
+|------|-------|
+| 10/3 | AMZN  |
+| 10/3 | MSFT  |
+| 10/4 | AMZN  |
+| 10/4 | MSFT  |
+:::
+::::
+
+## SQL Operations: Filter
+
+```sql
+SELECT * FROM prices WHERE price > 100
+```
+
+:::: {.columns}
+::: {.column width="45%"}
+**Input:**
+
+| day  | stock | price  |
+|------|-------|--------|
+| 10/3 | AMZN  | 957.10 |
+| 10/3 | MSFT  | 74.26  |
+| 10/4 | AMZN  | 965.45 |
+| 10/4 | MSFT  | 74.69  |
+:::
+
+::: {.column width="10%"}
+→
+:::
+
+::: {.column width="45%"}
+**Output:**
+
+| day  | stock | price  |
+|------|-------|--------|
+| 10/3 | AMZN  | 957.10 |
+| 10/4 | AMZN  | 965.45 |
+:::
+::::
+
+## SQL Operations: Aggregate
+
+```sql
+SELECT stock, MIN(price) 
+FROM prices 
+GROUP BY stock
+```
+
+:::: {.columns}
+::: {.column width="45%"}
+**Input:**
+
+| day  | stock | price  |
+|------|-------|--------|
+| 10/3 | AMZN  | 957.10 |
+| 10/3 | MSFT  | 74.26  |
+| 10/4 | AMZN  | 965.45 |
+| 10/4 | MSFT  | 74.69  |
+:::
+
+::: {.column width="10%"}
+→
+:::
+
+::: {.column width="45%"}
+**Output:**
+
+| stock | min(price) |
+|-------|------------|
+| AMZN  | 957.10     |
+| MSFT  | 74.26      |
+:::
+::::
+
+## Roll-Up and Drill-Down
+
+![](figs/rollup-drilldown-sql1.png){width="100%"}
+
+---
+
+## Roll-Up and Drill-Down: Adding Dimensions
+
+![](figs/rollup-drilldown-sql2.png){width="100%"}
+
+---
+
+## Data Cube Visualization: Aggregation Operations
+
+![](figs/rollup-drilldown-cube1.png){width="100%"}
+
+---
+
+## Roll-Up vs. Drill-Down Operations
+
+![](figs/rollup-drilldown-cube2.png){width="100%"}
+
+## Tidy Data: Organizing Data for Visualization
+
+**Goal:** Structuring data to make visualization and analysis easier
+
+![](figs/td-table-typical.jpg){width="100%"}
+
+---
+
+## Alternative Data Structures
+
+![](figs/td-table-alternative.jpg){width="100%"}
+
+---
+
+## The Tidy Data Solution
+
+![](figs/td-table-tidy.jpg){width="100%"}
+
+---
+
+## Tidy Data Definition
+
+In tidy data:
+
+::: {.incremental}
+- **Each variable forms a column**
+- **Each observation forms a row**  
+- **Each type of observational unit forms a table**
+:::
+
+---
+
+## Tidy Data Example #1
+
+![](figs/td-table-example.jpg){width="100%"}
+
+---
+
+## Transforming to Tidy Format
+
+![](figs/td-table-towards-tidy.jpg){width="100%"}
+
+---
+
+## Tidy Data Example #2: Before
+
+![](figs/td-table-before-tidy.jpg){width="100%"}
+
+---
+
+## Tidy Data Example #2: After
+
+![](figs/td-table-after-tidy.jpg){width="100%"}
+
+---
+
+# Part 3: Data Wrangling & Profiling
+
+## The Reality of Data Work
+
+> "I spend more than half of my time integrating, cleansing and transforming data without doing any actual analysis. Most of the time I'm lucky if I get to do any 'analysis' at all."
+> 
+> — Anonymous Data Scientist (2012 interview study)
+
+## Visualization Reveals Data Problems
+
+> "The first sign that a visualization is good is that it shows you a problem in your data. Every successful visualization that I've been involved with has had this stage where you realize, 'Oh my God, this data is not what I thought it would be!' So already, you've discovered something."
+> 
+> — Martin Wattenberg (ACM Queue '09)
+
+## Common Data Quality Issues
+
+:::: {.columns}
+::: {.column width="50%"}
+### Missing Data
+- Null values
+- Empty strings
+- Placeholder values (999, -1)
+- Incomplete records
+
+### Inconsistent Data
+- Different formats
+- Duplicate records
+- Conflicting values
+- Unit mismatches
+:::
+
+::: {.column width="50%"}
+### Incorrect Data
+- Data entry errors
+- Outliers
+- Wrong data types
+- Invalid relationships
+
+### Structural Issues
+- Denormalized data
+- Wrong granularity
+- Mixed semantics
+- Schema violations
+:::
+::::
+
+## Data Transformation Pipeline
+
+```mermaid
+graph LR
+    A[Raw Data] --> B[Clean]
+    B --> C[Transform]
+    C --> D[Aggregate]
+    D --> E[Visualize]
+    
+    B --> B1[Handle missing]
+    B --> B2[Fix errors]
+    
+    C --> C1[Derive attributes]
+    C --> C2[Normalize]
+    
+    D --> D1[Group by]
+    D --> D2[Summarize]
+```
+
+## Common Transformation Operations
+
+### 1. Aggregation
+- **Purpose**: Summarize groups of data
+- **Methods**: Sum, mean, median, count, min, max
+- **Example**: Daily sales → Monthly totals
+
+### 2. Filtering
+- **Purpose**: Focus on relevant subset
+- **Types**: Range, categorical, conditional
+
+### 3. Binning
+- **Purpose**: Convert continuous to discrete
+- **Methods**: Equal width, equal frequency, custom
+
+### 4. Normalization
+- **Purpose**: Enable fair comparison
+- **Methods**: Min-max, z-score, percentage
+
+## Creating Derived Attributes
+
+### Calculated Fields
+```python
+# Examples of derived attributes
+df['profit_margin'] = df['profit'] / df['revenue']
+df['year'] = pd.to_datetime(df['date']).dt.year
+df['is_profitable'] = df['profit'] > 0
+df['age_group'] = pd.cut(df['age'], 
+                         bins=[0, 18, 65, 100],
+                         labels=['child', 'adult', 'senior'])
+```
+
+### Feature Engineering
+- Ratios and percentages
+- Time-based features (day of week, season)
+- Categorical encoding (one-hot, ordinal)
+- Text processing (word counts, sentiment)
+
+## Tools for Data Transformation
+
+:::: {.columns}
+::: {.column width="33%"}
+### Programming
+- **Python**: pandas, numpy
+- **R**: dplyr, tidyr
+- **SQL**: CTEs, window functions
+:::
+
+::: {.column width="33%"}
+### Visual Tools
+- **Tableau Prep**
+- **Power Query**
+- **OpenRefine**
+- **Trifacta**
+:::
+
+::: {.column width="34%"}
+### Big Data
+- **Apache Spark**
+- **dbt**
+- **Alteryx**
+- **Apache Beam**
+:::
+::::
+
+## Best Practices
+
+### Data Transformation Guidelines
+
+::: {.incremental}
+1. **Document transformations**: Keep track of all changes
+2. **Preserve raw data**: Never modify original source
+3. **Validate results**: Check for unexpected values
+4. **Test edge cases**: Handle nulls, zeros, outliers
+5. **Consider performance**: Optimize for large datasets
+6. **Make it reproducible**: Script or save workflows
+7. **Think about updates**: Design for new data
+:::
+
+---
+
+# Examples & Practice
+
+## Data to Visualization Examples
+
+### Categories → Bar Chart
+![](figs/categories-to-barchart.png){width="90%"}
+
+---
+
+### Spatial Information → Map
+![](figs/spatial-to-map.png){width="90%"}
+
+## Example: U.S. Census Data
+
+### Data Schema
+- **Year**: 1850-2000 (every decade)
+- **Age**: 0-90+
+- **Sex**: Male, Female
+- **Marital Status**: Single, Married, Divorced, Widowed
+- **People Count**: Number in group
+
+### Questions to Explore
+- How has population age distribution changed?
+- What are marriage patterns by age and year?
+- How do we handle the changing categories over time?
+
+## Interactive Exercise: NYC Taxi Data
+
+### Dataset Description
+
+Raw taxi trip data with these fields:
+
+::: {.incremental}
+- **pickup_datetime, dropoff_datetime**
+- **pickup_location, dropoff_location**  
+- **trip_distance, fare_amount**
+- **passenger_count**
+:::
+
+---
+
+## Your Design Tasks
+
+Work in small groups to design a transformation pipeline:
+
+::: {.incremental}
+1. **What derived attributes would be useful?**
+2. **How would you aggregate for daily patterns?**
+3. **What filtering might reveal insights?**
+4. **How would you handle outliers?**
+:::
+
+::: {.notes}
+Give groups 5-7 minutes, then discuss solutions
+:::
+
+## Common Data Formats
+
+### Text Formats
+```csv
+# CSV: Comma-Separated Values
+year,age,marital_status,sex,people
+1850,0,0,1,1483789
+```
+
+```json
+// JSON: JavaScript Object Notation
+[
+  {"year":1850,"age":0,"marital_status":0,"sex":1,"people":1483789},
+  {"year":1850,"age":5,"marital_status":0,"sex":1,"people":1411067}
+]
+```
+
+### Binary Formats
+- **Arrow**: Columnar memory format
+- **Parquet**: Compressed columnar storage
+- **HDF5**: Hierarchical data format
+
+---
+
+# Summary
+
+## Key Takeaways
+
+### Analytical Questions
+- Different levels of questions require different visualizations
+- Tasks range from elementary lookups to pattern discovery
+- Visual queries enable interactive exploration
+
+### Data Models & Types
+- Distinguish between data models and conceptual models
+- Type (N/O/Q) determines appropriate encodings
+- Dimensions vs measures depends on analytical task
+
+### Data Transformation
+- SQL/relational algebra provides fundamental operations
+- Tidy data principles enable consistent analysis
+- Roll-up and drill-down for multidimensional exploration
+
+### Data Wrangling
+- Most time spent on data preparation, not analysis
+- Visualization helps identify data quality issues
+- Document and automate transformation pipelines
+
+## Next Week
+
+### Week 3: Marks, Channels, and Perception
+- Visual encoding principles
+- Perceptual effectiveness
+- Design guidelines
+
+### Reading
+- Munzner Ch. 4-5
+- Cleveland & McGill (1984)
+
+### Lab (Sept 13)
+- Hands-on data transformation with pandas
+- Creating tidy datasets
+- Building transformation pipelines
+
+## Questions?
+
+### Resources
+- [Tidy Data Paper](https://www.jstatsoft.org/article/view/v059i10)
+- [pandas Documentation](https://pandas.pydata.org/)
+- [Data Transformation with dplyr](https://dplyr.tidyverse.org/)
+- [Jeff Heer's CSE 512 Course](https://courses.cs.washington.edu/courses/cse512/)
+- **Amar, R., Eagan, J., & Stasko, J.** (2005). Low-level components of analytic activity in information visualization. *IEEE Symposium on Information Visualization*, 111-117.
+- **Card, S. K., Mackinlay, J. D., & Shneiderman, B.** (1999). *Readings in Information Visualization: Using Vision to Think*. Morgan Kaufmann.
+- **Munzner, T.** (2014). *Visualization Analysis and Design*. CRC Press.
+- **Shneiderman, B.** (1996). The eyes have it: A task by data type taxonomy for information visualization. *Proceedings 1996 IEEE Symposium on Visual Languages*, 336-343.
+- **Stevens, S. S.** (1946). On the Theory of Scales of Measurement. *Science*, 103(2684), 677-680.
