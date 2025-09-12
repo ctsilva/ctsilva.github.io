@@ -1,0 +1,417 @@
+---
+title: "Week 2 Lab: Intro to Vega-Lite DataTtransformations, Working with Real Datasets"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Ryan Kim"
+institute: "New York University"
+date: "September 12, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    css: lab-light-theme.css
+---
+
+## Logistics
+
+- TA Office Hours: 
+  - Physical Location: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn
+  - Online Zoom: ([https://nyu.zoom.us/j/92815268504](https://nyu.zoom.us/j/92815268504))
+
+- Feedback:
+  - Difficulty of the assignment?
+  - Submission problems?
+  - Discord + Brightspace notifications?
+
+## Week 2 Lab Overview
+
+|User Interface|Graphics Library|Notebook|
+|:--|:--|:--|
+|[observablehq.com](https://observablehq.com)|[Vega-Lite](https://vega.github.io/vega-lite/)|[Week 2 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-2-lab)|
+
+### Today's Lab Activities
+
+All about data transformations with movies!
+
+1. **Binning**
+2. **Aggregation**
+3. **Filtering**
+4. ~~Normalization~~
+
+## Food 4 Thought: "Data" v.s. "Information"
+
+### A Question:
+
+What's the difference between **data** and **information**?
+
+## Food 4 Thought: "Data" v.s. "Information"
+
+### A Question:
+
+What's the difference between **data** and **information**?
+
+### Data v.s. Information
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Data:
+- Facts and statistics collected together for reference or analysis. Can be structured/unstructured, quantitative/qualitative, temporal/static.
+- E.g. Census data, stock prices, sensor readings, survey responses, click streams.
+- Alone, it lacks context and meaning.
+:::
+
+::: {.column width="50%"}
+#### Information:
+- Processed and/or organized form of data.
+- E.g. Sales reports, news articles, graphs & figures.
+- Analyzed, structured, and given context through a narrative established by its handlers.
+:::
+::::
+
+## Meaning-Making: Data -> Information
+
+As engineers, designers, and researchers, we must do the work to **find meaning within the raw data** and **interpret them for the benefit of others**.
+
+![](week2-lab_files/figs/transformation-pipeline-example.png){width="100%"}
+
+## Dataset: Movies
+
+Vega-Lite contains several [datasets](https://vega.github.io/vega-datasets/) available to us. We'll be using a dataset that describes _movies_.
+
+```javascript
+movies = (await require('vega-datasets@1'))['movies.json']()
+```
+
+<br>
+
+### Features/Columns:
+:::: {.columns}
+::: {.column width="25%"}
+- `Title`
+- `US_Gross`
+- `Worldwide_Gross`
+- `US_DVD_Sales`
+:::
+::: {.column width="25%"}
+- `Production_Budget`
+- `Release_Date`
+- `MPAA_Rating`
+- `Running_Time_min`
+:::  
+::: {.column width="25%"}
+- `Distributor`
+- `Source`
+- `Major_Genre`
+- `Creative_Type`
+:::
+::: {.column width="25%"}
+- `Director`
+- `Rotten_Tomatoes_Rating`
+- `IMDB_Rating`
+- `IMDB_Votes`
+:::
+::::
+
+
+## Review: 4 Major Data Transformations
+
+* ### Aggregation
+  - **Purpose**: Summarize groups of data
+  - **Methods**: Sum, mean, median, count, min, max
+  - **Example**: Daily sales → Monthly totals
+
+* ### Filtering
+  - **Purpose**: Focus on relevant subset
+  - **Types**: Range, categorical, conditional 
+
+* ### Binning
+  - **Purpose**: Convert continuous to discrete
+  - **Methods**: Equal width, equal frequency, custom
+  _ **Example**: Dividing age into groups (<18, 18-65, >65)
+
+* ### Normalization
+  - **Purpose**: Enable fair comparison
+  - **Methods**: Min-max, z-score, percentage
+
+## Step 1: Binning
+
+::: {.incremental}
+- Grouping **continuous** data into **discrete** groups.
+- What are some common examples?
+    - Age groups
+    - NYC Boroughs
+    - Years
+    - Grades/Scores
+    - Any kind of continuous data can be binned, in theory.
+- We lose a bit of data in the meantime, but by doing so we increase the probability of deriving new meaning.
+:::
+
+---
+
+### Rotten Tomatoes v.s. IMDb Ratings
+
+::::{.incremental}
+
+::: {.fragment}
+To better understand the importance of aggregation, let's look at raw, unaggregated data of movie ratings across Rotten Tomatoes and IMDb. We'll use **Vega-Lite** to produce a scatter plot using the `circle` mark.
+:::
+
+- **[TO-DO]:** Generate a scatter plot with the `circle` marker, with the X-axis representing the Rotten Tomatoes ratings (`Rotten_Tomatoes_Rating`) and IMDb ratings (`IMDB_Rating`).
+
+:::{.fragment}
+```javascript
+vl.markCircle()
+  .data(movies)
+  .encode(
+    vl.x().fieldQ("Rotten_Tomatoes_Rating"),
+    vl.y().fieldQ("IMDB_Rating")
+  )
+  .render()
+```
+:::
+::::
+
+:::{.fragment}
+![](week2-lab_files/figs/1a.png){width="35%"}
+:::
+
+---
+
+### Your Turn (~5 min):
+
+In the Lab 2 notebook, complete Step 1, from 1b to 1d. You should eventually end up with the following two histograms:
+
+::::{.columns}
+:::{.column width="50%"}
+#### Rotten Tomatoes Counts per Rating (Binned)
+![](week2-lab_files/figs/1c.png){width="100%"}
+:::
+:::{.column width="50%"}
+#### IMDb Counts per Rating (Binned)
+![](week2-lab_files/figs/1d.png){width="100%"}
+:::
+::::
+
+---
+
+### Common Problem: Overplotting
+
+::::{.columns}
+:::{.column width="50%"}
+```javascript
+vl.markCircle()
+  .data(movies)
+  .encode(
+    vl.x().fieldQ('Rotten_Tomatoes_Rating').bin({maxbins: 20}),
+    vl.y().fieldQ('IMDB_Rating').bin({maxbins: 20})
+  )
+  .render()
+```
+Plotting too much data can make it hard to actually understand what's going on with the data.
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/overplotting.png){width="100%"}
+:::
+::::
+
+---
+
+### Benefits of Bins
+
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/1e_example1.png){width="100%"}
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/1e_example2.png){width="100%"}
+:::
+::::
+- Bins aren't just restricted to histograms. _They are compatible with other chart types_
+- Bins can _alleviate overplotting_ issues.
+- Bins can _emphasize outliers_ in data distributions.
+
+## Step 2: Aggregation
+
+Another data transformation that's common is **aggregation**. We use aggregation to _summarize groups of data_  (i.e. mean, median, min/max).
+
+The Vega-Lite documentation includes the [full set of available aggregation functions](https://vega.github.io/vega-lite/docs/aggregate.html#ops), which may be worth reading through.
+
+---
+
+### Averages (Mean) Across Genres
+
+::::{.incremental}
+:::{.fragment}
+```javascript
+vl.markBar()
+  .data(movies)
+  .encode(
+    vl.x().average('Rotten_Tomatoes_Rating'),
+    vl.y().fieldN('Major_Genre')
+  )
+  .render()
+```
+:::
+:::{.fragment}
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/2a.png){width="100%"}
+:::
+:::{.column width="50%"}
+<br />
+There may be some interesting variation, but _it's mentally tasking to try to understand overall rankings across genres._
+:::
+::::
+:::
+::::
+
+---
+
+### Sorting
+
+::::{.incremental}
+:::{.fragment}
+Rather than sort the genres alphabetically, let's try to sort them in _descending order_ of rating (i.e. the genres with the higher ratings are at the top, while the genres with the lower ratings are at the bottom).
+:::
+:::{.fragment}
+![](week2-lab_files/figs/2b.png){width="50%"}
+:::
+:::{.fragment}
+```javascript
+vl.markBar()
+  .data(movies)
+  .encode(
+    vl.x().average('Rotten_Tomatoes_Rating'),
+    vl.y().fieldN('Major_Genre')
+      .sort(vl.average('Rotten_Tomatoes_Rating').order('descending'))
+  )
+  .render()
+```
+:::
+::::
+
+## Food 4 Thought: Averages (Mean) vs. Median
+
+::::{.increment}
+:::{.fragment}
+#### Two Questions:
+- What's the difference between _Averages (Mean)_ and _Median_?
+- Why does it matter?
+:::
+:::{.fragment}
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/skewed-1.png){width="70%"}
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/skewed-2.png){width="70%"}
+:::
+::::
+_Img source: [https://statistics.laerd.com/statistical-guides/measures-central-tendency-mean-mode-median.php](https://statistics.laerd.com/statistical-guides/measures-central-tendency-mean-mode-median.php)_
+:::
+::::
+
+## From Mean to Median
+
+::::{.incremental}
+:::{.fragment}
+```javascript
+vl.markBar()
+  .data(movies)
+  .encode(
+    vl.x().median('Rotten_Tomatoes_Rating'),
+    vl.y().fieldN('Major_Genre')
+      .sort(vl.median('Rotten_Tomatoes_Rating').order('descending'))
+  )
+  .render()
+```
+:::
+:::{.fragment}
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/2c.png){width="100%"}
+:::
+:::{.column width="50%"}
+<br />
+Even with this data, we should still be a bit skeptical. What if, within the genres themselves, there's some skew caused by outliers and such? Observing the variation within each genre is a good way to extend our analysis.
+:::
+::::
+:::
+::::
+
+## Inter-Quartile Range (IQR)
+
+
+::::{.columns}
+:::{.column width="50%"}
+Let's add some _nuance_ to our bar chart by considering the [**"Inter-Quartile Range (IQR)"**](https://en.wikipedia.org/wiki/Interquartile_range) of each genre. 
+
+The _IQR_ is a special range across a set of values that represents where the _middle half_ of the data resides in. A _quartile_ represents 25% of data values. The IQR therefore represents the two middle quartiles, or the middle 50% of data.
+
+<br />
+_Img. src: [https://en.wikipedia.org/wiki/Interquartile_range](https://en.wikipedia.org/wiki/Interquartile_range)_
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/Boxplot_vs_PDF.svg){width="100%"}
+:::
+::::
+
+## Your Turn (~5 min):
+
+In the Lab 2 notebook, complete Step 2d and 2e. You should eventually end up with the following two histograms:
+
+<br />
+
+::::{.columns}
+:::{.column width="50%"}
+#### IQR of Rotten Tomatoes Ratings, by Genres
+![](week2-lab_files/figs/2d){width="100%"}
+:::
+:::{.column width="50%"}
+#### IQR of IMDb Ratings, by Genres
+![](week2-lab_files/figs/2e.png){width="100%"}
+:::
+::::
+
+
+## Core Concepts of Data Transformations
+
+::::{.columns}
+:::{.column width="50%"}
+### We Covered in the Lab:
+* #### Aggregation
+  - **Purpose**: Summarize groups of data
+  - **Methods**: Sum, mean, median, count, min, max
+  - **Example**: Daily sales → Monthly totals
+* #### Binning
+  - **Purpose**: Convert continuous to discrete
+  - **Methods**: Equal width, equal frequency, custom
+  - **Example**: Dividing age into groups (<18, 18-65, >65)
+:::
+:::{.column width="50%"}
+### Covered in Assignment #2:
+* #### Filtering
+  - **Purpose**: Focus on relevant subset
+  - **Types**: Range, categorical, conditional 
+* #### Normalization
+  - **Purpose**: Enable fair comparison
+  - **Methods**: Min-max, z-score, percentages
+:::
+::::
+
+## End of Lab
+
+- Assignment #2 will be posted no later than **September 13, 2025**.
+- Assignment #2 is due on **September 18th, 2025 @ 11:59pm**!
+- Where do I ask questions?
+  - TA Office Hours: 
+    - Physical Location: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn
+    - Online Zoom: ([https://nyu.zoom.us/j/92815268504](https://nyu.zoom.us/j/92815268504))
+  - Our course Discord!
