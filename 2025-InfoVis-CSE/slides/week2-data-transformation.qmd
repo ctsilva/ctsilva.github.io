@@ -1,11 +1,13 @@
 ---
 title: "Week 2: Analytical Questions and Data Transformation"
 subtitle: "CS-GY 6313 Information Visualization"
-author: "Claudio Silva"
+author: "Parikshit Solunke"
 institute: "New York University"
 date: "September 12, 2025"
 format:
   revealjs:
+    mermaid:
+      theme: default
     theme: [default, custom.scss]
     slide-number: c/t
     show-slide-number: all
@@ -38,13 +40,12 @@ This lecture incorporates materials from:
   
 ## Today's Agenda
 
-### Four Main Parts
+### Three Main Parts
 
 ::: {.incremental}
-1. **Recapitulation:** Data Fundamentals
-2. **Part 1:** Analytical Questions  
-3. **Part 2:** Data Transformation
-4. **Part 3:** Data Wrangling & Profiling
+1. **Part 1:** Recap:** Data Fundamentals
+2. **Part 2:** Analytical Questions  
+3. **Part 3:** Data Wrangling and Transformations
 :::
 
 ---
@@ -53,7 +54,7 @@ This lecture incorporates materials from:
 
 :::: {.columns}
 ::: {.column width="50%"}
-### Recapitulation & Part 1
+### Recapitulation & Part 2
 - What is data? (Interactive discussion)
 - Data abstraction: Items + Attributes
 - Dataset and attribute types
@@ -62,7 +63,7 @@ This lecture incorporates materials from:
 :::
 
 ::: {.column width="50%"}
-### Parts 2 & 3
+### Part 3 
 - SQL operations and relational algebra
 - Roll-up and drill-down operations
 - Tidy data principles
@@ -97,12 +98,14 @@ Interactive discussion - students provide examples and we build definition toget
 
 ::: {.incremental}
 1. **Collection**: Raw data from various sources
-2. **Transformation**: Data tables, cleaning, structuring
+2. **Transformation**: Data tables, cleaning, structuring, aggregations etc
 3. **Visualization**: Visual structures and views
 :::
 
 ::: {.notes}
 Complete this together - what happens at each stage?
+
+  
 :::
 
 ## Data Abstraction
@@ -136,7 +139,7 @@ Complete this together - what happens at each stage?
 - Definition: Objects/entities you want to visualize
 - Examples: 
 
-**Attributes** (also called variables, dimensions, fields):
+**Attributes** (also called variables, features, fields):
 - Definition: Properties of these objects/entities
 - Examples: 
 
@@ -169,25 +172,50 @@ Fill in examples for each type:
 Have students think of examples from their research/work experience
 :::
 
+---
+
 ## Attribute Types
 
-### Why is it useful to identify attribute types?
+### Qualitative (Categorical):
+- **Nominal:** No order (colors, countries)
+- **Ordinal:** Natural order (low/medium/high)
+- **Binary:** Two options (yes/no)
+
+### Quantitative (Numeric):
+- **Discrete:** Countable numbers (students in class)
+- **Continuous:** Any value in range (height, temperature)
 
 ---
 
-### Guidance in selecting appropriate graphical encoding strategies...
-
 ## Stevens' Levels of Measurement (1946)
 
-*From "On the Theory of Scales of Measurement" in Science*
+Complete the table with examples: 
 
-Complete the table with examples:
+| Level | Description | Operations | Examples |
+|-------|-------------|------------|----------|
+| **Nominal** | Categories, no order | =, ≠ |  |
+| **Ordinal** | Ordered categories | =, ≠, <, > |  |
+| **Interval (Quantitative)** | Numeric, no true zero | =, ≠, <, >, - |  |
+| **Ratio (Quantitative)** | Numeric, true zero | =, ≠, <, >, -, % |  |
 
-| Type | Operations | Your Examples |
-|------|------------|---------------|
-| **Nominal** | =, ≠ | |
-| **Ordinal** | =, ≠, <, > | |
-| **Quantitative** | =, ≠, <, >, +, - | |
+
+:::{.notes}
+ Colors, names, IDs |
+| **Ordinal** | Ordered categories | =, ≠, <, > | Rankings, grades |
+| **Interval** | Numeric, no true zero | =, ≠, <, >, - | Temperature (°C or °F only, Kelvin has a true 0 ), dates |
+| **Ratio** | Numeric, true zero | =, ≠, <, >, -, % | Height, weight, age, income |
+:::
+---
+
+### Why is it useful to identify attribute types?
+
+::: {.fragment}
+<br>
+</br>
+Types provide guidance in selecting appropriate graphical encoding strategies...
+:::
+
+---
 
 ## Visualization Examples by Attribute Type
 
@@ -211,7 +239,98 @@ Complete the table with examples:
 
 ---
 
-# Part 1: Analytical Questions
+## (More) Ways of Characterizing Variables
+
+### Physical Types
+- Characterized by storage format
+- Characterized by machine operations
+- *Example*: bool, int32, float, double, string
+
+### Abstract Types
+- Provide descriptions of the data
+- May be characterized by methods/attributes
+- May be organized into a hierarchy
+- *Example*: plants, animals, metazoans
+
+## Taxonomy of Data Types
+
+### Shneiderman's Classification (1996)
+
+:::: {.columns}
+::: {.column width="50%"}
+- **1D** (sets and sequences)
+- **Temporal**
+- **2D** (maps)
+- **3D** (shapes)
+:::
+
+::: {.column width="50%"}
+- **nD** (relational)
+- **Trees** (hierarchies)
+- **Networks** (graphs)
+:::
+::::
+
+*"The eyes have it: A task by data type taxonomy for information visualization"*
+
+## Dimensions & Measures
+
+### Dimensions (~ independent variables)
+- **Categorical variables** that describe and organize data (Nominal, Ordinal)
+- Examples: Categories, dates, regions, binned quantities
+- Used for: Grouping, filtering, splitting data
+
+### Measures (~ dependent variables)
+- Quantitative values that can be aggregated (Q)
+- Examples: Sales revenue, temperature readings, counts
+- Used for: Sum, count, average, std. dev, min/max
+
+*Not a strict distinction. The same variable may be treated either way depending on the task. For example - Weather if described as - Hot/Cold(N) vs Temparature Values(Q)*
+
+---
+
+## Data Models vs Conceptual Models
+
+### Data models are formal descriptions
+- Focus on storage, computation, and manipulation
+- Example: Array of 32-bit floats [98.6, 101.2, 99.1]
+
+### Conceptual models are mental constructions
+- Semantic, meaning-rich representations
+- Support reasoning, interpretation, and understanding
+- Example: Patient temperatures (normal, fever, recovering)
+
+### Examples (data vs. conceptual)
+- Float array [1.2, -0.8, 2.1] vs. market volatility
+- 3D vector of floats vs. spatial location
+
+**Data models ask "How is it stored?" Conceptual models ask "What does it mean?"**
+
+::: {.notes}
+From Jeff Heer's materials on distinguishing between formal data models and conceptual understanding
+:::
+
+## From Data Model to Stevens' Levels
+
+**Example: Temperature Data**
+
+### Data Model
+- 32.5, 54.0, -17.3, ...
+- Floating point numbers
+
+### Conceptual Model
+- Temperature (°C)
+
+### Measurement Scales (Stevens' Levels):
+- Above/Below Freezing (Nominal)
+- Cold, Warm, Hot (Ordinal)
+- Actual Temperature Values (Quantitative - Interval)
+
+**Key Point**: Same data, different analytical possibilities depending on measurement scale
+
+---
+
+# Part 2: Analytical Questions
 
 ## Visualization as a Tool to Answer Questions with Data
 
@@ -304,6 +423,24 @@ Complete the table with examples:
 Shneiderman's Visual Information Seeking Mantra: Overview first, zoom and filter, then details-on-demand
 :::
 
+
+## The Three Levels of Questions
+
+### According to Bertin (1983)
+
+::: {.incremental}
+1. **Elementary**: What is the value of X for element Y?
+2. **Intermediate**: What elements have value X?
+3. **Overall**: What are the relationships among all elements?
+:::
+
+## Modern Task Frameworks
+
+- **Brehmer & Munzner (2013)**: Why - What - How
+- **Schulz et al. (2013)**: Goals - Means - Characteristics
+
+---
+
 ## Types of Analytical Tasks
 
 ### Low-level Tasks (Amar et al., 2005)
@@ -332,119 +469,120 @@ Shneiderman's Visual Information Seeking Mantra: Overview first, zoom and filter
 :::
 ::::
 
-## High-level Questions
+---
 
-### According to Bertin (1983)
+## Why Task Frameworks?
 
-::: {.incremental}
-1. **Elementary**: What is the value of X for element Y?
-2. **Intermediate**: What elements have value X?
-3. **Overall**: What are the relationships among all elements?
+:::{.incremental}
+
+- **Choose appropriate visual encodings** - Match data types to suitable visual representations
+- **Support user tasks** - Ensure your visualization enables the analytical tasks users need
+- **Design systematic interactions** - Know what operations users expect to perform
+- **Avoid visualization pitfalls** - Understand when certain chart types mislead or fail
+- **Evaluate design decisions** - Test whether your visualization supports intended analytical goals
+- **Create complete tools** - Build systems that handle the full spectrum of data analysis tasks
 :::
 
-### Modern Task Frameworks
+# Part 3: Data Wrangling and Transformation
 
-- **Brehmer & Munzner (2013)**: Why - What - How
-- **Schulz et al. (2013)**: Goals - Means - Characteristics
+
+## The Reality of Data Work
+
+> "I spend more than half of my time integrating, cleansing and transforming data without doing any actual analysis. Most of the time I'm lucky if I get to do any 'analysis' at all."
+> 
+> — Anonymous Data Scientist (2012 interview study)
+
+## Visualization Reveals Data Problems
+
+> "The first sign that a visualization is good is that it shows you a problem in your data. Every successful visualization that I've been involved with has had this stage where you realize, 'Oh my God, this data is not what I thought it would be!' So already, you've discovered something."
+> 
+> — Martin Wattenberg (ACM Queue '09)
 
 ---
 
-# Part 2: Data Transformation
+## Data Wrangling Pipeline
+
+![](figs/data-wrangling-pipeline.png){width="100%"}
+
+## Common Data Quality Issues
+:::{.fragment}
+:::: {.columns}
+::: {.column width="50%"}
+### Missing Data
+- Null values
+- Empty strings
+- Placeholder values (999, -1)
+- Incomplete records
+
+### Inconsistent Data
+- Different formats
+- Duplicate records
+- Conflicting values
+- Unit mismatches
+:::
+
+::: {.column width="50%"}
+### Incorrect Data
+- Data entry errors
+- Outliers
+- Wrong data types
+- Invalid relationships
+
+### Structural Issues
+- Denormalized data
+- Wrong granularity
+- Mixed semantics
+- Schema violations
+:::
+::::
+:::
+
+## Common Data Cleaning Techniques
+
+:::{.incremental}
+* ### Handling Missing Values
+  - **Purpose**: Address incomplete data
+  - **Methods**: Imputation, deletion, interpolation
+  - **Example**: Fill missing ages with median value
+
+* ### Duplicate Removal
+  - **Purpose**: Eliminate redundant records
+  - **Types**: Exact matches, fuzzy matching, key-based
+
+* ### Outlier Detection
+  - **Purpose**: Identify anomalous values
+  - **Methods**: Statistical bounds, domain rules, clustering
+
+* ### Data Type Correction
+  - **Purpose**: Ensure proper format consistency
+  - **Methods**: Parsing, casting, validation rules
+:::
+
+## Common Transformation Operations
+
+:::{.incremental}
+* ### Aggregation
+  - **Purpose**: Summarize groups of data
+  - **Methods**: Sum, mean, median, count, min, max
+  - **Example**: Daily sales → Monthly totals
+
+* ### Filtering
+  - **Purpose**: Focus on relevant subset
+  - **Types**: Range, categorical, conditional 
+
+* ### Binning
+  - **Purpose**: Convert continuous to discrete
+  - **Methods**: Equal width, equal frequency, custom
+  _ **Example**: Dividing age into groups (<18, 18-65, >65)
+
+* ### Normalization
+  - **Purpose**: Enable fair comparison
+  - **Methods**: Min-max, z-score, percentage
+:::
 
 ## Transformation Pipeline Example
 
 ![](figs/transformation-pipeline-example.png){width="100%"}
-
-## Data Models vs Conceptual Models
-
-### Data models are formal descriptions
-- Math: sets with operations on them
-- Example: integers with + and × operators
-
-### Conceptual models are mental constructions
-- Include semantics and support reasoning
-
-### Examples (data vs. conceptual)
-- 1D floats vs. temperatures
-- 3D vector of floats vs. spatial location
-
-::: {.notes}
-From Jeff Heer's materials on distinguishing between formal data models and conceptual understanding
-:::
-
-## Types of Variables
-
-### Physical Types
-- Characterized by storage format
-- Characterized by machine operations
-- *Example*: bool, int32, float, double, string
-
-### Abstract Types
-- Provide descriptions of the data
-- May be characterized by methods/attributes
-- May be organized into a hierarchy
-- *Example*: plants, animals, metazoans
-
-## Taxonomy of Data Types
-
-### Shneiderman's Classification (1996)
-
-:::: {.columns}
-::: {.column width="50%"}
-- **1D** (sets and sequences)
-- **Temporal**
-- **2D** (maps)
-- **3D** (shapes)
-:::
-
-::: {.column width="50%"}
-- **nD** (relational)
-- **Trees** (hierarchies)
-- **Networks** (graphs)
-:::
-::::
-
-*"The eyes have it: A task by data type taxonomy for information visualization"*
-
-## Stevens' Levels of Measurement (1946)
-
-| Level | Description | Operations | Examples |
-|-------|-------------|------------|----------|
-| **Nominal** | Categories, no order | =, ≠ | Colors, names, IDs |
-| **Ordinal** | Ordered categories | =, ≠, <, > | Rankings, grades |
-| **Interval** | Numeric, no true zero | =, ≠, <, >, - | Temperature (°C), dates |
-| **Ratio** | Numeric, true zero | =, ≠, <, >, -, % | Height, weight, count |
-
-## From Data Model to N, O, Q
-
-### Example: Temperature Data
-
-**Data Model**
-- 32.5, 54.0, -17.3, ...
-- Floating point numbers
-
-**Conceptual Model**
-- Temperature (°C)
-
-**Data Type**
-- Burned vs. Not-Burned (N)
-- Hot, Warm, Cold (O)
-- Temperature Value (Q-interval)
-
-## Dimensions & Measures
-
-### Dimensions (~ independent variables)
-- Often discrete variables describing data (N, O)
-- Categories, dates, binned quantities
-
-### Measures (~ dependent variables)
-- Data values that can be aggregated (Q)
-- Numbers to be analyzed
-- Aggregate as sum, count, avg, std. dev
-
-*Not a strict distinction. The same variable may be treated either way depending on the task.*
-
----
 
 ## Relational Data Model
 
@@ -591,6 +729,29 @@ GROUP BY stock
 
 ![](figs/rollup-drilldown-cube2.png){width="100%"}
 
+---
+
+## Creating Derived Attributes
+
+### Calculated Fields
+```python
+# Examples of derived attributes
+df['profit_margin'] = df['profit'] / df['revenue']
+df['year'] = pd.to_datetime(df['date']).dt.year
+df['is_profitable'] = df['profit'] > 0
+df['age_group'] = pd.cut(df['age'], 
+                         bins=[0, 18, 65, 100],
+                         labels=['child', 'adult', 'senior'])
+```
+
+### Feature Engineering
+- Ratios and percentages
+- Time-based features (day of week, season)
+- Categorical encoding (one-hot, ordinal)
+- Text processing (word counts, sentiment)
+
+---
+
 ## Tidy Data: Organizing Data for Visualization
 
 **Goal:** Structuring data to make visualization and analysis easier
@@ -647,109 +808,6 @@ In tidy data:
 
 ---
 
-# Part 3: Data Wrangling & Profiling
-
-## The Reality of Data Work
-
-> "I spend more than half of my time integrating, cleansing and transforming data without doing any actual analysis. Most of the time I'm lucky if I get to do any 'analysis' at all."
-> 
-> — Anonymous Data Scientist (2012 interview study)
-
-## Visualization Reveals Data Problems
-
-> "The first sign that a visualization is good is that it shows you a problem in your data. Every successful visualization that I've been involved with has had this stage where you realize, 'Oh my God, this data is not what I thought it would be!' So already, you've discovered something."
-> 
-> — Martin Wattenberg (ACM Queue '09)
-
-## Common Data Quality Issues
-
-:::: {.columns}
-::: {.column width="50%"}
-### Missing Data
-- Null values
-- Empty strings
-- Placeholder values (999, -1)
-- Incomplete records
-
-### Inconsistent Data
-- Different formats
-- Duplicate records
-- Conflicting values
-- Unit mismatches
-:::
-
-::: {.column width="50%"}
-### Incorrect Data
-- Data entry errors
-- Outliers
-- Wrong data types
-- Invalid relationships
-
-### Structural Issues
-- Denormalized data
-- Wrong granularity
-- Mixed semantics
-- Schema violations
-:::
-::::
-
-## Data Transformation Pipeline
-
-```mermaid
-graph LR
-    A[Raw Data] --> B[Clean]
-    B --> C[Transform]
-    C --> D[Aggregate]
-    D --> E[Visualize]
-    
-    B --> B1[Handle missing]
-    B --> B2[Fix errors]
-    
-    C --> C1[Derive attributes]
-    C --> C2[Normalize]
-    
-    D --> D1[Group by]
-    D --> D2[Summarize]
-```
-
-## Common Transformation Operations
-
-### 1. Aggregation
-- **Purpose**: Summarize groups of data
-- **Methods**: Sum, mean, median, count, min, max
-- **Example**: Daily sales → Monthly totals
-
-### 2. Filtering
-- **Purpose**: Focus on relevant subset
-- **Types**: Range, categorical, conditional
-
-### 3. Binning
-- **Purpose**: Convert continuous to discrete
-- **Methods**: Equal width, equal frequency, custom
-
-### 4. Normalization
-- **Purpose**: Enable fair comparison
-- **Methods**: Min-max, z-score, percentage
-
-## Creating Derived Attributes
-
-### Calculated Fields
-```python
-# Examples of derived attributes
-df['profit_margin'] = df['profit'] / df['revenue']
-df['year'] = pd.to_datetime(df['date']).dt.year
-df['is_profitable'] = df['profit'] > 0
-df['age_group'] = pd.cut(df['age'], 
-                         bins=[0, 18, 65, 100],
-                         labels=['child', 'adult', 'senior'])
-```
-
-### Feature Engineering
-- Ratios and percentages
-- Time-based features (day of week, season)
-- Categorical encoding (one-hot, ordinal)
-- Text processing (word counts, sentiment)
-
 ## Tools for Data Transformation
 
 :::: {.columns}
@@ -779,7 +837,7 @@ df['age_group'] = pd.cut(df['age'],
 
 ## Best Practices
 
-### Data Transformation Guidelines
+### Data Wrangling Guidelines
 
 ::: {.incremental}
 1. **Document transformations**: Keep track of all changes
