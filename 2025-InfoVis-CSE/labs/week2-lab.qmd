@@ -1,0 +1,468 @@
+---
+title: "Week 2 Lab: Intro to Data Transformations"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Ryan Kim"
+institute: "New York University"
+date: "September 12, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    css: lab-light-theme.css
+---
+
+## Logistics
+
+- TA Office Hours: 
+  - Physical Location: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn
+  - Online Zoom: ([https://nyu.zoom.us/j/92815268504](https://nyu.zoom.us/j/92815268504))
+
+- Feedback:
+  - Difficulty of the assignment?
+  - Submission problems?
+  - Discord + Brightspace notifications?
+
+## Week 2 Lab Overview
+
+|User Interface|Graphics Library|Notebook|
+|:--|:--|:--|
+|[observablehq.com](https://observablehq.com)|[Vega-Lite](https://vega.github.io/vega-lite/)|[Week 2 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-2-lab)|
+
+### Today's Lab Activities
+
+All about data transformations with movies!
+
+1. **Binning**
+2. **Aggregation**
+3. **Filtering**
+4. ~~Normalization~~
+
+## Food 4 Thought: "Data" v.s. "Information"
+
+### A Question:
+
+What's the difference between **data** and **information**?
+
+## Food 4 Thought: "Data" v.s. "Information"
+
+### A Question:
+
+What's the difference between **data** and **information**?
+
+### Data v.s. Information
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Data:
+- Facts and statistics collected together for reference or analysis. Can be structured/unstructured, quantitative/qualitative, temporal/static.
+- E.g. Census data, stock prices, sensor readings, survey responses, click streams.
+- Alone, it lacks context and meaning.
+:::
+
+::: {.column width="50%"}
+#### Information:
+- Processed and/or organized form of data.
+- E.g. Sales reports, news articles, graphs & figures.
+- Analyzed, structured, and given context through a narrative established by its handlers.
+:::
+::::
+
+## Meaning-Making: Data -> Information
+
+As engineers, designers, and researchers, we must do the work to **find meaning within the raw data** and **interpret them for the benefit of others**.
+
+![](week2-lab_files/figs/transformation-pipeline-example.png){width="100%"}
+
+## Dataset: Movies
+
+Vega-Lite contains several [datasets](https://vega.github.io/vega-datasets/) available to us. We'll be using a dataset that describes _movies_.
+
+```javascript
+movies = (await require('vega-datasets@1'))['movies.json']()
+```
+
+<br>
+
+### Features/Columns:
+:::: {.columns}
+::: {.column width="25%"}
+- `Title`
+- `US_Gross`
+- `Worldwide_Gross`
+- `US_DVD_Sales`
+:::
+::: {.column width="25%"}
+- `Production_Budget`
+- `Release_Date`
+- `MPAA_Rating`
+- `Running_Time_min`
+:::  
+::: {.column width="25%"}
+- `Distributor`
+- `Source`
+- `Major_Genre`
+- `Creative_Type`
+:::
+::: {.column width="25%"}
+- `Director`
+- `Rotten_Tomatoes_Rating`
+- `IMDB_Rating`
+- `IMDB_Votes`
+:::
+::::
+
+
+## Review: 4 Major Data Transformations
+
+* ### Aggregation
+  - **Purpose**: Summarize groups of data
+  - **Methods**: Sum, mean, median, count, min, max
+  - **Example**: Daily sales → Monthly totals
+
+* ### Filtering
+  - **Purpose**: Focus on relevant subset
+  - **Types**: Range, categorical, conditional 
+
+* ### Binning
+  - **Purpose**: Convert continuous to discrete
+  - **Methods**: Equal width, equal frequency, custom
+  _ **Example**: Dividing age into groups (<18, 18-65, >65)
+
+* ### Normalization
+  - **Purpose**: Enable fair comparison
+  - **Methods**: Min-max, z-score, percentage
+
+## Step 1: Binning
+
+::: {.incremental}
+- Grouping **continuous** data into **discrete** groups.
+- What are some common examples?
+    - Age groups
+    - NYC Boroughs
+    - Years
+    - Grades/Scores
+    - Any kind of continuous data can be binned, in theory.
+- We lose a bit of data in the meantime, but by doing so we increase the probability of deriving new meaning.
+:::
+
+---
+
+### Rotten Tomatoes v.s. IMDb Ratings
+
+::::{.incremental}
+
+::: {.fragment}
+To better understand the importance of aggregation, let's look at raw, unaggregated data of movie ratings across Rotten Tomatoes and IMDb. We'll use **Vega-Lite** to produce a scatter plot using the `circle` mark.
+:::
+
+- **[TO-DO]:** Generate a scatter plot with the `circle` marker, with the X-axis representing the Rotten Tomatoes ratings (`Rotten_Tomatoes_Rating`) and IMDb ratings (`IMDB_Rating`).
+
+:::{.fragment}
+```javascript
+vl.markCircle()
+  .data(movies)
+  .encode(
+    vl.x().fieldQ("Rotten_Tomatoes_Rating"),
+    vl.y().fieldQ("IMDB_Rating")
+  )
+  .render()
+```
+:::
+::::
+
+:::{.fragment}
+![](week2-lab_files/figs/1a.png){width="35%"}
+:::
+
+---
+
+### Your Turn (~5 min):
+
+In the Lab 2 notebook, complete Step 1, from 1b to 1d. You should eventually end up with the following two histograms:
+
+::::{.columns}
+:::{.column width="50%"}
+#### Rotten Tomatoes Counts per Rating (Binned)
+![](week2-lab_files/figs/1c.png){width="100%"}
+:::
+:::{.column width="50%"}
+#### IMDb Counts per Rating (Binned)
+![](week2-lab_files/figs/1d.png){width="100%"}
+:::
+::::
+
+---
+
+### Common Problem: Overplotting
+
+::::{.columns}
+:::{.column width="50%"}
+```javascript
+vl.markCircle()
+  .data(movies)
+  .encode(
+    vl.x().fieldQ('Rotten_Tomatoes_Rating').bin({maxbins: 20}),
+    vl.y().fieldQ('IMDB_Rating').bin({maxbins: 20})
+  )
+  .render()
+```
+Plotting too much data can make it hard to actually understand what's going on with the data.
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/overplotting.png){width="100%"}
+:::
+::::
+
+---
+
+### Benefits of Bins
+
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/1e_example1.png){width="100%"}
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/1e_example2.png){width="100%"}
+:::
+::::
+- Bins aren't just restricted to histograms. _They are compatible with other chart types_
+- Bins can _alleviate overplotting_ issues.
+- Bins can _emphasize outliers_ in data distributions.
+
+## Step 2: Aggregation
+
+
+
+### Common Marks
+
+:::: {.columns}
+::: {.column width="33%"}
+#### Points & Lines
+- `point`: Scatterplots
+- `line`: Line charts
+- `area`: Area charts
+- `trail`: Connected points
+:::
+
+::: {.column width="33%"}
+#### Bars & Rectangles
+- `bar`: Bar charts
+- `rect`: Heatmaps
+- `square`: Equal-width rectangles
+:::
+
+::: {.column width="33%"}
+#### Other
+- `circle`: Fixed-size circles
+- `text`: Text labels
+- `tick`: Tick marks
+- `arc`: Pie charts
+:::
+::::
+
+## Exercise 1: Changing Chart Types
+
+### Task
+Replace `markCircle()` to generate different scatter plots using point, square, and tick.
+
+### Starter Code
+```javascript
+vl.markCircle() // TO-DO: Change this to show point, square and tick plots instead.
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),
+    vl.y().fieldQ("Miles_per_Gallon"),
+    vl.tooltip().fieldN("Name")
+  )
+  .render()
+```
+## Step 3b. Data Types
+
+|Data Type|API Equivalent|Description|Examples|
+|:--|:--|:--|:--|
+|Quantitative|\`fieldQ()\`| numerical magnitudes | 1, 1.2, 3, 4, $1,230.60|
+|Temporal|\`fieldT()\`| corresponding to Date values | 2019-01-02T00:01:23Z, 1996|
+|Nominal|\`fieldN()\`| unordered, categorical data | Audi, Ford, Hyundai, Tesla|
+|Ordinal|\`fieldO()\`| like nominal, but with an inherent order | small, medium, large|
+
+
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),        // This is a Quantitative type
+    vl.y().fieldQ("Miles_per_Gallon"),  // This is a Quantitative type
+    vl.tooltip().fieldN("Name")         // This is a Nominal type
+  )
+  .render()
+```
+
+
+## Step 3c. Visual Encodings
+
+### Encoding Channels
+
+| Channel | Use Case | Data Types |
+|---------|----------|------------|
+| `x`, `y` | Position | Quantitative, Ordinal, Temporal |
+| `color` | Category distinction | Nominal, Ordinal, Quantitative |
+| `size` | Magnitude | Quantitative |
+| `shape` | Category distinction | Nominal |
+| `opacity` | Emphasis/de-emphasis | Quantitative |
+| `tooltip` | Details on demand | Any |
+
+
+## Exercise 2: Bar Chart
+
+### Task
+Modify the code below in the following ways:
+
+1. Modify the x-axis to display "Year".
+2. Modify the y-axis to display "Horsepower".
+3. Modify the tooltip to display "Origin" instead of "Name".
+
+### Starter Code
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),        // TO-DO: Change this to represent "Year"
+    vl.y().fieldQ("Miles_per_Gallon"),  // TO-DO: Change this to represent "Horsepower"
+    vl.tooltip().fieldN("Name")         // TO-DO: Change this to represent "Origin"
+  )
+  .render()
+```
+
+## Step 3c. Render Settings
+
+**Vega-Lite** offers some different rendering options.
+
+- **Rendering as SVG**: Rather than rendering the chart as an HTML \<canvas\> element, the chart is rendered as an SVG image. This produces sharp images, but doesn't work well with large datasets
+- **Rendering as an Object**: For compatibility with **Vega-Lite** as a JavaScript library, you can also render the code into a JavaScript object.
+
+## Exercise 3: Render Settings
+
+### Task
+Try the following individually:
+
+1. Add `{ renderer: "svg" }` inside of the `render()` method.
+2. Replace `render()` with `toObject()` instead.
+
+### Starter Code
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),
+    vl.y().fieldQ("Miles_per_Gallon"),
+    vl.tooltip().fieldN("Name")
+  )
+  .render()   // TO-DO: Replace this line to either render as an SVG or as an JavaScript Object
+```
+
+## Step 4. A note on Tidy Data
+
+### The 3 Rules of Tidy Data
+
+- Each variable is a column; each column is a variable.
+- Each observation is a row; each row is an observation.
+- Each value is a cell; each cell is a single value.
+
+### Why Tidy?
+
+The _"shape"_ of your data is incredibly important! It helps with data transfer between different **Observable** notebooks, and even working with different environments altogether (e.g. **R**, **Tableau**).
+
+_Learn more here: [https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)_
+
+## Step 5: Coloring Charts
+
+Two ways to color charts:
+
+- Coloring all data points with a manually-designated color
+- Coloring based on a data feature / column.
+
+Coloration helps with visual communication of core relationships between data groups, or adding a 3rd dimension to data that is hard to capture in 2D graphs.
+
+### Code Sample
+
+```javascript
+vl.markCircle()
+  ...
+  .encode(
+    ...
+    vl.color().\<METHOD\>
+    ...
+  )
+  .render()
+```
+
+## Exercise 4: Color Charts
+
+Color the chart two ways:
+
+- Manually set a color "red" across all data points.
+- Coloring points based on the "Origin" data feature.
+
+### Starter Code
+
+```javascript
+vl.markCircle()
+  .data(cars)
+  .encode(
+    vl.x().fieldQ("Horsepower"),
+    vl.y().fieldQ("Miles_per_Gallon"),
+    // TO-DO: Add color options for coloring either all points or coloring points by "Origin"
+    vl.tooltip().fieldN("Name")
+  )
+  .render()
+```
+
+
+## Tips for Success
+
+### Best Practices
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Do's ✅
+- Start with simple charts
+- Test incrementally
+- Read error messages
+- Use Observable examples
+- Ask questions early
+:::
+
+::: {.column width="50%"}
+#### Don'ts ❌
+- Don't overcomplicate
+- Don't ignore data types
+- Don't forget axis labels
+- Don't use too many colors
+- Don't skip documentation
+:::
+::::
+
+
+## Resources for This Week
+
+### Documentation
+- [Vega-Lite Documentation](https://vega.github.io/vega-lite/)
+- [Observable Documentation](https://observablehq.com/documentation/)
+- [Example Gallery](https://vega.github.io/vega-lite/examples/)
+
+### Useful Observable Notebooks
+- [Introduction to Vega-Lite](https://observablehq.com/@uwdata/introduction-to-vega-lite)
+- [Data Types and Encoding Channels](https://observablehq.com/@uwdata/data-types-graphical-marks-encoding-channels)
+
+### Getting Help
+- Course Discord channel
+- Office hours (TBD)
+
