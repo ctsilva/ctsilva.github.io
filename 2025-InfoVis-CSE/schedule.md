@@ -4,7 +4,7 @@ permalink: /2025-InfoVis-CSE/schedule
 author_profile: true
 ---
 
-[← Back to Course Home](/2025-InfoVis-CSE/home) | [Syllabus](/2025-InfoVis-CSE/syllabus)
+[← Back to Course Home](/) | [Syllabus](syllabus)
 
 ## Detailed Schedule
 
