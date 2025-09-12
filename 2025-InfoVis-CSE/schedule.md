@@ -52,7 +52,7 @@ author_profile: true
 **Optional Reading:**
 - [The Eyes Have It: A Task by Data Type Taxonomy](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/models/shneiderman96eyes.pdf), Shneiderman. 1996.
 
-**Lab:** 
+**Lab: [Week 2 Lab - Intro to Vega-Lite DataTtransformations, Working with Real Datasets](/2025-InfoVis-CSE/labs/week2-lab.html)** 
 - Vega-Lite data transformations
 - Working with real datasets in Observable
 - Data aggregation and filtering

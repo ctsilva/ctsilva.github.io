@@ -1,5 +1,5 @@
 ---
-title: "Week 2 Lab: Intro to Data Transformations"
+title: "Week 2 Lab: Intro to Vega-Lite DataTtransformations, Working with Real Datasets"
 subtitle: "CS-GY 6313 - Information Visualization"
 author: "Ryan Kim"
 institute: "New York University"
@@ -239,230 +239,179 @@ Plotting too much data can make it hard to actually understand what's going on w
 
 ## Step 2: Aggregation
 
+Another data transformation that's common is **aggregation**. We use aggregation to _summarize groups of data_  (i.e. mean, median, min/max).
 
+The Vega-Lite documentation includes the [full set of available aggregation functions](https://vega.github.io/vega-lite/docs/aggregate.html#ops), which may be worth reading through.
 
-### Common Marks
+---
 
-:::: {.columns}
-::: {.column width="33%"}
-#### Points & Lines
-- `point`: Scatterplots
-- `line`: Line charts
-- `area`: Area charts
-- `trail`: Connected points
+### Averages (Mean) Across Genres
+
+::::{.incremental}
+:::{.fragment}
+```javascript
+vl.markBar()
+  .data(movies)
+  .encode(
+    vl.x().average('Rotten_Tomatoes_Rating'),
+    vl.y().fieldN('Major_Genre')
+  )
+  .render()
+```
 :::
-
-::: {.column width="33%"}
-#### Bars & Rectangles
-- `bar`: Bar charts
-- `rect`: Heatmaps
-- `square`: Equal-width rectangles
+:::{.fragment}
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/2a.png){width="100%"}
 :::
-
-::: {.column width="33%"}
-#### Other
-- `circle`: Fixed-size circles
-- `text`: Text labels
-- `tick`: Tick marks
-- `arc`: Pie charts
+:::{.column width="50%"}
+<br />
+There may be some interesting variation, but _it's mentally tasking to try to understand overall rankings across genres._
+:::
+::::
 :::
 ::::
 
-## Exercise 1: Changing Chart Types
+---
 
-### Task
-Replace `markCircle()` to generate different scatter plots using point, square, and tick.
+### Sorting
 
-### Starter Code
-```javascript
-vl.markCircle() // TO-DO: Change this to show point, square and tick plots instead.
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),
-    vl.y().fieldQ("Miles_per_Gallon"),
-    vl.tooltip().fieldN("Name")
-  )
-  .render()
-```
-## Step 3b. Data Types
-
-|Data Type|API Equivalent|Description|Examples|
-|:--|:--|:--|:--|
-|Quantitative|\`fieldQ()\`| numerical magnitudes | 1, 1.2, 3, 4, $1,230.60|
-|Temporal|\`fieldT()\`| corresponding to Date values | 2019-01-02T00:01:23Z, 1996|
-|Nominal|\`fieldN()\`| unordered, categorical data | Audi, Ford, Hyundai, Tesla|
-|Ordinal|\`fieldO()\`| like nominal, but with an inherent order | small, medium, large|
-
-
-```javascript
-vl.markCircle()
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),        // This is a Quantitative type
-    vl.y().fieldQ("Miles_per_Gallon"),  // This is a Quantitative type
-    vl.tooltip().fieldN("Name")         // This is a Nominal type
-  )
-  .render()
-```
-
-
-## Step 3c. Visual Encodings
-
-### Encoding Channels
-
-| Channel | Use Case | Data Types |
-|---------|----------|------------|
-| `x`, `y` | Position | Quantitative, Ordinal, Temporal |
-| `color` | Category distinction | Nominal, Ordinal, Quantitative |
-| `size` | Magnitude | Quantitative |
-| `shape` | Category distinction | Nominal |
-| `opacity` | Emphasis/de-emphasis | Quantitative |
-| `tooltip` | Details on demand | Any |
-
-
-## Exercise 2: Bar Chart
-
-### Task
-Modify the code below in the following ways:
-
-1. Modify the x-axis to display "Year".
-2. Modify the y-axis to display "Horsepower".
-3. Modify the tooltip to display "Origin" instead of "Name".
-
-### Starter Code
-```javascript
-vl.markCircle()
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),        // TO-DO: Change this to represent "Year"
-    vl.y().fieldQ("Miles_per_Gallon"),  // TO-DO: Change this to represent "Horsepower"
-    vl.tooltip().fieldN("Name")         // TO-DO: Change this to represent "Origin"
-  )
-  .render()
-```
-
-## Step 3c. Render Settings
-
-**Vega-Lite** offers some different rendering options.
-
-- **Rendering as SVG**: Rather than rendering the chart as an HTML \<canvas\> element, the chart is rendered as an SVG image. This produces sharp images, but doesn't work well with large datasets
-- **Rendering as an Object**: For compatibility with **Vega-Lite** as a JavaScript library, you can also render the code into a JavaScript object.
-
-## Exercise 3: Render Settings
-
-### Task
-Try the following individually:
-
-1. Add `{ renderer: "svg" }` inside of the `render()` method.
-2. Replace `render()` with `toObject()` instead.
-
-### Starter Code
-```javascript
-vl.markCircle()
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),
-    vl.y().fieldQ("Miles_per_Gallon"),
-    vl.tooltip().fieldN("Name")
-  )
-  .render()   // TO-DO: Replace this line to either render as an SVG or as an JavaScript Object
-```
-
-## Step 4. A note on Tidy Data
-
-### The 3 Rules of Tidy Data
-
-- Each variable is a column; each column is a variable.
-- Each observation is a row; each row is an observation.
-- Each value is a cell; each cell is a single value.
-
-### Why Tidy?
-
-The _"shape"_ of your data is incredibly important! It helps with data transfer between different **Observable** notebooks, and even working with different environments altogether (e.g. **R**, **Tableau**).
-
-_Learn more here: [https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)_
-
-## Step 5: Coloring Charts
-
-Two ways to color charts:
-
-- Coloring all data points with a manually-designated color
-- Coloring based on a data feature / column.
-
-Coloration helps with visual communication of core relationships between data groups, or adding a 3rd dimension to data that is hard to capture in 2D graphs.
-
-### Code Sample
-
-```javascript
-vl.markCircle()
-  ...
-  .encode(
-    ...
-    vl.color().\<METHOD\>
-    ...
-  )
-  .render()
-```
-
-## Exercise 4: Color Charts
-
-Color the chart two ways:
-
-- Manually set a color "red" across all data points.
-- Coloring points based on the "Origin" data feature.
-
-### Starter Code
-
-```javascript
-vl.markCircle()
-  .data(cars)
-  .encode(
-    vl.x().fieldQ("Horsepower"),
-    vl.y().fieldQ("Miles_per_Gallon"),
-    // TO-DO: Add color options for coloring either all points or coloring points by "Origin"
-    vl.tooltip().fieldN("Name")
-  )
-  .render()
-```
-
-
-## Tips for Success
-
-### Best Practices
-
-:::: {.columns}
-::: {.column width="50%"}
-#### Do's ✅
-- Start with simple charts
-- Test incrementally
-- Read error messages
-- Use Observable examples
-- Ask questions early
+::::{.incremental}
+:::{.fragment}
+Rather than sort the genres alphabetically, let's try to sort them in _descending order_ of rating (i.e. the genres with the higher ratings are at the top, while the genres with the lower ratings are at the bottom).
 :::
+:::{.fragment}
+![](week2-lab_files/figs/2b.png){width="50%"}
+:::
+:::{.fragment}
+```javascript
+vl.markBar()
+  .data(movies)
+  .encode(
+    vl.x().average('Rotten_Tomatoes_Rating'),
+    vl.y().fieldN('Major_Genre')
+      .sort(vl.average('Rotten_Tomatoes_Rating').order('descending'))
+  )
+  .render()
+```
+:::
+::::
 
-::: {.column width="50%"}
-#### Don'ts ❌
-- Don't overcomplicate
-- Don't ignore data types
-- Don't forget axis labels
-- Don't use too many colors
-- Don't skip documentation
+## Food 4 Thought: Averages (Mean) vs. Median
+
+::::{.increment}
+:::{.fragment}
+#### Two Questions:
+- What's the difference between _Averages (Mean)_ and _Median_?
+- Why does it matter?
+:::
+:::{.fragment}
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/skewed-1.png){width="70%"}
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/skewed-2.png){width="70%"}
+:::
+::::
+_Img source: [https://statistics.laerd.com/statistical-guides/measures-central-tendency-mean-mode-median.php](https://statistics.laerd.com/statistical-guides/measures-central-tendency-mean-mode-median.php)_
+:::
+::::
+
+## From Mean to Median
+
+::::{.incremental}
+:::{.fragment}
+```javascript
+vl.markBar()
+  .data(movies)
+  .encode(
+    vl.x().median('Rotten_Tomatoes_Rating'),
+    vl.y().fieldN('Major_Genre')
+      .sort(vl.median('Rotten_Tomatoes_Rating').order('descending'))
+  )
+  .render()
+```
+:::
+:::{.fragment}
+::::{.columns}
+:::{.column width="50%"}
+![](week2-lab_files/figs/2c.png){width="100%"}
+:::
+:::{.column width="50%"}
+<br />
+Even with this data, we should still be a bit skeptical. What if, within the genres themselves, there's some skew caused by outliers and such? Observing the variation within each genre is a good way to extend our analysis.
+:::
+::::
+:::
+::::
+
+## Inter-Quartile Range (IQR)
+
+
+::::{.columns}
+:::{.column width="50%"}
+Let's add some _nuance_ to our bar chart by considering the [**"Inter-Quartile Range (IQR)"**](https://en.wikipedia.org/wiki/Interquartile_range) of each genre. 
+
+The _IQR_ is a special range across a set of values that represents where the _middle half_ of the data resides in. A _quartile_ represents 25% of data values. The IQR therefore represents the two middle quartiles, or the middle 50% of data.
+
+<br />
+_Img. src: [https://en.wikipedia.org/wiki/Interquartile_range](https://en.wikipedia.org/wiki/Interquartile_range)_
+:::
+:::{.column width="50%"}
+![](week2-lab_files/figs/Boxplot_vs_PDF.svg){width="100%"}
+:::
+::::
+
+## Your Turn (~5 min):
+
+In the Lab 2 notebook, complete Step 2d and 2e. You should eventually end up with the following two histograms:
+
+<br />
+
+::::{.columns}
+:::{.column width="50%"}
+#### IQR of Rotten Tomatoes Ratings, by Genres
+![](week2-lab_files/figs/2d){width="100%"}
+:::
+:::{.column width="50%"}
+#### IQR of IMDb Ratings, by Genres
+![](week2-lab_files/figs/2e.png){width="100%"}
 :::
 ::::
 
 
-## Resources for This Week
+## Core Concepts of Data Transformations
 
-### Documentation
-- [Vega-Lite Documentation](https://vega.github.io/vega-lite/)
-- [Observable Documentation](https://observablehq.com/documentation/)
-- [Example Gallery](https://vega.github.io/vega-lite/examples/)
+::::{.columns}
+:::{.column width="50%"}
+### We Covered in the Lab:
+* #### Aggregation
+  - **Purpose**: Summarize groups of data
+  - **Methods**: Sum, mean, median, count, min, max
+  - **Example**: Daily sales → Monthly totals
+* #### Binning
+  - **Purpose**: Convert continuous to discrete
+  - **Methods**: Equal width, equal frequency, custom
+  - **Example**: Dividing age into groups (<18, 18-65, >65)
+:::
+:::{.column width="50%"}
+### Covered in Assignment #2:
+* #### Filtering
+  - **Purpose**: Focus on relevant subset
+  - **Types**: Range, categorical, conditional 
+* #### Normalization
+  - **Purpose**: Enable fair comparison
+  - **Methods**: Min-max, z-score, percentages
+:::
+::::
 
-### Useful Observable Notebooks
-- [Introduction to Vega-Lite](https://observablehq.com/@uwdata/introduction-to-vega-lite)
-- [Data Types and Encoding Channels](https://observablehq.com/@uwdata/data-types-graphical-marks-encoding-channels)
+## End of Lab
 
-### Getting Help
-- Course Discord channel
-- Office hours (TBD)
-
+- Assignment #2 will be posted no later than **September 13, 2025**.
+- Assignment #2 is due on **September 18th, 2025 @ 11:59pm**!
+- Where do I ask questions?
+  - TA Office Hours: 
+    - Physical Location: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn
+    - Online Zoom: ([https://nyu.zoom.us/j/92815268504](https://nyu.zoom.us/j/92815268504))
+  - Our course Discord!
