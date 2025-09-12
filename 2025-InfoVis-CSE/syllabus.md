@@ -4,6 +4,8 @@ permalink: /2025-InfoVis-CSE/syllabus
 author_profile: true
 ---
 
+[← Back to Course Home](/2025-InfoVis-CSE/) | [Detailed Schedule](/2025-InfoVis-CSE/schedule) | [Resources](/2025-InfoVis-CSE/resources)
+
 # CS-GY 6313: Information Visualization – Fall 2025
 
 **Instructor:** Claudio Silva (csilva@nyu.edu)

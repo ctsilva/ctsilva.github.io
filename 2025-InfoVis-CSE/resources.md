@@ -4,8 +4,6 @@ permalink: /2025-InfoVis-CSE/resources
 author_profile: true
 ---
 
-# Course Resources
-
 [← Back to Course Home](/2025-InfoVis-CSE/) | [Syllabus](/2025-InfoVis-CSE/syllabus) | [Schedule](/2025-InfoVis-CSE/schedule)
 
 ## Development Tools
