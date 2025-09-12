@@ -1,12 +1,10 @@
 ---
-title: "CS-GY 6313 Information Visualization Fall 2025 - Detailed Schedule"
+title: "CS-GY 6313: Information Visualization - Fall 2025 Detailed Schedule"
 permalink: /2025-InfoVis-CSE/schedule
 author_profile: true
 ---
 
-# CS-GY 6313 Information Visualization Fall 2025 - Detailed Schedule
-
-[← Back to Course Home](/2025-InfoVis-CSE/) | [Syllabus](/2025-InfoVis-CSE/syllabus)
+[← Back to Course Home](/2025-InfoVis-CSE/home) | [Syllabus](/2025-InfoVis-CSE/syllabus)
 
 ## Detailed Schedule
 
