@@ -27,7 +27,7 @@ author_profile: true
 **Optional Reading:**
 - [Decision to Launch the Challenger](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/value/Tufte-Challenger.pdf), in Visual Explanations. Edward Tufte.
 
-**Lab:** [Week 1 Lab - Introduction to Observable and Vega-Lite](/2025-InfoVis-CSE/labs/week1-lab.html)
+**Lab:** [Week 1 Lab - Introduction to Observable and Vega-Lite](labs/week1-lab.html)
 - Setup Observable accounts
 - Create first basic charts in Vega-Lite
 - Explore provided datasets
@@ -38,7 +38,7 @@ author_profile: true
 ### **Week 2** (Sept 12) - Analytical Questions and Data Transformation  
 **Learning Objectives:** Transform questions into visual queries; understand data transformation pipelines
 
-**Lecture:** 
+**Lecture:** [Week 2 - Analytical Questions and Data Transformation](slides/week2-data-transformation.html) 
 - From questions to visual mappings
 - Data types and structures
 - Data transformation operations (filter, aggregate, derive)
@@ -52,7 +52,7 @@ author_profile: true
 **Optional Reading:**
 - [The Eyes Have It: A Task by Data Type Taxonomy](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/models/shneiderman96eyes.pdf), Shneiderman. 1996.
 
-**Lab: [Week 2 Lab - Intro to Vega-Lite Data Transformations, Working with Real Datasets](/2025-InfoVis-CSE/labs/week2-lab.html)** 
+**Lab: [Week 2 Lab - Intro to Vega-Lite Data Transformations, Working with Real Datasets](labs/week2-lab.html)** 
 - Vega-Lite data transformations
 - Working with real datasets in Observable
 - Data aggregation and filtering
