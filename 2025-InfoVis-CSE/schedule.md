@@ -13,7 +13,7 @@ author_profile: true
 ### **Week 1** (Sept 5) - Introduction and Evaluation
 **Learning Objectives:** Understand what visualization is, when to use it, and how to evaluate effectiveness
 
-**Lecture:** [Week 1 - Course Introduction & Syllabus](/2025-InfoVis-CSE/slides/week1-syllabus.html)
+**Lecture:** [Week 1 - Course Introduction & Syllabus](slides/week1-syllabus.html)
 - Course overview and expectations
 - What is information visualization? 
 - Visualization taxonomy and design space
