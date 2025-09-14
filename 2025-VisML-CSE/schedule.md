@@ -36,31 +36,37 @@ author_profile: true
 - Hohman et al. "Visual Analytics in Deep Learning: An Interrogative Survey" (2018)
 - Munzner, "Visualization Analysis and Design", Chapter 1
 
-**Assignment Released:** Exercise 1 - Visualization Critique
+**Assignment:** TBD
 
 ---
 
 ### Week 3: September 15
-## Course Introduction & Visualization Fundamentals
+## Perception and Color Theory for Visualization
 
 **Lecture Topics:**
-- Course syllabus and logistics review
-- What is Information Visualization?
-- The Power of Visualization (Discovery, Storytelling, Exploration)
-- Key concepts: Abstract data, Interaction, Amplifying cognition
+- Visual perception fundamentals
+- Pre-attentive processing and popout
+- Gestalt principles in visualization
+- Graphical perception and effectiveness
+- Color theory and color spaces
+- Color scales: sequential, categorical, diverging
+- Accessibility and color blindness
 
 **Lab Session:**
-- Introduction to Observable and Vega-Lite
-- Setting up accounts and development environment
-- Creating first visualizations
-- Understanding tidy data principles
+- Experimenting with perceptual principles
+- Creating effective color palettes
+- Using ColorBrewer and other tools
+- Accessibility testing for visualizations
 
 **Materials:**
-- [Course Introduction Slides](/2025-VisML-CSE/slides/week2-intro.html)
-- [Vega-Lite Lab](/2025-VisML-CSE/labs/week2-lab.html)
+- [Perception for Design](/2025-VisML-CSE/slides/week3-perception.html)
+- [Color Theory for Visualization](/2025-VisML-CSE/slides/week3-color.html)
+- [Lab: Perception and Color in Practice](/2025-VisML-CSE/labs/week3-slides.html)
 
 **Readings:**
-- Munzner, "Visualization Analysis and Design", Chapter 1 (recommended)
+- Ware, "Information Visualization: Perception for Design", Chapters 1-4
+- Cleveland & McGill, "Graphical Perception" (1984)
+- Healey, "Choosing Effective Colours for Data Visualization" (1996)
 
 **Assignment:** TBD
 

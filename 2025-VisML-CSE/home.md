@@ -32,15 +32,17 @@ author_profile: true
 - **Assignment:** TBD
 
 ### Week 3 (Sept 15)
-- **Topics:** TBD
-- **Materials:** TBD
+- **Topics:** Perception for Design, Color Theory for Visualization
+- **Materials:** 
+  - [Perception for Design](/2025-VisML-CSE/slides/week3-perception.html)
+  - [Color Theory for Visualization](/2025-VisML-CSE/slides/week3-color.html)
+  - [Lab: Perception and Color in Practice](/2025-VisML-CSE/labs/week3-slides.html)
 
 ## Assignments
 
 ### Weekly Assignments (50% of grade)
-- Exercise 1: Visualization critique - *Due Sept 15*
-- Exercise 2: Color palette design - *Due Sept 22*
-- More programming assignments throughout first half of semester
+- Assignments will be posted as the semester progresses
+- Programming exercises will be given throughout the first half of the semester
 
 ### Research Project (45% of grade)
 - **Team formation** - *Week 3*

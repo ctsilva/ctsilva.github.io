@@ -1,0 +1,248 @@
+---
+title: "VisML Lab Week 3"
+subtitle: "CS-GY 9223 - Fall 2025 - Perception and Color in Practice"
+author: "Parikshit Solunke - Teaching Assistant"
+institute: "NYU Tandon School of Engineering"
+date: "September 15, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    footer: <https://engineering.nyu.edu>
+---
+
+## Lab Overview
+
+**Today's Topics:**
+- Hands-on exploration of perceptual principles
+- Creating effective color palettes
+- Using ColorBrewer and accessibility tools
+- Practical exercises with perception and color
+
+---
+
+## Agenda
+
+1. **Perceptual Principles in Practice** (30 min)
+   - Pre-attentive processing demonstrations
+   - Gestalt principles exercises
+   
+2. **Color Theory Applications** (30 min)
+   - Building color scales
+   - ColorBrewer tutorial
+   
+3. **Accessibility Testing** (20 min)
+   - Color blindness simulators
+   - Contrast checking tools
+
+4. **Hands-on Exercise** (40 min)
+   - Apply principles to improve a visualization
+
+---
+
+## Part 1: Perceptual Principles Demo
+
+### Pre-attentive Processing
+
+Let's explore what "pops out" automatically:
+
+```javascript
+// Observable notebook for testing pre-attentive features
+// https://observablehq.com/@d3/preattentive-processing
+```
+
+**Exercise 1:** Which visual encodings allow fastest target detection?
+- Color vs Shape
+- Size vs Orientation
+- Motion vs Position
+
+---
+
+## Cleveland & McGill Ranking
+
+Based on the lecture, let's test the accuracy rankings:
+
+1. Position along common scale
+2. Position along non-aligned scales
+3. Length, direction, angle
+4. Area
+5. Volume, curvature
+6. Shading, color saturation
+
+**Exercise 2:** Create the same data visualization using different encodings and compare accuracy
+
+---
+
+## Part 2: Color Palettes with ColorBrewer
+
+### Sequential Scales
+Best for ordered data from low to high
+
+```javascript
+// D3 sequential color scales
+const colorScale = d3.scaleSequential()
+  .domain([0, 100])
+  .interpolator(d3.interpolateBlues);
+```
+
+### Diverging Scales
+Best for data with meaningful midpoint
+
+```javascript
+// D3 diverging color scales
+const colorScale = d3.scaleDiverging()
+  .domain([-50, 0, 50])
+  .interpolator(d3.interpolateRdBu);
+```
+
+### Categorical Scales
+Best for nominal/categorical data
+
+```javascript
+// D3 categorical color scales
+const colorScale = d3.scaleOrdinal()
+  .domain(["A", "B", "C", "D"])
+  .range(d3.schemeCategory10);
+```
+
+---
+
+## ColorBrewer Tool
+
+Visit: [colorbrewer2.org](https://colorbrewer2.org)
+
+**Key Features:**
+- Data classes: 3-12 levels
+- Nature of data: Sequential, Diverging, Qualitative
+- Colorblind safe options
+- Print friendly options
+- Photocopy safe options
+
+**Exercise 3:** 
+1. Create a 5-class sequential scheme for temperature data
+2. Create a diverging scheme for election results
+3. Create a categorical scheme for 7 different categories
+
+---
+
+## Part 3: Accessibility Tools
+
+### Color Vision Deficiency Simulators
+
+**Tools to test your visualizations:**
+- [Coblis - Color Blindness Simulator](https://www.color-blindness.com/coblis-color-blindness-simulator/)
+- [Sim Daltonism](https://michelf.ca/projects/sim-daltonism/) (Mac app)
+- Chrome DevTools (Rendering tab → Emulate vision deficiencies)
+
+### Contrast Checkers
+- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- [Accessible Colors](https://accessible-colors.com)
+
+**WCAG Guidelines:**
+- Normal text: 4.5:1 contrast ratio
+- Large text: 3:1 contrast ratio
+- Graphics: 3:1 contrast ratio
+
+---
+
+## Part 4: Hands-on Exercise
+
+### Visualization Improvement Challenge
+
+Given this problematic visualization:
+
+```javascript
+// Poor color choices example
+const poorViz = {
+  colors: ["#FF0000", "#00FF00"], // Red-Green (bad for colorblind)
+  encoding: "3D pie chart",        // Difficult to compare angles
+  labels: "light gray on white"    // Poor contrast
+};
+```
+
+**Your Tasks:**
+1. Identify all perceptual issues
+2. Redesign using better encodings
+3. Choose an appropriate, accessible color palette
+4. Test with accessibility tools
+
+---
+
+## Observable Notebooks for Practice
+
+**Starter Notebooks:**
+1. [Perception Principles Playground](https://observablehq.com/@d3/perception-exercises)
+2. [Color Scale Builder](https://observablehq.com/@d3/color-legend)
+3. [Accessibility Tester](https://observablehq.com/@d3/color-accessibility)
+
+**Your Assignment:**
+- Fork one of the notebooks
+- Apply today's principles to improve it
+- Share your improved version
+
+---
+
+## Key Takeaways
+
+✅ **Perception Principles:**
+- Use position when accuracy matters most
+- Leverage pre-attentive features for important data
+- Apply Gestalt principles for grouping
+
+✅ **Color Best Practices:**
+- Match color scale to data type
+- Always test for accessibility
+- Limit categorical colors to ~7
+
+✅ **Accessibility:**
+- 8-10% of males have color vision deficiency
+- Always provide redundant encodings
+- Test contrast ratios
+
+---
+
+## Resources
+
+**Perception:**
+- [Ware - Information Visualization: Perception for Design](https://www.elsevier.com/books/information-visualization/ware/978-0-12-812875-6)
+- [Cleveland & McGill Paper](https://www.jstor.org/stable/2288400)
+
+**Color:**
+- [ColorBrewer](https://colorbrewer2.org)
+- [D3 Color Schemes](https://github.com/d3/d3-scale-chromatic)
+- [Datawrapper Color Palette Guide](https://blog.datawrapper.de/colorpalettes/)
+
+**Accessibility:**
+- [WCAG Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [Inclusive Design Principles](https://inclusivedesignprinciples.org)
+
+---
+
+## Next Week Preview
+
+**Week 4: Model Assessment and Performance Metrics**
+- Confusion matrices visualization
+- ROC curves
+- Performance dashboards
+
+**Preparation:**
+- Review basic ML metrics
+- Install scikit-learn if not already installed
+
+---
+
+## Questions & Office Hours
+
+**TA Office Hours:** TBD (will announce on Discord)
+
+**Contact:** Parikshit Solunke - pss442@nyu.edu
+
+**Discord:** Please post questions in #week3-lab channel
