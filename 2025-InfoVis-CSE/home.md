@@ -31,11 +31,19 @@ author_profile: true
 - **Assignment:** Exercise 2 - Data questions and transformations (due Sept 18)
 - **Readings:** [Shneiderman (1996) - The Eyes Have It](/2025-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf); [Wickham (2014) - Tidy Data](/2025-InfoVis-CSE/refs/Wickham_2014_Tidy_Data.pdf)
 
+### Week 3 (Sept 19) - Fundamental Graphs and Visual Encoding  ✅ **COMPLETE**
+- **Slides:** [Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/slides/week3-fundamental-graphs.html)
+- **Topics:** Five fundamental chart types, Marks and channels, Expressiveness and effectiveness, Scale choices
+- **Lab:** Chart comparison and design exercises, Scale choice scenarios
+- **Assignment:** Exercise 3 - Chart design and encoding alternatives (due Sept 25)
+- **Readings:** Tufte Ch 1-2 (Graphical Excellence & Integrity)
+
 ## Assignments
 
 ### Exercises (35% of grade)
 - Exercise 1: Visualization critique and basic Vega-Lite charts - *Due Sept 11*
 - Exercise 2: Data questions and transformations - *Due Sept 18*
+- Exercise 3: Chart design and encoding alternatives - *Due Sept 25*
 - More exercises TBA
 
 ### Mini-Projects (35% of grade)

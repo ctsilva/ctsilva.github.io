@@ -92,7 +92,7 @@ The `markdown_generator/` directory contains Python scripts and Jupyter notebook
 ### Course Websites
 The repository includes complete course websites as subdirectories:
 - **2024-VisML-CDS**: VisML (Visualization for Machine Learning) course website (Spring 2024, NYU CDS) - ARCHIVE
-- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon) - CS-GY 6313 ✅ **Week 2 READY**
+- **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon) - CS-GY 6313 ✅ **Week 3 COMPLETE**
 - **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon) - CS-GY 9223 🎉 **100% READY**
 
 #### VisML Course Structure (2025-VisML-CSE)
@@ -150,7 +150,7 @@ The repository includes complete course websites as subdirectories:
 - **Course Code**: CS-GY 6313 - Information Visualization
 - **Schedule**: Fridays 11:00 AM - 1:30 PM, Fall 2025 (Sept 5 - Dec 13)
 - **Location**: Jacobs Hall, Room 215, Brooklyn Campus  
-- **Status**: ✅ **Week 2 COMPLETE** - Analytical Questions and Data Transformation ready for Sept 12, 2025
+- **Status**: ✅ **Week 3 COMPLETE** - Fundamental Graphs and Data Transformation ready for Sept 19, 2025
 - **Discord**: https://discord.gg/sTEv3PnP
 
 ##### Course Materials:
@@ -184,6 +184,26 @@ The repository includes complete course websites as subdirectories:
   - Data abstraction and pipeline diagrams
 - **lab-light-theme.css**: Projector-optimized code styling for classroom visibility
 
+##### Week 3 Materials (Sept 19, 2025) - COMPLETE:
+- **week3-fundamental-graphs.qmd/html**: Fundamental Graphs and Data Transformation (50+ slides)
+  - Two-step visualization process (What to show → How to show)
+  - Five fundamental chart types with use cases and examples
+  - Expressiveness and effectiveness principles with Cleveland & McGill research
+  - Visual encoding rankings and channel effectiveness theory
+  - Scale types (linear vs logarithmic) with practical examples
+  - Zero baseline rule and appropriate truncation guidelines
+  - Data transformation pipeline and aggregation strategies
+  - **Complete figure integration**: All missing images found and extracted from source presentations
+  - **Optimized layout**: Professional two-column layouts with proper image sizing
+  - **Interactive elements**: Quizzes and exercises with structured feedback
+- **figs/**: Comprehensive image library with extracted figures
+  - Truncated axis examples (misleading vs. proper baselines)
+  - Scale comparison examples (linear vs. log scales)
+  - Encoding effectiveness demonstrations (bar charts vs. pie charts)
+  - Data transformation workflows and aggregation examples
+  - All images extracted from PowerPoint and PDF source materials
+  - Properly sized and formatted for classroom projection
+
 ##### Content Integration:
 - **Homepage updates**: Week 2 lecture link added with required readings
 - **PDF readings**: Direct links to Shneiderman (1996), Wickham (2014), Card & Mackinlay (1999)
@@ -191,7 +211,7 @@ The repository includes complete course websites as subdirectories:
 
 #### Important Notes
 - **Reveal.js Dependencies**: The `.gitignore` has been configured to allow `*_files/` directories for course materials, ensuring reveal.js presentations work correctly on GitHub Pages
-- **Week 1 & 2 Status**: Both weeks ready for Fall 2025 semester with complete materials
+- **Week 1-3 Status**: All three weeks ready for Fall 2025 semester with complete materials
 - **Projector-Ready**: Code blocks use light backgrounds for classroom visibility
 
 #### Content Creation Guide for TAs
@@ -396,4 +416,5 @@ The site automatically deploys to GitHub Pages when pushing to the main branch. 
 - **Jekyll Collections**: Ready for additional content types and categorization
 - **Responsive Design**: All additions should maintain mobile-friendly design
 - **Search Optimization**: Consider adding site search functionality for larger content volumes
+- to memorize
 - to memorize

@@ -68,6 +68,9 @@ author_profile: true
 - Comparison strategies
 - When to use different chart types
 
+**Materials:**
+- [Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/slides/week3-fundamental-graphs.html)
+
 **Required Readings:**
 - Chapter 1: Graphical Excellence, in The Visual Display of Quantitative Information. Tufte.
 - Chapter 2: Graphical Integrity, in The Visual Display of Quantitative Information. Tufte.
