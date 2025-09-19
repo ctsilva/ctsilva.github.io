@@ -32,7 +32,7 @@ author_profile: true
 - **Readings:** [Shneiderman (1996) - The Eyes Have It](/2025-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf); [Wickham (2014) - Tidy Data](/2025-InfoVis-CSE/refs/Wickham_2014_Tidy_Data.pdf)
 
 ### Week 3 (Sept 19) - Fundamental Graphs and Visual Encoding  ✅ **COMPLETE**
-- **Slides:** [Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/slides/week3-fundamental-graphs.html)
+- **Slides:** [Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/slides/week3-fundamental-graphs.html) | [Lab: Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/labs/week3-lab.html)
 - **Topics:** Five fundamental chart types, Marks and channels, Expressiveness and effectiveness, Scale choices
 - **Lab:** Chart comparison and design exercises, Scale choice scenarios
 - **Assignment:** Exercise 3 - Chart design and encoding alternatives (due Sept 25)

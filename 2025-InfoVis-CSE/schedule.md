@@ -50,7 +50,7 @@ author_profile: true
 **Optional Reading:**
 - [The Eyes Have It: A Task by Data Type Taxonomy](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/models/shneiderman96eyes.pdf), Shneiderman. 1996.
 
-**Lab: [Week 2 Lab - Intro to Vega-Lite Data Transformations, Working with Real Datasets](labs/week2-lab.html)** 
+**Lab:** [Week 2 Lab - Intro to Vega-Lite Data Transformations, Working with Real Datasets](labs/week2-lab.html) 
 - Vega-Lite data transformations
 - Working with real datasets in Observable
 - Data aggregation and filtering
@@ -79,7 +79,7 @@ author_profile: true
 **Optional Reading:**
 - [Vega-Lite: A Grammar of Interactive Graphics](https://www.youtube.com/watch?v=9uaHRWj04D4). Wongsuphasawat et al. OpenVis Conf 2017.
 
-**Lab:** 
+**Lab:** [Lab: Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/labs/week3-lab.html) 
 - Creating multiple chart types in Vega-Lite
 - Exploring encoding alternatives for same data
 - Small multiples and faceting
