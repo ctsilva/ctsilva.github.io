@@ -207,13 +207,29 @@ The repository includes complete course websites as subdirectories:
   - Calibration examples: forecast tables → reliability diagrams → neural networks
   - Visual analytics screenshots: Squares interface, EnsembleMatrix, Alsallakh systems
   - Modern research figures: Calibrate tool, Smooth ECE, multi-class calibration
-- **refs/**: Standardized academic reference collection (14 PDFs)
-  - **Visual Analytics**: Neo (Görtler 2022), Squares (Ren 2016), EnsembleMatrix (Talbot 2009)
-  - **Calibration Foundations**: Niculescu-Caruana (2005), Guo (2017), Vaicenavicius (2019)
-  - **Modern Advances**: Xenopoulos Calibrate (2022), Kull-Flach decomposition (2015)
-  - **ROC Analysis**: Bradley (1997), Hanley-McNeil (1982), Fawcett (2006)
-  - All follow `LastName_Year_Title.pdf` convention for predictable access
-  - Local PDF storage ensures classroom reliability and future-proof referencing
+- **refs/**: Standardized academic reference collection (16 PDFs - fully renamed Sept 21, 2025)
+  - **Visual Analytics**:
+    * Alsallakh et al. (2014) - Visual Methods for Analyzing Probabilistic Classification
+    * Beauxis-Aussalet & Hardman (2014) - Visualization for Non-Expert Users
+    * Görtler et al. (2022) - Neo Hierarchical Confusion Matrix
+    * Ren et al. (2016) - Squares Interactive Performance Analysis
+    * Talbot et al. (2009) - EnsembleMatrix Multiple Classifiers
+  - **Calibration Foundations**:
+    * Niculescu-Mizil & Caruana (2005) - Predicting Good Probabilities
+    * Guo et al. (2017) - Modern Neural Network Calibration
+    * Vaicenavicius et al. (2019) - Evaluating Model Calibration
+    * Xenopoulos et al. (2022) - Calibrate Interactive Analysis Tool
+  - **Scoring & Metrics**:
+    * Kull & Flach (2015) - Novel Decompositions of Proper Scoring Rules
+    * Silva Filho (2020) - ECML/PKDD Tutorial on Evaluation Metrics
+  - **ROC Analysis**:
+    * Fawcett (2006) - Introduction to ROC Analysis
+    * Hand & Till (2001) - Simple Generalisation for Multi-class ROC
+    * Hanley & McNeil (1982) - Meaning and Use of ROC Curves
+    * Fogarty (2005) - ROC Analysis in Sensor-Based HCI
+    * Cortes & Mohri (2003) - AUC Optimization and Error Minimization
+  - **Naming convention**: `LastName_SecondName_Year_Short_Title.pdf` for predictable access
+  - **Recent cleanup**: Renamed cryptic files (1703_20tvcg12, 22775A) to proper academic format
 
 ##### Technical Improvements and Design Principles (Week 4):
 - **Projector-Ready Code Blocks**: Light gray backgrounds (`#f8f9fa`) with dark text for optimal classroom visibility
