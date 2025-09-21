@@ -111,8 +111,9 @@ This slide summarizes the pros and cons of using confusion matrices. While they 
 
 ## Confusion Matrices in sklearn
 
-```python
-from sklearn import datasets, svm
+```{python}
+#| echo: true
+from sklearn import datasets
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
@@ -121,7 +122,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 clf = LogisticRegression(random_state=0)
 ```
 
-```python
+```{python}
+#| echo: true
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 
@@ -255,11 +257,24 @@ The Area Under the Curve (AUC) is a single number summary of the ROC curve. It r
 
 ## ROC curve in sklearn
 
-```python
+```{python}
+#| echo: false
+# Setup code - hidden from slides
+from sklearn import datasets
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+X,y = datasets.make_classification(5000, 10, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+clf = LogisticRegression(random_state=0)
+clf.fit(X_train, y_train)
+print()
+```
+
+```{python}
+#| echo: true
 import matplotlib.pyplot as plt
 from sklearn.metrics import RocCurveDisplay
-
-clf.fit(X_train, y_train)
 
 RocCurveDisplay.from_estimator(clf, X_test, y_test, plot_chance_level=True)
 plt.show()
@@ -313,6 +328,20 @@ ROC curves are widely used and intuitive, but they have an important limitation.
 Precision-Recall curves are often more informative than ROC curves, especially for imbalanced datasets. They focus directly on the performance for the positive class, which is usually the class of interest in imbalanced problems. The Alsallakh paper provides an excellent discussion on when to use PR curves over ROC curves.
 :::
 
+
+```{python}
+#| echo: false
+# Setup code - hidden from slides
+from sklearn import datasets
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+X,y = datasets.make_classification(5000, 10, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+clf = LogisticRegression(random_state=0)
+clf.fit(X_train, y_train)
+print()
+```
 
 ```{python}
 #| echo: true
