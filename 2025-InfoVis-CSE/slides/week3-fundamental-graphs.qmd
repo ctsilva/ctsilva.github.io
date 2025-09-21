@@ -22,312 +22,460 @@ format:
 ## Today's Agenda
 
 **Learning Objectives:**
+
+::: incremental
 - Master the five fundamental graph types and when to use them
 - Apply expressiveness and effectiveness principles
 - Understand visual encoding theory (marks and channels)
 - Make informed chart selection decisions
 - Design effective scales and axes
+:::
 
-::: {.notes}
+::: notes
 Today we're building the foundation for effective visualization design. We'll move from abstract principles to concrete techniques you can apply immediately.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Acknowledgments
 
 **Special thanks to:**
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
-**Prof. Enrico Bertini**
-NYU Tandon School of Engineering
+**Prof. Enrico Bertini** NYU Tandon School of Engineering
 
-- Course materials and pedagogical insights
-- Visualization design principles
-- Interactive visualization expertise
+-   Course materials and pedagogical insights
+-   Visualization design principles
+-   Interactive visualization expertise
 :::
+
 ::: {.column width="50%"}
-**Prof. Jeff Heer**
-University of Washington
+**Prof. Jeff Heer** University of Washington
 
-- Fundamental visualization theory
-- Perceptual effectiveness research
-- Vega-Lite and D3.js frameworks
+-   Fundamental visualization theory
+-   Perceptual effectiveness research
+-   Vega-Lite and D3.js frameworks
 :::
-::::
+:::::
 
 *This course builds upon their foundational contributions to visualization education and research.*
 
-::: {.notes}
+::: notes
 Acknowledge the important contributions of Prof. Bertini and Prof. Heer to the field and to the educational materials used in this course.
 :::
 
----
+------------------------------------------------------------------------
 
 ## The Chart Selection Challenge
 
-:::: {.columns}
+:::::: columns
 ::: {.column width="60%"}
-![The fundamental question: How do I visualize this data?](figs/data-viz-pipeline.png){width="100%"}
+![The fundamental question: How do I visualize this data?](figs/week3/datatable.png){width="100%"}
 :::
-::: {.column width="40%"}
+
+:::: {.column width="40%"}
 **The central question:** Given data and a task, which visualization technique will be most effective?
 
-::: {.incremental}
-- **Chart type** (bar, line, scatter, etc.)
-- **Visual encoding** (position, color, size)
-- **Design choices** (scales, axes, layout)
-:::
+::: incremental
+-   **Chart type** (bar, line, scatter, etc.)
+-   **Visual encoding** (position, color, size)
+-   **Design choices** (scales, axes, layout)
 :::
 ::::
+::::::
 
-::: {.notes}
+::: notes
 Start with the fundamental question every data analyst faces. The process breaks down into two critical steps that we'll explore in detail today. This isn't just theory - it's the practical workflow you'll use in every visualization project.
 :::
 
----
+------------------------------------------------------------------------
+
+## Two-Step Process
+
+:::::: columns
+:::incremental  
+-   **Step1:** Decide what to visualize.
+    -   Tipically, data is represented in a table and you must __SELECT__ attributes to create your visualization
+    -   The selected attributes can also be __TRANSFORMED__ in order to generated useful information to answer the question
+-   **Step2:** Choose/Design your visualization.
+    -   Your visualization can be selected from a set of existing visualizations
+    -   Based on well-defined principles, a novel visualization can be designed to answer the question
+:::
+
+::::::
+
+
+------------------------------------------------------------------------
+
 
 ## Data Types Drive Design
 
-:::: {.columns}
-::: {.column width="50%"}
+:::::: columns
+:::: {.column width="50%"}
 **Understanding your data:**
 
-::: {.incremental}
-- **Categorical** (nominal, ordinal)
-- **Quantitative** (continuous, discrete)
-- **Temporal** (time-based ordering)
-- **Spatial** (geographic coordinates)
+::: incremental
+-   **Categorical** (nominal, ordinal)
+-   **Quantitative** (continuous, discrete)
+-   **Temporal** (time-based ordering)
+-   **Spatial** (geographic coordinates)
 :::
 
 **The type determines suitable encodings**
-:::
-::: {.column width="50%"}
-![Example: Data types to visual mappings](figs/flight-data-domain-questions.png){width="100%"}
-:::
 ::::
 
-::: {.notes}
+::: {.column width="50%"}
+![Example: Data types to visual mappings](figs/flight-data-domain-questions.png){width="80%"}
+:::
+::::::
+
+::: notes
 This step is often underestimated but crucial. The wrong data selection can make even the best visual design ineffective. We'll see concrete examples of transformations that unlock insights.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Same Data, Multiple Options
 
-:::: {.columns}
-::: {.column width="50%"}
+:::::: columns
+:::: {.column width="50%"}
 **Design decisions:**
 
-::: {.incremental}
-- Which visual channels best represent your data?
-- How do you map data attributes to visual properties?
-- What design choices enhance clarity?
-- How do you avoid misleading representations?
+::: incremental
+-   Which visual channels best represent your data?
+-   How do you map data attributes to visual properties?
+-   What design choices enhance clarity?
+-   How do you avoid misleading representations?
 :::
-:::
+
+**Chart selection:** The attribute types can guide the chart selection!
+
+::::
+
 ::: {.column width="50%"}
 ![Example: Same data, different visual encodings](figs/plots-vs-datatypes.jpg){width="100%"}
 :::
-::::
+::::::
 
-::: {.notes}
+::: notes
 This is where art meets science. We'll learn principled approaches to make these choices, backed by research on human perception and cognition.
 :::
 
----
+------------------------------------------------------------------------
 
 ## The Five Fundamental Graphs
 
 :::: {.columns}
+::: {.column width="100%"}
+<!-- Top row content goes here -->
+:::: {.columns}
+::: {.column width="33%"}
+**Bar Chart:**  
+![Bar Chart](figs/barchart.jpg){width="50%"} 
+:::
+::: {.column width="33%"}
+**Line Chart:**  
+![Line Chart](figs/linechart.jpg){width="70%"}
+:::
+::: {.column width="33%"}
+**Scatterplot:**  
+![Scatter Plot](figs/scatterplot.jpg){width="70%"}
+:::
+::::
+:::
+::::
+
+:::: {.columns}
+::: {.column width="100%"}
+<!-- Bottom row content goes here -->
+:::: {.columns}
+::: {.column width="50%"}
+**Matrix Chart:**  
+![Matrix](figs/matrixchart.jpg){width="80%"}
+:::
+::: {.column width="50%"}
+**Symbol Map:**  
+![Symbol Map](figs/symbolmap.jpg){width="50%"}
+:::
+::::
+:::
+::::
+
+
+<!-- ::::: columns
 ::: {.column width="60%"}
 ![Bar Chart](figs/barchart.jpg){width="45%"} ![Line Chart](figs/linechart.jpg){width="45%"}
 :::
+
 ::: {.column width="40%"}
 ![Scatter Plot](figs/scatterplot.jpg){width="90%"}
 
 ![Matrix](figs/matrixchart.jpg){width="45%"} ![Symbol Map](figs/symbolmap.jpg){width="45%"}
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 These five chart types are your visualization toolkit's power tools. Master these, and you'll be able to tackle the vast majority of visualization challenges. They're also building blocks for more complex designs.
-:::
+::: -->
 
----
+------------------------------------------------------------------------
 
 ## Bar Chart: Categorical Comparisons
 
-:::: {.columns}
+::::: columns
 ::: {.column width="60%"}
 ![Distribution across categories](figs/barchart.jpg){width="100%"}
 :::
+
 ::: {.column width="40%"}
 **Purpose:** Compare quantities across categories
 
-**Data Types:**
-- Categorical/Ordinal + Quantitative
-- Example: Sales by product category
+**Data Types:** - Categorical/Ordinal + Quantitative - Example: Sales by product category
 
-**Best For:**
-- Rankings and comparisons
-- Part-to-whole relationships
+**Best For:** - Rankings and comparisons - Part-to-whole relationships
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Bar charts are the workhorses of categorical data visualization. The key insight: our visual system excels at comparing lengths along a common baseline. Always start the y-axis at zero for accurate magnitude comparison.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Line Chart: Trends Over Time
 
-:::: {.columns}
+::::: columns
 ::: {.column width="60%"}
 ![Change over continuous dimension](figs/linechart.jpg){width="100%"}
 :::
+
 ::: {.column width="40%"}
 **Purpose:** Show trends and changes over time
 
-**Data Types:**
-- Temporal + Quantitative
-- Example: Stock prices over months
+**Data Types:** - Temporal + Quantitative - Example: Stock prices over months
 
-**Best For:**
-- Trends and patterns
-- Multiple series comparison
+**Best For:** - Trends and patterns - Multiple series comparison
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Line charts excel at showing continuity and change. The connecting lines imply a continuous relationship - use them only when this makes sense (typically with time or other ordered dimensions).
 :::
 
----
+------------------------------------------------------------------------
 
 ## Scatter Plot: Relationships
 
-:::: {.columns}
+::::: columns
 ::: {.column width="60%"}
 ![Correlation between two quantitative variables](figs/scatterplot.jpg){width="100%"}
 :::
+
 ::: {.column width="40%"}
 **Purpose:** Explore relationships between variables
 
-**Data Types:**
-- Quantitative + Quantitative
-- Example: Height vs. weight
+**Data Types:** - Quantitative + Quantitative - Example: Height vs. weight
 
-**Best For:**
-- Correlation analysis
-- Outlier detection
-- Pattern recognition
+**Best For:** - Correlation analysis - Outlier detection - Pattern recognition
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Scatter plots reveal relationships that summary statistics might miss. They're essential for exploratory data analysis and can reveal clusters, outliers, and non-linear relationships.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Matrix (Heatmap): Two-Way Comparisons
 
-:::: {.columns}
+::::: columns
 ::: {.column width="60%"}
 ![Quantity across two categorical dimensions](figs/matrixchart.jpg){width="100%"}
 :::
+
 ::: {.column width="40%"}
 **Purpose:** Compare across two categorical dimensions
 
-**Data Types:**
-- Categorical + Categorical + Quantitative
-- Example: Sales by month and region
+**Data Types:** - Categorical + Categorical + Quantitative - Example: Sales by month and region
 
-**Best For:**
-- Cross-tabulations
-- Correlation matrices
-- Dense data display
+**Best For:** - Cross-tabulations - Correlation matrices - Dense data display
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Matrices efficiently display large amounts of data in compact form. Color encoding allows us to process many values quickly, though precise comparison is harder than with position-based encodings.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Symbol Map: Spatial Distribution
 
-:::: {.columns}
+::::: columns
 ::: {.column width="60%"}
 ![Geographic distribution of quantities](figs/symbolmap.jpg){width="100%"}
 :::
+
 ::: {.column width="40%"}
 **Purpose:** Show spatial distribution of data
 
-**Data Types:**
-- Spatial coordinates + Quantitative
-- Example: Population by city
+**Data Types:** - Spatial coordinates + Quantitative - Example: Population by city
 
-**Best For:**
-- Geographic patterns
-- Location-based analysis
-- Spatial clustering
+**Best For:** - Geographic patterns - Location-based analysis - Spatial clustering
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Symbol maps leverage our spatial reasoning abilities. They're powerful for revealing geographic patterns but require careful design to avoid overlapping symbols and ensure accurate size perception.
 :::
 
----
+------------------------------------------------------------------------
 
-## Principles: Expressiveness & Effectiveness
+## Alternate representations
 
-:::: {.columns}
-::: {.column width="50%"}
-**Expressiveness:** Show all and only the facts in the data
+::::: {.container-column}
 
-**Effectiveness:** Information should be readily perceived
+**Question:** Is it possible to create different representations of the same data?
+It is. However, some representations might not follow the best design guidelines
+:::::
+
+::::: {.container-row}
+
+::: {.content}
+Slope charts can be an alternative to scatter plots
 :::
+
+::: {.content}
+![Slope Chart](figs/week3/slope-chart.png){width="50%"}
+:::
+
+:::::
+
+------------------------------------------------------------------------
+
+## Chart Selection Examples
+
+**Scenario 1:** Monthly sales data for different product categories
+
+::: fragment
+**Answer:** Line chart (multiple series) - shows trends over time by category
+:::
+
+**Scenario 2:** Customer satisfaction ratings across departments
+
+::: fragment
+**Answer:** Bar chart - compares quantitative values across categories
+:::
+
+**Scenario 3:** Relationship between advertising spend and sales revenue
+
+::: fragment
+**Answer:** Scatter plot - explores correlation between two quantitative variables
+:::
+
+::: notes
+Work through these examples with students to reinforce the decision-making process. Ask them to justify their choices based on the framework.
+:::
+
+------------------------------------------------------------------------
+
+## Decomposing a chart: Marks and Channels
+
+::::: columns
+::: {.column width="50%"}
+**Marks:** 
+
+-   Marks are the geometric primitives we use in a visualization
+-   They are used to represent the itens of a dataset
+
+:::
+
 ::: {.column width="50%"}
 ![Marks and channels determine effectiveness](figs/marks.jpg){width="100%"}
 :::
-::::
 
-::: {.notes}
+
+
+:::::
+
+::: notes
 These are the foundational principles from Jacques Bertin and Jock Mackinlay. They provide objective criteria for evaluating visualization designs and guide our decision-making process.
 :::
 
----
+------------------------------------------------------------------------
+
+## Decomposing a chart: Marks and Channels
+
+::::: columns
+::: {.column width="50%"}
+**Channels:** 
+
+-   Channels are the appearance of the marks
+-   They are used to represent the __attributes__ of a dataset
+
+:::
+
+::: {.column width="50%"}
+![Channels encode data attributes](figs/week3/marks_and_channels.png){width="100%"}
+:::
+
+
+
+:::::
+
+::: notes
+These are the foundational principles from Jacques Bertin and Jock Mackinlay. They provide objective criteria for evaluating visualization designs and guide our decision-making process.
+:::
+
+------------------------------------------------------------------------
+
+## Principles: Expressiveness & Effectiveness
+
+::::: columns
+::: {.column width="50%"}
+**Expressiveness:** The visual encodings must show all and only the facts in the data.
+
+-   The most fundamental expression of this principle is that __ordered data should be shown in a way that our perceptual system intrinsically senses as ordered__. Conversely, unordered data should not be shown in a way that perceptually implies an ordering that does not exist. Violating this principle is a common beginner’s mistake in visualization.
+
+**Effectiveness:** Information should be readily perceived
+
+-   The importance of the attribute should match the salience of the channel; that is, its noticeability. In other words, the __most important attributes should be encoded with the most effective channels__ in order to be most noticeable, and then decreasingly important attributes can be matched with less effective channels.
+:::
+
+
+:::::
+
+::: notes
+These are the foundational principles from Jacques Bertin and Jock Mackinlay. They provide objective criteria for evaluating visualization designs and guide our decision-making process.
+:::
+
+------------------------------------------------------------------------
 
 ## Expressiveness Violations
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 ![Line chart with categorical data implies false ordering](figs/line-charts-inappropriate.png){width="90%"}
 
 **Problem:** Ordered visual channel (line) with unordered data
 :::
+
 ::: {.column width="50%"}
-![Bar chart ordering suggests ranking where none exists](figs/categorical-arbitrary-sorting.png){width="90%"}
+![Bar chart ordering suggests ranking where none exists](figs/categorical-arbitrary-sorting.png){width="50%"}
 
 **Problem:** Arbitrary ordering implies non-existent relationship
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 These examples show how visual choices can mislead. The line chart suggests temporal trends where none exist, while the bar chart ordering implies a ranking of categories that may be meaningless.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Effectiveness: A Quick Experiment
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 ![Compare these different encodings](figs/cleveland-mcgill-a-vs-b-examples.jpg)
 
@@ -339,40 +487,17 @@ Which value is larger?
 
 Which value is larger?
 :::
-::::
+:::::
 
-::: {.fragment}
+::: fragment
 **Result:** Length comparison is faster and more accurate than color comparison
 :::
 
-::: {.notes}
+::: notes
 This demonstrates why we need systematic understanding of visual channel effectiveness. Our perceptual system has different capabilities for different visual properties.
 :::
 
----
-
-## Visual Encoding Theory
-
-**Marks:** Basic graphical elements
-- Points, lines, areas, volumes
-
-**Channels:** Ways to vary marks
-- Position, size, shape, color, orientation, texture
-
-:::: {.columns}
-::: {.column width="60%"}
-![Marks and channels determine effectiveness](figs/marks.jpg){width="100%"}
-:::
-::: {.column width="40%"}
-**Key insight:** Different channels have different perceptual effectiveness for different data types
-:::
-::::
-
-::: {.notes}
-This is the foundation of systematic visualization design. Understanding marks and channels helps you make principled encoding decisions rather than arbitrary ones.
-:::
-
----
+------------------------------------------------------------------------
 
 ## Channel Effectiveness Rankings
 
@@ -380,78 +505,15 @@ This is the foundation of systematic visualization design. Understanding marks a
 
 **Key principle:** Use the most effective channel for your most important data
 
-::: {.notes}
+::: notes
 This ranking from Cleveland and McGill is based on empirical studies of human perception. Position along a common scale is most effective for quantitative data, while color hue works well for categorical distinctions but poorly for quantitative comparison.
 :::
 
----
-
-## Chart Selection Framework
-
-**How do you choose the right chart?**
-
-:::: {.columns}
-::: {.column width="50%"}
-**Ask these questions:**
-
-1. **What data types do I have?**
-   - Categorical vs. Quantitative
-   - Temporal vs. Non-temporal
-
-2. **What relationship am I showing?**
-   - Comparison, trend, correlation, distribution, composition
-
-3. **How many variables?**
-   - 1D, 2D, 3D, multidimensional
-:::
-::: {.column width="50%"}
-**Decision Tree:**
-
-- **Compare categories** → Bar Chart
-- **Show trends over time** → Line Chart
-- **Explore relationships** → Scatter Plot
-- **Cross-tabulate** → Matrix/Heatmap
-- **Show geographic distribution** → Symbol Map
-
-**Rule of thumb:** Start simple, add complexity only when needed
-:::
-::::
-
-::: {.notes}
-This framework helps students make systematic chart choices rather than arbitrary decisions. The decision tree provides a quick reference for common scenarios.
-:::
-
----
-
-## Chart Selection Examples
-
-**Scenario 1:** Monthly sales data for different product categories
-
-::: {.fragment}
-**Answer:** Line chart (multiple series) - shows trends over time by category
-:::
-
-**Scenario 2:** Customer satisfaction ratings across departments
-
-::: {.fragment}
-**Answer:** Bar chart - compares quantitative values across categories
-:::
-
-**Scenario 3:** Relationship between advertising spend and sales revenue
-
-::: {.fragment}
-**Answer:** Scatter plot - explores correlation between two quantitative variables
-:::
-
-::: {.notes}
-Work through these examples with students to reinforce the decision-making process. Ask them to justify their choices based on the framework.
-:::
-
----
+------------------------------------------------------------------------
 
 ## Applying Channel Rankings
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 **More Effective:**
 
@@ -467,14 +529,71 @@ Position encoding enables accurate comparison
 
 Area and angle are harder to compare accurately
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 This principle explains why bar charts often outperform pie charts for precise comparison. When accuracy matters most, prioritize position-based encodings.
 :::
 
----
+------------------------------------------------------------------------
 
+## Exercise
+
+::::: columns
+
+::: {.column width="50%"}
+![Bar Chart](figs/week3/bar_chart.png){width="90%"}
+:::
+
+::: {.column width="50%"}
+-   What are the marks?
+    -   Bars
+-   What are the channels?
+    -   Size
+    -   Horizontal position
+:::
+
+
+:::::
+
+
+------------------------------------------------------------------------
+
+## Chart Selection Framework
+
+**How do you choose the right chart?**
+
+::::: columns
+::: {.column width="50%"}
+**Ask these questions:**
+
+1.  **What data types do I have?**
+    -   Categorical vs. Quantitative
+    -   Temporal vs. Non-temporal
+2.  **What relationship am I showing?**
+    -   Comparison, trend, correlation, distribution, composition
+3.  **How many variables?**
+    -   1D, 2D, 3D, multidimensional
+:::
+
+::: {.column width="50%"}
+**Decision Tree:**
+
+-   **Compare categories** → Bar Chart
+-   **Show trends over time** → Line Chart
+-   **Explore relationships** → Scatter Plot
+-   **Cross-tabulate** → Matrix/Heatmap
+-   **Show geographic distribution** → Symbol Map
+
+**Rule of thumb:** Start simple, add complexity only when needed
+:::
+:::::
+
+::: notes
+This framework helps students make systematic chart choices rather than arbitrary decisions. The decision tree provides a quick reference for common scenarios.
+:::
+
+------------------------------------------------------------------------
 
 ## Scales and Axes: The Foundation
 
@@ -482,161 +601,182 @@ This principle explains why bar charts often outperform pie charts for precise c
 
 **Data Domain → Scale Function → Visual Range**
 
-::: {.incremental}
-- **Linear scales:** Equal data differences = equal visual differences
-- **Logarithmic scales:** Equal ratios = equal visual differences  
-- **Ordinal scales:** Preserve order, not magnitude
+::: incremental
+-   **Linear scales:** Equal data differences = equal visual differences
+-   **Logarithmic scales:** Equal ratios = equal visual differences\
+-   **Ordinal scales:** Preserve order, not magnitude
 :::
 
-::: {.notes}
+::: notes
 Scales are fundamental but often invisible. The choice of scale dramatically affects what patterns are visible and how data relationships are perceived.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Linear vs. Logarithmic Scales
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
-![Linear Scale Example](figs/linear-scale-example.jpg){width="90%"}
+![Linear vs Log](figs/week3/scales.png){width="90%"}
 
-**Linear Scale:**
-- Absolute differences
-- Additive changes
-- Most common choice
+**Linear Scale:** - Absolute differences - Additive changes - Most common choice
+
+**Logarithmic Scale:** - Relative differences - Multiplicative changes - Wide data ranges
 :::
 
 ::: {.column width="50%"}
-![Log Scale Example](figs/log-scale-example.jpg){width="90%"}
+![Scale Break](figs/log-scale-example.jpg){width="90%"}
 
-**Logarithmic Scale:**
-- Relative differences
-- Multiplicative changes
-- Wide data ranges
+
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Stock prices are a classic example: linear scales show absolute price changes, while log scales show percentage changes. Choose based on whether absolute or relative change matters more for your analysis.
 :::
 
----
+------------------------------------------------------------------------
 
 ## The Zero Baseline Rule
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 ![Truncated Axis Example](figs/truncated-axis.jpg){width="90%"}
 
-**Truncated Axis:**
-Exaggerates small differences
+**Truncated Axis:** Exaggerates small differences
 :::
 
 ::: {.column width="50%"}
 ![Zero Baseline Example](figs/zero-baseline.jpg){width="90%"}
 
-**Zero Baseline:**
-Accurate magnitude representation
+**Zero Baseline:** Accurate magnitude representation
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Bar charts encode data as length from a baseline. Without zero, these lengths misrepresent the data. This is one of the most common ways visualizations mislead, often unintentionally.
 :::
 
----
+------------------------------------------------------------------------
 
 ## When to Break the Rules
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
-**Log scales instead of zero baseline:**
-- Data spans multiple orders of magnitude
-- Ratios matter more than absolute values
+**Log scales instead of zero baseline:** - Data spans multiple orders of magnitude - Ratios matter more than absolute values
 
-**Truncated axes for line charts:**
-- Small changes in large values
-- When trend matters more than magnitude
+**Truncated axes for line charts:** - Small changes in large values - When trend matters more than magnitude
 :::
+
 ::: {.column width="50%"}
 ![Appropriate Truncation Example](figs/appropriate-truncation.jpg){width="100%"}
 
 Context determines when breaking rules is acceptable
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 Rules exist for good reasons, but context matters. The key is understanding why the rules exist so you can make informed decisions about when to break them. Always consider what story your scale choices tell.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Design Exercise: Scale Choices
 
-:::: {.columns}
+:::::: columns
 ::: {.column width="60%"}
 **Scenario:** Visualizing country populations
 
 **Data range:** 1,000 (Vatican) to 1.4 billion (China)
 :::
-::: {.column width="40%"}
-**Questions:**
-1. What scale would you choose?
-2. How would you handle the extreme range?
-3. What alternatives might you consider?
 
-::: {.fragment}
+:::: {.column width="40%"}
+**Questions:** 1. What scale would you choose? 2. How would you handle the extreme range? 3. What alternatives might you consider?
+
+::: fragment
 **Consider:** Log scale vs. filtering vs. grouping
 :::
-:::
 ::::
+::::::
 
-::: {.notes}
+::: notes
 This exercise highlights the challenge of extreme data ranges. Students should consider log scales, filtering small countries, or using different visualization types like maps where geographic size provides context.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Putting It All Together
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 **The Visualization Design Process:**
 
-1. **Understand your question**
-2. **Transform data appropriately**
-3. **Choose effective visual encodings**
-4. **Select appropriate scales**
-5. **Test and iterate**
+1.  **Understand your question**
+2.  **Transform data appropriately**
+3.  **Choose effective visual encodings**
+4.  **Select appropriate scales**
+5.  **Test and iterate**
 
 **Workflow:** Question → Transform → Encode → Scale → Iterate
 :::
+
 ::: {.column width="50%"}
 ![Design Process Workflow](figs/design-process.jpg){width="100%"}
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 This systematic approach helps avoid common pitfalls. Each step builds on the previous ones, and iteration often reveals better approaches. Don't expect to get it right on the first try.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Common Pitfalls to Avoid
 
-::: {.incremental}
-- **Skipping data exploration:** Visualize without understanding the data
-- **Chart junk:** Adding visual elements that don't encode information
-- **Color overuse:** Using color when position would be more effective
-- **Ignoring scale effects:** Not considering how scale choices affect perception
-- **3D when 2D suffices:** Adding dimensions that don't encode information
+::: incremental
+-   **Skipping data exploration:** Visualize without understanding the data
+-   **Chart junk:** Adding visual elements that don't encode information
+-   **Color overuse:** Using color when position would be more effective
+-   **Ignoring scale effects:** Not considering how scale choices affect perception
+-   **3D when 2D suffices:** Adding dimensions that don't encode information
 :::
 
-::: {.notes}
+::: notes
 These mistakes are common even among experienced practitioners. Developing an awareness of these pitfalls is the first step toward avoiding them.
 :::
 
----
+------------------------------------------------------------------------
+
+## Specific Pitfalls to Avoid
+
+::::: columns
+::: {.column width="50%"}
+![Overplotting might happen whenever too many data items are represented in the visualization](figs/week3/overplotting.png){width="100%"}
+:::
+:::::
+
+------------------------------------------------------------------------
+
+## Specific Pitfalls to Avoid
+
+::::: columns
+::: {.column width="50%"}
+![Always explain your visualization!](figs/week3/labels.png){width="100%"}
+:::
+:::::
+
+------------------------------------------------------------------------
+
+## Chart decoding
+
+::::: columns
+::: {.column width="50%"}
+![Graph decoding](figs/week3/decoding.png){width="80%"}
+:::
+:::::
+
+
+------------------------------------------------------------------------
 
 ## Best Practices Summary
 
@@ -650,119 +790,110 @@ These mistakes are common even among experienced practitioners. Developing an aw
 
 **Iteration:** Test your designs with real users when possible
 
-::: {.notes}
+::: notes
 These principles provide a framework for making systematic visualization decisions. They're not rigid rules but guidelines that help you think through design choices systematically.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Interactive Quiz
 
-:::: {.columns}
+:::::: columns
 ::: {.column width="70%"}
 **Question 1:** For comparing sales across product categories, which encoding is most effective?
 
-A) Color saturation
-B) Bar length
-C) Symbol size
-D) Line style
+A)  Color saturation
+B)  Bar length
+C)  Symbol size
+D)  Line style
 :::
-::: {.column width="30%"}
-::: {.fragment}
+
+:::: {.column width="30%"}
+::: fragment
 **Answer:** B) Bar length (position along common scale)
 
 *Why?* Position is the most effective visual channel for quantitative comparison.
 :::
-:::
 ::::
+::::::
 
-::: {.notes}
+::: notes
 Use this quiz to reinforce key concepts. Encourage students to explain their reasoning, not just give answers.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Interactive Quiz
 
-:::: {.columns}
+:::::: columns
 ::: {.column width="70%"}
 **Question 2:** You have website traffic data spanning 5 years. For showing long-term growth trends, you should:
 
-A) Use a zero baseline always
-B) Use a log scale if growth is exponential
-C) Show only the most recent year
-D) Use a pie chart for each year
+A)  Use a zero baseline always
+B)  Use a log scale if growth is exponential
+C)  Show only the most recent year
+D)  Use a pie chart for each year
 :::
-::: {.column width="30%"}
-::: {.fragment}
+
+:::: {.column width="30%"}
+::: fragment
 **Answer:** B) Use a log scale if growth is exponential
 
 *Why?* Log scales reveal multiplicative relationships and growth rates.
 :::
-:::
 ::::
+::::::
 
-::: {.notes}
+::: notes
 This question tests understanding of when to break the zero baseline rule and when log scales are appropriate.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Next Steps
 
-**For next class:**
-- Read Tufte Chapter 1-2 (Graphical Excellence & Integrity)
-- Practice chart selection with your own datasets
-- Complete Exercise 3: Chart design and encoding alternatives
+**For next class:** - Read Tufte Chapter 1-2 (Graphical Excellence & Integrity) - Practice chart selection with your own datasets - Complete Exercise 3: Chart design and encoding alternatives
 
-**Lab activities:**
-- Build all five chart types with real data
-- Compare encoding choices for the same dataset
-- Apply the chart selection framework to new scenarios
+**Lab activities:** - Build all five chart types with real data - Compare encoding choices for the same dataset - Apply the chart selection framework to new scenarios
 
-**Looking ahead:**
-- Interactive visualization techniques
-- Advanced visual encodings and multi-dimensional data
-- Design critique and evaluation methods
+**Looking ahead:** - Interactive visualization techniques - Advanced visual encodings and multi-dimensional data - Design critique and evaluation methods
 
-::: {.notes}
+::: notes
 Give students concrete actions to reinforce today's learning. The lab exercise helps them practice the concepts immediately while the reading prepares them for more advanced topics.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Key Takeaways
 
-::: {.incremental}
-- **Five fundamental charts** are your visualization toolkit
-- **Data types** determine appropriate chart selection
-- **Visual encoding theory** provides systematic design principles
-- **Effectiveness rankings** guide channel choices
-- **Scale and axis design** dramatically affects perception
+::: incremental
+-   **Five fundamental charts** are your visualization toolkit
+-   **Data types** determine appropriate chart selection
+-   **Visual encoding theory** provides systematic design principles
+-   **Effectiveness rankings** guide channel choices
+-   **Scale and axis design** dramatically affects perception
 :::
 
-::: {.notes}
+::: notes
 End with the core messages students should remember. These principles will guide them in every visualization project they undertake.
 :::
 
----
+------------------------------------------------------------------------
 
 ## Questions & Discussion
 
-:::: {.columns}
+::::: columns
 ::: {.column width="70%"}
-**Think about:**
-- What visualization challenges do you face in your work/research?
-- How might these principles apply to your domain?
-- What questions do you have about applying these techniques?
+**Think about:** - What visualization challenges do you face in your work/research? - How might these principles apply to your domain? - What questions do you have about applying these techniques?
 
 **Next class:** Interactive visualization techniques and advanced encodings
 :::
+
 ::: {.column width="30%"}
 ![Thank you](figs/vida.jpg){width="100%"}
 :::
-::::
+:::::
 
-::: {.notes}
+::: notes
 End with open discussion to connect the general principles to students' specific interests and challenges. This helps them see the practical relevance of what they've learned.
 :::
