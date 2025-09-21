@@ -100,7 +100,7 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
 - **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
 - **Make-up Class**: Tuesday, October 14 (for Fall Break)
-- **Status**: ✅ **Week 2 COMPLETE** - All materials prepared for Sept 8, 2025 class
+- **Status**: ✅ **Week 4 COMPLETE** - Model Assessment lecture ready for Sept 22, 2025 class
 - **Discord**: https://discord.gg/dyHSFN65
 
 ##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
@@ -139,6 +139,28 @@ The repository includes complete course websites as subdirectories:
 - **Projector-friendly design**: Light backgrounds for code blocks ensure classroom visibility
 - **Professional presentation**: Consistent, timeless language maintains quality over time
 - **Future-proof structure**: Content can be reused in future semesters without modification
+
+##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
+- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (848+ lines)
+  - Complete migration from 2024-VisML-CDS with all missing content restored
+  - Comprehensive speaker notes throughout for teaching preparation
+  - Enhanced content depth with additional explanations and context
+  - Projector-friendly code styling with light backgrounds for classroom visibility
+  - Complete figure collection (39 images) from confusion matrices to calibration
+- **figs/model_assessment_figs/**: Complete visual asset library (39 files)
+  - Confusion matrix examples and extended matrices
+  - ROC curves, AUC examples, and multiclass ROC demonstrations
+  - Visual analytics systems screenshots (Squares, Alsallakh, Neo, EnsembleMatrix)
+  - Complete calibration content: reliability diagrams, proper scoring rules, calibration techniques
+  - Modern research examples: Calibrate (2023), Smooth ECE, neural network calibration
+- **lab-light-theme.css**: Projector-optimized styling for code blocks
+
+##### Content Sources and Improvements:
+- **Base content**: Migrated from 2024-VisML-CDS with all missing advanced calibration content
+- **Enhanced pedagogy**: Added comprehensive speaker notes and improved explanations
+- **Technical improvements**: Projector-friendly code styling, larger video displays
+- **Research coverage**: Complete coverage from basic confusion matrices to state-of-the-art calibration methods
+- **Practical focus**: Working Python examples with sklearn for hands-on learning
 
 ##### Assignment Integration:
 - **Observable Homework 1**: https://observablehq.com/d/aa2a22499278e4c1
