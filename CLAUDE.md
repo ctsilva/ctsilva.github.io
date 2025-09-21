@@ -100,7 +100,7 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
 - **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
 - **Make-up Class**: Tuesday, October 14 (for Fall Break)
-- **Status**: ✅ **Week 4 COMPLETE** - Model Assessment slides ready for Sept 22, 2025 class
+- **Status**: ✅ **Week 4 COMPLETE** - Model Assessment slides ready for Sept 22, 2025 class with standardized citations
 - **Discord**: https://discord.gg/dyHSFN65
 
 ##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
@@ -167,12 +167,17 @@ The repository includes complete course websites as subdirectories:
     - **Calibrate system (2022)**: Interactive calibration analysis tool
     - **Smooth ECE (2023)**: Principled reliability diagrams via kernel smoothing
   - **Critical fixes**: Light code theme, working video links, projector-optimized styling
-  - **Citation standardization (Sept 2025)**: All 14 reference PDFs renamed to consistent academic format
-    - Used metadata extraction and manual curation for accurate author/title identification
-    - Applied Author_Year_Title_Keywords naming convention throughout
-    - Fixed incorrect attributions (e.g., Bradley→Fawcett, Fawcett→Hand&Till, Provost/Fawcett→Fogarty papers)
-    - Updated all slide references to match new filenames
-    - Examples: `Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf`
+  - **Citation standardization (Sept 2025)**: Complete overhaul of academic reference system
+    - **Methodology**: Combined CrossRef API, PDF metadata extraction, and manual curation
+    - **Scale**: 14 reference PDFs standardized to `Author_Year_Title_Keywords.pdf` convention
+    - **Major corrections**: Fixed 4 significant misattributions discovered through metadata analysis:
+      * `Bradley_1997_*` → `Fawcett_2006_Introduction_ROC_Analysis.pdf` (DOI: 10.1016/j.patrec.2005.10.010)
+      * `Fawcett_2006_*` → `Hand_Till_2001_Simple_Generalisation_ROC_Multiclass.pdf` (Machine Learning journal)
+      * `Provost_Fawcett_2001_*` → `Fogarty_2005_ROC_Curve_Analysis_Sensor_Based_HCI.pdf` (HCI context)
+      * `Liu_Bertini_Lins_2021_*` → `Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf` (CHI 2022)
+    - **Impact**: All slide references updated, course homepage includes direct reading links
+    - **Quality assurance**: Full author name completion (e.g., Niculescu→Niculescu-Mizil, added missing co-authors)
+    - **Future-proof**: Standardized naming enables predictable programmatic access and prevents broken links
 - **figs/model_assessment_figs/**: Complete visual asset library (52+ images)
   - Neo Figure 1 overview showing hierarchical capabilities (A, B, C scenarios)
   - Confusion matrix examples: MNIST digits, multi-class, hierarchical
@@ -445,6 +450,42 @@ Key plugins enabled (via github-pages gem):
 
 ## Deployment
 The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
+
+## Academic Reference Management System
+
+### Citation Standardization Process (Implemented Sept 2025)
+The repository now includes a systematic approach to academic reference management:
+
+1. **PDF Metadata Extraction**: Use `pdfinfo` to extract author, title, DOI, and publication info
+2. **CrossRef API Integration**: Verify and enrich metadata using DOI lookups and title/author searches  
+3. **Manual Curation**: Cross-reference with PDF content for accuracy, especially for misnamed files
+4. **Standardized Naming**: Apply `FirstAuthor_Year_Title_Keywords.pdf` format consistently
+5. **Reference Updates**: Update all slide citations to match new filenames
+6. **Documentation**: Record attribution corrections and methodology for future reference
+
+### Tools and Commands Used
+```bash
+# Extract PDF metadata
+pdfinfo filename.pdf
+
+# CrossRef API query (Python)
+import requests
+response = requests.get(f"https://api.crossref.org/works/{doi}")
+response = requests.get(f"https://api.crossref.org/works?query=title:{title}")
+
+# Bulk rename operations
+mv "old_filename.pdf" "New_Standardized_Filename.pdf"
+
+# Update slide references
+grep -r "old_filename" slides/ && sed -i 's/old/new/g' slides/*.qmd
+```
+
+### Benefits Achieved
+- **Predictable Access**: Standardized naming enables programmatic reference management
+- **Accurate Attribution**: Corrected misidentified papers through metadata verification
+- **Future-Proof Links**: Local PDFs prevent broken external links during classroom presentation
+- **Searchable Collection**: Descriptive filenames improve discoverability
+- **Professional Standards**: Follows academic convention for research paper organization
 
 ## Future Enhancements
 
