@@ -100,7 +100,7 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
 - **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
 - **Make-up Class**: Tuesday, October 14 (for Fall Break)
-- **Status**: ✅ **Week 2 COMPLETE** - All materials prepared for Sept 8, 2025 class
+- **Status**: ✅ **Week 4 COMPLETE** - Model Assessment lecture ready for Sept 22, 2025 class
 - **Discord**: https://discord.gg/dyHSFN65
 
 ##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
@@ -140,11 +140,113 @@ The repository includes complete course websites as subdirectories:
 - **Professional presentation**: Consistent, timeless language maintains quality over time
 - **Future-proof structure**: Content can be reused in future semesters without modification
 
+##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
+- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (848+ lines)
+  - Complete migration from 2024-VisML-CDS with all missing content restored
+  - Comprehensive speaker notes throughout for teaching preparation
+  - Enhanced content depth with additional explanations and context
+  - Projector-friendly code styling with light backgrounds for classroom visibility
+  - Complete figure collection (39 images) from confusion matrices to calibration
+- **figs/model_assessment_figs/**: Complete visual asset library (39 files)
+  - Confusion matrix examples and extended matrices
+  - ROC curves, AUC examples, and multiclass ROC demonstrations
+  - Visual analytics systems screenshots (Squares, Alsallakh, Neo, EnsembleMatrix)
+  - Complete calibration content: reliability diagrams, proper scoring rules, calibration techniques
+  - Modern research examples: Calibrate (2023), Smooth ECE, neural network calibration
+- **lab-light-theme.css**: Projector-optimized styling for code blocks
+
+##### Content Sources and Improvements:
+- **Base content**: Migrated from 2024-VisML-CDS with all missing advanced calibration content
+- **Enhanced pedagogy**: Added comprehensive speaker notes and improved explanations
+- **Technical improvements**: Projector-friendly code styling, larger video displays
+- **Research coverage**: Complete coverage from basic confusion matrices to state-of-the-art calibration methods
+- **Practical focus**: Working Python examples with sklearn for hands-on learning
+
 ##### Assignment Integration:
 - **Observable Homework 1**: https://observablehq.com/d/aa2a22499278e4c1
   - NYC transportation data visualization with D3.js fundamentals
   - Student fork-and-complete model for hands-on learning
   - Integrates with week2-lab.qmd Observable setup tutorial
+
+##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
+- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (630+ lines)
+  - **Section 1**: Confusion Matrices and ROC Curves
+    - Disease prediction and handwritten digit scenarios with MNIST examples
+    - Extended confusion matrix visualization and sklearn implementation
+    - Neo hierarchical confusion matrix system (CHI 2022 Best Paper Award)
+    - ROC analysis from WWII radar origins to modern multi-class scenarios
+    - AUC interpretation and sklearn ROC curve demonstrations
+  - **Section 2**: Visual Analytics Systems for Model Performance
+    - **Squares (2016)**: Interactive performance analysis with clickable video demo
+    - **Alsallakh et al. (2014)**: Probabilistic classification data visualization
+    - **Beauxis-Aussalet (2014)**: Confusion matrices for non-expert users
+    - **EnsembleMatrix (2009)**: Multi-classifier visualization support
+  - **Section 3**: Calibration Theory and Practice
+    - Weather forecasting calibration origins (Brier 1950)
+    - Reliability diagrams and hyperparameter effects
+    - Modern neural network calibration issues (Guo 2017, Minderer 2021)
+    - Calibration techniques: Platt scaling vs isotonic regression
+    - **Calibrate system (2022)**: Interactive calibration analysis tool
+    - **Smooth ECE (2023)**: Principled reliability diagrams via kernel smoothing
+  - **Critical fixes**: Light code theme, working video links, projector-optimized styling
+  - **Citation standardization (Sept 2025)**: Complete overhaul of academic reference system
+    - **Methodology**: Combined CrossRef API, PDF metadata extraction, and manual curation
+    - **Scale**: 14 reference PDFs standardized to `Author_Year_Title_Keywords.pdf` convention
+    - **Major corrections**: Fixed 4 significant misattributions discovered through metadata analysis:
+      * `Bradley_1997_*` → `Fawcett_2006_Introduction_ROC_Analysis.pdf` (DOI: 10.1016/j.patrec.2005.10.010)
+      * `Fawcett_2006_*` → `Hand_Till_2001_Simple_Generalisation_ROC_Multiclass.pdf` (Machine Learning journal)
+      * `Provost_Fawcett_2001_*` → `Fogarty_2005_ROC_Curve_Analysis_Sensor_Based_HCI.pdf` (HCI context)
+      * `Liu_Bertini_Lins_2021_*` → `Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf` (CHI 2022)
+    - **Impact**: All slide references updated, course homepage includes direct reading links
+    - **Quality assurance**: Full author name completion (e.g., Niculescu→Niculescu-Mizil, added missing co-authors)
+    - **Future-proof**: Standardized naming enables predictable programmatic access and prevents broken links
+- **figs/model_assessment_figs/**: Complete visual asset library (52+ images)
+  - Neo Figure 1 overview showing hierarchical capabilities (A, B, C scenarios)
+  - Confusion matrix examples: MNIST digits, multi-class, hierarchical
+  - ROC curve progression: aircraft detection → sklearn → multi-class scenarios
+  - Calibration examples: forecast tables → reliability diagrams → neural networks
+  - Visual analytics screenshots: Squares interface, EnsembleMatrix, Alsallakh systems
+  - Modern research figures: Calibrate tool, Smooth ECE, multi-class calibration
+- **refs/**: Standardized academic reference collection (16 PDFs - fully renamed Sept 21, 2025)
+  - **Visual Analytics**:
+    * Alsallakh et al. (2014) - Visual Methods for Analyzing Probabilistic Classification
+    * Beauxis-Aussalet & Hardman (2014) - Visualization for Non-Expert Users
+    * Görtler et al. (2022) - Neo Hierarchical Confusion Matrix
+    * Ren et al. (2016) - Squares Interactive Performance Analysis
+    * Talbot et al. (2009) - EnsembleMatrix Multiple Classifiers
+  - **Calibration Foundations**:
+    * Niculescu-Mizil & Caruana (2005) - Predicting Good Probabilities
+    * Guo et al. (2017) - Modern Neural Network Calibration
+    * Vaicenavicius et al. (2019) - Evaluating Model Calibration
+    * Xenopoulos et al. (2022) - Calibrate Interactive Analysis Tool
+  - **Scoring & Metrics**:
+    * Kull & Flach (2015) - Novel Decompositions of Proper Scoring Rules
+    * Silva Filho (2020) - ECML/PKDD Tutorial on Evaluation Metrics
+  - **ROC Analysis**:
+    * Fawcett (2006) - Introduction to ROC Analysis
+    * Hand & Till (2001) - Simple Generalisation for Multi-class ROC
+    * Hanley & McNeil (1982) - Meaning and Use of ROC Curves
+    * Fogarty (2005) - ROC Analysis in Sensor-Based HCI
+    * Cortes & Mohri (2003) - AUC Optimization and Error Minimization
+  - **Naming convention**: `LastName_SecondName_Year_Short_Title.pdf` for predictable access
+  - **Recent cleanup**: Renamed cryptic files (1703_20tvcg12, 22775A) to proper academic format
+
+##### Technical Improvements and Design Principles (Week 4):
+- **Projector-Ready Code Blocks**: Light gray backgrounds (`#f8f9fa`) with dark text for optimal classroom visibility
+- **Reliable Video Integration**: Replaced problematic YouTube embeds with clickable links for Neo and Squares demos
+- **Consistent Citation Format**: All papers use clean `[Title](../refs/Filename.pdf)` linking with abbreviated venue names
+- **Future-Proof Reference System**: Local PDFs prevent broken links, standardized naming enables predictable access
+- **Professional Slide Layout**: Two-column designs balance visual content with key feature summaries
+- **Updated Branding**: NYU Tandon styling with custom.scss theme, VIDA lab logo, Fall 2025 metadata
+- **Comprehensive Coverage**: 630+ lines spanning theoretical foundations to cutting-edge research (2023)
+- **Interactive Elements**: Clickable GitHub demo links, working video references, clean navigation structure
+
+##### Content Sources and Migration Strategy:
+- **Base content**: Migrated from 2024-VisML-CDS/slides/model_assessment.qmd
+- **Format updates**: Converted to 2025 Quarto reveal.js structure with enhanced metadata
+- **Figure integration**: Copied and organized 40+ images from 2024 course materials
+- **Reference curation**: Collected, renamed, and standardized 14 academic papers
+- **Quality assurance**: Fixed broken video embeds, updated code styling, verified all links
 
 #### InfoVis Course Structure (2025-InfoVis-CSE)
 - **Course Code**: CS-GY 6313 - Information Visualization
@@ -387,6 +489,42 @@ Key plugins enabled (via github-pages gem):
 ## Deployment
 The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
 
+## Academic Reference Management System
+
+### Citation Standardization Process (Implemented Sept 2025)
+The repository now includes a systematic approach to academic reference management:
+
+1. **PDF Metadata Extraction**: Use `pdfinfo` to extract author, title, DOI, and publication info
+2. **CrossRef API Integration**: Verify and enrich metadata using DOI lookups and title/author searches  
+3. **Manual Curation**: Cross-reference with PDF content for accuracy, especially for misnamed files
+4. **Standardized Naming**: Apply `FirstAuthor_Year_Title_Keywords.pdf` format consistently
+5. **Reference Updates**: Update all slide citations to match new filenames
+6. **Documentation**: Record attribution corrections and methodology for future reference
+
+### Tools and Commands Used
+```bash
+# Extract PDF metadata
+pdfinfo filename.pdf
+
+# CrossRef API query (Python)
+import requests
+response = requests.get(f"https://api.crossref.org/works/{doi}")
+response = requests.get(f"https://api.crossref.org/works?query=title:{title}")
+
+# Bulk rename operations
+mv "old_filename.pdf" "New_Standardized_Filename.pdf"
+
+# Update slide references
+grep -r "old_filename" slides/ && sed -i 's/old/new/g' slides/*.qmd
+```
+
+### Benefits Achieved
+- **Predictable Access**: Standardized naming enables programmatic reference management
+- **Accurate Attribution**: Corrected misidentified papers through metadata verification
+- **Future-Proof Links**: Local PDFs prevent broken external links during classroom presentation
+- **Searchable Collection**: Descriptive filenames improve discoverability
+- **Professional Standards**: Follows academic convention for research paper organization
+
 ## Future Enhancements
 
 ### Portfolio Expansion
@@ -416,5 +554,66 @@ The site automatically deploys to GitHub Pages when pushing to the main branch. 
 - **Jekyll Collections**: Ready for additional content types and categorization
 - **Responsive Design**: All additions should maintain mobile-friendly design
 - **Search Optimization**: Consider adding site search functionality for larger content volumes
+
+## Reference and Citation Management
+
+### PDF Reference Naming Convention
+All course materials should follow a consistent naming convention for academic references stored in `refs/` directories:
+
+**Format**: `LastName_SecondLastName_Year_Short_Title.pdf`
+
+**Examples**:
+- `Cleveland_McGill_1984_Graphical_Perception.pdf`
+- `Shneiderman_1996_The_Eyes_Have_It.pdf`
+- `Wickham_2014_Tidy_Data.pdf`
+- `Guo_Pleiss_Sun_Weinberger_2017_Neural_Network_Calibration.pdf`
+- `Xenopoulos_Rulff_Nonato_2022_Calibrate.pdf`
+- `Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf`
+- `Hanley_McNeil_1982_ROC_Analysis_Radiology.pdf`
+- `ECML_PKDD_2020_Tutorial_Evaluation_Metrics.pdf`
+
+**Rules**:
+1. **Authors**: Use last names only, separated by underscores
+2. **Year**: Four-digit publication year
+3. **Title**: Abbreviated descriptive title, no articles (a, an, the), use underscores for spaces
+4. **Length**: Keep filename under 60 characters when possible
+5. **Special characters**: Replace all spaces, hyphens, and special characters with underscores
+6. **Consistency**: Maintain same format across all course materials
+
+### Footer Citation Format
+In Quarto slides, use footer citations that link to local PDF files:
+
+**Format**:
+```markdown
+:::footer
+Author, A., Author, B., & Author, C. (Year). [*Title*](../refs/Author_Author_Year_Title.pdf). Venue.
+:::
+```
+
+**Examples**:
+```markdown
+:::footer
+Cleveland, W. S., & McGill, R. (1984). [*Graphical perception*](../refs/Cleveland_McGill_1984_Graphical_Perception.pdf). Journal of the American Statistical Association.
+:::
+
+:::footer
+Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). [*Squares: Supporting interactive performance analysis for multiclass classifiers*](../refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares.pdf). IEEE TVCG.
+:::
+```
+
+**Venue Abbreviations**:
+- IEEE Transactions on Visualization and Computer Graphics → IEEE TVCG
+- ACM Conference on Human Factors in Computing Systems → CHI
+- International Conference on Machine Learning → ICML
+- Conference on Artificial Intelligence and Statistics → AISTATS
+- European Conference on Machine Learning → ECML-PKDD
+
+### Benefits of This System
+- **Predictable file locations**: Easy to find and link references
+- **Version control friendly**: Consistent naming reduces merge conflicts
+- **Classroom ready**: Students can access papers directly from slides
+- **Future-proof**: Local files don't break when external URLs change
+- **Professional appearance**: Clean, academic-standard citation format
+
 - to memorize
 - to memorize
