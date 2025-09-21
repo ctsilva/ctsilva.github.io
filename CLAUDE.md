@@ -148,20 +148,56 @@ The repository includes complete course websites as subdirectories:
 
 ##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
 - **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (630+ lines)
-  - Confusion matrices and ROC curves with sklearn examples
-  - Visual analytics systems for model performance (Neo, Squares, EnsembleMatrix)
-  - Comprehensive calibration section with reliability diagrams
-  - Modern calibration research and techniques
-  - **Critical fixes**: Updated code blocks with light theme, fixed video embeds
-- **figs/model_assessment_figs/**: Complete figure collection (40+ images)
-  - Extended confusion matrix examples and Neo interface demonstrations
-  - ROC curve examples from radar analysis to multi-class scenarios
-  - Calibration forecast examples and reliability diagram variations
-  - Visual analytics system screenshots and research paper figures
-- **refs/**: Clean reference naming with 14 properly formatted PDFs
-  - All papers follow `LastName_Year_Title.pdf` convention
-  - Local PDF links for classroom reliability and future-proofing
-  - Complete calibration literature collection with seminal papers
+  - **Section 1**: Confusion Matrices and ROC Curves
+    - Disease prediction and handwritten digit scenarios with MNIST examples
+    - Extended confusion matrix visualization and sklearn implementation
+    - Neo hierarchical confusion matrix system (CHI 2022 Best Paper Award)
+    - ROC analysis from WWII radar origins to modern multi-class scenarios
+    - AUC interpretation and sklearn ROC curve demonstrations
+  - **Section 2**: Visual Analytics Systems for Model Performance
+    - **Squares (2016)**: Interactive performance analysis with clickable video demo
+    - **Alsallakh et al. (2014)**: Probabilistic classification data visualization
+    - **Beauxis-Aussalet (2014)**: Confusion matrices for non-expert users
+    - **EnsembleMatrix (2009)**: Multi-classifier visualization support
+  - **Section 3**: Calibration Theory and Practice
+    - Weather forecasting calibration origins (Brier 1950)
+    - Reliability diagrams and hyperparameter effects
+    - Modern neural network calibration issues (Guo 2017, Minderer 2021)
+    - Calibration techniques: Platt scaling vs isotonic regression
+    - **Calibrate system (2022)**: Interactive calibration analysis tool
+    - **Smooth ECE (2023)**: Principled reliability diagrams via kernel smoothing
+  - **Critical fixes**: Light code theme, working video links, projector-optimized styling
+- **figs/model_assessment_figs/**: Complete visual asset library (52+ images)
+  - Neo Figure 1 overview showing hierarchical capabilities (A, B, C scenarios)
+  - Confusion matrix examples: MNIST digits, multi-class, hierarchical
+  - ROC curve progression: aircraft detection → sklearn → multi-class scenarios
+  - Calibration examples: forecast tables → reliability diagrams → neural networks
+  - Visual analytics screenshots: Squares interface, EnsembleMatrix, Alsallakh systems
+  - Modern research figures: Calibrate tool, Smooth ECE, multi-class calibration
+- **refs/**: Standardized academic reference collection (14 PDFs)
+  - **Visual Analytics**: Neo (Liu 2022), Squares (Ren 2016), EnsembleMatrix (Talbot 2009)
+  - **Calibration Foundations**: Niculescu-Caruana (2005), Guo (2017), Vaicenavicius (2019)
+  - **Modern Advances**: Xenopoulos Calibrate (2022), Kull-Flach decomposition (2015)
+  - **ROC Analysis**: Bradley (1997), Hanley-McNeil (1982), Fawcett (2006)
+  - All follow `LastName_Year_Title.pdf` convention for predictable access
+  - Local PDF storage ensures classroom reliability and future-proof referencing
+
+##### Technical Improvements and Design Principles (Week 4):
+- **Projector-Ready Code Blocks**: Light gray backgrounds (`#f8f9fa`) with dark text for optimal classroom visibility
+- **Reliable Video Integration**: Replaced problematic YouTube embeds with clickable links for Neo and Squares demos
+- **Consistent Citation Format**: All papers use clean `[Title](../refs/Filename.pdf)` linking with abbreviated venue names
+- **Future-Proof Reference System**: Local PDFs prevent broken links, standardized naming enables predictable access
+- **Professional Slide Layout**: Two-column designs balance visual content with key feature summaries
+- **Updated Branding**: NYU Tandon styling with custom.scss theme, VIDA lab logo, Fall 2025 metadata
+- **Comprehensive Coverage**: 630+ lines spanning theoretical foundations to cutting-edge research (2023)
+- **Interactive Elements**: Clickable GitHub demo links, working video references, clean navigation structure
+
+##### Content Sources and Migration Strategy:
+- **Base content**: Migrated from 2024-VisML-CDS/slides/model_assessment.qmd
+- **Format updates**: Converted to 2025 Quarto reveal.js structure with enhanced metadata
+- **Figure integration**: Copied and organized 40+ images from 2024 course materials
+- **Reference curation**: Collected, renamed, and standardized 14 academic papers
+- **Quality assurance**: Fixed broken video embeds, updated code styling, verified all links
 
 #### InfoVis Course Structure (2025-InfoVis-CSE)
 - **Course Code**: CS-GY 6313 - Information Visualization
