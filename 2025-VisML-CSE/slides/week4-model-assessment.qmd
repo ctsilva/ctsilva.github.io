@@ -40,7 +40,7 @@ resources:
 
 * Consider a disease prediction model. Suppose the hypothetical disease has a 5% prevalence in the population
 
-* The given model converges on the solution of predicting that nobody has the disease (i.e., the model predicts “0” for every observation)
+* The given model converges on the solution of predicting that nobody has the disease (i.e., the model predicts "0" for every observation)
 
 * Our model is 95% accurate
 
@@ -62,7 +62,7 @@ resources:
 
 ## Confusion Matrices in sklearn
 
-```{python}
+```python
 from sklearn import datasets, svm
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -72,9 +72,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 clf = LogisticRegression(random_state=0)
 ```
 
-```{python}
-#| echo: true
-#| fig-pos: c
+```python
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 
@@ -112,14 +110,35 @@ plt.show()
 
 ## Neo: Hierarchical Confusion Matrix
 
-{{< video https://youtu.be/8ZxvsLPIF_Q width="60%" height="60%" >}}
-![](figs/model_assessment_figs/neo_reference.png){fig-align="center"}
+::: {.columns}
+::: {.column width="50%"}
+![](figs/model_assessment_figs/neo_figure1_overview.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+**Key Features:**
+
+- Supports hierarchical and multi-output labels
+- Interactive matrix authoring
+- Flexible renormalization 
+- Derived metrics visualization
+- **CHI 2022 Best Paper Award**
+
+**🎥 [Watch Video Demo](https://www.youtube.com/watch?v=LmsJJDHfGlI)**
+
+**[Live Demo & Code](https://github.com/apple/ml-hierarchical-confusion-matrix)**
+:::
+:::
+
+:::footer
+Liu, S., Xiao, D., Liu, J., et al. (2022). [*Neo: Generalizing Confusion Matrix Visualization to Hierarchical and Multi-Output Labels*](../refs/Liu_Bertini_Lins_2021_Neo_Confusion_Matrix.pdf). CHI.
+:::
 
 ## Receiver Operating Characteristic (ROC)
 
 :::: {.columns}
 ::: {.column width="60%"}
-* ROC analysis is another way to assess a classifier’s output
+* ROC analysis is another way to assess a classifier's output
 
 * ROC analysis developed out of radar operation in the second World War, where operators were interested in detecting signal (enemy aircraft) versus noise
 
@@ -181,8 +200,7 @@ Setting the threshold equal to 0.5, we get an accuracy of 80%. However, the curv
 
 ## ROC curve in sklearn
 
-```{python}
-#| echo: true
+```python
 import matplotlib.pyplot as plt
 from sklearn.metrics import RocCurveDisplay
 
@@ -218,12 +236,27 @@ plt.show()
 ![](figs/model_assessment_figs/squares_teaser.png){fig-align="center"}
 
 :::footer
-Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). *Squares: Supporting interactive performance analysis for multiclass classifiers*. IEEE transactions on visualization and computer graphics.
+Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). [*Squares: Supporting interactive performance analysis for multiclass classifiers*](../refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares.pdf). IEEE TVCG.
 :::
 
----
+## Squares Demo
 
-{{< video https://youtu.be/yUSwjofGAaQ width="100%" height="100%" >}}
+::: {.columns}
+::: {.column width="60%"}
+![](figs/model_assessment_figs/squares_teaser.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+**Interactive Performance Analysis:**
+
+- Multi-class classifier evaluation
+- Visual confusion matrix exploration
+- Performance metric visualization
+- Real-time interaction capabilities
+
+**🎥 [Watch Video Demo](https://youtu.be/yUSwjofGAaQ)**
+:::
+:::
 
 ## Alsallakh et. al. (2014)
 
@@ -265,7 +298,7 @@ Beauxis-Aussalet, E., & Hardman, L. (2014). *Visualization of confusion matrix f
 ![](figs/model_assessment_figs/ensemble_matrix.png){fig-align="center"}
 
 :::footer
-Talbot, J., Lee, B., Kapoor, A., & Tan, D. S. (2009, April). *EnsembleMatrix: interactive visualization to support machine learning with multiple classifiers*. In Proceedings of the SIGCHI conference on human factors in computing systems.
+Talbot, J., Lee, B., Kapoor, A., & Tan, D. S. (2009). [*EnsembleMatrix: interactive visualization to support machine learning with multiple classifiers*](../refs/Talbot_Lee_Kapoor_Tan_2009_EnsembleMatrix.pdf). CHI.
 :::
 
 # Calibration
@@ -283,7 +316,7 @@ Talbot, J., Lee, B., Kapoor, A., & Tan, D. S. (2009, April). *EnsembleMatrix: in
 
 ## Calibration - Forecast Example
 
-Weather forecasters started thinking about calibration a long time ago (Brier, 1950): a forecast of "70% chance of rain" should be followed by rain 70% of the time. Let’s consider a small toy example: 
+Weather forecasters started thinking about calibration a long time ago (Brier, 1950): a forecast of "70% chance of rain" should be followed by rain 70% of the time. Let's consider a small toy example: 
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -357,22 +390,15 @@ Slides based on [classifier-calibration.github.io](https://classifier-calibratio
 
 ## Reliability Diagram in sklearn
 
-```{python}
-#| echo: false
+```python
 from sklearn.naive_bayes import GaussianNB
+from sklearn.calibration import CalibrationDisplay
 
 lg = LogisticRegression(random_state=0)
 nb = GaussianNB()
 
 lg.fit(X_train, y_train)
 nb.fit(X_train, y_train)
-print()
-```
-
-```{python}
-#| echo: true
-#| panel: center
-from sklearn.calibration import CalibrationDisplay
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -385,12 +411,12 @@ CalibrationDisplay.from_estimator(nb, X_test, y_test, n_bins=10, ax=ax,
 
 ## Common sources of miscalibration
 
-* **Underconfidence:** a classifier thinks it’s worse at separating classes than it actually is.
+* **Underconfidence:** a classifier thinks it's worse at separating classes than it actually is.
 
     - Underconfidence typically gives sigmoidal distortions
     - To calibrate these means to pull predicted probabilities away from the centre
 
-*   **Overconfidence:** a classifier thinks it’s better at separating classes than it actually is
+*   **Overconfidence:** a classifier thinks it's better at separating classes than it actually is
 
     - Here, distortions are inverse-sigmoidal
     - Calibrating these means to push predicted probabilities toward the centre
@@ -427,7 +453,7 @@ $$MCE = \underset{m \in \{1,2,\dots,|B|\}}{\text{max}} |acc(b) - conf(b)|$$
 ![](figs/model_assessment_figs/calibration_nn_2016.png){fig-align="center"}
 
 :::footer
-Image taken from Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017, July). *On calibration of modern neural networks. In International Conference on Machine Learning*. PMLR.
+Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). [*On calibration of modern neural networks*](../refs/Guo_Pleiss_Sun_Weinberger_2017_Neural_Network_Calibration.pdf). ICML.
 :::
 
 ## Calibration of modern models
@@ -567,7 +593,7 @@ Image taken from Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C.
 ![](figs/model_assessment_figs/calibrate_teaser.png){fig-align="center"}
 
 :::footer
-Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). *Calibrate: Interactive analysis of probabilistic model output*. IEEE Transactions on Visualization and Computer Graphics.
+Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibrate: Interactive analysis of probabilistic model output*](../refs/Xenopoulos_Rulff_Nonato_2022_Calibrate.pdf). IEEE TVCG.
 :::
 
 ## Calibrate (2023) - Learned Reliability Diagram
@@ -575,7 +601,7 @@ Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). *Calibra
 ![](figs/model_assessment_figs/calibrate_learned_rel_diag.png){fig-align="center"}
 
 :::footer
-Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). *Calibrate: Interactive analysis of probabilistic model output*. IEEE Transactions on Visualization and Computer Graphics.
+Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibrate: Interactive analysis of probabilistic model output*](../refs/Xenopoulos_Rulff_Nonato_2022_Calibrate.pdf). IEEE TVCG.
 :::
 
 ## Calibrate (2023)
@@ -583,7 +609,7 @@ Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). *Calibra
 {{< video figs/model_assessment_figs/vis22a-sub1657-i7.mp4 >}}
 
 :::footer
-Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). *Calibrate: Interactive analysis of probabilistic model output*. IEEE Transactions on Visualization and Computer Graphics.
+Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibrate: Interactive analysis of probabilistic model output*](../refs/Xenopoulos_Rulff_Nonato_2022_Calibrate.pdf). IEEE TVCG.
 :::
 
 ## Smooth ECE (2023)
@@ -611,23 +637,23 @@ Błasiok, J., & Nakkiran, P. (2023). *Smooth ECE: Principled Reliability Diagram
 ![](figs/model_assessment_figs/calibration_multiclass.png){fig-align="center"}
 
 :::footer
-Image taken from Vaicenavicius, Juozas, et al. *Evaluating model calibration in classification*. The 22nd International Conference on Artificial Intelligence and Statistics. PMLR, 2019.
+Vaicenavicius, J., Widmann, D., Andersson, C., et al. (2019). [*Evaluating model calibration in classification*](../refs/Vaicenavicius_Widmann_2019_Evaluating_Model_Calibration.pdf). AISTATS.
 :::
 
 ## Suggested Calibration Literature
 
-* Niculescu-Mizil, A., & Caruana, R. (2005, August). [Predicting good probabilities with supervised learning](https://dl.acm.org/doi/pdf/10.1145/1102351.1102430?casa_token=o_8UMED_0fIAAAAA:MIq2GzQTPT0f-aWNDSijbcnzJN1riBdGqjq9FGn-wOZ188AOtXbTqRPkc9PuQGKSFIo5b4fM8-ItjQ). In Proceedings of the 22nd international conference on Machine learning (pp. 625-632).
+* Niculescu-Mizil, A., & Caruana, R. (2005). [Predicting good probabilities with supervised learning](../refs/Niculescu_Caruana_2005_Predicting_Good_Probabilities.pdf). ICML.
 
 * Nixon, J., Dusenberry, M. W., Zhang, L., Jerfel, G., & Tran, D. (2019, June). [Measuring Calibration in Deep Learning](http://openaccess.thecvf.com/content_CVPRW_2019/papers/Uncertainty%20and%20Robustness%20in%20Deep%20Visual%20Learning/Nixon_Measuring_Calibration_in_Deep_Learning_CVPRW_2019_paper.pdf). In CVPR Workshops (Vol. 2, No. 7).
 
-* Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017, July). [On calibration of modern neural networks](http://proceedings.mlr.press/v70/guo17a/guo17a.pdf). In International Conference on Machine Learning (pp. 1321-1330). PMLR.
+* Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). [On calibration of modern neural networks](../refs/Guo_Pleiss_Sun_Weinberger_2017_Neural_Network_Calibration.pdf). ICML.
 
-* Vaicenavicius, J., Widmann, D., Andersson, C., Lindsten, F., Roll, J., & Schön, T. (2019, April). [Evaluating model calibration in classification](http://proceedings.mlr.press/v89/vaicenavicius19a/vaicenavicius19a.pdf). In The 22nd International Conference on Artificial Intelligence and Statistics (pp. 3459-3467). PMLR.
+* Vaicenavicius, J., Widmann, D., Andersson, C., Lindsten, F., Roll, J., & Schön, T. (2019). [Evaluating model calibration in classification](../refs/Vaicenavicius_Widmann_2019_Evaluating_Model_Calibration.pdf). AISTATS.
 
 ## Suggested Calibration Literature
 
-* Kull, M., & Flach, P. (2015, September). [Novel decompositions of proper scoring rules for classification: Score adjustment as precursor to calibration](https://link.springer.com/content/pdf/10.1007/978-3-319-23528-8_5.pdf). In Joint European Conference on Machine Learning and Knowledge Discovery in Databases (pp. 68-85). Springer, Cham.
+* Kull, M., & Flach, P. (2015). [Novel decompositions of proper scoring rules for classification](../refs/Kull_Flach_2015_Scoring_Rules_Decomposition.pdf). ECML-PKDD.
 
-* [ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules](https://classifier-calibration.github.io/assets/slides/clacal_tutorial_ecmlpkdd_2020_evaluation.pdf)
+* [ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules](../refs/ECML_PKDD_2020_Tutorial_Evaluation_Metrics.pdf)
 
 * [Google Colab notebook for calibration curves](https://colab.research.google.com/drive/1mqDVJICMBg2eoIr2VPaDjQFUzlDT3grc?usp=sharing)

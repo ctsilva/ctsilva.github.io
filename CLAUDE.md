@@ -100,7 +100,7 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
 - **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
 - **Make-up Class**: Tuesday, October 14 (for Fall Break)
-- **Status**: ✅ **Week 2 COMPLETE** - All materials prepared for Sept 8, 2025 class
+- **Status**: ✅ **Week 4 COMPLETE** - Model Assessment slides ready for Sept 22, 2025 class
 - **Discord**: https://discord.gg/dyHSFN65
 
 ##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
@@ -145,6 +145,23 @@ The repository includes complete course websites as subdirectories:
   - NYC transportation data visualization with D3.js fundamentals
   - Student fork-and-complete model for hands-on learning
   - Integrates with week2-lab.qmd Observable setup tutorial
+
+##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
+- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (630+ lines)
+  - Confusion matrices and ROC curves with sklearn examples
+  - Visual analytics systems for model performance (Neo, Squares, EnsembleMatrix)
+  - Comprehensive calibration section with reliability diagrams
+  - Modern calibration research and techniques
+  - **Critical fixes**: Updated code blocks with light theme, fixed video embeds
+- **figs/model_assessment_figs/**: Complete figure collection (40+ images)
+  - Extended confusion matrix examples and Neo interface demonstrations
+  - ROC curve examples from radar analysis to multi-class scenarios
+  - Calibration forecast examples and reliability diagram variations
+  - Visual analytics system screenshots and research paper figures
+- **refs/**: Clean reference naming with 14 properly formatted PDFs
+  - All papers follow `LastName_Year_Title.pdf` convention
+  - Local PDF links for classroom reliability and future-proofing
+  - Complete calibration literature collection with seminal papers
 
 #### InfoVis Course Structure (2025-InfoVis-CSE)
 - **Course Code**: CS-GY 6313 - Information Visualization
@@ -416,5 +433,65 @@ The site automatically deploys to GitHub Pages when pushing to the main branch. 
 - **Jekyll Collections**: Ready for additional content types and categorization
 - **Responsive Design**: All additions should maintain mobile-friendly design
 - **Search Optimization**: Consider adding site search functionality for larger content volumes
+
+## Reference and Citation Management
+
+### PDF Reference Naming Convention
+All course materials should follow a consistent naming convention for academic references stored in `refs/` directories:
+
+**Format**: `LastName_SecondLastName_Year_Short_Title.pdf`
+
+**Examples**:
+- `Cleveland_McGill_1984_Graphical_Perception.pdf`
+- `Shneiderman_1996_The_Eyes_Have_It.pdf`
+- `Wickham_2014_Tidy_Data.pdf`
+- `Guo_Pleiss_Sun_Weinberger_2017_Neural_Network_Calibration.pdf`
+- `Xenopoulos_Rulff_Nonato_2022_Calibrate.pdf`
+- `Hanley_McNeil_1982_ROC_Analysis_Radiology.pdf`
+- `ECML_PKDD_2020_Tutorial_Evaluation_Metrics.pdf`
+
+**Rules**:
+1. **Authors**: Use last names only, separated by underscores
+2. **Year**: Four-digit publication year
+3. **Title**: Abbreviated descriptive title, no articles (a, an, the), use underscores for spaces
+4. **Length**: Keep filename under 60 characters when possible
+5. **Special characters**: Replace all spaces, hyphens, and special characters with underscores
+6. **Consistency**: Maintain same format across all course materials
+
+### Footer Citation Format
+In Quarto slides, use footer citations that link to local PDF files:
+
+**Format**:
+```markdown
+:::footer
+Author, A., Author, B., & Author, C. (Year). [*Title*](../refs/Author_Author_Year_Title.pdf). Venue.
+:::
+```
+
+**Examples**:
+```markdown
+:::footer
+Cleveland, W. S., & McGill, R. (1984). [*Graphical perception*](../refs/Cleveland_McGill_1984_Graphical_Perception.pdf). Journal of the American Statistical Association.
+:::
+
+:::footer
+Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). [*Squares: Supporting interactive performance analysis for multiclass classifiers*](../refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares.pdf). IEEE TVCG.
+:::
+```
+
+**Venue Abbreviations**:
+- IEEE Transactions on Visualization and Computer Graphics → IEEE TVCG
+- ACM Conference on Human Factors in Computing Systems → CHI
+- International Conference on Machine Learning → ICML
+- Conference on Artificial Intelligence and Statistics → AISTATS
+- European Conference on Machine Learning → ECML-PKDD
+
+### Benefits of This System
+- **Predictable file locations**: Easy to find and link references
+- **Version control friendly**: Consistent naming reduces merge conflicts
+- **Classroom ready**: Students can access papers directly from slides
+- **Future-proof**: Local files don't break when external URLs change
+- **Professional appearance**: Clean, academic-standard citation format
+
 - to memorize
 - to memorize
