@@ -11,7 +11,7 @@
 
   <meta name="author" content="Claudio Silva">
   <meta name="dcterms.date" content="2025-09-12">
-  <title>Fundamental Graphs and Data Transformation</title>
+  <title>Fundamental Graphs and Visual Encoding</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -128,7 +128,7 @@
     <div class="slides">
 
 <section class="quarto-title-block center">
-  <h1 class="title">Fundamental Graphs and Data Transformation</h1>
+  <h1 class="title">Fundamental Graphs and Visual Encoding</h1>
   <p class="subtitle">CS-GY 6313 - Information Visualization - Fall 2025</p>
 
 <div class="quarto-title-authors">
@@ -146,7 +146,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Today’s Agenda</h2>
-<p><strong>Learning Objectives:</strong> - Understand the two-step visualization process - Master the five fundamental graph types - Apply expressiveness and effectiveness principles - Learn essential data transformation techniques - Recognize the impact of scales and axes choices</p>
+<p><strong>Learning Objectives:</strong> - Master the five fundamental graph types and when to use them - Apply expressiveness and effectiveness principles - Understand visual encoding theory (marks and channels) - Make informed chart selection decisions - Design effective scales and axes</p>
 <aside class="notes">
 <p>Today we’re building the foundation for effective visualization design. We’ll move from abstract principles to concrete techniques you can apply immediately.</p>
 <style type="text/css">
@@ -162,7 +162,41 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>The Visualization Process</h2>
+<h2>Acknowledgments</h2>
+<p><strong>Special thanks to:</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Prof.&nbsp;Enrico Bertini</strong> NYU Tandon School of Engineering</p>
+<ul>
+<li>Course materials and pedagogical insights</li>
+<li>Visualization design principles</li>
+<li>Interactive visualization expertise</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Prof.&nbsp;Jeff Heer</strong> University of Washington</p>
+<ul>
+<li>Fundamental visualization theory</li>
+<li>Perceptual effectiveness research</li>
+<li>Vega-Lite and D3.js frameworks</li>
+</ul>
+</div></div>
+<p><em>This course builds upon their foundational contributions to visualization education and research.</em></p>
+<aside class="notes">
+<p>Acknowledge the important contributions of Prof.&nbsp;Bertini and Prof.&nbsp;Heer to the field and to the educational materials used in this course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The Chart Selection Challenge</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
@@ -172,9 +206,11 @@ Claudio Silva
 </figure>
 </div>
 </div><div class="column" style="width:40%;">
+<p><strong>The central question:</strong> Given data and a task, which visualization technique will be most effective?</p>
 <ul>
-<li class="fragment"><strong>Step 1:</strong> What to visualize? (Data selection &amp; transformation)</li>
-<li class="fragment"><strong>Step 2:</strong> How to visualize? (Visual encoding &amp; design)</li>
+<li class="fragment"><strong>Chart type</strong> (bar, line, scatter, etc.)</li>
+<li class="fragment"><strong>Visual encoding</strong> (position, color, size)</li>
+<li class="fragment"><strong>Design choices</strong> (scales, axes, layout)</li>
 </ul>
 </div></div>
 <aside class="notes">
@@ -192,21 +228,22 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Step 1: What to Visualize?</h2>
+<h2>Data Types Drive Design</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Data Selection &amp; Transformation:</strong></p>
+<p><strong>Understanding your data:</strong></p>
 <ul>
-<li class="fragment">Which attributes matter for your question?</li>
-<li class="fragment">What level of detail is appropriate?</li>
-<li class="fragment">How should data be aggregated or filtered?</li>
-<li class="fragment">What derived attributes might be useful?</li>
+<li class="fragment"><strong>Categorical</strong> (nominal, ordinal)</li>
+<li class="fragment"><strong>Quantitative</strong> (continuous, discrete)</li>
+<li class="fragment"><strong>Temporal</strong> (time-based ordering)</li>
+<li class="fragment"><strong>Spatial</strong> (geographic coordinates)</li>
 </ul>
+<p><strong>The type determines suitable encodings</strong></p>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figs/flight-data-domain-questions.png" style="width:100.0%"></p>
-<figcaption>Example: Domain questions to data transformation</figcaption>
+<figcaption>Example: Data types to visual mappings</figcaption>
 </figure>
 </div>
 </div></div>
@@ -225,10 +262,10 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Step 2: How to Visualize?</h2>
+<h2>Same Data, Multiple Options</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Visual Encoding &amp; Design:</strong></p>
+<p><strong>Design decisions:</strong></p>
 <ul>
 <li class="fragment">Which visual channels best represent your data?</li>
 <li class="fragment">How do you map data attributes to visual properties?</li>
@@ -530,10 +567,114 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
+<h2>Visual Encoding Theory</h2>
+<p><strong>Marks:</strong> Basic graphical elements - Points, lines, areas, volumes</p>
+<p><strong>Channels:</strong> Ways to vary marks - Position, size, shape, color, orientation, texture</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/marks.jpg" style="width:100.0%"></p>
+<figcaption>Marks and channels determine effectiveness</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<p><strong>Key insight:</strong> Different channels have different perceptual effectiveness for different data types</p>
+</div></div>
+<aside class="notes">
+<p>This is the foundation of systematic visualization design. Understanding marks and channels helps you make principled encoding decisions rather than arbitrary ones.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Channel Effectiveness Rankings</h2>
 
-<img data-src="figs/effectiveness.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Ranking of visual channels by data type</p><aside class="notes">
+<img data-src="figs/effectiveness.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Ranking of visual channels by data type</p><p><strong>Key principle:</strong> Use the most effective channel for your most important data</p>
+<aside class="notes">
 <p>This ranking from Cleveland and McGill is based on empirical studies of human perception. Position along a common scale is most effective for quantitative data, while color hue works well for categorical distinctions but poorly for quantitative comparison.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Chart Selection Framework</h2>
+<p><strong>How do you choose the right chart?</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Ask these questions:</strong></p>
+<ol type="1">
+<li><strong>What data types do I have?</strong>
+<ul>
+<li>Categorical vs.&nbsp;Quantitative</li>
+<li>Temporal vs.&nbsp;Non-temporal</li>
+</ul></li>
+<li><strong>What relationship am I showing?</strong>
+<ul>
+<li>Comparison, trend, correlation, distribution, composition</li>
+</ul></li>
+<li><strong>How many variables?</strong>
+<ul>
+<li>1D, 2D, 3D, multidimensional</li>
+</ul></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<p><strong>Decision Tree:</strong></p>
+<ul>
+<li><strong>Compare categories</strong> → Bar Chart</li>
+<li><strong>Show trends over time</strong> → Line Chart</li>
+<li><strong>Explore relationships</strong> → Scatter Plot</li>
+<li><strong>Cross-tabulate</strong> → Matrix/Heatmap</li>
+<li><strong>Show geographic distribution</strong> → Symbol Map</li>
+</ul>
+<p><strong>Rule of thumb:</strong> Start simple, add complexity only when needed</p>
+</div></div>
+<aside class="notes">
+<p>This framework helps students make systematic chart choices rather than arbitrary decisions. The decision tree provides a quick reference for common scenarios.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Chart Selection Examples</h2>
+<p><strong>Scenario 1:</strong> Monthly sales data for different product categories</p>
+<div class="fragment">
+<p><strong>Answer:</strong> Line chart (multiple series) - shows trends over time by category</p>
+</div>
+<p><strong>Scenario 2:</strong> Customer satisfaction ratings across departments</p>
+<div class="fragment">
+<p><strong>Answer:</strong> Bar chart - compares quantitative values across categories</p>
+</div>
+<p><strong>Scenario 3:</strong> Relationship between advertising spend and sales revenue</p>
+<div class="fragment">
+<p><strong>Answer:</strong> Scatter plot - explores correlation between two quantitative variables</p>
+</div>
+<aside class="notes">
+<p>Work through these examples with students to reinforce the decision-making process. Ask them to justify their choices based on the framework.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -570,126 +711,6 @@ Claudio Silva
 </div></div>
 <aside class="notes">
 <p>This principle explains why bar charts often outperform pie charts for precise comparison. When accuracy matters most, prioritize position-based encodings.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Data Transformation: The First Step</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/data-wrangling-pipeline.png" style="width:100.0%"></p>
-<figcaption>Data transformation pipeline</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:40%;">
-<ul>
-<li class="fragment">Raw data rarely answers your questions directly</li>
-<li class="fragment">Transformation creates the information you need</li>
-<li class="fragment">Different transformations reveal different insights</li>
-<li class="fragment">This step is often more important than visual design choices</li>
-</ul>
-</div></div>
-<aside class="notes">
-<p>Many visualization failures stem from poor data preparation, not poor design. The most beautiful chart is useless if it doesn’t contain the right information to answer your question.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Aggregation: Summarizing for Insight</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Raw Data:</strong></p>
-<pre><code>Sales transactions: 50,000 records
-Date, Product, Amount, Customer...</code></pre>
-<p><strong>Questions:</strong> - Which products sell best? - How do sales vary by month? - What’s the geographic distribution?</p>
-</div><div class="column" style="width:50%;">
-<p><strong>Aggregated Data:</strong></p>
-<pre><code>By Product: Sum(Amount)
-By Month: Avg(Amount) 
-By Region: Count(Transactions)</code></pre>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/flight-data-table.png" style="width:80.0%"></p>
-<figcaption>Example: Flight data transformation</figcaption>
-</figure>
-</div>
-</div></div>
-<aside class="notes">
-<p>Aggregation is essential for moving from individual records to patterns and trends. The key is choosing the right aggregation function (sum, average, count, etc.) and grouping variables for your specific question.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Common Transformation Types</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Temporal Aggregation:</strong> - Year → Month → Week → Day → Hour</p>
-<p><strong>Spatial Aggregation:</strong> - Country → State → City → Neighborhood</p>
-</div><div class="column" style="width:50%;">
-<p><strong>Binning:</strong> - Age: 18-25, 26-35, 36-45, etc. - Income: Low, Medium, High</p>
-<p><strong>Derived Attributes:</strong> - Growth rate from sequential values - Ratios and percentages</p>
-</div></div>
-<aside class="notes">
-<p>Each transformation type serves different analytical purposes. Temporal aggregation reveals trends, spatial aggregation shows geographic patterns, binning simplifies continuous variables, and derived attributes can reveal relationships invisible in raw data.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Interactive Exercise: Transformation Choices</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p><strong>Dataset:</strong> E-commerce transactions - Product, Date, Amount, Customer</p>
-<p><strong>Questions to explore:</strong> 1. How do you identify seasonal trends? 2. Which customer segments are most valuable? 3. How has product popularity changed over time?</p>
-</div><div class="column" style="width:40%;">
-<div class="fragment">
-<p><strong>Your turn:</strong> What transformations would you apply for each question?</p>
-<ul>
-<li>Temporal aggregation?</li>
-<li>Customer segmentation?</li>
-<li>Product ranking over time?</li>
-</ul>
-</div>
-</div></div>
-<aside class="notes">
-<p>Pause here for student discussion. This exercise helps them think through the connection between analytical questions and data transformation choices. Different questions require different ways of preparing the data.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -992,8 +1013,9 @@ By Region: Count(Transactions)</code></pre>
 </section>
 <section class="slide level2">
 <h2>Next Steps</h2>
-<p><strong>For next class:</strong> - Read Munzner Chapter 7 (Arrange Tables) - Practice with the fundamental charts using your own data - Complete Lab Exercise: Build all five chart types with sample dataset</p>
-<p><strong>Looking ahead:</strong> - Interactive visualization techniques - Multi-dimensional data representation - Advanced transformation methods</p>
+<p><strong>For next class:</strong> - Read Tufte Chapter 1-2 (Graphical Excellence &amp; Integrity) - Practice chart selection with your own datasets - Complete Exercise 3: Chart design and encoding alternatives</p>
+<p><strong>Lab activities:</strong> - Build all five chart types with real data - Compare encoding choices for the same dataset - Apply the chart selection framework to new scenarios</p>
+<p><strong>Looking ahead:</strong> - Interactive visualization techniques - Advanced visual encodings and multi-dimensional data - Design critique and evaluation methods</p>
 <aside class="notes">
 <p>Give students concrete actions to reinforce today’s learning. The lab exercise helps them practice the concepts immediately while the reading prepares them for more advanced topics.</p>
 <style type="text/css">
@@ -1011,11 +1033,11 @@ By Region: Count(Transactions)</code></pre>
 <section class="slide level2">
 <h2>Key Takeaways</h2>
 <ul>
-<li class="fragment"><strong>Two-step process:</strong> What to show, then how to show it</li>
-<li class="fragment"><strong>Five fundamental charts</strong> solve most visualization problems</li>
-<li class="fragment"><strong>Expressiveness and effectiveness</strong> guide design decisions</li>
-<li class="fragment"><strong>Data transformation</strong> is often more important than visual design</li>
-<li class="fragment"><strong>Scale choices</strong> dramatically affect perception and interpretation</li>
+<li class="fragment"><strong>Five fundamental charts</strong> are your visualization toolkit</li>
+<li class="fragment"><strong>Data types</strong> determine appropriate chart selection</li>
+<li class="fragment"><strong>Visual encoding theory</strong> provides systematic design principles</li>
+<li class="fragment"><strong>Effectiveness rankings</strong> guide channel choices</li>
+<li class="fragment"><strong>Scale and axis design</strong> dramatically affects perception</li>
 </ul>
 <aside class="notes">
 <p>End with the core messages students should remember. These principles will guide them in every visualization project they undertake.</p>
