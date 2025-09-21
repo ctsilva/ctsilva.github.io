@@ -38,6 +38,18 @@ author_profile: true
   - [Color Theory for Visualization](/2025-VisML-CSE/slides/week3-color.html)
   - [Lab: Perception and Color in Practice](/2025-VisML-CSE/labs/week3-slides.html)
 
+### Week 4 (Sept 22)
+- **Topics:** Model Assessment and Evaluation
+- **Materials:** 
+  - [Model Assessment and Evaluation](/2025-VisML-CSE/slides/week4-model-assessment.html)
+- **Recommended Readings:**
+  - [Squares: Supporting Interactive Performance Analysis for Multiclass Classifiers](/2025-VisML-CSE/refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares_Interactive_Performance_Analysis.pdf) (Ren et al., 2016)
+  - [Neo: Generalizing Confusion Matrix Visualization to Hierarchical and Multi-Output Labels](/2025-VisML-CSE/refs/Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf) (Görtler et al., 2022)
+- **Content:**
+  - Confusion Matrices and ROC Curves
+  - Visual Analytics Systems for Model Performance
+  - Calibration Theory and Practice
+
 ## Assignments
 
 ### Weekly Assignments (50% of grade)
