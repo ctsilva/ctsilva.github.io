@@ -167,6 +167,12 @@ The repository includes complete course websites as subdirectories:
     - **Calibrate system (2022)**: Interactive calibration analysis tool
     - **Smooth ECE (2023)**: Principled reliability diagrams via kernel smoothing
   - **Critical fixes**: Light code theme, working video links, projector-optimized styling
+  - **Citation standardization (Sept 2025)**: All 14 reference PDFs renamed to consistent academic format
+    - Used metadata extraction and manual curation for accurate author/title identification
+    - Applied Author_Year_Title_Keywords naming convention throughout
+    - Fixed incorrect attributions (e.g., Bradley→Fawcett, Fawcett→Hand&Till, Provost/Fawcett→Fogarty papers)
+    - Updated all slide references to match new filenames
+    - Examples: `Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf`
 - **figs/model_assessment_figs/**: Complete visual asset library (52+ images)
   - Neo Figure 1 overview showing hierarchical capabilities (A, B, C scenarios)
   - Confusion matrix examples: MNIST digits, multi-class, hierarchical
@@ -175,7 +181,7 @@ The repository includes complete course websites as subdirectories:
   - Visual analytics screenshots: Squares interface, EnsembleMatrix, Alsallakh systems
   - Modern research figures: Calibrate tool, Smooth ECE, multi-class calibration
 - **refs/**: Standardized academic reference collection (14 PDFs)
-  - **Visual Analytics**: Neo (Liu 2022), Squares (Ren 2016), EnsembleMatrix (Talbot 2009)
+  - **Visual Analytics**: Neo (Görtler 2022), Squares (Ren 2016), EnsembleMatrix (Talbot 2009)
   - **Calibration Foundations**: Niculescu-Caruana (2005), Guo (2017), Vaicenavicius (2019)
   - **Modern Advances**: Xenopoulos Calibrate (2022), Kull-Flach decomposition (2015)
   - **ROC Analysis**: Bradley (1997), Hanley-McNeil (1982), Fawcett (2006)
@@ -483,6 +489,7 @@ All course materials should follow a consistent naming convention for academic r
 - `Wickham_2014_Tidy_Data.pdf`
 - `Guo_Pleiss_Sun_Weinberger_2017_Neural_Network_Calibration.pdf`
 - `Xenopoulos_Rulff_Nonato_2022_Calibrate.pdf`
+- `Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf`
 - `Hanley_McNeil_1982_ROC_Analysis_Radiology.pdf`
 - `ECML_PKDD_2020_Tutorial_Evaluation_Metrics.pdf`
 
