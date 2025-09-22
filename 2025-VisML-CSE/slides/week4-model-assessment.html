@@ -98,7 +98,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="week4-model-assessment_files/libs/revealjs/dist/theme/quarto-003cedc6a03c2619daa3c895fbe7d9d3.css">
+  <link rel="stylesheet" href="week4-model-assessment_files/libs/revealjs/dist/theme/quarto-743137726eb562984e8d4ff610b648a8.css">
   <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week4-model-assessment_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week4-model-assessment_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -356,18 +356,27 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Confusion Matrices in sklearn</h2>
-<div id="406f0101" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
-<span id="cb1-3"><a href=""></a></span>
-<span id="cb1-4"><a href=""></a>clf.fit(X_train, y_train)</span>
-<span id="cb1-5"><a href=""></a></span>
-<span id="cb1-6"><a href=""></a>ConfusionMatrixDisplay.from_estimator(clf, X_test, y_test, cmap<span class="op">=</span>plt.cm.Blues)</span>
-<span id="cb1-7"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="9d3233b4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-4"><a href=""></a></span>
+<span id="cb1-5"><a href=""></a>X,y <span class="op">=</span> datasets.make_classification(<span class="dv">5000</span>, <span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-6"><a href=""></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-7"><a href=""></a>clf <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="232aee50" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
+<span id="cb2-3"><a href=""></a></span>
+<span id="cb2-4"><a href=""></a>clf.fit(X_train, y_train)</span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a>ConfusionMatrixDisplay.from_estimator(clf, X_test, y_test, cmap<span class="op">=</span>plt.cm.Blues)</span>
+<span id="cb2-7"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-3-output-1.png" data-fig-pos="c" width="515" height="429"></p>
+<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-3-output-1.png" width="515" height="429"></p>
 </figure>
 </div>
 </div>
@@ -527,7 +536,7 @@ Claudio Silva
 <h2>ROC Curve</h2>
 
 <img data-src="figs/model_assessment_figs/roc_curve_naive_bayes.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Setting the threshold equal to 0.5, we get an accuracy of 80%. However, the curve indicade a perfect classification performance on this test set. Why is there a discrepancy? The model is not properly calibrated. A threshold of 0.7 has perfect accuracy. We will talk more about calibration later in the lecture.</p>
+<p>Setting the threshold equal to 0.5, we get an accuracy of 80%. However, the curve indicates a perfect classification performance on this test set. Why is there a discrepancy? The model is not properly calibrated. A threshold of 0.7 has perfect accuracy. We will talk more about calibration later in the lecture.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -561,18 +570,21 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>ROC curve in sklearn</h2>
-<div id="abc0b6d4" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> RocCurveDisplay</span>
-<span id="cb2-3"><a href=""></a></span>
-<span id="cb2-4"><a href=""></a>clf.fit(X_train, y_train)</span>
-<span id="cb2-5"><a href=""></a></span>
-<span id="cb2-6"><a href=""></a>RocCurveDisplay.from_estimator(clf, X_test, y_test, plot_chance_level<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-7"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="db1c582d" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+<div id="7db7c472" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> RocCurveDisplay</span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a>RocCurveDisplay.from_estimator(clf, X_test, y_test, plot_chance_level<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-4-output-1.png" width="445" height="431"></p>
+<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-5-output-1.png" width="445" height="431"></p>
 </figure>
 </div>
 </div>
@@ -624,26 +636,14 @@ Claudio Silva
 </div>
 </section>
 <section class="slide level2">
-<h2>ROC and Precision-Recall Curves</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>ROC Curves</strong></p>
+<h2>ROC Curves: Strengths and Limitations</h2>
 <ul>
-<li>Plots True Positive Rate (TPR) vs.&nbsp;False Positive Rate (FPR).</li>
-<li>Good for balanced datasets.</li>
-<li>Can be misleading on imbalanced datasets because the FPR can be very small, even with a large number of false positives.</li>
+<li><strong>What they show:</strong> True Positive Rate (TPR) vs.&nbsp;False Positive Rate (FPR)</li>
+<li><strong>Best for:</strong> Balanced datasets</li>
+<li><strong>Limitation:</strong> Can be misleading on imbalanced datasets because the FPR can be very small, even with a large number of false positives</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Precision-Recall (PR) Curves</strong></p>
-<ul>
-<li>Plots Precision vs.&nbsp;Recall (TPR).</li>
-<li>Better for imbalanced datasets.</li>
-<li>A model that has high precision and high recall is a good model.</li>
-<li>As mentioned in “Visual methods for analyzing probabilistic classification data” by Alsallakh et al.&nbsp;(2014), PR curves are more informative than ROC curves when dealing with imbalanced datasets.</li>
-</ul>
-</div></div>
 <aside class="notes">
-<p>While ROC curves are widely used, they can be misleading on imbalanced datasets. In such cases, Precision-Recall curves are often more informative. A PR curve plots precision against recall. For a good model, both precision and recall should be high. The Alsallakh paper provides a good discussion on when to use PR curves over ROC curves.</p>
+<p>ROC curves are widely used and intuitive, but they have an important limitation. On imbalanced datasets, the false positive rate can appear very small even when the model is making many false positive errors, simply because the denominator (total negatives) is very large. This can make a poor model appear better than it actually is.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -655,16 +655,43 @@ Claudio Silva
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<div id="f1fdbb71" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> PrecisionRecallDisplay</span>
-<span id="cb3-3"><a href=""></a></span>
-<span id="cb3-4"><a href=""></a>PrecisionRecallDisplay.from_estimator(clf, X_test, y_test)</span>
-<span id="cb3-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+<h2>Precision-Recall (PR) Curves</h2>
+<ul>
+<li><strong>What they show:</strong> Precision vs.&nbsp;Recall (TPR)</li>
+<li><strong>Best for:</strong> Imbalanced datasets</li>
+<li><strong>Advantage:</strong> A model that has high precision and high recall is truly a good model</li>
+<li><strong>Research insight:</strong> As mentioned in “Visual methods for analyzing probabilistic classification data” by Alsallakh et al.&nbsp;(2014), PR curves are more informative than ROC curves when dealing with imbalanced datasets</li>
+</ul>
+<aside class="notes">
+<p>Precision-Recall curves are often more informative than ROC curves, especially for imbalanced datasets. They focus directly on the performance for the positive class, which is usually the class of interest in imbalanced problems. The Alsallakh paper provides an excellent discussion on when to use PR curves over ROC curves.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div id="fa2421b3" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+<div id="5d66d8c1" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> PrecisionRecallDisplay</span>
+<span id="cb6-3"><a href=""></a></span>
+<span id="cb6-4"><a href=""></a>PrecisionRecallDisplay.from_estimator(clf, X_test, y_test)</span>
+<span id="cb6-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-5-output-1.png" width="445" height="431"></p>
+<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-7-output-1.png" width="445" height="431"></p>
 <figcaption>Precision-Recall Curve</figcaption>
 </figure>
 </div>
@@ -743,7 +770,7 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 <div class="footer">
-<p>Alsallakh, B., Hanbury, A., Hauser, H., Miksch, S., &amp; Rauber, A. (2014). <em>Visual methods for analyzing probabilistic classification data</em>. IEEE transactions on visualization and computer graphics.</p>
+<p>Alsallakh, B., Hanbury, A., Hauser, H., Miksch, S., &amp; Rauber, A. (2014). <a href="../refs/Alsallakh_Hanbury_Hauser_Miksch_Rauber_2014_Visual_Methods_Analyzing_Probabilistic_Classification.pdf"><em>Visual methods for analyzing probabilistic classification data</em></a>. IEEE TVCG.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -763,7 +790,7 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 <div class="footer">
-<p>Alsallakh, B., Hanbury, A., Hauser, H., Miksch, S., &amp; Rauber, A. (2014). <em>Visual methods for analyzing probabilistic classification data</em>. IEEE transactions on visualization and computer graphics.</p>
+<p>Alsallakh, B., Hanbury, A., Hauser, H., Miksch, S., &amp; Rauber, A. (2014). <a href="../refs/Alsallakh_Hanbury_Hauser_Miksch_Rauber_2014_Visual_Methods_Analyzing_Probabilistic_Classification.pdf"><em>Visual methods for analyzing probabilistic classification data</em></a>. IEEE TVCG.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -786,7 +813,7 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 <div class="footer">
-<p>Beauxis-Aussalet, E., &amp; Hardman, L. (2014). <em>Visualization of confusion matrix for non-expert users</em>. In IEEE Conference on Visual Analytics Science and Technology (VAST)-Poster Proceedings.</p>
+<p>Beauxis-Aussalet, E., &amp; Hardman, L. (2014). <a href="../refs/Beauxis_Aussalet_Hardman_2014_Visualization_Confusion_Matrix_Non_Expert_Users.pdf"><em>Visualization of confusion matrix for non-expert users</em></a>. IEEE VAST.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -806,7 +833,7 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 <div class="footer">
-<p>Beauxis-Aussalet, E., &amp; Hardman, L. (2014). <em>Visualization of confusion matrix for non-expert users</em>. In IEEE Conference on Visual Analytics Science and Technology (VAST)-Poster Proceedings.</p>
+<p>Beauxis-Aussalet, E., &amp; Hardman, L. (2014). <a href="../refs/Beauxis_Aussalet_Hardman_2014_Visualization_Confusion_Matrix_Non_Expert_Users.pdf"><em>Visualization of confusion matrix for non-expert users</em></a>. IEEE VAST.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -826,7 +853,7 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 <div class="footer">
-<p>Talbot, J., Lee, B., Kapoor, A., &amp; Tan, D. S. (2009, April). <em>EnsembleMatrix: interactive visualization to support machine learning with multiple classifiers</em>. In Proceedings of the SIGCHI conference on human factors in computing systems.</p>
+<p>Talbot, J., Lee, B., Kapoor, A., &amp; Tan, D. S. (2009). <a href="../refs/Talbot_Lee_Kapoor_Tan_2009_EnsembleMatrix_Interactive_Visualization_Multiple_Classifiers.pdf"><em>EnsembleMatrix: interactive visualization to support machine learning with multiple classifiers</em></a>. CHI.</p>
 </div>
 </section></section>
 <section>
@@ -999,7 +1026,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Reliability Diagram in sklearn</h2>
-<div id="a2f242bb" class="cell" data-execution_count="5">
+<div id="4983045e" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
 </div>
@@ -1017,20 +1044,21 @@ Claudio Silva
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<div id="64b9c90c" class="cell panel-center" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">from</span> sklearn.calibration <span class="im">import</span> CalibrationDisplay</span>
-<span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb5-4"><a href=""></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>)</span>
-<span id="cb5-5"><a href=""></a></span>
-<span id="cb5-6"><a href=""></a>CalibrationDisplay.from_estimator(lg, X_test, y_test, n_bins<span class="op">=</span><span class="dv">10</span>, ax<span class="op">=</span>ax,</span>
-<span id="cb5-7"><a href=""></a>                                  label<span class="op">=</span><span class="st">'Logistic Regression'</span>)</span>
-<span id="cb5-8"><a href=""></a>CalibrationDisplay.from_estimator(nb, X_test, y_test, n_bins<span class="op">=</span><span class="dv">10</span>, ax<span class="op">=</span>ax,</span>
-<span id="cb5-9"><a href=""></a>                                  label<span class="op">=</span><span class="st">'Naive Bayes'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f8af2ddb" class="cell panel-center" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-2"><a href=""></a><span class="im">from</span> sklearn.calibration <span class="im">import</span> CalibrationDisplay</span>
+<span id="cb8-3"><a href=""></a></span>
+<span id="cb8-4"><a href=""></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb8-5"><a href=""></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>)</span>
+<span id="cb8-6"><a href=""></a></span>
+<span id="cb8-7"><a href=""></a>CalibrationDisplay.from_estimator(lg, X_test, y_test, n_bins<span class="op">=</span><span class="dv">10</span>, ax<span class="op">=</span>ax,</span>
+<span id="cb8-8"><a href=""></a>                                  label<span class="op">=</span><span class="st">'Logistic Regression'</span>)</span>
+<span id="cb8-9"><a href=""></a>CalibrationDisplay.from_estimator(nb, X_test, y_test, n_bins<span class="op">=</span><span class="dv">10</span>, ax<span class="op">=</span>ax,</span>
+<span id="cb8-10"><a href=""></a>                                  label<span class="op">=</span><span class="st">'Naive Bayes'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-7-output-1.png" width="812" height="429"></p>
+<p><img data-src="week4-model-assessment_files/figure-revealjs/cell-9-output-1.png" width="812" height="429"></p>
 </figure>
 </div>
 </div>
@@ -1130,7 +1158,7 @@ Claudio Silva
 <h2>Calibration of modern models</h2>
 
 <img data-src="figs/model_assessment_figs/calibration_nn_2016.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
-<p>Image taken from Guo, C., Pleiss, G., Sun, Y., &amp; Weinberger, K. Q. (2017, July). <em>On calibration of modern neural networks. In International Conference on Machine Learning</em>. PMLR.</p>
+<p>Guo, C., Pleiss, G., Sun, Y., &amp; Weinberger, K. Q. (2017). <a href="../refs/Guo_Pleiss_Sun_Weinberger_2017_Calibration_Modern_Neural_Networks.pdf"><em>On calibration of modern neural networks</em></a>. ICML.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -1293,21 +1321,21 @@ Claudio Silva
 <h2>Calibrate (2023)</h2>
 
 <img data-src="figs/model_assessment_figs/calibrate_teaser.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
-<p>Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <em>Calibrate: Interactive analysis of probabilistic model output</em>. IEEE Transactions on Visualization and Computer Graphics.</p>
+<p>Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <a href="../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf"><em>Calibrate: Interactive analysis of probabilistic model output</em></a>. IEEE TVCG.</p>
 </div>
 </section>
 <section class="slide level2">
 <h2>Calibrate (2023) - Learned Reliability Diagram</h2>
 
 <img data-src="figs/model_assessment_figs/calibrate_learned_rel_diag.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
-<p>Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <em>Calibrate: Interactive analysis of probabilistic model output</em>. IEEE Transactions on Visualization and Computer Graphics.</p>
+<p>Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <a href="../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf"><em>Calibrate: Interactive analysis of probabilistic model output</em></a>. IEEE TVCG.</p>
 </div>
 </section>
 <section class="slide level2">
 <h2>Calibrate (2023)</h2>
 <video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="figs/model_assessment_figs/vis22a-sub1657-i7.mp4"></video>
 <div class="footer">
-<p>Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <em>Calibrate: Interactive analysis of probabilistic model output</em>. IEEE Transactions on Visualization and Computer Graphics.</p>
+<p>Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <a href="../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf"><em>Calibrate: Interactive analysis of probabilistic model output</em></a>. IEEE TVCG.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -1332,15 +1360,15 @@ Claudio Silva
 <h2>Visualizing Calibration for Multi-Class Problems</h2>
 
 <img data-src="figs/model_assessment_figs/calibration_multiclass.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
-<p>Image taken from Vaicenavicius, Juozas, et al.&nbsp;<em>Evaluating model calibration in classification</em>. The 22nd International Conference on Artificial Intelligence and Statistics. PMLR, 2019.</p>
+<p>Vaicenavicius, J., Widmann, D., Andersson, C., et al.&nbsp;(2019). <a href="../refs/Vaicenavicius_Widmann_Andersson_Lindsten_Roll_Schon_2019_Evaluating_Model_Calibration.pdf"><em>Evaluating model calibration in classification</em></a>. AISTATS.</p>
 </div>
 </section>
 <section class="slide level2">
 <h2>Suggested Calibration Literature</h2>
 <ul>
-<li><p>Niculescu-Mizil, A., &amp; Caruana, R. (2005, August). <a href="https://dl.acm.org/doi/pdf/10.1145/1102351.1102430?casa_token=o_8UMED_0fIAAAAA:MIq2GzQTPT0f-aWNDSijbcnzJN1riBdGqjq9FGn-wOZ188AOtXbTqRPkc9PuQGKSFIo5b4fM8-ItjQ">Predicting good probabilities with supervised learning</a>. In Proceedings of the 22nd international conference on Machine learning (pp.&nbsp;625-632).</p></li>
+<li><p>Niculescu-Mizil, A., &amp; Caruana, R. (2005). <a href="../refs/Niculescu_Mizil_Caruana_2005_Predicting_Good_Probabilities_Supervised_Learning.pdf">Predicting good probabilities with supervised learning</a>. ICML.</p></li>
 <li><p>Nixon, J., Dusenberry, M. W., Zhang, L., Jerfel, G., &amp; Tran, D. (2019, June). <a href="http://openaccess.thecvf.com/content_CVPRW_2019/papers/Uncertainty%20and%20Robustness%20in%20Deep%20Visual%20Learning/Nixon_Measuring_Calibration_in_Deep_Learning_CVPRW_2019_paper.pdf">Measuring Calibration in Deep Learning</a>. In CVPR Workshops (Vol. 2, No.&nbsp;7).</p></li>
-<li><p>Guo, C., Pleiss, G., Sun, Y., &amp; Weinberger, K. Q. (2017, July). <a href="http://proceedings.mlr.press/v70/guo17a/guo17a.pdf">On calibration of modern neural networks</a>. In International Conference on Machine Learning (pp.&nbsp;1321-1330). PMLR.</p></li>
+<li><p>Guo, C., Pleiss, G., Sun, Y., &amp; Weinberger, K. Q. (2017). <a href="../refs/Guo_Pleiss_Sun_Weinberger_2017_Calibration_Modern_Neural_Networks.pdf">On calibration of modern neural networks</a>. ICML.</p></li>
 <li><p>Vaicenavicius, J., Widmann, D., Andersson, C., Lindsten, F., Roll, J., &amp; Schön, T. (2019, April). <a href="http://proceedings.mlr.press/v89/vaicenavicius19a/vaicenavicius19a.pdf">Evaluating model calibration in classification</a>. In The 22nd International Conference on Artificial Intelligence and Statistics (pp.&nbsp;3459-3467). PMLR.</p></li>
 </ul>
 <aside class="notes">
@@ -1360,8 +1388,8 @@ Claudio Silva
 <section class="slide level2">
 <h2>Suggested Calibration Literature</h2>
 <ul>
-<li><p>Kull, M., &amp; Flach, P. (2015, September). <a href="https://link.springer.com/content/pdf/10.1007/978-3-319-23528-8_5.pdf">Novel decompositions of proper scoring rules for classification: Score adjustment as precursor to calibration</a>. In Joint European Conference on Machine Learning and Knowledge Discovery in Databases (pp.&nbsp;68-85). Springer, Cham.</p></li>
-<li><p><a href="https://classifier-calibration.github.io/assets/slides/clacal_tutorial_ecmlpkdd_2020_evaluation.pdf">ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules</a></p></li>
+<li><p>Kull, M., &amp; Flach, P. (2015). <a href="../refs/Kull_Flach_2015_Novel_Decompositions_Proper_Scoring_Rules.pdf">Novel decompositions of proper scoring rules for classification</a>. ECML-PKDD.</p></li>
+<li><p><a href="../refs/Silva_Filho_2020_ECML_PKDD_Tutorial_Evaluation_Metrics.pdf">ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules</a></p></li>
 <li><p><a href="https://colab.research.google.com/drive/1mqDVJICMBg2eoIr2VPaDjQFUzlDT3grc?usp=sharing">Google Colab notebook for calibration curves</a></p></li>
 <li><p>Kull, M., &amp; Flach, P. (2015, September). <a href="https://link.springer.com/content/pdf/10.1007/978-3-319-23528-8_5.pdf">Novel decompositions of proper scoring rules for classification: Score adjustment as precursor to calibration</a>. In Joint European Conference on Machine Learning and Knowledge Discovery in Databases (pp.&nbsp;68-85). Springer, Cham.</p></li>
 <li><p><a href="https://classifier-calibration.github.io/assets/slides/clacal_tutorial_ecmlpkdd_2020_evaluation.pdf">ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules</a></p></li>

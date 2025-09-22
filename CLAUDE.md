@@ -141,9 +141,9 @@ The repository includes complete course websites as subdirectories:
 - **Future-proof structure**: Content can be reused in future semesters without modification
 
 ##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
-- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (848+ lines)
-  - Complete migration from 2024-VisML-CDS with all missing content restored
-  - Comprehensive speaker notes throughout for teaching preparation
+- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (850+ lines)
+  - Complete migration from 2024-VisML-CDS with duplicate slide removed
+  - Comprehensive speaker notes throughout for teaching preparation (added to all slides)
   - Enhanced content depth with additional explanations and context
   - Projector-friendly code styling with light backgrounds for classroom visibility
   - Complete figure collection (39 images) from confusion matrices to calibration

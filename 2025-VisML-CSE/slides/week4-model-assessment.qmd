@@ -106,6 +106,10 @@ Here is a more detailed view of a confusion matrix. It shows the number of true 
 ::::
 
 ::: {.notes}
+This slide provides a balanced view of confusion matrices. While they're one of our most fundamental tools for understanding classification performance, they have important limitations. The key insight here is that confusion matrices treat all errors equally - they don't show the confidence of predictions or instance-level details. This is why we'll look at more advanced visualization systems like Squares later, which address these limitations by showing the distribution of instances within each cell.
+:::
+
+::: {.notes}
 This slide summarizes the pros and cons of using confusion matrices. While they are intuitive and provide the basis for many metrics, they have limitations in terms of scalability and the insights they provide for probabilistic outputs. The 'Squares' paper, which we will discuss later, addresses some of these limitations.
 :::
 
@@ -134,38 +138,12 @@ plt.show()
 ```
 
 ::: {.notes}
-Here we see how to generate a confusion matrix using the scikit-learn library in Python. The code is straightforward. We first define and split the data, then we fit a logistic regression classifier. The `ConfusionMatrixDisplay` function then takes the classifier and the test data as input to plot the matrix.
+Here's the practical implementation using scikit-learn. The code is straightforward - we generate synthetic data, train a logistic regression classifier, and visualize the results. The ConfusionMatrixDisplay class makes it very easy to generate these visualizations. Notice how the diagonal shows correct predictions while off-diagonal elements show different types of errors. The color intensity helps quickly identify where most errors occur.
 :::
-
-## Confusion Matrices
-
-::::::: {.columns}
-::: {.column}
-![](figs/model_assessment_figs/sphx_glr_plot_label_propagation_digits_001.png)
-:::
-::: {.column}
-::: {.fragment}
-**Pros**
-
-- Many derived metrics\
-- Easy to implement\
-- Summary of model mistakes is clear
-:::
-
-::: {.fragment}
-**Cons**
-
-- Hard to scale\
-- Hard to assess probabilistic output\
-- Hard to view individual errors
-:::
-:::
-::::
 
 ::: {.notes}
-To reiterate, confusion matrices are a fundamental tool. They offer a quick summary of a model's performance and are easy to implement. However, as the number of classes grows, they become difficult to interpret. They also don't capture the full picture of probabilistic classifiers and hide instance-level errors.
+Here we see how to generate a confusion matrix using the scikit-learn library in Python. The code is straightforward. We first define and split the data, then we fit a logistic regression classifier. The `ConfusionMatrixDisplay` function then takes the classifier and the test data as input to plot the matrix.
 :::
-
 
 ## Neo: Hierarchical Confusion Matrix
 
@@ -196,6 +174,10 @@ Neo is a research project that introduces a hierarchical confusion matrix. This 
 ::::
 
 ::: {.notes}
+ROC curves have a fascinating history rooted in signal detection theory during WWII. Radar operators needed to distinguish between enemy aircraft (signal) and birds or weather phenomena (noise). This same principle applies to any binary classification problem. The key insight is that by varying the decision threshold, we can trade off between catching more true positives (higher TPR) at the cost of more false positives (higher FPR). The ROC curve visualizes all these trade-offs simultaneously.
+:::
+
+::: {.notes}
 We are now moving on to another important tool for model evaluation: the Receiver Operating Characteristic, or ROC curve. The concept of ROC analysis has its roots in signal detection theory, and it has been widely adopted in machine learning. It provides a way to visualize the performance of a classifier at all classification thresholds.
 :::
 
@@ -216,6 +198,10 @@ We are now moving on to another important tool for model evaluation: the Receive
 :::
 :::
 ::::
+
+::: {.notes}
+This slide shows the relationship between confusion matrices and ROC curves. Each point on the ROC curve corresponds to a different threshold setting and thus a different confusion matrix. The ideal classifier would reach the top-left corner (TPR=1, FPR=0), meaning it perfectly identifies all positives without any false positives. The diagonal line represents random guessing - any classifier below this line is performing worse than random.
+:::
 
 ::: {.notes}
 An ROC curve shows the trade-off between the true positive rate and the false positive rate for a binary classifier as the discrimination threshold is varied. The top-left corner of the plot is the ideal point - a false positive rate of 0, and a true positive rate of 1. This is not always possible in practice, but it is the goal.
@@ -279,6 +265,10 @@ from sklearn.metrics import RocCurveDisplay
 RocCurveDisplay.from_estimator(clf, X_test, y_test, plot_chance_level=True)
 plt.show()
 ```
+
+::: {.notes}
+Scikit-learn makes it easy to generate ROC curves. The diagonal "chance level" line shows the performance of a random classifier. The further the blue curve is above this diagonal, the better the classifier. The AUC (Area Under Curve) score of 0.97 indicates excellent performance. Remember that ROC curves are most appropriate for balanced datasets - for imbalanced data, precision-recall curves may be more informative.
+:::
 
 ::: {.notes}
 Similar to the confusion matrix, scikit-learn provides a simple way to generate ROC curves. The `RocCurveDisplay` function can be used to plot the ROC curve for a trained classifier. The `plot_chance_level` argument is useful to visualize the performance of a random classifier.
@@ -462,7 +452,7 @@ Now we are moving to the third part of our lecture: calibration. Calibration is 
 
 ## Calibration - Forecast Example
 
-Weather forecasters started thinking about calibration a long time ago (Brier, 1950): a forecast of "70% chance of rain" should be followed by rain 70% of the time. Let's consider a small toy example: 
+Weather forecasters started thinking about calibration a long time ago (Brier, 1950): a forecast of "70% chance of rain" should be followed by rain 70% of the time. Let's consider a small toy example:
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -478,6 +468,10 @@ $(\bar{y} = 0/2 = 0\%)$
 - "90% chance of rain" was a slight under-estimate: $(\bar{y} = 1/1 = 100\%)$
 :::
 ::::
+
+::: {.notes}
+This weather forecast example perfectly illustrates calibration. When we say "70% chance of rain," it should actually rain about 70% of the time we make that prediction. Notice that this forecaster is pretty well calibrated - their predictions are close to the actual frequencies. This concept extends directly to machine learning: when a model outputs a probability, we want that probability to be reliable and meaningful.
+:::
 
 ::: {.notes}
 This is a classic example used to explain calibration. We have a weather forecaster who gives probabilistic predictions of rain. We can check how well calibrated these predictions are by looking at the actual outcomes. For example, for all the days the forecaster predicted a 10% chance of rain, did it actually rain 10% of the time? In this case, the forecaster is not perfectly calibrated, but they are not too far off.
@@ -571,6 +565,10 @@ print()
 ```
 
 ::: {.notes}
+Here we're setting up two different classifiers - Logistic Regression and Gaussian Naive Bayes - to compare their calibration. Logistic Regression is often well-calibrated by design, while Naive Bayes can suffer from poor calibration despite having good discrimination ability. We'll see this difference clearly in the reliability diagram on the next slide.
+:::
+
+::: {.notes}
 Scikit-learn also provides tools for calibration analysis. Here we are setting up two classifiers, Logistic Regression and Gaussian Naive Bayes, to compare their calibration. We will plot their calibration curves on the next slide.
 :::
 
@@ -649,6 +647,10 @@ Besides visualizing calibration with reliability diagrams, we can also quantify 
 
 ![](figs/model_assessment_figs/calibration_nn_2016.png){fig-align="center"}
 
+::: {.notes}
+This landmark paper by Guo et al. (2017) revealed a surprising finding: modern neural networks, despite their impressive accuracy, are often poorly calibrated. As networks have gotten deeper and more complex, they've become increasingly overconfident in their predictions. This graph shows how calibration error has increased with model capacity over the years. This is why calibration has become such an important topic in modern machine learning.
+:::
+
 :::footer
 Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). [*On calibration of modern neural networks*](../refs/Guo_Pleiss_Sun_Weinberger_2017_Calibration_Modern_Neural_Networks.pdf). ICML.
 :::
@@ -671,6 +673,10 @@ Image taken from Minderer, Matthias, et al. (2021). *Revisiting the calibration 
 
 ![](figs/model_assessment_figs/proper_scoring_rules.png){fig-align="center"}
 
+::: {.notes}
+Proper scoring rules are a more principled way to evaluate probabilistic predictions. Unlike ECE which requires binning (and thus loses information), proper scoring rules evaluate each prediction individually. They're called "proper" because they incentivize the model to output its true belief - a model can't game the system by outputting different probabilities than what it actually believes.
+:::
+
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
 :::
@@ -688,6 +694,10 @@ $$BS = \frac{1}{N} \sum_{i=1}^N (\hat{y}_i - y_i)^2$$
     - Only penalises the probability given to the true class
 
 $$LL = -\frac{1}{N} \sum_{i=1}^N [y_i \text{log}(\hat{y}_i) + (1-y_i)\text{log}( 1 - \hat{y}_i)]$$
+
+::: {.notes}
+These are the two most common proper scoring rules. The Brier Score is the mean squared error of probabilistic predictions - simple and interpretable. Log-loss (cross-entropy) is what most neural networks optimize during training. An important distinction: log-loss can be infinite if you predict probability 0 for something that happens, while Brier Score is bounded between 0 and 2. Both encourage well-calibrated predictions but in slightly different ways.
+:::
 
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
@@ -760,6 +770,10 @@ Isotonic regression is a more powerful, non-parametric calibration method. It ca
 
 ![](figs/model_assessment_figs/sphx_glr_plot_calibration_curve_001.png){fig-align="center"}
 
+::: {.notes}
+This example shows calibration in action. The Naive Bayes classifier (orange) shows the characteristic S-curve of poor calibration - it's overconfident for low probabilities and underconfident for high probabilities. After calibration using isotonic regression, the curve becomes much closer to the diagonal, meaning the probabilities are now more reliable. Notice how calibration improves the Brier score significantly.
+:::
+
 :::footer
 [code](https://scikit-learn.org/stable/auto_examples/calibration/plot_calibration_curve.html)
 :::
@@ -794,6 +808,10 @@ To summarize the key points on calibration: reliability diagrams are the primary
 
 ![](figs/model_assessment_figs/calibrate_reliability_hyperparameters.png){fig-align="center"}
 
+::: {.notes}
+An important but often overlooked point: reliability diagrams depend heavily on hyperparameters like the number of bins and binning strategy. Different choices can lead to very different visual interpretations of the same model's calibration. This figure from the Calibrate paper shows how the same model can look well-calibrated or poorly calibrated depending on these choices. This is why tools like Calibrate that provide interactive exploration are so valuable.
+:::
+
 :::footer
 Image taken from Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). *Calibrate: Interactive analysis of probabilistic model output*. IEEE Transactions on Visualization and Computer Graphics.
 :::
@@ -809,6 +827,10 @@ Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibr
 ## Calibrate (2023) - Learned Reliability Diagram
 
 ![](figs/model_assessment_figs/calibrate_learned_rel_diag.png){fig-align="center"}
+
+::: {.notes}
+The Calibrate system introduces a learned reliability diagram that avoids the binning problem entirely. Instead of fixed bins, it uses kernel density estimation to create a smooth, continuous reliability curve. This gives a more accurate picture of calibration without the artifacts introduced by arbitrary binning choices. The shaded regions show uncertainty in the calibration estimate.
+:::
 
 :::footer
 Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibrate: Interactive analysis of probabilistic model output*](../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf). IEEE TVCG.
@@ -827,6 +849,10 @@ Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibr
 \
 
 ![](figs/model_assessment_figs/smoothece_teaser.png){fig-align="center"}
+
+::: {.notes}
+Smooth ECE is a recent advancement that addresses the fundamental problem with traditional ECE: the arbitrary choice of bins. By using kernel smoothing instead of hard binning, it provides a more principled and stable measure of calibration error. This visualization shows how different binning choices can give wildly different ECE values for the same model, while Smooth ECE provides a consistent estimate.
+:::
 
 :::footer
 Błasiok, J., & Nakkiran, P. (2023). *Smooth ECE: Principled Reliability Diagrams via Kernel Smoothing*. arXiv preprint arXiv:2309.12236.
