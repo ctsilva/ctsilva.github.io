@@ -31,12 +31,19 @@ author_profile: true
 - **Assignment:** Exercise 2 - Data questions and transformations (due Sept 18)
 - **Readings:** [Shneiderman (1996) - The Eyes Have It](/2025-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf); [Wickham (2014) - Tidy Data](/2025-InfoVis-CSE/refs/Wickham_2014_Tidy_Data.pdf)
 
-### Week 3 (Sept 19) - Fundamental Graphs and Visual Encoding  ✅ **COMPLETE**
+### Week 3 (Sept 19) - Fundamental Graphs and Visual Encoding
 - **Slides:** [Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/slides/week3-fundamental-graphs.html) | [Lab: Fundamental Graphs and Visual Encoding](/2025-InfoVis-CSE/labs/week3-lab.html)
 - **Topics:** Five fundamental chart types, Marks and channels, Expressiveness and effectiveness, Scale choices
 - **Lab:** Chart comparison and design exercises, Scale choice scenarios
 - **Assignment:** Exercise 3 - Chart design and encoding alternatives (due Sept 25)
 - **Readings:** Tufte Ch 1-2 (Graphical Excellence & Integrity)
+
+### Week 4 (Sept 26) - Visual Perception and D3 Foundations (Draft)
+- **Slides:** [Visual Perception and D3 Foundations](/2025-InfoVis-CSE/slides/week4-perception.html)
+- **Topics:** Pre-attentive processing, Gestalt principles, Perceptual accuracy, D3.js introduction
+- **Lab:** First D3 programming session, DOM manipulation, Data binding
+- **Assignment:** Exercise 4 - Perception-based design + D3 implementation (due Oct 2)
+- **Readings:** Franconeri et al. (2021); Kennedy Elliott - 39 Studies
 
 ## Assignments
 
