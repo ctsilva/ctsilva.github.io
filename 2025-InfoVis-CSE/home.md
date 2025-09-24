@@ -4,9 +4,10 @@ permalink: /2025-InfoVis-CSE/
 author_profile: true
 ---
 
-**Instructor:** Claudio Silva (csilva@nyu.edu)  
-**TA (Labs):** Ryan Kim ([rkim.dev](https://www.rkim.dev))  
-**Meeting Times:** Fridays 11:00 AM - 1:30 PM  
+**Instructor:** Claudio Silva (csilva@nyu.edu)
+**TA (Labs):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
+**Grader:** Hashmmath Shaik (hs5544@nyu.edu)
+**Meeting Times:** Fridays 11:00 AM - 1:30 PM
 **Classroom:** Jacobs Hall, Room 215, Brooklyn Campus
 
 [Course Syllabus](/2025-InfoVis-CSE/syllabus) | [Detailed Schedule](/2025-InfoVis-CSE/schedule) | [Resources](/2025-InfoVis-CSE/resources)

@@ -12,7 +12,7 @@ author_profile: true
 
 **Teaching Assistant (labs):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
 
-**Grader:** TBD
+**Grader:** Hashmmath Shaik (hs5544@nyu.edu)
 
 ## Class Information
 
