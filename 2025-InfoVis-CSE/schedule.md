@@ -87,36 +87,10 @@ author_profile: true
 
 **Assignment:** Exercise 3 - Chart design and encoding alternatives (due Sept 25)
 
-### **Week 4** (Sept 26) - Deceptive Visualization and Design Ethics
-**Learning Objectives:** Identify misleading visualizations; understand ethical design principles; recognize cognitive biases
-
-**Lecture:** 
-- Types of misleading visualizations
-- Intentional vs. unintentional deception
-- Cognitive biases in visualization interpretation
-- Ethical responsibilities of designers
-- Case studies of deceptive visualizations in media
-
-**Required Readings:**
-- Chapter 2: Graphical Integrity, in *The Visual Display of Quantitative Information*. Edward Tufte. 2001.
-- [Misinformed by Visualization: What Do We Learn From Misinformative Visualizations?](https://arxiv.org/pdf/2104.14332.pdf). Lo, Gupta & Shigyo. EuroVis 2022.
-
-**Optional Readings:**
-- [Truncating the Y-Axis: Threat or Menace?](https://arxiv.org/pdf/1907.02035.pdf). Correll, Bertini & Franconeri. 2020.
-- [Viral Visualizations: How Coronavirus Skeptics Use Orthodox Data Practices to Promote Unorthodox Science Online](https://arxiv.org/pdf/2101.07993.pdf). Lee et al. ACM CHI 2021.
-
-**Lab:** 
-- Analyze deceptive visualization examples
-- Create misleading and honest versions of same data
-- Redesign problematic visualizations
-- Discussion and critique session
-
-**Assignment:** Exercise 4 - Design misleading vs. honest versions of same data (due Oct 2)
-
-### **Week 5** (Oct 3) - Visual Perception and D3 Foundations
+### **Week 4** (Sept 26) - Visual Perception and D3 Foundations
 **Learning Objectives:** Understand human visual perception principles; begin D3 programming
 
-**Lecture:** 
+**Lecture:**
 - Pre-attentive processing and visual attention
 - Gestalt principles in visualization
 - Color perception and accessibility
@@ -130,18 +104,18 @@ author_profile: true
 **Optional Reading:**
 - [Graphical Perception: Theory, Experimentation and Application](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/perception/Cleveland_GraphicalPerception.pdf). Cleveland & McGill. 1984.
 
-**Lab:** 
+**Lab:**
 - First D3 programming session
 - DOM manipulation exercises
 - Data binding concepts
 - Create simple bar chart in D3
 
-**Assignment:** Exercise 5 - Perception-based design decisions + D3 implementation (due Oct 9)
+**Assignment:** Exercise 4 - Perception-based design decisions + D3 implementation (due Oct 2)
 
-### **Week 6** (Oct 10) - Color and D3 Scales
+### **Week 5** (Oct 3) - Color and D3 Scales
 **Learning Objectives:** Master color theory for visualization; implement D3 scales and color schemes
 
-**Lecture:** 
+**Lecture:**
 - Color theory fundamentals
 - Perceptual color spaces (RGB, HSL, LAB)
 - Colorblindness and accessibility
@@ -156,13 +130,39 @@ author_profile: true
 - [Somewhere Over the Rainbow: An Empirical Assessment of Quantitative Colormaps](http://idl.cs.washington.edu/papers/quantitative-color/). Liu & Heer. ACM CHI 2018.
 - [Color Use Guidelines for Mapping and Visualization](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/color/Brewer_1994b.pdf). Cynthia Brewer. 1994.
 
-**Lab:** 
+**Lab:**
 - D3 scales implementation
 - Color scheme creation and testing
 - Accessibility testing tools
 - Apply color theory to previous D3 examples
 
-**Assignment:** Exercise 6 - Color design with D3 scales (due Oct 16)
+**Assignment:** Exercise 5 - Color design with D3 scales (due Oct 9)
+
+### **Week 6** (Oct 10) - Deceptive Visualization and Design Ethics
+**Learning Objectives:** Identify misleading visualizations; understand ethical design principles; recognize cognitive biases
+
+**Lecture:**
+- Types of misleading visualizations
+- Intentional vs. unintentional deception
+- Cognitive biases in visualization interpretation
+- Ethical responsibilities of designers
+- Case studies of deceptive visualizations in media
+
+**Required Readings:**
+- Chapter 2: Graphical Integrity, in *The Visual Display of Quantitative Information*. Edward Tufte. 2001.
+- [Misinformed by Visualization: What Do We Learn From Misinformative Visualizations?](https://arxiv.org/pdf/2104.14332.pdf). Lo, Gupta & Shigyo. EuroVis 2022.
+
+**Optional Readings:**
+- [Truncating the Y-Axis: Threat or Menace?](https://arxiv.org/pdf/1907.02035.pdf). Correll, Bertini & Franconeri. 2020.
+- [Viral Visualizations: How Coronavirus Skeptics Use Orthodox Data Practices to Promote Unorthodox Science Online](https://arxiv.org/pdf/2101.07993.pdf). Lee et al. ACM CHI 2021.
+
+**Lab:**
+- Analyze deceptive visualization examples
+- Create misleading and honest versions of same data
+- Redesign problematic visualizations
+- Discussion and critique session
+
+**Assignment:** Exercise 6 - Design misleading vs. honest versions of same data (due Oct 16)
 
 ### **Fall Break** (Oct 11-13) - **NO CLASS**
 
