@@ -97,6 +97,6 @@ author_profile: true
 - **Course Discord:** [Join Course Discord](https://discord.gg/sTEv3PnP)
 - **Office Hours:** 
     - **Ryan Kim (TA)**: Wednesdays @ 2-3pm, 8th floor common area @ 370 Jay Street, Brooklyn (also [Online @ Zoom](https://nyu.zoom.us/j/92815268504))
-    - **Hashmmath Shaik (Grading TA)**: Mondays @ 1-2pm, only [Online @ Zoom](https://nyu.zoom.us/j/97143247434)
+    - **Hashmmath Shaik (Grading TA)**: Mondays @ 1-2pm, only [Online @ Zoom](https://nyu.zoom.us/j/2817596431)
 - **Stack Overflow:** Use tags `d3.js`, `vega-lite`, `observable`
 - **Observable Forum:** [talk.observablehq.com](https://talk.observablehq.com/)
