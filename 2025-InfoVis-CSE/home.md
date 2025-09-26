@@ -40,7 +40,7 @@ author_profile: true
 - **Readings:** Tufte Ch 1-2 (Graphical Excellence & Integrity)
 
 ### Week 4 (Sept 26) - Visual Perception and D3 Foundations (Draft)
-- **Slides:** [Visual Perception and D3 Foundations](/2025-InfoVis-CSE/slides/week4-perception.html)
+- **Slides:** [Visual Perception and D3 Foundations](/2025-InfoVis-CSE/slides/week4-perception.html) | [Lab: First D3 programming session, DOM manipulation, Data binding](/2025-InfoVis-CSE/labs/week4-lab.html)
 - **Topics:** Pre-attentive processing, Gestalt principles, Perceptual accuracy, D3.js introduction
 - **Lab:** First D3 programming session, DOM manipulation, Data binding
 - **Assignment:** Exercise 4 - Perception-based design + D3 implementation (due Oct 2)

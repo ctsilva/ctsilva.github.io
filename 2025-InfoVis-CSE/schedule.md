@@ -104,7 +104,7 @@ author_profile: true
 **Optional Reading:**
 - [Graphical Perception: Theory, Experimentation and Application](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/perception/Cleveland_GraphicalPerception.pdf). Cleveland & McGill. 1984.
 
-**Lab:**
+**Lab:** [Lab: First D3 programming session, DOM manipulation, Data binding](/2025-InfoVis-CSE/labs/week4-lab.html)
 - First D3 programming session
 - DOM manipulation exercises
 - Data binding concepts
