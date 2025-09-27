@@ -620,28 +620,66 @@ Wang, Z. J., Kale, A., Nori, H., Stella, P., Nunnally, M., Chau, D. H., ... & Ca
 
 ::: {.notes}
 GAM Changer allows users to interactively edit learned shape functions to inject domain knowledge. Data scientists can manually adjust function shapes (e.g., enforcing monotonicity where it makes business sense) while seeing real-time impacts on model performance. This human-in-the-loop approach bridges data-driven learning with expert knowledge. The tool runs locally in computational notebooks or browsers without requiring extra compute resources.
-::: 
-
-## Practice 1
-Notebook:
-https://colab.research.google.com/drive/1nKE6WIApebHi67yfhH6k5mZN86evLZOM?usp=sharing 
-
-Some other libraries for PDP visualization:
-https://scikit-learn.org/stable/modules/partial_dependence.html
-https://interpret.ml/docs/pdp.html
-
-::: {.notes}
-This hands-on exercise walks through training GAMs with Python's interpret library and creating partial dependence visualizations. You'll explore how to identify non-linear patterns, detect feature interactions, and interpret model behavior through visualizations. Try comparing linear regression vs GAM on the same dataset.
-::: 
-
+:::
 
 ## BREAK
+
+## Decision Trees: How They Work
+
+Decision trees recursively split data based on feature thresholds:
+
+::: {.incremental}
+- **Internal nodes**: Tests on features (e.g., "glucose ≤ 127")
+- **Branches**: Outcomes of the test (left = true, right = false)
+- **Leaf nodes**: Final predictions (average of instances in that node)
+- **Algorithm**: CART (Classification and Regression Trees)
+:::
+
+**Prediction**: Follow path from root to leaf based on feature values
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/tree.html). Chapter 4.4.
+:::
+
+::: {.notes}
+Decision trees work by recursively partitioning the feature space. At each internal node, the algorithm chooses a feature and threshold that best splits the data (measured by Gini impurity for classification or variance reduction for regression). This creates a hierarchical structure where each path represents a decision rule. To make a prediction, follow the decision path from root to leaf based on the instance's feature values.
+:::
+
+## Decision Trees: Interpretation
+
+**Reading a tree**: "If feature $x_j$ is [smaller/larger] than threshold $c$ AND ... then predict $\hat{y}$"
+
+::: {.columns}
+::: {.column width="50%"}
+### ✅ Strengths:
+- **Natural interactions**: Captures feature interactions automatically
+- **Visual logic**: Clear decision rules
+- **No preprocessing**: Works with raw features
+- **Human-friendly**: Mimics human reasoning
+:::
+
+::: {.column width="50%"}
+### ⚠️ Limitations:
+- **Linear relationships**: Poor at modeling smooth trends
+- **Instability**: Small data changes → different tree
+- **Depth problem**: Deep trees become uninterpretable
+- **Step functions**: Predictions jump at thresholds
+:::
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/tree.html). Chapter 4.4.
+:::
+
+::: {.notes}
+The key to interpretability is tree depth. Shallow trees (1-3 splits) are highly interpretable - you can easily trace the logic. But performance often requires deeper trees which become impossible to fully comprehend. Trees naturally capture interactions (e.g., "if age > 50 AND glucose > 120") without manual feature engineering. However, they're unstable - retraining on slightly different data can produce completely different tree structures. They also struggle with smooth linear relationships, creating step-function approximations instead.
+:::
 
 ## Tree-based Models: Example
 ![A decision tree of diabetes diagnosis](figs/white-box/paper8.png)
 
 ::: {.notes}
-Decision trees provide natural visual explanations through their hierarchical structure. Each path from root to leaf represents a decision rule with explicit conditions. This diabetes diagnosis tree shows how glucose level, BMI, age, and other factors combine hierarchically to predict disease risk. Trees are highly interpretable when shallow but can become unwieldy when deep.
+This diabetes diagnosis tree demonstrates decision tree structure in practice. Each path from root to leaf represents a decision rule with explicit conditions. The tree shows how glucose level, BMI, age, and other factors combine hierarchically to predict disease risk. Notice how the tree naturally captures interactions - the same glucose threshold might have different meanings depending on BMI. Trees are highly interpretable when shallow like this, but can become unwieldy when deep.
 :::
 
 
@@ -664,19 +702,27 @@ The TreeVis gallery showcases diverse tree visualization techniques from decades
 :::
 
 ::: {.column width="35%"}
-It shows the flow of different class, and the class distribution in along the feature values.
+It shows the flow of different class, and the class distribution along the feature values.
 :::
 :::
 
+::: footer
+van den Elzen, S., & van Wijk, J. J. (2011). [BaobabView: Interactive Construction and Analysis of Decision Trees](https://doi.org/10.1109/VAST.2011.6102453). *IEEE VAST 2011*.
+:::
+
 ::: {.notes}
-BaobabView uses a custom layout optimized for classification trees. The width of edges encodes the number of instances flowing through each branch, and color shows class distribution at each node. This makes it easy to see where the model is confident vs uncertain, and which features do the most splitting work.
+BaobabView (van den Elzen & van Wijk, VAST 2011) uses a custom layout optimized for classification trees. The width of edges encodes the number of instances flowing through each branch, and color shows class distribution at each node. This makes it easy to see where the model is confident vs uncertain, and which features do the most splitting work. The system allows interactive construction and analysis of decision trees.
 :::
 
 ## VA Systems Using Tree-based Models
 ![iForest](figs/white-box/paper11.png)
 
+::: footer
+Zhao, X., Wu, Y., Lee, D. L., & Cui, W. (2019). [iForest: Interpreting Random Forests via Visual Analytics](https://doi.org/10.1109/TVCG.2018.2864475). *IEEE TVCG*, 25(1), 407-416.
+:::
+
 ::: {.notes}
-iForest visualizes random forest ensembles rather than individual trees. The system aggregates predictions across trees to show which regions of feature space have high consensus vs disagreement among ensemble members. Areas of disagreement may indicate decision boundaries, noisy data, or underspecified regions where the model is uncertain.
+iForest (Zhao et al., IEEE TVCG 2019) visualizes random forest ensembles rather than individual trees. The system aggregates predictions across trees to show which regions of feature space have high consensus vs disagreement among ensemble members. Areas of disagreement may indicate decision boundaries, noisy data, or underspecified regions where the model is uncertain. This addresses the key interpretability challenge with random forests - understanding the collective behavior of many trees.
 :::
 
 ## Interactive Construction and Analysis of Decision Trees
@@ -699,7 +745,9 @@ Elzen and van Wijk's VAST 2011 paper presents an interactive system for construc
 
 ## Interactive Construction: Video Demonstration
 
-{{< video figs/white-box/Elzen-Wijk-VAST2011.mov width=1080 height=720 >}}
+::: {style="text-align: center;"}
+{{< video figs/white-box/Elzen-Wijk-VAST2011.mov width=1400 height=933 >}}
+:::
 
 ::: {.notes}
 This video demonstrates the interactive capabilities of the Elzen & van Wijk system. Watch how users can interactively construct decision trees, explore different splits, prune branches, and analyze the resulting tree structure. The system provides real-time feedback on tree performance as users make modifications.
@@ -719,6 +767,43 @@ This view shows decision paths colored by class labels (e.g., neck=no, lung, bre
 
 ::: {.notes}
 This view shows the explicit decision rules at each node (e.g., y-bar ≤ 9.00, x2ybr > 2.00). The rainbow coloring helps distinguish different paths through the tree. Users can see the complete rule set from root to any leaf, making it easy to extract interpretable decision rules from the trained tree.
+:::
+
+# Decision Rules
+
+## Decision Rules: What Are They?
+
+**Decision rules are IF-THEN statements that predict outcomes based on conditions**
+
+::: {.incremental}
+- **Structure**: IF condition THEN prediction
+- **Example**: IF size>100 AND garden=1 THEN value=high
+- **Natural language**: Rules read like human reasoning
+- **Sparse representation**: Only relevant features appear in conditions
+:::
+
+::: {.notes}
+Decision rules represent one of the most interpretable forms of machine learning models. They directly mirror human decision-making processes by explicitly stating conditions and outcomes. This makes them particularly valuable in domains where transparency and explainability are crucial, such as healthcare, finance, and legal applications.
+:::
+
+## Decision Rules: Key Characteristics
+
+**Evaluation Metrics:**
+::: {.incremental}
+- **Support**: Percentage of instances matching rule conditions
+- **Confidence/Accuracy**: Percentage of correct predictions when rule fires
+- **Coverage**: How much of the dataset is explained by the rule set
+:::
+
+**Learning Approaches:**
+::: {.incremental}
+- **OneR**: Single best feature generates rules
+- **Sequential Covering**: Iteratively learns rules, removes covered data
+- **Bayesian Rule Lists**: Pre-mines patterns, uses Bayesian statistics
+:::
+
+::: {.notes}
+Support measures breadth - does the rule apply to many instances? Confidence measures precision - when the rule fires, is it usually correct? Good rules balance both metrics. Very specific rules (low support) may overfit, while very general rules (high support, low confidence) may be too simplistic. Sequential covering is the classic approach: learn one rule, remove the data it covers, repeat until all data is covered.
 :::
 
 ## Decision Rules: Different Structures
@@ -858,18 +943,6 @@ Explainable Matrix extends rule visualization to random forest ensembles. Each t
 Beyond the models we've covered, other naturally interpretable models include: Naive Bayes (shows probability contributions from each feature via Bayes rule), K-Nearest Neighbors (predictions explained by showing similar training examples), and Logistic Regression (similar to linear regression but for classification). Each provides different forms of interpretability suited to different explanation needs.
 :::
 
-## Practice 2
-Notebook:
-https://colab.research.google.com/drive/12LV2Z_1BbP3efACYp2QxzsPaOrIn8a8l?usp=sharing
-
-::: {.notes}
-This hands-on exercise covers decision tree training, visualization, and rule extraction with sklearn. You'll experiment with tree depth, pruning strategies, and extracting interpretable rules from trained trees. Try comparing different tree visualization libraries and see how tree structure affects interpretability and performance.
-::: 
-
-
-
-
-
 ## Outline
 - <span style="color: grey;">Model Interpretation and Explanation</span>
 - <span style="color: grey;">White-box Approaches and Visualizations</span>
@@ -924,4 +997,24 @@ InterpretML: https://github.com/interpretml/interpret
 
 ::: {.notes}
 InterpretML is Microsoft's open-source library for interpretable machine learning. It implements GAMs, Explainable Boosting Machines (EBMs), and various explanation techniques. The library includes both glass-box models (inherently interpretable) and black-box explanation methods (LIME, SHAP). It provides unified APIs and visualization tools, making it easy to compare different interpretability approaches. Highly recommended for practical work.
+:::
+
+## Practice 1
+Notebook:
+https://colab.research.google.com/drive/1nKE6WIApebHi67yfhH6k5mZN86evLZOM?usp=sharing
+
+Some other libraries for PDP visualization:
+https://scikit-learn.org/stable/modules/partial_dependence.html
+https://interpret.ml/docs/pdp.html
+
+::: {.notes}
+This hands-on exercise walks through training GAMs with Python's interpret library and creating partial dependence visualizations. You'll explore how to identify non-linear patterns, detect feature interactions, and interpret model behavior through visualizations. Try comparing linear regression vs GAM on the same dataset.
+:::
+
+## Practice 2
+Notebook:
+https://colab.research.google.com/drive/12LV2Z_1BbP3efACYp2QxzsPaOrIn8a8l?usp=sharing
+
+::: {.notes}
+This hands-on exercise covers decision tree training, visualization, and rule extraction with sklearn. You'll experiment with tree depth, pruning strategies, and extracting interpretable rules from trained trees. Try comparing different tree visualization libraries and see how tree structure affects interpretability and performance.
 ::: 

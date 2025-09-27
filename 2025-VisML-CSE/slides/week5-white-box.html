@@ -1004,11 +1004,23 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Practice 1</h2>
-<p>Notebook: https://colab.research.google.com/drive/1nKE6WIApebHi67yfhH6k5mZN86evLZOM?usp=sharing</p>
-<p>Some other libraries for PDP visualization: https://scikit-learn.org/stable/modules/partial_dependence.html https://interpret.ml/docs/pdp.html</p>
+<h2>BREAK</h2>
+</section>
+<section class="slide level2">
+<h2>Decision Trees: How They Work</h2>
+<p>Decision trees recursively split data based on feature thresholds:</p>
+<ul>
+<li class="fragment"><strong>Internal nodes</strong>: Tests on features (e.g., “glucose ≤ 127”)</li>
+<li class="fragment"><strong>Branches</strong>: Outcomes of the test (left = true, right = false)</li>
+<li class="fragment"><strong>Leaf nodes</strong>: Final predictions (average of instances in that node)</li>
+<li class="fragment"><strong>Algorithm</strong>: CART (Classification and Regression Trees)</li>
+</ul>
+<p><strong>Prediction</strong>: Follow path from root to leaf based on feature values</p>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/tree.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.4.</p>
+</div>
 <aside class="notes">
-<p>This hands-on exercise walks through training GAMs with Python’s interpret library and creating partial dependence visualizations. You’ll explore how to identify non-linear patterns, detect feature interactions, and interpret model behavior through visualizations. Try comparing linear regression vs GAM on the same dataset.</p>
+<p>Decision trees work by recursively partitioning the feature space. At each internal node, the algorithm chooses a feature and threshold that best splits the data (measured by Gini impurity for classification or variance reduction for regression). This creates a hierarchical structure where each path represents a decision rule. To make a prediction, follow the decision path from root to leaf based on the instance’s feature values.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1022,13 +1034,48 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>BREAK</h2>
+<h2>Decision Trees: Interpretation</h2>
+<p><strong>Reading a tree</strong>: “If feature <span class="math inline">\(x_j\)</span> is [smaller/larger] than threshold <span class="math inline">\(c\)</span> AND … then predict <span class="math inline">\(\hat{y}\)</span>”</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Strengths:</h3>
+<ul>
+<li><strong>Natural interactions</strong>: Captures feature interactions automatically</li>
+<li><strong>Visual logic</strong>: Clear decision rules</li>
+<li><strong>No preprocessing</strong>: Works with raw features</li>
+<li><strong>Human-friendly</strong>: Mimics human reasoning</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Limitations:</h3>
+<ul>
+<li><strong>Linear relationships</strong>: Poor at modeling smooth trends</li>
+<li><strong>Instability</strong>: Small data changes → different tree</li>
+<li><strong>Depth problem</strong>: Deep trees become uninterpretable</li>
+<li><strong>Step functions</strong>: Predictions jump at thresholds</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/tree.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.4.</p>
+</div>
+<aside class="notes">
+<p>The key to interpretability is tree depth. Shallow trees (1-3 splits) are highly interpretable - you can easily trace the logic. But performance often requires deeper trees which become impossible to fully comprehend. Trees naturally capture interactions (e.g., “if age &gt; 50 AND glucose &gt; 120”) without manual feature engineering. However, they’re unstable - retraining on slightly different data can produce completely different tree structures. They also struggle with smooth linear relationships, creating step-function approximations instead.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Tree-based Models: Example</h2>
 
 <img data-src="figs/white-box/paper8.png" class="r-stretch quarto-figure-center"><p class="caption">A decision tree of diabetes diagnosis</p><aside class="notes">
-<p>Decision trees provide natural visual explanations through their hierarchical structure. Each path from root to leaf represents a decision rule with explicit conditions. This diabetes diagnosis tree shows how glucose level, BMI, age, and other factors combine hierarchically to predict disease risk. Trees are highly interpretable when shallow but can become unwieldy when deep.</p>
+<p>This diabetes diagnosis tree demonstrates decision tree structure in practice. Each path from root to leaf represents a decision rule with explicit conditions. The tree shows how glucose level, BMI, age, and other factors combine hierarchically to predict disease risk. Notice how the tree naturally captures interactions - the same glucose threshold might have different meanings depending on BMI. Trees are highly interpretable when shallow like this, but can become unwieldy when deep.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1069,10 +1116,13 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </figure>
 </div>
 </div><div class="column" style="width:35%;">
-<p>It shows the flow of different class, and the class distribution in along the feature values.</p>
+<p>It shows the flow of different class, and the class distribution along the feature values.</p>
 </div></div>
+<div class="footer">
+<p>van den Elzen, S., &amp; van Wijk, J. J. (2011). <a href="https://doi.org/10.1109/VAST.2011.6102453">BaobabView: Interactive Construction and Analysis of Decision Trees</a>. <em>IEEE VAST 2011</em>.</p>
+</div>
 <aside class="notes">
-<p>BaobabView uses a custom layout optimized for classification trees. The width of edges encodes the number of instances flowing through each branch, and color shows class distribution at each node. This makes it easy to see where the model is confident vs uncertain, and which features do the most splitting work.</p>
+<p>BaobabView (van den Elzen &amp; van Wijk, VAST 2011) uses a custom layout optimized for classification trees. The width of edges encodes the number of instances flowing through each branch, and color shows class distribution at each node. This makes it easy to see where the model is confident vs uncertain, and which features do the most splitting work. The system allows interactive construction and analysis of decision trees.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1088,8 +1138,11 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 <section class="slide level2">
 <h2>VA Systems Using Tree-based Models</h2>
 
-<img data-src="figs/white-box/paper11.png" class="r-stretch quarto-figure-center"><p class="caption">iForest</p><aside class="notes">
-<p>iForest visualizes random forest ensembles rather than individual trees. The system aggregates predictions across trees to show which regions of feature space have high consensus vs disagreement among ensemble members. Areas of disagreement may indicate decision boundaries, noisy data, or underspecified regions where the model is uncertain.</p>
+<img data-src="figs/white-box/paper11.png" class="r-stretch quarto-figure-center"><p class="caption">iForest</p><div class="footer">
+<p>Zhao, X., Wu, Y., Lee, D. L., &amp; Cui, W. (2019). <a href="https://doi.org/10.1109/TVCG.2018.2864475">iForest: Interpreting Random Forests via Visual Analytics</a>. <em>IEEE TVCG</em>, 25(1), 407-416.</p>
+</div>
+<aside class="notes">
+<p>iForest (Zhao et al., IEEE TVCG 2019) visualizes random forest ensembles rather than individual trees. The system aggregates predictions across trees to show which regions of feature space have high consensus vs disagreement among ensemble members. Areas of disagreement may indicate decision boundaries, noisy data, or underspecified regions where the model is uncertain. This addresses the key interpretability challenge with random forests - understanding the collective behavior of many trees.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1135,7 +1188,9 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </section>
 <section class="slide level2">
 <h2>Interactive Construction: Video Demonstration</h2>
-<video id="video_shortcode_videojs_video1" width="1080" height="720" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="figs/white-box/Elzen-Wijk-VAST2011.mov"></video>
+<div style="text-align: center;">
+<video id="video_shortcode_videojs_video1" width="1400" height="933" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="figs/white-box/Elzen-Wijk-VAST2011.mov"></video>
+</div>
 <aside class="notes">
 <p>This video demonstrates the interactive capabilities of the Elzen &amp; van Wijk system. Watch how users can interactively construct decision trees, explore different splits, prune branches, and analyze the resulting tree structure. The system provides real-time feedback on tree performance as users make modifications.</p>
 <style type="text/css">
@@ -1172,6 +1227,52 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 
 <img data-src="figs/white-box/elzen-tree-rules.png" class="r-stretch quarto-figure-center"><p class="caption">Decision rules with feature splits</p><aside class="notes">
 <p>This view shows the explicit decision rules at each node (e.g., y-bar ≤ 9.00, x2ybr &gt; 2.00). The rainbow coloring helps distinguish different paths through the tree. Users can see the complete rule set from root to any leaf, making it easy to extract interpretable decision rules from the trained tree.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Decision Rules</h1>
+
+</section>
+<section class="slide level2">
+<h2>Decision Rules: What Are They?</h2>
+<p><strong>Decision rules are IF-THEN statements that predict outcomes based on conditions</strong></p>
+<ul>
+<li class="fragment"><strong>Structure</strong>: IF condition THEN prediction</li>
+<li class="fragment"><strong>Example</strong>: IF size&gt;100 AND garden=1 THEN value=high</li>
+<li class="fragment"><strong>Natural language</strong>: Rules read like human reasoning</li>
+<li class="fragment"><strong>Sparse representation</strong>: Only relevant features appear in conditions</li>
+</ul>
+<aside class="notes">
+<p>Decision rules represent one of the most interpretable forms of machine learning models. They directly mirror human decision-making processes by explicitly stating conditions and outcomes. This makes them particularly valuable in domains where transparency and explainability are crucial, such as healthcare, finance, and legal applications.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Rules: Key Characteristics</h2>
+<p><strong>Evaluation Metrics:</strong> ::: {.incremental} - <strong>Support</strong>: Percentage of instances matching rule conditions - <strong>Confidence/Accuracy</strong>: Percentage of correct predictions when rule fires - <strong>Coverage</strong>: How much of the dataset is explained by the rule set :::</p>
+<p><strong>Learning Approaches:</strong> ::: {.incremental} - <strong>OneR</strong>: Single best feature generates rules - <strong>Sequential Covering</strong>: Iteratively learns rules, removes covered data - <strong>Bayesian Rule Lists</strong>: Pre-mines patterns, uses Bayesian statistics :::</p>
+<aside class="notes">
+<p>Support measures breadth - does the rule apply to many instances? Confidence measures precision - when the rule fires, is it usually correct? Good rules balance both metrics. Very specific rules (low support) may overfit, while very general rules (high support, low confidence) may be too simplistic. Sequential covering is the classic approach: learn one rule, remove the data it covers, repeat until all data is covered.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1395,23 +1496,6 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Practice 2</h2>
-<p>Notebook: https://colab.research.google.com/drive/12LV2Z_1BbP3efACYp2QxzsPaOrIn8a8l?usp=sharing</p>
-<aside class="notes">
-<p>This hands-on exercise covers decision tree training, visualization, and rule extraction with sklearn. You’ll experiment with tree depth, pruning strategies, and extracting interpretable rules from trained trees. Try comparing different tree visualization libraries and see how tree structure affects interpretability and performance.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
 <h2>Outline</h2>
 <ul>
 <li><span style="color: grey;">Model Interpretation and Explanation</span></li>
@@ -1494,8 +1578,43 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-
 </section>
+<section class="slide level2">
+<h2>Practice 1</h2>
+<p>Notebook: https://colab.research.google.com/drive/1nKE6WIApebHi67yfhH6k5mZN86evLZOM?usp=sharing</p>
+<p>Some other libraries for PDP visualization: https://scikit-learn.org/stable/modules/partial_dependence.html https://interpret.ml/docs/pdp.html</p>
+<aside class="notes">
+<p>This hands-on exercise walks through training GAMs with Python’s interpret library and creating partial dependence visualizations. You’ll explore how to identify non-linear patterns, detect feature interactions, and interpret model behavior through visualizations. Try comparing linear regression vs GAM on the same dataset.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Practice 2</h2>
+<p>Notebook: https://colab.research.google.com/drive/12LV2Z_1BbP3efACYp2QxzsPaOrIn8a8l?usp=sharing</p>
+<aside class="notes">
+<p>This hands-on exercise covers decision tree training, visualization, and rule extraction with sklearn. You’ll experiment with tree depth, pruning strategies, and extracting interpretable rules from trained trees. Try comparing different tree visualization libraries and see how tree structure affects interpretability and performance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="figs/vida.jpg" class="slide-logo"></p>
