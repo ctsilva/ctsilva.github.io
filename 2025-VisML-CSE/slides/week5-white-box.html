@@ -813,10 +813,73 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 <!-- ![](figs/white-box/exp2.png) -->
 </section>
 <section class="slide level2">
+<h2>Partial Dependence Plots (PDPs)</h2>
+<p><strong>What PDPs show:</strong> The marginal effect of a feature on the predicted outcome</p>
+<p><strong>Mathematical idea:</strong> Average the model’s predictions across all data points while varying one feature</p>
+<ul>
+<li class="fragment"><strong>Y-axis</strong>: Change in prediction (relative to baseline)</li>
+<li class="fragment"><strong>X-axis</strong>: Feature values</li>
+<li class="fragment"><strong>Curve shape</strong>: Reveals linear, monotonic, or complex relationships</li>
+</ul>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/pdp.html"><em>Interpretable Machine Learning</em></a>. Chapter 8.1.</p>
+</div>
+<aside class="notes">
+<p>PDPs marginalize the model output over the distribution of other features. For each value of feature X, we compute predictions for all data points with X set to that value, then average those predictions. This shows the average effect of X on predictions. The curve reveals whether the relationship is linear (straight line), monotonic (always increasing/decreasing), or more complex with peaks and valleys.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PDPs: Advantages and Limitations</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Advantages:</h3>
+<ul>
+<li><strong>Intuitive</strong>: Easy to understand and explain</li>
+<li><strong>Model-agnostic</strong>: Works with any model</li>
+<li><strong>Causal hints</strong>: Suggests feature importance</li>
+<li><strong>Shows shape</strong>: Reveals non-linear patterns</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Limitations:</h3>
+<ul>
+<li><strong>Independence assumption</strong>: Assumes features are independent (often violated!)</li>
+<li><strong>Averages hide details</strong>: Misses heterogeneous effects</li>
+<li><strong>Unrealistic combinations</strong>: May average over impossible feature values</li>
+<li><strong>Max 2 features</strong>: Can’t visualize high-dimensional interactions</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/pdp.html"><em>Interpretable Machine Learning</em></a>. Chapter 8.1.</p>
+</div>
+<aside class="notes">
+<p>The independence assumption is critical: PDPs assume you can vary one feature while holding others at their marginal distribution. But if features are correlated (e.g., house size and number of rooms), the PDP may average over unrealistic combinations. For example, it might average predictions for “1000 sq ft with 10 bedrooms” which doesn’t exist in reality. ICE plots (coming next) help reveal when PDPs are misleading by showing individual trajectories instead of averages.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Visualizing EBMs (or GAMs)</h2>
 
 <img data-src="figs/white-box/exp3.png" class="r-stretch quarto-figure-center"><p class="caption">Partial dependency plot</p><aside class="notes">
-<p>Partial dependence plots show how predictions change as we vary one feature while marginalizing over all others. The y-axis shows the average prediction change from the baseline, making it easy to see each feature’s isolated effect. The rug plot at bottom shows the distribution of actual feature values.</p>
+<p>This PDP shows how predictions change as we vary one feature while marginalizing over all others. The y-axis shows the average prediction change from the baseline, making it easy to see each feature’s isolated effect. The rug plot at bottom shows the distribution of actual feature values - always check this to ensure you’re not extrapolating beyond the data.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

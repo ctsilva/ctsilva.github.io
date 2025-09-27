@@ -512,11 +512,59 @@ This video from Microsoft Research demonstrates the InterpretML library and EBMs
 :::
 <!-- ![](figs/white-box/exp2.png) -->
 
+## Partial Dependence Plots (PDPs)
+
+**What PDPs show:** The marginal effect of a feature on the predicted outcome
+
+**Mathematical idea:** Average the model's predictions across all data points while varying one feature
+
+::: {.incremental}
+- **Y-axis**: Change in prediction (relative to baseline)
+- **X-axis**: Feature values
+- **Curve shape**: Reveals linear, monotonic, or complex relationships
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/pdp.html). Chapter 8.1.
+:::
+
+::: {.notes}
+PDPs marginalize the model output over the distribution of other features. For each value of feature X, we compute predictions for all data points with X set to that value, then average those predictions. This shows the average effect of X on predictions. The curve reveals whether the relationship is linear (straight line), monotonic (always increasing/decreasing), or more complex with peaks and valleys.
+:::
+
+## PDPs: Advantages and Limitations
+
+::: {.columns}
+::: {.column width="50%"}
+### ✅ Advantages:
+- **Intuitive**: Easy to understand and explain
+- **Model-agnostic**: Works with any model
+- **Causal hints**: Suggests feature importance
+- **Shows shape**: Reveals non-linear patterns
+:::
+
+::: {.column width="50%"}
+### ⚠️ Limitations:
+- **Independence assumption**: Assumes features are independent (often violated!)
+- **Averages hide details**: Misses heterogeneous effects
+- **Unrealistic combinations**: May average over impossible feature values
+- **Max 2 features**: Can't visualize high-dimensional interactions
+:::
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/pdp.html). Chapter 8.1.
+:::
+
+::: {.notes}
+The independence assumption is critical: PDPs assume you can vary one feature while holding others at their marginal distribution. But if features are correlated (e.g., house size and number of rooms), the PDP may average over unrealistic combinations. For example, it might average predictions for "1000 sq ft with 10 bedrooms" which doesn't exist in reality. ICE plots (coming next) help reveal when PDPs are misleading by showing individual trajectories instead of averages.
+:::
+
 ## Visualizing EBMs (or GAMs)
 ![Partial dependency plot](figs/white-box/exp3.png)
 
 ::: {.notes}
-Partial dependence plots show how predictions change as we vary one feature while marginalizing over all others. The y-axis shows the average prediction change from the baseline, making it easy to see each feature's isolated effect. The rug plot at bottom shows the distribution of actual feature values.
+This PDP shows how predictions change as we vary one feature while marginalizing over all others. The y-axis shows the average prediction change from the baseline, making it easy to see each feature's isolated effect. The rug plot at bottom shows the distribution of actual feature values - always check this to ensure you're not extrapolating beyond the data.
 :::
 
 ## Visualizing EBMs (or GAMs)
