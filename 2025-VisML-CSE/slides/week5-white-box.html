@@ -155,20 +155,7 @@ Claudio Silva
 <li>Related Research in VIS &amp; AI</li>
 </ul>
 <aside class="notes">
-<p>Today we focus on interpretable machine learning models and their visualization. We’ll explore intrinsically interpretable models like linear regression, GAMs, decision trees, and rule-based systems.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<aside class="notes">
-<p>Today we focus on interpretable machine learning models and their visualization. We’ll explore intrinsically interpretable models like linear regression, GAMs, decision trees, and rule-based systems.</p>
+<p>Today we focus on interpretable machine learning models and their visualization. We’ll explore intrinsically interpretable models like linear regression, GAMs, decision trees, and rule-based systems. We’ll see how visualization helps us understand model behavior and how different model types offer different forms of interpretability.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -190,19 +177,47 @@ Claudio Silva
 </ul>
 </section>
 <section class="slide level2">
+<h2>What is Interpretability?</h2>
+<blockquote>
+<p><strong>“Interpretability is the degree to which a human can understand the cause of a decision”</strong></p>
+</blockquote>
+<ul>
+<li class="fragment">Can you predict what the model will do?</li>
+<li class="fragment">Can you understand <em>why</em> it made a particular decision?</li>
+<li class="fragment">Can you trust the model’s reasoning process?</li>
+</ul>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
+</div>
+<aside class="notes">
+<p>Interpretability fundamentally means understanding causation - why did the model produce this output? A more operational definition: a model is interpretable if a human can correctly and efficiently predict the model’s results. This goes beyond just seeing outputs - it requires understanding the mechanism.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Why Model Interpretation &amp; Explanation?</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<p><img data-src="figs/white-box/paper1.png"></p>
-</div><div class="column" style="width:50%;">
+<div class="column" style="width:60%;">
+<p><img data-src="figs/white-box/paper1.png" width="700"></p>
+</div><div class="column" style="width:40%;">
 <ul>
-<li>Model Validation and Improvement</li>
-<li>Decision Making and Knowledge Discovery</li>
-<li>Gain Confidence and Obtain Trust</li>
+<li><strong>Debugging &amp; Validation</strong>: Detect bugs, biases, data leakage</li>
+<li><strong>Knowledge Discovery</strong>: Learn patterns, generate hypotheses</li>
+<li><strong>Building Trust</strong>: Increase confidence, social acceptance</li>
+<li><strong>Compliance</strong>: Legal/ethical requirements, fairness audits</li>
 </ul>
 </div></div>
 <aside class="notes">
-<p>Understanding how ML models make decisions is crucial for several reasons: validating that models work correctly, discovering new knowledge from learned patterns, and building trust with stakeholders who rely on model predictions.</p>
+<p>Interpretability serves multiple critical functions. For debugging, we can catch issues like the model learning spurious correlations. For science, interpretable models reveal domain insights. For deployment, stakeholders need to trust the system. In regulated domains like healthcare and finance, interpretability may be legally required to justify decisions.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -247,16 +262,43 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
+<h2>Properties of Good Explanations</h2>
+<p>Human explanations are naturally:</p>
+<ol type="1">
+<li class="fragment"><strong>Contrastive</strong>: “Why this, rather than that?” (not exhaustive)</li>
+<li class="fragment"><strong>Selective</strong>: Focus on 1-3 key reasons (not all causes)</li>
+<li class="fragment"><strong>Social</strong>: Tailored to audience and context</li>
+<li class="fragment"><strong>Focused on abnormal</strong>: Highlight surprising factors</li>
+<li class="fragment"><strong>Truthful but simple</strong>: Balance accuracy with understandability</li>
+</ol>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/interpretability.html"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
+</div>
+<aside class="notes">
+<p>Research on human explanations reveals important patterns. People don’t want exhaustive causal chains - they want contrastive answers comparing to alternatives. Good explanations are selective, providing just a few key factors rather than everything. They should be tailored to the audience’s knowledge and focus on surprising or abnormal causes rather than routine factors. This guides how we should design ML explanations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Why Model Interpretation &amp; Explanation?</h2>
 <div class="columns">
-<div class="column" style="width:40%;">
+<div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/white-box/paper2.png"></p>
+<p><img data-src="figs/white-box/paper2.png" width="700"></p>
 <figcaption>https://arxiv.org/abs/1702.08608</figcaption>
 </figure>
 </div>
-</div><div class="column" style="width:60%;">
+</div><div class="column" style="width:40%;">
 <ul>
 <li>Fairness</li>
 <li>Privacy</li>
@@ -265,17 +307,46 @@ Claudio Silva
 <li>Trust</li>
 </ul>
 </div></div>
+<aside class="notes">
+<p>This paper highlights critical concerns in ML deployment. Fairness requires understanding if protected attributes influence decisions. Privacy needs transparency about what data influences predictions. Robustness demands knowing if the model relies on brittle features. Causality questions whether correlations are meaningful. All these build toward the ultimate goal: trust in AI systems.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
-<h2>How Do We Interpret Model Behavior?</h2>
-<p>Methods for machine learning model interpretation can be classified according to various criteria.</p>
+<h2>Taxonomy of Interpretability Methods</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Intrinsic (White-box)</strong></p>
 <ul>
-<li><p><strong>White-box / Intrinsic interpretability</strong>: Machine learning models that are considered interpretable due to their simple structure, such as short decision trees or sparse linear models. Interpretability is gained by explaining the internal structure of the model.</p></li>
-<li><p><strong>Black-box / Post-hoc interpretability</strong>: Machine learning models that are hard to gain a comprehensive understanding of their inner working (e.g., deep neural networks) are considered black boxes. Interpretability is gained by explaining the model behavior after training.</p></li>
+<li>Interpretability built into model structure</li>
+<li>Examples: Linear models, short decision trees, sparse models</li>
+<li>Understand by examining model internals</li>
+<li><em>Today’s focus</em></li>
 </ul>
-<p><a href="https://christophm.github.io/interpretable-ml-book/taxonomy-of-interpretability-methods.html">Taxonomy of Interpretability Methods</a></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Post-hoc (Black-box)</strong></p>
+<ul>
+<li>Explain after training</li>
+<li>Works with any model (neural nets, ensembles)</li>
+<li>Examples: LIME, SHAP, saliency maps</li>
+<li><em>Next week’s topic</em></li>
+</ul>
+</div></div>
+<p><strong>Additional dimensions:</strong> Model-specific vs Model-agnostic | Local vs Global | Feature importance vs Feature effects</p>
+<div class="footer">
+<p><a href="https://christophm.github.io/interpretable-ml-book/taxonomy-of-interpretability-methods.html">Christoph Molnar: Interpretable Machine Learning</a></p>
+</div>
 <aside class="notes">
-<p>Today we focus on white-box models with intrinsic interpretability. Later in the course we’ll cover black-box interpretability techniques like SHAP and LIME that work with any model architecture.</p>
+<p>Intrinsic interpretability means the model structure itself is understandable - you can look at a decision tree and trace the logic. Post-hoc methods generate explanations after the fact for any model. We also distinguish: model-specific (works for one type) vs model-agnostic (works for any), local (explains one prediction) vs global (explains overall behavior), and feature importance (which features matter) vs feature effects (how do features influence predictions). Today we focus on intrinsically interpretable white-box models.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -375,6 +446,58 @@ y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</
       }</style></aside>
 </section>
 <section class="slide level2">
+<h2>Interpreting Linear Model Coefficients</h2>
+<p><strong>Basic interpretation:</strong> An increase in feature <span class="math inline">\(x_j\)</span> by one unit changes the prediction by <span class="math inline">\(\beta_j\)</span> units</p>
+<ul>
+<li class="fragment">✅ <strong>Numerical features</strong>: Direct marginal effect (holding others constant)</li>
+<li class="fragment">✅ <strong>Categorical features</strong>: Effect vs reference category</li>
+<li class="fragment">⚠️ <strong>Scale-dependent</strong>: Coefficients change with feature units</li>
+<li class="fragment">⚠️ <strong>“Holding others constant”</strong> assumes independence</li>
+</ul>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/limo.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.1.</p>
+</div>
+<aside class="notes">
+<p>The standard interpretation is deceptively simple: each coefficient tells you the marginal effect of that feature. But be careful - this interpretation assumes you can change one feature while holding others constant, which may not be realistic. For example, in housing, you can’t easily change square footage without affecting other features. Coefficients are also scale-dependent - standardizing features helps comparisons.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Important Assumptions for Interpretation</h2>
+<p>Linear models make strong assumptions:</p>
+<ol type="1">
+<li class="fragment"><strong>Linearity</strong>: Effects are additive (no interactions unless explicitly added)</li>
+<li class="fragment"><strong>Independence</strong>: Features are not strongly correlated</li>
+<li class="fragment"><strong>Homoscedasticity</strong>: Constant error variance</li>
+<li class="fragment"><strong>No multicollinearity</strong>: Correlated features can flip coefficient signs!</li>
+</ol>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/limo.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.1.</p>
+</div>
+<aside class="notes">
+<p>When features are correlated (multicollinearity), coefficients become unstable and can even change signs in counterintuitive ways. For example, if square footage and number of rooms are highly correlated, their individual coefficients may not reflect their true importance. The model can still predict well, but individual coefficient interpretation becomes unreliable. Always check for multicollinearity using VIF (variance inflation factor) or correlation matrices.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Evaluation of Linear Regression Model</h2>
 <h3>R Square</h3>
 <p><span class="math inline">\(R^2\)</span> (R-squared) <span class="math display">\[\begin{equation}
@@ -389,7 +512,7 @@ MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2
 MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 \end{equation}\]</span></p>
 <aside class="notes">
-<p>R-squared tells us the proportion of variance explained by the model (ranges 0-1, higher is better). MSE/RMSE penalize large errors more heavily than MAE due to squaring. Choose metrics based on your application’s tolerance for outliers - use MAE if you want robust estimates, MSE if large errors are particularly costly.</p>
+<p>R-squared tells us the proportion of variance explained by the model (ranges 0-1, higher is better). MSE/RMSE penalize large errors more heavily than MAE due to squaring. Choose metrics based on your application’s tolerance for outliers - use MAE if you want robust estimates, MSE if large errors are particularly costly. Note that R-squared can be misleading with many features - adjusted R-squared accounts for model complexity.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -489,13 +612,47 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 </section>
 <section class="slide level2">
 <h2>Generalized Additive Models (GAMs)</h2>
-<p>Generalized additive models extend standard linear models by allowing non-linear functions of each of the variables. <span class="math display">\[\begin{equation}
-y_i = \beta_0 + \sum_{j=1}^{p} f_j(x_{ij}) + \varepsilon_i \\
-= \beta_0 + f_1(x_{i1}) + f_2(x_{i2}) + \dots + f_p(x_{ip}) + \varepsilon_i
-
+<p>GAMs extend linear models by replacing linear terms with flexible shape functions:</p>
+<p><span class="math display">\[\begin{equation}
+g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
 \end{equation}\]</span></p>
+<p><strong>Key idea:</strong> Replace <span class="math inline">\(\beta_j x_j\)</span> (linear) with <span class="math inline">\(f_j(x_j)\)</span> (flexible smooth function)</p>
+<ul>
+<li class="fragment">Each <span class="math inline">\(f_j\)</span> is learned from data (typically using splines)</li>
+<li class="fragment">Maintains additive structure → still interpretable</li>
+<li class="fragment">Can mix linear and non-linear terms</li>
+</ul>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/extend-lm.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.2.</p>
+</div>
 <aside class="notes">
-<p>GAMs replace linear terms with smooth functions that can capture non-linear patterns. Each feature gets its own learned shape function (often splines or smoothing functions). The model remains additive (no interactions by default) which preserves interpretability - we can visualize each function independently.</p>
+<p>GAMs replace linear terms with smooth functions that can capture non-linear patterns. Each feature gets its own learned shape function (often splines or smoothing functions). The model remains additive (no interactions by default) which preserves interpretability - we can visualize each function independently. The link function g allows for different target distributions (normal for regression, logistic for classification).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How GAMs Work: Splines as Building Blocks</h2>
+<p>GAMs use <strong>splines</strong> (piecewise polynomial functions) to approximate smooth curves:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Technical approach:</strong> - Replace feature <span class="math inline">\(x_j\)</span> with basis functions - Fit weights to these basis functions - Add penalty term for smoothness</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Interpretation:</strong> - Visualize each <span class="math inline">\(f_j(x_j)\)</span> as a curve - Y-axis shows contribution to prediction - Relative to mean prediction</p>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/extend-lm.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.2.</p>
+</div>
+<aside class="notes">
+<p>Under the hood, GAMs convert each feature into multiple “basis functions” (like polynomial terms or spline segments). The model learns weights for these basis functions, similar to how linear regression learns coefficients. A smoothness penalty prevents overfitting by penalizing overly wiggly curves. This is controlled by cross-validation. The result: smooth, interpretable curves showing each feature’s effect.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

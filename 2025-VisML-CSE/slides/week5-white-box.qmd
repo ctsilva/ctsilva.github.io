@@ -27,11 +27,7 @@ format:
 - Related Research in VIS & AI
 
 ::: {.notes}
-Today we focus on interpretable machine learning models and their visualization. We'll explore intrinsically interpretable models like linear regression, GAMs, decision trees, and rule-based systems.
-:::
-
-::: {.notes}
-Today we focus on interpretable machine learning models and their visualization. We'll explore intrinsically interpretable models like linear regression, GAMs, decision trees, and rule-based systems.
+Today we focus on interpretable machine learning models and their visualization. We'll explore intrinsically interpretable models like linear regression, GAMs, decision trees, and rule-based systems. We'll see how visualization helps us understand model behavior and how different model types offer different forms of interpretability.
 :::
 
 ## Outline
@@ -39,21 +35,40 @@ Today we focus on interpretable machine learning models and their visualization.
 - <span style="color: grey;">White-box Approaches and Visualizations</span>
 - <span style="color: grey;">Related Research in VIS & AI</span>
 
-## Why Model Interpretation & Explanation?
-::: {.columns}
-::: {.column width="50%"}
-![](figs/white-box/paper1.png)
+## What is Interpretability?
+
+> **"Interpretability is the degree to which a human can understand the cause of a decision"**
+
+::: {.incremental}
+- Can you predict what the model will do?
+- Can you understand *why* it made a particular decision?
+- Can you trust the model's reasoning process?
 :::
 
-::: {.column width="50%"}
-- Model Validation and Improvement
-- Decision Making and Knowledge Discovery
-- Gain Confidence and Obtain Trust
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/). 2nd Edition.
+:::
+
+::: {.notes}
+Interpretability fundamentally means understanding causation - why did the model produce this output? A more operational definition: a model is interpretable if a human can correctly and efficiently predict the model's results. This goes beyond just seeing outputs - it requires understanding the mechanism.
+:::
+
+## Why Model Interpretation & Explanation?
+::: {.columns}
+::: {.column width="60%"}
+![](figs/white-box/paper1.png){width="700px"}
+:::
+
+::: {.column width="40%"}
+- **Debugging & Validation**: Detect bugs, biases, data leakage
+- **Knowledge Discovery**: Learn patterns, generate hypotheses
+- **Building Trust**: Increase confidence, social acceptance
+- **Compliance**: Legal/ethical requirements, fairness audits
 :::
 :::
 
 ::: {.notes}
-Understanding how ML models make decisions is crucial for several reasons: validating that models work correctly, discovering new knowledge from learned patterns, and building trust with stakeholders who rely on model predictions.
+Interpretability serves multiple critical functions. For debugging, we can catch issues like the model learning spurious correlations. For science, interpretable models reveal domain insights. For deployment, stakeholders need to trust the system. In regulated domains like healthcare and finance, interpretability may be legally required to justify decisions.
 :::
 
 ## Machine-learning-assisted materials discovery using failed experiments
@@ -74,14 +89,34 @@ Understanding how ML models make decisions is crucial for several reasons: valid
 This Nature paper demonstrates using interpretable models to understand scientific experiments. By training a surrogate decision tree on SVM predictions, researchers could extract human-understandable rules about which experimental conditions lead to success.
 :::
 
+## Properties of Good Explanations
+
+Human explanations are naturally:
+
+::: {.incremental}
+1. **Contrastive**: "Why this, rather than that?" (not exhaustive)
+2. **Selective**: Focus on 1-3 key reasons (not all causes)
+3. **Social**: Tailored to audience and context
+4. **Focused on abnormal**: Highlight surprising factors
+5. **Truthful but simple**: Balance accuracy with understandability
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/interpretability.html). 2nd Edition.
+:::
+
+::: {.notes}
+Research on human explanations reveals important patterns. People don't want exhaustive causal chains - they want contrastive answers comparing to alternatives. Good explanations are selective, providing just a few key factors rather than everything. They should be tailored to the audience's knowledge and focus on surprising or abnormal causes rather than routine factors. This guides how we should design ML explanations.
+:::
+
 ## Why Model Interpretation & Explanation?
 
 ::: {.columns}
-::: {.column width="40%"}
-![https://arxiv.org/abs/1702.08608](figs/white-box/paper2.png)
+::: {.column width="60%"}
+![https://arxiv.org/abs/1702.08608](figs/white-box/paper2.png){width="700px"}
 :::
 
-::: {.column width="60%"}
+::: {.column width="40%"}
 - Fairness
 - Privacy
 - Reliability or Robustness
@@ -90,18 +125,43 @@ This Nature paper demonstrates using interpretable models to understand scientif
 :::
 :::
 
-## How Do We Interpret Model Behavior?
+::: {.notes}
+This paper highlights critical concerns in ML deployment. Fairness requires understanding if protected attributes influence decisions. Privacy needs transparency about what data influences predictions. Robustness demands knowing if the model relies on brittle features. Causality questions whether correlations are meaningful. All these build toward the ultimate goal: trust in AI systems.
+:::
 
-Methods for machine learning model interpretation can be classified according to various criteria.
+## Taxonomy of Interpretability Methods
 
-- **White-box / Intrinsic interpretability**: Machine learning models that are considered interpretable due to their simple structure, such as short decision trees or sparse linear models. Interpretability is gained by explaining the internal structure of the model.
+::: {.columns}
+::: {.column width="50%"}
+**Intrinsic (White-box)**
 
-- **Black-box / Post-hoc interpretability**: Machine learning models that are hard to gain a comprehensive understanding of their inner working (e.g., deep neural networks) are considered black boxes. Interpretability is gained by explaining the model behavior after training.
+- Interpretability built into model structure
+- Examples: Linear models, short decision trees, sparse models
+- Understand by examining model internals
+- *Today's focus*
 
-[Taxonomy of Interpretability Methods](https://christophm.github.io/interpretable-ml-book/taxonomy-of-interpretability-methods.html)
+:::
+
+::: {.column width="50%"}
+**Post-hoc (Black-box)**
+
+- Explain after training
+- Works with any model (neural nets, ensembles)
+- Examples: LIME, SHAP, saliency maps
+- *Next week's topic*
+
+:::
+:::
+
+**Additional dimensions:**
+Model-specific vs Model-agnostic | Local vs Global | Feature importance vs Feature effects
+
+::: footer
+[Christoph Molnar: Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/taxonomy-of-interpretability-methods.html)
+:::
 
 ::: {.notes}
-Today we focus on white-box models with intrinsic interpretability. Later in the course we'll cover black-box interpretability techniques like SHAP and LIME that work with any model architecture.
+Intrinsic interpretability means the model structure itself is understandable - you can look at a decision tree and trace the logic. Post-hoc methods generate explanations after the fact for any model. We also distinguish: model-specific (works for one type) vs model-agnostic (works for any), local (explains one prediction) vs global (explains overall behavior), and feature importance (which features matter) vs feature effects (how do features influence predictions). Today we focus on intrinsically interpretable white-box models.
 :::
 
 ## Outline
@@ -153,11 +213,49 @@ In this housing price model, we can directly read off the coefficients: each add
 :::
 
 
+## Interpreting Linear Model Coefficients
+
+**Basic interpretation:** An increase in feature $x_j$ by one unit changes the prediction by $\beta_j$ units
+
+::: {.incremental}
+- ✅ **Numerical features**: Direct marginal effect (holding others constant)
+- ✅ **Categorical features**: Effect vs reference category
+- ⚠️ **Scale-dependent**: Coefficients change with feature units
+- ⚠️ **"Holding others constant"** assumes independence
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/limo.html). Chapter 4.1.
+:::
+
+::: {.notes}
+The standard interpretation is deceptively simple: each coefficient tells you the marginal effect of that feature. But be careful - this interpretation assumes you can change one feature while holding others constant, which may not be realistic. For example, in housing, you can't easily change square footage without affecting other features. Coefficients are also scale-dependent - standardizing features helps comparisons.
+:::
+
+## Important Assumptions for Interpretation
+
+Linear models make strong assumptions:
+
+::: {.incremental}
+1. **Linearity**: Effects are additive (no interactions unless explicitly added)
+2. **Independence**: Features are not strongly correlated
+3. **Homoscedasticity**: Constant error variance
+4. **No multicollinearity**: Correlated features can flip coefficient signs!
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/limo.html). Chapter 4.1.
+:::
+
+::: {.notes}
+When features are correlated (multicollinearity), coefficients become unstable and can even change signs in counterintuitive ways. For example, if square footage and number of rooms are highly correlated, their individual coefficients may not reflect their true importance. The model can still predict well, but individual coefficient interpretation becomes unreliable. Always check for multicollinearity using VIF (variance inflation factor) or correlation matrices.
+:::
+
 ## Evaluation of Linear Regression Model
 
 ### R Square
 
-$R^2$ (R-squared) 
+$R^2$ (R-squared)
 \begin{equation}
 R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
 \end{equation}
@@ -177,7 +275,7 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 \end{equation}
 
 ::: {.notes}
-R-squared tells us the proportion of variance explained by the model (ranges 0-1, higher is better). MSE/RMSE penalize large errors more heavily than MAE due to squaring. Choose metrics based on your application's tolerance for outliers - use MAE if you want robust estimates, MSE if large errors are particularly costly.
+R-squared tells us the proportion of variance explained by the model (ranges 0-1, higher is better). MSE/RMSE penalize large errors more heavily than MAE due to squaring. Choose metrics based on your application's tolerance for outliers - use MAE if you want robust estimates, MSE if large errors are particularly costly. Note that R-squared can be misleading with many features - adjusted R-squared accounts for model complexity.
 :::
 
 
@@ -258,15 +356,55 @@ The linearity assumption is particularly limiting. Many real phenomena have non-
 :::
 
 ## Generalized Additive Models (GAMs)
-Generalized additive models extend standard linear models by allowing non-linear functions of each of the variables.
-\begin{equation}
-y_i = \beta_0 + \sum_{j=1}^{p} f_j(x_{ij}) + \varepsilon_i \\
-= \beta_0 + f_1(x_{i1}) + f_2(x_{i2}) + \dots + f_p(x_{ip}) + \varepsilon_i
 
+GAMs extend linear models by replacing linear terms with flexible shape functions:
+
+\begin{equation}
+g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
 \end{equation}
 
+**Key idea:** Replace $\beta_j x_j$ (linear) with $f_j(x_j)$ (flexible smooth function)
+
+::: {.incremental}
+- Each $f_j$ is learned from data (typically using splines)
+- Maintains additive structure → still interpretable
+- Can mix linear and non-linear terms
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/extend-lm.html). Chapter 4.2.
+:::
+
 ::: {.notes}
-GAMs replace linear terms with smooth functions that can capture non-linear patterns. Each feature gets its own learned shape function (often splines or smoothing functions). The model remains additive (no interactions by default) which preserves interpretability - we can visualize each function independently.
+GAMs replace linear terms with smooth functions that can capture non-linear patterns. Each feature gets its own learned shape function (often splines or smoothing functions). The model remains additive (no interactions by default) which preserves interpretability - we can visualize each function independently. The link function g allows for different target distributions (normal for regression, logistic for classification).
+:::
+
+## How GAMs Work: Splines as Building Blocks
+
+GAMs use **splines** (piecewise polynomial functions) to approximate smooth curves:
+
+::: {.columns}
+::: {.column width="50%"}
+**Technical approach:**
+- Replace feature $x_j$ with basis functions
+- Fit weights to these basis functions
+- Add penalty term for smoothness
+:::
+
+::: {.column width="50%"}
+**Interpretation:**
+- Visualize each $f_j(x_j)$ as a curve
+- Y-axis shows contribution to prediction
+- Relative to mean prediction
+:::
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/extend-lm.html). Chapter 4.2.
+:::
+
+::: {.notes}
+Under the hood, GAMs convert each feature into multiple "basis functions" (like polynomial terms or spline segments). The model learns weights for these basis functions, similar to how linear regression learns coefficients. A smoothness penalty prevents overfitting by penalizing overly wiggly curves. This is controlled by cross-validation. The result: smooth, interpretable curves showing each feature's effect.
 :::
 
 ## Generalized Additive Models (GAMs): An Example
