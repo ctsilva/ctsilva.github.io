@@ -247,6 +247,9 @@ Claudio Silva
 <li>Then they train a surrogate DT to explain the model to learn more about the experiment.</li>
 </ul>
 </div></div>
+<div class="footer">
+<p>Raccuglia, P., et al.&nbsp;(2016). <a href="https://doi.org/10.1038/nature17439">Machine-learning-assisted materials discovery using failed experiments</a>. <em>Nature</em>, 533, 73-76.</p>
+</div>
 <aside class="notes">
 <p>This Nature paper demonstrates using interpretable models to understand scientific experiments. By training a surrogate decision tree on SVM predictions, researchers could extract human-understandable rules about which experimental conditions lead to success.</p>
 <style type="text/css">
@@ -450,7 +453,7 @@ y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</
 <p><strong>Basic interpretation:</strong> An increase in feature <span class="math inline">\(x_j\)</span> by one unit changes the prediction by <span class="math inline">\(\beta_j\)</span> units</p>
 <ul>
 <li class="fragment">✅ <strong>Numerical features</strong>: Direct marginal effect (holding others constant)</li>
-<li class="fragment">✅ <strong>Categorical features</strong>: Effect vs reference category</li>
+<li class="fragment">✅ <strong>Categorical features</strong>: Coefficients show difference from reference category</li>
 <li class="fragment">⚠️ <strong>Scale-dependent</strong>: Coefficients change with feature units</li>
 <li class="fragment">⚠️ <strong>“Holding others constant”</strong> assumes independence</li>
 </ul>
@@ -480,11 +483,12 @@ y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</
 <li class="fragment"><strong>Homoscedasticity</strong>: Constant error variance</li>
 <li class="fragment"><strong>No multicollinearity</strong>: Correlated features can flip coefficient signs!</li>
 </ol>
+<p><strong>Example:</strong> Housing model with both “square footage” AND “number of rooms” - These features are highly correlated (VIF &gt; 10) - Coefficients become unstable and unreliable for interpretation - Model predicts well, but individual coefficients are meaningless</p>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/limo.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.1.</p>
 </div>
 <aside class="notes">
-<p>When features are correlated (multicollinearity), coefficients become unstable and can even change signs in counterintuitive ways. For example, if square footage and number of rooms are highly correlated, their individual coefficients may not reflect their true importance. The model can still predict well, but individual coefficient interpretation becomes unreliable. Always check for multicollinearity using VIF (variance inflation factor) or correlation matrices.</p>
+<p>When features are correlated (multicollinearity), coefficients become unstable and can even change signs in counterintuitive ways. VIF (Variance Inflation Factor) measures this: VIF = 1 means no correlation, VIF &gt; 10 indicates severe multicollinearity. In the housing example, square footage and rooms are highly correlated - bigger houses have more rooms. Their individual coefficients become unreliable because the model can’t separate their independent effects. The model can still predict well, but you shouldn’t interpret individual coefficients. Always check VIF or correlation matrices before interpreting coefficients.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
