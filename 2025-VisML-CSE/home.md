@@ -40,7 +40,7 @@ author_profile: true
 
 ### Week 4 (Sept 22)
 - **Topics:** Model Assessment and Evaluation
-- **Materials:** 
+- **Materials:**
   - [Model Assessment and Evaluation](/2025-VisML-CSE/slides/week4-model-assessment.html)
 - **Recommended Readings:**
   - [Squares: Supporting Interactive Performance Analysis for Multiclass Classifiers](/2025-VisML-CSE/refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares_Interactive_Performance_Analysis.pdf) (Ren et al., 2016)
@@ -49,6 +49,16 @@ author_profile: true
   - Confusion Matrices and ROC Curves
   - Visual Analytics Systems for Model Performance
   - Calibration Theory and Practice
+
+### Week 5 (Sept 29)
+- **Topics:** Visualization for White-box Machine Learning Models
+- **Materials:**
+  - [White-box Model Interpretation](/2025-VisML-CSE/slides/week5-white-box.html)
+- **Content:**
+  - Linear Regression and Visual Analytics Systems
+  - Generalized Additive Models (GAMs) and Explainable Boosting Machines
+  - Tree-based Models and Visualization Techniques
+  - Decision Rules and Global Surrogate Models
 
 ## Assignments
 
