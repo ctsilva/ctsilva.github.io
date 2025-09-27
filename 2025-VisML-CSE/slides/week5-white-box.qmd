@@ -293,8 +293,7 @@ R-squared tells us the proportion of variance explained by the model (ranges 0-1
 
 ::: {.columns}
 ::: {.column width="40%"}
-![https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6634169
-](figs/white-box/paper4.png)
+![](figs/white-box/paper4.png)
 
 :::
 
@@ -306,46 +305,36 @@ This VA system helps model building (feature ranking) and model validation.
 :::
 :::
 
+::: footer
+Mühlbacher, T., & Piringer, H. (2013). [A Partition-Based Framework for Building and Validating Regression Models](https://doi.org/10.1109/TVCG.2013.125). *IEEE TVCG*. **Best Paper Award, IEEE VAST 2013**.
+:::
+
 ::: {.notes}
-This IEEE TVCG paper presents an interactive system for exploring the accuracy-complexity tradeoff in linear models. Users can interactively add or remove features and immediately see the impact on model performance metrics like R-squared and cross-validation error. This helps identify the simplest model that achieves acceptable accuracy.
+This IEEE TVCG Best Paper (VAST 2013) presents an interactive system for exploring the accuracy-complexity tradeoff in linear models. Users can interactively add or remove features and immediately see the impact on model performance metrics like R-squared and cross-validation error. This helps identify the simplest model that achieves acceptable accuracy.
 :::
 
 
 
 ## Pros and Cons of Linear Models
+
 ::: {.columns}
 ::: {.column width="50%"}
-Pros:
+### ✅ Pros:
+
+- **Highly interpretable**: Each coefficient has clear meaning
+- **Statistical guarantees**: Inference possible when assumptions hold
+- **Fast**: Analytical solution, no hyperparameters
+- **Transparent**: Easy to explain to stakeholders
 
 :::
 
 ::: {.column width="50%"}
-Cons:
+### ⚠️ Cons:
 
-
-:::
-:::
-
-## Pros and Cons of Linear Models
-::: {.columns}
-::: {.column width="50%"}
-Pros:
-
-
-Easily interpretable
-
-Statistical guarantees on inference (if assumptions are satisfied)
-
-No hyperparameters (analytical solution)
-
-:::
-
-::: {.column width="50%"}
-Cons:
-
-$X$’s relationship with $Y$ can be non-linear. In these cases, linear regression may not provide good results.
-
-If you don’t satisfy certain assumptions (namely normal distribution of residuals and homoscedasticity), then inference can be incorrect.
+- **Linearity assumption**: Cannot capture non-linear relationships
+- **Multicollinearity**: Correlated features break interpretation
+- **Assumption violations**: Wrong inference if residuals not normal
+- **No interactions**: Must manually add interaction terms
 
 :::
 :::
@@ -437,23 +426,25 @@ The backfitting algorithm trains GAMs iteratively using a coordinate descent app
 
 
 ## Generalized Additive Models (GAMs): Pros and Cons
+
 ::: {.columns}
 ::: {.column width="50%"}
-Pros:
+### ✅ Pros:
 
-
-GAMs allow us to fit a non-linear $f_j$ to each $X_j$ , so that we can model non-linear relationships easily. 
-
-The non-linear fits can potentially lead to better predictions.
-
-Because the model is additive, we can examine the effect of each $X_j$ on $Y$ for each observation. This is useful for visualization.
+- **Non-linear flexibility**: Automatically learns smooth curves for each feature
+- **Better predictions**: Captures non-linear relationships without manual feature engineering
+- **Still interpretable**: Visualize each $f_j(x_j)$ independently
+- **Maintains additivity**: Easy to understand feature contributions
 
 :::
 
 ::: {.column width="50%"}
-Cons:
+### ⚠️ Cons:
 
-GAMs are restricted to be additive. With many variables, important interactions can be missed or computationally infeasible to find.
+- **No interactions by default**: Must explicitly add interaction terms
+- **Computationally expensive**: Finding all pairwise interactions is infeasible with many features
+- **Harder to explain**: Shape functions less intuitive than linear coefficients
+- **Overfitting risk**: Requires careful smoothness tuning
 
 :::
 :::

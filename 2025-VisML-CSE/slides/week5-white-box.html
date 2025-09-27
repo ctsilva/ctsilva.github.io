@@ -533,18 +533,16 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 <h2>Visual Analytics (VA) Systems for Linear Regression</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
 <p><img data-src="figs/white-box/paper4.png"></p>
-<figcaption>https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=6634169</figcaption>
-</figure>
-</div>
 </div><div class="column" style="width:60%;">
 <p>There is a trade-off between model complexity (number of features) and accuracy.</p>
 <p>This VA system helps model building (feature ranking) and model validation.</p>
 </div></div>
+<div class="footer">
+<p>Mühlbacher, T., &amp; Piringer, H. (2013). <a href="https://doi.org/10.1109/TVCG.2013.125">A Partition-Based Framework for Building and Validating Regression Models</a>. <em>IEEE TVCG</em>. <strong>Best Paper Award, IEEE VAST 2013</strong>.</p>
+</div>
 <aside class="notes">
-<p>This IEEE TVCG paper presents an interactive system for exploring the accuracy-complexity tradeoff in linear models. Users can interactively add or remove features and immediately see the impact on model performance metrics like R-squared and cross-validation error. This helps identify the simplest model that achieves acceptable accuracy.</p>
+<p>This IEEE TVCG Best Paper (VAST 2013) presents an interactive system for exploring the accuracy-complexity tradeoff in linear models. Users can interactively add or remove features and immediately see the impact on model performance metrics like R-squared and cross-validation error. This helps identify the simplest model that achieves acceptable accuracy.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -561,23 +559,21 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 <h2>Pros and Cons of Linear Models</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Pros:</p>
+<h3>✅ Pros:</h3>
+<ul>
+<li><strong>Highly interpretable</strong>: Each coefficient has clear meaning</li>
+<li><strong>Statistical guarantees</strong>: Inference possible when assumptions hold</li>
+<li><strong>Fast</strong>: Analytical solution, no hyperparameters</li>
+<li><strong>Transparent</strong>: Easy to explain to stakeholders</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<p>Cons:</p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Pros and Cons of Linear Models</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Pros:</p>
-<p>Easily interpretable</p>
-<p>Statistical guarantees on inference (if assumptions are satisfied)</p>
-<p>No hyperparameters (analytical solution)</p>
-</div><div class="column" style="width:50%;">
-<p>Cons:</p>
-<p><span class="math inline">\(X\)</span>’s relationship with <span class="math inline">\(Y\)</span> can be non-linear. In these cases, linear regression may not provide good results.</p>
-<p>If you don’t satisfy certain assumptions (namely normal distribution of residuals and homoscedasticity), then inference can be incorrect.</p>
+<h3>⚠️ Cons:</h3>
+<ul>
+<li><strong>Linearity assumption</strong>: Cannot capture non-linear relationships</li>
+<li><strong>Multicollinearity</strong>: Correlated features break interpretation</li>
+<li><strong>Assumption violations</strong>: Wrong inference if residuals not normal</li>
+<li><strong>No interactions</strong>: Must manually add interaction terms</li>
+</ul>
 </div></div>
 <aside class="notes">
 <p>Linear models shine when relationships are truly linear and assumptions hold (normal residuals, homoscedasticity, no multicollinearity). But real-world data often violates these assumptions, leading to poor predictions and incorrect statistical inference. The analytical solution is fast but inflexible.</p>
@@ -709,13 +705,21 @@ Wage = f(year, age, education) = b_0 + f_1(year) + f_2(age) + f_3(education)
 <h2>Generalized Additive Models (GAMs): Pros and Cons</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Pros:</p>
-<p>GAMs allow us to fit a non-linear <span class="math inline">\(f_j\)</span> to each <span class="math inline">\(X_j\)</span> , so that we can model non-linear relationships easily.</p>
-<p>The non-linear fits can potentially lead to better predictions.</p>
-<p>Because the model is additive, we can examine the effect of each <span class="math inline">\(X_j\)</span> on <span class="math inline">\(Y\)</span> for each observation. This is useful for visualization.</p>
+<h3>✅ Pros:</h3>
+<ul>
+<li><strong>Non-linear flexibility</strong>: Automatically learns smooth curves for each feature</li>
+<li><strong>Better predictions</strong>: Captures non-linear relationships without manual feature engineering</li>
+<li><strong>Still interpretable</strong>: Visualize each <span class="math inline">\(f_j(x_j)\)</span> independently</li>
+<li><strong>Maintains additivity</strong>: Easy to understand feature contributions</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<p>Cons:</p>
-<p>GAMs are restricted to be additive. With many variables, important interactions can be missed or computationally infeasible to find.</p>
+<h3>⚠️ Cons:</h3>
+<ul>
+<li><strong>No interactions by default</strong>: Must explicitly add interaction terms</li>
+<li><strong>Computationally expensive</strong>: Finding all pairwise interactions is infeasible with many features</li>
+<li><strong>Harder to explain</strong>: Shape functions less intuitive than linear coefficients</li>
+<li><strong>Overfitting risk</strong>: Requires careful smoothness tuning</li>
+</ul>
 </div></div>
 <aside class="notes">
 <p>GAMs balance flexibility and interpretability nicely - more expressive than linear models but still visualizable. But the no-interaction constraint can be limiting. If temperature and humidity interact to affect outcomes (e.g., heat index), a pure GAM will miss this synergistic effect and may underfit.</p>
