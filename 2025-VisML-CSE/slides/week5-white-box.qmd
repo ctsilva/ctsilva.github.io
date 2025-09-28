@@ -245,12 +245,12 @@ Linear models make strong assumptions:
 2. **Independence**: Features are not strongly correlated
 3. **Homoscedasticity**: Constant error variance
 4. **No multicollinearity**: Correlated features can flip coefficient signs!
-:::
 
-**Example:** Housing model with both "square footage" AND "number of rooms"
-- These features are highly correlated (VIF > 10)
-- Coefficients become unstable and unreliable for interpretation
-- Model predicts well, but individual coefficients are meaningless
+   **Example:** Housing model with both "square footage" AND "number of rooms"
+   - These features are highly correlated (VIF > 10)
+   - Coefficients become unstable and unreliable for interpretation
+   - Model predicts well, but individual coefficients are meaningless
+:::
 
 ::: footer
 Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/limo.html). Chapter 4.1.
@@ -262,23 +262,25 @@ When features are correlated (multicollinearity), coefficients become unstable a
 
 ## Evaluation of Linear Regression Model
 
+**Notation:**
+- $y_i$ = actual/true value for sample $i$
+- $\hat{y}_i$ = predicted value for sample $i$
+- $\bar{y}$ = mean of all actual values
+- $N$ = number of samples
+
 ### R Square
 
-$R^2$ (R-squared)
+$R^2$ (R-squared): Proportion of variance explained
 \begin{equation}
 R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
 \end{equation}
 
 Mean Square Error (MSE)/Root Mean Square Error (RMSE)
-
-
 \begin{equation}
-MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2
+MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2, \quad RMSE = \sqrt{MSE}
 \end{equation}
 
-
 Mean Absolute Error (MAE)
-
 \begin{equation}
 MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 \end{equation}
@@ -292,12 +294,12 @@ R-squared tells us the proportion of variance explained by the model (ranges 0-1
 
 
 ::: {.columns}
-::: {.column width="40%"}
+::: {.column width="55%"}
 ![](figs/white-box/gam-weather-analysis.png)
 
 :::
 
-::: {.column width="60%"}
+::: {.column width="45%"}
 There is a trade-off between model complexity (number of features) and accuracy.
 
 This VA system helps model building (feature ranking) and model validation.
@@ -315,7 +317,7 @@ This IEEE TVCG Best Paper (VAST 2013) presents an interactive system for explori
 
 
 
-## Pros and Cons of Linear Models
+## Pros, Cons, and Limitations of Linear Models
 
 ::: {.columns}
 ::: {.column width="50%"}
@@ -329,28 +331,21 @@ This IEEE TVCG Best Paper (VAST 2013) presents an interactive system for explori
 :::
 
 ::: {.column width="50%"}
-### ⚠️ Cons:
+### ⚠️ Cons & Limitations:
 
 - **Linearity assumption**: Cannot capture non-linear relationships
+- **Gaussian assumption**: Features assumed to follow normal distribution
 - **Multicollinearity**: Correlated features break interpretation
-- **Assumption violations**: Wrong inference if residuals not normal
 - **No interactions**: Must manually add interaction terms
+- **Assumption violations**: Wrong inference if residuals not normal
+
+**What if your dataset does not follow these assumptions?**
 
 :::
 :::
 
 ::: {.notes}
-Linear models shine when relationships are truly linear and assumptions hold (normal residuals, homoscedasticity, no multicollinearity). But real-world data often violates these assumptions, leading to poor predictions and incorrect statistical inference. The analytical solution is fast but inflexible.
-:::
-
-## Limitations of Linear Models
-- Features are assumed to follow Gaussian distribution
-- No interactions between features
-
-What if your dataset does not follow the assumptions?
-
-::: {.notes}
-The linearity assumption is particularly limiting. Many real phenomena have non-linear relationships (e.g., diminishing returns, threshold effects, exponential growth) and feature interactions (e.g., temperature × humidity jointly affecting comfort). When data violates linear assumptions, we need more flexible models like GAMs.
+Linear models shine when relationships are truly linear and assumptions hold (normal residuals, homoscedasticity, no multicollinearity). But real-world data often violates these assumptions - many real phenomena have non-linear relationships (e.g., diminishing returns, threshold effects) and feature interactions (e.g., temperature × humidity jointly affecting comfort). When data violates linear assumptions, we need more flexible models like GAMs.
 :::
 
 ## Generalized Additive Models (GAMs)
@@ -384,6 +379,7 @@ GAMs use **splines** (piecewise polynomial functions) to approximate smooth curv
 ::: {.columns}
 ::: {.column width="50%"}
 **Technical approach:**
+
 - Replace feature $x_j$ with basis functions
 - Fit weights to these basis functions
 - Add penalty term for smoothness
@@ -391,6 +387,7 @@ GAMs use **splines** (piecewise polynomial functions) to approximate smooth curv
 
 ::: {.column width="50%"}
 **Interpretation:**
+
 - Visualize each $f_j(x_j)$ as a curve
 - Y-axis shows contribution to prediction
 - Relative to mean prediction
@@ -417,12 +414,12 @@ This wage prediction example shows how GAMs capture different functional forms: 
 :::
 
 
-## Training GAMs (Backfitting)
+<!-- ## Training GAMs (Backfitting)
 ![](figs/white-box/algo1.png)
 
 ::: {.notes}
 The backfitting algorithm trains GAMs iteratively using a coordinate descent approach. Start with initial functions, then repeatedly update each function to fit the residuals from all other functions. This process converges to the optimal additive decomposition. It's computationally efficient and works well even with many features.
-:::
+::: -->
 
 
 ## Generalized Additive Models (GAMs): Pros and Cons
@@ -504,8 +501,10 @@ Automatically selecting which interactions to include is an active research area
 :::
 
 ## Explainable Boosting Machines
-<!-- ![]{./figures/exp2.png} -->
-{{< video https://youtu.be/MREiHgHgl0k width=1080 height=720 >}}
+
+::: {style="text-align: center;"}
+{{< video https://youtu.be/MREiHgHgl0k width=1400 height=900 >}}
+:::
 
 ::: {.notes}
 This video from Microsoft Research demonstrates the InterpretML library and EBMs in action. Watch how the system automatically discovers important feature interactions and visualizes their effects on predictions using partial dependence plots and interaction heatmaps.
@@ -681,14 +680,14 @@ This diabetes diagnosis tree demonstrates decision tree structure in practice. E
 :::
 
 
-## Visualization of Trees
+<!-- ## Visualization of Trees
 
 https://treevis.net/ provides a gallery of tree visualization. These trees are used to visualize hierarchical structures, but not just tree-based machine learning models.
 ![](figs/white-box/decision-tree-visualization.png)
 
 ::: {.notes}
 The TreeVis gallery showcases diverse tree visualization techniques from decades of HCI and InfoVis research. While many are designed for file systems, organizational charts, or taxonomies, the layout algorithms (node-link diagrams, treemaps, sunburst charts, icicle plots) all apply to ML decision trees. Choice of layout depends on what you want to emphasize - structure vs space utilization.
-:::
+::: -->
 
 
 ## VA Systems Using Tree-based Models
@@ -771,13 +770,15 @@ This view shows the explicit decision rules at each node (e.g., y-bar ≤ 9.00, 
 
 ## Decision Rules: What Are They?
 
-**Decision rules are IF-THEN statements that predict outcomes based on conditions**
+**Definition:** A decision rule is a simple IF-THEN statement consisting of a condition (antecedent) and a prediction (consequent).
 
 ::: {.incremental}
-- **Structure**: IF condition THEN prediction
-- **Example**: IF size>100 AND garden=1 THEN value=high
-- **Natural language**: Rules read like human reasoning
+- **Structure**: IF (condition) THEN (prediction)
+- **Example**: IF glucose > 120 AND age > 50 THEN diabetes_risk = high
+- **Natural language**: Rules mirror human decision-making processes
 - **Sparse representation**: Only relevant features appear in conditions
+- **Fast prediction**: Simple logical evaluation
+- **Transparent**: Each rule's logic is fully exposed
 :::
 
 ::: {.notes}
@@ -787,6 +788,7 @@ Decision rules represent one of the most interpretable forms of machine learning
 ## Decision Rules: Key Characteristics
 
 **Evaluation Metrics:**
+
 ::: {.incremental}
 - **Support**: Percentage of instances matching rule conditions
 - **Confidence/Accuracy**: Percentage of correct predictions when rule fires
@@ -794,14 +796,50 @@ Decision rules represent one of the most interpretable forms of machine learning
 :::
 
 **Learning Approaches:**
+
 ::: {.incremental}
-- **OneR**: Single best feature generates rules
-- **Sequential Covering**: Iteratively learns rules, removes covered data
-- **Bayesian Rule Lists**: Pre-mines patterns, uses Bayesian statistics
+- **OneR**: Selects single best feature, discretizes it, creates one rule per value
+- **Sequential Covering**: Learns rules greedily - finds best rule, removes covered instances, repeats
+- **Bayesian Rule Lists**: Pre-mines frequent patterns, uses Bayesian model selection for optimal ordering
+- **RIPPER**: Fast rule learner with pruning to prevent overfitting
 :::
 
 ::: {.notes}
 Support measures breadth - does the rule apply to many instances? Confidence measures precision - when the rule fires, is it usually correct? Good rules balance both metrics. Very specific rules (low support) may overfit, while very general rules (high support, low confidence) may be too simplistic. Sequential covering is the classic approach: learn one rule, remove the data it covers, repeat until all data is covered.
+:::
+
+## Decision Rules: Pros and Cons
+
+::: {.columns}
+::: {.column width="50%"}
+### ✅ Strengths:
+
+- **Easy to interpret**: Natural language reasoning
+- **Fast prediction**: Simple logical checks
+- **Robust**: Invariant to feature transformations
+- **Feature selection**: Automatically identifies relevant features
+- **Human-aligned**: Matches how experts explain decisions
+
+:::
+
+::: {.column width="50%"}
+### ⚠️ Limitations:
+
+- **Regression challenges**: Works best for classification
+- **Feature discretization**: Continuous features need binning
+- **Linear relationships**: Hard to capture smooth trends
+- **Overfitting risk**: Complex rules may not generalize
+- **Rule conflicts**: Overlapping rules need resolution
+
+:::
+:::
+
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/rules.html). Chapter 4.7.
+:::
+
+::: {.notes}
+Decision rules excel when you need transparent, auditable models. They're particularly valuable in regulated industries where you must explain each decision. However, they struggle with continuous relationships - you can't easily express "price increases smoothly with size" as rules. The discretization required for continuous features can lose information and create artificial boundaries.
 :::
 
 ## Decision Rules: Different Structures
@@ -843,22 +881,29 @@ This example shows DNF (Disjunctive Normal Form) rules: each rule is a conjuncti
 
 ::: {.columns}
 ::: {.column width="65%"}
-![Paper: https://arxiv.org/abs/2109.09160](figs/white-box/rule-evaluation-metrics.png)
+![](figs/white-box/rule-evaluation-metrics.png)
 
 :::
 
 ::: {.column width="35%"}
 
-Can different visualizations of rules lead to different level of understanding of rules?
+**Research Questions:**
 
-If so, what are the visual factors influence understanding and how they play a role in rule understanding?
+Can different visualizations of rules lead to different levels of understanding?
 
+What visual factors influence understanding and how do they affect rule comprehension?
+
+**Key findings:** Visual encoding choices significantly impact interpretability
 
 :::
+:::
+
+::: footer
+Yuan, J., Nov, O., & Bertini, E. (2021). [*An Exploration and Validation of Visual Factors in Understanding Classification Rule Sets*](https://arxiv.org/abs/2109.09160). arXiv:2109.09160.
 :::
 
 ::: {.notes}
-This research investigates how visual presentation affects rule comprehension. Factors like rule ordering, grouping, highlighting, and textual formatting all influence how quickly and accurately people understand rule-based models. Good visual design can make complex rule sets much more accessible to non-experts, while poor design obscures patterns.
+This research by Yuan et al. investigates how visual presentation affects rule comprehension. They found that factors like rule ordering, grouping, highlighting, and textual formatting all influence how quickly and accurately people understand rule-based models. Good visual design can make complex rule sets much more accessible to non-experts, while poor design obscures patterns. The study provides empirical evidence that visualization design matters as much as the underlying model for interpretability.
 :::
 
 

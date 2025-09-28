@@ -478,12 +478,17 @@ y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</
 <h2>Important Assumptions for Interpretation</h2>
 <p>Linear models make strong assumptions:</p>
 <ol type="1">
-<li class="fragment"><strong>Linearity</strong>: Effects are additive (no interactions unless explicitly added)</li>
-<li class="fragment"><strong>Independence</strong>: Features are not strongly correlated</li>
-<li class="fragment"><strong>Homoscedasticity</strong>: Constant error variance</li>
-<li class="fragment"><strong>No multicollinearity</strong>: Correlated features can flip coefficient signs!</li>
+<li class="fragment"><p><strong>Linearity</strong>: Effects are additive (no interactions unless explicitly added)</p></li>
+<li class="fragment"><p><strong>Independence</strong>: Features are not strongly correlated</p></li>
+<li class="fragment"><p><strong>Homoscedasticity</strong>: Constant error variance</p></li>
+<li class="fragment"><p><strong>No multicollinearity</strong>: Correlated features can flip coefficient signs!</p>
+<p><strong>Example:</strong> Housing model with both “square footage” AND “number of rooms”</p>
+<ul>
+<li class="fragment">These features are highly correlated (VIF &gt; 10)</li>
+<li class="fragment">Coefficients become unstable and unreliable for interpretation</li>
+<li class="fragment">Model predicts well, but individual coefficients are meaningless</li>
+</ul></li>
 </ol>
-<p><strong>Example:</strong> Housing model with both “square footage” AND “number of rooms” - These features are highly correlated (VIF &gt; 10) - Coefficients become unstable and unreliable for interpretation - Model predicts well, but individual coefficients are meaningless</p>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/limo.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.1.</p>
 </div>
@@ -503,16 +508,15 @@ y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</
 </section>
 <section class="slide level2">
 <h2>Evaluation of Linear Regression Model</h2>
+<p><strong>Notation:</strong> - <span class="math inline">\(y_i\)</span> = actual/true value for sample <span class="math inline">\(i\)</span> - <span class="math inline">\(\hat{y}_i\)</span> = predicted value for sample <span class="math inline">\(i\)</span> - <span class="math inline">\(\bar{y}\)</span> = mean of all actual values - <span class="math inline">\(N\)</span> = number of samples</p>
 <h3>R Square</h3>
-<p><span class="math inline">\(R^2\)</span> (R-squared) <span class="math display">\[\begin{equation}
+<p><span class="math inline">\(R^2\)</span> (R-squared): Proportion of variance explained <span class="math display">\[\begin{equation}
 R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
 \end{equation}\]</span></p>
-<p>Mean Square Error (MSE)/Root Mean Square Error (RMSE)</p>
-<p><span class="math display">\[\begin{equation}
-MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2
+<p>Mean Square Error (MSE)/Root Mean Square Error (RMSE) <span class="math display">\[\begin{equation}
+MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2, \quad RMSE = \sqrt{MSE}
 \end{equation}\]</span></p>
-<p>Mean Absolute Error (MAE)</p>
-<p><span class="math display">\[\begin{equation}
+<p>Mean Absolute Error (MAE) <span class="math display">\[\begin{equation}
 MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 \end{equation}\]</span></p>
 <aside class="notes">
@@ -532,9 +536,9 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 <section class="slide level2">
 <h2>Visual Analytics (VA) Systems for Linear Regression</h2>
 <div class="columns">
-<div class="column" style="width:40%;">
+<div class="column" style="width:55%;">
 <p><img data-src="figs/white-box/gam-weather-analysis.png"></p>
-</div><div class="column" style="width:60%;">
+</div><div class="column" style="width:45%;">
 <p>There is a trade-off between model complexity (number of features) and accuracy.</p>
 <p>This VA system helps model building (feature ranking) and model validation.</p>
 </div></div>
@@ -556,7 +560,7 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Pros and Cons of Linear Models</h2>
+<h2>Pros, Cons, and Limitations of Linear Models</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3>✅ Pros:</h3>
@@ -567,37 +571,18 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 <li><strong>Transparent</strong>: Easy to explain to stakeholders</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3>⚠️ Cons:</h3>
+<h3>⚠️ Cons &amp; Limitations:</h3>
 <ul>
 <li><strong>Linearity assumption</strong>: Cannot capture non-linear relationships</li>
+<li><strong>Gaussian assumption</strong>: Features assumed to follow normal distribution</li>
 <li><strong>Multicollinearity</strong>: Correlated features break interpretation</li>
-<li><strong>Assumption violations</strong>: Wrong inference if residuals not normal</li>
 <li><strong>No interactions</strong>: Must manually add interaction terms</li>
+<li><strong>Assumption violations</strong>: Wrong inference if residuals not normal</li>
 </ul>
+<p><strong>What if your dataset does not follow these assumptions?</strong></p>
 </div></div>
 <aside class="notes">
-<p>Linear models shine when relationships are truly linear and assumptions hold (normal residuals, homoscedasticity, no multicollinearity). But real-world data often violates these assumptions, leading to poor predictions and incorrect statistical inference. The analytical solution is fast but inflexible.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Limitations of Linear Models</h2>
-<ul>
-<li>Features are assumed to follow Gaussian distribution</li>
-<li>No interactions between features</li>
-</ul>
-<p>What if your dataset does not follow the assumptions?</p>
-<aside class="notes">
-<p>The linearity assumption is particularly limiting. Many real phenomena have non-linear relationships (e.g., diminishing returns, threshold effects, exponential growth) and feature interactions (e.g., temperature × humidity jointly affecting comfort). When data violates linear assumptions, we need more flexible models like GAMs.</p>
+<p>Linear models shine when relationships are truly linear and assumptions hold (normal residuals, homoscedasticity, no multicollinearity). But real-world data often violates these assumptions - many real phenomena have non-linear relationships (e.g., diminishing returns, threshold effects) and feature interactions (e.g., temperature × humidity jointly affecting comfort). When data violates linear assumptions, we need more flexible models like GAMs.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -644,9 +629,19 @@ g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
 <p>GAMs use <strong>splines</strong> (piecewise polynomial functions) to approximate smooth curves:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Technical approach:</strong> - Replace feature <span class="math inline">\(x_j\)</span> with basis functions - Fit weights to these basis functions - Add penalty term for smoothness</p>
+<p><strong>Technical approach:</strong></p>
+<ul>
+<li>Replace feature <span class="math inline">\(x_j\)</span> with basis functions</li>
+<li>Fit weights to these basis functions</li>
+<li>Add penalty term for smoothness</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<p><strong>Interpretation:</strong> - Visualize each <span class="math inline">\(f_j(x_j)\)</span> as a curve - Y-axis shows contribution to prediction - Relative to mean prediction</p>
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li>Visualize each <span class="math inline">\(f_j(x_j)\)</span> as a curve</li>
+<li>Y-axis shows contribution to prediction</li>
+<li>Relative to mean prediction</li>
+</ul>
 </div></div>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/extend-lm.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.2.</p>
@@ -683,23 +678,12 @@ Wage = f(year, age, education) = b_0 + f_1(year) + f_2(age) + f_3(education)
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Training GAMs (Backfitting)</h2>
+<!-- ## Training GAMs (Backfitting)
+![](figs/white-box/algo1.png)
 
-<img data-src="figs/white-box/algo1.png" class="r-stretch"><aside class="notes">
-<p>The backfitting algorithm trains GAMs iteratively using a coordinate descent approach. Start with initial functions, then repeatedly update each function to fit the residuals from all other functions. This process converges to the optimal additive decomposition. It’s computationally efficient and works well even with many features.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+::: {.notes}
+The backfitting algorithm trains GAMs iteratively using a coordinate descent approach. Start with initial functions, then repeatedly update each function to fit the residuals from all other functions. This process converges to the optimal additive decomposition. It's computationally efficient and works well even with many features.
+::: -->
 </section>
 <section class="slide level2">
 <h2>Generalized Additive Models (GAMs): Pros and Cons</h2>
@@ -795,8 +779,9 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </section>
 <section class="slide level2">
 <h2>Explainable Boosting Machines</h2>
-<!-- ![]{./figures/exp2.png} -->
-<iframe data-external="1" src="https://www.youtube.com/embed/MREiHgHgl0k" width="1080" height="720" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<div style="text-align: center;">
+<iframe data-external="1" src="https://www.youtube.com/embed/MREiHgHgl0k" width="1400" height="900" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
 <aside class="notes">
 <p>This video from Microsoft Research demonstrates the InterpretML library and EBMs in action. Watch how the system automatically discovers important feature interactions and visualizes their effects on predictions using partial dependence plots and interaction heatmaps.</p>
 <style type="text/css">
@@ -1084,23 +1069,14 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Visualization of Trees</h2>
-<p>https://treevis.net/ provides a gallery of tree visualization. These trees are used to visualize hierarchical structures, but not just tree-based machine learning models. <img data-src="figs/white-box/decision-tree-visualization.png"></p>
-<aside class="notes">
-<p>The TreeVis gallery showcases diverse tree visualization techniques from decades of HCI and InfoVis research. While many are designed for file systems, organizational charts, or taxonomies, the layout algorithms (node-link diagrams, treemaps, sunburst charts, icicle plots) all apply to ML decision trees. Choice of layout depends on what you want to emphasize - structure vs space utilization.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<!-- ## Visualization of Trees
+
+https://treevis.net/ provides a gallery of tree visualization. These trees are used to visualize hierarchical structures, but not just tree-based machine learning models.
+![](figs/white-box/decision-tree-visualization.png)
+
+::: {.notes}
+The TreeVis gallery showcases diverse tree visualization techniques from decades of HCI and InfoVis research. While many are designed for file systems, organizational charts, or taxonomies, the layout algorithms (node-link diagrams, treemaps, sunburst charts, icicle plots) all apply to ML decision trees. Choice of layout depends on what you want to emphasize - structure vs space utilization.
+::: -->
 </section>
 <section class="slide level2">
 <h2>VA Systems Using Tree-based Models</h2>
@@ -1243,12 +1219,14 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </section>
 <section class="slide level2">
 <h2>Decision Rules: What Are They?</h2>
-<p><strong>Decision rules are IF-THEN statements that predict outcomes based on conditions</strong></p>
+<p><strong>Definition:</strong> A decision rule is a simple IF-THEN statement consisting of a condition (antecedent) and a prediction (consequent).</p>
 <ul>
-<li class="fragment"><strong>Structure</strong>: IF condition THEN prediction</li>
-<li class="fragment"><strong>Example</strong>: IF size&gt;100 AND garden=1 THEN value=high</li>
-<li class="fragment"><strong>Natural language</strong>: Rules read like human reasoning</li>
+<li class="fragment"><strong>Structure</strong>: IF (condition) THEN (prediction)</li>
+<li class="fragment"><strong>Example</strong>: IF glucose &gt; 120 AND age &gt; 50 THEN diabetes_risk = high</li>
+<li class="fragment"><strong>Natural language</strong>: Rules mirror human decision-making processes</li>
 <li class="fragment"><strong>Sparse representation</strong>: Only relevant features appear in conditions</li>
+<li class="fragment"><strong>Fast prediction</strong>: Simple logical evaluation</li>
+<li class="fragment"><strong>Transparent</strong>: Each rule’s logic is fully exposed</li>
 </ul>
 <aside class="notes">
 <p>Decision rules represent one of the most interpretable forms of machine learning models. They directly mirror human decision-making processes by explicitly stating conditions and outcomes. This makes them particularly valuable in domains where transparency and explainability are crucial, such as healthcare, finance, and legal applications.</p>
@@ -1266,10 +1244,60 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </section>
 <section class="slide level2">
 <h2>Decision Rules: Key Characteristics</h2>
-<p><strong>Evaluation Metrics:</strong> ::: {.incremental} - <strong>Support</strong>: Percentage of instances matching rule conditions - <strong>Confidence/Accuracy</strong>: Percentage of correct predictions when rule fires - <strong>Coverage</strong>: How much of the dataset is explained by the rule set :::</p>
-<p><strong>Learning Approaches:</strong> ::: {.incremental} - <strong>OneR</strong>: Single best feature generates rules - <strong>Sequential Covering</strong>: Iteratively learns rules, removes covered data - <strong>Bayesian Rule Lists</strong>: Pre-mines patterns, uses Bayesian statistics :::</p>
+<p><strong>Evaluation Metrics:</strong></p>
+<ul>
+<li class="fragment"><strong>Support</strong>: Percentage of instances matching rule conditions</li>
+<li class="fragment"><strong>Confidence/Accuracy</strong>: Percentage of correct predictions when rule fires</li>
+<li class="fragment"><strong>Coverage</strong>: How much of the dataset is explained by the rule set</li>
+</ul>
+<p><strong>Learning Approaches:</strong></p>
+<ul>
+<li class="fragment"><strong>OneR</strong>: Selects single best feature, discretizes it, creates one rule per value</li>
+<li class="fragment"><strong>Sequential Covering</strong>: Learns rules greedily - finds best rule, removes covered instances, repeats</li>
+<li class="fragment"><strong>Bayesian Rule Lists</strong>: Pre-mines frequent patterns, uses Bayesian model selection for optimal ordering</li>
+<li class="fragment"><strong>RIPPER</strong>: Fast rule learner with pruning to prevent overfitting</li>
+</ul>
 <aside class="notes">
 <p>Support measures breadth - does the rule apply to many instances? Confidence measures precision - when the rule fires, is it usually correct? Good rules balance both metrics. Very specific rules (low support) may overfit, while very general rules (high support, low confidence) may be too simplistic. Sequential covering is the classic approach: learn one rule, remove the data it covers, repeat until all data is covered.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Rules: Pros and Cons</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Strengths:</h3>
+<ul>
+<li><strong>Easy to interpret</strong>: Natural language reasoning</li>
+<li><strong>Fast prediction</strong>: Simple logical checks</li>
+<li><strong>Robust</strong>: Invariant to feature transformations</li>
+<li><strong>Feature selection</strong>: Automatically identifies relevant features</li>
+<li><strong>Human-aligned</strong>: Matches how experts explain decisions</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Limitations:</h3>
+<ul>
+<li><strong>Regression challenges</strong>: Works best for classification</li>
+<li><strong>Feature discretization</strong>: Continuous features need binning</li>
+<li><strong>Linear relationships</strong>: Hard to capture smooth trends</li>
+<li><strong>Overfitting risk</strong>: Complex rules may not generalize</li>
+<li><strong>Rule conflicts</strong>: Overlapping rules need resolution</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/rules.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.7.</p>
+</div>
+<aside class="notes">
+<p>Decision rules excel when you need transparent, auditable models. They’re particularly valuable in regulated industries where you must explain each decision. However, they struggle with continuous relationships - you can’t easily express “price increases smoothly with size” as rules. The discretization required for continuous features can lose information and create artificial boundaries.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1333,18 +1361,18 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 <h2>Decision Rules: Visual Factors Influence Rule Understanding</h2>
 <div class="columns">
 <div class="column" style="width:65%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
 <p><img data-src="figs/white-box/rule-evaluation-metrics.png"></p>
-<figcaption>Paper: https://arxiv.org/abs/2109.09160</figcaption>
-</figure>
-</div>
 </div><div class="column" style="width:35%;">
-<p>Can different visualizations of rules lead to different level of understanding of rules?</p>
-<p>If so, what are the visual factors influence understanding and how they play a role in rule understanding?</p>
+<p><strong>Research Questions:</strong></p>
+<p>Can different visualizations of rules lead to different levels of understanding?</p>
+<p>What visual factors influence understanding and how do they affect rule comprehension?</p>
+<p><strong>Key findings:</strong> Visual encoding choices significantly impact interpretability</p>
 </div></div>
+<div class="footer">
+<p>Yuan, J., Nov, O., &amp; Bertini, E. (2021). <a href="https://arxiv.org/abs/2109.09160"><em>An Exploration and Validation of Visual Factors in Understanding Classification Rule Sets</em></a>. arXiv:2109.09160.</p>
+</div>
 <aside class="notes">
-<p>This research investigates how visual presentation affects rule comprehension. Factors like rule ordering, grouping, highlighting, and textual formatting all influence how quickly and accurately people understand rule-based models. Good visual design can make complex rule sets much more accessible to non-experts, while poor design obscures patterns.</p>
+<p>This research by Yuan et al.&nbsp;investigates how visual presentation affects rule comprehension. They found that factors like rule ordering, grouping, highlighting, and textual formatting all influence how quickly and accurately people understand rule-based models. Good visual design can make complex rule sets much more accessible to non-experts, while poor design obscures patterns. The study provides empirical evidence that visualization design matters as much as the underlying model for interpretability.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
