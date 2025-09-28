@@ -217,11 +217,25 @@ Claudio Silva
 <p><strong>🤝 Building Trust</strong> - Increase confidence, social acceptance - Enable stakeholder buy-in</p>
 <p><strong>⚖️ Compliance &amp; Ethics</strong> - Meet legal/ethical requirements - Conduct fairness audits</p>
 </div><div class="column" style="width:55%;">
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/model-interpretability-overview.mmd.png" style="width:100.0%"></p>
+<figcaption>Model Interpretability Overview</figcaption>
+</figure>
+</div>
+<!-- MERMAID CODE FOR FUTURE REFERENCE:
+Save this to figs/white-box/model-interpretability-overview.mmd and use mermaid.live to generate PNG:
+
+
+::::::{.cell reveal=true layout-align="default"}
+
+:::::{.cell-output-display}
+
+::::{}
+`<figure class=''>`{=html}
+
+:::{}
+
 <pre class="mermaid mermaid-js">graph TD
     MI[Model Interpretability]
     MI --&gt; D[🔧 Debugging &amp; Validation]
@@ -244,11 +258,12 @@ Claudio Silva
     style T1 fill:#e8f5e9,stroke:#27ae60,stroke-width:1px,color:#333
     style C1 fill:#fff3e0,stroke:#e67e22,stroke-width:1px,color:#333
 </pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+:::
+`</figure>`{=html}
+::::
+:::::
+::::::
+-->
 </div></div>
 <aside class="notes">
 <p>Interpretability serves multiple critical functions. For debugging, we can catch issues like the model learning spurious correlations. For science, interpretable models reveal domain insights. For deployment, stakeholders need to trust the system. In regulated domains like healthcare and finance, interpretability may be legally required to justify decisions.</p>
@@ -687,25 +702,6 @@ g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
 <li>Constant effect across all values</li>
 <li>Example: Each year of age adds $1,000 to salary</li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph LR
-    subgraph "Linear Effect"
-        A[Low x] --&gt;|"+β"| B[Medium x] --&gt;|"+β"| C[High x]
-    end
-
-    style A fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style B fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style C fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
 </div><div class="column" style="width:50%;">
 <p><strong>GAM:</strong> <span class="math inline">\(y = f_j(x_j)\)</span></p>
 <ul>
@@ -713,26 +709,6 @@ g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
 <li>Effect varies across feature range</li>
 <li>Example: Salary peaks at age 45-55, declines after</li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph LR
-    subgraph "Non-linear Effect (PDP)"
-        D[Young] --&gt;|"Steep ↑"| E[Mid-career] --&gt;|"Plateau"| F[Senior] --&gt;|"Decline ↓"| G[Retirement]
-    end
-
-    style D fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
-    style E fill:#fff3e0,stroke:#ff9800,stroke-width:2px
-    style F fill:#ffebee,stroke:#f44336,stroke-width:2px
-    style G fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
 </div></div>
 <p><strong>Visualization:</strong> PDPs show <span class="math inline">\(f_j(x_j)\)</span> - the contribution of feature <span class="math inline">\(x_j\)</span> to the prediction across its range</p>
 <aside class="notes">
@@ -895,13 +871,23 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </section>
 <section class="slide level2">
 <h2>Partial Dependence Plots (PDPs)</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
 <p><strong>What PDPs show:</strong> The marginal effect of a feature on the predicted outcome</p>
 <p><strong>Mathematical idea:</strong> Average the model’s predictions across all data points while varying one feature</p>
 <ul>
 <li class="fragment"><strong>Y-axis</strong>: Change in prediction (relative to baseline)</li>
 <li class="fragment"><strong>X-axis</strong>: Feature values</li>
-<li class="fragment"><strong>Curve shape</strong>: Reveals linear, monotonic, or complex relationships</li>
+<li class="fragment"><strong>Curve shape</strong>: Reveals linear, monotonic, or complex relationships (U-shaped in example)</li>
 </ul>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/pdp-example.png" style="width:100.0%"></p>
+<figcaption>Example of a Partial Dependence Plot (PDP) showing non-linear effect of Age</figcaption>
+</figure>
+</div>
+</div></div>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/pdp.html"><em>Interpretable Machine Learning</em></a>. Chapter 8.1.</p>
 </div>
@@ -1109,11 +1095,23 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </ul>
 <p><strong>Prediction</strong>: Follow path from root to leaf</p>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/decision-tree-diabetes.mmd.png" style="width:100.0%"></p>
+<figcaption>Decision Tree Diabetes Example</figcaption>
+</figure>
+</div>
+<!-- MERMAID CODE: decision-tree-diabetes.mmd
+
+::::::{.cell reveal=true layout-align="default"}
+
+:::::{.cell-output-display}
+
+::::{}
+`<figure class=''>`{=html}
+
+:::{}
+
 <pre class="mermaid mermaid-js">graph TD
     A[Glucose ≤ 127?&lt;br/&gt;Root Node]
     A --&gt;|Yes| B[BMI ≤ 28?&lt;br/&gt;Internal Node]
@@ -1131,11 +1129,12 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
     style F fill:#ffd6cc,stroke:#e67e22,stroke-width:2px
     style G fill:#f8d7da,stroke:#e74c3c,stroke-width:2px
 </pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+:::
+`</figure>`{=html}
+::::
+:::::
+::::::
+-->
 <p><strong>Example:</strong> 3 splits, 4 leaves, depth 2</p>
 </div></div>
 <div class="footer">
