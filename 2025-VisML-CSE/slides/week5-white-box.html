@@ -125,6 +125,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="week5-white-box_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="week5-white-box_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="week5-white-box_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -185,12 +188,13 @@ Claudio Silva
 <li class="fragment">Can you predict what the model will do?</li>
 <li class="fragment">Can you understand <em>why</em> it made a particular decision?</li>
 <li class="fragment">Can you trust the model’s reasoning process?</li>
+<li class="fragment"><strong>Key Dimensions:</strong> Local (single prediction) vs.&nbsp;Global (overall model logic)</li>
 </ul>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
 </div>
 <aside class="notes">
-<p>Interpretability fundamentally means understanding causation - why did the model produce this output? A more operational definition: a model is interpretable if a human can correctly and efficiently predict the model’s results. This goes beyond just seeing outputs - it requires understanding the mechanism.</p>
+<p>Interpretability fundamentally means understanding causation - why did the model produce this output? A more operational definition: a model is interpretable if a human can correctly and efficiently predict the model’s results. This goes beyond just seeing outputs - it requires understanding the mechanism. Importantly, interpretability has two scopes: Global interpretability means understanding the overall model logic and patterns, while Local interpretability focuses on explaining individual predictions. This distinction becomes crucial when we discuss techniques like LIME and SHAP in later lectures, which provide local explanations for otherwise black-box models.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -206,15 +210,49 @@ Claudio Silva
 <section class="slide level2">
 <h2>Why Model Interpretation &amp; Explanation?</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
-<p><img data-src="figs/white-box/hong-interpretability-survey.png" width="700"></p>
-</div><div class="column" style="width:40%;">
-<ul>
-<li><strong>Debugging &amp; Validation</strong>: Detect bugs, biases, data leakage</li>
-<li><strong>Knowledge Discovery</strong>: Learn patterns, generate hypotheses</li>
-<li><strong>Building Trust</strong>: Increase confidence, social acceptance</li>
-<li><strong>Compliance</strong>: Legal/ethical requirements, fairness audits</li>
-</ul>
+<div class="column" style="width:45%;">
+<h3>Four Key Functions:</h3>
+<p><strong>🔧 Debugging &amp; Validation</strong> - Detect bugs, biases, data leakage - Identify spurious correlations</p>
+<p><strong>🔬 Knowledge Discovery</strong> - Learn patterns, generate hypotheses - Extract scientific insights</p>
+<p><strong>🤝 Building Trust</strong> - Increase confidence, social acceptance - Enable stakeholder buy-in</p>
+<p><strong>⚖️ Compliance &amp; Ethics</strong> - Meet legal/ethical requirements - Conduct fairness audits</p>
+</div><div class="column" style="width:55%;">
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#1f77b4', 'primaryBorderColor':'#1f77b4', 'primaryTextColor':'#fff', 'fontSize':'14px'}}}%%
+graph TD
+    MI["Model&lt;br/&gt;Interpretability"]
+
+    MI --&gt; D["🔧 Debugging &amp;&lt;br/&gt;Validation"]
+    D --&gt; D1["Find bugs&lt;br/&gt;Detect bias&lt;br/&gt;Spot leakage"]
+
+    MI --&gt; K["🔬 Knowledge&lt;br/&gt;Discovery"]
+    K --&gt; K1["Learn patterns&lt;br/&gt;Test hypotheses&lt;br/&gt;Scientific insight"]
+
+    MI --&gt; T["🤝 Building&lt;br/&gt;Trust"]
+    T --&gt; T1["User confidence&lt;br/&gt;Social acceptance&lt;br/&gt;Stakeholder trust"]
+
+    MI --&gt; C["⚖️ Compliance &amp;&lt;br/&gt;Ethics"]
+    C --&gt; C1["Legal requirements&lt;br/&gt;Fairness audits&lt;br/&gt;Ethical guidelines"]
+
+    style MI fill:#2d3e50,stroke:#1f77b4,stroke-width:3px,color:#fff,text-align:center
+    style D fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff,text-align:center
+    style K fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff,text-align:center
+    style T fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff,text-align:center
+    style C fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#fff,text-align:center
+    style D1 fill:#ffebee,stroke:#c0392b,stroke-width:1px,text-align:center
+    style K1 fill:#e3f2fd,stroke:#2980b9,stroke-width:1px,text-align:center
+    style T1 fill:#e8f5e9,stroke:#27ae60,stroke-width:1px,text-align:center
+    style C1 fill:#fff3e0,stroke:#e67e22,stroke-width:1px,text-align:center
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </div></div>
 <aside class="notes">
 <p>Interpretability serves multiple critical functions. For debugging, we can catch issues like the model learning spurious correlations. For science, interpretable models reveal domain insights. For deployment, stakeholders need to trust the system. In regulated domains like healthcare and finance, interpretability may be legally required to justify decisions.</p>
@@ -268,7 +306,10 @@ Claudio Silva
 <h2>Properties of Good Explanations</h2>
 <p>Human explanations are naturally:</p>
 <ol type="1">
-<li class="fragment"><strong>Contrastive</strong>: “Why this, rather than that?” (not exhaustive)</li>
+<li class="fragment"><strong>Contrastive</strong>: “Why this, rather than that?” (not exhaustive)
+<ul>
+<li class="fragment">Example: “Loan denied because debt-to-income ratio was 45%, not the required ≤30%”</li>
+</ul></li>
 <li class="fragment"><strong>Selective</strong>: Focus on 1-3 key reasons (not all causes)</li>
 <li class="fragment"><strong>Social</strong>: Tailored to audience and context</li>
 <li class="fragment"><strong>Focused on abnormal</strong>: Highlight surprising factors</li>
@@ -455,7 +496,7 @@ y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</
 <li class="fragment">✅ <strong>Numerical features</strong>: Direct marginal effect (holding others constant)</li>
 <li class="fragment">✅ <strong>Categorical features</strong>: Coefficients show difference from reference category</li>
 <li class="fragment">⚠️ <strong>Scale-dependent</strong>: Coefficients change with feature units</li>
-<li class="fragment">⚠️ <strong>“Holding others constant”</strong> assumes independence</li>
+<li class="fragment">⚠️ <strong>“Holding others constant” assumes Feature Independence</strong> (a strong assumption!)</li>
 </ul>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/limo.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.1.</p>
@@ -508,7 +549,13 @@ y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</
 </section>
 <section class="slide level2">
 <h2>Evaluation of Linear Regression Model</h2>
-<p><strong>Notation:</strong> - <span class="math inline">\(y_i\)</span> = actual/true value for sample <span class="math inline">\(i\)</span> - <span class="math inline">\(\hat{y}_i\)</span> = predicted value for sample <span class="math inline">\(i\)</span> - <span class="math inline">\(\bar{y}\)</span> = mean of all actual values - <span class="math inline">\(N\)</span> = number of samples</p>
+<p><strong>Notation:</strong></p>
+<ul>
+<li><span class="math inline">\(y_i\)</span> = actual/true value for sample <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\hat{y}_i\)</span> = predicted value for sample <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\bar{y}\)</span> = mean of all actual values</li>
+<li><span class="math inline">\(N\)</span> = number of samples</li>
+</ul>
 <h3>R Square</h3>
 <p><span class="math inline">\(R^2\)</span> (R-squared): Proportion of variance explained <span class="math display">\[\begin{equation}
 R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
@@ -539,14 +586,19 @@ MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
 <div class="column" style="width:55%;">
 <p><img data-src="figs/white-box/gam-weather-analysis.png"></p>
 </div><div class="column" style="width:45%;">
-<p>There is a trade-off between model complexity (number of features) and accuracy.</p>
-<p>This VA system helps model building (feature ranking) and model validation.</p>
+<p><strong>Core Visualizations:</strong></p>
+<ul>
+<li><strong>Scatterplot Matrix</strong>: Explore feature relationships and partitions</li>
+<li><strong>Parallel Coordinates</strong>: Analyze high-dimensional patterns</li>
+<li><strong>Interactive Partitioning</strong>: Split data to test model stability</li>
+</ul>
+<p><strong>Key Insights:</strong> - Trade-off between model complexity and accuracy - Feature ranking and selection - Model validation across partitions</p>
 </div></div>
 <div class="footer">
 <p>Mühlbacher, T., &amp; Piringer, H. (2013). <a href="https://doi.org/10.1109/TVCG.2013.125">A Partition-Based Framework for Building and Validating Regression Models</a>. <em>IEEE TVCG</em>. <strong>Best Paper Award, IEEE VAST 2013</strong>.</p>
 </div>
 <aside class="notes">
-<p>This IEEE TVCG Best Paper (VAST 2013) presents an interactive system for exploring the accuracy-complexity tradeoff in linear models. Users can interactively add or remove features and immediately see the impact on model performance metrics like R-squared and cross-validation error. This helps identify the simplest model that achieves acceptable accuracy.</p>
+<p>This IEEE TVCG Best Paper (VAST 2013) presents an interactive system for exploring the accuracy-complexity tradeoff in linear models. The system uses scatterplot matrices to visualize relationships between features and identify potential partitions in the data. Parallel coordinates help analysts understand high-dimensional patterns and feature interactions. Users can interactively partition the data, add or remove features, and immediately see the impact on model performance metrics like R-squared and cross-validation error. This combination of visualizations helps identify the simplest model that achieves acceptable accuracy while understanding how the model performs across different data subsets.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -612,6 +664,70 @@ g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
 </div>
 <aside class="notes">
 <p>GAMs replace linear terms with smooth functions that can capture non-linear patterns. Each feature gets its own learned shape function (often splines or smoothing functions). The model remains additive (no interactions by default) which preserves interpretability - we can visualize each function independently. The link function g allows for different target distributions (normal for regression, logistic for classification).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>GAMs are Interpretable via Partial Dependence Plots (PDPs)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Linear Model:</strong> <span class="math inline">\(y = \beta_j x_j\)</span> - Fixed slope <span class="math inline">\(\beta_j\)</span> - Constant effect across all values - Example: Each year of age adds $1,000 to salary</p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
+graph LR
+    subgraph "Linear Effect"
+        A[Low x] --&gt;|"+β"| B[Medium x] --&gt;|"+β"| C[High x]
+    end
+
+    style A fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style B fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style C fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>GAM:</strong> <span class="math inline">\(y = f_j(x_j)\)</span> - Flexible shape function - Effect varies across feature range - Example: Salary peaks at age 45-55, declines after</p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
+graph LR
+    subgraph "Non-linear Effect (PDP)"
+        D[Young] --&gt;|"Steep ↑"| E[Mid-career] --&gt;|"Plateau"| F[Senior] --&gt;|"Decline ↓"| G[Retirement]
+    end
+
+    style D fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
+    style E fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    style F fill:#ffebee,stroke:#f44336,stroke-width:2px
+    style G fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<p><strong>Visualization:</strong> PDPs show <span class="math inline">\(f_j(x_j)\)</span> - the contribution of feature <span class="math inline">\(x_j\)</span> to the prediction across its range</p>
+<aside class="notes">
+<p>Partial Dependence Plots are what make GAMs interpretable. Instead of a single coefficient, we get a curve showing how the feature’s contribution changes across its range. This reveals patterns like U-shapes (high at extremes), S-shapes (threshold effects), or plateaus (saturation). PDPs answer: “How does changing this feature affect predictions, on average?” The y-axis shows contribution relative to the mean prediction.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -969,13 +1085,25 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Visual Analytics (VA) Systems Using GAMs</h2>
-
-<img data-src="figs/white-box/drucker-presentation.png" class="r-stretch"><div class="footer">
+<h2>GAM Changer: Injecting Domain Knowledge via Interactive Editing</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="figs/white-box/drucker-presentation.png"></p>
+</div><div class="column" style="width:35%;">
+<p><strong>Human-in-the-Loop Features:</strong></p>
+<ul>
+<li><strong>Edit shape functions</strong> to encode domain knowledge</li>
+<li><strong>Enforce monotonicity</strong> where business logic requires</li>
+<li><strong>Smooth noisy patterns</strong> to improve generalization</li>
+<li><strong>Real-time feedback</strong> on model performance</li>
+</ul>
+<p><strong>Key Innovation:</strong> Bridges data-driven learning with expert knowledge through interactive visualization</p>
+</div></div>
+<div class="footer">
 <p>Wang, Z. J., Kale, A., Nori, H., Stella, P., Nunnally, M., Chau, D. H., … &amp; Caruana, R. (2021). <a href="https://arxiv.org/abs/2112.03245">GAM Changer: Editing Generalized Additive Models with Interactive Visualization</a>. arXiv:2112.03245. <a href="https://interpret.ml/gam-changer/">Demo</a> | <a href="https://github.com/interpretml/gam-changer">Code</a></p>
 </div>
 <aside class="notes">
-<p>GAM Changer allows users to interactively edit learned shape functions to inject domain knowledge. Data scientists can manually adjust function shapes (e.g., enforcing monotonicity where it makes business sense) while seeing real-time impacts on model performance. This human-in-the-loop approach bridges data-driven learning with expert knowledge. The tool runs locally in computational notebooks or browsers without requiring extra compute resources.</p>
+<p>GAM Changer exemplifies the human-in-the-loop paradigm for model development. Users can interactively edit learned shape functions to inject domain knowledge - for example, enforcing that credit risk must monotonically increase with debt-to-income ratio, even if the data suggests otherwise due to sampling bias. Data scientists can manually adjust function shapes while seeing real-time impacts on model performance metrics. This approach is crucial when you need models that are not just accurate but also align with business logic and regulatory requirements. The tool runs locally in computational notebooks or browsers without requiring extra compute resources.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -990,14 +1118,47 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 </section>
 <section class="slide level2">
 <h2>Decision Trees: How They Work</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p>Decision trees recursively split data based on feature thresholds:</p>
 <ul>
-<li class="fragment"><strong>Internal nodes</strong>: Tests on features (e.g., “glucose ≤ 127”)</li>
-<li class="fragment"><strong>Branches</strong>: Outcomes of the test (left = true, right = false)</li>
-<li class="fragment"><strong>Leaf nodes</strong>: Final predictions (average of instances in that node)</li>
-<li class="fragment"><strong>Algorithm</strong>: CART (Classification and Regression Trees)</li>
+<li class="fragment"><strong>Internal nodes</strong>: Tests on features</li>
+<li class="fragment"><strong>Branches</strong>: Test outcomes (Yes/No)</li>
+<li class="fragment"><strong>Leaf nodes</strong>: Final predictions</li>
+<li class="fragment"><strong>Algorithm</strong>: CART</li>
 </ul>
-<p><strong>Prediction</strong>: Follow path from root to leaf based on feature values</p>
+<p><strong>Prediction</strong>: Follow path from root to leaf</p>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fff', 'primaryBorderColor':'#333'}}}%%
+graph TD
+    A[Glucose ≤ 127?&lt;br/&gt;Root Node]
+    A --&gt;|Yes| B[BMI ≤ 28?&lt;br/&gt;Internal Node]
+    A --&gt;|No| C[Age ≤ 50?&lt;br/&gt;Internal Node]
+    B --&gt;|Yes| D[Healthy&lt;br/&gt;Leaf: 0.15]
+    B --&gt;|No| E[At Risk&lt;br/&gt;Leaf: 0.45]
+    C --&gt;|Yes| F[Pre-diabetic&lt;br/&gt;Leaf: 0.65]
+    C --&gt;|No| G[Diabetic&lt;br/&gt;Leaf: 0.85]
+
+    style A fill:#e8f4f8,stroke:#2980b9,stroke-width:3px
+    style B fill:#f0f8ff,stroke:#3498db,stroke-width:2px
+    style C fill:#f0f8ff,stroke:#3498db,stroke-width:2px
+    style D fill:#d5f4e6,stroke:#27ae60,stroke-width:2px
+    style E fill:#fff3cd,stroke:#f39c12,stroke-width:2px
+    style F fill:#ffd6cc,stroke:#e67e22,stroke-width:2px
+    style G fill:#f8d7da,stroke:#e74c3c,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><strong>Example:</strong> 3 splits, 4 leaves, depth 2</p>
+</div></div>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/tree.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.4.</p>
 </div>
@@ -1031,16 +1192,18 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 <h3>⚠️ Limitations:</h3>
 <ul>
 <li><strong>Linear relationships</strong>: Poor at modeling smooth trends</li>
-<li><strong>Instability</strong>: Small data changes → different tree</li>
+<li><strong>High variance/instability</strong>: Small data changes → different tree</li>
 <li><strong>Depth problem</strong>: Deep trees become uninterpretable</li>
 <li><strong>Step functions</strong>: Predictions jump at thresholds</li>
 </ul>
+<p><strong>→ This instability motivates ensemble methods</strong> (Random Forests, Gradient Boosting) which average many trees</p>
 </div></div>
+<p><strong>Trade-off:</strong> Ensembles gain accuracy but <strong>lose white-box interpretability</strong> → Need for global surrogates (discussed later)</p>
 <div class="footer">
 <p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/tree.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.4.</p>
 </div>
 <aside class="notes">
-<p>The key to interpretability is tree depth. Shallow trees (1-3 splits) are highly interpretable - you can easily trace the logic. But performance often requires deeper trees which become impossible to fully comprehend. Trees naturally capture interactions (e.g., “if age &gt; 50 AND glucose &gt; 120”) without manual feature engineering. However, they’re unstable - retraining on slightly different data can produce completely different tree structures. They also struggle with smooth linear relationships, creating step-function approximations instead.</p>
+<p>The key limitation of decision trees is their instability (high variance) - small changes in training data can produce completely different tree structures. This motivated the development of ensemble methods like Random Forests and Gradient Boosting, which average predictions from hundreds of trees to reduce variance and improve accuracy. However, this comes at a major cost: we lose the white-box interpretability of individual trees. You can’t meaningfully inspect 500 trees! This trade-off between accuracy and interpretability is why we need techniques like global surrogate models (discussed later) to explain ensemble predictions.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1230,6 +1393,41 @@ The TreeVis gallery showcases diverse tree visualization techniques from decades
 </ul>
 <aside class="notes">
 <p>Decision rules represent one of the most interpretable forms of machine learning models. They directly mirror human decision-making processes by explicitly stating conditions and outcomes. This makes them particularly valuable in domains where transparency and explainability are crucial, such as healthcare, finance, and legal applications.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Key Difference: Trees vs.&nbsp;Rule Systems</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Decision Trees:</strong></p>
+<ul>
+<li><strong>Mutually Exclusive</strong>: Each instance follows exactly one path</li>
+<li><strong>No conflicts</strong>: Instance reaches exactly one leaf</li>
+<li><strong>Hierarchical</strong>: Rules are ordered by tree structure</li>
+<li><strong>Example</strong>: A patient is either “high risk” OR “low risk”, never both</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Rule Systems:</strong></p>
+<ul>
+<li><strong>Not Mutually Exclusive</strong>: Instance can match multiple rules</li>
+<li><strong>Conflict resolution needed</strong>: Voting, priority, or confidence-based</li>
+<li><strong>Flat structure</strong>: Rules can be evaluated in any order</li>
+<li><strong>Example</strong>: A loan can trigger both “high income” AND “high debt” rules</li>
+</ul>
+</div></div>
+<p><strong>Implication:</strong> Rule systems need strategies to handle overlapping rules (majority vote, highest confidence, first match)</p>
+<aside class="notes">
+<p>This is a fundamental distinction often overlooked. In decision trees, the hierarchical structure guarantees mutual exclusivity - you can’t be in two leaves simultaneously. Rule systems allow multiple rules to fire for the same instance, which can be more flexible but requires conflict resolution. Common strategies include: majority voting (classification), weighted average (regression), or priority ordering (first matching rule wins).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1446,13 +1644,14 @@ The TreeVis gallery showcases diverse tree visualization techniques from decades
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>However…</h2>
-<p>What you want:</p>
-<p><img data-src="figs/white-box/illustration4.png" width="540"></p>
-<p>What you get:</p>
-<p><img data-src="figs/white-box/illustration5.png"></p>
+<h2>However… The Fidelity-Interpretability Trade-off</h2>
+<p><strong>The Fidelity-Interpretability Trade-off:</strong> A fundamental challenge in XAI where increasing model interpretability often decreases fidelity to the original model’s behavior</p>
+<p><strong>What you want:</strong> <img data-src="figs/white-box/illustration4.png" width="540"></p>
+<p>Simple, interpretable surrogate with high fidelity to the black-box model</p>
+<p><strong>What you get:</strong> <img data-src="figs/white-box/illustration5.png" width="540"></p>
+<p>Either low fidelity (simple but inaccurate) or low interpretability (accurate but complex)</p>
 <aside class="notes">
-<p>The classic surrogate model problem: you want a simple, interpretable explanation that’s also highly faithful to the black-box. But there’s often a trade-off - simple surrogates may miss important patterns (low fidelity), while high-fidelity surrogates become too complex to interpret. This is the fundamental tension in explanation approaches.</p>
+<p>This is the Fidelity-Interpretability Trade-off, a foundational problem in Explainable AI (XAI). You want a simple, interpretable surrogate that’s also highly faithful to the black-box model’s decisions. But there’s an inherent tension: simple surrogates miss important patterns (low fidelity), while high-fidelity surrogates become too complex to interpret. This trade-off appears throughout XAI - in global surrogates, local explanations (LIME/SHAP), and even in choosing between white-box and black-box models initially. Understanding this trade-off is crucial for setting realistic expectations about what explanations can achieve.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
