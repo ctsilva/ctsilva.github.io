@@ -19,6 +19,58 @@ format:
     footer: <https://engineering.nyu.edu>
     fontsize: 24pt
     css: lab-light-theme.css
+    include-after-body:
+      - text: |
+          <script>
+            Reveal.addEventListener('ready', function() {
+              mermaid.initialize({
+                startOnLoad: true,
+                theme: 'default',
+                flowchart: {
+                  nodeSpacing: 60,
+                  rankSpacing: 60,
+                  padding: 20,
+                  useMaxWidth: true,
+                  htmlLabels: true
+                },
+                themeVariables: {
+                  fontFamily: 'arial, helvetica, sans-serif',
+                  fontSize: '12px',
+                  primaryColor: '#ffffff',
+                  primaryTextColor: '#333333',
+                  primaryBorderColor: '#cccccc',
+                  lineColor: '#333333',
+                  secondaryColor: '#ffffff',
+                  tertiaryColor: '#ffffff',
+                  background: '#ffffff',
+                  mainBkg: '#ffffff',
+                  secondBkg: '#ffffff',
+                  primaryButtonBkg: '#ffffff'
+                }
+              });
+              // Add custom CSS for larger nodes
+              const style = document.createElement('style');
+              style.textContent = `
+                .mermaid .node rect {
+                  rx: 8px !important;
+                  ry: 8px !important;
+                  min-width: 120px !important;
+                  min-height: 40px !important;
+                }
+                .mermaid .node .label {
+                  font-size: 12px !important;
+                  line-height: 1.2 !important;
+                  text-align: center !important;
+                  padding: 8px !important;
+                }
+                .mermaid .edgeLabel {
+                  font-size: 10px !important;
+                }
+              `;
+              document.head.appendChild(style);
+              mermaid.init();
+            });
+          </script>
 ---
 
 ## Week 5: White-box Model Interpretation
@@ -78,6 +130,7 @@ Interpretability fundamentally means understanding causation - why did the model
 :::
 
 ::: {.column width="55%"}
+
 ```{mermaid}
 graph TD
     MI[Model Interpretability]
@@ -101,12 +154,14 @@ graph TD
     style T1 fill:#e8f5e9,stroke:#27ae60,stroke-width:1px,color:#333
     style C1 fill:#fff3e0,stroke:#e67e22,stroke-width:1px,color:#333
 ```
+
 :::
 :::
 
 ::: {.notes}
 Interpretability serves multiple critical functions. For debugging, we can catch issues like the model learning spurious correlations. For science, interpretable models reveal domain insights. For deployment, stakeholders need to trust the system. In regulated domains like healthcare and finance, interpretability may be legally required to justify decisions.
 :::
+
 
 ## Machine-learning-assisted materials discovery using failed experiments
 
@@ -429,7 +484,6 @@ GAMs replace linear terms with smooth functions that can capture non-linear patt
 - Example: Each year of age adds $1,000 to salary
 
 ```{mermaid}
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
 graph LR
     subgraph "Linear Effect"
         A[Low x] -->|"+β"| B[Medium x] -->|"+β"| C[High x]
@@ -449,7 +503,6 @@ graph LR
 - Example: Salary peaks at age 45-55, declines after
 
 ```{mermaid}
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
 graph LR
     subgraph "Non-linear Effect (PDP)"
         D[Young] -->|"Steep ↑"| E[Mid-career] -->|"Plateau"| F[Senior] -->|"Decline ↓"| G[Retirement]
@@ -547,29 +600,6 @@ The backfitting algorithm trains GAMs iteratively using a coordinate descent app
 GAMs balance flexibility and interpretability nicely - more expressive than linear models but still visualizable. But the no-interaction constraint can be limiting. If temperature and humidity interact to affect outcomes (e.g., heat index), a pure GAM will miss this synergistic effect and may underfit.
 :::
 
-## Explainable Boosting Machines
-::: {.columns}
-::: {.column width="65%"}
-\begin{equation}
-g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) 
-
-\end{equation}
-
-\begin{equation}
-g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
-
-\end{equation}
-
-:::
-
-::: {.column width="35%"}
-However, as with linear regression, we can manually add interaction terms to the GAM model by including additional predictors of the form $X_j \times X_k$. In addition we can add low-dimensional interaction functions of the form $f_{jk}(X_j , X_k)$ into the model.
-:::
-:::
-
-::: {.notes}
-EBMs extend GAMs by automatically detecting and including pairwise interaction terms. This gives the model more expressiveness while keeping visualization tractable since we only need to show 1D shape functions and 2D interaction heatmaps. Microsoft's InterpretML library implements this efficiently using gradient boosting.
-:::
 
 ## Explainable Boosting Machines
 ::: {.columns}
@@ -740,19 +770,16 @@ GAM Changer exemplifies the human-in-the-loop paradigm for model development. Us
 ::: {.column width="50%"}
 Decision trees recursively split data based on feature thresholds:
 
-::: {.incremental}
 - **Internal nodes**: Tests on features
 - **Branches**: Test outcomes (Yes/No)
 - **Leaf nodes**: Final predictions
 - **Algorithm**: CART
-:::
 
 **Prediction**: Follow path from root to leaf
 :::
 
 ::: {.column width="50%"}
 ```{mermaid}
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fff', 'primaryBorderColor':'#333'}}}%%
 graph TD
     A[Glucose ≤ 127?<br/>Root Node]
     A -->|Yes| B[BMI ≤ 28?<br/>Internal Node]
@@ -924,6 +951,7 @@ This view shows the explicit decision rules at each node (e.g., y-bar ≤ 9.00, 
 - **Sparse representation**: Only relevant features appear in conditions
 - **Fast prediction**: Simple logical evaluation
 - **Transparent**: Each rule's logic is fully exposed
+- **Compliance-ready**: Rules can be directly translated into legal/regulatory documentation
 :::
 
 ::: {.notes}
@@ -1119,7 +1147,7 @@ Open the black box by understanding a "surrogate model" that approximate the beh
 The surrogate training process: feed data through the black-box to get predictions, then train an interpretable model (decision tree, linear model, rules) to predict what the black-box would predict. The surrogate's feature importances and structure reveal what the black-box learned. Check surrogate fidelity - how well does it match the black-box predictions?
 :::
 
-## However... The Fidelity-Interpretability Trade-off
+## The Fidelity-Interpretability Trade-off
 
 **The Fidelity-Interpretability Trade-off:** A fundamental challenge in XAI where increasing model interpretability often decreases fidelity to the original model's behavior
 

@@ -692,8 +692,7 @@ g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<pre class="mermaid mermaid-js">%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
-graph LR
+<pre class="mermaid mermaid-js">graph LR
     subgraph "Linear Effect"
         A[Low x] --&gt;|"+β"| B[Medium x] --&gt;|"+β"| C[High x]
     end
@@ -719,8 +718,7 @@ graph LR
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<pre class="mermaid mermaid-js">%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
-graph LR
+<pre class="mermaid mermaid-js">graph LR
     subgraph "Non-linear Effect (PDP)"
         D[Young] --&gt;|"Steep ↑"| E[Mid-career] --&gt;|"Plateau"| F[Senior] --&gt;|"Decline ↓"| G[Retirement]
     end
@@ -834,35 +832,6 @@ The backfitting algorithm trains GAMs iteratively using a coordinate descent app
 </div></div>
 <aside class="notes">
 <p>GAMs balance flexibility and interpretability nicely - more expressive than linear models but still visualizable. But the no-interaction constraint can be limiting. If temperature and humidity interact to affect outcomes (e.g., heat index), a pure GAM will miss this synergistic effect and may underfit.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Explainable Boosting Machines</h2>
-<div class="columns">
-<div class="column" style="width:65%;">
-<p><span class="math display">\[\begin{equation}
-g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j)
-
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation}
-g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
-
-\end{equation}\]</span></p>
-</div><div class="column" style="width:35%;">
-<p>However, as with linear regression, we can manually add interaction terms to the GAM model by including additional predictors of the form <span class="math inline">\(X_j \times X_k\)</span>. In addition we can add low-dimensional interaction functions of the form <span class="math inline">\(f_{jk}(X_j , X_k)\)</span> into the model.</p>
-</div></div>
-<aside class="notes">
-<p>EBMs extend GAMs by automatically detecting and including pairwise interaction terms. This gives the model more expressiveness while keeping visualization tractable since we only need to show 1D shape functions and 2D interaction heatmaps. Microsoft’s InterpretML library implements this efficiently using gradient boosting.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1133,10 +1102,10 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 <div class="column" style="width:50%;">
 <p>Decision trees recursively split data based on feature thresholds:</p>
 <ul>
-<li class="fragment"><strong>Internal nodes</strong>: Tests on features</li>
-<li class="fragment"><strong>Branches</strong>: Test outcomes (Yes/No)</li>
-<li class="fragment"><strong>Leaf nodes</strong>: Final predictions</li>
-<li class="fragment"><strong>Algorithm</strong>: CART</li>
+<li><strong>Internal nodes</strong>: Tests on features</li>
+<li><strong>Branches</strong>: Test outcomes (Yes/No)</li>
+<li><strong>Leaf nodes</strong>: Final predictions</li>
+<li><strong>Algorithm</strong>: CART</li>
 </ul>
 <p><strong>Prediction</strong>: Follow path from root to leaf</p>
 </div><div class="column" style="width:50%;">
@@ -1145,8 +1114,7 @@ g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<pre class="mermaid mermaid-js">%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fff', 'primaryBorderColor':'#333'}}}%%
-graph TD
+<pre class="mermaid mermaid-js">graph TD
     A[Glucose ≤ 127?&lt;br/&gt;Root Node]
     A --&gt;|Yes| B[BMI ≤ 28?&lt;br/&gt;Internal Node]
     A --&gt;|No| C[Age ≤ 50?&lt;br/&gt;Internal Node]
@@ -1401,6 +1369,7 @@ The TreeVis gallery showcases diverse tree visualization techniques from decades
 <li class="fragment"><strong>Sparse representation</strong>: Only relevant features appear in conditions</li>
 <li class="fragment"><strong>Fast prediction</strong>: Simple logical evaluation</li>
 <li class="fragment"><strong>Transparent</strong>: Each rule’s logic is fully exposed</li>
+<li class="fragment"><strong>Compliance-ready</strong>: Rules can be directly translated into legal/regulatory documentation</li>
 </ul>
 <aside class="notes">
 <p>Decision rules represent one of the most interpretable forms of machine learning models. They directly mirror human decision-making processes by explicitly stating conditions and outcomes. This makes them particularly valuable in domains where transparency and explainability are crucial, such as healthcare, finance, and legal applications.</p>
@@ -1655,7 +1624,7 @@ The TreeVis gallery showcases diverse tree visualization techniques from decades
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>However… The Fidelity-Interpretability Trade-off</h2>
+<h2>The Fidelity-Interpretability Trade-off</h2>
 <p><strong>The Fidelity-Interpretability Trade-off:</strong> A fundamental challenge in XAI where increasing model interpretability often decreases fidelity to the original model’s behavior</p>
 <p><strong>What you want:</strong> <img data-src="figs/white-box/illustration4.png" width="540"></p>
 <p>Simple, interpretable surrogate with high fidelity to the black-box model</p>
@@ -2246,6 +2215,56 @@ The TreeVis gallery showcases diverse tree visualization techniques from decades
         }
       });
       </script>
+    <script>
+      Reveal.addEventListener('ready', function() {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'default',
+          flowchart: {
+            nodeSpacing: 60,
+            rankSpacing: 60,
+            padding: 20,
+            useMaxWidth: true,
+            htmlLabels: true
+          },
+          themeVariables: {
+            fontFamily: 'arial, helvetica, sans-serif',
+            fontSize: '12px',
+            primaryColor: '#ffffff',
+            primaryTextColor: '#333333',
+            primaryBorderColor: '#cccccc',
+            lineColor: '#333333',
+            secondaryColor: '#ffffff',
+            tertiaryColor: '#ffffff',
+            background: '#ffffff',
+            mainBkg: '#ffffff',
+            secondBkg: '#ffffff',
+            primaryButtonBkg: '#ffffff'
+          }
+        });
+        // Add custom CSS for larger nodes
+        const style = document.createElement('style');
+        style.textContent = `
+          .mermaid .node rect {
+            rx: 8px !important;
+            ry: 8px !important;
+            min-width: 120px !important;
+            min-height: 40px !important;
+          }
+          .mermaid .node .label {
+            font-size: 12px !important;
+            line-height: 1.2 !important;
+            text-align: center !important;
+            padding: 8px !important;
+          }
+          .mermaid .edgeLabel {
+            font-size: 10px !important;
+          }
+        `;
+        document.head.appendChild(style);
+        mermaid.init();
+      });
+    </script>
     <script>videojs(video_shortcode_videojs_video1);</script>
     
 
