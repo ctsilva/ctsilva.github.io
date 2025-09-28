@@ -19,17 +19,6 @@ format:
     footer: <https://engineering.nyu.edu>
     fontsize: 24pt
     css: lab-light-theme.css
-    include-after-body:
-      - text: |
-          <script>
-            // Simple mermaid initialization for RevealJS
-            if (typeof mermaid !== 'undefined') {
-              mermaid.initialize({
-                startOnLoad: true,
-                theme: 'default'
-              });
-            }
-          </script>
 ---
 
 ## Week 5: White-box Model Interpretation
@@ -89,14 +78,13 @@ Interpretability fundamentally means understanding causation - why did the model
 :::
 
 ::: {.column width="55%"}
-
 ```{mermaid}
 graph TD
     MI[Model Interpretability]
-    MI --> D[Debugging & Validation]
-    MI --> K[Knowledge Discovery]
-    MI --> T[Building Trust]
-    MI --> C[Compliance & Ethics]
+    MI --> D[🔧 Debugging & Validation]
+    MI --> K[🔬 Knowledge Discovery]
+    MI --> T[🤝 Building Trust]
+    MI --> C[⚖️ Compliance & Ethics]
 
     D --> D1[Find bugs<br/>Detect bias<br/>Spot leakage]
     K --> K1[Learn patterns<br/>Test hypotheses<br/>Scientific insight]
@@ -113,14 +101,12 @@ graph TD
     style T1 fill:#e8f5e9,stroke:#27ae60,stroke-width:1px,color:#333
     style C1 fill:#fff3e0,stroke:#e67e22,stroke-width:1px,color:#333
 ```
-
 :::
 :::
 
 ::: {.notes}
 Interpretability serves multiple critical functions. For debugging, we can catch issues like the model learning spurious correlations. For science, interpretable models reveal domain insights. For deployment, stakeholders need to trust the system. In regulated domains like healthcare and finance, interpretability may be legally required to justify decisions.
 :::
-
 
 ## Machine-learning-assisted materials discovery using failed experiments
 
@@ -443,6 +429,7 @@ GAMs replace linear terms with smooth functions that can capture non-linear patt
 - Example: Each year of age adds $1,000 to salary
 
 ```{mermaid}
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
 graph LR
     subgraph "Linear Effect"
         A[Low x] -->|"+β"| B[Medium x] -->|"+β"| C[High x]
@@ -462,6 +449,7 @@ graph LR
 - Example: Salary peaks at age 45-55, declines after
 
 ```{mermaid}
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#f9f9f9', 'primaryBorderColor':'#333', 'primaryTextColor':'#333', 'background':'#ffffff', 'subgraph':'#f0f0f0'}}}%%
 graph LR
     subgraph "Non-linear Effect (PDP)"
         D[Young] -->|"Steep ↑"| E[Mid-career] -->|"Plateau"| F[Senior] -->|"Decline ↓"| G[Retirement]
@@ -558,7 +546,6 @@ The backfitting algorithm trains GAMs iteratively using a coordinate descent app
 ::: {.notes}
 GAMs balance flexibility and interpretability nicely - more expressive than linear models but still visualizable. But the no-interaction constraint can be limiting. If temperature and humidity interact to affect outcomes (e.g., heat index), a pure GAM will miss this synergistic effect and may underfit.
 :::
-
 
 ## Explainable Boosting Machines
 ::: {.columns}
@@ -729,16 +716,19 @@ GAM Changer exemplifies the human-in-the-loop paradigm for model development. Us
 ::: {.column width="50%"}
 Decision trees recursively split data based on feature thresholds:
 
+::: {.incremental}
 - **Internal nodes**: Tests on features
 - **Branches**: Test outcomes (Yes/No)
 - **Leaf nodes**: Final predictions
 - **Algorithm**: CART
+:::
 
 **Prediction**: Follow path from root to leaf
 :::
 
 ::: {.column width="50%"}
 ```{mermaid}
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fff', 'primaryBorderColor':'#333'}}}%%
 graph TD
     A[Glucose ≤ 127?<br/>Root Node]
     A -->|Yes| B[BMI ≤ 28?<br/>Internal Node]
