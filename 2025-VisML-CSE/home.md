@@ -42,6 +42,7 @@ author_profile: true
 - **Topics:** Model Assessment and Evaluation
 - **Materials:**
   - [Model Assessment and Evaluation](/2025-VisML-CSE/slides/week4-model-assessment.html)
+  - Lab: *Materials to be posted*
 - **Recommended Readings:**
   - [Squares: Supporting Interactive Performance Analysis for Multiclass Classifiers](/2025-VisML-CSE/refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares_Interactive_Performance_Analysis.pdf) (Ren et al., 2016)
   - [Neo: Generalizing Confusion Matrix Visualization to Hierarchical and Multi-Output Labels](/2025-VisML-CSE/refs/Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf) (Görtler et al., 2022)
@@ -54,7 +55,7 @@ author_profile: true
 - **Topics:** Visualization for White-box Machine Learning Models
 - **Materials:**
   - [White-box Model Interpretation](/2025-VisML-CSE/slides/week5-white-box.html)
-  - [Lab](/2025-VisML-CSE/labs/week5-lab.html)
+  - [Lab: Interpretable ML Methods](/2025-VisML-CSE/labs/week5-lab.html)
 - **Recommended Readings:**
   - [A Partition-Based Framework for Building and Validating Regression Models](https://doi.org/10.1109/TVCG.2013.125) (Mühlbacher & Piringer, 2013) - **Best Paper Award, IEEE VAST 2013**
   - [Gamut: A Design Probe to Understand How Data Scientists Understand Machine Learning Models](https://doi.org/10.1145/3290605.3300809) (Hohman et al., 2019)
