@@ -1,0 +1,144 @@
+---
+title: "VisML Lab Week 5"
+subtitle: "CS-GY 9223 - Fall 2025"
+author: "Claudio Silva"
+institute: "NYU Tandon School of Engineering"
+date: "September 29, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    footer: <https://engineering.nyu.edu>
+---
+
+
+
+## Recap: Model Interpretability? {.smaller}
+
+- **Black box** vs **Interpretable** models
+- Why interpretability matters in ML
+- Trade-off: Performance vs Explainability
+
+![Model comparison showing interpretable vs black box approaches](week5-lab_files/images/model_interpretability_comparison.png){fig-align="center" width="70%"}
+
+::: {.notes}
+Today we'll explore two key approaches to understanding how our models make decisions. Model interpretability helps us answer 'why did the model predict this?' which is crucial for trust, debugging, and regulatory compliance. We'll see how some models are naturally interpretable while others require special techniques to understand their behavior.
+:::
+
+---
+
+## Linear vs Non-Linear Relationships {.smaller}
+
+- **Linear**: Straight-line relationships
+- **Non-linear**: Curves, thresholds, interactions
+- Why linear models miss complex patterns
+
+![Linear vs non-linear data relationships](week5-lab_files/images/linear_nonlinear_comparison.png){fig-align="center" width="80%"}
+
+::: {.notes}
+Real-world relationships aren't always straight lines. Linear models assume a constant relationship between features and outcomes, but many phenomena show curves, thresholds, or diminishing returns. GAMs help us capture these non-linear patterns while maintaining interpretability - perfect for today's first exercise.
+:::
+
+---
+
+## Partial Dependence Plots (PDPs) {.smaller}
+
+- Show **isolated effect** of one feature
+- "What happens when I change X, holding everything else constant?"
+- Reveals feature's contribution to predictions
+
+![Example partial dependence plot](week5-lab_files/images/partial_dependence.png){fig-align="center" width="75%"}
+
+::: {.notes}
+PDPs answer a key question: 'How does changing this one feature affect my prediction?' They're like controlled experiments within your model. By averaging out the effects of all other features, we can see the pure relationship between one feature and the prediction. This is incredibly valuable for understanding feature importance and model behavior.
+:::
+
+---
+
+## Decision Trees - How They Work {.smaller}
+
+- Series of **yes/no questions**
+- Split data based on feature values
+- Each path = decision rule
+
+::: {style="font-size: 1.5em; font-family: monospace; text-align: center; margin: 20px 0;"}
+```
+                        Age > 25?
+                       /         \
+                   Yes/           \No
+                     /             \
+            Income > 50K?       Approved: No
+               /       \
+           Yes/         \No
+             /           \
+      Approved: Yes   Approved: Maybe
+```
+:::
+
+::: {.notes}
+Decision trees make predictions by asking a series of simple questions. Each path from root to leaf represents a rule we can easily understand and explain. For example: 'If age > 25 AND income > 50K, then approve the loan.' This transparency makes trees naturally interpretable - you can literally follow the decision path.
+:::
+
+---
+
+## Tree Depth & Overfitting {.smaller}
+
+- **Shallow trees**: Simple rules, may underfit
+- **Deep trees**: Complex rules, may overfit
+- **Pruning**: Remove unnecessary branches
+
+![Decision trees showing underfitting and overfitting](week5-lab_files/images/decision_trees_suboptimal.png){fig-align="center" width="85%"}
+
+::: {.notes}
+Finding the right tree depth is crucial. Too shallow and we miss important patterns - the model underfits and makes overly simple assumptions. Too deep and we memorize noise instead of learning generalizable rules - this leads to overfitting. Pruning helps us find the sweet spot by removing branches that don't improve generalization.
+:::
+
+---
+
+## Comparing Approaches {.smaller}
+
+- **GAMs**: Smooth curves, feature interactions
+- **Trees**: Hierarchical splits, exact decision paths
+- Both provide **different types** of visual interpretability
+
+| Aspect | GAMs | Decision Trees |
+|--------|------|----------------|
+| **Visual style** | Smooth curves | Branching diagrams |
+| **Rule format** | Mathematical relationships | Logical if-then paths |
+| **Individual predictions** | Harder to trace | Easier to follow path |
+| **Interactions** | Complex interaction plots | Nested decision splits |
+
+::: {.notes}
+Today you'll compare these approaches hands-on. GAMs show smooth relationships and interactions through partial dependence plots - great for understanding continuous effects and complex feature interactions. Trees give you hierarchical decision structures that you can both visualize as branching diagrams and express as logical rules - perfect for following exact prediction paths. Both are powerful visual tools in your interpretability toolkit, each revealing different aspects of how models make decisions.
+:::
+
+---
+
+## Let's Start the Lab! {.smaller}
+
+### Practice 1: GAMs & Partial Dependence
+- Explore non-linear relationships
+- Create PDP visualizations
+- Compare with linear regression
+
+### Practice 2: Decision Trees
+- Build and visualize trees
+- Extract decision rules
+- Experiment with tree depth
+
+**Notebook Links:**
+
+- [Practice 1: GAMs](https://colab.research.google.com/drive/1nKE6WIApebHi67yfhH6k5mZN86evLZOM?usp=sharing)
+- [Practice 2: Trees](https://colab.research.google.com/drive/12LV2Z_1BbP3efACYp2QxzsPaOrIn8a8l?usp=sharing)
+
+::: {.notes}
+Now let's dive into the notebooks. Start with Practice 1 to explore GAMs and partial dependence plots, then move to Practice 2 for decision trees. Pay attention to how each method reveals different aspects of your data's story. Try to compare the insights you get from each approach - they often complement each other beautifully.
+:::
