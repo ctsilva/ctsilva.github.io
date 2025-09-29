@@ -375,7 +375,7 @@ grep -r "\.pdf" slides/week*/
 **Solution Process**:
 ```bash
 # 1. Video enhancement:
-#    - Locate video embeds: grep "{{< video" slides/
+#    - Locate video embeds: grep "\{\{< video" slides/
 #    - Increase size for classroom: width=1400+ height=900+
 #    - Center videos: wrap in ::: {style="text-align: center;"}
 
