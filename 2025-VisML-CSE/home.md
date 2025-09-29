@@ -54,6 +54,7 @@ author_profile: true
 - **Topics:** Visualization for White-box Machine Learning Models
 - **Materials:**
   - [White-box Model Interpretation](/2025-VisML-CSE/slides/week5-white-box.html)
+  - [Lab](/2025-VisML-CSE/labs/week5-lab.html)
 - **Recommended Readings:**
   - [A Partition-Based Framework for Building and Validating Regression Models](https://doi.org/10.1109/TVCG.2013.125) (Mühlbacher & Piringer, 2013) - **Best Paper Award, IEEE VAST 2013**
   - [Gamut: A Design Probe to Understand How Data Scientists Understand Machine Learning Models](https://doi.org/10.1145/3290605.3300809) (Hohman et al., 2019)
