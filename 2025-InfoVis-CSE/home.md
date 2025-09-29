@@ -40,7 +40,7 @@ author_profile: true
 - **Readings:** Tufte Ch 1-2 (Graphical Excellence & Integrity)
 
 ### Week 4 (Sept 26) - Visual Perception and D3 Foundations (Draft)
-- **Slides:** [Visual Perception and D3 Foundations](/2025-InfoVis-CSE/slides/week4-perception.html)
+- **Slides:** [Visual Perception and D3 Foundations](/2025-InfoVis-CSE/slides/week4-perception.html) | [Lab: First D3 programming session, DOM manipulation, Data binding](/2025-InfoVis-CSE/labs/week4-lab.html)
 - **Topics:** Pre-attentive processing, Gestalt principles, Perceptual accuracy, D3.js introduction
 - **Lab:** First D3 programming session, DOM manipulation, Data binding
 - **Assignment:** Exercise 4 - Perception-based design + D3 implementation (due Oct 2)
@@ -70,6 +70,6 @@ author_profile: true
 - **Brightspace:** [Course materials and submissions]
 - **Observable:** [Create account at observablehq.com]
 - **Office Hours:**
-    - **Ryan Kim**:
-        - **Ryan Kim (TA)**: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn (also [Online @ Zoom](https://nyu.zoom.us/j/92815268504))
+    - **Ryan Kim (TA)**: Wednesdays @ 2-3pm, 8th floor common area @ 370 Jay Street, Brooklyn (also [Online @ Zoom](https://nyu.zoom.us/j/92815268504))
+    - **Hashmmath Shaik (Grading TA)**: Mondays @ 1-2pm, only [Online @ Zoom](https://nyu.zoom.us/j/2817596431)
 

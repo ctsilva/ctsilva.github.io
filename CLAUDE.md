@@ -100,7 +100,7 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
 - **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
 - **Make-up Class**: Tuesday, October 14 (for Fall Break)
-- **Status**: ✅ **Week 4 COMPLETE** - Model Assessment lecture ready for Sept 22, 2025 class
+- **Status**: ✅ **Week 5 COMPLETE** - White-box Model Interpretation ready for Sept 29, 2025 class
 - **Discord**: https://discord.gg/dyHSFN65
 
 ##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
@@ -247,6 +247,208 @@ The repository includes complete course websites as subdirectories:
 - **Figure integration**: Copied and organized 40+ images from 2024 course materials
 - **Reference curation**: Collected, renamed, and standardized 14 academic papers
 - **Quality assurance**: Fixed broken video embeds, updated code styling, verified all links
+
+##### Week 5 Materials (Sept 29, 2025) - COMPLETE:
+- **week5-white-box.qmd/html**: White-box Model Interpretation (1000+ lines)
+  - **Section 1**: Linear Models and Generalized Additive Models (GAMs)
+    - Housing price regression example with coefficient interpretation
+    - Complete GAM theory with partial dependence plots (PDPs)
+    - Visual Analytics systems: GAMUT (Hohman et al., 2019), GAM Changer (Wang et al., 2021)
+    - Enhanced pros/cons sections with ✅/⚠️ formatting for clarity
+  - **Section 2**: Decision Trees and Interactive Construction
+    - Diabetes decision tree example with glucose/BMI splits
+    - Complete tree theory from Molnar's Interpretable ML book
+    - Interactive systems: BaobabView (van den Elzen & van Wijk, 2011), iForest (Zhao et al., 2019)
+    - Enhanced video demonstration (larger, centered) of Elzen-Wijk VAST 2011 system
+  - **Section 3**: Decision Rules and Matrix Visualizations
+    - Complete decision rules theory: IF-THEN statements, evaluation metrics, learning approaches
+    - Rule list vs rule set structures with medical examples
+    - Visual Analytics systems: RuleMatrix (Ming et al., 2019), Explainable Matrix (Popolin Neto & Paulovich, 2020)
+  - **Section 4**: Global Surrogate Models and Research Perspectives
+    - Surrogate training process and fidelity considerations
+    - Rudin's "Stop explaining black box models" (Nature 2019) perspective
+    - Slice Finder automated validation (Chung et al., 2019)
+- **figs/white-box/**: Complete visual asset library (37+ meaningful filenames)
+  - **Professional renaming**: All generic paperX.png → descriptive names
+    - hong-interpretability-survey.png, doshi-velez-interpretable-ml.png
+    - housing-linear-regression-example.png, gam-weather-analysis.png
+    - diabetes-decision-tree.png, rule-list-medical-example.png
+    - baobabview-interface.png, iforest-interface.png, etc.
+  - Elzen-Wijk decision tree visualizations (overview, colored flow, rules)
+  - Complete GAM and PDP examples from weather data analysis
+- **Academic Citations**: Complete footer citations for all 15+ papers
+  - Mühlbacher & Piringer (2013) IEEE VAST Best Paper Award
+  - Molnar's Interpretable ML book content integration
+  - Modern systems: GAMUT, GAM Changer, BaobabView, iForest
+  - Foundational papers: Rudin (2019), Poursabzi-Sangdeh et al. (2021)
+
+##### Technical Improvements and Design Principles (Week 5):
+- **Systematic Figure Renaming**: 20 generic paperX.png files renamed to meaningful descriptive names
+- **Enhanced Academic Citations**: All papers now have complete footer citations with DOI links
+- **Decision Rules Theory**: Added comprehensive background from Molnar's Interpretable ML book
+- **Video Enhancement**: Made Elzen-Wijk demonstration larger (1400x933) and centered
+- **Clean Presentation Flow**: Removed unnecessary BREAK slide for seamless transitions
+- **Projector-Ready Styling**: Light code backgrounds for optimal classroom visibility
+- **Professional Organization**: Self-documenting figure library with descriptive filenames
+
+##### Content Sources and Integration Strategy:
+- **Base content**: Migrated from 2024-VisML-CDS with significant enhancements
+- **Theoretical foundation**: Integrated content from Molnar's Interpretable ML book
+- **Modern research**: Added citations for 2019-2022 systems and papers
+- **Figure curation**: Professional renaming and organization of all visual assets
+- **Citation standardization**: Complete academic references with DOI links
+- **Quality assurance**: Comprehensive testing, rendering verification, git workflow
+
+### Automated Course Material Enhancement Workflow
+
+**TRIGGER PHRASE**: "PLAN to do these updates for [Week X]"
+
+Based on Week 5 experience, these generic processes should be automatically applied to each new class:
+
+#### 1. Figure Organization and Renaming (AUTOMATED WORKFLOW)
+**Problem**: Generic paperX.png, figureY.jpg filenames are meaningless
+**Solution Process**:
+```bash
+# 1. Scan for generic filenames
+grep -r "paper\d+\." slides/week*/
+grep -r "figure\d+\." slides/week*/
+grep -r "img\d+\." slides/week*/
+
+# 2. Examine each figure with Read tool to understand content
+# 3. Create descriptive names based on content:
+#    - author-paper-title.png (for paper screenshots)
+#    - system-interface-name.png (for VA system screenshots)
+#    - concept-example-domain.png (for examples/illustrations)
+#    - method-technique-type.png (for methodology diagrams)
+
+# 4. Batch rename files with meaningful names
+# 5. Update all references in .qmd files using MultiEdit
+# 6. Verify rendering works correctly
+```
+
+#### 2. Academic Citation Standardization (AUTOMATED WORKFLOW)
+**Problem**: Raw URLs, incomplete citations, inconsistent formatting
+**Solution Process**:
+```bash
+# 1. Scan for incomplete citations
+grep -r "https://arxiv.org/" slides/week*/
+grep -r "https://ieeexplore.ieee.org/" slides/week*/
+grep -r "\.pdf" slides/week*/
+
+# 2. For each paper, gather complete citation info:
+#    - WebSearch for full bibliographic details
+#    - WebFetch paper URLs for author/title/venue
+#    - Format as: Author, A., Author, B. (Year). [Title](DOI). Venue, Volume(Issue), Pages.
+
+# 3. Replace raw URLs with footer citations:
+#    ::: footer
+#    [Properly formatted citation with DOI link]
+#    :::
+
+# 4. Verify all links work and formatting is consistent
+```
+
+#### 3. Content Enhancement from Authoritative Sources (AUTOMATED WORKFLOW)
+**Problem**: Missing theoretical background, incomplete explanations
+**Solution Process**:
+```bash
+# 1. Identify key concepts needing theoretical foundation
+# 2. Search for authoritative sources based on topic:
+#    - WebSearch for standard textbooks, review papers, tutorials
+#    - Look for canonical references in the field
+#    - Use established online resources (e.g., D3 docs for D3, sklearn docs for ML)
+#    - Add 1-2 slides of foundational content before examples
+
+# 3. Enhanced speaker notes:
+#    - Add comprehensive ::: {.notes} sections
+#    - Include pedagogical context and teaching tips
+#    - Provide examples and analogies for complex concepts
+
+# 4. Pros/cons enhancement:
+#    - Use ✅/⚠️ emoji formatting for clarity
+#    - Bold key terms and concepts
+#    - Structure as bullet points for readability
+```
+
+#### 4. Technical Presentation Optimization (AUTOMATED WORKFLOW)
+**Problem**: Poor classroom visibility, broken videos, inconsistent styling
+**Solution Process**:
+```bash
+# 1. Video enhancement:
+#    - Locate video embeds: grep "{{< video" slides/
+#    - Increase size for classroom: width=1400+ height=900+
+#    - Center videos: wrap in ::: {style="text-align: center;"}
+
+# 2. Code block optimization:
+#    - Ensure lab-light-theme.css is applied
+#    - Light backgrounds (#f8f9fa) for projector visibility
+#    - Verify syntax highlighting works
+
+# 3. Remove unnecessary elements:
+#    - Eliminate BREAK slides: grep -n "BREAK" slides/
+#    - Clean up duplicate content
+#    - Streamline presentation flow
+```
+
+#### 5. Quality Assurance and Documentation (AUTOMATED WORKFLOW)
+**Problem**: Inconsistent testing, missing documentation updates
+**Solution Process**:
+```bash
+# 1. Systematic testing:
+#    - quarto render [filename].qmd
+#    - Verify all figures display correctly
+#    - Test all links and citations work
+#    - Check responsive design and projector visibility
+
+# 2. Git workflow:
+#    - Commit work incrementally with descriptive messages
+#    - git add -A && git commit -m "Descriptive message"
+#    - git push to deploy changes
+
+# 3. Documentation updates:
+#    - Update CLAUDE.md with Week X status: COMPLETE
+#    - Add detailed section documenting content, improvements, sources
+#    - Update course home.md if needed
+#    - Document any new patterns or lessons learned
+```
+
+#### 6. Standardized Commit Message Templates
+```
+# Figure renaming
+"Rename generic figure names to meaningful descriptive names
+
+- Renamed X generic files: paperY.png → descriptive-name.png
+- Updated all references in weekX-[topic].qmd
+- Verified successful rendering"
+
+# Citation additions
+"Add complete academic citations for all papers
+
+- Added [System] citation: Author et al. (Year) Venue
+- All papers now have proper footer citations with DOI links
+- Consistent academic formatting throughout"
+
+# Content enhancement
+"Add [concept] background from authoritative sources
+
+- Enhanced theoretical foundation with [source] content
+- Added comprehensive speaker notes for teaching
+- Improved [specific aspects] for classroom delivery"
+
+# Final completion
+"Week X [Topic] slides complete and ready for [date]
+
+- [Summary of major enhancements]
+- All figures have meaningful names
+- Complete academic citations throughout
+- Professional presentation ready for classroom"
+```
+
+#### Usage Instructions
+When starting work on a new week's materials, use the trigger phrase:
+**"PLAN to do these updates for Week X"**
+
+This will automatically initiate the 6-step workflow above, ensuring consistent quality and saving significant time on repetitive tasks.
 
 #### InfoVis Course Structure (2025-InfoVis-CSE)
 - **Course Code**: CS-GY 6313 - Information Visualization

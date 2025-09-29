@@ -341,6 +341,19 @@ Claudio Silva
 </ul>
 </div></div>
 <aside class="notes">
+<p>This slide provides a balanced view of confusion matrices. While they’re one of our most fundamental tools for understanding classification performance, they have important limitations. The key insight here is that confusion matrices treat all errors equally - they don’t show the confidence of predictions or instance-level details. This is why we’ll look at more advanced visualization systems like Squares later, which address these limitations by showing the distribution of instances within each cell.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside class="notes">
 <p>This slide summarizes the pros and cons of using confusion matrices. While they are intuitive and provide the basis for many metrics, they have limitations in terms of scalability and the insights they provide for probabilistic outputs. The ‘Squares’ paper, which we will discuss later, addresses some of these limitations.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -356,7 +369,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Confusion Matrices in sklearn</h2>
-<div id="9d3233b4" class="cell" data-execution_count="1">
+<div id="57d5f7d7" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -365,7 +378,7 @@ Claudio Silva
 <span id="cb1-6"><a href=""></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb1-7"><a href=""></a>clf <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="232aee50" class="cell" data-execution_count="2">
+<div id="9960d1c0" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
 <span id="cb2-3"><a href=""></a></span>
@@ -382,7 +395,7 @@ Claudio Silva
 </div>
 </div>
 <aside class="notes">
-<p>Here we see how to generate a confusion matrix using the scikit-learn library in Python. The code is straightforward. We first define and split the data, then we fit a logistic regression classifier. The <code>ConfusionMatrixDisplay</code> function then takes the classifier and the test data as input to plot the matrix.</p>
+<p>Here’s the practical implementation using scikit-learn. The code is straightforward - we generate synthetic data, train a logistic regression classifier, and visualize the results. The ConfusionMatrixDisplay class makes it very easy to generate these visualizations. Notice how the diagonal shows correct predictions while off-diagonal elements show different types of errors. The color intensity helps quickly identify where most errors occur.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -394,36 +407,8 @@ Claudio Silva
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Confusion Matrices</h2>
-<div class="columns">
-<div class="column">
-<p><img data-src="figs/model_assessment_figs/sphx_glr_plot_label_propagation_digits_001.png"></p>
-</div><div class="column">
-<div class="fragment">
-<p><strong>Pros</strong></p>
-<ul>
-<li>Many derived metrics<br>
-</li>
-<li>Easy to implement<br>
-</li>
-<li>Summary of model mistakes is clear</li>
-</ul>
-</div>
-<div class="fragment">
-<p><strong>Cons</strong></p>
-<ul>
-<li>Hard to scale<br>
-</li>
-<li>Hard to assess probabilistic output<br>
-</li>
-<li>Hard to view individual errors</li>
-</ul>
-</div>
-</div></div>
 <aside class="notes">
-<p>To reiterate, confusion matrices are a fundamental tool. They offer a quick summary of a model’s performance and are easy to implement. However, as the number of classes grows, they become difficult to interpret. They also don’t capture the full picture of probabilistic classifiers and hide instance-level errors.</p>
+<p>Here we see how to generate a confusion matrix using the scikit-learn library in Python. The code is straightforward. We first define and split the data, then we fit a logistic regression classifier. The <code>ConfusionMatrixDisplay</code> function then takes the classifier and the test data as input to plot the matrix.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -470,6 +455,19 @@ Claudio Silva
 <p><img data-src="figs/model_assessment_figs/roc_data_aircraft.png"></p>
 </div></div>
 <aside class="notes">
+<p>ROC curves have a fascinating history rooted in signal detection theory during WWII. Radar operators needed to distinguish between enemy aircraft (signal) and birds or weather phenomena (noise). This same principle applies to any binary classification problem. The key insight is that by varying the decision threshold, we can trade off between catching more true positives (higher TPR) at the cost of more false positives (higher FPR). The ROC curve visualizes all these trade-offs simultaneously.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside class="notes">
 <p>We are now moving on to another important tool for model evaluation: the Receiver Operating Characteristic, or ROC curve. The concept of ROC analysis has its roots in signal detection theory, and it has been widely adopted in machine learning. It provides a way to visualize the performance of a classifier at all classification thresholds.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -496,6 +494,19 @@ Claudio Silva
 <p><img data-src="figs/model_assessment_figs/discrete_roc_graph.png"></p>
 </div>
 </div></div>
+<aside class="notes">
+<p>This slide shows the relationship between confusion matrices and ROC curves. Each point on the ROC curve corresponds to a different threshold setting and thus a different confusion matrix. The ideal classifier would reach the top-left corner (TPR=1, FPR=0), meaning it perfectly identifies all positives without any false positives. The diagonal line represents random guessing - any classifier below this line is performing worse than random.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <aside class="notes">
 <p>An ROC curve shows the trade-off between the true positive rate and the false positive rate for a binary classifier as the discrimination threshold is varied. The top-left corner of the plot is the ideal point - a false positive rate of 0, and a true positive rate of 1. This is not always possible in practice, but it is the goal.</p>
 <style type="text/css">
@@ -570,12 +581,12 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>ROC curve in sklearn</h2>
-<div id="db1c582d" class="cell" data-execution_count="3">
+<div id="b2a7afba" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
 </div>
 </div>
-<div id="7db7c472" class="cell" data-execution_count="4">
+<div id="722aba4e" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> RocCurveDisplay</span>
 <span id="cb4-3"><a href=""></a></span>
@@ -589,6 +600,19 @@ Claudio Silva
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>Scikit-learn makes it easy to generate ROC curves. The diagonal “chance level” line shows the performance of a random classifier. The further the blue curve is above this diagonal, the better the classifier. The AUC (Area Under Curve) score of 0.97 indicates excellent performance. Remember that ROC curves are most appropriate for balanced datasets - for imbalanced data, precision-recall curves may be more informative.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <aside class="notes">
 <p>Similar to the confusion matrix, scikit-learn provides a simple way to generate ROC curves. The <code>RocCurveDisplay</code> function can be used to plot the ROC curve for a trained classifier. The <code>plot_chance_level</code> argument is useful to visualize the performance of a random classifier.</p>
 <style type="text/css">
@@ -677,12 +701,12 @@ Claudio Silva
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<div id="fa2421b3" class="cell" data-execution_count="5">
+<div id="ab082ec8" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
 </div>
 </div>
-<div id="5d66d8c1" class="cell" data-execution_count="6">
+<div id="ba5001b7" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> PrecisionRecallDisplay</span>
 <span id="cb6-3"><a href=""></a></span>
@@ -903,6 +927,19 @@ Claudio Silva
 </ul>
 </div></div>
 <aside class="notes">
+<p>This weather forecast example perfectly illustrates calibration. When we say “70% chance of rain,” it should actually rain about 70% of the time we make that prediction. Notice that this forecaster is pretty well calibrated - their predictions are close to the actual frequencies. This concept extends directly to machine learning: when a model outputs a probability, we want that probability to be reliable and meaningful.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside class="notes">
 <p>This is a classic example used to explain calibration. We have a weather forecaster who gives probabilistic predictions of rain. We can check how well calibrated these predictions are by looking at the actual outcomes. For example, for all the days the forecaster predicted a 10% chance of rain, did it actually rain 10% of the time? In this case, the forecaster is not perfectly calibrated, but they are not too far off.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1026,11 +1063,24 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Reliability Diagram in sklearn</h2>
-<div id="4983045e" class="cell" data-execution_count="7">
+<div id="b39dbad1" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
 </div>
 </div>
+<aside class="notes">
+<p>Here we’re setting up two different classifiers - Logistic Regression and Gaussian Naive Bayes - to compare their calibration. Logistic Regression is often well-calibrated by design, while Naive Bayes can suffer from poor calibration despite having good discrimination ability. We’ll see this difference clearly in the reliability diagram on the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <aside class="notes">
 <p>Scikit-learn also provides tools for calibration analysis. Here we are setting up two classifiers, Logistic Regression and Gaussian Naive Bayes, to compare their calibration. We will plot their calibration curves on the next slide.</p>
 <style type="text/css">
@@ -1044,7 +1094,7 @@ Claudio Silva
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<div id="f8af2ddb" class="cell panel-center" data-execution_count="8">
+<div id="ab1276d5" class="cell panel-center" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb8-2"><a href=""></a><span class="im">from</span> sklearn.calibration <span class="im">import</span> CalibrationDisplay</span>
 <span id="cb8-3"><a href=""></a></span>
@@ -1157,7 +1207,20 @@ Claudio Silva
 <section class="slide level2">
 <h2>Calibration of modern models</h2>
 
-<img data-src="figs/model_assessment_figs/calibration_nn_2016.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<img data-src="figs/model_assessment_figs/calibration_nn_2016.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>This landmark paper by Guo et al.&nbsp;(2017) revealed a surprising finding: modern neural networks, despite their impressive accuracy, are often poorly calibrated. As networks have gotten deeper and more complex, they’ve become increasingly overconfident in their predictions. This graph shows how calibration error has increased with model capacity over the years. This is why calibration has become such an important topic in modern machine learning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
 <p>Guo, C., Pleiss, G., Sun, Y., &amp; Weinberger, K. Q. (2017). <a href="../refs/Guo_Pleiss_Sun_Weinberger_2017_Calibration_Modern_Neural_Networks.pdf"><em>On calibration of modern neural networks</em></a>. ICML.</p>
 </div>
 </section>
@@ -1176,7 +1239,20 @@ Claudio Silva
 <li><p>Think of them as putting each item in its separate bin, then computing the average of some loss for each predicted probability and its corresponding observed label</p></li>
 </ul>
 
-<img data-src="figs/model_assessment_figs/proper_scoring_rules.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<img data-src="figs/model_assessment_figs/proper_scoring_rules.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Proper scoring rules are a more principled way to evaluate probabilistic predictions. Unlike ECE which requires binning (and thus loses information), proper scoring rules evaluate each prediction individually. They’re called “proper” because they incentivize the model to output its true belief - a model can’t game the system by outputting different probabilities than what it actually believes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
 <p>Slides based on <a href="https://classifier-calibration.github.io/">classifier-calibration.github.io</a></p>
 </div>
 </section>
@@ -1194,6 +1270,19 @@ Claudio Silva
 </ul></li>
 </ul>
 <p><span class="math display">\[LL = -\frac{1}{N} \sum_{i=1}^N [y_i \text{log}(\hat{y}_i) + (1-y_i)\text{log}( 1 - \hat{y}_i)]\]</span></p>
+<aside class="notes">
+<p>These are the two most common proper scoring rules. The Brier Score is the mean squared error of probabilistic predictions - simple and interpretable. Log-loss (cross-entropy) is what most neural networks optimize during training. An important distinction: log-loss can be infinite if you predict probability 0 for something that happens, while Brier Score is bounded between 0 and 2. Both encourage well-calibrated predictions but in slightly different ways.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <div class="footer">
 <p>Slides based on <a href="https://classifier-calibration.github.io/">classifier-calibration.github.io</a></p>
 </div>
@@ -1275,7 +1364,20 @@ Claudio Silva
 <section class="slide level2">
 <h2>Calibration in sklearn</h2>
 
-<img data-src="figs/model_assessment_figs/sphx_glr_plot_calibration_curve_001.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<img data-src="figs/model_assessment_figs/sphx_glr_plot_calibration_curve_001.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>This example shows calibration in action. The Naive Bayes classifier (orange) shows the characteristic S-curve of poor calibration - it’s overconfident for low probabilities and underconfident for high probabilities. After calibration using isotonic regression, the curve becomes much closer to the diagonal, meaning the probabilities are now more reliable. Notice how calibration improves the Brier score significantly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
 <p><a href="https://scikit-learn.org/stable/auto_examples/calibration/plot_calibration_curve.html">code</a></p>
 </div>
 </section>
@@ -1313,7 +1415,20 @@ Claudio Silva
 <p><br>
 </p>
 
-<img data-src="figs/model_assessment_figs/calibrate_reliability_hyperparameters.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<img data-src="figs/model_assessment_figs/calibrate_reliability_hyperparameters.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>An important but often overlooked point: reliability diagrams depend heavily on hyperparameters like the number of bins and binning strategy. Different choices can lead to very different visual interpretations of the same model’s calibration. This figure from the Calibrate paper shows how the same model can look well-calibrated or poorly calibrated depending on these choices. This is why tools like Calibrate that provide interactive exploration are so valuable.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
 <p>Image taken from Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <em>Calibrate: Interactive analysis of probabilistic model output</em>. IEEE Transactions on Visualization and Computer Graphics.</p>
 </div>
 </section>
@@ -1327,7 +1442,20 @@ Claudio Silva
 <section class="slide level2">
 <h2>Calibrate (2023) - Learned Reliability Diagram</h2>
 
-<img data-src="figs/model_assessment_figs/calibrate_learned_rel_diag.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<img data-src="figs/model_assessment_figs/calibrate_learned_rel_diag.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>The Calibrate system introduces a learned reliability diagram that avoids the binning problem entirely. Instead of fixed bins, it uses kernel density estimation to create a smooth, continuous reliability curve. This gives a more accurate picture of calibration without the artifacts introduced by arbitrary binning choices. The shaded regions show uncertainty in the calibration estimate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
 <p>Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., &amp; Silva, C. (2022). <a href="../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf"><em>Calibrate: Interactive analysis of probabilistic model output</em></a>. IEEE TVCG.</p>
 </div>
 </section>
@@ -1343,7 +1471,20 @@ Claudio Silva
 <p><br>
 </p>
 
-<img data-src="figs/model_assessment_figs/smoothece_teaser.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<img data-src="figs/model_assessment_figs/smoothece_teaser.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Smooth ECE is a recent advancement that addresses the fundamental problem with traditional ECE: the arbitrary choice of bins. By using kernel smoothing instead of hard binning, it provides a more principled and stable measure of calibration error. This visualization shows how different binning choices can give wildly different ECE values for the same model, while Smooth ECE provides a consistent estimate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
 <p>Błasiok, J., &amp; Nakkiran, P. (2023). <em>Smooth ECE: Principled Reliability Diagrams via Kernel Smoothing</em>. arXiv preprint arXiv:2309.12236.</p>
 </div>
 </section>
