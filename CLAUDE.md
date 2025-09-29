@@ -101,6 +101,7 @@ The repository includes complete course websites as subdirectories:
 - **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
 - **Make-up Class**: Tuesday, October 14 (for Fall Break)
 - **Status**: ✅ **Week 5 COMPLETE** - White-box Model Interpretation ready for Sept 29, 2025 class
+- **Lab Status**: ✅ **Week 5 Lab COMPLETE** - Created by Parikshit Solunke, covers GAMs and Decision Trees
 - **Discord**: https://discord.gg/dyHSFN65
 
 ##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
@@ -298,6 +299,16 @@ The repository includes complete course websites as subdirectories:
 - **Figure curation**: Professional renaming and organization of all visual assets
 - **Citation standardization**: Complete academic references with DOI links
 - **Quality assurance**: Comprehensive testing, rendering verification, git workflow
+
+### Recent Issue Resolution (Sept 29, 2025)
+
+**Critical Site Outage Fixed:**
+- **Problem**: Website (ctsilva.github.io) completely broken due to Jekyll build failure
+- **Root Cause**: CLAUDE.md contained `\{\{< video` text in documentation that Jekyll/Liquid interpreted as template syntax
+- **Solution**: Escaped curly braces to prevent Liquid parsing: `\{\{< video` → `\\{\\\{< video`
+- **Impact**: GitHub Pages build status changed from "errored" to "built"
+- **Resolution Time**: ~30 minutes from identification to fix deployment
+- **Lesson**: Be careful with Jekyll/Liquid syntax in documentation files - escape template-like text in code examples
 
 ### Automated Course Material Enhancement Workflow
 
@@ -522,6 +533,8 @@ This will automatically initiate the 6-step workflow above, ensuring consistent 
 
 **Current TAs for Fall 2025:**
 - **CS-GY 9223 (VisML):** Parikshit Solunke ([parisolunke.github.io](https://parisolunke.github.io)) - pss442@nyu.edu
+  - **Lab Contributions**: Week 2, 3, 5 lab slides created
+  - **Attribution Status**: ✅ Correctly attributed in all lab materials
 - **CS-GY 6313 (InfoVis):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
 
 ##### Creating New Lecture Slides
