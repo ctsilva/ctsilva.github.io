@@ -72,6 +72,10 @@ Humans perceive wavelengths from approximately 390-700nm
 Gregory, R.L. (1997). *Eye and Brain: The Psychology of Seeing* (5th ed.). Princeton University Press.
 :::
 
+::: {.notes}
+Explain that the limited range (390–700nm) is due to environmental factors: shorter wavelengths (UV) are highly scattered by Earth's atmosphere, and longer wavelengths (IR) are absorbed by water and lead to molecular vibration rather than electronic excitation. Our peak sensitivity is in the green-yellow region (~555nm), which corresponds to the peak of the solar spectrum at Earth's surface. This is no accident - evolution optimized our vision for the available light in our environment.
+:::
+
 ## Properties of Light
 
 * **Visible range**: 390-700nm
@@ -148,6 +152,10 @@ Highest density in fovea (center of vision)
 Gregory, R.L. (1997). *Eye and Brain: The Psychology of Seeing* (5th ed.). Princeton University Press.
 :::
 
+::: {.notes}
+Emphasize the importance of the fovea (the central 2° of vision). This is where acuity and color discrimination are highest - cone density reaches 150,000 per mm². This biological fact explains why legends and critical information should be placed centrally or made salient enough to attract foveal attention. Teaching Point: When the visualization requires reading fine detail or discerning subtle color differences, the viewer must consciously shift their gaze. This is why we can't rely on peripheral vision for detailed color work - the cone density drops dramatically outside the fovea. Practical implication: Don't put critical color-coded information in the periphery of a visualization.
+:::
+
 ## Rods vs. Cones Sensitivity
 
 ![](figs/color/cones-and-rods-sensitivity.jpg){width="70%"}
@@ -178,6 +186,10 @@ Foundation of color theory: any color can be matched with three primaries
 Stone, M. (2005). Representing Color as Three Numbers. *IEEE Computer Graphics and Applications*, 25(4), 78-85.
 :::
 
+::: {.notes}
+Explain that this is the empirical basis for all modern color spaces. The key finding from these experiments (starting with Thomas Young in 1801 and refined by Maxwell and others) is that the human visual system is 3-dimensional (trichromatic). This confirms that any physical color can be replicated by mixing three primary lights, leading directly to the RGB model used in computers. Important: Some colors require "negative" amounts of a primary (subtracting light), which is why no three real primaries can produce all visible colors - this led to the development of the CIE XYZ color space with imaginary primaries.
+:::
+
 ## Color Models for Visualization
 
 ### Trichromacy
@@ -199,9 +211,9 @@ This is where we transition from biology to design principles. These three dimen
 
 **For Color:**
 
-- **Luminance**: ~1-2% change detectable
+- **Luminance**: **`~1-2%`** change detectable
 - **Hue**: Varies by wavelength (most sensitive in blue-green)
-- **Saturation**: ~5-10% change needed
+- **Saturation**: **`~5-10%`** change needed
 
 **Implications for Visualization:**
 
@@ -238,11 +250,19 @@ Distinguish categories
 
 Mapping numerical values to color intensity or hue
 
+::: {.notes}
+Focus: Emphasize that for quantification, we are primarily encoding value differences using the Luminance/Lightness channel, as it is perceptually ordered and robust. Hue is generally a weak channel for conveying precise numerical value differences - people cannot reliably order hues or judge relative magnitudes based on hue alone. The map shown uses a single-hue progression (likely blue) where darker = more. This works because luminance has a natural ordering. Multi-hue scales can work (like Viridis) but ONLY if luminance increases monotonically.
+:::
+
 ## Color to Label
 
 ![](figs/color/color-label.jpg){width="80%"}
 
 Using distinct colors to represent different categories
+
+::: {.notes}
+Focus: Emphasize that for labeling (categories), we maximize Hue differences and use similar Lightness/Saturation across all categories. The goal is maximum difference (discriminability) without any color seeming more important (uniform saliency). In the transit map shown, each line has a distinct hue but similar visual weight. Common mistake: Using both bright and pastel colors together - the bright ones will dominate attention. Keep saturation consistent unless you intentionally want to highlight certain categories.
+:::
 
 ## Quantitative Color Scales
 
@@ -301,7 +321,7 @@ Healey, C.G. (1996). [Choosing effective colours for data visualization](https:/
 :::
 
 ::: {.notes}
-Healey's research showed that pre-attentive processing (instant recognition) breaks down beyond 5-7 colors. With careful design, you might push to 10-12, but users will need legends and more cognitive effort. When you have more categories, consider: (1) grouping into super-categories with sub-hues, (2) highlighting only important categories and graying others, or (3) using interaction to filter.
+Reference the Magic Number 7 ± 2 rule (Miller's Law, 1956) for cognitive load. Beyond 5-7 categories, users stop instantly recognizing differences (pre-attentive processing) and must rely on a legend, which slows down analysis dramatically. Healey's research confirmed this specifically for color. Alternatives when you have too many categories: (1) Group data into super-categories with related sub-hues, (2) Use interactivity - show only relevant categories on demand (filtering/highlighting), (3) Apply texture or shape as redundant encoding, (4) Use "focus + context" - highlight important categories and gray out others, (5) Consider if all categories really need to be shown simultaneously. Remember: Every time users look at the legend, they break their analysis flow.
 :::
 
 ## Diverging Color Scales
@@ -361,19 +381,19 @@ This is why color palettes that look good in a swatch panel might fail in your v
 ::: {.column width="50%"}
 **Universal Associations:**
 
-- Red: Heat, danger, stop
-- Blue: Cold, water, calm
-- Green: Nature, growth, go
-- Yellow: Caution, energy
+- **Red**: Heat, danger, stop 🔥 🛑
+- **Blue**: Cold, water, calm 💧 ❄️
+- **Green**: Nature, growth, go 🌱 ✅
+- **Yellow**: Caution, energy ⚠️ ⚡
 :::
 
 ::: {.column width="50%"}
 **Domain-Specific:**
 
-- Finance: Red = loss, Green = profit
-- Politics: Red/Blue = parties (varies by country!)
-- Temperature: Blue = cold, Red = hot
-- Health: Red = critical, Yellow = warning, Green = normal
+- **Finance**: Red = loss 📉, Green = profit 📈
+- **Politics**: Red/Blue = parties (varies by country!)
+- **Temperature**: Blue = cold ❄️, Red = hot 🌡️
+- **Health**: Red = critical 🚨, Yellow = warning ⚠️, Green = normal ✅
 :::
 ::::
 
@@ -482,6 +502,10 @@ Perfect for:
 - Profit/loss
 - Any data with meaningful zero
 
+::: {.notes}
+Guide students to choose an interpolator like d3.interpolateRdBu because it is perceptually uniform around the critical midpoint, preventing the muddy gray region that RGB interpolation creates. The domain([min, midpoint, max]) structure is critical - the midpoint should be meaningful (0 for anomalies, average for deviations, 50% for proportions). Common mistake: Using diverging scales when data doesn't have a meaningful midpoint. If your data is all positive (e.g., 0-100%), use sequential instead. The midpoint in the interpolator gets white/neutral color, so it must represent a true neutral value in your data.
+:::
+
 ## D3 Categorical Scales
 
 ```javascript
@@ -534,7 +558,11 @@ Important: schemeSet1 is colorblind-safe but has very saturated colors that can 
 :::
 ::::
 
-## Advanced D3 Scales
+::: {.notes}
+Use this slide to review common student errors. Sequential Data: Rainbow maps are the #1 mistake—they create false edges where the color suddenly shifts (e.g., yellow band appears as a boundary). Show example: weather maps where rainbow creates artificial storm boundaries. Categorical Data: Reiterate that Saturation should be kept consistent across categories to avoid unintended emphasis. If one category is bright red and another is pale blue, the red will dominate. Diverging: Students often use these for data without true midpoints. Accessibility: Not optional - in any professional setting, colorblind-safe design is required, not suggested.
+:::
+
+## D3 Data Transformation Scales (Beyond Color)
 
 ### Time Scales
 ```javascript
@@ -558,7 +586,7 @@ const sqrtScale = d3.scaleSqrt()  // same as scalePow().exponent(0.5)
 ```
 
 ::: {.notes}
-These scales transform your data space. Time scales understand JavaScript dates and create nice tick marks at meaningful intervals (days, months, years). Log scales are essential for data with large ranges - use when data spans multiple orders of magnitude. Square root scales (and other power scales) are useful for circle areas - since area grows with radius squared, sqrt scale makes area proportional to data value.
+Important distinction: These scales transform your data space, not color space. They map data values to positions, sizes, or other visual properties. Time scales understand JavaScript dates and create nice tick marks at meaningful intervals (days, months, years). Log scales are essential for data with large ranges - use when data spans multiple orders of magnitude (e.g., population, income). Square root scales are crucial for encoding data as area - since area grows with radius squared, sqrt scale makes the area proportional to data value, not the radius.
 :::
 
 ## Quantized Scales
@@ -664,24 +692,23 @@ const piecewise = d3.scaleLinear()
 
 :::: {.columns}
 ::: {.column width="50%"}
-### 1. Rainbow Color Maps
-- Non-uniform perceptually
-- Create false boundaries
-- Poor for colorblind users
+### 1. Don't Use Rainbow Scales
+**Why:** Perceptually non-uniform, creates false boundaries
+**Instead:** Use Viridis or single-hue sequential
 
-### 2. Too Many Categories
-- Beyond 7-8, colors become confusable
-- Consider grouping or filtering
+### 2. Don't Exceed 7-8 Categories
+**Why:** Colors become indistinguishable
+**Instead:** Group data or use interactive filtering
 :::
 
 ::: {.column width="50%"}
-### 3. Ignoring Context
-- Red/green for good/bad in finance
-- Cultural color associations vary
+### 3. Don't Ignore Cultural Context
+**Why:** Red = profit in Asia, loss in West
+**Instead:** Know your audience, test assumptions
 
-### 4. Poor Contrast
-- Insufficient luminance difference
-- Fails accessibility standards
+### 4. Don't Use Poor Contrast
+**Why:** Fails WCAG accessibility standards
+**Instead:** Test contrast ratios (4.5:1 minimum)
 :::
 ::::
 
@@ -751,29 +778,50 @@ const legend = d3.legendColor()
 - Consider print requirements early
 
 ::: {.notes}
-This is often overlooked but critical for professional work. That beautiful saturated blue might look gray on older monitors. Print has completely different limitations - vibrant screen colors often look dull on paper. Always test your visualizations on the actual delivery medium. For web, stick to sRGB color space for maximum compatibility.
+Use the analogy: "Color gamut is the vocabulary of the display." P3 has a richer vocabulary than sRGB - about 25% more colors. A color defined in P3 might be "out of gamut" for an sRGB display and will be clamped to the nearest available color, potentially changing your carefully designed palette. This is essential for professional design where a visualization might be seen on a high-end monitor (designer's machine) but needs to be accessible on standard web displays (user's machine). Action: Always work in or constrain colors to the sRGB space for maximum web compatibility. Test on different devices. For print, convert to CMYK early and adjust - never trust screen colors for print work. Modern CSS supports color-gamut media queries to provide fallbacks.
 :::
 
-## Summary
+## Summary: Key Concepts
 
-### Color Theory:
-- Human vision: trichromatic with non-uniform perception
-- Three main uses: sequential, categorical, diverging
-- Accessibility crucial: ~10% have color vision deficiency
+### Vision & Perception
+- **Trichromatic vision**: 3 cone types → 3D color space
+- **Non-uniform perception**: JND varies by channel
+- **Foveal concentration**: Color discrimination best in center
 
-### D3 Scales:
-- Transform data space to visual space
-- Rich variety: linear, log, time, ordinal, sequential
-- Color scales with perceptual considerations
+### Color Uses in Visualization
+- **Sequential**: Ordered data (light → dark)
+- **Diverging**: Data with meaningful midpoint
+- **Categorical**: Distinct groups (max 5-8)
 
-### Best Practices:
-- Limit categorical colors to 5-8
-- Use perceptually uniform scales
-- Always consider colorblindness
-- Test in context
+### Accessibility is Essential
+- **~10% color vision deficiency** (mostly red-green)
+- **Always provide redundant encoding**
+- **Test with simulators** before deployment
 
 ::: {.notes}
-Key takeaways: Color is powerful but complex. The biology of vision constrains our design choices. Always start with the right scale type for your data (sequential/diverging/categorical). Use perceptually uniform color spaces for interpolation. Test with colorblind simulators. Remember that color is just one channel - combine with other encodings for critical information. Most importantly: less is often more with color.
+These are the foundational concepts that explain WHY we make certain color choices. The biology constrains what's possible; the use case determines what's appropriate; accessibility ensures what's ethical and professional.
+:::
+
+## Summary: Implementation & Practices
+
+### D3 Color Implementation
+- **Perceptual spaces**: Use LAB/HCL for interpolation
+- **Built-in schemes**: Viridis, ColorBrewer, etc.
+- **Scale types**: Sequential, diverging, ordinal
+
+### Critical Best Practices
+- **Avoid rainbow scales** for continuous data
+- **Maintain uniform saliency** in categories
+- **Consider display gamut** (sRGB for web)
+
+### Testing Checklist
+✓ Colorblind safe?
+✓ Prints in grayscale?
+✓ Works on different displays?
+✓ Context effects considered?
+
+::: {.notes}
+These are the practical guidelines for implementation. Remember: Less is often more with color. When in doubt, test with real users and real data. Color should enhance understanding, not dominate the visualization.
 :::
 
 ## Next Week: Deceptive Visualizations
