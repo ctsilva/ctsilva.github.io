@@ -14,6 +14,8 @@ author_profile: true
 
 ## Announcements
 
+**Week 5 Materials Ready (Sept 30):** Color Theory and D3 Scales slides are now available with comprehensive coverage of color perception, spaces, and practical implementation in D3.
+
 *Course materials will be posted as the semester progresses*
 
 ## Upcoming Classes
@@ -39,12 +41,22 @@ author_profile: true
 - **Assignment:** Exercise 3 - Chart design and encoding alternatives (due Sept 25)
 - **Readings:** Tufte Ch 1-2 (Graphical Excellence & Integrity)
 
-### Week 4 (Sept 26) - Visual Perception and D3 Foundations (Draft)
+### Week 4 (Sept 26) - Visual Perception and D3 Foundations
 - **Slides:** [Visual Perception and D3 Foundations](/2025-InfoVis-CSE/slides/week4-perception.html) | [Lab: First D3 programming session, DOM manipulation, Data binding](/2025-InfoVis-CSE/labs/week4-lab.html)
 - **Topics:** Pre-attentive processing, Gestalt principles, Perceptual accuracy, D3.js introduction
 - **Lab:** First D3 programming session, DOM manipulation, Data binding
 - **Assignment:** Exercise 4 - Perception-based design + D3 implementation (due Oct 2)
 - **Readings:** Franconeri et al. (2021); Kennedy Elliott - 39 Studies
+
+### Week 5 (Oct 3) - Color Theory and D3 Scales
+- **Slides:** [Color Theory and D3 Scales](/2025-InfoVis-CSE/slides/week5-color.html)
+- **Topics:** Color perception (biology/physics), Color spaces (RGB, HSL, LAB), Sequential/diverging/categorical scales, Color accessibility, D3 scale implementation
+- **Lab:** Color scale exercises, Choropleth maps, Accessibility testing
+- **Assignment:** Exercise 5 - Color scale design and implementation (due Oct 9)
+- **Required Readings:**
+  - [Which Color Scale to Use](https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/) - Lisa Charlotte Rost
+  - [Modeling Color Difference](https://ieeexplore.ieee.org/document/8031043) - Szafir (2017)
+  - [D3 Scale Chromatic](https://observablehq.com/@d3/color-schemes) - Observable notebook
 
 ## Assignments
 
@@ -52,6 +64,8 @@ author_profile: true
 - Exercise 1: Visualization critique and basic Vega-Lite charts - *Due Sept 11*
 - Exercise 2: Data questions and transformations - *Due Sept 18*
 - Exercise 3: Chart design and encoding alternatives - *Due Sept 25*
+- Exercise 4: Perception-based design + D3 implementation - *Due Oct 2*
+- Exercise 5: Color scale design and implementation - *Due Oct 9*
 - More exercises TBA
 
 ### Mini-Projects (35% of grade)
