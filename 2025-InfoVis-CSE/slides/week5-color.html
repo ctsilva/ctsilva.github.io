@@ -6,8 +6,8 @@
 <script src="week5-color_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week5-color_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week5-color_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week5-color_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.34">
+<link href="week5-color_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
 
   <meta name="author" content="Claudio Silva">
   <meta name="dcterms.date" content="2025-10-03">
@@ -96,7 +96,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="week5-color_files/libs/revealjs/dist/theme/quarto-676fc40f45aa6f5445b17b21b33c326b.css">
+  <link rel="stylesheet" href="week5-color_files/libs/revealjs/dist/theme/quarto-443e2f83cf99eb1ebcdf0bd5f49e2745.css">
   <link href="week5-color_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week5-color_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week5-color_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -212,24 +212,39 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Color Theory and D3 Scales</h2>
+<h3>Today’s Journey</h3>
+<p><strong>Biology/Physics</strong> → <strong>Perception Theory</strong> → <strong>Design Principles</strong> → <strong>D3 Implementation</strong> → <strong>Best Practices</strong></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3>Color Theory</h3>
+<h3>Part 1: Color Theory</h3>
 <ul>
 <li>Physics and physiology of color</li>
+<li>How humans perceive color</li>
 <li>Color spaces and models</li>
-<li>Color scales for data</li>
-<li>Accessibility considerations</li>
+<li>Perceptual principles</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3>D3 Scales Deep Dive</h3>
+<h3>Part 2: D3 Implementation</h3>
 <ul>
-<li>Linear and ordinal scales</li>
 <li>Color scales in D3</li>
-<li>Time scales</li>
-<li>Advanced scale techniques</li>
+<li>Sequential, diverging, categorical</li>
+<li>Interpolation methods</li>
+<li>Accessibility and best practices</li>
 </ul>
 </div></div>
+<aside class="notes">
+<p>This lecture bridges the gap between the science of color perception and practical implementation in D3. We follow a logical progression: First understanding the biology and physics (WHY colors work the way they do), then perception theory (HOW humans process color), then design principles (WHAT makes effective color choices), then D3 implementation (HOW to code it), and finally best practices (WHEN to use each approach). This foundation is crucial - without understanding how humans perceive color, you’ll make poor design decisions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Color in Nature</h2>
@@ -238,11 +253,27 @@ Claudio Silva
 <div class="footer">
 <p>Image from <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002444">PLOS Biology</a></p>
 </div>
+<aside class="notes">
+<p>Start with how color evolved in nature for communication and survival. Animals use color for warning signals, mating displays, and camouflage. This sets the stage for understanding that color perception is biological and varies across species - humans see differently than birds or bees.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>The Visible Spectrum</h2>
 
 <img data-src="figs/color/visiblespectrum.jpg" style="width:80.0%" class="r-stretch"><p>Humans perceive wavelengths from approximately 390-700nm</p>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Properties of Light</h2>
@@ -262,16 +293,35 @@ Claudio Silva
 <li>Purity → <strong>Saturation</strong></li>
 </ul></li>
 </ul>
+<aside class="notes">
+<p>Key insight: Our eyes handle an enormous dynamic range (100,000:1) through adaptation. This is why absolute luminance values aren’t as important as relative contrasts in visualization. The three properties (hue, lightness, saturation) form the basis of the HLS color model, which is more intuitive than RGB for design work. Note that computer screens can only display about 1000:1 contrast ratio, far less than what we can perceive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Physiology of the Eye</h2>
 
 <img data-src="figs/color/physiology-eye.jpg" style="width:70.0%" class="r-stretch"><p>Light passes through cornea, pupil, lens, and reaches the retina</p>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>The Retina Structure</h2>
 
 <img data-src="figs/color/retina.jpg" style="width:70.0%" class="r-stretch"><p>Multiple layers of cells process visual information before sending to brain</p>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Photoreceptors: Rods and Cones</h2>
@@ -294,28 +344,53 @@ Claudio Silva
 
 <img data-src="figs/color/cones-spectral-sensitity.jpg" style="width:70.0%" class="r-stretch"><p>Three types of cones: S (short/blue), M (medium/green), L (long/red)</p>
 <div class="footer">
-<p>Image from <a href="https://wrfranklin.org/Teaching/graphics-f2019/files/stone_colors.pdf">WR Franklin</a></p>
+<p>Stone, M. (2003). <em>A Field Guide to Digital Color</em>. A.K. Peters.</p>
 </div>
+<aside class="notes">
+<p>Critical slide! This is the foundation of trichromatic color theory. Note the overlapping sensitivity curves - this is why we can’t see “pure” wavelengths. The brain interprets the relative activation of all three cone types. Point out that the L and M curves are very close, which is why red-green colorblindness is most common.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Density of Cones Across Retina</h2>
 
 <img data-src="figs/color/cones-density.jpg" style="width:60.0%" class="r-stretch"><p>Highest density in fovea (center of vision)</p>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Rods vs.&nbsp;Cones Sensitivity</h2>
 
 <img data-src="figs/color/cones-and-rods-sensitivity.jpg" style="width:70.0%" class="r-stretch"><p>Rods more sensitive in low light; cones provide color vision</p>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>How We Perceive Color</h2>
 
 <img data-src="figs/color/color-stimulus.jpg" style="width:70.0%" class="r-stretch"><p>Color perception results from brain’s interpretation of cone responses</p>
+<div class="footer">
+<p>Stone, M. (2003). <em>A Field Guide to Digital Color</em>. A.K. Peters.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Color Matching Experiments</h2>
 
 <img data-src="figs/color/color-matching-experiments.jpg" style="width:70.0%" class="r-stretch"><p>Foundation of color theory: any color can be matched with three primaries</p>
+<div class="footer">
+<p>Stone, M. (2003). <em>A Field Guide to Digital Color</em>. A.K. Peters.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Color Models for Visualization</h2>
@@ -330,6 +405,48 @@ Claudio Silva
 <div class="footer">
 <p>Material from Enrico Bertini</p>
 </div>
+<aside class="notes">
+<p>This is where we transition from biology to design principles. These three dimensions map to how we actually think about color. Luminance is the strongest channel for ordered data (we easily see light-to-dark progression). Hue is best for categorical distinctions (red vs blue vs green). Saturation is the weakest channel - hard to judge precise values. This hierarchy guides our encoding choices.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Just Noticeable Difference (JND)</h2>
+<h3>The smallest detectable difference in a stimulus</h3>
+<p><strong>For Color:</strong></p>
+<ul>
+<li><strong>Luminance</strong>: ~1-2% change detectable</li>
+<li><strong>Hue</strong>: Varies by wavelength (most sensitive in blue-green)</li>
+<li><strong>Saturation</strong>: ~5-10% change needed</li>
+</ul>
+<p><strong>Implications for Visualization:</strong></p>
+<ul>
+<li>Need sufficient steps between colors in a scale</li>
+<li>Can’t encode too many distinct values</li>
+<li>Background affects perception (simultaneous contrast)</li>
+</ul>
+<aside class="notes">
+<p>JND is fundamental to color scale design. It determines how many distinct values you can encode. For continuous scales, you want steps larger than JND to be clearly distinguishable. This is why we can only reliably encode about 5-7 distinct colors, or about 7-10 distinct luminance levels. The background color affects JND - a color that’s distinguishable on white might not be on gray.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>How Do We Use Color in Visualization?</h2>
@@ -374,6 +491,19 @@ Claudio Silva
 <div class="footer">
 <p>Material from Enrico Bertini</p>
 </div>
+<aside class="notes">
+<p>This is a key insight students often miss. Equal steps in RGB values don’t produce equal perceptual steps. This is why we need perceptually uniform color spaces like LAB or HCL. Use the example of yellow appearing brighter than blue even at the same RGB intensity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Single Hue Sequential Scales</h2>
@@ -409,11 +539,28 @@ Claudio Silva
 <h2>Categorical Scale Limits</h2>
 <h3>How many distinct colors can we use effectively?</h3>
 <p>Research suggests: <strong>5-10 distinct categories maximum</strong></p>
-<p>Beyond this limit: - Colors become confusable - Need additional encoding (shape, pattern) - Consider grouping categories</p>
-<p><em>Reference: Healey, “Choosing effective colours for data visualization” IEEE Vis 1996</em></p>
+<p>Beyond this limit:</p>
+<ul>
+<li>Colors become confusable</li>
+<li>Need additional encoding (shape, pattern)</li>
+<li>Consider grouping categories</li>
+</ul>
 <div class="footer">
-<p>Material from Enrico Bertini</p>
+<p>Healey, C.G. (1996). <a href="https://ieeexplore.ieee.org/document/567774">Choosing effective colours for data visualization</a>. IEEE Visualization ’96, pp.&nbsp;263-270.</p>
 </div>
+<aside class="notes">
+<p>Healey’s research showed that pre-attentive processing (instant recognition) breaks down beyond 5-7 colors. With careful design, you might push to 10-12, but users will need legends and more cognitive effort. When you have more categories, consider: (1) grouping into super-categories with sub-hues, (2) highlighting only important categories and graying others, or (3) using interaction to filter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Diverging Color Scales</h2>
@@ -427,14 +574,106 @@ Claudio Silva
 <div class="footer">
 <p>Data from <a href="https://github.com/tonmcg/County_Level_Election_Results_12-16">County Level Election Results</a></p>
 </div>
+<aside class="notes">
+<p>Perfect example of why choosing the right scale matters! The left map makes it hard to see which counties voted majority Republican vs Democrat. The diverging scale immediately reveals the pattern. Other good use cases: temperature anomalies (above/below average), profit/loss, survey responses (agree/disagree). Key insight: the midpoint should be meaningful, not arbitrary.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Context Effects</h2>
+<h3>Simultaneous Contrast</h3>
+<p>The same color appears different depending on surrounding colors</p>
+<p><strong>Key Effects:</strong></p>
+<ul>
+<li>Colors appear lighter on dark backgrounds</li>
+<li>Colors appear more saturated next to gray</li>
+<li>Complementary colors enhance each other</li>
+</ul>
+<p><strong>Design Implications:</strong></p>
+<ul>
+<li>Test colors in context, not isolation</li>
+<li>Be consistent with backgrounds</li>
+<li>Use borders/whitespace to separate regions</li>
+<li>Consider the whole visualization, not just the palette</li>
+</ul>
+<aside class="notes">
+<p>This is why color palettes that look good in a swatch panel might fail in your visualization. The classic example: a gray square looks yellowish on a blue background and bluish on a yellow background. For maps, this means adjacent regions can affect color perception. Solution: add thin white borders between regions, or test your palette with actual data patterns.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Semantic Color Associations</h2>
+<h3>Cultural and Contextual Meanings</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Universal Associations:</strong></p>
+<ul>
+<li>Red: Heat, danger, stop</li>
+<li>Blue: Cold, water, calm</li>
+<li>Green: Nature, growth, go</li>
+<li>Yellow: Caution, energy</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Domain-Specific:</strong></p>
+<ul>
+<li>Finance: Red = loss, Green = profit</li>
+<li>Politics: Red/Blue = parties (varies by country!)</li>
+<li>Temperature: Blue = cold, Red = hot</li>
+<li>Health: Red = critical, Yellow = warning, Green = normal</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Leverage semantic associations when they help, but be aware they’re not universal. In China, red means prosperity. In finance, Western markets use red for losses, but East Asian markets use red for gains! Always consider your audience. Sometimes you should intentionally break conventions - use blue for hot if you’re showing cooling needs, not temperature.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Color Blindness Considerations</h2>
 <p>~10% of males and ~1% of females have color vision deficiencies</p>
 
 <img data-src="figs/color/color-blindness.jpg" style="width:80.0%" class="r-stretch"><div class="footer">
-<p>Oliveira, “Towards More Accessible Visualizations for Color-Vision-Deficient Individuals” 2013</p>
+<p>Oliveira, M. “Towards More Accessible Visualizations for Color-Vision-Deficient Individuals” Computing in Science &amp; Engineering, 2013</p>
 </div>
+<aside class="notes">
+<p>Emphasize that this means in a typical classroom, 2-3 students likely have some form of color vision deficiency. Red-green is most common (deuteranopia and protanopia). Always design with this in mind - use redundant encoding (shape, pattern) and test with simulators. The Viridis colormap was specifically designed to be perceptually uniform AND colorblind-safe.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Color Spaces</h2>
@@ -456,24 +695,50 @@ Claudio Silva
 <li>Better for interpolation</li>
 <li>Used in professional design</li>
 </ul>
+<aside class="notes">
+<p>Critical concept: RGB is how devices work, but not how humans perceive. Equal steps in RGB space don’t produce equal perceptual steps - this is why RGB interpolation looks muddy. HSL is better for picking colors manually but still has issues (yellow appears brighter than blue at same L value). LAB/LCH are based on human perception studies and produce smooth gradients. Always use LAB or HCL for color interpolation in visualizations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Perceptual Color Spaces</h2>
 <h3>Why Perceptual Uniformity Matters</h3>
 <p>In RGB space, equal numerical steps ≠ equal perceptual steps</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href=""></a><span class="co">// RGB interpolation can produce muddy colors</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href=""></a><span class="co">// RGB interpolation can produce muddy colors</span></span>
 <span id="cb1-2"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateRgb</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)</span>
 <span id="cb1-3"><a href=""></a></span>
 <span id="cb1-4"><a href=""></a><span class="co">// LAB interpolation maintains perceptual uniformity</span></span>
 <span id="cb1-5"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateLab</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)</span>
 <span id="cb1-6"><a href=""></a></span>
 <span id="cb1-7"><a href=""></a><span class="co">// HCL even better for many visualizations</span></span>
-<span id="cb1-8"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Demo this live if possible! RGB interpolation between red and blue passes through muddy purple. LAB maintains brightness consistency. HCL (Hue-Chroma-Luminance) follows the color wheel, producing vibrant intermediates. For diverging scales, HCL is often best. For sequential scales, LAB works well. The key is that perceptual uniformity means your data differences map linearly to perceived color differences.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>D3 Color Scales</h2>
 <h3>Sequential Scales</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href=""></a><span class="co">// Single hue</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href=""></a><span class="co">// Single hue</span></span>
 <span id="cb2-2"><a href=""></a><span class="kw">const</span> blueScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSequential</span>()</span>
 <span id="cb2-3"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
 <span id="cb2-4"><a href=""></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateBlues</span>)<span class="op">;</span></span>
@@ -481,7 +746,7 @@ Claudio Silva
 <span id="cb2-6"><a href=""></a><span class="co">// Multi-hue</span></span>
 <span id="cb2-7"><a href=""></a><span class="kw">const</span> viridisScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSequential</span>()</span>
 <span id="cb2-8"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
-<span id="cb2-9"><a href=""></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateViridis</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-9"><a href=""></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateViridis</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <h3>Built-in Color Schemes:</h3>
 <ul>
 <li>Blues, Greens, Reds, Purples, Oranges, Greys</li>
@@ -490,19 +755,25 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>D3 Diverging Scales</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href=""></a><span class="co">// Diverging scale with custom midpoint</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href=""></a><span class="co">// Diverging scale with custom midpoint</span></span>
 <span id="cb3-2"><a href=""></a><span class="kw">const</span> divergingScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleDiverging</span>()</span>
 <span id="cb3-3"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([−50<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])  <span class="co">// min, midpoint, max</span></span>
 <span id="cb3-4"><a href=""></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateRdBu</span>)<span class="op">;</span></span>
 <span id="cb3-5"><a href=""></a></span>
 <span id="cb3-6"><a href=""></a><span class="co">// Common diverging schemes:</span></span>
 <span id="cb3-7"><a href=""></a><span class="co">// RdBu (red-blue), RdYlGn (red-yellow-green),</span></span>
-<span id="cb3-8"><a href=""></a><span class="co">// BrBG (brown-green), PuOr (purple-orange)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Perfect for: - Temperature anomalies - Election results - Profit/loss - Any data with meaningful zero</p>
+<span id="cb3-8"><a href=""></a><span class="co">// BrBG (brown-green), PuOr (purple-orange)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Perfect for:</p>
+<ul>
+<li>Temperature anomalies</li>
+<li>Election results</li>
+<li>Profit/loss</li>
+<li>Any data with meaningful zero</li>
+</ul>
 </section>
 <section class="slide level2">
 <h2>D3 Categorical Scales</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href=""></a><span class="co">// Ordinal scale with color scheme</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href=""></a><span class="co">// Ordinal scale with color scheme</span></span>
 <span id="cb4-2"><a href=""></a><span class="kw">const</span> categoryScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleOrdinal</span>()</span>
 <span id="cb4-3"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="st">"A"</span><span class="op">,</span> <span class="st">"B"</span><span class="op">,</span> <span class="st">"C"</span><span class="op">,</span> <span class="st">"D"</span>])</span>
 <span id="cb4-4"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>(d3<span class="op">.</span><span class="at">schemeCategory10</span>)<span class="op">;</span></span>
@@ -512,38 +783,72 @@ Claudio Silva
 <span id="cb4-8"><a href=""></a><span class="co">// schemeSet1 - 9 colors (colorblind safe)</span></span>
 <span id="cb4-9"><a href=""></a><span class="co">// schemeSet2 - 8 colors (print friendly)</span></span>
 <span id="cb4-10"><a href=""></a><span class="co">// schemeSet3 - 12 colors (pastel)</span></span>
-<span id="cb4-11"><a href=""></a><span class="co">// schemePaired - 12 colors (paired)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-11"><a href=""></a><span class="co">// schemePaired - 12 colors (paired)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Important: schemeSet1 is colorblind-safe but has very saturated colors that can be overwhelming. schemeSet2 is better for professional presentations. schemePaired is great when you have natural pairs in your data (e.g., before/after, male/female). Always test your chosen scheme with actual data - what looks good in isolation may not work with your specific visualization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Color Scale Best Practices</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <h3>Sequential Data</h3>
-<p>✅ Use single or multi-hue sequential ❌ Don’t use rainbow scales</p>
+<p>✅ Use single or multi-hue sequential</p>
+<p>❌ Don’t use rainbow scales</p>
 <h3>Categorical Data</h3>
-<p>✅ Use distinct hues with similar saturation/lightness ❌ Don’t use more than ~8 categories</p>
+<p>✅ Use distinct hues with similar saturation/lightness</p>
+<p>❌ Don’t use more than ~8 categories</p>
+</div><div class="column" style="width:50%;">
 <h3>Diverging Data</h3>
-<p>✅ Use when there’s a meaningful midpoint ❌ Don’t use for purely positive data</p>
+<p>✅ Use when there’s a meaningful midpoint</p>
+<p>❌ Don’t use for purely positive data</p>
 <h3>Accessibility</h3>
-<p>✅ Test with colorblind simulators ✅ Provide redundant encoding when possible</p>
+<p>✅ Test with colorblind simulators</p>
+<p>✅ Provide redundant encoding when possible</p>
+</div></div>
 </section>
 <section class="slide level2">
 <h2>Advanced D3 Scales</h2>
 <h3>Time Scales</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href=""></a><span class="kw">const</span> timeScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleTime</span>()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href=""></a><span class="kw">const</span> timeScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleTime</span>()</span>
 <span id="cb5-2"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="kw">new</span> <span class="bu">Date</span>(<span class="dv">2020</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">,</span> <span class="kw">new</span> <span class="bu">Date</span>(<span class="dv">2025</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>)])</span>
-<span id="cb5-3"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <h3>Log Scales</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href=""></a><span class="kw">const</span> logScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLog</span>()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href=""></a><span class="kw">const</span> logScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLog</span>()</span>
 <span id="cb6-2"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">1000</span>])</span>
-<span id="cb6-3"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <h3>Power Scales</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><a href=""></a><span class="kw">const</span> sqrtScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSqrt</span>()  <span class="co">// same as scalePow().exponent(0.5)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><a href=""></a><span class="kw">const</span> sqrtScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSqrt</span>()  <span class="co">// same as scalePow().exponent(0.5)</span></span>
 <span id="cb7-2"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
-<span id="cb7-3"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>These scales transform your data space. Time scales understand JavaScript dates and create nice tick marks at meaningful intervals (days, months, years). Log scales are essential for data with large ranges - use when data spans multiple orders of magnitude. Square root scales (and other power scales) are useful for circle areas - since area grows with radius squared, sqrt scale makes area proportional to data value.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Quantized Scales</h2>
 <p>Transform continuous domains into discrete ranges</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb8-1"><a href=""></a><span class="co">// Quantize scale - equal intervals</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb8-1"><a href=""></a><span class="co">// Quantize scale - equal intervals</span></span>
 <span id="cb8-2"><a href=""></a><span class="kw">const</span> quantizeScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleQuantize</span>()</span>
 <span id="cb8-3"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
 <span id="cb8-4"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"low"</span><span class="op">,</span> <span class="st">"medium"</span><span class="op">,</span> <span class="st">"high"</span>])<span class="op">;</span></span>
@@ -556,12 +861,25 @@ Claudio Silva
 <span id="cb8-11"><a href=""></a><span class="co">// Threshold scale - custom breakpoints</span></span>
 <span id="cb8-12"><a href=""></a><span class="kw">const</span> thresholdScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleThreshold</span>()</span>
 <span id="cb8-13"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">30</span><span class="op">,</span> <span class="dv">70</span>])</span>
-<span id="cb8-14"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"cold"</span><span class="op">,</span> <span class="st">"comfortable"</span><span class="op">,</span> <span class="st">"hot"</span>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-14"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"cold"</span><span class="op">,</span> <span class="st">"comfortable"</span><span class="op">,</span> <span class="st">"hot"</span>])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Critical for choropleth maps and binned visualizations. Quantize creates equal-width bins (like a histogram). Quantile creates bins with equal numbers of data points - useful for skewed distributions. Threshold gives you complete control over breakpoints - use for meaningful boundaries like freezing point, poverty line, etc. Always show the binning method in your legend!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Color Interpolation</h2>
 <p>D3 provides multiple interpolation methods:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb9-1"><a href=""></a><span class="co">// RGB interpolation (can be muddy)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb9-1"><a href=""></a><span class="co">// RGB interpolation (can be muddy)</span></span>
 <span id="cb9-2"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateRgb</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span>
 <span id="cb9-3"><a href=""></a></span>
 <span id="cb9-4"><a href=""></a><span class="co">// HSL interpolation (follows hue wheel)</span></span>
@@ -574,11 +892,11 @@ Claudio Silva
 <span id="cb9-11"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span>
 <span id="cb9-12"><a href=""></a></span>
 <span id="cb9-13"><a href=""></a><span class="co">// Cubehelix (rainbow with uniform luminance)</span></span>
-<span id="cb9-14"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateCubehelix</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-14"><a href=""></a>d3<span class="op">.</span><span class="fu">interpolateCubehelix</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 <h2>Creating Custom Color Scales</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb10-1"><a href=""></a><span class="co">// Custom sequential scale</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb10-1"><a href=""></a><span class="co">// Custom sequential scale</span></span>
 <span id="cb10-2"><a href=""></a><span class="kw">const</span> customSequential <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSequential</span>()</span>
 <span id="cb10-3"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
 <span id="cb10-4"><a href=""></a>  <span class="op">.</span><span class="fu">interpolator</span>(t <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"#e8f4f8"</span><span class="op">,</span> <span class="st">"#004c6d"</span>)(t))<span class="op">;</span></span>
@@ -591,94 +909,173 @@ Claudio Silva
 <span id="cb10-11"><a href=""></a>    <span class="op">:</span> d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"#f7f7f7"</span><span class="op">,</span> <span class="st">"#053061"</span>)((t <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">*</span> <span class="dv">2</span>))<span class="op">;</span></span>
 <span id="cb10-12"><a href=""></a></span>
 <span id="cb10-13"><a href=""></a><span class="co">// Piecewise scale</span></span>
-<span id="cb10-14"><a href=""></a><span class="kw">const</span> piecewise <span class="op">=</span> d3<span class="op">.</span><span class="at">scaleLi</span> ## Practical Color Guidelines</span>
-<span id="cb10-15"><a href=""></a></span>
-<span id="cb10-16"><a href=""></a>### For Print</span>
-<span id="cb10-17"><a href=""></a><span class="op">-</span> Consider grayscale reproduction</span>
-<span id="cb10-18"><a href=""></a><span class="op">-</span> Use ColorBrewer schemes</span>
-<span id="cb10-19"><a href=""></a><span class="op">-</span> Test on actual printer</span>
-<span id="cb10-20"><a href=""></a></span>
-<span id="cb10-21"><a href=""></a>### For Screen</span>
-<span id="cb10-22"><a href=""></a><span class="op">-</span> Consider monitor variations</span>
-<span id="cb10-23"><a href=""></a><span class="op">-</span> Use sufficient contrast</span>
-<span id="cb10-24"><a href=""></a><span class="op">-</span> Test on different devices</span>
-<span id="cb10-25"><a href=""></a></span>
-<span id="cb10-26"><a href=""></a>### For Accessibility</span>
-<span id="cb10-27"><a href=""></a><span class="op">-</span> Use colorblind<span class="op">-</span>safe palettes</span>
-<span id="cb10-28"><a href=""></a><span class="op">-</span> Provide alternative encodings</span>
-<span id="cb10-29"><a href=""></a><span class="op">-</span> Test <span class="cf">with</span> simulators</span>
-<span id="cb10-30"><a href=""></a></span>
-<span id="cb10-31"><a href=""></a>## Color Tools and Resources</span>
-<span id="cb10-32"><a href=""></a></span>
-<span id="cb10-33"><a href=""></a>### Online Tools<span class="op">:</span></span>
-<span id="cb10-34"><a href=""></a><span class="op">-</span> [ColorBrewer](https<span class="op">:</span><span class="co">//colorbrewer2.org) - Color schemes for maps</span></span>
-<span id="cb10-35"><a href=""></a><span class="op">-</span> [Accessible Colors](https<span class="op">:</span><span class="co">//accessible-colors.com) - WCAG compliance</span></span>
-<span id="cb10-36"><a href=""></a><span class="op">-</span> [Coblis](https<span class="op">:</span><span class="co">//www.color-blindness.com/coblis-color-blindness-simulator/) - Colorblind simulator</span></span>
-<span id="cb10-37"><a href=""></a></span>
-<span id="cb10-38"><a href=""></a>### D3 Resources<span class="op">:</span></span>
-<span id="cb10-39"><a href=""></a><span class="op">-</span> [D3 Scale Chromatic](https<span class="op">:</span><span class="co">//github.com/d3/d3-scale-chromatic) - All color schemes</span></span>
-<span id="cb10-40"><a href=""></a><span class="op">-</span> [Observable Color Notebooks](https<span class="op">:</span><span class="co">//observablehq.com/@d3/color-schemes) - Interactive examples</span></span>
-<span id="cb10-41"><a href=""></a></span>
-<span id="cb10-42"><a href=""></a>### Research<span class="op">:</span></span>
-<span id="cb10-43"><a href=""></a><span class="op">-</span> [ColorBrewer Paper](http<span class="op">:</span><span class="co">//colorbrewer2.org/learnmore/schemes_full.html) - Harrower &amp; Brewer</span></span>
-<span id="cb10-44"><a href=""></a><span class="op">-</span> [Viridis Explanation](https<span class="op">:</span><span class="co">//www.youtube.com/watch?v=xAoljeRJ3lU) - Why we need better colormaps</span></span>
-<span id="cb10-45"><a href=""></a></span>
-<span id="cb10-46"><a href=""></a>## Common Color Mistakes</span>
-<span id="cb10-47"><a href=""></a></span>
-<span id="cb10-48"><a href=""></a>### <span class="fl">1.</span> Rainbow Color Maps</span>
-<span id="cb10-49"><a href=""></a><span class="op">-</span> Non<span class="op">-</span>uniform perceptually</span>
-<span id="cb10-50"><a href=""></a><span class="op">-</span> Create <span class="kw">false</span> boundaries</span>
-<span id="cb10-51"><a href=""></a><span class="op">-</span> Poor <span class="cf">for</span> colorblind users</span>
-<span id="cb10-52"><a href=""></a></span>
-<span id="cb10-53"><a href=""></a>### <span class="fl">2.</span> Too Many Categories</span>
-<span id="cb10-54"><a href=""></a><span class="op">-</span> Beyond <span class="dv">7</span><span class="op">-</span><span class="dv">8</span><span class="op">,</span> colors become confusable</span>
-<span id="cb10-55"><a href=""></a><span class="op">-</span> Consider grouping or filtering</span>
-<span id="cb10-56"><a href=""></a></span>
-<span id="cb10-57"><a href=""></a>### <span class="fl">3.</span> Ignoring Context</span>
-<span id="cb10-58"><a href=""></a><span class="op">-</span> Red<span class="op">/</span>green <span class="cf">for</span> good<span class="op">/</span>bad <span class="kw">in</span> finance</span>
-<span id="cb10-59"><a href=""></a><span class="op">-</span> Cultural color associations vary</span>
-<span id="cb10-60"><a href=""></a></span>
-<span id="cb10-61"><a href=""></a>### <span class="fl">4.</span> Poor Contrast</span>
-<span id="cb10-62"><a href=""></a><span class="op">-</span> Insufficient luminance difference</span>
-<span id="cb10-63"><a href=""></a><span class="op">-</span> Fails accessibility standards</span>
-<span id="cb10-64"><a href=""></a></span>
-<span id="cb10-65"><a href=""></a>## Lab Preview<span class="op">:</span> Color and Scales <span class="kw">in</span> D3</span>
-<span id="cb10-66"><a href=""></a></span>
-<span id="cb10-67"><a href=""></a>### Today<span class="st">'s Lab Activities:</span></span>
-<span id="cb10-68"><a href=""></a><span class="fl">1.</span> Implement different scale <span class="fu">types</span> (linear<span class="op">,</span> log<span class="op">,</span> time)</span>
-<span id="cb10-69"><a href=""></a><span class="fl">2.</span> Create color scales <span class="cf">for</span> different data types</span>
-<span id="cb10-70"><a href=""></a><span class="fl">3.</span> Build a choropleth map <span class="cf">with</span> sequential colors</span>
-<span id="cb10-71"><a href=""></a><span class="fl">4.</span> Design accessible categorical palettes</span>
-<span id="cb10-72"><a href=""></a><span class="fl">5.</span> Test colorblind safety</span>
-<span id="cb10-73"><a href=""></a></span>
-<span id="cb10-74"><a href=""></a>### Key Concepts to Practice<span class="op">:</span></span>
-<span id="cb10-75"><a href=""></a><span class="op">-</span> Scale domains and ranges</span>
-<span id="cb10-76"><a href=""></a><span class="op">-</span> Color interpolation methods</span>
-<span id="cb10-77"><a href=""></a><span class="op">-</span> Legends <span class="cf">for</span> color scales</span>
-<span id="cb10-78"><a href=""></a><span class="op">-</span> Interactive scale adjustments</span>
-<span id="cb10-79"><a href=""></a></span>
-<span id="cb10-80"><a href=""></a>## Putting It All Together</span>
-<span id="cb10-81"><a href=""></a></span>
-<span id="cb10-82"><a href=""></a>### Example<span class="op">:</span> Temperature Visualization</span>
-<span id="cb10-83"><a href=""></a></span>
-<span id="cb10-84"><a href=""></a><span class="vs">```javascript</span></span>
-<span id="cb10-85"><a href=""></a><span class="vs">// Temperature data with anomalies</span></span>
-<span id="cb10-86"><a href=""></a><span class="vs">const tempScale = d3.scaleDiverging()</span></span>
-<span id="cb10-87"><a href=""></a><span class="vs">  .domain([−10, 0, 10])  // Anomaly in degrees</span></span>
-<span id="cb10-88"><a href=""></a><span class="vs">  .interpolator(d3.interpolateRdBu)</span></span>
-<span id="cb10-89"><a href=""></a><span class="vs">  .clamp(true);  // Prevent extrapolation</span></span>
-<span id="cb10-90"><a href=""></a></span>
-<span id="cb10-91"><a href=""></a><span class="vs">// Apply to data</span></span>
-<span id="cb10-92"><a href=""></a><span class="vs">svg.selectAll("rect")</span></span>
-<span id="cb10-93"><a href=""></a><span class="vs">  .data(temperatureData)</span></span>
-<span id="cb10-94"><a href=""></a><span class="vs">  .enter().append("rect")</span></span>
-<span id="cb10-95"><a href=""></a><span class="vs">  .attr("fill", d =&gt; tempScale(d.anomaly))</span></span>
-<span id="cb10-96"><a href=""></a><span class="vs">  .attr("opacity", 0.8);  // Slight transparency</span></span>
-<span id="cb10-97"><a href=""></a></span>
-<span id="cb10-98"><a href=""></a><span class="vs">// Add legend</span></span>
-<span id="cb10-99"><a href=""></a><span class="vs">const legend = d3.legendColor()</span></span>
-<span id="cb10-100"><a href=""></a><span class="vs">  .scale(tempScale)</span></span>
-<span id="cb10-101"><a href=""></a><span class="vs">  .title("Temperature Anomaly (°C)");</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-14"><a href=""></a><span class="kw">const</span> piecewise <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()</span>
+<span id="cb10-15"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">50</span><span class="op">,</span> <span class="dv">100</span>])</span>
+<span id="cb10-16"><a href=""></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"#2166ac"</span><span class="op">,</span> <span class="st">"#f7f7f7"</span><span class="op">,</span> <span class="st">"#b2182b"</span>])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+<h2>Practical Color Guidelines</h2>
+<h3>For Print</h3>
+<ul>
+<li>Consider grayscale reproduction</li>
+<li>Use ColorBrewer schemes</li>
+<li>Test on actual printer</li>
+</ul>
+<h3>For Screen</h3>
+<ul>
+<li>Consider monitor variations</li>
+<li>Use sufficient contrast</li>
+<li>Test on different devices</li>
+</ul>
+<h3>For Accessibility</h3>
+<ul>
+<li>Use colorblind-safe palettes</li>
+<li>Provide alternative encodings</li>
+<li>Test with simulators</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Color Tools and Resources</h2>
+<h3>Online Tools:</h3>
+<ul>
+<li><a href="https://colorbrewer2.org">ColorBrewer</a> - Color schemes for maps</li>
+<li><a href="https://accessible-colors.com">Accessible Colors</a> - WCAG compliance</li>
+<li><a href="https://www.color-blindness.com/coblis-color-blindness-simulator/">Coblis</a> - Colorblind simulator</li>
+</ul>
+<h3>D3 Resources:</h3>
+<ul>
+<li><a href="https://github.com/d3/d3-scale-chromatic">D3 Scale Chromatic</a> - All color schemes</li>
+<li><a href="https://observablehq.com/@d3/color-schemes">Observable Color Notebooks</a> - Interactive examples</li>
+</ul>
+<h3>Research:</h3>
+<ul>
+<li><a href="http://colorbrewer2.org/learnmore/schemes_full.html">ColorBrewer Paper</a> - Harrower &amp; Brewer</li>
+<li><a href="https://www.youtube.com/watch?v=xAoljeRJ3lU">Viridis Explanation</a> - Why we need better colormaps</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Common Color Mistakes</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>1. Rainbow Color Maps</h3>
+<ul>
+<li>Non-uniform perceptually</li>
+<li>Create false boundaries</li>
+<li>Poor for colorblind users</li>
+</ul>
+<h3>2. Too Many Categories</h3>
+<ul>
+<li>Beyond 7-8, colors become confusable</li>
+<li>Consider grouping or filtering</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>3. Ignoring Context</h3>
+<ul>
+<li>Red/green for good/bad in finance</li>
+<li>Cultural color associations vary</li>
+</ul>
+<h3>4. Poor Contrast</h3>
+<ul>
+<li>Insufficient luminance difference</li>
+<li>Fails accessibility standards</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Show real examples: (1) Rainbow map - point out the artificial yellow band that appears as a boundary but isn’t in the data. (2) Too many categories - show a 20-category pie chart where you can’t distinguish colors. (3) Context - red in Western culture means “stop/bad” but in Chinese culture can mean “prosperity/good”. (4) Poor contrast - show light yellow on white background, fails WCAG standards.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Lab Preview: Color and Scales in D3</h2>
+<h3>Today’s Lab Activities:</h3>
+<ol type="1">
+<li>Implement different scale types (linear, log, time)</li>
+<li>Create color scales for different data types</li>
+<li>Build a choropleth map with sequential colors</li>
+<li>Design accessible categorical palettes</li>
+<li>Test colorblind safety</li>
+</ol>
+<h3>Key Concepts to Practice:</h3>
+<ul>
+<li>Scale domains and ranges</li>
+<li>Color interpolation methods</li>
+<li>Legends for color scales</li>
+<li>Interactive scale adjustments</li>
+</ul>
+<aside class="notes">
+<p>The lab will be hands-on with Observable notebooks. Students will see the immediate impact of different color choices. The choropleth exercise is particularly important - it combines everything: data binning, color scales, and geographic visualization. Make sure students test their palettes with the colorblind simulator. Common mistakes to watch for: using too many colors, poor contrast, and forgetting to add legends.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Putting It All Together</h2>
+<h3>Example: Temperature Visualization</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb11-1"><a href=""></a><span class="co">// Temperature data with anomalies</span></span>
+<span id="cb11-2"><a href=""></a><span class="kw">const</span> tempScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleDiverging</span>()</span>
+<span id="cb11-3"><a href=""></a>  <span class="op">.</span><span class="fu">domain</span>([−10<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>])  <span class="co">// Anomaly in degrees</span></span>
+<span id="cb11-4"><a href=""></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateRdBu</span>)</span>
+<span id="cb11-5"><a href=""></a>  <span class="op">.</span><span class="fu">clamp</span>(<span class="kw">true</span>)<span class="op">;</span>  <span class="co">// Prevent extrapolation</span></span>
+<span id="cb11-6"><a href=""></a></span>
+<span id="cb11-7"><a href=""></a><span class="co">// Apply to data</span></span>
+<span id="cb11-8"><a href=""></a>svg<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"rect"</span>)</span>
+<span id="cb11-9"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(temperatureData)</span>
+<span id="cb11-10"><a href=""></a>  <span class="op">.</span><span class="fu">enter</span>()<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb11-11"><a href=""></a>  <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="fu">tempScale</span>(d<span class="op">.</span><span class="at">anomaly</span>))</span>
+<span id="cb11-12"><a href=""></a>  <span class="op">.</span><span class="fu">attr</span>(<span class="st">"opacity"</span><span class="op">,</span> <span class="fl">0.8</span>)<span class="op">;</span>  <span class="co">// Slight transparency</span></span>
+<span id="cb11-13"><a href=""></a></span>
+<span id="cb11-14"><a href=""></a><span class="co">// Add legend</span></span>
+<span id="cb11-15"><a href=""></a><span class="kw">const</span> legend <span class="op">=</span> d3<span class="op">.</span><span class="fu">legendColor</span>()</span>
+<span id="cb11-16"><a href=""></a>  <span class="op">.</span><span class="fu">scale</span>(tempScale)</span>
+<span id="cb11-17"><a href=""></a>  <span class="op">.</span><span class="fu">title</span>(<span class="st">"Temperature Anomaly (°C)"</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+<h2>Color Gamut and Display Limitations</h2>
+<h3>Not All Colors Are Equal</h3>
+<p><strong>Display Constraints:</strong></p>
+<ul>
+<li><strong>sRGB</strong>: Standard web/monitor gamut (most limited)</li>
+<li><strong>Adobe RGB</strong>: Wider gamut for professional displays</li>
+<li><strong>P3</strong>: Modern displays (iPhone, Mac)</li>
+<li><strong>Print CMYK</strong>: Different gamut than screens</li>
+</ul>
+<p><strong>Practical Implications:</strong></p>
+<ul>
+<li>Highly saturated colors may not reproduce</li>
+<li>Test on target devices</li>
+<li>Provide fallbacks for older displays</li>
+<li>Consider print requirements early</li>
+</ul>
+<aside class="notes">
+<p>This is often overlooked but critical for professional work. That beautiful saturated blue might look gray on older monitors. Print has completely different limitations - vibrant screen colors often look dull on paper. Always test your visualizations on the actual delivery medium. For web, stick to sRGB color space for maximum compatibility.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Summary</h2>
@@ -701,6 +1098,19 @@ Claudio Silva
 <li>Always consider colorblindness</li>
 <li>Test in context</li>
 </ul>
+<aside class="notes">
+<p>Key takeaways: Color is powerful but complex. The biology of vision constrains our design choices. Always start with the right scale type for your data (sequential/diverging/categorical). Use perceptually uniform color spaces for interpolation. Test with colorblind simulators. Remember that color is just one channel - combine with other encodings for critical information. Most importantly: less is often more with color.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Next Week: Deceptive Visualizations</h2>
@@ -719,17 +1129,69 @@ Claudio Silva
 </ul>
 </section>
 <section class="slide level2">
-<h2>Reading for Next Week</h2>
-<h3>Required:</h3>
+<h2>Required Readings</h2>
+<h3>Core Papers &amp; Resources</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong><a href="https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/">Which Color Scale to Use</a></strong> <em>Lisa Charlotte Rost, Datawrapper Blog</em></p>
 <ul>
-<li><a href="https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/">Which color scale to use</a> - Lisa Charlotte Rost</li>
-<li><a href="https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/color/szafir2017modeling.pdf">Modeling Color Difference</a> - Danielle Szafir 2017</li>
-<li><a href="https://observablehq.com/@d3/color-schemes">D3 Scale Chromatic</a> - Observable notebook</li>
+<li>Practical guide to choosing color scales</li>
+<li>Covers sequential, diverging, and categorical palettes</li>
+<li>Real-world examples from data journalism</li>
+<li>Interactive examples you can modify</li>
 </ul>
-<h3>Optional:</h3>
+<p><strong><a href="https://ieeexplore.ieee.org/document/8031043">Modeling Color Difference</a></strong> <em>Szafir, D.A. (2017). IEEE TVCG</em></p>
 <ul>
-<li><a href="http://idl.cs.washington.edu/papers/quantitative-color/">Somewhere Over the Rainbow</a> - Liu &amp; Heer 2018</li>
-<li><a href="https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/color/Brewer_1994b.pdf">Color Use Guidelines</a> - Cynthia Brewer 1994</li>
+<li>Empirical study of color perception in visualization</li>
+<li>Shows RGB interpolation problems</li>
+<li>Proposes perceptually-uniform color models</li>
+<li>Critical for understanding why we use LAB/HCL</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong><a href="https://observablehq.com/@d3/color-schemes">D3 Scale Chromatic</a></strong> <em>Observable Interactive Notebook</em></p>
+<ul>
+<li>Live code examples of all D3 color schemes</li>
+<li>Interactive comparisons between scales</li>
+<li>Copy-paste ready code snippets</li>
+<li>Includes accessibility information</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>These three readings form the foundation: Rost gives practical advice, Szafir provides the science behind perceptual uniformity, and the Observable notebook gives hands-on practice. Students should spend most time on the Observable notebook - actually trying the code.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Optional Readings</h2>
+<h3>Advanced Color Theory</h3>
+<p><strong><a href="https://idl.cs.washington.edu/papers/quantitative-color/">Somewhere Over the Rainbow</a></strong> <em>Liu, Y. &amp; Heer, J. (2018). CHI 2018</em></p>
+<ul>
+<li>Large-scale empirical study (n=9,871 participants)</li>
+<li>Quantifies effectiveness of different color scales</li>
+<li>Proves why rainbow colormaps are problematic</li>
+<li>Recommendations: single-hue and multi-hue scales outperform rainbow</li>
+</ul>
+<p><strong><a href="https://www.personal.psu.edu/cab38/ColorSch/Schemes.html">Color Use Guidelines for Mapping</a></strong> <em>Brewer, C.A. (1994). Cartography and GIS</em></p>
+<ul>
+<li>Foundation of ColorBrewer tool</li>
+<li>Systematic approach to color selection</li>
+<li>Addresses print, screen, and colorblind considerations</li>
+<li>Still the definitive reference 30 years later</li>
+</ul>
+<p><strong><a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">The Viridis Color Palettes</a></strong> <em>Garnier et al.&nbsp;(2021)</em></p>
+<ul>
+<li>Story behind the most popular scientific colormap</li>
+<li>Perceptually uniform, colorblind-safe, print-friendly</li>
+<li>Mathematical derivation and testing methodology</li>
 </ul>
 
 </section>
@@ -923,7 +1385,7 @@ Claudio Silva
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -997,13 +1459,14 @@ Claudio Silva
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

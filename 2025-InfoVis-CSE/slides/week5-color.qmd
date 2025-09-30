@@ -6,7 +6,7 @@ institute: "NYU Tandon School of Engineering"
 date: "October 3, 2025"
 format:
   revealjs:
-    theme: [default, custom.scss]
+    theme: [default, custom.scss, lab-light-theme.css]
     slide-number: c/t
     show-slide-number: all
     hash-type: number
@@ -21,22 +21,29 @@ format:
 
 ## Color Theory and D3 Scales
 
+### Today's Journey
+**Biology/Physics** → **Perception Theory** → **Design Principles** → **D3 Implementation** → **Best Practices**
+
 :::: {.columns}
 ::: {.column width="50%"}
-### Color Theory
+### Part 1: Color Theory
 - Physics and physiology of color
+- How humans perceive color
 - Color spaces and models
-- Color scales for data
-- Accessibility considerations
+- Perceptual principles
 :::
 ::: {.column width="50%"}
-### D3 Scales Deep Dive
-- Linear and ordinal scales
+### Part 2: D3 Implementation
 - Color scales in D3
-- Time scales
-- Advanced scale techniques
+- Sequential, diverging, categorical
+- Interpolation methods
+- Accessibility and best practices
 :::
 ::::
+
+::: {.notes}
+This lecture bridges the gap between the science of color perception and practical implementation in D3. We follow a logical progression: First understanding the biology and physics (WHY colors work the way they do), then perception theory (HOW humans process color), then design principles (WHAT makes effective color choices), then D3 implementation (HOW to code it), and finally best practices (WHEN to use each approach). This foundation is crucial - without understanding how humans perceive color, you'll make poor design decisions.
+:::
 
 ## Color in Nature
 
@@ -48,11 +55,19 @@ Vasas et al, PLOS Biology, 2024
 Image from [PLOS Biology](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002444)
 :::
 
+::: {.notes}
+Start with how color evolved in nature for communication and survival. Animals use color for warning signals, mating displays, and camouflage. This sets the stage for understanding that color perception is biological and varies across species - humans see differently than birds or bees.
+:::
+
 ## The Visible Spectrum
 
 ![](figs/color/visiblespectrum.jpg){width="80%"}
 
 Humans perceive wavelengths from approximately 390-700nm
+
+::: footer
+Gregory, R.L. (1997). *Eye and Brain: The Psychology of Seeing* (5th ed.). Princeton University Press.
+:::
 
 ## Properties of Light
 
@@ -69,17 +84,29 @@ Humans perceive wavelengths from approximately 390-700nm
   - Brightness → **Lightness**
   - Purity → **Saturation**
 
+::: {.notes}
+Key insight: Our eyes handle an enormous dynamic range (100,000:1) through adaptation. This is why absolute luminance values aren't as important as relative contrasts in visualization. The three properties (hue, lightness, saturation) form the basis of the HLS color model, which is more intuitive than RGB for design work. Note that computer screens can only display about 1000:1 contrast ratio, far less than what we can perceive.
+:::
+
 ## Physiology of the Eye
 
 ![](figs/color/physiology-eye.jpg){width="70%"}
 
 Light passes through cornea, pupil, lens, and reaches the retina
 
+::: footer
+Gregory, R.L. (1997). *Eye and Brain: The Psychology of Seeing* (5th ed.). Princeton University Press.
+:::
+
 ## The Retina Structure
 
 ![](figs/color/retina.jpg){width="70%"}
 
 Multiple layers of cells process visual information before sending to brain
+
+::: footer
+Gregory, R.L. (1997). *Eye and Brain: The Psychology of Seeing* (5th ed.). Princeton University Press.
+:::
 
 ## Photoreceptors: Rods and Cones
 
@@ -101,7 +128,11 @@ Multiple layers of cells process visual information before sending to brain
 Three types of cones: S (short/blue), M (medium/green), L (long/red)
 
 ::: footer
-Image from [WR Franklin](https://wrfranklin.org/Teaching/graphics-f2019/files/stone_colors.pdf)
+Stone, M. (2003). *A Field Guide to Digital Color*. A.K. Peters.
+:::
+
+::: {.notes}
+Critical slide! This is the foundation of trichromatic color theory. Note the overlapping sensitivity curves - this is why we can't see "pure" wavelengths. The brain interprets the relative activation of all three cone types. Point out that the L and M curves are very close, which is why red-green colorblindness is most common.
 :::
 
 ## Density of Cones Across Retina
@@ -110,11 +141,19 @@ Image from [WR Franklin](https://wrfranklin.org/Teaching/graphics-f2019/files/st
 
 Highest density in fovea (center of vision)
 
+::: footer
+Gregory, R.L. (1997). *Eye and Brain: The Psychology of Seeing* (5th ed.). Princeton University Press.
+:::
+
 ## Rods vs. Cones Sensitivity
 
 ![](figs/color/cones-and-rods-sensitivity.jpg){width="70%"}
 
 Rods more sensitive in low light; cones provide color vision
+
+::: footer
+Gregory, R.L. (1997). *Eye and Brain: The Psychology of Seeing* (5th ed.). Princeton University Press.
+:::
 
 ## How We Perceive Color
 
@@ -122,11 +161,19 @@ Rods more sensitive in low light; cones provide color vision
 
 Color perception results from brain's interpretation of cone responses
 
+::: footer
+Stone, M. (2003). *A Field Guide to Digital Color*. A.K. Peters.
+:::
+
 ## Color Matching Experiments
 
 ![](figs/color/color-matching-experiments.jpg){width="70%"}
 
 Foundation of color theory: any color can be matched with three primaries
+
+::: footer
+Stone, M. (2003). *A Field Guide to Digital Color*. A.K. Peters.
+:::
 
 ## Color Models for Visualization
 
@@ -134,12 +181,37 @@ Foundation of color theory: any color can be matched with three primaries
 Humans perceive colors through three channels
 
 ### Most useful color description for visualization:
+
 - **Hue**: What color (red, blue, green...)
 - **Saturation**: Purity of color
 - **Luminance/Lightness**: Brightness
 
 ::: footer
 Material from Enrico Bertini
+:::
+
+::: {.notes}
+This is where we transition from biology to design principles. These three dimensions map to how we actually think about color. Luminance is the strongest channel for ordered data (we easily see light-to-dark progression). Hue is best for categorical distinctions (red vs blue vs green). Saturation is the weakest channel - hard to judge precise values. This hierarchy guides our encoding choices.
+:::
+
+## Just Noticeable Difference (JND)
+
+### The smallest detectable difference in a stimulus
+
+**For Color:**
+
+- **Luminance**: ~1-2% change detectable
+- **Hue**: Varies by wavelength (most sensitive in blue-green)
+- **Saturation**: ~5-10% change needed
+
+**Implications for Visualization:**
+
+- Need sufficient steps between colors in a scale
+- Can't encode too many distinct values
+- Background affects perception (simultaneous contrast)
+
+::: {.notes}
+JND is fundamental to color scale design. It determines how many distinct values you can encode. For continuous scales, you want steps larger than JND to be clearly distinguishable. This is why we can only reliably encode about 5-7 distinct colors, or about 7-10 distinct luminance levels. The background color affects JND - a color that's distinguishable on white might not be on gray.
 :::
 
 ## How Do We Use Color in Visualization?
@@ -184,6 +256,7 @@ Material from Enrico Bertini
 ## Quantitative Color Scales
 
 ### Desired Properties:
+
 - **Uniformity**: Value difference = Perceived difference
 - **Discriminability**: As many distinct values as possible
 
@@ -192,6 +265,10 @@ Human perception is non-linear!
 
 ::: footer
 Material from Enrico Bertini
+:::
+
+::: {.notes}
+This is a key insight students often miss. Equal steps in RGB values don't produce equal perceptual steps. This is why we need perceptually uniform color spaces like LAB or HCL. Use the example of yellow appearing brighter than blue even at the same RGB intensity.
 :::
 
 ## Single Hue Sequential Scales
@@ -220,6 +297,7 @@ For nominal/categorical data without inherent order
 ![](figs/color/categorical-color-scale.jpg){width="70%"}
 
 ### Design Goals:
+
 - **Uniform saliency**: Nothing stands out unintentionally
 - **Maximum discriminability**: Each category clearly distinct
 
@@ -234,14 +312,17 @@ Material from Enrico Bertini
 Research suggests: **5-10 distinct categories maximum**
 
 Beyond this limit:
+
 - Colors become confusable
 - Need additional encoding (shape, pattern)
 - Consider grouping categories
 
-*Reference: Healey, "Choosing effective colours for data visualization" IEEE Vis 1996*
-
 ::: footer
-Material from Enrico Bertini
+Healey, C.G. (1996). [Choosing effective colours for data visualization](https://ieeexplore.ieee.org/document/567774). IEEE Visualization '96, pp. 263-270.
+:::
+
+::: {.notes}
+Healey's research showed that pre-attentive processing (instant recognition) breaks down beyond 5-7 colors. With careful design, you might push to 10-12, but users will need legends and more cognitive effort. When you have more categories, consider: (1) grouping into super-categories with sub-hues, (2) highlighting only important categories and graying others, or (3) using interaction to filter.
 :::
 
 ## Diverging Color Scales
@@ -263,6 +344,60 @@ Diverging scale clearly shows above/below threshold
 Data from [County Level Election Results](https://github.com/tonmcg/County_Level_Election_Results_12-16)
 :::
 
+::: {.notes}
+Perfect example of why choosing the right scale matters! The left map makes it hard to see which counties voted majority Republican vs Democrat. The diverging scale immediately reveals the pattern. Other good use cases: temperature anomalies (above/below average), profit/loss, survey responses (agree/disagree). Key insight: the midpoint should be meaningful, not arbitrary.
+:::
+
+## Color Context Effects
+
+### Simultaneous Contrast
+The same color appears different depending on surrounding colors
+
+**Key Effects:**
+
+- Colors appear lighter on dark backgrounds
+- Colors appear more saturated next to gray
+- Complementary colors enhance each other
+
+**Design Implications:**
+
+- Test colors in context, not isolation
+- Be consistent with backgrounds
+- Use borders/whitespace to separate regions
+- Consider the whole visualization, not just the palette
+
+::: {.notes}
+This is why color palettes that look good in a swatch panel might fail in your visualization. The classic example: a gray square looks yellowish on a blue background and bluish on a yellow background. For maps, this means adjacent regions can affect color perception. Solution: add thin white borders between regions, or test your palette with actual data patterns.
+:::
+
+## Semantic Color Associations
+
+### Cultural and Contextual Meanings
+
+:::: {.columns}
+::: {.column width="50%"}
+**Universal Associations:**
+
+- Red: Heat, danger, stop
+- Blue: Cold, water, calm
+- Green: Nature, growth, go
+- Yellow: Caution, energy
+:::
+
+::: {.column width="50%"}
+**Domain-Specific:**
+
+- Finance: Red = loss, Green = profit
+- Politics: Red/Blue = parties (varies by country!)
+- Temperature: Blue = cold, Red = hot
+- Health: Red = critical, Yellow = warning, Green = normal
+:::
+::::
+
+::: {.notes}
+Leverage semantic associations when they help, but be aware they're not universal. In China, red means prosperity. In finance, Western markets use red for losses, but East Asian markets use red for gains! Always consider your audience. Sometimes you should intentionally break conventions - use blue for hot if you're showing cooling needs, not temperature.
+:::
+
 ## Color Blindness Considerations
 
 ~10% of males and ~1% of females have color vision deficiencies
@@ -270,7 +405,11 @@ Data from [County Level Election Results](https://github.com/tonmcg/County_Level
 ![](figs/color/color-blindness.jpg){width="80%"}
 
 ::: footer
-Oliveira, "Towards More Accessible Visualizations for Color-Vision-Deficient Individuals" 2013
+Oliveira, M. "Towards More Accessible Visualizations for Color-Vision-Deficient Individuals" Computing in Science & Engineering, 2013
+:::
+
+::: {.notes}
+Emphasize that this means in a typical classroom, 2-3 students likely have some form of color vision deficiency. Red-green is most common (deuteranopia and protanopia). Always design with this in mind - use redundant encoding (shape, pattern) and test with simulators. The Viridis colormap was specifically designed to be perceptually uniform AND colorblind-safe.
 :::
 
 ## Color Spaces
@@ -290,6 +429,10 @@ Oliveira, "Towards More Accessible Visualizations for Color-Vision-Deficient Ind
 - Better for interpolation
 - Used in professional design
 
+::: {.notes}
+Critical concept: RGB is how devices work, but not how humans perceive. Equal steps in RGB space don't produce equal perceptual steps - this is why RGB interpolation looks muddy. HSL is better for picking colors manually but still has issues (yellow appears brighter than blue at same L value). LAB/LCH are based on human perception studies and produce smooth gradients. Always use LAB or HCL for color interpolation in visualizations.
+:::
+
 ## Perceptual Color Spaces
 
 ### Why Perceptual Uniformity Matters
@@ -306,6 +449,10 @@ d3.interpolateLab("red", "blue")
 // HCL even better for many visualizations
 d3.interpolateHcl("red", "blue")
 ```
+
+::: {.notes}
+Demo this live if possible! RGB interpolation between red and blue passes through muddy purple. LAB maintains brightness consistency. HCL (Hue-Chroma-Luminance) follows the color wheel, producing vibrant intermediates. For diverging scales, HCL is often best. For sequential scales, LAB works well. The key is that perceptual uniformity means your data differences map linearly to perceived color differences.
+:::
 
 ## D3 Color Scales
 
@@ -324,6 +471,7 @@ const viridisScale = d3.scaleSequential()
 ```
 
 ### Built-in Color Schemes:
+
 - Blues, Greens, Reds, Purples, Oranges, Greys
 - Viridis, Inferno, Magma, Plasma (perceptually uniform)
 
@@ -341,6 +489,7 @@ const divergingScale = d3.scaleDiverging()
 ```
 
 Perfect for:
+
 - Temperature anomalies
 - Election results
 - Profit/loss
@@ -362,23 +511,41 @@ const categoryScale = d3.scaleOrdinal()
 // schemePaired - 12 colors (paired)
 ```
 
+::: {.notes}
+Important: schemeSet1 is colorblind-safe but has very saturated colors that can be overwhelming. schemeSet2 is better for professional presentations. schemePaired is great when you have natural pairs in your data (e.g., before/after, male/female). Always test your chosen scheme with actual data - what looks good in isolation may not work with your specific visualization.
+:::
+
 ## Color Scale Best Practices
 
+:::: {.columns}
+::: {.column width="50%"}
 ### Sequential Data
+
 ✅ Use single or multi-hue sequential
+
 ❌ Don't use rainbow scales
 
 ### Categorical Data
-✅ Use distinct hues with similar saturation/lightness
-❌ Don't use more than ~8 categories
 
+✅ Use distinct hues with similar saturation/lightness
+
+❌ Don't use more than ~8 categories
+:::
+
+::: {.column width="50%"}
 ### Diverging Data
+
 ✅ Use when there's a meaningful midpoint
+
 ❌ Don't use for purely positive data
 
 ### Accessibility
+
 ✅ Test with colorblind simulators
+
 ✅ Provide redundant encoding when possible
+:::
+::::
 
 ## Advanced D3 Scales
 
@@ -403,6 +570,10 @@ const sqrtScale = d3.scaleSqrt()  // same as scalePow().exponent(0.5)
   .range([0, width]);
 ```
 
+::: {.notes}
+These scales transform your data space. Time scales understand JavaScript dates and create nice tick marks at meaningful intervals (days, months, years). Log scales are essential for data with large ranges - use when data spans multiple orders of magnitude. Square root scales (and other power scales) are useful for circle areas - since area grows with radius squared, sqrt scale makes area proportional to data value.
+:::
+
 ## Quantized Scales
 
 Transform continuous domains into discrete ranges
@@ -423,6 +594,10 @@ const thresholdScale = d3.scaleThreshold()
   .domain([30, 70])
   .range(["cold", "comfortable", "hot"]);
 ```
+
+::: {.notes}
+Critical for choropleth maps and binned visualizations. Quantize creates equal-width bins (like a histogram). Quantile creates bins with equal numbers of data points - useful for skewed distributions. Threshold gives you complete control over breakpoints - use for meaningful boundaries like freezing point, poverty line, etc. Always show the binning method in your legend!
+:::
 
 ## Color Interpolation
 
@@ -461,7 +636,12 @@ const customDiverging = d3.scaleDiverging()
     : d3.interpolateHcl("#f7f7f7", "#053061")((t - 0.5) * 2));
 
 // Piecewise scale
-const piecewise = d3.scaleLi ## Practical Color Guidelines
+const piecewise = d3.scaleLinear()
+  .domain([0, 50, 100])
+  .range(["#2166ac", "#f7f7f7", "#b2182b"]);
+```
+
+## Practical Color Guidelines
 
 ### For Print
 - Consider grayscale reproduction
@@ -495,6 +675,8 @@ const piecewise = d3.scaleLi ## Practical Color Guidelines
 
 ## Common Color Mistakes
 
+:::: {.columns}
+::: {.column width="50%"}
 ### 1. Rainbow Color Maps
 - Non-uniform perceptually
 - Create false boundaries
@@ -503,7 +685,9 @@ const piecewise = d3.scaleLi ## Practical Color Guidelines
 ### 2. Too Many Categories
 - Beyond 7-8, colors become confusable
 - Consider grouping or filtering
+:::
 
+::: {.column width="50%"}
 ### 3. Ignoring Context
 - Red/green for good/bad in finance
 - Cultural color associations vary
@@ -511,6 +695,12 @@ const piecewise = d3.scaleLi ## Practical Color Guidelines
 ### 4. Poor Contrast
 - Insufficient luminance difference
 - Fails accessibility standards
+:::
+::::
+
+::: {.notes}
+Show real examples: (1) Rainbow map - point out the artificial yellow band that appears as a boundary but isn't in the data. (2) Too many categories - show a 20-category pie chart where you can't distinguish colors. (3) Context - red in Western culture means "stop/bad" but in Chinese culture can mean "prosperity/good". (4) Poor contrast - show light yellow on white background, fails WCAG standards.
+:::
 
 ## Lab Preview: Color and Scales in D3
 
@@ -526,6 +716,10 @@ const piecewise = d3.scaleLi ## Practical Color Guidelines
 - Color interpolation methods
 - Legends for color scales
 - Interactive scale adjustments
+
+::: {.notes}
+The lab will be hands-on with Observable notebooks. Students will see the immediate impact of different color choices. The choropleth exercise is particularly important - it combines everything: data binning, color scales, and geographic visualization. Make sure students test their palettes with the colorblind simulator. Common mistakes to watch for: using too many colors, poor contrast, and forgetting to add legends.
+:::
 
 ## Putting It All Together
 
@@ -551,6 +745,28 @@ const legend = d3.legendColor()
   .title("Temperature Anomaly (°C)");
 ```
 
+## Color Gamut and Display Limitations
+
+### Not All Colors Are Equal
+
+**Display Constraints:**
+
+- **sRGB**: Standard web/monitor gamut (most limited)
+- **Adobe RGB**: Wider gamut for professional displays
+- **P3**: Modern displays (iPhone, Mac)
+- **Print CMYK**: Different gamut than screens
+
+**Practical Implications:**
+
+- Highly saturated colors may not reproduce
+- Test on target devices
+- Provide fallbacks for older displays
+- Consider print requirements early
+
+::: {.notes}
+This is often overlooked but critical for professional work. That beautiful saturated blue might look gray on older monitors. Print has completely different limitations - vibrant screen colors often look dull on paper. Always test your visualizations on the actual delivery medium. For web, stick to sRGB color space for maximum compatibility.
+:::
+
 ## Summary
 
 ### Color Theory:
@@ -569,6 +785,10 @@ const legend = d3.legendColor()
 - Always consider colorblindness
 - Test in context
 
+::: {.notes}
+Key takeaways: Color is powerful but complex. The biology of vision constrains our design choices. Always start with the right scale type for your data (sequential/diverging/categorical). Use perceptually uniform color spaces for interpolation. Test with colorblind simulators. Remember that color is just one channel - combine with other encodings for critical information. Most importantly: less is often more with color.
+:::
+
 ## Next Week: Deceptive Visualizations
 
 ### Topics:
@@ -582,13 +802,67 @@ const legend = d3.legendColor()
 - Tufte Chapter 2: "Graphical Integrity"
 - "Truncating the Y-Axis: Threat or Menace?"
 
-## Reading for Next Week
+## Required Readings
 
-### Required:
-- [Which color scale to use](https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/) - Lisa Charlotte Rost
-- [Modeling Color Difference](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/color/szafir2017modeling.pdf) - Danielle Szafir 2017
-- [D3 Scale Chromatic](https://observablehq.com/@d3/color-schemes) - Observable notebook
+### Core Papers & Resources
 
-### Optional:
-- [Somewhere Over the Rainbow](http://idl.cs.washington.edu/papers/quantitative-color/) - Liu & Heer 2018
-- [Color Use Guidelines](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/color/Brewer_1994b.pdf) - Cynthia Brewer 1994
+:::: {.columns}
+::: {.column width="50%"}
+**[Which Color Scale to Use](https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/)**
+*Lisa Charlotte Rost, Datawrapper Blog*
+
+- Practical guide to choosing color scales
+- Covers sequential, diverging, and categorical palettes
+- Real-world examples from data journalism
+- Interactive examples you can modify
+
+**[Modeling Color Difference](https://ieeexplore.ieee.org/document/8031043)**
+*Szafir, D.A. (2017). IEEE TVCG*
+
+- Empirical study of color perception in visualization
+- Shows RGB interpolation problems
+- Proposes perceptually-uniform color models
+- Critical for understanding why we use LAB/HCL
+:::
+
+::: {.column width="50%"}
+**[D3 Scale Chromatic](https://observablehq.com/@d3/color-schemes)**
+*Observable Interactive Notebook*
+
+- Live code examples of all D3 color schemes
+- Interactive comparisons between scales
+- Copy-paste ready code snippets
+- Includes accessibility information
+:::
+::::
+
+::: {.notes}
+These three readings form the foundation: Rost gives practical advice, Szafir provides the science behind perceptual uniformity, and the Observable notebook gives hands-on practice. Students should spend most time on the Observable notebook - actually trying the code.
+:::
+
+## Optional Readings
+
+### Advanced Color Theory
+
+**[Somewhere Over the Rainbow](https://idl.cs.washington.edu/papers/quantitative-color/)**
+*Liu, Y. & Heer, J. (2018). CHI 2018*
+
+- Large-scale empirical study (n=9,871 participants)
+- Quantifies effectiveness of different color scales
+- Proves why rainbow colormaps are problematic
+- Recommendations: single-hue and multi-hue scales outperform rainbow
+
+**[Color Use Guidelines for Mapping](https://www.personal.psu.edu/cab38/ColorSch/Schemes.html)**
+*Brewer, C.A. (1994). Cartography and GIS*
+
+- Foundation of ColorBrewer tool
+- Systematic approach to color selection
+- Addresses print, screen, and colorblind considerations
+- Still the definitive reference 30 years later
+
+**[The Viridis Color Palettes](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)**
+*Garnier et al. (2021)*
+
+- Story behind the most popular scientific colormap
+- Perceptually uniform, colorblind-safe, print-friendly
+- Mathematical derivation and testing methodology
