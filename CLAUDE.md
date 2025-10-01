@@ -1,93 +1,44 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working with Claudio Silva's academic website (Jekyll/GitHub Pages at ctsilva.github.io).
 
-## Overview
+## Quick Commands
 
-This is an academic personal website for Claudio Silva built using Jekyll and the Academic Pages template (forked from Minimal Mistakes theme). The site is hosted on GitHub Pages at ctsilva.github.io.
-
-## Development Commands
-
-### Local Development Setup (First Time)
 ```bash
-# Install dependencies locally (without sudo)
+# Setup
 bundle install --path vendor/bundle
-```
 
-### Running the Local Server
-```bash
-# Run Jekyll server locally with auto-rebuild
+# Local server (http://127.0.0.1:4000/)
 bundle exec jekyll liveserve
 
-# Alternative serve command (without live reload)
-bundle exec jekyll serve
-
-# Server will be available at http://127.0.0.1:4000/
-# Course pages at http://127.0.0.1:4000/2025-InfoVis-CSE/
-
-# Note: Use 127.0.0.1 instead of localhost if localhost doesn't work
-```
-
-### Other Commands
-```bash
-# Clean build directory
-bundle clean
-```
-
-### JavaScript Build Commands
-```bash
-# Build/minify JavaScript
+# JavaScript build
 npm run build:js
-# or
-npm run uglify
-
-# Watch JavaScript files for changes
-npm run watch:js
 ```
 
-## Architecture & Structure
+### Mermaid Diagrams (for Quarto slides)
+```bash
+# Setup
+npm install -g @mermaid-js/mermaid-cli
 
-### Core Jekyll Collections
-The site uses Jekyll collections for organizing content:
-- **_publications**: Academic publications
-- **_talks**: Presentations and talks  
-- **_teaching**: Teaching materials
-- **_portfolio**: Project portfolio items
-- **_posts**: Blog posts
-- **_pages**: Static pages (about, cv, news, etc.)
+# Generate PNGs from .mmd files
+cd 2025-VisML-CSE/slides
+python3 render_mermaid.py
 
-#### Publications Management
-The publications are maintained in `_pages/publications.md` with the following structure:
-- **Selected Recent Publications (2023-2025)**: Highlight reel of recent work with full links
-- **Award-Winning Publications**: Chronologically organized by year (2024→1996) with comprehensive link coverage
-- **Consistent formatting**: All journal extensions use "Invited journal extension of [Original Award]" terminology
-- **Complete link coverage**: IEEE Xplore, ResearchGate, NYU Scholars, arXiv, PDFs, and other academic sources
-- **Proper chronological ordering**: Publications flow from newest (2024) to oldest (1996) without duplicates
+# Manual generation
+mmdc -i input.mmd -o output.png -w 800 -H 600 -t default -b transparent
+```
+**Note**: Always use PNG generation for RevealJS slides (inline mermaid doesn't render reliably).
 
-#### Media Coverage Management
-The media coverage is maintained in `_pages/news.md` with the following structure:
-- **Chronological organization**: Coverage from 2024 → 2015 with clear year sections
-- **Resilient linking strategy**: Multiple access methods including original URLs, archive links, and search guidance
-- **Featured highlights**: Key stories prominently displayed on main page (PaleoScan, Statcast 10-year, NYC shadows, SONYC)
-- **Comprehensive coverage**: Major outlets including NYT, Smithsonian, The Economist, Forbes, etc.
-- **Search fallbacks**: Each entry includes search terms to help users find articles even if URLs change
-- **Future-proof approach**: Designed to handle link decay and media website changes over time
+## Site Structure
 
-### Key Configuration
-- **_config.yml**: Main Jekyll configuration with site metadata, author info, and collection settings
-- **_config.dev.yml**: Development-specific configuration overrides
+### Jekyll Collections
+- `_publications`, `_talks`, `_teaching`, `_portfolio`, `_posts`, `_pages`
+- Publications in `_pages/publications.md` (chronological 2024→1996)
+- Media coverage in `_pages/news.md` (resilient linking with search fallbacks)
 
-### Content Generation
-The `markdown_generator/` directory contains Python scripts and Jupyter notebooks for generating markdown files from TSV/BibTeX data:
-- `publications.py/ipynb`: Generate publication pages from TSV
-- `pubsFromBib.py/PubsFromBib.ipynb`: Generate publication pages from BibTeX
-- `talks.py/ipynb`: Generate talk pages from TSV
-
-### Theme Structure
-- **_sass/**: SCSS stylesheets
-- **_layouts/**: Jekyll page layouts
-- **_includes/**: Reusable HTML components
-- **assets/**: JavaScript, CSS, and other static assets
+### Key Files
+- `_config.yml`: Main configuration
+- `markdown_generator/`: Scripts for generating content from TSV/BibTeX
 
 ### Course Websites
 The repository includes complete course websites as subdirectories:
@@ -95,740 +46,76 @@ The repository includes complete course websites as subdirectories:
 - **2025-InfoVis-CSE**: Information Visualization course website (Fall 2025, NYU Tandon) - CS-GY 6313 ✅ **Week 3 COMPLETE**
 - **2025-VisML-CSE**: Visualization for Machine Learning course website (Fall 2025, NYU Tandon) - CS-GY 9223 🎉 **100% READY**
 
-#### VisML Course Structure (2025-VisML-CSE)
-- **Course Code**: CS-GY 9223 Section N - Selected Topics in CS: Visualization for Machine Learning
-- **Schedule**: Mondays 5:00 PM - 7:30 PM, Fall 2025 (Sept 2 - Dec 11)
-- **Location**: Jacobs Hall, 6 Metrotech Room 473, Brooklyn Campus
-- **Make-up Class**: Tuesday, October 14 (for Fall Break)
-- **Status**: ✅ **Week 5 COMPLETE** - White-box Model Interpretation ready for Sept 29, 2025 class
-- **Lab Status**: ✅ **Week 5 Lab COMPLETE** - Created by Parikshit Solunke, covers GAMs and Decision Trees
+#### 2025-VisML-CSE (CS-GY 9223)
+- **Schedule**: Mondays 5-7:30PM (Sept 2-Dec 11), Room 473
+- **Status**: Week 5 COMPLETE (including lab by Parikshit Solunke)
 - **Discord**: https://discord.gg/dyHSFN65
+- **Materials**: week2-intro, week2-infovis, week2-lab, week4-model-assessment, week5-white-box
 
-##### Week 2 Materials (Sept 8, 2025) - COMPLETE:
-- **week2-intro.qmd/html**: Course introduction, syllabus, logistics (363 lines)
-  - Course overview and policies
-  - Assessment structure and timeline  
-  - Academic integrity and AI policy
-  - All syntax issues resolved, renders without warnings
-- **week2-infovis.qmd/html**: Information visualization fundamentals (730+ lines)
-  - Complete InfoVis theory with Power of Visualization examples
-  - All 31 required figures copied and verified
-  - Data types, encodings, tidy data principles
-  - Graphical perception and effectiveness principles
-- **week2-lab.qmd/html**: Vega-Lite hands-on lab activities
-  - Observable notebooks and development environment setup
-  - Basic visualization creation exercises
-  - **Projector-optimized**: Light code backgrounds for classroom visibility
-- **figs/**: Complete figure collection (34 total)
-  - All Cleveland McGill research examples
-  - Complete chart gallery (bar, line, scatter, matrix, symbol maps)  
-  - Tidy data transformation examples
-  - Visual encoding channels and marks
-  - Historical examples (Snow cholera, Minard Napoleon, NYT dialect)
 
-##### Content Sources and Figure Locations:
-- **InfoVis fundamentals**: Migrated from 2025-InfoVis-CSE with complete figure set
-- **Course logistics**: Adapted from previous VisML courses with Fall 2025 updates
-- **Figure assets**: Collected from 2025-InfoVis-CSE and 2024-VisML-CDS repositories
-- **Lab materials**: Adapted from InfoVis Vega-Lite exercises
 
-##### Design Principles for Sustainable Course Materials:
-- **Date-neutral language**: All content uses specific dates (e.g., "Sept 8") rather than relative terms ("Today", "Next Week")
-  - **Rationale**: Avoids outdated language as semester progresses, maintains professional appearance
-  - **Implementation**: Replaced "Today's Class" → "Week 2 (Sept 8)", "Today's Lab Activities" → "Lab Activities"
-- **Evergreen content**: Materials remain accurate regardless of current date
-- **Projector-friendly design**: Light backgrounds for code blocks ensure classroom visibility
-- **Professional presentation**: Consistent, timeless language maintains quality over time
-- **Future-proof structure**: Content can be reused in future semesters without modification
 
-##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
-- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (850+ lines)
-  - Complete migration from 2024-VisML-CDS with duplicate slide removed
-  - Comprehensive speaker notes throughout for teaching preparation (added to all slides)
-  - Enhanced content depth with additional explanations and context
-  - Projector-friendly code styling with light backgrounds for classroom visibility
-  - Complete figure collection (39 images) from confusion matrices to calibration
-- **figs/model_assessment_figs/**: Complete visual asset library (39 files)
-  - Confusion matrix examples and extended matrices
-  - ROC curves, AUC examples, and multiclass ROC demonstrations
-  - Visual analytics systems screenshots (Squares, Alsallakh, Neo, EnsembleMatrix)
-  - Complete calibration content: reliability diagrams, proper scoring rules, calibration techniques
-  - Modern research examples: Calibrate (2023), Smooth ECE, neural network calibration
-- **lab-light-theme.css**: Projector-optimized styling for code blocks
+### Course Material Enhancement Workflow
 
-##### Content Sources and Improvements:
-- **Base content**: Migrated from 2024-VisML-CDS with all missing advanced calibration content
-- **Enhanced pedagogy**: Added comprehensive speaker notes and improved explanations
-- **Technical improvements**: Projector-friendly code styling, larger video displays
-- **Research coverage**: Complete coverage from basic confusion matrices to state-of-the-art calibration methods
-- **Practical focus**: Working Python examples with sklearn for hands-on learning
+**Trigger**: "PLAN to do these updates for Week X"
 
-##### Assignment Integration:
-- **Observable Homework 1**: https://observablehq.com/d/aa2a22499278e4c1
-  - NYC transportation data visualization with D3.js fundamentals
-  - Student fork-and-complete model for hands-on learning
-  - Integrates with week2-lab.qmd Observable setup tutorial
+1. **Rename generic figures**: paperX.png → descriptive-name.png
+2. **Standardize citations**: Add footer citations with DOI links
+3. **Add theoretical content**: Include foundational slides with speaker notes
+4. **Optimize for projector**: Light code backgrounds, large centered videos
+5. **Quality check**: Render, test links, commit with descriptive messages
+6. **Update docs**: Mark week complete in CLAUDE.md
 
-##### Week 4 Materials (Sept 22, 2025) - COMPLETE:
-- **week4-model-assessment.qmd/html**: Model Assessment and Evaluation (630+ lines)
-  - **Section 1**: Confusion Matrices and ROC Curves
-    - Disease prediction and handwritten digit scenarios with MNIST examples
-    - Extended confusion matrix visualization and sklearn implementation
-    - Neo hierarchical confusion matrix system (CHI 2022 Best Paper Award)
-    - ROC analysis from WWII radar origins to modern multi-class scenarios
-    - AUC interpretation and sklearn ROC curve demonstrations
-  - **Section 2**: Visual Analytics Systems for Model Performance
-    - **Squares (2016)**: Interactive performance analysis with clickable video demo
-    - **Alsallakh et al. (2014)**: Probabilistic classification data visualization
-    - **Beauxis-Aussalet (2014)**: Confusion matrices for non-expert users
-    - **EnsembleMatrix (2009)**: Multi-classifier visualization support
-  - **Section 3**: Calibration Theory and Practice
-    - Weather forecasting calibration origins (Brier 1950)
-    - Reliability diagrams and hyperparameter effects
-    - Modern neural network calibration issues (Guo 2017, Minderer 2021)
-    - Calibration techniques: Platt scaling vs isotonic regression
-    - **Calibrate system (2022)**: Interactive calibration analysis tool
-    - **Smooth ECE (2023)**: Principled reliability diagrams via kernel smoothing
-  - **Critical fixes**: Light code theme, working video links, projector-optimized styling
-  - **Citation standardization (Sept 2025)**: Complete overhaul of academic reference system
-    - **Methodology**: Combined CrossRef API, PDF metadata extraction, and manual curation
-    - **Scale**: 14 reference PDFs standardized to `Author_Year_Title_Keywords.pdf` convention
-    - **Major corrections**: Fixed 4 significant misattributions discovered through metadata analysis:
-      * `Bradley_1997_*` → `Fawcett_2006_Introduction_ROC_Analysis.pdf` (DOI: 10.1016/j.patrec.2005.10.010)
-      * `Fawcett_2006_*` → `Hand_Till_2001_Simple_Generalisation_ROC_Multiclass.pdf` (Machine Learning journal)
-      * `Provost_Fawcett_2001_*` → `Fogarty_2005_ROC_Curve_Analysis_Sensor_Based_HCI.pdf` (HCI context)
-      * `Liu_Bertini_Lins_2021_*` → `Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf` (CHI 2022)
-    - **Impact**: All slide references updated, course homepage includes direct reading links
-    - **Quality assurance**: Full author name completion (e.g., Niculescu→Niculescu-Mizil, added missing co-authors)
-    - **Future-proof**: Standardized naming enables predictable programmatic access and prevents broken links
-- **figs/model_assessment_figs/**: Complete visual asset library (52+ images)
-  - Neo Figure 1 overview showing hierarchical capabilities (A, B, C scenarios)
-  - Confusion matrix examples: MNIST digits, multi-class, hierarchical
-  - ROC curve progression: aircraft detection → sklearn → multi-class scenarios
-  - Calibration examples: forecast tables → reliability diagrams → neural networks
-  - Visual analytics screenshots: Squares interface, EnsembleMatrix, Alsallakh systems
-  - Modern research figures: Calibrate tool, Smooth ECE, multi-class calibration
-- **refs/**: Standardized academic reference collection (16 PDFs - fully renamed Sept 21, 2025)
-  - **Visual Analytics**:
-    * Alsallakh et al. (2014) - Visual Methods for Analyzing Probabilistic Classification
-    * Beauxis-Aussalet & Hardman (2014) - Visualization for Non-Expert Users
-    * Görtler et al. (2022) - Neo Hierarchical Confusion Matrix
-    * Ren et al. (2016) - Squares Interactive Performance Analysis
-    * Talbot et al. (2009) - EnsembleMatrix Multiple Classifiers
-  - **Calibration Foundations**:
-    * Niculescu-Mizil & Caruana (2005) - Predicting Good Probabilities
-    * Guo et al. (2017) - Modern Neural Network Calibration
-    * Vaicenavicius et al. (2019) - Evaluating Model Calibration
-    * Xenopoulos et al. (2022) - Calibrate Interactive Analysis Tool
-  - **Scoring & Metrics**:
-    * Kull & Flach (2015) - Novel Decompositions of Proper Scoring Rules
-    * Silva Filho (2020) - ECML/PKDD Tutorial on Evaluation Metrics
-  - **ROC Analysis**:
-    * Fawcett (2006) - Introduction to ROC Analysis
-    * Hand & Till (2001) - Simple Generalisation for Multi-class ROC
-    * Hanley & McNeil (1982) - Meaning and Use of ROC Curves
-    * Fogarty (2005) - ROC Analysis in Sensor-Based HCI
-    * Cortes & Mohri (2003) - AUC Optimization and Error Minimization
-  - **Naming convention**: `LastName_SecondName_Year_Short_Title.pdf` for predictable access
-  - **Recent cleanup**: Renamed cryptic files (1703_20tvcg12, 22775A) to proper academic format
-
-##### Technical Improvements and Design Principles (Week 4):
-- **Projector-Ready Code Blocks**: Light gray backgrounds (`#f8f9fa`) with dark text for optimal classroom visibility
-- **Reliable Video Integration**: Replaced problematic YouTube embeds with clickable links for Neo and Squares demos
-- **Consistent Citation Format**: All papers use clean `[Title](../refs/Filename.pdf)` linking with abbreviated venue names
-- **Future-Proof Reference System**: Local PDFs prevent broken links, standardized naming enables predictable access
-- **Professional Slide Layout**: Two-column designs balance visual content with key feature summaries
-- **Updated Branding**: NYU Tandon styling with custom.scss theme, VIDA lab logo, Fall 2025 metadata
-- **Comprehensive Coverage**: 630+ lines spanning theoretical foundations to cutting-edge research (2023)
-- **Interactive Elements**: Clickable GitHub demo links, working video references, clean navigation structure
-
-##### Content Sources and Migration Strategy:
-- **Base content**: Migrated from 2024-VisML-CDS/slides/model_assessment.qmd
-- **Format updates**: Converted to 2025 Quarto reveal.js structure with enhanced metadata
-- **Figure integration**: Copied and organized 40+ images from 2024 course materials
-- **Reference curation**: Collected, renamed, and standardized 14 academic papers
-- **Quality assurance**: Fixed broken video embeds, updated code styling, verified all links
-
-##### Week 5 Materials (Sept 29, 2025) - COMPLETE:
-- **week5-white-box.qmd/html**: White-box Model Interpretation (1000+ lines)
-  - **Section 1**: Linear Models and Generalized Additive Models (GAMs)
-    - Housing price regression example with coefficient interpretation
-    - Complete GAM theory with partial dependence plots (PDPs)
-    - Visual Analytics systems: GAMUT (Hohman et al., 2019), GAM Changer (Wang et al., 2021)
-    - Enhanced pros/cons sections with ✅/⚠️ formatting for clarity
-  - **Section 2**: Decision Trees and Interactive Construction
-    - Diabetes decision tree example with glucose/BMI splits
-    - Complete tree theory from Molnar's Interpretable ML book
-    - Interactive systems: BaobabView (van den Elzen & van Wijk, 2011), iForest (Zhao et al., 2019)
-    - Enhanced video demonstration (larger, centered) of Elzen-Wijk VAST 2011 system
-  - **Section 3**: Decision Rules and Matrix Visualizations
-    - Complete decision rules theory: IF-THEN statements, evaluation metrics, learning approaches
-    - Rule list vs rule set structures with medical examples
-    - Visual Analytics systems: RuleMatrix (Ming et al., 2019), Explainable Matrix (Popolin Neto & Paulovich, 2020)
-  - **Section 4**: Global Surrogate Models and Research Perspectives
-    - Surrogate training process and fidelity considerations
-    - Rudin's "Stop explaining black box models" (Nature 2019) perspective
-    - Slice Finder automated validation (Chung et al., 2019)
-- **figs/white-box/**: Complete visual asset library (37+ meaningful filenames)
-  - **Professional renaming**: All generic paperX.png → descriptive names
-    - hong-interpretability-survey.png, doshi-velez-interpretable-ml.png
-    - housing-linear-regression-example.png, gam-weather-analysis.png
-    - diabetes-decision-tree.png, rule-list-medical-example.png
-    - baobabview-interface.png, iforest-interface.png, etc.
-  - Elzen-Wijk decision tree visualizations (overview, colored flow, rules)
-  - Complete GAM and PDP examples from weather data analysis
-- **Academic Citations**: Complete footer citations for all 15+ papers
-  - Mühlbacher & Piringer (2013) IEEE VAST Best Paper Award
-  - Molnar's Interpretable ML book content integration
-  - Modern systems: GAMUT, GAM Changer, BaobabView, iForest
-  - Foundational papers: Rudin (2019), Poursabzi-Sangdeh et al. (2021)
-
-##### Technical Improvements and Design Principles (Week 5):
-- **Systematic Figure Renaming**: 20 generic paperX.png files renamed to meaningful descriptive names
-- **Enhanced Academic Citations**: All papers now have complete footer citations with DOI links
-- **Decision Rules Theory**: Added comprehensive background from Molnar's Interpretable ML book
-- **Video Enhancement**: Made Elzen-Wijk demonstration larger (1400x933) and centered
-- **Clean Presentation Flow**: Removed unnecessary BREAK slide for seamless transitions
-- **Projector-Ready Styling**: Light code backgrounds for optimal classroom visibility
-- **Professional Organization**: Self-documenting figure library with descriptive filenames
-
-##### Content Sources and Integration Strategy:
-- **Base content**: Migrated from 2024-VisML-CDS with significant enhancements
-- **Theoretical foundation**: Integrated content from Molnar's Interpretable ML book
-- **Modern research**: Added citations for 2019-2022 systems and papers
-- **Figure curation**: Professional renaming and organization of all visual assets
-- **Citation standardization**: Complete academic references with DOI links
-- **Quality assurance**: Comprehensive testing, rendering verification, git workflow
-
-### Recent Issue Resolution (Sept 29, 2025)
-
-**Critical Site Outage Fixed:**
-- **Problem**: Website (ctsilva.github.io) completely broken due to Jekyll build failure
-- **Root Cause**: CLAUDE.md contained `\{\{< video` text in documentation that Jekyll/Liquid interpreted as template syntax
-- **Solution**: Escaped curly braces to prevent Liquid parsing: `\{\{< video` → `\\{\\\{< video`
-- **Impact**: GitHub Pages build status changed from "errored" to "built"
-- **Resolution Time**: ~30 minutes from identification to fix deployment
-- **Lesson**: Be careful with Jekyll/Liquid syntax in documentation files - escape template-like text in code examples
-
-### Automated Course Material Enhancement Workflow
-
-**TRIGGER PHRASE**: "PLAN to do these updates for [Week X]"
-
-Based on Week 5 experience, these generic processes should be automatically applied to each new class:
-
-#### 1. Figure Organization and Renaming (AUTOMATED WORKFLOW)
-**Problem**: Generic paperX.png, figureY.jpg filenames are meaningless
-**Solution Process**:
-```bash
-# 1. Scan for generic filenames
-grep -r "paper\d+\." slides/week*/
-grep -r "figure\d+\." slides/week*/
-grep -r "img\d+\." slides/week*/
-
-# 2. Examine each figure with Read tool to understand content
-# 3. Create descriptive names based on content:
-#    - author-paper-title.png (for paper screenshots)
-#    - system-interface-name.png (for VA system screenshots)
-#    - concept-example-domain.png (for examples/illustrations)
-#    - method-technique-type.png (for methodology diagrams)
-
-# 4. Batch rename files with meaningful names
-# 5. Update all references in .qmd files using MultiEdit
-# 6. Verify rendering works correctly
-```
-
-#### 2. Academic Citation Standardization (AUTOMATED WORKFLOW)
-**Problem**: Raw URLs, incomplete citations, inconsistent formatting
-**Solution Process**:
-```bash
-# 1. Scan for incomplete citations
-grep -r "https://arxiv.org/" slides/week*/
-grep -r "https://ieeexplore.ieee.org/" slides/week*/
-grep -r "\.pdf" slides/week*/
-
-# 2. For each paper, gather complete citation info:
-#    - WebSearch for full bibliographic details
-#    - WebFetch paper URLs for author/title/venue
-#    - Format as: Author, A., Author, B. (Year). [Title](DOI). Venue, Volume(Issue), Pages.
-
-# 3. Replace raw URLs with footer citations:
-#    ::: footer
-#    [Properly formatted citation with DOI link]
-#    :::
-
-# 4. Verify all links work and formatting is consistent
-```
-
-#### 3. Content Enhancement from Authoritative Sources (AUTOMATED WORKFLOW)
-**Problem**: Missing theoretical background, incomplete explanations
-**Solution Process**:
-```bash
-# 1. Identify key concepts needing theoretical foundation
-# 2. Search for authoritative sources based on topic:
-#    - WebSearch for standard textbooks, review papers, tutorials
-#    - Look for canonical references in the field
-#    - Use established online resources (e.g., D3 docs for D3, sklearn docs for ML)
-#    - Add 1-2 slides of foundational content before examples
-
-# 3. Enhanced speaker notes:
-#    - Add comprehensive ::: {.notes} sections
-#    - Include pedagogical context and teaching tips
-#    - Provide examples and analogies for complex concepts
-
-# 4. Pros/cons enhancement:
-#    - Use ✅/⚠️ emoji formatting for clarity
-#    - Bold key terms and concepts
-#    - Structure as bullet points for readability
-```
-
-#### 4. Technical Presentation Optimization (AUTOMATED WORKFLOW)
-**Problem**: Poor classroom visibility, broken videos, inconsistent styling
-**Solution Process**:
-```bash
-# 1. Video enhancement:
-#    - Locate video embeds: grep "\{\{< video" slides/
-#    - Increase size for classroom: width=1400+ height=900+
-#    - Center videos: wrap in ::: {style="text-align: center;"}
-
-# 2. Code block optimization:
-#    - Ensure lab-light-theme.css is applied
-#    - Light backgrounds (#f8f9fa) for projector visibility
-#    - Verify syntax highlighting works
-
-# 3. Remove unnecessary elements:
-#    - Eliminate BREAK slides: grep -n "BREAK" slides/
-#    - Clean up duplicate content
-#    - Streamline presentation flow
-```
-
-#### 5. Quality Assurance and Documentation (AUTOMATED WORKFLOW)
-**Problem**: Inconsistent testing, missing documentation updates
-**Solution Process**:
-```bash
-# 1. Systematic testing:
-#    - quarto render [filename].qmd
-#    - Verify all figures display correctly
-#    - Test all links and citations work
-#    - Check responsive design and projector visibility
-
-# 2. Git workflow:
-#    - Commit work incrementally with descriptive messages
-#    - git add -A && git commit -m "Descriptive message"
-#    - git push to deploy changes
-
-# 3. Documentation updates:
-#    - Update CLAUDE.md with Week X status: COMPLETE
-#    - Add detailed section documenting content, improvements, sources
-#    - Update course home.md if needed
-#    - Document any new patterns or lessons learned
-```
-
-#### 6. Standardized Commit Message Templates
-```
-# Figure renaming
-"Rename generic figure names to meaningful descriptive names
-
-- Renamed X generic files: paperY.png → descriptive-name.png
-- Updated all references in weekX-[topic].qmd
-- Verified successful rendering"
-
-# Citation additions
-"Add complete academic citations for all papers
-
-- Added [System] citation: Author et al. (Year) Venue
-- All papers now have proper footer citations with DOI links
-- Consistent academic formatting throughout"
-
-# Content enhancement
-"Add [concept] background from authoritative sources
-
-- Enhanced theoretical foundation with [source] content
-- Added comprehensive speaker notes for teaching
-- Improved [specific aspects] for classroom delivery"
-
-# Final completion
-"Week X [Topic] slides complete and ready for [date]
-
-- [Summary of major enhancements]
-- All figures have meaningful names
-- Complete academic citations throughout
-- Professional presentation ready for classroom"
-```
-
-#### Usage Instructions
-When starting work on a new week's materials, use the trigger phrase:
-**"PLAN to do these updates for Week X"**
-
-This will automatically initiate the 6-step workflow above, ensuring consistent quality and saving significant time on repetitive tasks.
-
-#### InfoVis Course Structure (2025-InfoVis-CSE)
-- **Course Code**: CS-GY 6313 - Information Visualization
-- **Schedule**: Fridays 11:00 AM - 1:30 PM, Fall 2025 (Sept 5 - Dec 13)
-- **Location**: Jacobs Hall, Room 215, Brooklyn Campus  
-- **Status**: ✅ **Week 3 COMPLETE** - Fundamental Graphs and Data Transformation ready for Sept 19, 2025
+#### 2025-InfoVis-CSE (CS-GY 6313)
+- **Schedule**: Fridays 11AM-1:30PM (Sept 5-Dec 13), Room 215
+- **Status**: Week 3 COMPLETE
 - **Discord**: https://discord.gg/sTEv3PnP
+- **Materials**: week2-data-transformation, week3-fundamental-graphs
+- **Resources**: home.md, syllabus.md, schedule.md, slides/, labs/
 
-##### Course Materials:
-- **home.md**: Main landing page with course announcements and upcoming classes
-- **syllabus.md**: Full course syllabus with policies and grading
-- **schedule.md**: Detailed weekly schedule with readings and assignments
-- **resources.md**: Links to tools, datasets, and learning materials
-- **refs/**: Required readings with direct PDF links (Shneiderman, Wickham, Card & Mackinlay)
-- **slides/**: Quarto presentations for lectures (instructor content)
-  - Uses reveal.js format with custom NYU branding
-  - Includes VIDA lab logo (figs/vida.jpg) on all slides
-  - Custom SCSS styling + projector-friendly code blocks
-- **labs/**: Lab session materials and exercises (TA content)
-  - Separate Quarto presentations for lab activities
-  - Hands-on exercises and tutorials
-  - Clear separation from lecture content
 
-##### Week 2 Materials (Sept 12, 2025) - COMPLETE:
-- **week2-data-transformation.qmd/html**: Analytical Questions and Data Transformation (40+ slides)
-  - Domain-to-data question translation with flight data and Vision Zero examples
-  - Complete SQL operations (Project, Filter, Aggregate) with proper table formatting
-  - Roll-up and drill-down operations with visual cube representations  
-  - Comprehensive tidy data section with Hadley Wickham examples
-  - Data transformation pipeline and wrangling concepts
-  - **Critical fixes**: Broken table formatting resolved, projector-friendly code styling
-- **figs/**: Complete visual asset library (40+ images)
-  - Domain question translation examples (flight data, Vision Zero)
-  - SQL operation before/after table visualizations
-  - Roll-up/drill-down cube diagrams and SQL examples
-  - Complete tidy data transformation workflow images
-  - Data abstraction and pipeline diagrams
-- **lab-light-theme.css**: Projector-optimized code styling for classroom visibility
+### Quarto Slide Creation
 
-##### Week 3 Materials (Sept 19, 2025) - COMPLETE:
-- **week3-fundamental-graphs.qmd/html**: Fundamental Graphs and Data Transformation (50+ slides)
-  - Two-step visualization process (What to show → How to show)
-  - Five fundamental chart types with use cases and examples
-  - Expressiveness and effectiveness principles with Cleveland & McGill research
-  - Visual encoding rankings and channel effectiveness theory
-  - Scale types (linear vs logarithmic) with practical examples
-  - Zero baseline rule and appropriate truncation guidelines
-  - Data transformation pipeline and aggregation strategies
-  - **Complete figure integration**: All missing images found and extracted from source presentations
-  - **Optimized layout**: Professional two-column layouts with proper image sizing
-  - **Interactive elements**: Quizzes and exercises with structured feedback
-- **figs/**: Comprehensive image library with extracted figures
-  - Truncated axis examples (misleading vs. proper baselines)
-  - Scale comparison examples (linear vs. log scales)
-  - Encoding effectiveness demonstrations (bar charts vs. pie charts)
-  - Data transformation workflows and aggregation examples
-  - All images extracted from PowerPoint and PDF source materials
-  - Properly sized and formatted for classroom projection
+```bash
+# Render slides
+cd 2025-InfoVis-CSE/slides/
+quarto render week1-syllabus.qmd
 
-##### Content Integration:
-- **Homepage updates**: Week 2 lecture link added with required readings
-- **PDF readings**: Direct links to Shneiderman (1996), Wickham (2014), Card & Mackinlay (1999)
-- **Quality assurance**: Comprehensive review resolved formatting issues and content gaps
+# Preview with live reload
+quarto preview week1-syllabus.qmd
 
-#### Important Notes
-- **Reveal.js Dependencies**: The `.gitignore` has been configured to allow `*_files/` directories for course materials, ensuring reveal.js presentations work correctly on GitHub Pages
-- **Week 1-3 Status**: All three weeks ready for Fall 2025 semester with complete materials
-- **Projector-Ready**: Code blocks use light backgrounds for classroom visibility
+# Commit both HTML and _files/ directories
+git add week1-syllabus.html week1-syllabus_files/
+git commit -m "Add Week 1 slides"
+```
 
-#### Content Creation Guide for TAs
-
-**Current TAs for Fall 2025:**
-- **CS-GY 9223 (VisML):** Parikshit Solunke ([parisolunke.github.io](https://parisolunke.github.io)) - pss442@nyu.edu
-  - **Lab Contributions**: Week 2, 3, 5 lab slides created
-  - **Attribution Status**: ✅ Correctly attributed in all lab materials
-- **CS-GY 6313 (InfoVis):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
-
-##### Creating New Lecture Slides
-1. **Create a new .qmd file** in `2025-InfoVis-CSE/slides/`
-2. **Use this template structure:**
-```markdown
+**Template header**:
+```yaml
 ---
-title: "Lecture Title"
+title: "Title"
 subtitle: "CS-GY 6313 - Fall 2025"
-author: "Instructor Name"
-institute: "New York University"
-date: "Month Day, 2025"
+author: "Name"
 format:
   revealjs:
     theme: [default, custom.scss]
-    slide-number: c/t
-    show-slide-number: all
-    hash-type: number
     logo: figs/vida.jpg
     width: 1920
     height: 1080
-    preview-links: auto
-    transition: fade
-    transition-speed: fast
----
-
-## Slide Title
-
-Content here...
-
-## Two Column Layout
-
-:::: {.columns}
-::: {.column width="50%"}
-Left column content
-:::
-::: {.column width="50%"}
-Right column content
-:::
-::::
-
-## Code Example
-
-```javascript
-// JavaScript code
-const data = [1, 2, 3];
-```
-
-## Callout Boxes
-
-::: {.callout-tip}
-This is a tip
-:::
-
-::: {.callout-warning}
-This is a warning
-:::
-
-::: {.callout-important}
-This is important
-:::
-
-## Speaker Notes
-
-::: {.notes}
-These notes are only visible in presenter mode
-:::
-```
-
-##### Rendering Slides
-```bash
-# Navigate to slides directory
-cd 2025-InfoVis-CSE/slides/
-
-# Render a specific slide deck
-quarto render week1-syllabus.qmd
-
-# Render all .qmd files in directory
-quarto render
-
-# Preview with live reload (auto-updates on save)
-quarto preview week1-syllabus.qmd
-```
-
-**Important:** After rendering, make sure to commit both the generated HTML files and `*_files/` directories containing reveal.js dependencies:
-```bash
-git add week1-syllabus.html week1-syllabus_files/
-git commit -m "Add/update Week 1 slides"
-```
-
-The HTML files are **not ignored** by git so they're accessible to students at:
-`https://ctsilva.github.io/2025-InfoVis-CSE/slides/[filename].html`
-
-##### Adding Lab Materials
-1. Lab materials go in `2025-InfoVis-CSE/labs/` directory
-2. Create Quarto slides for lab sessions using same template as lectures
-3. Path adjustments for labs:
-   - Logo: `logo: ../slides/figs/vida.jpg`
-   - Theme: `theme: [default, ../slides/custom.scss]`
-4. Include Observable notebook links and exercises
-5. Keep lab content separate from lecture slides for clear ownership
-
-Example lab slide header:
-```markdown
----
-title: "Week X Lab: Topic"
-subtitle: "CS-GY 6313 - Information Visualization"
-author: "Teaching Assistant"
-institute: "New York University"
-date: "Month Day, 2025"
-format:
-  revealjs:
-    theme: [default, ../slides/custom.scss]
-    logo: ../slides/figs/vida.jpg
-    # ... other settings
 ---
 ```
 
-##### Updating Course Pages
-1. **home.md**: Update with weekly announcements and assignment deadlines
-2. **schedule.md**: Add lecture slides links, readings, and lab materials as they're created
-3. Use Jekyll/Markdown format with YAML front matter:
-```markdown
----
-title: "Page Title"
-permalink: /2025-InfoVis-CSE/pagename
-author_profile: true
----
 
-Content in markdown...
-```
 
-##### Adding Images and Assets
-- Place images in appropriate directories:
-  - Slide images: `2025-InfoVis-CSE/slides/figs/`
-  - Course images: `2025-InfoVis-CSE/images/`
-- Reference in markdown: `![Alt text](figs/image.png)`
-- Reference in Quarto: `![[Alt text]](figs/image.png){width="50%"}`
 
-##### Linking to Materials
-- **Lecture slides:** `/2025-InfoVis-CSE/slides/week1-syllabus.html`
-- **Lab slides:** `/2025-InfoVis-CSE/labs/week1-lab.html`
-- **Course pages (MD):** `/2025-InfoVis-CSE/syllabus`
-- **Example links:** 
-  - `[Week 1 Lecture](/2025-InfoVis-CSE/slides/week1-syllabus.html)`
-  - `[Week 1 Lab](/2025-InfoVis-CSE/labs/week1-lab.html)`
-- **External links:** `[Observable](https://observablehq.com)`
+## Reference Management
 
-Note: Link to `.html` for rendered slides, but omit extension for Jekyll pages
+**PDF Naming**: `LastName_Year_Short_Title.pdf`
 
-##### Testing Changes Locally
-```bash
-# From repository root
-bundle exec jekyll serve
-
-# View at http://127.0.0.1:4000/2025-InfoVis-CSE/
-```
-
-## Jekyll Plugins
-Key plugins enabled (via github-pages gem):
-- jekyll-paginate
-- jekyll-sitemap  
-- jekyll-gist
-- jekyll-feed
-- jekyll-redirect-from
-
-## Deployment
-The site automatically deploys to GitHub Pages when pushing to the main branch. GitHub Pages settings should have the repository renamed to `[username].github.io`.
-
-## Academic Reference Management System
-
-### Citation Standardization Process (Implemented Sept 2025)
-The repository now includes a systematic approach to academic reference management:
-
-1. **PDF Metadata Extraction**: Use `pdfinfo` to extract author, title, DOI, and publication info
-2. **CrossRef API Integration**: Verify and enrich metadata using DOI lookups and title/author searches  
-3. **Manual Curation**: Cross-reference with PDF content for accuracy, especially for misnamed files
-4. **Standardized Naming**: Apply `FirstAuthor_Year_Title_Keywords.pdf` format consistently
-5. **Reference Updates**: Update all slide citations to match new filenames
-6. **Documentation**: Record attribution corrections and methodology for future reference
-
-### Tools and Commands Used
-```bash
-# Extract PDF metadata
-pdfinfo filename.pdf
-
-# CrossRef API query (Python)
-import requests
-response = requests.get(f"https://api.crossref.org/works/{doi}")
-response = requests.get(f"https://api.crossref.org/works?query=title:{title}")
-
-# Bulk rename operations
-mv "old_filename.pdf" "New_Standardized_Filename.pdf"
-
-# Update slide references
-grep -r "old_filename" slides/ && sed -i 's/old/new/g' slides/*.qmd
-```
-
-### Benefits Achieved
-- **Predictable Access**: Standardized naming enables programmatic reference management
-- **Accurate Attribution**: Corrected misidentified papers through metadata verification
-- **Future-Proof Links**: Local PDFs prevent broken external links during classroom presentation
-- **Searchable Collection**: Descriptive filenames improve discoverability
-- **Professional Standards**: Follows academic convention for research paper organization
-
-## Future Enhancements
-
-### Portfolio Expansion
-- **Code repositories**: Highlight key GitHub projects (OpenSpace, OSCUR, PaleoScan, etc.)
-- **Interactive demos**: Link to live visualizations or web-based tools
-- **Project galleries**: Screenshots/videos of major systems in action
-- **Technical documentation**: API docs, user guides for your tools
-
-### Publications Organization
-- **Research categories**: Visualization, Urban Computing, Sports Analytics, Machine Learning, etc.
-- **Topic filters**: Allow visitors to browse by research area
-- **Impact highlights**: Feature most-cited papers or award winners
-- **Collaboration networks**: Show key co-authors and institutions
-- **Timeline view**: Chronological research evolution
-- **Audience-specific guides**: 
-  - "New to visualization" → foundational papers
-  - "Sports analytics researchers" → Statcast and related work
-  - "Urban computing" → SONYC, shadow mapping, etc.
-
-### Metrics Integration (Currently Commented Out)
-- **Sidebar metrics**: h-index: 78, i10-index: 323, Citations: 29,427, Publications: 400+
-- **Location**: `_includes/author-profile.html` (lines 118-125)
-- **To enable**: Remove `{% comment %}` and `{% endcomment %}` tags
-
-### Technical Notes
-- **Academic Pages Template**: Base template provides solid foundation for future enhancements
-- **Jekyll Collections**: Ready for additional content types and categorization
-- **Responsive Design**: All additions should maintain mobile-friendly design
-- **Search Optimization**: Consider adding site search functionality for larger content volumes
-
-## Reference and Citation Management
-
-### PDF Reference Naming Convention
-All course materials should follow a consistent naming convention for academic references stored in `refs/` directories:
-
-**Format**: `LastName_SecondLastName_Year_Short_Title.pdf`
-
-**Examples**:
-- `Cleveland_McGill_1984_Graphical_Perception.pdf`
-- `Shneiderman_1996_The_Eyes_Have_It.pdf`
-- `Wickham_2014_Tidy_Data.pdf`
-- `Guo_Pleiss_Sun_Weinberger_2017_Neural_Network_Calibration.pdf`
-- `Xenopoulos_Rulff_Nonato_2022_Calibrate.pdf`
-- `Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf`
-- `Hanley_McNeil_1982_ROC_Analysis_Radiology.pdf`
-- `ECML_PKDD_2020_Tutorial_Evaluation_Metrics.pdf`
-
-**Rules**:
-1. **Authors**: Use last names only, separated by underscores
-2. **Year**: Four-digit publication year
-3. **Title**: Abbreviated descriptive title, no articles (a, an, the), use underscores for spaces
-4. **Length**: Keep filename under 60 characters when possible
-5. **Special characters**: Replace all spaces, hyphens, and special characters with underscores
-6. **Consistency**: Maintain same format across all course materials
-
-### Footer Citation Format
-In Quarto slides, use footer citations that link to local PDF files:
-
-**Format**:
+**Footer Citations**:
 ```markdown
 :::footer
-Author, A., Author, B., & Author, C. (Year). [*Title*](../refs/Author_Author_Year_Title.pdf). Venue.
+Author, A. (Year). [*Title*](../refs/Author_Year_Title.pdf). Venue.
 :::
 ```
 
-**Examples**:
-```markdown
-:::footer
-Cleveland, W. S., & McGill, R. (1984). [*Graphical perception*](../refs/Cleveland_McGill_1984_Graphical_Perception.pdf). Journal of the American Statistical Association.
-:::
-
-:::footer
-Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). [*Squares: Supporting interactive performance analysis for multiclass classifiers*](../refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares.pdf). IEEE TVCG.
-:::
-```
-
-**Venue Abbreviations**:
-- IEEE Transactions on Visualization and Computer Graphics → IEEE TVCG
-- ACM Conference on Human Factors in Computing Systems → CHI
-- International Conference on Machine Learning → ICML
-- Conference on Artificial Intelligence and Statistics → AISTATS
-- European Conference on Machine Learning → ECML-PKDD
-
-### Benefits of This System
-- **Predictable file locations**: Easy to find and link references
-- **Version control friendly**: Consistent naming reduces merge conflicts
-- **Classroom ready**: Students can access papers directly from slides
-- **Future-proof**: Local files don't break when external URLs change
-- **Professional appearance**: Clean, academic-standard citation format
-
-- to memorize
-- to memorize
+**Venue Abbreviations**: IEEE TVCG, CHI, ICML, AISTATS, ECML-PKDD
