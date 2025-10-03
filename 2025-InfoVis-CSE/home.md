@@ -50,7 +50,7 @@ author_profile: true
 - **Optional Reference:** *Visual Thinking for Information Design* (2nd Ed.) by Colin Ware - Chapters on perception
 
 ### Week 5 (Oct 3) - Color Theory and D3 Scales
-- **Slides:** [Color Theory and D3 Scales](/2025-InfoVis-CSE/slides/week5-color.html)
+- **Slides:** [Color Theory and D3 Scales](/2025-InfoVis-CSE/slides/week5-color.html) | [Lab: Color scale exercises, Choropleth maps, Accessibility testing](/2025-InfoVis-CSE/labs/week5-lab.html)
 - **Topics:** Color perception (biology/physics), Color spaces (RGB, HSL, LAB), Sequential/diverging/categorical scales, Color accessibility, D3 scale implementation
 - **Lab:** Color scale exercises, Choropleth maps, Accessibility testing
 - **Assignment:** Exercise 5 - Color scale design and implementation (due Oct 9)
