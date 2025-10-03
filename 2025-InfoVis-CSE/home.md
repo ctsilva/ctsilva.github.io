@@ -55,7 +55,7 @@ author_profile: true
 - **Assignment:** Exercise 5 - Color scale design and implementation (due Oct 9)
 - **Required Readings:**
   - [Which Color Scale to Use](https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/) - Lisa Charlotte Rost
-  - [Modeling Color Difference](https://ieeexplore.ieee.org/document/8031043) - Szafir (2017)
+  - [Modeling Color Difference](https://doi.org/10.1109/TVCG.2017.2744359) - Szafir (2018)
   - [D3 Scale Chromatic](https://observablehq.com/@d3/color-schemes) - Observable notebook
 
 ## Assignments
