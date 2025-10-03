@@ -18,6 +18,7 @@ format:
     transition-speed: fast
     footer: <https://engineering.nyu.edu>
     fontsize: 24pt
+    css: lab-light-theme.css
 resources:
   - model_assessment.pdf
 ---
@@ -37,8 +38,12 @@ resources:
 3. SHAP (SHapley Additive exPlanations)
 
 
-Examples and materials from Molnar’s book: 
+Examples and materials from Molnar's book:
            https://christophm.github.io/interpretable-ml-book/
+
+::: {.notes}
+Today we transition from white-box (interpretable) models to black-box explanation methods. These techniques work with ANY machine learning model - neural networks, ensemble methods, etc. The key distinction: white-box models are inherently interpretable, while black-box methods provide post-hoc explanations. We'll cover three major approaches: PDPs for global feature effects, LIME for local instance explanations, and SHAP for theoretically-grounded feature attribution. Each has different trade-offs between computational cost, interpretability, and theoretical guarantees.
+:::
 
 
 ## Bike Rentals (Regression) 
@@ -68,24 +73,36 @@ heavy rain + ice pallets + thunderstorm + mist, snow + mist
 
 Shows the marginal effect one or two features have on the predicted outcome of a machine learning model (J. H. Friedman 2001).
 
-![](figs/bike-use-temperature.jpg)
+![](figs/black-box/bike-use-temperature.jpg)
+
+::: footer
+Friedman, J. H. (2001). [*Greedy function approximation: A gradient boosting machine*](https://doi.org/10.1214/aos/1013203451). Annals of Statistics.
+:::
+
+::: {.notes}
+PDPs are one of the oldest and most intuitive model-agnostic interpretation methods. The key idea: marginalize over all other features to isolate the effect of one (or two) features on the prediction. Here we see bike rentals vs temperature - notice the non-linear relationship with a sweet spot around 20-25°C. The visualization immediately reveals this pattern that might be hidden in model coefficients. PDPs answer: "On average, how does changing this feature affect predictions?"
+:::
 
 ## Partial Dependence Plot (PDP)
 
 High level idea: marginalizing the machine learning model output over the distributions of the all other features to show the relationship between the feature we are interested in and the predicted outcome.
 
 ::: {.r-stack}
-![](figs/pdp-feature1.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature1.jpg){.fragment width="950" height="450"}
 
-![](figs/pdp-feature2.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature2.jpg){.fragment width="950" height="450"}
 
-![](figs/pdp-feature3.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature3.jpg){.fragment width="950" height="450"}
 
-![](figs/pdp-feature4.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature4.jpg){.fragment width="950" height="450"}
 
-![](figs/pdp-feature5.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature5.jpg){.fragment width="950" height="450"}
 
-![](figs/pdp-feature6.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature6.jpg){.fragment width="950" height="450"}
+:::
+
+::: {.notes}
+This animation shows the PDP computation process step by step. For each value of our feature of interest, we: (1) Replace that feature with a fixed value across ALL data points, (2) Get predictions for all those modified instances, (3) Average those predictions, (4) Repeat for different feature values. The result is a curve showing the average effect. Notice how we're effectively "scanning" through the feature space while averaging out the effects of all other features. This is powerful because it works with any black-box model.
 :::
 
 ## Partial Dependence Plot (PDP)
@@ -114,16 +131,22 @@ Training local surrograte models to explain *individual* predictions
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/lime-global-decision-boundaries.jpg)
+![](figs/black-box/lime-global-decision-boundaries.jpg)
 :::
 
 ::: {.column width="40%"}
-![](figs/lime-paper.jpg)
+![](figs/black-box/lime-paper.jpg)
 :::
 
 ::::
 
-https://arxiv.org/pdf/1602.04938.pdf
+::: footer
+Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Explaining the Predictions of Any Classifier*](https://arxiv.org/pdf/1602.04938.pdf). KDD.
+:::
+
+::: {.notes}
+LIME represents a paradigm shift from global to local explanations. The key insight: even if the global decision boundary is complex (left image shows a highly non-linear boundary), we can approximate it LOCALLY with a simple linear model. Think of it like approximating a curve with a tangent line - it only works near the point of tangency. The title "Why Should I Trust You?" captures the motivation: users need to understand individual predictions to build trust. LIME became hugely influential because it's model-agnostic, produces human-interpretable explanations, and works for any data type (tabular, text, images).
+:::
 
 ## Local Interpretable Model-agnostic Explanations (LIME)
 
@@ -138,13 +161,17 @@ The idea is quite intuitive.
 - On this new dataset LIME then trains an interpretable model, which is weighted by the proximity of the sampled instances to the instance of interest. The interpretable model can be anything from the interpretable models chapter, for example Lasso or a decision tree. The learned model should be a good approximation of the machine learning model predictions locally, but it does not have to be a good global approximation. This kind of accuracy is also called *local fidelity*.
 :::
 
-https://christophm.github.io/interpretable-ml-book/
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/). 2nd Edition.
+:::
 
 ## Local Interpretable Model-agnostic Explanations (LIME)
 
-![](figs/lime-equations.jpg)
+![](figs/black-box/lime-equations.jpg)
 
-https://arxiv.org/pdf/1602.04938.pdf
+::: footer
+Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Explaining the Predictions of Any Classifier*](https://arxiv.org/pdf/1602.04938.pdf). KDD.
+:::
 
 ## Local Interpretable Model-agnostic Explanations (LIME)
 
@@ -160,11 +187,11 @@ https://arxiv.org/pdf/1602.04938.pdf
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/lime-random-forest-model.jpg)
+![](figs/black-box/lime-random-forest-model.jpg)
 :::
 
 ::: {.column width="40%"}
-Random forest predictions given features x1 and x2. 
+Random forest predictions given features x1 and x2.
 
 Predicted classes: 1 (dark) or 0 (light).
 :::
@@ -177,7 +204,7 @@ Predicted classes: 1 (dark) or 0 (light).
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/lime-random-forest-sampling.jpg)
+![](figs/black-box/lime-random-forest-sampling.jpg)
 :::
 
 ::: {.column width="40%"}
@@ -192,7 +219,7 @@ Instance of interest (big yellow dot) and data sampled from a normal distributio
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/lime-random-forest-weighting.jpg)
+![](figs/black-box/lime-random-forest-weighting.jpg)
 :::
 
 ::: {.column width="40%"}
@@ -210,11 +237,11 @@ instantce of interest, and $w$ is the kernel width (self-defined).
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/lime-random-forest-line.jpg)
+![](figs/black-box/lime-random-forest-line.jpg)
 :::
 
 ::: {.column width="40%"}
-Use both the samples and sample weights to train a linear classifier. 
+Use both the samples and sample weights to train a linear classifier.
 
 Signs of the grid show the classifications of the locally learned model from the weighted samples. The red line marks the decision boundary (P(class=1) = 0.5).
 
@@ -239,7 +266,7 @@ The explanations are created with 2 features. The results of the sparse local li
 :::
 
 ::: {.column width="50%"}
-![](figs/lime-example-result.jpg)
+![](figs/black-box/lime-example-result.jpg)
 :::
 
 ::::
@@ -268,14 +295,10 @@ The explanations are created with 2 features. The results of the sparse local li
 
 ## SHAP (SHapley Additive exPlanations)
 
-Examples and materials from Molnar’s new book:
-https://christophmolnar.com/books/shap/
-
-
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/shap-example.jpg)
+![](figs/black-box/shap-example.jpg)
 :::
 
 ::: {.column width="40%"}
@@ -283,6 +306,14 @@ SHAP (Lundberg and Lee 2017a) is a game-theory-inspired method created to explai
 :::
 
 ::::
+
+::: footer
+Lundberg, S. M., & Lee, S. I. (2017). [*A Unified Approach to Interpreting Model Predictions*](https://proceedings.neurips.cc/paper/2017/file/8a20a8621978632d76c43dfd28b67767-Paper.pdf). NeurIPS. | Molnar, C. (2024). [*SHAP Book*](https://christophmolnar.com/books/shap/).
+:::
+
+::: {.notes}
+SHAP brings rigorous game theory to ML interpretability. The key innovation: apply Shapley values from cooperative game theory to feature attribution. This provides a principled answer to "how much did each feature contribute?" with mathematical guarantees (efficiency, symmetry, dummy, additivity axioms). SHAP unified several existing methods under one framework. The image shows a typical SHAP force plot - red pushes prediction higher, blue pushes lower. Unlike LIME which is heuristic, SHAP has strong theoretical foundations. Trade-off: computational cost is higher, but you get provably fair attributions.
+:::
 
 
 ## A Short History of Shapley Values and SHAP
@@ -294,11 +325,15 @@ SHAP (Lundberg and Lee 2017a) is a game-theory-inspired method created to explai
 
 ## Theory of Shapley Values
 
-Who’s going to pay for that taxi?
+Who's going to pay for that taxi?
 
 Alice, Bob, and Charlie have dinner together and share a taxi ride home. The total cost is $51. The question is, how should they divide the costs fairly?
 
-![](figs/shap-taxi.jpg)
+![](figs/black-box/shap-taxi.jpg)
+
+::: {.notes}
+The taxi example beautifully illustrates why Shapley values are "fair". Alice lives closest ($20 alone), Bob is farther ($38 with Alice), Charlie is farthest ($51 all together). A naive split ($17 each) is unfair - Alice subsidizes the others. Shapley values compute each person's marginal contribution across all possible orderings of joining the taxi. This ensures: (1) Total cost is exactly split, (2) Symmetric players pay equally, (3) Non-contributors pay nothing, (4) Values are additive. The same logic applies to features in ML: how much does each feature "contribute" to the prediction, measured fairly across all possible feature coalitions?
+:::
 
 
 ## Theory of Shapley Values
@@ -307,7 +342,7 @@ The **marginal contribution** of a player to a coalition is the value of the coa
 
 ## Theory of Shapley Values
 
-![](figs/shap-marginal-contribution.jpg)
+![](figs/black-box/shap-marginal-contribution.jpg)
 
 ## Theory of Shapley Values
 
@@ -328,22 +363,22 @@ We can use these permutations to form coalitions, for example, for Alice.
 
 In two of these cases, Alice was added to an empty taxi, and in one case, she was added to a taxi with only Bob. By weighting the marginal contributions accordingly, we calculate the following weighted average marginal contribution for Alice, abbreviating Alice, Bob, and Charlie to A, B, and C:
 
-![](figs/shap-marginal-alice.jpg)
+![](figs/black-box/shap-marginal-alice.jpg)
 
 ## Theory of Shapley Values
 
 for Bob:
 
-![](figs/shap-marginal-bob.jpg)
+![](figs/black-box/shap-marginal-bob.jpg)
 
 for Charlie:
 
-![](figs/shap-marginal-charlie.jpg)
+![](figs/black-box/shap-marginal-charlie.jpg)
 
 
 ## Calculating Shapley values
 
-![](figs/shap-general-formation.jpg)
+![](figs/black-box/shap-general-formation.jpg)
 
 **The Shapley value is the weighted average of a player’s marginal contribu- tions to all possible coalitions.**
 
@@ -363,19 +398,19 @@ for Charlie:
 
 Consider the following scenario: You have trained a machine learning model $f$ to predict apartment prices.
 
-![](figs/shap-apartment-example.jpg)
+![](figs/black-box/shap-apartment-example.jpg)
 
 ## From Shapley Values to SHAP
 
 We want to evaluate the effort of cat-banned
 
-![](figs/shap-cat-banned.jpg)
+![](figs/black-box/shap-cat-banned.jpg)
 
 ## From Shapley Values to SHAP
 
 We want to evaluate the effort of cat-banned
 
-![](figs/shap-cat-banned-2.jpg)
+![](figs/black-box/shap-cat-banned-2.jpg)
 
 ## Interpreting SHAP values
 
@@ -408,23 +443,32 @@ The Shapley value is the wrong explanation method if you seek sparse explanation
 
 ## SHAP (SHapley Additive exPlanations)
 
-![](figs/shap-figure-waterfall.jpg)
+![](figs/black-box/shap-figure-waterfall.jpg)
 
 ## SHAP limitations
-
-
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-![](figs/shap-problems.jpg)
-
-http://proceedings.mlr.press/v119/kumar20e/kumar20e.pdf
-
+![](figs/black-box/shap-problems.jpg)
 :::
 
-::: {.column width="40%"}
+::: {.column width="50%"}
+**Key Limitations:**
+
+- **Computational Cost**: Exponential complexity O(2^n) for exact calculation
+- **Feature Independence Assumption**: Unrealistic in correlated datasets
+- **Interpretation Challenges**: Values represent marginal contributions, not causal effects
+- **Instability**: Small perturbations can lead to different explanations
 
 :::
 
 ::::
+
+::: footer
+Kumar, I. E., et al. (2020). [*Problems with Shapley-value-based explanations as feature importance measures*](http://proceedings.mlr.press/v119/kumar20e/kumar20e.pdf). ICML.
+:::
+
+::: {.notes}
+Despite SHAP's theoretical elegance, it has important limitations that practitioners must understand. The Kumar et al. paper provides crucial critiques: (1) SHAP assumes features can be independently varied, but real features are often correlated (e.g., house size and bedrooms), (2) SHAP values show associative, not causal relationships - they tell you "what" contributes but not "why", (3) Computational cost grows exponentially with features (though approximations like TreeSHAP and KernelSHAP help), (4) Explanations can be unstable under small data perturbations. Bottom line: SHAP is a powerful tool but not a magic bullet. Always validate explanations against domain knowledge.
+:::

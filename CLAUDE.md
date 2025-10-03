@@ -48,9 +48,9 @@ The repository includes complete course websites as subdirectories:
 
 #### 2025-VisML-CSE (CS-GY 9223)
 - **Schedule**: Mondays 5-7:30PM (Sept 2-Dec 11), Room 473
-- **Status**: Week 5 COMPLETE (including lab by Parikshit Solunke)
+- **Status**: Week 6 COMPLETE
 - **Discord**: https://discord.gg/dyHSFN65
-- **Materials**: week2-intro, week2-infovis, week2-lab, week4-model-assessment, week5-white-box
+- **Materials**: week2-intro, week2-infovis, week2-lab, week4-model-assessment, week5-white-box, week6-black-box
 
 
 
