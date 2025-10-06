@@ -29,6 +29,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="week6-black-box_files/libs/revealjs/dist/theme/quarto-743137726eb562984e8d4ff610b648a8.css">
   <link rel="stylesheet" href="lab-light-theme.css">
@@ -194,6 +260,9 @@ Claudio Silva
 <li>Wind speed in km per hour.</li>
 </ul>
 </div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophmolnar.com/books/interpretable-machine-learning"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Partial Dependence Plot (PDP)</h2>
@@ -262,16 +331,93 @@ Claudio Silva
 <h2>Partial Dependence Plot (PDP)</h2>
 <p>High level idea: marginalizing the machine learning model output over the distributions of the all other features to show the relationship between the feature we are interested in and the predicted outcome.</p>
 <div class="r-stack">
-<p><img data-src="figs/black-box/pdp-feature1.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/black-box/pdp-feature2.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/black-box/pdp-feature3.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/black-box/pdp-feature4.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/black-box/pdp-feature5.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/black-box/pdp-feature6.jpg" class="fragment" width="950" height="450"></p>
+<p><img data-src="figs/black-box/pdp-feature1.jpg" class="fragment" width="1400" height="700"></p>
+<p><img data-src="figs/black-box/pdp-feature2.jpg" class="fragment" width="1400" height="700"></p>
+<p><img data-src="figs/black-box/pdp-feature3.jpg" class="fragment" width="1400" height="700"></p>
+<p><img data-src="figs/black-box/pdp-feature4.jpg" class="fragment" width="1400" height="700"></p>
+<p><img data-src="figs/black-box/pdp-feature5.jpg" class="fragment" width="1400" height="700"></p>
+<p><img data-src="figs/black-box/pdp-feature6.jpg" class="fragment" width="1400" height="700"></p>
 </div>
 <aside class="notes">
 <p>This animation shows the PDP computation process step by step. For each value of our feature of interest, we: (1) Replace that feature with a fixed value across ALL data points, (2) Get predictions for all those modified instances, (3) Average those predictions, (4) Repeat for different feature values. The result is a curve showing the average effect. Notice how we’re effectively “scanning” through the feature space while averaging out the effects of all other features. This is powerful because it works with any black-box model.</p>
 <p>While the animation shows the calculation (marginalizing/averaging), remind students that the resulting simple 2D line plot is the visualization product we interpret. The computational complexity is hidden from the end user - they only see the clean, interpretable curve that reveals the feature’s marginal effect.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PDP: Code Example with scikit-learn</h2>
+<p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
+<div id="65d4be4c" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
+<span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
+<span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
+<span id="cb1-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href=""></a></span>
+<span id="cb1-6"><a href=""></a><span class="co"># Load California housing dataset</span></span>
+<span id="cb1-7"><a href=""></a><span class="co"># Features: median income, house age, average rooms, etc.</span></span>
+<span id="cb1-8"><a href=""></a>housing <span class="op">=</span> fetch_california_housing()</span>
+<span id="cb1-9"><a href=""></a>X, y <span class="op">=</span> housing.data, housing.target</span>
+<span id="cb1-10"><a href=""></a></span>
+<span id="cb1-11"><a href=""></a><span class="co"># Train a gradient boosting regressor</span></span>
+<span id="cb1-12"><a href=""></a>model <span class="op">=</span> GradientBoostingRegressor(</span>
+<span id="cb1-13"><a href=""></a>    n_estimators<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb1-14"><a href=""></a>    max_depth<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb1-15"><a href=""></a>    learning_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb1-16"><a href=""></a>    random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb1-17"><a href=""></a>).fit(X, y)</span>
+<span id="cb1-18"><a href=""></a></span>
+<span id="cb1-19"><a href=""></a><span class="co"># Create PDPs for: MedInc (0), HouseAge (1), and their interaction</span></span>
+<span id="cb1-20"><a href=""></a><span class="co"># MedInc = median income, HouseAge = median house age</span></span>
+<span id="cb1-21"><a href=""></a>features <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, (<span class="dv">0</span>, <span class="dv">1</span>)]</span>
+<span id="cb1-22"><a href=""></a>display <span class="op">=</span> PartialDependenceDisplay.from_estimator(</span>
+<span id="cb1-23"><a href=""></a>    model, X, features, feature_names<span class="op">=</span>housing.feature_names</span>
+<span id="cb1-24"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="footer">
+<p><a href="https://scikit-learn.org/stable/modules/partial_dependence.html">scikit-learn Partial Dependence Documentation</a></p>
+</div>
+<aside class="notes">
+<p>This example shows how simple it is to compute PDPs in practice using scikit-learn. The <code>PartialDependenceDisplay.from_estimator()</code> method handles all the computation automatically: (1) It marginalizes over the training data, (2) Computes predictions for all feature values, (3) Averages the results, (4) Creates the visualization. Note that you can plot individual features <code>[0, 1]</code> or interactions <code>[(0, 1)]</code> which show how two features jointly affect predictions. The interaction plot is a 2D heatmap instead of a line plot. This high-level API abstracts away the complexity we saw in the animation, making PDPs accessible for practitioners.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PDP: Output Visualization</h2>
+<div id="a6e885ee" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="49">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li><strong>Left (MedInc):</strong> Strong positive monotonic relationship - higher median income → higher house prices (as expected)</li>
+<li><strong>Middle (HouseAge):</strong> Non-monotonic effect - newer and very old houses have lower values, middle-aged houses peak</li>
+<li><strong>Right (Interaction):</strong> Shows how income and age combine - high income dominates regardless of age (vertical gradient)</li>
+</ul>
+<aside class="notes">
+<p>The California Housing dataset provides much clearer, more interpretable patterns: (1) <strong>MedInc (Median Income)</strong>: Shows a strong, near-linear positive relationship - as median income increases, predicted house values increase consistently. This makes intuitive sense and demonstrates a clear monotonic effect. (2) <strong>HouseAge</strong>: Reveals a non-monotonic pattern with a peak for middle-aged houses (around 20-30 years). Very new houses might lack established neighborhoods, while very old houses may need renovation. This is the kind of “sweet spot” pattern we discussed earlier. (3) <strong>Interaction plot</strong>: The 2D heatmap shows that median income has a dominant effect (notice the strong vertical color gradient), while house age modulates this effect more subtly. The interaction reveals that high-income areas command high prices regardless of house age. These diverse patterns demonstrate why PDPs are valuable for understanding feature effects.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -330,23 +476,30 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
-<div class="r-fit-text">
-<p>The idea is quite intuitive.</p>
-<ul>
-<li><p>First, forget about the training data and imagine you only have the black box model where you can input data points and get the predictions of the model. You can probe the box as often as you want. Your goal is to understand why the machine learning model made a certain prediction. LIME tests what happens to the predictions when you give variations of your data into the machine learning model.</p></li>
-<li><p>LIME generates a new dataset consisting of perturbed samples and the corresponding predictions of the black box model.</p></li>
-<li><p>On this new dataset LIME then trains an interpretable model, which is weighted by the proximity of the sampled instances to the instance of interest. The interpretable model can be anything from the interpretable models chapter, for example Lasso or a decision tree. The learned model should be a good approximation of the machine learning model predictions locally, but it does not have to be a good global approximation. This kind of accuracy is also called <em>local fidelity</em>.</p></li>
-</ul>
-</div>
+<h2>Training local surrogate models to explain individual predictions</h2>
+<p>The idea is quite intuitive. <strong>First, forget about the training data and imagine you only have the black box model where you can input data points and get the predictions of the model. You can probe the box as often as you want. Your goal is to understand why the machine learning model made a certain prediction. LIME tests what happens to the predictions when you give variations of your data into the machine learning model.</strong></p>
+<p><strong>LIME generates a new dataset consisting of perturbed samples and the corresponding predictions of the black box model.</strong></p>
+<p><strong>On this new dataset LIME then trains an interpretable model, which is weighted by the proximity of the sampled instances to the instance of interest.</strong> The interpretable model can be anything from the interpretable models chapter, for example Lasso or a decision tree. <strong>The learned model should be a good approximation of the machine learning model predictions locally, but it does not have to be a good global approximation. This kind of accuracy is also called <em>local fidelity</em>.</strong></p>
+<p>Mathematically, local surrogate models with interpretability constraint can be expressed as follows:</p>
+<p><span class="math display">\[\text{explanation}(x) = \arg\min_{g \in G} L(f, g, \pi_x) + \Omega(g)\]</span></p>
 <div class="footer">
-<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
+<p>Section 9.2, on Molnar’s book.</p>
 </div>
 </section>
 <section class="slide level2">
-<h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
-
-<img data-src="figs/black-box/lime-equations.jpg" class="r-stretch"><div class="footer">
+<h2>Training local surrogate models to explain individual predictions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/black-box/lime-random-forest-line.jpg"></p>
+<p><span class="math inline">\(s_i\)</span> = sample weight, <span class="math inline">\(\lambda\)</span> = regularization term</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Ridge Classifier</strong></p>
+<p><span class="math display">\[minimize \sum_{i=1}^{M} s_i(y_i - \hat{y}_i)^2\]</span></p>
+<p><span class="math display">\[= \sum_{i=1}^{M} s_i(y_i - \sum_{j=0}^{p} w_j \times x_{ij})^2 + \lambda \sum_{j=0}^{p} w_j^2\]</span></p>
+<p><span style="color: red;"><span class="math inline">\(w_j\)</span> = trained weight to explain the importance of feature j</span></p>
+<p><span style="color: red;">The higher the <span class="math inline">\(\lambda\)</span>, the more sparse the <span class="math inline">\(w\)</span> (more zeros) will become.</span></p>
+</div></div>
+<div class="footer">
 <p>Ribeiro, M. T., Singh, S., &amp; Guestrin, C. (2016). <a href="https://arxiv.org/pdf/1602.04938.pdf"><em>“Why Should I Trust You?” Explaining the Predictions of Any Classifier</em></a>. KDD.</p>
 </div>
 </section>
@@ -418,6 +571,166 @@ Claudio Silva
 </div></div>
 <aside class="notes">
 <p>Emphasize the visualization: <strong>Color</strong> (Green supports the prediction, Red opposes it), <strong>Length of Bar</strong> (magnitude of influence), and <strong>Sparsity</strong> (only a few features are shown—this makes it easy for a non-expert to trust). The bar chart is the key deliverable of LIME - it provides a contrastive explanation showing which features push toward vs away from the prediction. Compare the two cases: Case 1 is dominated by green (supporting features), while Case 2 is dominated by red (opposing features). This visual contrast makes the explanation immediately understandable.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Local Surrogate (LIME): Bike Rental Example</h2>
+<p><strong>Task:</strong> Predict if bike rentals will be above or below trend</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>High Rental Day</strong></p>
+<p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
+<div id="0a64ff81" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="51">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-2.png" width="949" height="470"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="font-size: 1em; margin-top: 10px; background: #e8f5e9; padding: 10px; border-radius: 5px;">
+<p>✓ High temperature strongly supports<br> ✓ Good weather condition supports</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Low Rental Day</strong></p>
+<p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
+<div id="451413d3" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="52">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-2.png" width="949" height="470"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="font-size: 1em; margin-top: 10px; background: #ffebee; padding: 10px; border-radius: 5px;">
+<p>✗ Bad weather strongly opposes<br> ✗ Low temperature opposes</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>This slide shows actual LIME explanations for bike rental predictions. The bar charts display feature contributions - green bars indicate features supporting the prediction, orange/red bars indicate features opposing it. Notice how the high rental day is dominated by positive contributions (warm temp, good weather), while the low rental day is dominated by negative contributions (bad weather, cold temp). The model predictions are shown at the top - one instance has high probability of being ABOVE trend, the other BELOW trend. This is exactly the kind of local explanation LIME provides - understanding which features matter most for each specific prediction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
+<p>Bike Sharing Dataset from UCI Machine Learning Repository. Fanaee-T, H., &amp; Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence, 2(2-3), 113-127.</p>
+</div>
+</section>
+<section class="slide level2">
+<h2>LIME: Code Example</h2>
+<p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
+<div id="c11e14bf" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
+<span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
+<span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-4"><a href=""></a></span>
+<span id="cb2-5"><a href=""></a><span class="co"># Reload California Housing data for this example</span></span>
+<span id="cb2-6"><a href=""></a>housing <span class="op">=</span> fetch_california_housing()</span>
+<span id="cb2-7"><a href=""></a>X_housing, y_housing <span class="op">=</span> housing.data, housing.target</span>
+<span id="cb2-8"><a href=""></a></span>
+<span id="cb2-9"><a href=""></a><span class="co"># Retrain model on California Housing</span></span>
+<span id="cb2-10"><a href=""></a>model <span class="op">=</span> GradientBoostingRegressor(</span>
+<span id="cb2-11"><a href=""></a>    n_estimators<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb2-12"><a href=""></a>    max_depth<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb2-13"><a href=""></a>    learning_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb2-14"><a href=""></a>    random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb2-15"><a href=""></a>).fit(X_housing, y_housing)</span>
+<span id="cb2-16"><a href=""></a></span>
+<span id="cb2-17"><a href=""></a><span class="co"># Create LIME explainer using training data</span></span>
+<span id="cb2-18"><a href=""></a>explainer <span class="op">=</span> lime.lime_tabular.LimeTabularExplainer(</span>
+<span id="cb2-19"><a href=""></a>    training_data<span class="op">=</span>X_housing,</span>
+<span id="cb2-20"><a href=""></a>    feature_names<span class="op">=</span>housing.feature_names,</span>
+<span id="cb2-21"><a href=""></a>    mode<span class="op">=</span><span class="st">'regression'</span>,</span>
+<span id="cb2-22"><a href=""></a>    random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb2-23"><a href=""></a>)</span>
+<span id="cb2-24"><a href=""></a></span>
+<span id="cb2-25"><a href=""></a><span class="co"># Select an instance to explain (e.g., instance 0)</span></span>
+<span id="cb2-26"><a href=""></a>instance_idx <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-27"><a href=""></a>instance <span class="op">=</span> X_housing[instance_idx]</span>
+<span id="cb2-28"><a href=""></a></span>
+<span id="cb2-29"><a href=""></a><span class="co"># Generate explanation for this instance</span></span>
+<span id="cb2-30"><a href=""></a><span class="co"># predict_fn should return predictions</span></span>
+<span id="cb2-31"><a href=""></a>exp <span class="op">=</span> explainer.explain_instance(</span>
+<span id="cb2-32"><a href=""></a>    instance,</span>
+<span id="cb2-33"><a href=""></a>    model.predict,</span>
+<span id="cb2-34"><a href=""></a>    num_features<span class="op">=</span><span class="dv">5</span>  <span class="co"># Show top 5 features</span></span>
+<span id="cb2-35"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="footer">
+<p><a href="https://lime-ml.readthedocs.io/">LIME Documentation</a></p>
+</div>
+<aside class="notes">
+<p>LIME provides local explanations by training a simple interpretable model around a specific instance. The LimeTabularExplainer is initialized with the training data to understand feature distributions. The key parameter is <code>num_features</code> which controls sparsity - we only show the top 5 most important features for this prediction. Unlike PDP which gives global effects, LIME explains why the model made this specific prediction for this specific instance. The <code>predict</code> function is passed to LIME so it can probe the model with perturbed versions of the instance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>LIME: Output Visualization</h2>
+<div id="7190194d" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="54">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-2.png" width="951" height="469"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="font-size: 1.3em;">
+<p><strong>Explanation for Instance 0:</strong></p>
+<p>Predicted value: 4.29 (in units of $100k)</p>
+<p>The bar chart shows which features push the prediction higher (positive) or lower (negative) for this specific house.</p>
+</div>
+<aside class="notes">
+<p>The output shows a horizontal bar chart with the most important features for this specific prediction. Positive bars (pointing right) indicate features that increase the predicted house value, while negative bars (pointing left) decrease it. The length of each bar represents the magnitude of the feature’s contribution. Notice this is a LOCAL explanation - it only applies to this one house. If we explained a different house, we’d likely get different important features. This is the key difference from PDP which shows global average effects. The sparse representation (only 5 features) makes it easy for users to understand and trust the prediction.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

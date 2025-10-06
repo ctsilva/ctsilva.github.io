@@ -71,6 +71,10 @@ heavy rain + ice pallets + thunderstorm + mist, snow + mist
 - Wind speed in km per hour.
 :::
 
+::: footer
+Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophmolnar.com/books/interpretable-machine-learning). 2nd Edition.
+:::
+
 ## Partial Dependence Plot (PDP)
 
 Shows the marginal effect one or two features have on the predicted outcome of a machine learning model (J. H. Friedman 2001).
@@ -148,23 +152,83 @@ The key visual takeaway is the slope and shape of the line. The slope indicates 
 High level idea: marginalizing the machine learning model output over the distributions of the all other features to show the relationship between the feature we are interested in and the predicted outcome.
 
 ::: {.r-stack}
-![](figs/black-box/pdp-feature1.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature1.jpg){.fragment width="1400" height="700"}
 
-![](figs/black-box/pdp-feature2.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature2.jpg){.fragment width="1400" height="700"}
 
-![](figs/black-box/pdp-feature3.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature3.jpg){.fragment width="1400" height="700"}
 
-![](figs/black-box/pdp-feature4.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature4.jpg){.fragment width="1400" height="700"}
 
-![](figs/black-box/pdp-feature5.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature5.jpg){.fragment width="1400" height="700"}
 
-![](figs/black-box/pdp-feature6.jpg){.fragment width="950" height="450"}
+![](figs/black-box/pdp-feature6.jpg){.fragment width="1400" height="700"}
 :::
 
 ::: {.notes}
 This animation shows the PDP computation process step by step. For each value of our feature of interest, we: (1) Replace that feature with a fixed value across ALL data points, (2) Get predictions for all those modified instances, (3) Average those predictions, (4) Repeat for different feature values. The result is a curve showing the average effect. Notice how we're effectively "scanning" through the feature space while averaging out the effects of all other features. This is powerful because it works with any black-box model.
 
 While the animation shows the calculation (marginalizing/averaging), remind students that the resulting simple 2D line plot is the visualization product we interpret. The computational complexity is hidden from the end user - they only see the clean, interpretable curve that reveals the feature's marginal effect.
+:::
+
+## PDP: Code Example with scikit-learn
+
+**Dataset:** California Housing - median house value prediction (8 features)
+
+```{python}
+#| echo: true
+#| output: false
+from sklearn.datasets import fetch_california_housing
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.inspection import PartialDependenceDisplay
+import matplotlib.pyplot as plt
+
+# Load California housing dataset
+# Features: median income, house age, average rooms, etc.
+housing = fetch_california_housing()
+X, y = housing.data, housing.target
+
+# Train a gradient boosting regressor
+model = GradientBoostingRegressor(
+    n_estimators=100,
+    max_depth=4,
+    learning_rate=0.1,
+    random_state=0
+).fit(X, y)
+
+# Create PDPs for: MedInc (0), HouseAge (1), and their interaction
+# MedInc = median income, HouseAge = median house age
+features = [0, 1, (0, 1)]
+display = PartialDependenceDisplay.from_estimator(
+    model, X, features, feature_names=housing.feature_names
+)
+```
+
+::: footer
+[scikit-learn Partial Dependence Documentation](https://scikit-learn.org/stable/modules/partial_dependence.html)
+:::
+
+::: {.notes}
+This example shows how simple it is to compute PDPs in practice using scikit-learn. The `PartialDependenceDisplay.from_estimator()` method handles all the computation automatically: (1) It marginalizes over the training data, (2) Computes predictions for all feature values, (3) Averages the results, (4) Creates the visualization. Note that you can plot individual features `[0, 1]` or interactions `[(0, 1)]` which show how two features jointly affect predictions. The interaction plot is a 2D heatmap instead of a line plot. This high-level API abstracts away the complexity we saw in the animation, making PDPs accessible for practitioners.
+:::
+
+## PDP: Output Visualization
+
+```{python}
+#| echo: false
+#| fig-width: 14
+#| fig-height: 6
+display.figure_
+```
+
+**Interpretation:**
+
+- **Left (MedInc):** Strong positive monotonic relationship - higher median income → higher house prices (as expected)
+- **Middle (HouseAge):** Non-monotonic effect - newer and very old houses have lower values, middle-aged houses peak
+- **Right (Interaction):** Shows how income and age combine - high income dominates regardless of age (vertical gradient)
+
+::: {.notes}
+The California Housing dataset provides much clearer, more interpretable patterns: (1) **MedInc (Median Income)**: Shows a strong, near-linear positive relationship - as median income increases, predicted house values increase consistently. This makes intuitive sense and demonstrates a clear monotonic effect. (2) **HouseAge**: Reveals a non-monotonic pattern with a peak for middle-aged houses (around 20-30 years). Very new houses might lack established neighborhoods, while very old houses may need renovation. This is the kind of "sweet spot" pattern we discussed earlier. (3) **Interaction plot**: The 2D heatmap shows that median income has a dominant effect (notice the strong vertical color gradient), while house age modulates this effect more subtly. The interaction reveals that high-income areas command high prices regardless of house age. These diverse patterns demonstrate why PDPs are valuable for understanding feature effects.
 :::
 
 ## Partial Dependence Plot (PDP)
@@ -210,26 +274,45 @@ Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Ex
 LIME represents a paradigm shift from global to local explanations. The key insight: even if the global decision boundary is complex (left image shows a highly non-linear boundary), we can approximate it LOCALLY with a simple linear model. Think of it like approximating a curve with a tangent line - it only works near the point of tangency. The title "Why Should I Trust You?" captures the motivation: users need to understand individual predictions to build trust. LIME became hugely influential because it's model-agnostic, produces human-interpretable explanations, and works for any data type (tabular, text, images).
 :::
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+## Training local surrogate models to explain individual predictions
 
-::: {.r-fit-text}
+The idea is quite intuitive. **First, forget about the training data and imagine you only have the black box model where you can input data points and get the predictions of the model. You can probe the box as often as you want. Your goal is to understand why the machine learning model made a certain prediction. LIME tests what happens to the predictions when you give variations of your data into the machine learning model.**
 
-The idea is quite intuitive. 
+**LIME generates a new dataset consisting of perturbed samples and the corresponding predictions of the black box model.**
 
-- First, forget about the training data and imagine you only have the black box model where you can input data points and get the predictions of the model. You can probe the box as often as you want. Your goal is to understand why the machine learning model made a certain prediction. LIME tests what happens to the predictions when you give variations of your data into the machine learning model. 
+**On this new dataset LIME then trains an interpretable model, which is weighted by the proximity of the sampled instances to the instance of interest.** The interpretable model can be anything from the interpretable models chapter, for example Lasso or a decision tree. **The learned model should be a good approximation of the machine learning model predictions locally, but it does not have to be a good global approximation. This kind of accuracy is also called *local fidelity*.**
 
-- LIME generates a new dataset consisting of perturbed samples and the corresponding predictions of the black box model. 
+Mathematically, local surrogate models with interpretability constraint can be expressed as follows:
 
-- On this new dataset LIME then trains an interpretable model, which is weighted by the proximity of the sampled instances to the instance of interest. The interpretable model can be anything from the interpretable models chapter, for example Lasso or a decision tree. The learned model should be a good approximation of the machine learning model predictions locally, but it does not have to be a good global approximation. This kind of accuracy is also called *local fidelity*.
-:::
+$$\text{explanation}(x) = \arg\min_{g \in G} L(f, g, \pi_x) + \Omega(g)$$
 
 ::: footer
-Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophm.github.io/interpretable-ml-book/). 2nd Edition.
+Section 9.2, on Molnar's book.
 :::
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+## Training local surrogate models to explain individual predictions
 
-![](figs/black-box/lime-equations.jpg)
+:::: {.columns}
+
+::: {.column width="50%"}
+![](figs/black-box/lime-random-forest-line.jpg)
+
+$s_i$ = sample weight, $\lambda$ = regularization term
+:::
+
+::: {.column width="50%"}
+**Ridge Classifier**
+
+$$minimize \sum_{i=1}^{M} s_i(y_i - \hat{y}_i)^2$$
+
+$$= \sum_{i=1}^{M} s_i(y_i - \sum_{j=0}^{p} w_j \times x_{ij})^2 + \lambda \sum_{j=0}^{p} w_j^2$$
+
+<span style="color: red;">$w_j$ = trained weight to explain the importance of feature j</span>
+
+<span style="color: red;">The higher the $\lambda$, the more sparse the $w$ (more zeros) will become.</span>
+:::
+
+::::
 
 ::: footer
 Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Explaining the Predictions of Any Classifier*](https://arxiv.org/pdf/1602.04938.pdf). KDD.
@@ -357,6 +440,214 @@ The official implementation uses a Ridge Classifier as the linear model for expl
 
 ::: {.notes}
 Emphasize the visualization: **Color** (Green supports the prediction, Red opposes it), **Length of Bar** (magnitude of influence), and **Sparsity** (only a few features are shown—this makes it easy for a non-expert to trust). The bar chart is the key deliverable of LIME - it provides a contrastive explanation showing which features push toward vs away from the prediction. Compare the two cases: Case 1 is dominated by green (supporting features), while Case 2 is dominated by red (opposing features). This visual contrast makes the explanation immediately understandable.
+:::
+
+## Local Surrogate (LIME): Bike Rental Example
+
+**Task:** Predict if bike rentals will be above or below trend
+
+```{python}
+#| echo: false
+#| output: false
+
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+import lime
+import lime.lime_tabular
+import matplotlib.pyplot as plt
+
+# Load bike sharing dataset
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip"
+import urllib.request
+import zipfile
+import io
+
+# Download and extract
+response = urllib.request.urlopen(url)
+zip_file = zipfile.ZipFile(io.BytesIO(response.read()))
+zip_file.extractall("/tmp/bike_data")
+
+# Load day.csv
+bike_df = pd.read_csv("/tmp/bike_data/day.csv")
+
+# Create features
+feature_names = ['season', 'weathersit', 'temp', 'hum', 'windspeed', 'workingday']
+X = bike_df[feature_names].values
+y = (bike_df['cnt'] > bike_df['cnt'].median()).astype(int)  # Above/below median
+
+# Train random forest
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X, y)
+
+# Create LIME explainer
+explainer = lime.lime_tabular.LimeTabularExplainer(
+    training_data=X,
+    feature_names=feature_names,
+    class_names=['BELOW trend', 'ABOVE trend'],
+    mode='classification',
+    random_state=42
+)
+
+# Find a high rental day (warm, good weather)
+high_idx = bike_df[(bike_df['temp'] > 0.7) & (bike_df['weathersit'] == 1)].index[0]
+high_instance = X[high_idx]
+exp_high = explainer.explain_instance(high_instance, rf_model.predict_proba, num_features=5)
+
+# Find a low rental day (cold, bad weather)
+low_idx = bike_df[(bike_df['temp'] < 0.3) & (bike_df['weathersit'] == 3)].index[0]
+low_instance = X[low_idx]
+exp_low = explainer.explain_instance(low_instance, rf_model.predict_proba, num_features=5)
+
+# Store predictions
+pred_high = rf_model.predict_proba([high_instance])[0]
+pred_low = rf_model.predict_proba([low_instance])[0]
+```
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**High Rental Day**
+
+Prediction: **{python} f"{pred_high[1]:.2f}"** probability ABOVE trend
+
+```{python}
+#| echo: false
+#| fig-width: 6.5
+#| fig-height: 4.5
+
+fig = exp_high.as_pyplot_figure(label=1)
+ax = fig.gca()
+ax.set_xlabel('Feature Contribution to ABOVE Trend', fontsize=13)
+ax.tick_params(labelsize=12)
+ax.set_title('LIME Explanation', fontsize=15, fontweight='bold')
+fig.tight_layout()
+fig
+```
+
+<div style="font-size: 1em; margin-top: 10px; background: #e8f5e9; padding: 10px; border-radius: 5px;">
+✓ High temperature strongly supports<br>
+✓ Good weather condition supports
+</div>
+:::
+
+::: {.column width="50%"}
+**Low Rental Day**
+
+Prediction: **{python} f"{pred_low[0]:.2f}"** probability BELOW trend
+
+```{python}
+#| echo: false
+#| fig-width: 6.5
+#| fig-height: 4.5
+
+# For low rental, also explain label=1 (ABOVE) to show negative contributions
+fig = exp_low.as_pyplot_figure(label=1)
+ax = fig.gca()
+ax.set_xlabel('Feature Contribution to ABOVE Trend', fontsize=13)
+ax.tick_params(labelsize=12)
+ax.set_title('LIME Explanation', fontsize=15, fontweight='bold')
+fig.tight_layout()
+fig
+```
+
+<div style="font-size: 1em; margin-top: 10px; background: #ffebee; padding: 10px; border-radius: 5px;">
+✗ Bad weather strongly opposes<br>
+✗ Low temperature opposes
+</div>
+:::
+
+::::
+
+::: {.notes}
+This slide shows actual LIME explanations for bike rental predictions. The bar charts display feature contributions - green bars indicate features supporting the prediction, orange/red bars indicate features opposing it. Notice how the high rental day is dominated by positive contributions (warm temp, good weather), while the low rental day is dominated by negative contributions (bad weather, cold temp). The model predictions are shown at the top - one instance has high probability of being ABOVE trend, the other BELOW trend. This is exactly the kind of local explanation LIME provides - understanding which features matter most for each specific prediction.
+:::
+
+::: footer
+Bike Sharing Dataset from UCI Machine Learning Repository. Fanaee-T, H., & Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence, 2(2-3), 113-127.
+:::
+
+## LIME: Code Example
+
+**Dataset:** California Housing (same model as PDP example)
+
+```{python}
+#| echo: true
+#| output: false
+import lime
+import lime.lime_tabular
+import numpy as np
+
+# Reload California Housing data for this example
+housing = fetch_california_housing()
+X_housing, y_housing = housing.data, housing.target
+
+# Retrain model on California Housing
+model = GradientBoostingRegressor(
+    n_estimators=100,
+    max_depth=4,
+    learning_rate=0.1,
+    random_state=0
+).fit(X_housing, y_housing)
+
+# Create LIME explainer using training data
+explainer = lime.lime_tabular.LimeTabularExplainer(
+    training_data=X_housing,
+    feature_names=housing.feature_names,
+    mode='regression',
+    random_state=0
+)
+
+# Select an instance to explain (e.g., instance 0)
+instance_idx = 0
+instance = X_housing[instance_idx]
+
+# Generate explanation for this instance
+# predict_fn should return predictions
+exp = explainer.explain_instance(
+    instance,
+    model.predict,
+    num_features=5  # Show top 5 features
+)
+```
+
+::: footer
+[LIME Documentation](https://lime-ml.readthedocs.io/)
+:::
+
+::: {.notes}
+LIME provides local explanations by training a simple interpretable model around a specific instance. The LimeTabularExplainer is initialized with the training data to understand feature distributions. The key parameter is `num_features` which controls sparsity - we only show the top 5 most important features for this prediction. Unlike PDP which gives global effects, LIME explains why the model made this specific prediction for this specific instance. The `predict` function is passed to LIME so it can probe the model with perturbed versions of the instance.
+:::
+
+## LIME: Output Visualization
+
+```{python}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 7
+# Get the explanation as a matplotlib figure
+# Increase font sizes for better readability
+fig = exp.as_pyplot_figure()
+ax = fig.gca()
+for text in ax.texts:
+    text.set_fontsize(14)
+ax.tick_params(labelsize=14)
+ax.set_xlabel(ax.get_xlabel(), fontsize=16)
+ax.set_title(ax.get_title(), fontsize=18)
+fig.tight_layout()
+fig
+```
+
+::: {style="font-size: 1.3em;"}
+**Explanation for Instance 0:**
+
+Predicted value: `{python} f"{model.predict([instance])[0]:.2f}"` (in units of $100k)
+
+The bar chart shows which features push the prediction higher (positive) or lower (negative) for this specific house.
+:::
+
+::: {.notes}
+The output shows a horizontal bar chart with the most important features for this specific prediction. Positive bars (pointing right) indicate features that increase the predicted house value, while negative bars (pointing left) decrease it. The length of each bar represents the magnitude of the feature's contribution. Notice this is a LOCAL explanation - it only applies to this one house. If we explained a different house, we'd likely get different important features. This is the key difference from PDP which shows global average effects. The sparse representation (only 5 features) makes it easy for users to understand and trust the prediction.
 :::
 
 ## Local Interpretable Model-agnostic Explanations (LIME)
