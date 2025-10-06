@@ -81,16 +81,41 @@ Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophmolnar.co
 
 ## Partial Dependence Plot (PDP)
 
-Shows the marginal effect one or two features have on the predicted outcome of a machine learning model (J. H. Friedman 2001).
+Shows the marginal effect **one or two features** have on the predicted outcome of a machine learning model (J. H. Friedman 2001).
 
+:::: {.columns}
+
+::: {.column width="55%"}
 ![](figs/black-box/bike-use-temperature.jpg)
+
+**1D PDP**: Line plot showing effect of single feature
+:::
+
+::: {.column width="45%"}
+<div style="background: #e8f4f8; padding: 20px; border-radius: 8px; margin-top: 40px;">
+**2D PDP (Interaction Plots):**
+
+For **two features**, PDP generates a **heatmap** showing interactions.
+
+<div style="text-align: center; margin: 15px 0; font-size: 2em;">
+🟦🟦🟨🟧🟧<br/>
+🟦🟦🟨🟧🟧<br/>
+🟩🟩🟨🟨🟨<br/>
+🟩🟩🟨🟨🟨
+</div>
+
+**Complex contours** = strong feature interaction
+</div>
+:::
+
+::::
 
 ::: footer
 Friedman, J. H. (2001). [*Greedy function approximation: A gradient boosting machine*](https://doi.org/10.1214/aos/1013203451). Annals of Statistics.
 :::
 
 ::: {.notes}
-PDPs are one of the oldest and most intuitive model-agnostic interpretation methods. The key idea: marginalize over all other features to isolate the effect of one (or two) features on the prediction. Here we see bike rentals vs temperature - notice the non-linear relationship with a sweet spot around 20-25°C. The visualization immediately reveals this pattern that might be hidden in model coefficients. PDPs answer: "On average, how does changing this feature affect predictions?"
+PDPs are one of the oldest and most intuitive model-agnostic interpretation methods. The key idea: marginalize over all other features to isolate the effect of one (or two) features on the prediction. Here we see bike rentals vs temperature - notice the non-linear relationship with a sweet spot around 20-25°C. The visualization immediately reveals this pattern that might be hidden in model coefficients. For two features, PDP generates a 2D plot (heatmap) showing interactions - the more complex the contour lines, the stronger the interaction between features. For example, a 2D PDP of temperature × humidity might show that high temperature increases rentals only when humidity is low. PDPs answer: "On average, how does changing this feature affect predictions?"
 :::
 
 ## PDP Visualization: Interpreting Feature Effects
@@ -254,9 +279,52 @@ The California Housing dataset provides much clearer, more interpretable pattern
 - Hidden heterogeneous effects from averaging
 :::
 
+## From Global to Local: Bridging PDP to LIME
+
+**PDP's Limitation: Averaging Hides Individual Differences**
+
+:::: {.columns}
+
+::: {.column width="50%"}
+<div style="background: #fff3cd; padding: 25px; border-left: 4px solid #ffc107; margin: 20px 0;">
+**The Problem:**
+
+PDP shows the **average effect** across all instances.
+
+But what if the effect differs between:
+- Cold days vs. warm days?
+- New customers vs. loyal customers?
+- Low-income vs. high-income applicants?
+
+**PDP cannot tell you!**
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="background: #d1ecf1; padding: 25px; border-left: 4px solid #0c5460; margin: 20px 0;">
+**The Solution:**
+
+Move from **global** to **local** explanations.
+
+Instead of asking:
+> "How does temperature affect rentals **on average**?"
+
+Ask:
+> "Why did the model predict **this specific value** for **this particular day**?"
+
+**→ Enter LIME**
+</div>
+:::
+
+::::
+
+::: {.notes}
+This slide bridges the conceptual gap between PDP and LIME. PDP's key limitation - "hidden heterogeneous effects from averaging" - means we lose important information about how features affect different types of instances differently. For example, temperature might increase bike rentals on sunny days but decrease them on rainy days, and PDP would just show the average. This motivates the need for local explanations that focus on individual instances. LIME addresses this by building interpretable surrogate models around specific predictions, allowing us to understand "why THIS prediction for THIS instance?" rather than just global averages.
+:::
+
 ## Local Interpretable Model-agnostic Explanations (LIME)
 
-Training local surrograte models to explain *individual* predictions
+Training local surrogate models to explain *individual* predictions
 
 :::: {.columns}
 
