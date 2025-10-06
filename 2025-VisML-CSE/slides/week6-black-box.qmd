@@ -1387,6 +1387,124 @@ Kumar, I. E., et al. (2020). [*Problems with Shapley-value-based explanations as
 Despite SHAP's theoretical elegance, it has important limitations that practitioners must understand. The Kumar et al. paper provides crucial critiques: (1) SHAP assumes features can be independently varied, but real features are often correlated (e.g., house size and bedrooms), (2) SHAP values show associative, not causal relationships - they tell you "what" contributes but not "why", (3) Computational cost grows exponentially with features (though approximations like TreeSHAP and KernelSHAP help), (4) Explanations can be unstable under small data perturbations. Bottom line: SHAP is a powerful tool but not a magic bullet. Always validate explanations against domain knowledge.
 :::
 
+## SHAP Limitations: Not Always Human-Friendly
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**What Makes Explanations Human-Friendly?** *(Miller 2019)*
+
+Human-friendly explanations should be:
+
+1. **Concise**: Focus on key factors (2-3 features)
+2. **Contrastive**: Compare to specific alternatives
+3. **Abnormal**: Highlight unusual causes
+
+**But SHAP:**
+
+- ❌ **Not concise**: Always uses ALL features
+- ❌ **Not strongly contrastive**: Averages over many coalitions, diluting contrast
+- ❌ **Doesn't highlight abnormal**: Treats all features equally
+
+<div style="background: #f8d7da; padding: 15px; border-left: 4px solid #dc3545; margin-top: 20px;">
+**⚠️ Warning**: Don't present SHAP values to end-users as straightforward information. They require explanation and training to understand properly.
+</div>
+:::
+
+::: {.column width="50%"}
+**SHAP Doesn't Enable User Actions**
+
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+**Example: Corn Yield Prediction**
+
+- Model predicts low yield for a field
+- SHAP: "Fertilizer use had +0.3 positive impact"
+- Farmer asks: **"Should I add more fertilizer?"**
+- SHAP: 🤷 **Cannot answer!**
+
+SHAP explains the **current state** vs. average, not **how to change** outcomes.
+</div>
+
+**For Actionable Recommendations:**
+
+- Use **counterfactual explanations**: "If fertilizer increased by 20%, yield would increase by 5%"
+- Design models with **causal relationships**
+- Use **representative training data**
+:::
+
+::::
+
+::: footer
+Miller, T. (2019). [*Explanation in artificial intelligence: Insights from the social sciences*](https://www.sciencedirect.com/science/article/pii/S0004370218305988). Artificial Intelligence, 267, 1-38.
+:::
+
+::: {.notes}
+This slide addresses critical usability limitations of SHAP. Research on human cognition shows that good explanations are concise (2-3 key factors), contrastive (compared to specific alternatives), and focus on abnormal causes. SHAP fails on all three: it always attributes to ALL features (not concise), averages over many coalitions which dilutes contrastiveness, and treats all features equally without highlighting what's unusual. The corn yield example illustrates another major limitation: SHAP doesn't enable action. It tells you fertilizer had a positive contribution compared to the average field, but doesn't answer "should I add more?" This is because SHAP measures deviation from background data, not causal effects of changes. For actionable insights, you need counterfactual explanations that explicitly model "what if" scenarios. Bottom line: SHAP is a technical tool for ML practitioners, not an end-user explanation method.
+:::
+
+## SHAP Limitations: Misinterpretation and Adversarial Risks
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Common Misinterpretations**
+
+<div style="background: #d1ecf1; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+**❌ Wrong Interpretation:**
+
+"SHAP value = difference in prediction if feature removed from training"
+
+**✓ Correct Interpretation:**
+
+"SHAP value = contribution to deviation from mean prediction, given current feature values"
+</div>
+
+**SHAP Is NOT:**
+
+- ❌ A **surrogate model** (unlike LIME)
+  - Cannot predict effects of feature changes
+  - Example: "If salary increases €300, credit score increases 5 points" ← SHAP can't do this!
+
+- ❌ **Training-data independent**
+  - Requires background data for computation
+  - Privacy/access concerns in production
+:::
+
+::: {.column width="50%"}
+**Adversarial Risk: You Can Fool SHAP** *(Slack et al. 2020)*
+
+Unscrupulous data scientists can create **intentionally misleading** SHAP explanations to conceal biases:
+
+<div style="background: #f8d7da; padding: 20px; border-radius: 8px; margin: 20px 0;">
+**Attack Scenario:**
+
+1. Train a **biased model** (e.g., using race for loan decisions)
+2. Add **decoy features** that appear important to SHAP
+3. Manipulate **background data** distribution
+4. Result: SHAP shows "fair" explanations for discriminatory predictions!
+</div>
+
+**Philosophical Issue: No Consensus**
+
+- What should "feature importance" mean?
+- Are SHAP axioms the "right" definition?
+- Process is backwards: method → interpretation
+
+<div style="font-size: 0.9em; font-style: italic; margin-top: 20px;">
+"We use a mathematically coherent method that generates an 'explanation' and then attempt to decipher its meaning." - Molnar (2024)
+</div>
+:::
+
+::::
+
+::: footer
+Slack, D., et al. (2020). [*Fooling LIME and SHAP*](https://arxiv.org/abs/1911.02508). AIES. | Molnar, C. (2024). *Interpretable Machine Learning*.
+:::
+
+::: {.notes}
+This slide covers critical risks in deploying SHAP. FIRST, misinterpretation is common and dangerous. SHAP values are NOT the effect of removing features from training - they're contributions to deviation from the mean prediction given current values. This subtle distinction matters for correct interpretation. SHAP also isn't a surrogate model like LIME - you can't use it to simulate "what if" changes. SECOND, adversarial risk: Slack et al. demonstrated that malicious data scientists can intentionally create misleading SHAP explanations. They can add decoy features, manipulate background data, and train models that appear fair to SHAP while being discriminatory. This is particularly dangerous for auditing AI systems - you can't blindly trust SHAP explanations without deeper investigation. THIRD, philosophical issue: there's no consensus in the field about what "feature importance" should mean. SHAP defines it through axioms, but are these the right axioms? For linear/additive models, SHAP aligns with coefficients, which validates the approach. But for complex interactions, interpretation becomes murky. The field often works backwards: we apply mathematically elegant methods and then try to understand what they mean, rather than defining what we want first.
+:::
+
 ## Deep Dive: The Correlation Problem
 
 **Why Correlated Features Break SHAP's Independence Assumption**

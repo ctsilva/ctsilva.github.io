@@ -356,7 +356,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="7dbb82a7" class="cell" data-execution_count="1">
+<div id="2d8a95ef" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +401,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="d892065a" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div id="9ec50f23" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="46">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -610,8 +610,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="12ce004e" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="33">
+<div id="d7ce1061" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="48">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -632,8 +632,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="ffb1b155" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="34">
+<div id="0524572d" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="49">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -714,7 +714,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="15e2c70b" class="cell" data-execution_count="6">
+<div id="e2448163" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -770,8 +770,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="4e28bd70" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="36">
+<div id="7b448d6f" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="51">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
@@ -1562,6 +1562,125 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
+<h2>SHAP Limitations: Not Always Human-Friendly</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>What Makes Explanations Human-Friendly?</strong> <em>(Miller 2019)</em></p>
+<p>Human-friendly explanations should be:</p>
+<ol type="1">
+<li><strong>Concise</strong>: Focus on key factors (2-3 features)</li>
+<li><strong>Contrastive</strong>: Compare to specific alternatives</li>
+<li><strong>Abnormal</strong>: Highlight unusual causes</li>
+</ol>
+<p><strong>But SHAP:</strong></p>
+<ul>
+<li>❌ <strong>Not concise</strong>: Always uses ALL features</li>
+<li>❌ <strong>Not strongly contrastive</strong>: Averages over many coalitions, diluting contrast</li>
+<li>❌ <strong>Doesn’t highlight abnormal</strong>: Treats all features equally</li>
+</ul>
+<div style="background: #f8d7da; padding: 15px; border-left: 4px solid #dc3545; margin-top: 20px;">
+<p><strong>⚠️ Warning</strong>: Don’t present SHAP values to end-users as straightforward information. They require explanation and training to understand properly.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>SHAP Doesn’t Enable User Actions</strong></p>
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+<p><strong>Example: Corn Yield Prediction</strong></p>
+<ul>
+<li>Model predicts low yield for a field</li>
+<li>SHAP: “Fertilizer use had +0.3 positive impact”</li>
+<li>Farmer asks: <strong>“Should I add more fertilizer?”</strong></li>
+<li>SHAP: 🤷 <strong>Cannot answer!</strong></li>
+</ul>
+<p>SHAP explains the <strong>current state</strong> vs.&nbsp;average, not <strong>how to change</strong> outcomes.</p>
+</div>
+<p><strong>For Actionable Recommendations:</strong></p>
+<ul>
+<li>Use <strong>counterfactual explanations</strong>: “If fertilizer increased by 20%, yield would increase by 5%”</li>
+<li>Design models with <strong>causal relationships</strong></li>
+<li>Use <strong>representative training data</strong></li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Miller, T. (2019). <a href="https://www.sciencedirect.com/science/article/pii/S0004370218305988"><em>Explanation in artificial intelligence: Insights from the social sciences</em></a>. Artificial Intelligence, 267, 1-38.</p>
+</div>
+<aside class="notes">
+<p>This slide addresses critical usability limitations of SHAP. Research on human cognition shows that good explanations are concise (2-3 key factors), contrastive (compared to specific alternatives), and focus on abnormal causes. SHAP fails on all three: it always attributes to ALL features (not concise), averages over many coalitions which dilutes contrastiveness, and treats all features equally without highlighting what’s unusual. The corn yield example illustrates another major limitation: SHAP doesn’t enable action. It tells you fertilizer had a positive contribution compared to the average field, but doesn’t answer “should I add more?” This is because SHAP measures deviation from background data, not causal effects of changes. For actionable insights, you need counterfactual explanations that explicitly model “what if” scenarios. Bottom line: SHAP is a technical tool for ML practitioners, not an end-user explanation method.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>SHAP Limitations: Misinterpretation and Adversarial Risks</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Common Misinterpretations</strong></p>
+<div style="background: #d1ecf1; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+<p><strong>❌ Wrong Interpretation:</strong></p>
+<p>“SHAP value = difference in prediction if feature removed from training”</p>
+<p><strong>✓ Correct Interpretation:</strong></p>
+<p>“SHAP value = contribution to deviation from mean prediction, given current feature values”</p>
+</div>
+<p><strong>SHAP Is NOT:</strong></p>
+<ul>
+<li>❌ A <strong>surrogate model</strong> (unlike LIME)
+<ul>
+<li>Cannot predict effects of feature changes</li>
+<li>Example: “If salary increases €300, credit score increases 5 points” ← SHAP can’t do this!</li>
+</ul></li>
+<li>❌ <strong>Training-data independent</strong>
+<ul>
+<li>Requires background data for computation</li>
+<li>Privacy/access concerns in production</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Adversarial Risk: You Can Fool SHAP</strong> <em>(Slack et al.&nbsp;2020)</em></p>
+<p>Unscrupulous data scientists can create <strong>intentionally misleading</strong> SHAP explanations to conceal biases:</p>
+<div style="background: #f8d7da; padding: 20px; border-radius: 8px; margin: 20px 0;">
+<p><strong>Attack Scenario:</strong></p>
+<ol type="1">
+<li>Train a <strong>biased model</strong> (e.g., using race for loan decisions)</li>
+<li>Add <strong>decoy features</strong> that appear important to SHAP</li>
+<li>Manipulate <strong>background data</strong> distribution</li>
+<li>Result: SHAP shows “fair” explanations for discriminatory predictions!</li>
+</ol>
+</div>
+<p><strong>Philosophical Issue: No Consensus</strong></p>
+<ul>
+<li>What should “feature importance” mean?</li>
+<li>Are SHAP axioms the “right” definition?</li>
+<li>Process is backwards: method → interpretation</li>
+</ul>
+<div style="font-size: 0.9em; font-style: italic; margin-top: 20px;">
+<p>“We use a mathematically coherent method that generates an ‘explanation’ and then attempt to decipher its meaning.” - Molnar (2024)</p>
+</div>
+</div></div>
+<div class="footer">
+<p>Slack, D., et al.&nbsp;(2020). <a href="https://arxiv.org/abs/1911.02508"><em>Fooling LIME and SHAP</em></a>. AIES. | Molnar, C. (2024). <em>Interpretable Machine Learning</em>.</p>
+</div>
+<aside class="notes">
+<p>This slide covers critical risks in deploying SHAP. FIRST, misinterpretation is common and dangerous. SHAP values are NOT the effect of removing features from training - they’re contributions to deviation from the mean prediction given current values. This subtle distinction matters for correct interpretation. SHAP also isn’t a surrogate model like LIME - you can’t use it to simulate “what if” changes. SECOND, adversarial risk: Slack et al.&nbsp;demonstrated that malicious data scientists can intentionally create misleading SHAP explanations. They can add decoy features, manipulate background data, and train models that appear fair to SHAP while being discriminatory. This is particularly dangerous for auditing AI systems - you can’t blindly trust SHAP explanations without deeper investigation. THIRD, philosophical issue: there’s no consensus in the field about what “feature importance” should mean. SHAP defines it through axioms, but are these the right axioms? For linear/additive models, SHAP aligns with coefficients, which validates the approach. But for complex interactions, interpretation becomes murky. The field often works backwards: we apply mathematically elegant methods and then try to understand what they mean, rather than defining what we want first.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Deep Dive: The Correlation Problem</h2>
 <p><strong>Why Correlated Features Break SHAP’s Independence Assumption</strong></p>
 <div class="columns">
@@ -1609,7 +1728,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Visualizing the Correlation Problem</h2>
-<div id="2ba9ccd5" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="8">
+<div id="af3b456e" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb3-3"><a href=""></a></span>
@@ -1788,7 +1907,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Loading the Wine Quality Dataset</h2>
-<div id="86a8bfbd" class="cell" data-execution_count="9">
+<div id="6781c849" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-3"><a href=""></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -1852,7 +1971,7 @@ First few rows:
 </section>
 <section class="slide level2">
 <h2>Training a Linear Regression Model</h2>
-<div id="2729a0ef" class="cell" data-execution_count="10">
+<div id="aa2b69b6" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="co"># Prepare features and target</span></span>
 <span id="cb7-2"><a href=""></a>X <span class="op">=</span> wine.drop(<span class="st">'quality'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb7-3"><a href=""></a>y <span class="op">=</span> wine[<span class="st">'quality'</span>]</span>
@@ -1911,7 +2030,7 @@ Model coefficients:
 </section>
 <section class="slide level2">
 <h2>Computing SHAP Values with LinearExplainer</h2>
-<div id="b6a81ea0" class="cell" data-execution_count="11">
+<div id="0bd5529b" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="co"># Create SHAP explainer for linear models</span></span>
 <span id="cb9-2"><a href=""></a>explainer <span class="op">=</span> shap.LinearExplainer(model, X_train)</span>
 <span id="cb9-3"><a href=""></a></span>
@@ -1962,7 +2081,7 @@ Sum: base_value + sum(shap_values) = 6.372</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Waterfall Plot: Local Explanation</h2>
-<div id="803bf931" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="12">
+<div id="085cd82f" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Select an interesting wine (high quality prediction)</span></span>
 <span id="cb11-2"><a href=""></a>idx <span class="op">=</span> np.argmax(model.predict(X_test))</span>
 <span id="cb11-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Selected wine index: </span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -2000,7 +2119,7 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Summary Plot: Global Feature Importance</h2>
-<div id="3747eaaa" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="13">
+<div id="61cd98ce" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># Create summary plot (beeswarm)</span></span>
 <span id="cb13-2"><a href=""></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -2027,7 +2146,7 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Dependence Plot: Feature Relationships</h2>
-<div id="15d82f6c" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="14">
+<div id="0f962c9d" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="co"># Create dependence plot for alcohol</span></span>
 <span id="cb14-2"><a href=""></a>shap.plots.scatter(shap_values[:, <span class="st">'alcohol'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -2054,7 +2173,7 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>Verifying SHAP Values for Linear Models</h2>
-<div id="d06d4cff" class="cell" data-execution_count="15">
+<div id="2fff6909" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="co"># For linear models: SHAP = coefficient × (x - mean(x))</span></span>
 <span id="cb15-2"><a href=""></a><span class="co"># Let's verify this relationship</span></span>
 <span id="cb15-3"><a href=""></a></span>
