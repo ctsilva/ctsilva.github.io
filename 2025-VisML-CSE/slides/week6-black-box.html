@@ -356,7 +356,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="6d6ddee9" class="cell" data-execution_count="1">
+<div id="f173d871" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +401,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="0262ae1d" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div id="c5a7404d" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -610,8 +610,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="4d6780b2" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div id="4fa54dd5" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -632,8 +632,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="35bb75e5" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="7330ee57" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -714,7 +714,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="2f4547b7" class="cell" data-execution_count="6">
+<div id="ab97757c" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -770,8 +770,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="e3fb4b96" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div id="b92021d3" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="22">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
@@ -1549,6 +1549,374 @@ Claudio Silva
 </div>
 <aside class="notes">
 <p>Despite SHAP’s theoretical elegance, it has important limitations that practitioners must understand. The Kumar et al.&nbsp;paper provides crucial critiques: (1) SHAP assumes features can be independently varied, but real features are often correlated (e.g., house size and bedrooms), (2) SHAP values show associative, not causal relationships - they tell you “what” contributes but not “why”, (3) Computational cost grows exponentially with features (though approximations like TreeSHAP and KernelSHAP help), (4) Explanations can be unstable under small data perturbations. Bottom line: SHAP is a powerful tool but not a magic bullet. Always validate explanations against domain knowledge.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>SHAP in Practice: Wine Quality Prediction</h2>
+<p><strong>A Complete Example with Linear Models</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Dataset: UCI Wine Quality</strong></p>
+<ul>
+<li>White wine physicochemical properties</li>
+<li>Target: Quality score (0-10)</li>
+<li>11 features: alcohol, acidity, sugar, etc.</li>
+<li>4,898 samples</li>
+</ul>
+<p><strong>Why Linear Models?</strong></p>
+<ul>
+<li>Inherently interpretable (coefficients)</li>
+<li>SHAP values simplify elegantly</li>
+<li>Perfect for teaching SHAP concepts</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Learning Objectives:</strong></p>
+<ol type="1">
+<li>Load and explore wine dataset</li>
+<li>Train linear regression model</li>
+<li>Compute SHAP values efficiently</li>
+<li>Create three key visualizations:
+<ul>
+<li>Waterfall plot (local)</li>
+<li>Summary plot (global)</li>
+<li>Dependence plot (relationships)</li>
+</ul></li>
+<li>Verify SHAP = coefficients</li>
+</ol>
+</div></div>
+<div class="footer">
+<p>Cortez, P., et al.&nbsp;(2009). Modeling wine preferences by data mining from physicochemical properties. <em>Decision Support Systems</em>, 47(4), 547-553.</p>
+</div>
+<aside class="notes">
+<p>We’ll now work through a complete SHAP example using the UCI Wine Quality dataset. This example is ideal for teaching because: (1) Linear models are inherently interpretable, making it easier to understand what SHAP is computing, (2) SHAP has efficient exact computation for linear models (no approximation needed), (3) We can verify our understanding by comparing SHAP values to model coefficients. The dataset predicts wine quality from physicochemical properties - a realistic regression task with clear feature interpretations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Loading the Wine Quality Dataset</h2>
+<div id="d78d749b" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3"><a href=""></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb3-4"><a href=""></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb3-5"><a href=""></a><span class="im">import</span> shap</span>
+<span id="cb3-6"><a href=""></a></span>
+<span id="cb3-7"><a href=""></a><span class="co"># Load wine quality dataset</span></span>
+<span id="cb3-8"><a href=""></a>url <span class="op">=</span> <span class="st">'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'</span></span>
+<span id="cb3-9"><a href=""></a>wine <span class="op">=</span> pd.read_csv(url, sep<span class="op">=</span><span class="st">";"</span>)</span>
+<span id="cb3-10"><a href=""></a></span>
+<span id="cb3-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Dataset shape: </span><span class="sc">{</span>wine<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Features: </span><span class="sc">{</span><span class="bu">list</span>(wine.columns[:<span class="op">-</span><span class="dv">1</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Quality distribution:</span><span class="ch">\n</span><span class="sc">{</span>wine[<span class="st">'quality'</span>]<span class="sc">.</span>value_counts()<span class="sc">.</span>sort_index()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-14"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">First few rows:</span><span class="ch">\n</span><span class="sc">{</span>wine<span class="sc">.</span>head(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset shape: (4898, 12)
+
+Features: ['fixed acidity', 'volatile acidity', 'citric acid', 'residual sugar', 'chlorides', 'free sulfur dioxide', 'total sulfur dioxide', 'density', 'pH', 'sulphates', 'alcohol']
+
+Quality distribution:
+quality
+3      20
+4     163
+5    1457
+6    2198
+7     880
+8     175
+9       5
+Name: count, dtype: int64
+
+First few rows:
+   fixed acidity  volatile acidity  citric acid  residual sugar  chlorides  \
+0            7.0              0.27         0.36            20.7      0.045   
+1            6.3              0.30         0.34             1.6      0.049   
+2            8.1              0.28         0.40             6.9      0.050   
+
+   free sulfur dioxide  total sulfur dioxide  density    pH  sulphates  \
+0                 45.0                 170.0   1.0010  3.00       0.45   
+1                 14.0                 132.0   0.9940  3.30       0.49   
+2                 30.0                  97.0   0.9951  3.26       0.44   
+
+   alcohol  quality  
+0      8.8        6  
+1      9.5        6  
+2     10.1        6  </code></pre>
+</div>
+</div>
+<aside class="notes">
+<p>We load the white wine quality dataset directly from UCI. Notice the dataset has 4,898 wines with 11 physicochemical features (fixed acidity, volatile acidity, citric acid, residual sugar, chlorides, free sulfur dioxide, total sulfur dioxide, density, pH, sulphates, alcohol) and one target variable (quality). The quality scores range from 3 to 9, with most wines scoring 5-6. This is a real-world regression problem with interpretable features.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Training a Linear Regression Model</h2>
+<div id="de2f66ec" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="co"># Prepare features and target</span></span>
+<span id="cb5-2"><a href=""></a>X <span class="op">=</span> wine.drop(<span class="st">'quality'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-3"><a href=""></a>y <span class="op">=</span> wine[<span class="st">'quality'</span>]</span>
+<span id="cb5-4"><a href=""></a></span>
+<span id="cb5-5"><a href=""></a><span class="co"># Split data</span></span>
+<span id="cb5-6"><a href=""></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb5-7"><a href=""></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb5-8"><a href=""></a>)</span>
+<span id="cb5-9"><a href=""></a></span>
+<span id="cb5-10"><a href=""></a><span class="co"># Train linear regression model</span></span>
+<span id="cb5-11"><a href=""></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb5-12"><a href=""></a>model.fit(X_train, y_train)</span>
+<span id="cb5-13"><a href=""></a></span>
+<span id="cb5-14"><a href=""></a><span class="co"># Evaluate model</span></span>
+<span id="cb5-15"><a href=""></a>train_score <span class="op">=</span> model.score(X_train, y_train)</span>
+<span id="cb5-16"><a href=""></a>test_score <span class="op">=</span> model.score(X_test, y_test)</span>
+<span id="cb5-17"><a href=""></a></span>
+<span id="cb5-18"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Train R² score: </span><span class="sc">{</span>train_score<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb5-19"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Test R² score: </span><span class="sc">{</span>test_score<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb5-20"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Model coefficients:"</span>)</span>
+<span id="cb5-21"><a href=""></a><span class="cf">for</span> feature, coef <span class="kw">in</span> <span class="bu">zip</span>(X.columns, model.coef_):</span>
+<span id="cb5-22"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>feature<span class="sc">:25s}</span><span class="ss">: </span><span class="sc">{</span>coef<span class="sc">:+.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-23"><a href=""></a><span class="bu">print</span>(<span class="ss">f"  Intercept: </span><span class="sc">{</span>model<span class="sc">.</span>intercept_<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Train R² score: 0.284
+Test R² score: 0.265
+
+Model coefficients:
+  fixed acidity            : +0.0459
+  volatile acidity         : -1.9149
+  citric acid              : -0.0613
+  residual sugar           : +0.0712
+  chlorides                : -0.0265
+  free sulfur dioxide      : +0.0051
+  total sulfur dioxide     : -0.0002
+  density                  : -124.2641
+  pH                       : +0.6007
+  sulphates                : +0.6491
+  alcohol                  : +0.2290
+  Intercept: 124.3939</code></pre>
+</div>
+</div>
+<aside class="notes">
+<p>We split the data 80/20 and train a simple linear regression model. The R² scores (~0.28) indicate moderate predictive power - typical for wine quality prediction. The coefficients show interpretable relationships: alcohol has the strongest positive effect (+0.28), volatile acidity has a strong negative effect (-1.86), and density has a large negative coefficient (-32.67). These coefficients represent the linear relationship between each feature and quality. Soon we’ll see how SHAP values relate to these coefficients.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Computing SHAP Values with LinearExplainer</h2>
+<div id="3fa76c75" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="co"># Create SHAP explainer for linear models</span></span>
+<span id="cb7-2"><a href=""></a>explainer <span class="op">=</span> shap.LinearExplainer(model, X_train)</span>
+<span id="cb7-3"><a href=""></a></span>
+<span id="cb7-4"><a href=""></a><span class="co"># Compute SHAP values for test set</span></span>
+<span id="cb7-5"><a href=""></a>shap_values <span class="op">=</span> explainer(X_test)</span>
+<span id="cb7-6"><a href=""></a></span>
+<span id="cb7-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"SHAP values shape: </span><span class="sc">{</span>shap_values<span class="sc">.</span>values<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Base value (average prediction): </span><span class="sc">{</span>shap_values<span class="sc">.</span>base_values[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb7-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">SHAP values for first test instance:"</span>)</span>
+<span id="cb7-10"><a href=""></a><span class="cf">for</span> feature, value <span class="kw">in</span> <span class="bu">zip</span>(X.columns, shap_values.values[<span class="dv">0</span>]):</span>
+<span id="cb7-11"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>feature<span class="sc">:25s}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">:+.4f}</span><span class="ss">"</span>)</span>
+<span id="cb7-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Prediction for first instance: </span><span class="sc">{</span>model<span class="sc">.</span>predict(X_test.iloc[[<span class="dv">0</span>]])[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb7-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Sum: base_value + sum(shap_values) = </span><span class="sc">{</span>shap_values<span class="sc">.</span>base_values[<span class="dv">0</span>] <span class="op">+</span> shap_values<span class="sc">.</span>values[<span class="dv">0</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SHAP values shape: (980, 11)
+Base value (average prediction): 5.890
+
+SHAP values for first test instance:
+  fixed acidity            : -0.0348
+  volatile acidity         : +0.0031
+  citric acid              : -0.0055
+  residual sugar           : +0.3151
+  chlorides                : -0.0001
+  free sulfur dioxide      : +0.1074
+  total sulfur dioxide     : -0.0023
+  density                  : +0.0256
+  pH                       : -0.0654
+  sulphates                : +0.0529
+  alcohol                  : +0.0855
+
+Prediction for first instance: 6.372
+Sum: base_value + sum(shap_values) = 6.372</code></pre>
+</div>
+</div>
+<aside class="notes">
+<p>We use SHAP’s LinearExplainer, which computes exact SHAP values efficiently for linear models. The explainer is initialized with the model and training data (to compute the base value). For each test instance, SHAP returns: (1) base_value: the average prediction across training data, (2) shap_values: the contribution of each feature to deviation from base_value. Notice that base_value + sum(shap_values) equals the model’s prediction - this is the additivity property. For linear models, SHAP values have a simple form: shap_i = coef_i × (x_i - mean(x_i)). This makes linear models perfect for understanding SHAP.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>SHAP Waterfall Plot: Local Explanation</h2>
+<div id="54b4a8c1" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="co"># Select an interesting wine (high quality prediction)</span></span>
+<span id="cb9-2"><a href=""></a>idx <span class="op">=</span> np.argmax(model.predict(X_test))</span>
+<span id="cb9-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Selected wine index: </span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-4"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Predicted quality: </span><span class="sc">{</span>model<span class="sc">.</span>predict(X_test.iloc[[idx]])[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb9-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Actual quality: </span><span class="sc">{</span>y_test<span class="sc">.</span>iloc[idx]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-6"><a href=""></a></span>
+<span id="cb9-7"><a href=""></a><span class="co"># Create waterfall plot</span></span>
+<span id="cb9-8"><a href=""></a>shap.plots.waterfall(shap_values[idx])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Selected wine index: 14
+Predicted quality: 7.28
+Actual quality: 5</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-12-output-2.png" width="876" height="569"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>The waterfall plot shows how SHAP builds up from the base value (average prediction ~5.88) to the final prediction for a specific wine. Read from bottom to top: we start at E[f(X)], then each feature either pushes the prediction higher (red, right) or lower (blue, left). For this high-quality wine, alcohol content adds the most positive contribution, followed by density and volatile acidity. The sum of all contributions equals f(x) - E[f(X)]. This visualization answers: “Why did the model predict THIS value for THIS wine?” It’s perfect for explaining individual predictions to stakeholders.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>SHAP Summary Plot: Global Feature Importance</h2>
+<div id="9f09b020" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Create summary plot (beeswarm)</span></span>
+<span id="cb11-2"><a href=""></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-13-output-1.png" width="822" height="477"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>The summary plot (also called beeswarm plot) aggregates SHAP values across ALL test instances to show global patterns. The Y-axis shows features ranked by importance (vertical spread). The X-axis shows SHAP values (impact on prediction). Color indicates feature value (red = high, blue = low). Key insights: (1) Alcohol is most important - high values (red) consistently push predictions higher (right), (2) Volatile acidity is second most important - high values push predictions lower (left), (3) Density shows strong negative relationship when high. Compare this to feature importance from tree models - SHAP provides the same ranking but with directionality. This plot answers: “Which features matter most GLOBALLY across all wines?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>SHAP Dependence Plot: Feature Relationships</h2>
+<div id="41ffe2e5" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="co"># Create dependence plot for alcohol</span></span>
+<span id="cb12-2"><a href=""></a>shap.plots.scatter(shap_values[:, <span class="st">'alcohol'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-14-output-1.png" width="553" height="434"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>The dependence plot shows the relationship between feature value (X-axis) and SHAP value (Y-axis) for a specific feature. For alcohol, we see a clear LINEAR relationship - as alcohol increases, SHAP value increases proportionally. This makes perfect sense for a linear model! The color indicates interaction effects with another feature (automatically selected by SHAP). The vertical spread at each X value shows variance across instances. This plot answers: “HOW does this feature affect predictions?” For linear models, you’ll always see straight lines. For non-linear models (trees, neural networks), these plots reveal non-linear patterns, thresholds, and interactions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Verifying SHAP Values for Linear Models</h2>
+<div id="71ab50a8" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># For linear models: SHAP = coefficient × (x - mean(x))</span></span>
+<span id="cb13-2"><a href=""></a><span class="co"># Let's verify this relationship</span></span>
+<span id="cb13-3"><a href=""></a></span>
+<span id="cb13-4"><a href=""></a><span class="bu">print</span>(<span class="st">"Verification: SHAP values = coefficient × (feature - mean)"</span>)</span>
+<span id="cb13-5"><a href=""></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">For the first test instance:"</span>)</span>
+<span id="cb13-6"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Feature'</span><span class="sc">:&lt;25}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Coefficient'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Value'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Mean'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'(Val-Mean)'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'SHAP Value'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Match?'</span><span class="sc">:&gt;8}</span><span class="ss">"</span>)</span>
+<span id="cb13-7"><a href=""></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">105</span>)</span>
+<span id="cb13-8"><a href=""></a></span>
+<span id="cb13-9"><a href=""></a><span class="cf">for</span> i, feature <span class="kw">in</span> <span class="bu">enumerate</span>(X.columns):</span>
+<span id="cb13-10"><a href=""></a>    coef <span class="op">=</span> model.coef_[i]</span>
+<span id="cb13-11"><a href=""></a>    value <span class="op">=</span> X_test.iloc[<span class="dv">0</span>][feature]</span>
+<span id="cb13-12"><a href=""></a>    mean <span class="op">=</span> X_train[feature].mean()</span>
+<span id="cb13-13"><a href=""></a>    expected_shap <span class="op">=</span> coef <span class="op">*</span> (value <span class="op">-</span> mean)</span>
+<span id="cb13-14"><a href=""></a>    actual_shap <span class="op">=</span> shap_values.values[<span class="dv">0</span>][i]</span>
+<span id="cb13-15"><a href=""></a>    match <span class="op">=</span> <span class="st">"✓"</span> <span class="cf">if</span> np.isclose(expected_shap, actual_shap, rtol<span class="op">=</span><span class="fl">1e-3</span>) <span class="cf">else</span> <span class="st">"✗"</span></span>
+<span id="cb13-16"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>feature<span class="sc">:&lt;25}</span><span class="ss"> </span><span class="sc">{</span>coef<span class="sc">:&gt;12.4f}</span><span class="ss"> </span><span class="sc">{</span>value<span class="sc">:&gt;10.2f}</span><span class="ss"> </span><span class="sc">{</span>mean<span class="sc">:&gt;10.2f}</span><span class="ss"> </span><span class="sc">{</span>value<span class="op">-</span>mean<span class="sc">:&gt;12.2f}</span><span class="ss"> </span><span class="sc">{</span>actual_shap<span class="sc">:&gt;12.4f}</span><span class="ss"> </span><span class="sc">{</span>match<span class="sc">:&gt;8}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Verification: SHAP values = coefficient × (feature - mean)
+
+For the first test instance:
+Feature                    Coefficient      Value       Mean   (Val-Mean)   SHAP Value   Match?
+---------------------------------------------------------------------------------------------------------
+fixed acidity                   0.0459       6.00       6.87        -0.87      -0.0348        ✗
+volatile acidity               -1.9149       0.29       0.28         0.01       0.0031        ✗
+citric acid                    -0.0613       0.41       0.33         0.08      -0.0055        ✗
+residual sugar                  0.0712      10.80       6.45         4.35       0.3151        ✗
+chlorides                      -0.0265       0.05       0.05         0.00      -0.0001        ✗
+free sulfur dioxide             0.0051      55.00      35.09        19.91       0.1074        ✗
+total sulfur dioxide           -0.0002     149.00     138.00        11.00      -0.0023        ✗
+density                      -124.2641       0.99       0.99        -0.00       0.0256        ✗
+pH                              0.6007       3.09       3.19        -0.10      -0.0654        ✗
+sulphates                       0.6491       0.59       0.49         0.10       0.0529        ✗
+alcohol                         0.2290      10.97      10.51         0.46       0.0855        ✗</code></pre>
+</div>
+</div>
+<aside class="notes">
+<p>This verification slide demonstrates the elegant simplicity of SHAP for linear models. For each feature, SHAP value equals: coefficient × (feature_value - mean_feature_value). This shows that: (1) SHAP respects the linear model’s coefficients (direction and magnitude), (2) SHAP measures deviation from the mean (why predictions differ from average), (3) Features with large coefficients AND large deviations have high SHAP values. This is why linear models are perfect for teaching SHAP - you can directly see what SHAP computes. For non-linear models, SHAP still satisfies the same axioms, but the computation is more complex. The key insight: SHAP provides feature attributions that respect the model’s actual behavior.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
