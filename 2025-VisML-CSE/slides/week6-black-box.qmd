@@ -879,74 +879,203 @@ Lundberg, S. M., & Lee, S. I. (2017). A unified approach to interpreting model p
 
 ## Theory of Shapley Values
 
-Who's going to pay for that taxi?
+**Who's going to pay for that taxi?**
 
-Alice, Bob, and Charlie have dinner together and share a taxi ride home. The total cost is $51. The question is, how should they divide the costs fairly?
+Alice, Bob, and Charlie have dinner together and share a taxi ride home. **The total cost is $51.**
 
-![](figs/black-box/shap-taxi.jpg)
+**The question is: How should they divide the costs fairly?**
+
+:::: {.columns}
+
+::: {.column width="50%"}
+| Passengers | Cost | Note |
+|------------|------|------|
+| ∅ | $0 | No taxi, no costs |
+| {Alice} | $15 | Standard fare |
+| {Bob} | $25 | Luxury taxi |
+| {Charlie} | $38 | Lives further away |
+| {Alice, Bob} | $25 | Bob gets his way |
+| {Alice, Charlie} | $41 | Drop Alice first |
+| {Bob, Charlie} | $51 | Drop Bob first |
+| {Alice, Bob, Charlie} | $51 | Full fare |
+:::
+
+::: {.column width="50%"}
+**Key observations:**
+
+- Alice alone: $15
+- Bob alone: $25 (insists on luxury)
+- Charlie alone: $38 (lives farther)
+- All three: $51
+
+**Naive approach:** $51 ÷ 3 = $17 each
+
+**Problem:** Is this fair? Alice is subsidizing the others!
+
+<div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+We need a principled way to divide costs based on **marginal contributions**.
+</div>
+:::
+
+::::
 
 ::: {.notes}
-The taxi example beautifully illustrates why Shapley values are "fair". Alice lives closest ($20 alone), Bob is farther ($38 with Alice), Charlie is farthest ($51 all together). A naive split ($17 each) is unfair - Alice subsidizes the others. Shapley values compute each person's marginal contribution across all possible orderings of joining the taxi. This ensures: (1) Total cost is exactly split, (2) Symmetric players pay equally, (3) Non-contributors pay nothing, (4) Values are additive. The same logic applies to features in ML: how much does each feature "contribute" to the prediction, measured fairly across all possible feature coalitions?
+The taxi example beautifully illustrates why Shapley values are "fair". A naive split ($17 each) is unfair - Alice subsidizes the others. Shapley values compute each person's marginal contribution across all possible orderings of joining the taxi. This ensures: (1) Total cost is exactly split, (2) Symmetric players pay equally, (3) Non-contributors pay nothing, (4) Values are additive. The same logic applies to features in ML: how much does each feature "contribute" to the prediction, measured fairly across all possible feature coalitions?
 :::
 
 
-## Theory of Shapley Values
+## Calculating Marginal Contributions
 
-The **marginal contribution** of a player to a coalition is the value of the coali- tion with the player minus the value of the coalition without the player. In the taxi example, the value of a coalition is equal to the cost of the ride as detailed in the above table. Therefore, the marginal contribution of, for instance, Charlie to a taxi already containing Bob is the cost of the taxi with Bob and Charlie, minus the cost of the taxi with Bob alone.
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+**Marginal Contribution** = Value with player − Value without player
+</div>
 
-## Theory of Shapley Values
+**Example:** Charlie joining Bob's taxi = $51 - $25 = **$26**
 
-![](figs/black-box/shap-marginal-contribution.jpg)
+| Addition | To Coalition | Cost Before | Cost After | Marginal Contribution |
+|----------|--------------|-------------|------------|---------------------|
+| Alice | ∅ | $0 | $15 | **$15** |
+| Alice | {Bob} | $25 | $25 | **$0** |
+| Alice | {Charlie} | $38 | $41 | **$3** |
+| Alice | {Bob, Charlie} | $51 | $51 | **$0** |
+| Bob | ∅ | $0 | $25 | **$25** |
+| Bob | {Alice} | $15 | $25 | **$10** |
+| Bob | {Charlie} | $38 | $51 | **$13** |
+| Bob | {Alice, Charlie} | $41 | $51 | **$10** |
+| Charlie | ∅ | $0 | $38 | **$38** |
+| Charlie | {Alice} | $15 | $41 | **$26** |
+| Charlie | {Bob} | $25 | $51 | **$26** |
+| Charlie | {Alice, Bob} | $25 | $51 | **$26** |
 
-## Theory of Shapley Values
+## Weighted Average via Permutations
 
-How to average these marginal contributions per passenger?
+**How to weight these marginal contributions?**
 
-One way to answer this question is by considering all possible permutations of Alice, Bob, and Charlie. There are 3! = 3 * 2 * 1 = 6 possible permutations of passengers:
+Consider all possible permutations (orderings) of passengers joining the taxi:
 
-* Alice, Bob, Charlie 
-* Alice, Charlie, Bob
-* Bob, Alice, Charlie
-* Charlie, Alice, Bob 
-* Bob, Charlie, Alice 
-* Charlie, Bob, Alice
+:::: {.columns}
 
-We can use these permutations to form coalitions, for example, for Alice. 
+::: {.column width="50%"}
+**All 3! = 6 permutations:**
 
-## Theory of Shapley Values
+1. Alice, Bob, Charlie
+2. Alice, Charlie, Bob
+3. Bob, Alice, Charlie
+4. Bob, Charlie, Alice
+5. Charlie, Alice, Bob
+6. Charlie, Bob, Alice
 
-In two of these cases, Alice was added to an empty taxi, and in one case, she was added to a taxi with only Bob. By weighting the marginal contributions accordingly, we calculate the following weighted average marginal contribution for Alice, abbreviating Alice, Bob, and Charlie to A, B, and C:
+Each permutation defines which players are "already in the taxi" when each player joins.
+:::
 
-![](figs/black-box/shap-marginal-alice.jpg)
+::: {.column width="50%"}
+**For Alice:**
 
-## Theory of Shapley Values
+- **2 times** added to ∅ (empty taxi)
+- **1 time** added to {Bob}
+- **1 time** added to {Charlie}
+- **2 times** added to {Bob, Charlie}
 
-for Bob:
+**Weights determined by permutation frequency!**
 
-![](figs/black-box/shap-marginal-bob.jpg)
+<div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px;">
+Coalition size matters: smaller coalitions get higher weight.
+</div>
+:::
 
-for Charlie:
+::::
 
-![](figs/black-box/shap-marginal-charlie.jpg)
+## Averaging Marginal Contributions
+
+**Alice's Shapley value:**
+
+$$\phi_{Alice} = \frac{1}{6}(2 \cdot \$15 + 1 \cdot \$0 + 1 \cdot \$3 + 2 \cdot \$0) = \$5.50$$
+
+**Bob's Shapley value:**
+
+$$\phi_{Bob} = \frac{1}{6}(2 \cdot \$25 + 1 \cdot \$10 + 1 \cdot \$13 + 2 \cdot \$10) = \$15.50$$
+
+**Charlie's Shapley value:**
+
+$$\phi_{Charlie} = \frac{1}{6}(2 \cdot \$38 + 1 \cdot \$26 + 1 \cdot \$26 + 2 \cdot \$26) = \$30.00$$
+
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center; font-size: 1.3em;">
+**Verification:** $5.50 + $15.50 + $30.00 = **$51.00** ✓
+</div>
 
 
-## Calculating Shapley values
+## General Shapley Value Formula
 
-![](figs/black-box/shap-general-formation.jpg)
+**Game Theory Notation:**
 
-**The Shapley value is the weighted average of a player’s marginal contribu- tions to all possible coalitions.**
+| Term | Math | Taxi Example |
+|------|------|--------------|
+| Player | $j \in \{1, \ldots, N\}$ | Alice, Bob, Charlie |
+| Coalition | $S \subseteq N$ | {Alice, Bob} |
+| Value Function | $v(S)$ | Cost of coalition |
+| Shapley Value | $\phi_j$ | Fair share for player $j$ |
 
-## The axioms behind Shapley values
+**The Formula:**
 
-* Efficiency: The sum of the contributions must precisely add up to the payout.
+$$\phi_j = \sum_{S \subseteq N \setminus \{j\}} \frac{|S|!(N - |S| - 1)!}{N!} \left( v(S \cup \{j\}) - v(S) \right)$$
 
-* Symmetry: If two players are identical, they should receive equal contributions.
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px; font-size: 1.1em;">
+**The Shapley value is the weighted average of a player's marginal contributions to all possible coalitions.**
+</div>
 
-* Dummy or Null Player: The value of a player who doesn't contribute to any coalition is zero.
+## The Four Axioms Behind Shapley Values
 
-* Additivity: In a game with two value functions, the Shapley values for the sum can be expressed as the sum of the Shapley values.
+:::: {.columns}
 
-**These four axioms ensure the uniqueness of the Shapley values.**
+::: {.column width="50%"}
+**1. Efficiency**
+
+The contributions sum to the total payout:
+
+$$\sum_{j \in N} \phi_j = v(N)$$
+
+<div style="margin-top: 15px;">
+*In taxi: $5.50 + $15.50 + $30 = $51* ✓
+</div>
+
+**2. Symmetry**
+
+If players have identical marginal contributions, they get equal payouts:
+
+If $v(S \cup \{j\}) = v(S \cup \{k\})$ for all $S$, then $\phi_j = \phi_k$
+
+<div style="margin-top: 15px;">
+*If Bob didn't need luxury taxi, he'd pay same as Alice*
+</div>
+:::
+
+::: {.column width="50%"}
+**3. Dummy (Null Player)**
+
+Players who contribute nothing get nothing:
+
+If $v(S \cup \{j\}) = v(S)$ for all $S$, then $\phi_j = 0$
+
+<div style="margin-top: 15px;">
+*If Dora the dog rides free, her share = $0*
+</div>
+
+**4. Additivity**
+
+For two games with value functions $v_1$ and $v_2$:
+
+$$\phi_{j,v_1+v_2} = \phi_{j,v_1} + \phi_{j,v_2}$$
+
+<div style="margin-top: 15px;">
+*Can split taxi + ice cream costs separately, then add*
+</div>
+:::
+
+::::
+
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center; font-size: 1.2em;">
+**These four axioms uniquely determine the Shapley value formula** (Shapley, 1953)
+</div>
 
 ## From Shapley Values to SHAP
 

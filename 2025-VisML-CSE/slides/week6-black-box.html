@@ -356,7 +356,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="0ea2d02d" class="cell" data-execution_count="1">
+<div id="c28c2041" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +401,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="04e7a002" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div id="ca18b4f0" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -610,8 +610,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="b6f9f7c5" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div id="04c1ba17" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -632,8 +632,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="87987e27" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="ae472b1c" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -714,7 +714,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="72b29d1a" class="cell" data-execution_count="6">
+<div id="1cccf135" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -770,8 +770,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="707dc4c6" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div id="c8249304" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
@@ -965,11 +965,78 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Theory of Shapley Values</h2>
-<p>Who’s going to pay for that taxi?</p>
-<p>Alice, Bob, and Charlie have dinner together and share a taxi ride home. The total cost is $51. The question is, how should they divide the costs fairly?</p>
-
-<img data-src="figs/black-box/shap-taxi.jpg" class="r-stretch"><aside class="notes">
-<p>The taxi example beautifully illustrates why Shapley values are “fair”. Alice lives closest ($20 alone), Bob is farther ($38 with Alice), Charlie is farthest ($51 all together). A naive split ($17 each) is unfair - Alice subsidizes the others. Shapley values compute each person’s marginal contribution across all possible orderings of joining the taxi. This ensures: (1) Total cost is exactly split, (2) Symmetric players pay equally, (3) Non-contributors pay nothing, (4) Values are additive. The same logic applies to features in ML: how much does each feature “contribute” to the prediction, measured fairly across all possible feature coalitions?</p>
+<p><strong>Who’s going to pay for that taxi?</strong></p>
+<p>Alice, Bob, and Charlie have dinner together and share a taxi ride home. <strong>The total cost is $51.</strong></p>
+<p><strong>The question is: How should they divide the costs fairly?</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Passengers</th>
+<th>Cost</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>∅</td>
+<td>$0</td>
+<td>No taxi, no costs</td>
+</tr>
+<tr class="even">
+<td>{Alice}</td>
+<td>$15</td>
+<td>Standard fare</td>
+</tr>
+<tr class="odd">
+<td>{Bob}</td>
+<td>$25</td>
+<td>Luxury taxi</td>
+</tr>
+<tr class="even">
+<td>{Charlie}</td>
+<td>$38</td>
+<td>Lives further away</td>
+</tr>
+<tr class="odd">
+<td>{Alice, Bob}</td>
+<td>$25</td>
+<td>Bob gets his way</td>
+</tr>
+<tr class="even">
+<td>{Alice, Charlie}</td>
+<td>$41</td>
+<td>Drop Alice first</td>
+</tr>
+<tr class="odd">
+<td>{Bob, Charlie}</td>
+<td>$51</td>
+<td>Drop Bob first</td>
+</tr>
+<tr class="even">
+<td>{Alice, Bob, Charlie}</td>
+<td>$51</td>
+<td>Full fare</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<p><strong>Key observations:</strong></p>
+<ul>
+<li>Alice alone: $15</li>
+<li>Bob alone: $25 (insists on luxury)</li>
+<li>Charlie alone: $38 (lives farther)</li>
+<li>All three: $51</li>
+</ul>
+<p><strong>Naive approach:</strong> $51 ÷ 3 = $17 each</p>
+<p><strong>Problem:</strong> Is this fair? Alice is subsidizing the others!</p>
+<div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+<p>We need a principled way to divide costs based on <strong>marginal contributions</strong>.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>The taxi example beautifully illustrates why Shapley values are “fair”. A naive split ($17 each) is unfair - Alice subsidizes the others. Shapley values compute each person’s marginal contribution across all possible orderings of joining the taxi. This ensures: (1) Total cost is exactly split, (2) Symmetric players pay equally, (3) Non-contributors pay nothing, (4) Values are additive. The same logic applies to features in ML: how much does each feature “contribute” to the prediction, measured fairly across all possible feature coalitions?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -983,53 +1050,231 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Theory of Shapley Values</h2>
-<p>The <strong>marginal contribution</strong> of a player to a coalition is the value of the coali- tion with the player minus the value of the coalition without the player. In the taxi example, the value of a coalition is equal to the cost of the ride as detailed in the above table. Therefore, the marginal contribution of, for instance, Charlie to a taxi already containing Bob is the cost of the taxi with Bob and Charlie, minus the cost of the taxi with Bob alone.</p>
+<h2>Calculating Marginal Contributions</h2>
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+<p><strong>Marginal Contribution</strong> = Value with player − Value without player</p>
+</div>
+<p><strong>Example:</strong> Charlie joining Bob’s taxi = $51 - $25 = <strong>$26</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 20%">
+<col style="width: 18%">
+<col style="width: 17%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Addition</th>
+<th>To Coalition</th>
+<th>Cost Before</th>
+<th>Cost After</th>
+<th>Marginal Contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alice</td>
+<td>∅</td>
+<td>$0</td>
+<td>$15</td>
+<td><strong>$15</strong></td>
+</tr>
+<tr class="even">
+<td>Alice</td>
+<td>{Bob}</td>
+<td>$25</td>
+<td>$25</td>
+<td><strong>$0</strong></td>
+</tr>
+<tr class="odd">
+<td>Alice</td>
+<td>{Charlie}</td>
+<td>$38</td>
+<td>$41</td>
+<td><strong>$3</strong></td>
+</tr>
+<tr class="even">
+<td>Alice</td>
+<td>{Bob, Charlie}</td>
+<td>$51</td>
+<td>$51</td>
+<td><strong>$0</strong></td>
+</tr>
+<tr class="odd">
+<td>Bob</td>
+<td>∅</td>
+<td>$0</td>
+<td>$25</td>
+<td><strong>$25</strong></td>
+</tr>
+<tr class="even">
+<td>Bob</td>
+<td>{Alice}</td>
+<td>$15</td>
+<td>$25</td>
+<td><strong>$10</strong></td>
+</tr>
+<tr class="odd">
+<td>Bob</td>
+<td>{Charlie}</td>
+<td>$38</td>
+<td>$51</td>
+<td><strong>$13</strong></td>
+</tr>
+<tr class="even">
+<td>Bob</td>
+<td>{Alice, Charlie}</td>
+<td>$41</td>
+<td>$51</td>
+<td><strong>$10</strong></td>
+</tr>
+<tr class="odd">
+<td>Charlie</td>
+<td>∅</td>
+<td>$0</td>
+<td>$38</td>
+<td><strong>$38</strong></td>
+</tr>
+<tr class="even">
+<td>Charlie</td>
+<td>{Alice}</td>
+<td>$15</td>
+<td>$41</td>
+<td><strong>$26</strong></td>
+</tr>
+<tr class="odd">
+<td>Charlie</td>
+<td>{Bob}</td>
+<td>$25</td>
+<td>$51</td>
+<td><strong>$26</strong></td>
+</tr>
+<tr class="even">
+<td>Charlie</td>
+<td>{Alice, Bob}</td>
+<td>$25</td>
+<td>$51</td>
+<td><strong>$26</strong></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section class="slide level2">
-<h2>Theory of Shapley Values</h2>
-
-<img data-src="figs/black-box/shap-marginal-contribution.jpg" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Theory of Shapley Values</h2>
-<p>How to average these marginal contributions per passenger?</p>
-<p>One way to answer this question is by considering all possible permutations of Alice, Bob, and Charlie. There are 3! = 3 * 2 * 1 = 6 possible permutations of passengers:</p>
-<ul>
+<h2>Weighted Average via Permutations</h2>
+<p><strong>How to weight these marginal contributions?</strong></p>
+<p>Consider all possible permutations (orderings) of passengers joining the taxi:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>All 3! = 6 permutations:</strong></p>
+<ol type="1">
 <li>Alice, Bob, Charlie</li>
 <li>Alice, Charlie, Bob</li>
 <li>Bob, Alice, Charlie</li>
-<li>Charlie, Alice, Bob</li>
 <li>Bob, Charlie, Alice</li>
+<li>Charlie, Alice, Bob</li>
 <li>Charlie, Bob, Alice</li>
-</ul>
-<p>We can use these permutations to form coalitions, for example, for Alice.</p>
-</section>
-<section class="slide level2">
-<h2>Theory of Shapley Values</h2>
-<p>In two of these cases, Alice was added to an empty taxi, and in one case, she was added to a taxi with only Bob. By weighting the marginal contributions accordingly, we calculate the following weighted average marginal contribution for Alice, abbreviating Alice, Bob, and Charlie to A, B, and C:</p>
-
-<img data-src="figs/black-box/shap-marginal-alice.jpg" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Theory of Shapley Values</h2>
-<p>for Bob:</p>
-<p><img data-src="figs/black-box/shap-marginal-bob.jpg"></p>
-<p>for Charlie:</p>
-<p><img data-src="figs/black-box/shap-marginal-charlie.jpg"></p>
-</section>
-<section class="slide level2">
-<h2>Calculating Shapley values</h2>
-
-<img data-src="figs/black-box/shap-general-formation.jpg" class="r-stretch"><p><strong>The Shapley value is the weighted average of a player’s marginal contribu- tions to all possible coalitions.</strong></p>
-</section>
-<section class="slide level2">
-<h2>The axioms behind Shapley values</h2>
+</ol>
+<p>Each permutation defines which players are “already in the taxi” when each player joins.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>For Alice:</strong></p>
 <ul>
-<li><p>Efficiency: The sum of the contributions must precisely add up to the payout.</p></li>
-<li><p>Symmetry: If two players are identical, they should receive equal contributions.</p></li>
-<li><p>Dummy or Null Player: The value of a player who doesn’t contribute to any coalition is zero.</p></li>
-<li><p>Additivity: In a game with two value functions, the Shapley values for the sum can be expressed as the sum of the Shapley values.</p></li>
+<li><strong>2 times</strong> added to ∅ (empty taxi)</li>
+<li><strong>1 time</strong> added to {Bob}</li>
+<li><strong>1 time</strong> added to {Charlie}</li>
+<li><strong>2 times</strong> added to {Bob, Charlie}</li>
 </ul>
-<p><strong>These four axioms ensure the uniqueness of the Shapley values.</strong></p>
+<p><strong>Weights determined by permutation frequency!</strong></p>
+<div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px;">
+<p>Coalition size matters: smaller coalitions get higher weight.</p>
+</div>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>Averaging Marginal Contributions</h2>
+<p><strong>Alice’s Shapley value:</strong></p>
+<p><span class="math display">\[\phi_{Alice} = \frac{1}{6}(2 \cdot \$15 + 1 \cdot \$0 + 1 \cdot \$3 + 2 \cdot \$0) = \$5.50\]</span></p>
+<p><strong>Bob’s Shapley value:</strong></p>
+<p><span class="math display">\[\phi_{Bob} = \frac{1}{6}(2 \cdot \$25 + 1 \cdot \$10 + 1 \cdot \$13 + 2 \cdot \$10) = \$15.50\]</span></p>
+<p><strong>Charlie’s Shapley value:</strong></p>
+<p><span class="math display">\[\phi_{Charlie} = \frac{1}{6}(2 \cdot \$38 + 1 \cdot \$26 + 1 \cdot \$26 + 2 \cdot \$26) = \$30.00\]</span></p>
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center; font-size: 1.3em;">
+<p><strong>Verification:</strong> $5.50 + $15.50 + $30.00 = <strong>$51.00</strong> ✓</p>
+</div>
+</section>
+<section class="slide level2">
+<h2>General Shapley Value Formula</h2>
+<p><strong>Game Theory Notation:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Math</th>
+<th>Taxi Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Player</td>
+<td><span class="math inline">\(j \in \{1, \ldots, N\}\)</span></td>
+<td>Alice, Bob, Charlie</td>
+</tr>
+<tr class="even">
+<td>Coalition</td>
+<td><span class="math inline">\(S \subseteq N\)</span></td>
+<td>{Alice, Bob}</td>
+</tr>
+<tr class="odd">
+<td>Value Function</td>
+<td><span class="math inline">\(v(S)\)</span></td>
+<td>Cost of coalition</td>
+</tr>
+<tr class="even">
+<td>Shapley Value</td>
+<td><span class="math inline">\(\phi_j\)</span></td>
+<td>Fair share for player <span class="math inline">\(j\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The Formula:</strong></p>
+<p><span class="math display">\[\phi_j = \sum_{S \subseteq N \setminus \{j\}} \frac{|S|!(N - |S| - 1)!}{N!} \left( v(S \cup \{j\}) - v(S) \right)\]</span></p>
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px; font-size: 1.1em;">
+<p><strong>The Shapley value is the weighted average of a player’s marginal contributions to all possible coalitions.</strong></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>The Four Axioms Behind Shapley Values</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>1. Efficiency</strong></p>
+<p>The contributions sum to the total payout:</p>
+<p><span class="math display">\[\sum_{j \in N} \phi_j = v(N)\]</span></p>
+<div style="margin-top: 15px;">
+<p><em>In taxi: $5.50 + $15.50 + $30 = $51</em> ✓</p>
+</div>
+<p><strong>2. Symmetry</strong></p>
+<p>If players have identical marginal contributions, they get equal payouts:</p>
+<p>If <span class="math inline">\(v(S \cup \{j\}) = v(S \cup \{k\})\)</span> for all <span class="math inline">\(S\)</span>, then <span class="math inline">\(\phi_j = \phi_k\)</span></p>
+<div style="margin-top: 15px;">
+<p><em>If Bob didn’t need luxury taxi, he’d pay same as Alice</em></p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>3. Dummy (Null Player)</strong></p>
+<p>Players who contribute nothing get nothing:</p>
+<p>If <span class="math inline">\(v(S \cup \{j\}) = v(S)\)</span> for all <span class="math inline">\(S\)</span>, then <span class="math inline">\(\phi_j = 0\)</span></p>
+<div style="margin-top: 15px;">
+<p><em>If Dora the dog rides free, her share = $0</em></p>
+</div>
+<p><strong>4. Additivity</strong></p>
+<p>For two games with value functions <span class="math inline">\(v_1\)</span> and <span class="math inline">\(v_2\)</span>:</p>
+<p><span class="math display">\[\phi_{j,v_1+v_2} = \phi_{j,v_1} + \phi_{j,v_2}\]</span></p>
+<div style="margin-top: 15px;">
+<p><em>Can split taxi + ice cream costs separately, then add</em></p>
+</div>
+</div></div>
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center; font-size: 1.2em;">
+<p><strong>These four axioms uniquely determine the Shapley value formula</strong> (Shapley, 1953)</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>From Shapley Values to SHAP</h2>
