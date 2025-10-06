@@ -23,6 +23,7 @@ author_profile: true
 
 - **Visualization Analysis and Design** by Tamara Munzner (CRC Press, 2014)
 - **Information Visualization: Perception for Design** by Colin Ware (Morgan Kaufmann, 2019)
+- **Visual Thinking for Information Design** (2nd Edition) by Colin Ware (Morgan Kaufmann, 2022) - *Optional reference for perception and color topics*
 - **Interactive Data Visualization for the Web** by Scott Murray (O'Reilly Media, 2017)
 - **Fullstack Data Visualization with D3** by Amelia Wattenberger (Fullstack.io, 2019)
 

@@ -130,7 +130,7 @@ author_profile: true
 - [Somewhere Over the Rainbow: An Empirical Assessment of Quantitative Colormaps](http://idl.cs.washington.edu/papers/quantitative-color/). Liu & Heer. ACM CHI 2018.
 - [Color Use Guidelines for Mapping and Visualization](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/color/Brewer_1994b.pdf). Cynthia Brewer. 1994.
 
-**Lab:**
+**Lab:** [Color scale exercises, Choropleth maps, Accessibility testing](/2025-InfoVis-CSE/labs/week5-lab.html)
 - D3 scales implementation
 - Color scheme creation and testing
 - Accessibility testing tools

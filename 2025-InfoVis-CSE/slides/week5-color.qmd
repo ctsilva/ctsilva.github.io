@@ -197,22 +197,10 @@ Stone, M. (2005). [Representing Color as Three Numbers](../refs/Stone_2005_Repre
 - Processed in retinal ganglion cells and LGN
 - Some cells excited by red, inhibited by green (and vice versa)
 - Explains unique hues: red, green, blue, yellow
-
-**Practical Impact:**
-
-- Informs color space design (LAB uses opponent channels)
-- Explains categorical color perception
-- Guides accessible color choices
 :::
 
 ::: {.column width="50%"}
-### Visual Demonstrations Needed:
-1. **Afterimage demonstration** - Stare at red dot → see green afterimage
-2. **Opponent channel diagram** - Neural wiring showing R+/G- and B+/Y- cells
-3. **Color wheel showing oppositions** - Traditional wheel with opponent pairs
-4. **Impossible colors visualization** - Why we can't see reddish-green
-
-*[Placeholder for opponent process diagram - suggest creating an interactive demo or using a scientific illustration showing ganglion cell responses]*
+![](figs/color/opponent-process-theory.png){width="100%"}
 :::
 ::::
 
@@ -221,7 +209,32 @@ Hering, E. (1964). *Outlines of a Theory of the Light Sense*. Harvard University
 :::
 
 ::: {.notes}
-This is THE theory that bridges trichromatic theory (3 cone types) with how we actually experience color. Demo: Have students stare at a red square for 30 seconds, then look at white - they'll see green! This isn't a "trick" - it's fundamental to how our visual system works. The opponent channels are why we have four unique hues (red, green, blue, yellow) even though we have three cone types. Modern color spaces like LAB are built on this principle - L for luminance, A for red-green, B for blue-yellow. Fun fact: some people claim they can see "impossible colors" like reddish-green using special viewing conditions, but this is controversial.
+This is THE theory that bridges trichromatic theory (3 cone types) with how we actually experience color. The opponent channels are why we have four unique hues (red, green, blue, yellow) even though we have three cone types. Modern color spaces like LAB are built on this principle - L for luminance, A for red-green, B for blue-yellow.
+
+**The Neural Processing:** In V1 (primary visual cortex), the raw signals from the cones in the retina are transformed. Some neurons compute differences between red- and green-sensitive cone signals. Some neurons compute the sum of red- and green-sensitive cones. Still others compute yellow-blue differences. The result is three kinds of color signals that are called color-opponent channels. This transformation happens early in visual processing - starting in retinal ganglion cells and continuing through the lateral geniculate nucleus (LGN) to V1.
+:::
+
+## Opponent Process Applications
+
+### Practical Impact:
+
+- **Color space design**: LAB uses opponent channels (A = red-green, B = blue-yellow)
+- **Categorical perception**: Explains why we naturally group colors into categories
+- **Accessible color choices**: Understanding oppositions guides colorblind-safe palettes
+
+### Visual Demonstrations:
+
+1. **Afterimage demonstration** - Stare at red dot → see green afterimage
+2. **Opponent channel diagram** - Neural wiring showing R+/G- and B+/Y- cells
+3. **Color wheel showing oppositions** - Traditional wheel with opponent pairs
+4. **Impossible colors** - Why we can't see reddish-green
+
+::: footer
+Hering, E. (1964). *Outlines of a Theory of the Light Sense*. Harvard University Press. (Original work published 1920); Hurvich, L. M., & Jameson, D. (1957). An opponent-process theory of color vision. *Psychological Review*, 64(6), 384-404.
+:::
+
+::: {.notes}
+Demo: Have students stare at a red square for 30 seconds, then look at white - they'll see green! This isn't a "trick" - it's fundamental to how our visual system works. Fun fact: some people claim they can see "impossible colors" like reddish-green using special viewing conditions, but this is controversial.
 :::
 
 ## Color Matching Experiments
@@ -548,6 +561,148 @@ d3.interpolateHcl("red", "blue")
 
 ::: {.notes}
 Demo this live if possible! RGB interpolation between red and blue passes through muddy purple. LAB maintains brightness consistency. HCL (Hue-Chroma-Luminance) follows the color wheel, producing vibrant intermediates. For diverging scales, HCL is often best. For sequential scales, LAB works well. The key is that perceptual uniformity means your data differences map linearly to perceived color differences.
+:::
+
+## Design Implications of Color Processing
+
+### From Biology to Design
+
+Our visual system's structure creates constraints and opportunities:
+
+**Three Opponent Channels Process Color:**
+
+- **Luminance (Black-White)**: Best for detail and patterns
+- **Red-Green**: Categorical distinctions
+- **Yellow-Blue**: Categorical distinctions (weaker than red-green)
+
+**Key Biological Facts:**
+
+- Far fewer blue-sensitive cones (~2% of total)
+- Blue cones less sensitive than red/green
+- Chromatic channels cannot convey fine detail
+
+::: {.notes}
+This bridges the gap between understanding the biology and applying it to design. The three opponent channels have very different capabilities - luminance is king for detail, while chromatic channels are better for categorical coding. The scarcity of blue cones explains why blue is problematic for fine detail.
+:::
+
+## Luminance Contrast is Critical for Detail
+
+### Text and Fine Details Require Strong Luminance Contrast
+
+**ISO Standard Recommendation:**
+
+- **Minimum 3:1 luminance ratio** between text and background
+- Chromatic channels (red-green, yellow-blue) **cannot** convey fine detail
+
+**Common Mistakes:**
+
+- ❌ Blue text on dark backgrounds (illegible - lacks luminance contrast)
+- ❌ Red text on green background (relies only on chromatic contrast)
+- ✅ Black text on white (maximum luminance contrast)
+- ✅ High-contrast text with color used sparingly for emphasis
+
+::: {.notes}
+This is one of the most practical design guidelines. Many students think "red on green should work because they're opposite" - but if the luminance values are similar, it fails for small text. Demo if possible: show red text on green background with matched luminance - it's nearly unreadable. Blue on dark is particularly bad because blue cones are scarce and less sensitive.
+:::
+
+## Color Coding Limitations
+
+### How Many Colors Can Users Distinguish?
+
+**Research Finding: Only 6-12 colors work reliably as codes**
+
+**Best Practice - Use Unique Hues First:**
+
+1. 🔴 **Red**
+2. 🟢 **Green**
+3. 🟡 **Yellow**
+4. 🔵 **Blue**
+5. ⚫ **Black**
+6. ⚪ **White**
+
+**Why These Work Best:**
+
+- Most easily learned and identified
+- Correspond to opponent channel structure
+- Universal across cultures (mostly)
+
+**Beyond 6 categories?** Add redundant encoding (shape, pattern, labels)
+
+::: {.notes}
+The 6-12 limit is empirically validated. The unique hues are special because they align with our opponent process channels - they're the "purest" examples of each channel. After these 6, you can add orange, purple, brown, pink, etc., but discriminability drops. This is why Tableau and other tools default to 6-10 color palettes. Real-world tip: If you have 20 categories, color alone won't work - consider grouping or interactive filtering.
+:::
+
+## Size-Dependent Color Choices
+
+### Small Symbols vs. Large Areas
+
+:::: {.columns}
+::: {.column width="50%"}
+### Small Symbols/Text
+
+**Requirements:**
+
+- Strong, **saturated colors**
+- High **luminance contrast** with background
+- Avoid subtle color differences
+
+**Examples:**
+
+- Points on scatter plots
+- Line graphs
+- Small icons
+- Text labels
+:::
+
+::: {.column width="50%"}
+### Large Areas
+
+**Requirements:**
+
+- **Subdued, low-saturation** colors
+- Avoid overwhelming the design
+- Prevent contrast effects on smaller elements
+
+**Examples:**
+
+- Background fills
+- Map regions
+- Area charts
+- Dashboard panels
+:::
+::::
+
+::: {.notes}
+This is counterintuitive for many students. Bright saturated colors work great for small elements but become overwhelming for large areas. Large saturated areas also create strong simultaneous contrast effects that distort perception of smaller elements. Think of heatmaps - the cells should be relatively muted, while outliers or highlights can be saturated. Geographic maps are a classic example: countries should be pastel/muted, while city markers can be bright and saturated.
+:::
+
+## Simultaneous Contrast & Design Practice
+
+### Context Affects Color Perception
+
+**Simultaneous Contrast Effects:**
+
+- Backgrounds affect small color patches more than vice versa
+- Same color appears different on different backgrounds
+- Critical for visualization design
+
+**Highlighting Best Practices:**
+
+- ✅ **Maintain or increase luminance contrast** for emphasis
+- ❌ Common mistake: Reducing contrast (e.g., light text on light highlight)
+- ✅ Dark text on light highlight, or light text on dark highlight
+
+**Shape and Color Together:**
+
+- Light-colored patterns interfere **less** with shape perception
+- Dark saturated patterns dominate and obscure 3D shape
+
+::: footer
+Ware, C. (2022). *Visual Thinking for Information Design* (2nd ed.). Morgan Kaufmann.
+:::
+
+::: {.notes}
+PowerPoint's default highlighting (yellow background) often reduces contrast by making black text appear lighter - this is exactly wrong! Good highlighting increases luminance difference. For 3D visualizations colored by data values, use light colors so shading cues for shape remain visible. The simultaneous contrast demo (gray squares on different backgrounds) should be shown if available - it's a powerful demonstration that context is everything in color perception.
 :::
 
 ## D3 Color Scales
@@ -1008,5 +1163,12 @@ These three readings form the foundation: Rost gives practical advice, Szafir pr
 - Based on XKCD color survey with 3.5 million judgments
 - Probabilistic model for color naming and selection
 - Foundation for many modern color tools
+
+**Visual Thinking for Information Design** (2nd Edition)
+*Colin Ware (Morgan Kaufmann, 2022)*
+
+- Comprehensive coverage of color perception
+- Practical design guidelines
+- Chapters on color theory and visual encoding
 :::
 ::::

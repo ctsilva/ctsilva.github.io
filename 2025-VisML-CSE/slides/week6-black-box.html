@@ -6,8 +6,8 @@
 <script src="week6-black-box_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week6-black-box_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week6-black-box_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week6-black-box_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<link href="week6-black-box_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
 
   <meta name="author" content="Claudio Silva">
   <meta name="dcterms.date" content="2025-10-06">
@@ -31,6 +31,7 @@
     }
   </style>
   <link rel="stylesheet" href="week6-black-box_files/libs/revealjs/dist/theme/quarto-743137726eb562984e8d4ff610b648a8.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week6-black-box_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week6-black-box_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week6-black-box_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -160,6 +161,19 @@ Claudio Silva
 <li><p>SHAP (SHapley Additive exPlanations)</p></li>
 </ol>
 <p>Examples and materials from Molnar’s book: https://christophm.github.io/interpretable-ml-book/</p>
+<aside class="notes">
+<p>Today we transition from white-box (interpretable) models to black-box explanation methods. These techniques work with ANY machine learning model - neural networks, ensemble methods, etc. The key distinction: white-box models are inherently interpretable, while black-box methods provide post-hoc explanations. We’ll cover three major approaches: PDPs for global feature effects, LIME for local instance explanations, and SHAP for theoretically-grounded feature attribution. Each has different trade-offs between computational cost, interpretability, and theoretical guarantees.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Bike Rentals (Regression)</h2>
@@ -184,7 +198,23 @@ Claudio Silva
 <h2>Partial Dependence Plot (PDP)</h2>
 <p>Shows the marginal effect one or two features have on the predicted outcome of a machine learning model (J. H. Friedman 2001).</p>
 
-<img data-src="figs/black-box/bike-use-temperature.jpg" class="r-stretch"></section>
+<img data-src="figs/black-box/bike-use-temperature.jpg" class="r-stretch"><div class="footer">
+<p>Friedman, J. H. (2001). <a href="https://doi.org/10.1214/aos/1013203451"><em>Greedy function approximation: A gradient boosting machine</em></a>. Annals of Statistics.</p>
+</div>
+<aside class="notes">
+<p>PDPs are one of the oldest and most intuitive model-agnostic interpretation methods. The key idea: marginalize over all other features to isolate the effect of one (or two) features on the prediction. Here we see bike rentals vs temperature - notice the non-linear relationship with a sweet spot around 20-25°C. The visualization immediately reveals this pattern that might be hidden in model coefficients. PDPs answer: “On average, how does changing this feature affect predictions?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section class="slide level2">
 <h2>Partial Dependence Plot (PDP)</h2>
 <p>High level idea: marginalizing the machine learning model output over the distributions of the all other features to show the relationship between the feature we are interested in and the predicted outcome.</p>
@@ -196,6 +226,19 @@ Claudio Silva
 <p><img data-src="figs/black-box/pdp-feature5.jpg" class="fragment" width="950" height="450"></p>
 <p><img data-src="figs/black-box/pdp-feature6.jpg" class="fragment" width="950" height="450"></p>
 </div>
+<aside class="notes">
+<p>This animation shows the PDP computation process step by step. For each value of our feature of interest, we: (1) Replace that feature with a fixed value across ALL data points, (2) Get predictions for all those modified instances, (3) Average those predictions, (4) Repeat for different feature values. The result is a curve showing the average effect. Notice how we’re effectively “scanning” through the feature space while averaging out the effects of all other features. This is powerful because it works with any black-box model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Partial Dependence Plot (PDP)</h2>
@@ -225,7 +268,22 @@ Claudio Silva
 </div><div class="column" style="width:40%;">
 <p><img data-src="figs/black-box/lime-paper.jpg"></p>
 </div></div>
-<p>https://arxiv.org/pdf/1602.04938.pdf</p>
+<div class="footer">
+<p>Ribeiro, M. T., Singh, S., &amp; Guestrin, C. (2016). <a href="https://arxiv.org/pdf/1602.04938.pdf"><em>“Why Should I Trust You?” Explaining the Predictions of Any Classifier</em></a>. KDD.</p>
+</div>
+<aside class="notes">
+<p>LIME represents a paradigm shift from global to local explanations. The key insight: even if the global decision boundary is complex (left image shows a highly non-linear boundary), we can approximate it LOCALLY with a simple linear model. Think of it like approximating a curve with a tangent line - it only works near the point of tangency. The title “Why Should I Trust You?” captures the motivation: users need to understand individual predictions to build trust. LIME became hugely influential because it’s model-agnostic, produces human-interpretable explanations, and works for any data type (tabular, text, images).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
@@ -237,12 +295,16 @@ Claudio Silva
 <li><p>On this new dataset LIME then trains an interpretable model, which is weighted by the proximity of the sampled instances to the instance of interest. The interpretable model can be anything from the interpretable models chapter, for example Lasso or a decision tree. The learned model should be a good approximation of the machine learning model predictions locally, but it does not have to be a good global approximation. This kind of accuracy is also called <em>local fidelity</em>.</p></li>
 </ul>
 </div>
-<p>https://christophm.github.io/interpretable-ml-book/</p>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 
-<img data-src="figs/black-box/lime-equations.jpg" class="r-stretch"><p>https://arxiv.org/pdf/1602.04938.pdf</p>
+<img data-src="figs/black-box/lime-equations.jpg" class="r-stretch"><div class="footer">
+<p>Ribeiro, M. T., Singh, S., &amp; Guestrin, C. (2016). <a href="https://arxiv.org/pdf/1602.04938.pdf"><em>“Why Should I Trust You?” Explaining the Predictions of Any Classifier</em></a>. KDD.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
@@ -329,13 +391,28 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>SHAP (SHapley Additive exPlanations)</h2>
-<p>Examples and materials from Molnar’s new book: https://christophmolnar.com/books/shap/</p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><img data-src="figs/black-box/shap-example.jpg"></p>
 </div><div class="column" style="width:40%;">
 <p>SHAP (Lundberg and Lee 2017a) is a game-theory-inspired method created to explain predictions made by machine learning models. SHAP generates one value per input feature (also known as SHAP values) that indicates how the feature contributes to the prediction of the specified data point.</p>
 </div></div>
+<div class="footer">
+<p>Lundberg, S. M., &amp; Lee, S. I. (2017). <a href="https://proceedings.neurips.cc/paper/2017/file/8a20a8621978632d76c43dfd28b67767-Paper.pdf"><em>A Unified Approach to Interpreting Model Predictions</em></a>. NeurIPS. | Molnar, C. (2024). <a href="https://christophmolnar.com/books/shap/"><em>SHAP Book</em></a>.</p>
+</div>
+<aside class="notes">
+<p>SHAP brings rigorous game theory to ML interpretability. The key innovation: apply Shapley values from cooperative game theory to feature attribution. This provides a principled answer to “how much did each feature contribute?” with mathematical guarantees (efficiency, symmetry, dummy, additivity axioms). SHAP unified several existing methods under one framework. The image shows a typical SHAP force plot - red pushes prediction higher, blue pushes lower. Unlike LIME which is heuristic, SHAP has strong theoretical foundations. Trade-off: computational cost is higher, but you get provably fair attributions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>A Short History of Shapley Values and SHAP</h2>
@@ -353,7 +430,20 @@ Claudio Silva
 <p>Who’s going to pay for that taxi?</p>
 <p>Alice, Bob, and Charlie have dinner together and share a taxi ride home. The total cost is $51. The question is, how should they divide the costs fairly?</p>
 
-<img data-src="figs/black-box/shap-taxi.jpg" class="r-stretch"></section>
+<img data-src="figs/black-box/shap-taxi.jpg" class="r-stretch"><aside class="notes">
+<p>The taxi example beautifully illustrates why Shapley values are “fair”. Alice lives closest ($20 alone), Bob is farther ($38 with Alice), Charlie is farthest ($51 all together). A naive split ($17 each) is unfair - Alice subsidizes the others. Shapley values compute each person’s marginal contribution across all possible orderings of joining the taxi. This ensures: (1) Total cost is exactly split, (2) Symmetric players pay equally, (3) Non-contributors pay nothing, (4) Values are additive. The same logic applies to features in ML: how much does each feature “contribute” to the prediction, measured fairly across all possible feature coalitions?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section class="slide level2">
 <h2>Theory of Shapley Values</h2>
 <p>The <strong>marginal contribution</strong> of a player to a coalition is the value of the coali- tion with the player minus the value of the coalition without the player. In the taxi example, the value of a coalition is equal to the cost of the ride as detailed in the above table. Therefore, the marginal contribution of, for instance, Charlie to a taxi already containing Bob is the cost of the taxi with Bob and Charlie, minus the cost of the taxi with Bob alone.</p>
@@ -451,10 +541,31 @@ Claudio Silva
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><img data-src="figs/black-box/shap-problems.jpg"></p>
-<p>http://proceedings.mlr.press/v119/kumar20e/kumar20e.pdf</p>
-</div><div class="column" style="width:40%;">
-
+</div><div class="column" style="width:50%;">
+<p><strong>Key Limitations:</strong></p>
+<ul>
+<li><strong>Computational Cost</strong>: Exponential complexity O(2^n) for exact calculation</li>
+<li><strong>Feature Independence Assumption</strong>: Unrealistic in correlated datasets</li>
+<li><strong>Interpretation Challenges</strong>: Values represent marginal contributions, not causal effects</li>
+<li><strong>Instability</strong>: Small perturbations can lead to different explanations</li>
+</ul>
 </div></div>
+<div class="footer">
+<p>Kumar, I. E., et al.&nbsp;(2020). <a href="http://proceedings.mlr.press/v119/kumar20e/kumar20e.pdf"><em>Problems with Shapley-value-based explanations as feature importance measures</em></a>. ICML.</p>
+</div>
+<aside class="notes">
+<p>Despite SHAP’s theoretical elegance, it has important limitations that practitioners must understand. The Kumar et al.&nbsp;paper provides crucial critiques: (1) SHAP assumes features can be independently varied, but real features are often correlated (e.g., house size and bedrooms), (2) SHAP values show associative, not causal relationships - they tell you “what” contributes but not “why”, (3) Computational cost grows exponentially with features (though approximations like TreeSHAP and KernelSHAP help), (4) Explanations can be unstable under small data perturbations. Bottom line: SHAP is a powerful tool but not a magic bullet. Always validate explanations against domain knowledge.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 </section></section>
     </div>

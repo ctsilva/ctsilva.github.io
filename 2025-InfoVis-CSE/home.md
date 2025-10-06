@@ -47,16 +47,18 @@ author_profile: true
 - **Lab:** First D3 programming session, DOM manipulation, Data binding
 - **Assignment:** Exercise 4 - Perception-based design + D3 implementation (due Oct 2)
 - **Readings:** Franconeri et al. (2021); Kennedy Elliott - 39 Studies
+- **Optional Reference:** *Visual Thinking for Information Design* (2nd Ed.) by Colin Ware - Chapters on perception
 
 ### Week 5 (Oct 3) - Color Theory and D3 Scales
-- **Slides:** [Color Theory and D3 Scales](/2025-InfoVis-CSE/slides/week5-color.html)
+- **Slides:** [Color Theory and D3 Scales](/2025-InfoVis-CSE/slides/week5-color.html) | [Lab: Color scale exercises, Choropleth maps, Accessibility testing](/2025-InfoVis-CSE/labs/week5-lab.html)
 - **Topics:** Color perception (biology/physics), Color spaces (RGB, HSL, LAB), Sequential/diverging/categorical scales, Color accessibility, D3 scale implementation
 - **Lab:** Color scale exercises, Choropleth maps, Accessibility testing
 - **Assignment:** Exercise 5 - Color scale design and implementation (due Oct 9)
 - **Required Readings:**
   - [Which Color Scale to Use](https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/) - Lisa Charlotte Rost
-  - [Modeling Color Difference](https://ieeexplore.ieee.org/document/8031043) - Szafir (2017)
+  - [Modeling Color Difference](https://doi.org/10.1109/TVCG.2017.2744359) - Szafir (2018)
   - [D3 Scale Chromatic](https://observablehq.com/@d3/color-schemes) - Observable notebook
+- **Optional Reference:** *Visual Thinking for Information Design* (2nd Ed.) by Colin Ware - Chapters on color
 
 ## Assignments
 
