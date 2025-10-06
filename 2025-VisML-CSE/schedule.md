@@ -314,7 +314,7 @@ author_profile: true
 
 1. **Make-up Class:** October 14 (Tuesday) replaces October 13 Fall Break
 2. **Thanksgiving Week:** Check for updates regarding November 24 class
-3. **Office Hours:** Will be posted on Discord
+3. **Office Hours:** Mondays 3-4 PM (Room 1153, 370 Jay St) - TA hours on Discord
 4. **Slides:** Available after each class on course website
 5. **Recordings:** Posted for registered students who miss class
 
