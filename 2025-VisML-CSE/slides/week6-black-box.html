@@ -227,9 +227,14 @@ Claudio Silva
 <li><p>SHAP (SHapley Additive exPlanations)</p></li>
 <li><p>Comparative Analysis and Trade-offs</p></li>
 </ol>
-<p>Examples and materials from Molnar’s book: https://christophm.github.io/interpretable-ml-book/</p>
+<p><strong>Acknowledgments:</strong></p>
+<p>Materials adapted from:</p>
+<ul>
+<li>Molnar, C. (2024). <a href="https://christophm.github.io/interpretable-ml-book/"><em>Interpretable Machine Learning</em></a></li>
+<li>Molnar, C. (2024). <a href="https://christophmolnar.com/books/shap/"><em>Interpreting Machine Learning Models With SHAP</em></a></li>
+</ul>
 <aside class="notes">
-<p>Today we transition from white-box (interpretable) models to black-box explanation methods. These techniques work with ANY machine learning model - neural networks, ensemble methods, etc. The key distinction: white-box models are inherently interpretable, while black-box methods provide post-hoc explanations. We’ll cover three major approaches: PDPs for global feature effects, LIME for local instance explanations, and SHAP for theoretically-grounded feature attribution. Each has different trade-offs between computational cost, interpretability, and theoretical guarantees.</p>
+<p>Today we transition from white-box (interpretable) models to black-box explanation methods. These techniques work with ANY machine learning model - neural networks, ensemble methods, etc. The key distinction: white-box models are inherently interpretable, while black-box methods provide post-hoc explanations. We’ll cover three major approaches: PDPs for global feature effects, LIME for local instance explanations, and SHAP for theoretically-grounded feature attribution. Each has different trade-offs between computational cost, interpretability, and theoretical guarantees. Significant portions of this lecture are adapted from Christoph Molnar’s excellent books on interpretable machine learning and SHAP.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -356,7 +361,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="2d8a95ef" class="cell" data-execution_count="1">
+<div id="d9f1220a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +406,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="9ec50f23" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="46">
+<div id="4ec4610b" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="76">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -610,8 +615,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="d7ce1061" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="48">
+<div id="5f265d01" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="78">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -632,8 +637,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="0524572d" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="49">
+<div id="394a42b7" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="79">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -714,7 +719,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="e2448163" class="cell" data-execution_count="6">
+<div id="3b852f81" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -770,8 +775,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="7b448d6f" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="51">
+<div id="27cf108e" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="81">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
@@ -1728,7 +1733,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Visualizing the Correlation Problem</h2>
-<div id="af3b456e" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="8">
+<div id="1c7c8d0a" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb3-3"><a href=""></a></span>
@@ -1907,7 +1912,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Loading the Wine Quality Dataset</h2>
-<div id="6781c849" class="cell" data-execution_count="9">
+<div id="e377240d" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-3"><a href=""></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -1971,7 +1976,7 @@ First few rows:
 </section>
 <section class="slide level2">
 <h2>Training a Linear Regression Model</h2>
-<div id="aa2b69b6" class="cell" data-execution_count="10">
+<div id="0879eba9" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="co"># Prepare features and target</span></span>
 <span id="cb7-2"><a href=""></a>X <span class="op">=</span> wine.drop(<span class="st">'quality'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb7-3"><a href=""></a>y <span class="op">=</span> wine[<span class="st">'quality'</span>]</span>
@@ -2030,7 +2035,7 @@ Model coefficients:
 </section>
 <section class="slide level2">
 <h2>Computing SHAP Values with LinearExplainer</h2>
-<div id="0bd5529b" class="cell" data-execution_count="11">
+<div id="5516f193" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="co"># Create SHAP explainer for linear models</span></span>
 <span id="cb9-2"><a href=""></a>explainer <span class="op">=</span> shap.LinearExplainer(model, X_train)</span>
 <span id="cb9-3"><a href=""></a></span>
@@ -2081,7 +2086,7 @@ Sum: base_value + sum(shap_values) = 6.372</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Waterfall Plot: Local Explanation</h2>
-<div id="085cd82f" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="12">
+<div id="f0aaa19d" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Select an interesting wine (high quality prediction)</span></span>
 <span id="cb11-2"><a href=""></a>idx <span class="op">=</span> np.argmax(model.predict(X_test))</span>
 <span id="cb11-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Selected wine index: </span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -2119,7 +2124,7 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Summary Plot: Global Feature Importance</h2>
-<div id="61cd98ce" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="13">
+<div id="95f18167" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># Create summary plot (beeswarm)</span></span>
 <span id="cb13-2"><a href=""></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -2146,7 +2151,7 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Dependence Plot: Feature Relationships</h2>
-<div id="0f962c9d" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="14">
+<div id="54c51d80" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="co"># Create dependence plot for alcohol</span></span>
 <span id="cb14-2"><a href=""></a>shap.plots.scatter(shap_values[:, <span class="st">'alcohol'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -2173,7 +2178,7 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>Verifying SHAP Values for Linear Models</h2>
-<div id="2fff6909" class="cell" data-execution_count="15">
+<div id="7d3041a8" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="co"># For linear models: SHAP = coefficient × (x - mean(x))</span></span>
 <span id="cb15-2"><a href=""></a><span class="co"># Let's verify this relationship</span></span>
 <span id="cb15-3"><a href=""></a></span>
