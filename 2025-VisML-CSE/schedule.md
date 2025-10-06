@@ -147,23 +147,24 @@ author_profile: true
 ---
 
 ### Make-up Class: October 14 (Tuesday)
-## Deep Learning Visualization
+## Project Discussion
 
 **Lecture Topics:**
-- Neural network architecture visualization
-- Activation and gradient visualization
-- CNN filter visualization
-- Attention mechanism displays
+- Final project overview and expectations
+- Default vs. custom project decision making
+- Project proposal requirements
+- Critical reading of research papers
+- Evaluation criteria and timeline
+- Sample projects and portfolio planning
 
-**Lab Session:**
-- TensorBoard integration
-- Building network diagrams
-- Interactive layer exploration
+**Materials:**
+- [Project Discussion](/2025-VisML-CSE/slides/week7-project-discussion.html)
 
 **Readings:**
-- Zeiler & Fergus, "Visualizing and Understanding Convolutional Networks"
-- Olah et al., "The Building Blocks of Interpretability"
+- Review project proposal guidelines on Discord
+- Start identifying potential project topics
 
+**Due:** Final project proposals (October 6)
 **Assignment Released:** Mini-Project 2
 
 ---
