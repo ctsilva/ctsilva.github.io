@@ -356,7 +356,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="3d351496" class="cell" data-execution_count="1">
+<div id="89def156" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +401,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="c1380eb2" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="70">
+<div id="763bd91a" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -610,8 +610,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="917d2399" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="72">
+<div id="a0f817ca" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -632,8 +632,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="48056258" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="73">
+<div id="25584fbc" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -670,9 +670,51 @@ Claudio Silva
 </div>
 </section>
 <section class="slide level2">
+<h2>Local Surrogate (LIME)</h2>
+<p><strong>Training local surrogate models to explain individual predictions</strong></p>
+
+<img data-src="figs/black-box/lime-image-guitar-dog.jpg.png" style="width:90.0%" class="r-stretch"><div class="footer">
+<p>Ribeiro, M. T., Singh, S., &amp; Guestrin, C. (2016). <a href="https://arxiv.org/pdf/1602.04938.pdf"><em>“Why Should I Trust You?” Explaining the Predictions of Any Classifier</em></a>. KDD. Figure 4.</p>
+</div>
+<aside class="notes">
+<p>This figure demonstrates LIME’s model-agnostic nature applied to image classification with Google’s Inception neural network. The key adaptation for images is using superpixels (coherent image regions) as interpretable features instead of individual pixels. Notice how LIME provides instance-specific explanations: when explaining “Electric guitar” (p=0.32), it highlights the guitar; when explaining “Acoustic guitar” (p=0.24), it highlights acoustic features; when explaining “Labrador” (p=0.21), it highlights the dog’s face. This shows that different predictions for the same image get different explanations - LIME adapts to explain what matters for each specific prediction. The gray regions are turned off (superpixels not contributing to that prediction), while colored regions are what the local linear model identifies as most important.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Local Surrogate (LIME)</h2>
+<p><strong>Raw data and explanation of a bad model’s prediction in the “Husky vs Wolf” task</strong></p>
+
+<img data-src="figs/black-box/lime-image-husky-wolf.jpg.png" style="width:70.0%" class="r-stretch"><div class="footer">
+<p>Ribeiro, M. T., Singh, S., &amp; Guestrin, C. (2016). <a href="https://arxiv.org/pdf/1602.04938.pdf"><em>“Why Should I Trust You?” Explaining the Predictions of Any Classifier</em></a>. KDD. Figure 11.</p>
+</div>
+<aside class="notes">
+<p>This is one of the most famous examples from the LIME paper, demonstrating its value for model debugging. A husky is incorrectly classified as a wolf. The LIME explanation reveals why: the model is focusing on the background snow rather than the animal’s features. This exposes a serious flaw - the model learned a spurious correlation between wolves and snowy backgrounds in the training data, rather than learning actual wolf features. Without LIME, this model might have seemed accurate on test data, but would fail catastrophically in the real world when encountering wolves without snow or huskies with snow. This illustrates LIME’s critical role in building trust and identifying when NOT to trust a model. The explanation shows which superpixels the model is using - and in this case, it’s using the wrong ones.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="b361928d" class="cell" data-execution_count="6">
+<div id="0578ba35" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -728,8 +770,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="687b640e" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="75">
+<div id="56553261" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>

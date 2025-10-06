@@ -585,6 +585,34 @@ This slide shows actual LIME explanations for bike rental predictions. The bar c
 Bike Sharing Dataset from UCI Machine Learning Repository. Fanaee-T, H., & Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence, 2(2-3), 113-127.
 :::
 
+## Local Surrogate (LIME)
+
+**Training local surrogate models to explain individual predictions**
+
+![](figs/black-box/lime-image-guitar-dog.jpg.png){width=90%}
+
+::: footer
+Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Explaining the Predictions of Any Classifier*](https://arxiv.org/pdf/1602.04938.pdf). KDD. Figure 4.
+:::
+
+::: {.notes}
+This figure demonstrates LIME's model-agnostic nature applied to image classification with Google's Inception neural network. The key adaptation for images is using superpixels (coherent image regions) as interpretable features instead of individual pixels. Notice how LIME provides instance-specific explanations: when explaining "Electric guitar" (p=0.32), it highlights the guitar; when explaining "Acoustic guitar" (p=0.24), it highlights acoustic features; when explaining "Labrador" (p=0.21), it highlights the dog's face. This shows that different predictions for the same image get different explanations - LIME adapts to explain what matters for each specific prediction. The gray regions are turned off (superpixels not contributing to that prediction), while colored regions are what the local linear model identifies as most important.
+:::
+
+## Local Surrogate (LIME)
+
+**Raw data and explanation of a bad model's prediction in the "Husky vs Wolf" task**
+
+![](figs/black-box/lime-image-husky-wolf.jpg.png){width=70%}
+
+::: footer
+Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Explaining the Predictions of Any Classifier*](https://arxiv.org/pdf/1602.04938.pdf). KDD. Figure 11.
+:::
+
+::: {.notes}
+This is one of the most famous examples from the LIME paper, demonstrating its value for model debugging. A husky is incorrectly classified as a wolf. The LIME explanation reveals why: the model is focusing on the background snow rather than the animal's features. This exposes a serious flaw - the model learned a spurious correlation between wolves and snowy backgrounds in the training data, rather than learning actual wolf features. Without LIME, this model might have seemed accurate on test data, but would fail catastrophically in the real world when encountering wolves without snow or huskies with snow. This illustrates LIME's critical role in building trust and identifying when NOT to trust a model. The explanation shows which superpixels the model is using - and in this case, it's using the wrong ones.
+:::
+
 ## LIME: Code Example
 
 **Dataset:** California Housing (same model as PDP example)
