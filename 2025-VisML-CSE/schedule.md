@@ -116,55 +116,58 @@ author_profile: true
 ---
 
 ### Week 6: October 6
-## Black-box Model Interpretation
+## Black-box Model Interpretation & Project Discussion
 
 **Lecture Topics:**
 - LIME and SHAP explanations
 - Partial dependence plots
 - Feature interaction visualization
 - Surrogate models
+- **Final project overview and expectations**
+
+**Materials:**
+- [Black-box Model Interpretation](/2025-VisML-CSE/slides/week6-black-box.html)
+- [Project Discussion](/2025-VisML-CSE/slides/week7-project-discussion.html)
 
 **Lab Session:**
 - Implementing SHAP visualizations
 - Building explanation interfaces
 - Interactive what-if analysis
 
-**Materials:**
-- [Black-box Model Interpretation](/2025-VisML-CSE/slides/week6-black-box.html)
-
 **Readings:**
 - Ribeiro et al. "Why Should I Trust You?" (LIME paper)
 - Lundberg & Lee "A Unified Approach to Interpreting Model Predictions" (SHAP)
+- Review project proposal guidelines on Discord
 
 **Due:** Mini-Project 1
-**Project:** Final project proposals due
 
 ---
 
 ### Week 7: October 13
 ## Fall Break - No Class
 
+**Project:** Final project proposals due
+
 ---
 
 ### Make-up Class: October 14 (Tuesday)
-## Project Discussion
+## Deep Learning Visualization
 
 **Lecture Topics:**
-- Final project overview and expectations
-- Default vs. custom project decision making
-- Project proposal requirements
-- Critical reading of research papers
-- Evaluation criteria and timeline
-- Sample projects and portfolio planning
+- Neural network architecture visualization
+- Activation and gradient visualization
+- CNN filter visualization
+- Attention mechanism displays
 
-**Materials:**
-- [Project Discussion](/2025-VisML-CSE/slides/week7-project-discussion.html)
+**Lab Session:**
+- TensorBoard integration
+- Building network diagrams
+- Interactive layer exploration
 
 **Readings:**
-- Review project proposal guidelines on Discord
-- Start identifying potential project topics
+- Zeiler & Fergus, "Visualizing and Understanding Convolutional Networks"
+- Olah et al., "The Building Blocks of Interpretability"
 
-**Due:** Final project proposals (October 6)
 **Assignment Released:** Mini-Project 2
 
 ---
