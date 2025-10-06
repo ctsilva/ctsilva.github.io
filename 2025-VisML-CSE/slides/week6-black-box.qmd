@@ -1387,6 +1387,171 @@ Kumar, I. E., et al. (2020). [*Problems with Shapley-value-based explanations as
 Despite SHAP's theoretical elegance, it has important limitations that practitioners must understand. The Kumar et al. paper provides crucial critiques: (1) SHAP assumes features can be independently varied, but real features are often correlated (e.g., house size and bedrooms), (2) SHAP values show associative, not causal relationships - they tell you "what" contributes but not "why", (3) Computational cost grows exponentially with features (though approximations like TreeSHAP and KernelSHAP help), (4) Explanations can be unstable under small data perturbations. Bottom line: SHAP is a powerful tool but not a magic bullet. Always validate explanations against domain knowledge.
 :::
 
+## Deep Dive: The Correlation Problem
+
+**Why Correlated Features Break SHAP's Independence Assumption**
+
+:::: {.columns}
+
+::: {.column width="55%"}
+**The Core Issue:**
+
+SHAP simulates feature absence by replacing them with **sampled values from background data** (marginal distribution)
+
+**Problems with Correlated Features:**
+
+1. **Unrealistic data points**: Combining features independently creates impossible combinations
+   - Example: 2-meter tall person weighing 10 kg
+   - Example: Rain without clouds
+
+2. **Extrapolation**: Model evaluated on data it never saw during training
+
+3. **Misleading explanations**: SHAP values based on unrealistic scenarios
+:::
+
+::: {.column width="45%"}
+**Philosophical Question:**
+
+<div style="background: #fff3cd; padding: 20px; border-left: 4px solid #ffc107; margin: 20px 0;">
+If two features share information (e.g., rainfall ↔ cloudiness), can we truly isolate the effect of one while ignoring the other?
+</div>
+
+**The Trade-off:**
+
+- **Marginal sampling**: True to the **model**
+- **Conditional sampling**: True to the **data**
+
+Your choice depends on interpretation goals!
+:::
+
+::::
+
+::: footer
+Molnar, C. (2024). *Interpretable Machine Learning*. Chapter 11: The Correlation Problem.
+:::
+
+::: {.notes}
+The correlation problem is subtle but critical. SHAP's marginal sampling strategy assumes features can be varied independently, but this assumption fails when features are correlated. When we replace a feature value with one sampled from the background data without considering correlations, we create data points that may never occur in reality. For example, if apartment size and number of rooms are correlated, SHAP might evaluate a 20m² apartment with 5 bedrooms - physically impossible. The model was never trained on such data and might produce unreliable predictions. This raises a philosophical question: what does "feature importance" even mean when features share information? The rainfall/cloudiness example illustrates this perfectly - if it rained, it must have been cloudy, so how do we isolate rain's effect?
+:::
+
+## Visualizing the Correlation Problem
+
+```{python}
+#| echo: true
+#| output: true
+#| fig-width: 14
+#| fig-height: 6
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+
+# Create two highly correlated features (ρ = 0.9)
+p = 0.9
+mean = [0, 0]
+cov = [[1, p], [p, 1]]
+n = 100
+
+x1, x2 = np.random.multivariate_normal(mean, cov, n).T
+
+# Point to explain
+point = (-1.7, -1.7)
+m = 15  # number of samples
+
+# Marginal sampling: sample x2 independently (ignores correlation)
+x2_marg = np.random.choice(x2, size=m)
+
+# Conditional sampling: sample x2 given x1 (respects correlation)
+x2_cond = np.random.normal(loc=p*point[0], scale=np.sqrt(1-p**2), size=m)
+
+# Create side-by-side plots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
+# Left: Marginal sampling (SHAP default)
+ax1.scatter(x1, x2, color='black', alpha=0.2, s=50, label='Training data')
+ax1.scatter(np.repeat(point[0], m), x2_marg, color='blue', s=100, alpha=0.7, label='Marginal samples')
+ax1.scatter(point[0], point[1], color='red', s=200, marker='*', label='Point to explain', zorder=10)
+ax1.set_xlabel('Feature X₁', fontsize=14)
+ax1.set_ylabel('Feature X₂', fontsize=14)
+ax1.set_title('Marginal Sampling (SHAP Default)\n⚠️ Creates unrealistic data points', fontsize=16, fontweight='bold')
+ax1.legend(fontsize=12)
+ax1.grid(alpha=0.3)
+ax1.set_xlim(-2.5, 2.5)
+ax1.set_ylim(-2.5, 2.5)
+
+# Right: Conditional sampling
+ax2.scatter(x1, x2, color='black', alpha=0.2, s=50, label='Training data')
+ax2.scatter(np.repeat(point[0], m), x2_cond, color='green', s=100, alpha=0.7, label='Conditional samples')
+ax2.scatter(point[0], point[1], color='red', s=200, marker='*', label='Point to explain', zorder=10)
+ax2.set_xlabel('Feature X₁', fontsize=14)
+ax2.set_ylabel('Feature X₂', fontsize=14)
+ax2.set_title('Conditional Sampling P(X₂|X₁)\n✓ Respects feature correlation', fontsize=16, fontweight='bold')
+ax2.legend(fontsize=12)
+ax2.grid(alpha=0.3)
+ax2.set_xlim(-2.5, 2.5)
+ax2.set_ylim(-2.5, 2.5)
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.notes}
+This visualization demonstrates the correlation problem concretely. We simulate two features with high correlation (ρ=0.9) - notice the diagonal cloud of training data points. The red star is the point we want to explain at (-1.7, -1.7). LEFT PLOT shows marginal sampling (SHAP's default): when computing SHAP for X₁, we fix it at -1.7 and sample X₂ independently from the background data (blue points). Notice these blue points spread across the entire range of X₂, creating data points far outside the training distribution - these are unrealistic! RIGHT PLOT shows conditional sampling: we sample X₂ given X₁=-1.7, respecting their correlation. Green points cluster near the red star, staying within the training distribution. Marginal sampling evaluates the model on out-of-distribution data, potentially yielding misleading SHAP values. Conditional sampling avoids this but changes the interpretation (no longer pure Shapley values).
+:::
+
+## Solutions to the Correlation Problem
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Solution 1: Reduce Correlation in Model**
+
+- **Feature selection**: Remove redundant correlated features
+- **Feature engineering**: Transform features to decorrelate
+  - Example: "rent" + "rooms" → "rent per m²"
+- **Combine features**: Daily rainfall vs. morning/afternoon rain
+- **Dimensionality reduction**: PCA (but loses interpretability)
+
+<div style="background: #d1ecf1; padding: 15px; border-left: 4px solid #0c5460; margin-top: 20px;">
+**✓ Benefit**: Improves both model performance AND interpretability
+</div>
+:::
+
+::: {.column width="50%"}
+**Solution 2: Use Conditional Sampling**
+
+Available in SHAP library:
+
+```python
+# Linear models
+explainer = shap.LinearExplainer(
+    model, X_train,
+    feature_perturbation='correlation_dependent'
+)
+
+# Tree models
+explainer = shap.TreeExplainer(
+    model,
+    feature_perturbation='tree_path_dependent'
+)
+```
+
+<div style="background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin-top: 20px;">
+**⚠️ Warning**: Changes the value function - no longer pure Shapley values! Use when goal is to understand **data** rather than audit **model**.
+</div>
+:::
+
+::::
+
+::: footer
+Aas, K., et al. (2021). [*Explaining individual predictions when features are dependent*](https://www.jmlr.org/papers/volume22/20-1223/20-1223.pdf). JMLR, 22(213), 1-34.
+:::
+
+::: {.notes}
+There are two main approaches to handle the correlation problem. SOLUTION 1: Prevent the problem by reducing feature correlations during model development. This is the cleanest approach - use feature selection methods that identify and remove correlated features, apply feature engineering to decorrelate (e.g., instead of absolute rent and size, use rent per square meter), or combine redundant features. This not only helps SHAP but often improves model generalization. SOLUTION 2: Use conditional sampling when computing SHAP values. The SHAP library provides feature_perturbation options for this. However, understand the trade-off: conditional sampling changes the underlying game-theoretic foundation. The resulting values aren't true Shapley values anymore, and interpretation changes. Marginal sampling (default) is "true to the model" - it shows what the model learned, including potential artifacts from correlation. Conditional sampling is "true to the data" - it respects real-world distributions. Choose based on your goal: model auditing → marginal; data understanding → conditional.
+:::
+
 ## SHAP in Practice: Wine Quality Prediction
 
 **A Complete Example with Linear Models**

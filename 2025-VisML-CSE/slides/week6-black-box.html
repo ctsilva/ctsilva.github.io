@@ -356,7 +356,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="f173d871" class="cell" data-execution_count="1">
+<div id="7dbb82a7" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +401,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="c5a7404d" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div id="d892065a" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="31">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -610,8 +610,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="4fa54dd5" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div id="12ce004e" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="33">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -632,8 +632,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="7330ee57" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div id="ffb1b155" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="34">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -714,7 +714,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="ab97757c" class="cell" data-execution_count="6">
+<div id="15e2c70b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -770,8 +770,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="b92021d3" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div id="4e28bd70" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="36">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
@@ -1562,6 +1562,181 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
+<h2>Deep Dive: The Correlation Problem</h2>
+<p><strong>Why Correlated Features Break SHAP’s Independence Assumption</strong></p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>The Core Issue:</strong></p>
+<p>SHAP simulates feature absence by replacing them with <strong>sampled values from background data</strong> (marginal distribution)</p>
+<p><strong>Problems with Correlated Features:</strong></p>
+<ol type="1">
+<li><p><strong>Unrealistic data points</strong>: Combining features independently creates impossible combinations</p>
+<ul>
+<li>Example: 2-meter tall person weighing 10 kg</li>
+<li>Example: Rain without clouds</li>
+</ul></li>
+<li><p><strong>Extrapolation</strong>: Model evaluated on data it never saw during training</p></li>
+<li><p><strong>Misleading explanations</strong>: SHAP values based on unrealistic scenarios</p></li>
+</ol>
+</div><div class="column" style="width:45%;">
+<p><strong>Philosophical Question:</strong></p>
+<div style="background: #fff3cd; padding: 20px; border-left: 4px solid #ffc107; margin: 20px 0;">
+<p>If two features share information (e.g., rainfall ↔︎ cloudiness), can we truly isolate the effect of one while ignoring the other?</p>
+</div>
+<p><strong>The Trade-off:</strong></p>
+<ul>
+<li><strong>Marginal sampling</strong>: True to the <strong>model</strong></li>
+<li><strong>Conditional sampling</strong>: True to the <strong>data</strong></li>
+</ul>
+<p>Your choice depends on interpretation goals!</p>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2024). <em>Interpretable Machine Learning</em>. Chapter 11: The Correlation Problem.</p>
+</div>
+<aside class="notes">
+<p>The correlation problem is subtle but critical. SHAP’s marginal sampling strategy assumes features can be varied independently, but this assumption fails when features are correlated. When we replace a feature value with one sampled from the background data without considering correlations, we create data points that may never occur in reality. For example, if apartment size and number of rooms are correlated, SHAP might evaluate a 20m² apartment with 5 bedrooms - physically impossible. The model was never trained on such data and might produce unreliable predictions. This raises a philosophical question: what does “feature importance” even mean when features share information? The rainfall/cloudiness example illustrates this perfectly - if it rained, it must have been cloudy, so how do we isolate rain’s effect?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing the Correlation Problem</h2>
+<div id="2ba9ccd5" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href=""></a></span>
+<span id="cb3-4"><a href=""></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb3-5"><a href=""></a></span>
+<span id="cb3-6"><a href=""></a><span class="co"># Create two highly correlated features (ρ = 0.9)</span></span>
+<span id="cb3-7"><a href=""></a>p <span class="op">=</span> <span class="fl">0.9</span></span>
+<span id="cb3-8"><a href=""></a>mean <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<span id="cb3-9"><a href=""></a>cov <span class="op">=</span> [[<span class="dv">1</span>, p], [p, <span class="dv">1</span>]]</span>
+<span id="cb3-10"><a href=""></a>n <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb3-11"><a href=""></a></span>
+<span id="cb3-12"><a href=""></a>x1, x2 <span class="op">=</span> np.random.multivariate_normal(mean, cov, n).T</span>
+<span id="cb3-13"><a href=""></a></span>
+<span id="cb3-14"><a href=""></a><span class="co"># Point to explain</span></span>
+<span id="cb3-15"><a href=""></a>point <span class="op">=</span> (<span class="op">-</span><span class="fl">1.7</span>, <span class="op">-</span><span class="fl">1.7</span>)</span>
+<span id="cb3-16"><a href=""></a>m <span class="op">=</span> <span class="dv">15</span>  <span class="co"># number of samples</span></span>
+<span id="cb3-17"><a href=""></a></span>
+<span id="cb3-18"><a href=""></a><span class="co"># Marginal sampling: sample x2 independently (ignores correlation)</span></span>
+<span id="cb3-19"><a href=""></a>x2_marg <span class="op">=</span> np.random.choice(x2, size<span class="op">=</span>m)</span>
+<span id="cb3-20"><a href=""></a></span>
+<span id="cb3-21"><a href=""></a><span class="co"># Conditional sampling: sample x2 given x1 (respects correlation)</span></span>
+<span id="cb3-22"><a href=""></a>x2_cond <span class="op">=</span> np.random.normal(loc<span class="op">=</span>p<span class="op">*</span>point[<span class="dv">0</span>], scale<span class="op">=</span>np.sqrt(<span class="dv">1</span><span class="op">-</span>p<span class="op">**</span><span class="dv">2</span>), size<span class="op">=</span>m)</span>
+<span id="cb3-23"><a href=""></a></span>
+<span id="cb3-24"><a href=""></a><span class="co"># Create side-by-side plots</span></span>
+<span id="cb3-25"><a href=""></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb3-26"><a href=""></a></span>
+<span id="cb3-27"><a href=""></a><span class="co"># Left: Marginal sampling (SHAP default)</span></span>
+<span id="cb3-28"><a href=""></a>ax1.scatter(x1, x2, color<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>, s<span class="op">=</span><span class="dv">50</span>, label<span class="op">=</span><span class="st">'Training data'</span>)</span>
+<span id="cb3-29"><a href=""></a>ax1.scatter(np.repeat(point[<span class="dv">0</span>], m), x2_marg, color<span class="op">=</span><span class="st">'blue'</span>, s<span class="op">=</span><span class="dv">100</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Marginal samples'</span>)</span>
+<span id="cb3-30"><a href=""></a>ax1.scatter(point[<span class="dv">0</span>], point[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, s<span class="op">=</span><span class="dv">200</span>, marker<span class="op">=</span><span class="st">'*'</span>, label<span class="op">=</span><span class="st">'Point to explain'</span>, zorder<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-31"><a href=""></a>ax1.set_xlabel(<span class="st">'Feature X₁'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb3-32"><a href=""></a>ax1.set_ylabel(<span class="st">'Feature X₂'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb3-33"><a href=""></a>ax1.set_title(<span class="st">'Marginal Sampling (SHAP Default)</span><span class="ch">\n</span><span class="st">⚠️ Creates unrealistic data points'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb3-34"><a href=""></a>ax1.legend(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-35"><a href=""></a>ax1.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb3-36"><a href=""></a>ax1.set_xlim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb3-37"><a href=""></a>ax1.set_ylim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb3-38"><a href=""></a></span>
+<span id="cb3-39"><a href=""></a><span class="co"># Right: Conditional sampling</span></span>
+<span id="cb3-40"><a href=""></a>ax2.scatter(x1, x2, color<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>, s<span class="op">=</span><span class="dv">50</span>, label<span class="op">=</span><span class="st">'Training data'</span>)</span>
+<span id="cb3-41"><a href=""></a>ax2.scatter(np.repeat(point[<span class="dv">0</span>], m), x2_cond, color<span class="op">=</span><span class="st">'green'</span>, s<span class="op">=</span><span class="dv">100</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Conditional samples'</span>)</span>
+<span id="cb3-42"><a href=""></a>ax2.scatter(point[<span class="dv">0</span>], point[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, s<span class="op">=</span><span class="dv">200</span>, marker<span class="op">=</span><span class="st">'*'</span>, label<span class="op">=</span><span class="st">'Point to explain'</span>, zorder<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-43"><a href=""></a>ax2.set_xlabel(<span class="st">'Feature X₁'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb3-44"><a href=""></a>ax2.set_ylabel(<span class="st">'Feature X₂'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb3-45"><a href=""></a>ax2.set_title(<span class="st">'Conditional Sampling P(X₂|X₁)</span><span class="ch">\n</span><span class="st">✓ Respects feature correlation'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb3-46"><a href=""></a>ax2.legend(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-47"><a href=""></a>ax2.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb3-48"><a href=""></a>ax2.set_xlim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb3-49"><a href=""></a>ax2.set_ylim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb3-50"><a href=""></a></span>
+<span id="cb3-51"><a href=""></a>plt.tight_layout()</span>
+<span id="cb3-52"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-9-output-1.png" width="1334" height="567"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This visualization demonstrates the correlation problem concretely. We simulate two features with high correlation (ρ=0.9) - notice the diagonal cloud of training data points. The red star is the point we want to explain at (-1.7, -1.7). LEFT PLOT shows marginal sampling (SHAP’s default): when computing SHAP for X₁, we fix it at -1.7 and sample X₂ independently from the background data (blue points). Notice these blue points spread across the entire range of X₂, creating data points far outside the training distribution - these are unrealistic! RIGHT PLOT shows conditional sampling: we sample X₂ given X₁=-1.7, respecting their correlation. Green points cluster near the red star, staying within the training distribution. Marginal sampling evaluates the model on out-of-distribution data, potentially yielding misleading SHAP values. Conditional sampling avoids this but changes the interpretation (no longer pure Shapley values).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Solutions to the Correlation Problem</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Solution 1: Reduce Correlation in Model</strong></p>
+<ul>
+<li><strong>Feature selection</strong>: Remove redundant correlated features</li>
+<li><strong>Feature engineering</strong>: Transform features to decorrelate
+<ul>
+<li>Example: “rent” + “rooms” → “rent per m²”</li>
+</ul></li>
+<li><strong>Combine features</strong>: Daily rainfall vs.&nbsp;morning/afternoon rain</li>
+<li><strong>Dimensionality reduction</strong>: PCA (but loses interpretability)</li>
+</ul>
+<div style="background: #d1ecf1; padding: 15px; border-left: 4px solid #0c5460; margin-top: 20px;">
+<p><strong>✓ Benefit</strong>: Improves both model performance AND interpretability</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Solution 2: Use Conditional Sampling</strong></p>
+<p>Available in SHAP library:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="co"># Linear models</span></span>
+<span id="cb4-2"><a href=""></a>explainer <span class="op">=</span> shap.LinearExplainer(</span>
+<span id="cb4-3"><a href=""></a>    model, X_train,</span>
+<span id="cb4-4"><a href=""></a>    feature_perturbation<span class="op">=</span><span class="st">'correlation_dependent'</span></span>
+<span id="cb4-5"><a href=""></a>)</span>
+<span id="cb4-6"><a href=""></a></span>
+<span id="cb4-7"><a href=""></a><span class="co"># Tree models</span></span>
+<span id="cb4-8"><a href=""></a>explainer <span class="op">=</span> shap.TreeExplainer(</span>
+<span id="cb4-9"><a href=""></a>    model,</span>
+<span id="cb4-10"><a href=""></a>    feature_perturbation<span class="op">=</span><span class="st">'tree_path_dependent'</span></span>
+<span id="cb4-11"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin-top: 20px;">
+<p><strong>⚠️ Warning</strong>: Changes the value function - no longer pure Shapley values! Use when goal is to understand <strong>data</strong> rather than audit <strong>model</strong>.</p>
+</div>
+</div></div>
+<div class="footer">
+<p>Aas, K., et al.&nbsp;(2021). <a href="https://www.jmlr.org/papers/volume22/20-1223/20-1223.pdf"><em>Explaining individual predictions when features are dependent</em></a>. JMLR, 22(213), 1-34.</p>
+</div>
+<aside class="notes">
+<p>There are two main approaches to handle the correlation problem. SOLUTION 1: Prevent the problem by reducing feature correlations during model development. This is the cleanest approach - use feature selection methods that identify and remove correlated features, apply feature engineering to decorrelate (e.g., instead of absolute rent and size, use rent per square meter), or combine redundant features. This not only helps SHAP but often improves model generalization. SOLUTION 2: Use conditional sampling when computing SHAP values. The SHAP library provides feature_perturbation options for this. However, understand the trade-off: conditional sampling changes the underlying game-theoretic foundation. The resulting values aren’t true Shapley values anymore, and interpretation changes. Marginal sampling (default) is “true to the model” - it shows what the model learned, including potential artifacts from correlation. Conditional sampling is “true to the data” - it respects real-world distributions. Choose based on your goal: model auditing → marginal; data understanding → conditional.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>SHAP in Practice: Wine Quality Prediction</h2>
 <p><strong>A Complete Example with Linear Models</strong></p>
 <div class="columns">
@@ -1613,21 +1788,21 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Loading the Wine Quality Dataset</h2>
-<div id="d78d749b" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-3"><a href=""></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb3-4"><a href=""></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb3-5"><a href=""></a><span class="im">import</span> shap</span>
-<span id="cb3-6"><a href=""></a></span>
-<span id="cb3-7"><a href=""></a><span class="co"># Load wine quality dataset</span></span>
-<span id="cb3-8"><a href=""></a>url <span class="op">=</span> <span class="st">'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'</span></span>
-<span id="cb3-9"><a href=""></a>wine <span class="op">=</span> pd.read_csv(url, sep<span class="op">=</span><span class="st">";"</span>)</span>
-<span id="cb3-10"><a href=""></a></span>
-<span id="cb3-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Dataset shape: </span><span class="sc">{</span>wine<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Features: </span><span class="sc">{</span><span class="bu">list</span>(wine.columns[:<span class="op">-</span><span class="dv">1</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Quality distribution:</span><span class="ch">\n</span><span class="sc">{</span>wine[<span class="st">'quality'</span>]<span class="sc">.</span>value_counts()<span class="sc">.</span>sort_index()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-14"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">First few rows:</span><span class="ch">\n</span><span class="sc">{</span>wine<span class="sc">.</span>head(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="86a8bfbd" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href=""></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb5-4"><a href=""></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb5-5"><a href=""></a><span class="im">import</span> shap</span>
+<span id="cb5-6"><a href=""></a></span>
+<span id="cb5-7"><a href=""></a><span class="co"># Load wine quality dataset</span></span>
+<span id="cb5-8"><a href=""></a>url <span class="op">=</span> <span class="st">'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'</span></span>
+<span id="cb5-9"><a href=""></a>wine <span class="op">=</span> pd.read_csv(url, sep<span class="op">=</span><span class="st">";"</span>)</span>
+<span id="cb5-10"><a href=""></a></span>
+<span id="cb5-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Dataset shape: </span><span class="sc">{</span>wine<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Features: </span><span class="sc">{</span><span class="bu">list</span>(wine.columns[:<span class="op">-</span><span class="dv">1</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Quality distribution:</span><span class="ch">\n</span><span class="sc">{</span>wine[<span class="st">'quality'</span>]<span class="sc">.</span>value_counts()<span class="sc">.</span>sort_index()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-14"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">First few rows:</span><span class="ch">\n</span><span class="sc">{</span>wine<span class="sc">.</span>head(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Dataset shape: (4898, 12)
 
@@ -1677,30 +1852,30 @@ First few rows:
 </section>
 <section class="slide level2">
 <h2>Training a Linear Regression Model</h2>
-<div id="de2f66ec" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="co"># Prepare features and target</span></span>
-<span id="cb5-2"><a href=""></a>X <span class="op">=</span> wine.drop(<span class="st">'quality'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb5-3"><a href=""></a>y <span class="op">=</span> wine[<span class="st">'quality'</span>]</span>
-<span id="cb5-4"><a href=""></a></span>
-<span id="cb5-5"><a href=""></a><span class="co"># Split data</span></span>
-<span id="cb5-6"><a href=""></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb5-7"><a href=""></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
-<span id="cb5-8"><a href=""></a>)</span>
-<span id="cb5-9"><a href=""></a></span>
-<span id="cb5-10"><a href=""></a><span class="co"># Train linear regression model</span></span>
-<span id="cb5-11"><a href=""></a>model <span class="op">=</span> LinearRegression()</span>
-<span id="cb5-12"><a href=""></a>model.fit(X_train, y_train)</span>
-<span id="cb5-13"><a href=""></a></span>
-<span id="cb5-14"><a href=""></a><span class="co"># Evaluate model</span></span>
-<span id="cb5-15"><a href=""></a>train_score <span class="op">=</span> model.score(X_train, y_train)</span>
-<span id="cb5-16"><a href=""></a>test_score <span class="op">=</span> model.score(X_test, y_test)</span>
-<span id="cb5-17"><a href=""></a></span>
-<span id="cb5-18"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Train R² score: </span><span class="sc">{</span>train_score<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb5-19"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Test R² score: </span><span class="sc">{</span>test_score<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb5-20"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Model coefficients:"</span>)</span>
-<span id="cb5-21"><a href=""></a><span class="cf">for</span> feature, coef <span class="kw">in</span> <span class="bu">zip</span>(X.columns, model.coef_):</span>
-<span id="cb5-22"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>feature<span class="sc">:25s}</span><span class="ss">: </span><span class="sc">{</span>coef<span class="sc">:+.4f}</span><span class="ss">"</span>)</span>
-<span id="cb5-23"><a href=""></a><span class="bu">print</span>(<span class="ss">f"  Intercept: </span><span class="sc">{</span>model<span class="sc">.</span>intercept_<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2729a0ef" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="co"># Prepare features and target</span></span>
+<span id="cb7-2"><a href=""></a>X <span class="op">=</span> wine.drop(<span class="st">'quality'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-3"><a href=""></a>y <span class="op">=</span> wine[<span class="st">'quality'</span>]</span>
+<span id="cb7-4"><a href=""></a></span>
+<span id="cb7-5"><a href=""></a><span class="co"># Split data</span></span>
+<span id="cb7-6"><a href=""></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb7-7"><a href=""></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb7-8"><a href=""></a>)</span>
+<span id="cb7-9"><a href=""></a></span>
+<span id="cb7-10"><a href=""></a><span class="co"># Train linear regression model</span></span>
+<span id="cb7-11"><a href=""></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb7-12"><a href=""></a>model.fit(X_train, y_train)</span>
+<span id="cb7-13"><a href=""></a></span>
+<span id="cb7-14"><a href=""></a><span class="co"># Evaluate model</span></span>
+<span id="cb7-15"><a href=""></a>train_score <span class="op">=</span> model.score(X_train, y_train)</span>
+<span id="cb7-16"><a href=""></a>test_score <span class="op">=</span> model.score(X_test, y_test)</span>
+<span id="cb7-17"><a href=""></a></span>
+<span id="cb7-18"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Train R² score: </span><span class="sc">{</span>train_score<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb7-19"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Test R² score: </span><span class="sc">{</span>test_score<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb7-20"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Model coefficients:"</span>)</span>
+<span id="cb7-21"><a href=""></a><span class="cf">for</span> feature, coef <span class="kw">in</span> <span class="bu">zip</span>(X.columns, model.coef_):</span>
+<span id="cb7-22"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>feature<span class="sc">:25s}</span><span class="ss">: </span><span class="sc">{</span>coef<span class="sc">:+.4f}</span><span class="ss">"</span>)</span>
+<span id="cb7-23"><a href=""></a><span class="bu">print</span>(<span class="ss">f"  Intercept: </span><span class="sc">{</span>model<span class="sc">.</span>intercept_<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Train R² score: 0.284
 Test R² score: 0.265
@@ -1736,20 +1911,20 @@ Model coefficients:
 </section>
 <section class="slide level2">
 <h2>Computing SHAP Values with LinearExplainer</h2>
-<div id="3fa76c75" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="co"># Create SHAP explainer for linear models</span></span>
-<span id="cb7-2"><a href=""></a>explainer <span class="op">=</span> shap.LinearExplainer(model, X_train)</span>
-<span id="cb7-3"><a href=""></a></span>
-<span id="cb7-4"><a href=""></a><span class="co"># Compute SHAP values for test set</span></span>
-<span id="cb7-5"><a href=""></a>shap_values <span class="op">=</span> explainer(X_test)</span>
-<span id="cb7-6"><a href=""></a></span>
-<span id="cb7-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"SHAP values shape: </span><span class="sc">{</span>shap_values<span class="sc">.</span>values<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Base value (average prediction): </span><span class="sc">{</span>shap_values<span class="sc">.</span>base_values[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb7-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">SHAP values for first test instance:"</span>)</span>
-<span id="cb7-10"><a href=""></a><span class="cf">for</span> feature, value <span class="kw">in</span> <span class="bu">zip</span>(X.columns, shap_values.values[<span class="dv">0</span>]):</span>
-<span id="cb7-11"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>feature<span class="sc">:25s}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">:+.4f}</span><span class="ss">"</span>)</span>
-<span id="cb7-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Prediction for first instance: </span><span class="sc">{</span>model<span class="sc">.</span>predict(X_test.iloc[[<span class="dv">0</span>]])[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb7-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Sum: base_value + sum(shap_values) = </span><span class="sc">{</span>shap_values<span class="sc">.</span>base_values[<span class="dv">0</span>] <span class="op">+</span> shap_values<span class="sc">.</span>values[<span class="dv">0</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="b6a81ea0" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="co"># Create SHAP explainer for linear models</span></span>
+<span id="cb9-2"><a href=""></a>explainer <span class="op">=</span> shap.LinearExplainer(model, X_train)</span>
+<span id="cb9-3"><a href=""></a></span>
+<span id="cb9-4"><a href=""></a><span class="co"># Compute SHAP values for test set</span></span>
+<span id="cb9-5"><a href=""></a>shap_values <span class="op">=</span> explainer(X_test)</span>
+<span id="cb9-6"><a href=""></a></span>
+<span id="cb9-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"SHAP values shape: </span><span class="sc">{</span>shap_values<span class="sc">.</span>values<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Base value (average prediction): </span><span class="sc">{</span>shap_values<span class="sc">.</span>base_values[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb9-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">SHAP values for first test instance:"</span>)</span>
+<span id="cb9-10"><a href=""></a><span class="cf">for</span> feature, value <span class="kw">in</span> <span class="bu">zip</span>(X.columns, shap_values.values[<span class="dv">0</span>]):</span>
+<span id="cb9-11"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>feature<span class="sc">:25s}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">:+.4f}</span><span class="ss">"</span>)</span>
+<span id="cb9-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Prediction for first instance: </span><span class="sc">{</span>model<span class="sc">.</span>predict(X_test.iloc[[<span class="dv">0</span>]])[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb9-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Sum: base_value + sum(shap_values) = </span><span class="sc">{</span>shap_values<span class="sc">.</span>base_values[<span class="dv">0</span>] <span class="op">+</span> shap_values<span class="sc">.</span>values[<span class="dv">0</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SHAP values shape: (980, 11)
 Base value (average prediction): 5.890
@@ -1787,15 +1962,15 @@ Sum: base_value + sum(shap_values) = 6.372</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Waterfall Plot: Local Explanation</h2>
-<div id="54b4a8c1" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="co"># Select an interesting wine (high quality prediction)</span></span>
-<span id="cb9-2"><a href=""></a>idx <span class="op">=</span> np.argmax(model.predict(X_test))</span>
-<span id="cb9-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Selected wine index: </span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-4"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Predicted quality: </span><span class="sc">{</span>model<span class="sc">.</span>predict(X_test.iloc[[idx]])[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb9-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Actual quality: </span><span class="sc">{</span>y_test<span class="sc">.</span>iloc[idx]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-6"><a href=""></a></span>
-<span id="cb9-7"><a href=""></a><span class="co"># Create waterfall plot</span></span>
-<span id="cb9-8"><a href=""></a>shap.plots.waterfall(shap_values[idx])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="803bf931" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Select an interesting wine (high quality prediction)</span></span>
+<span id="cb11-2"><a href=""></a>idx <span class="op">=</span> np.argmax(model.predict(X_test))</span>
+<span id="cb11-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Selected wine index: </span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-4"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Predicted quality: </span><span class="sc">{</span>model<span class="sc">.</span>predict(X_test.iloc[[idx]])[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb11-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Actual quality: </span><span class="sc">{</span>y_test<span class="sc">.</span>iloc[idx]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-6"><a href=""></a></span>
+<span id="cb11-7"><a href=""></a><span class="co"># Create waterfall plot</span></span>
+<span id="cb11-8"><a href=""></a>shap.plots.waterfall(shap_values[idx])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Selected wine index: 14
 Predicted quality: 7.28
@@ -1804,7 +1979,7 @@ Actual quality: 5</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week6-black-box_files/figure-revealjs/cell-12-output-2.png" width="876" height="569"></p>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-13-output-2.png" width="876" height="569"></p>
 </figure>
 </div>
 </div>
@@ -1825,13 +2000,13 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Summary Plot: Global Feature Importance</h2>
-<div id="9f09b020" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Create summary plot (beeswarm)</span></span>
-<span id="cb11-2"><a href=""></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3747eaaa" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># Create summary plot (beeswarm)</span></span>
+<span id="cb13-2"><a href=""></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week6-black-box_files/figure-revealjs/cell-13-output-1.png" width="822" height="477"></p>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-14-output-1.png" width="822" height="477"></p>
 </figure>
 </div>
 </div>
@@ -1852,13 +2027,13 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>SHAP Dependence Plot: Feature Relationships</h2>
-<div id="41ffe2e5" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="co"># Create dependence plot for alcohol</span></span>
-<span id="cb12-2"><a href=""></a>shap.plots.scatter(shap_values[:, <span class="st">'alcohol'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="15d82f6c" class="cell" data-fig-height="8" data-fig-width="12" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="co"># Create dependence plot for alcohol</span></span>
+<span id="cb14-2"><a href=""></a>shap.plots.scatter(shap_values[:, <span class="st">'alcohol'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week6-black-box_files/figure-revealjs/cell-14-output-1.png" width="553" height="434"></p>
+<p><img data-src="week6-black-box_files/figure-revealjs/cell-15-output-1.png" width="553" height="434"></p>
 </figure>
 </div>
 </div>
@@ -1879,23 +2054,23 @@ Actual quality: 5</code></pre>
 </section>
 <section class="slide level2">
 <h2>Verifying SHAP Values for Linear Models</h2>
-<div id="71ab50a8" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># For linear models: SHAP = coefficient × (x - mean(x))</span></span>
-<span id="cb13-2"><a href=""></a><span class="co"># Let's verify this relationship</span></span>
-<span id="cb13-3"><a href=""></a></span>
-<span id="cb13-4"><a href=""></a><span class="bu">print</span>(<span class="st">"Verification: SHAP values = coefficient × (feature - mean)"</span>)</span>
-<span id="cb13-5"><a href=""></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">For the first test instance:"</span>)</span>
-<span id="cb13-6"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Feature'</span><span class="sc">:&lt;25}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Coefficient'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Value'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Mean'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'(Val-Mean)'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'SHAP Value'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Match?'</span><span class="sc">:&gt;8}</span><span class="ss">"</span>)</span>
-<span id="cb13-7"><a href=""></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">105</span>)</span>
-<span id="cb13-8"><a href=""></a></span>
-<span id="cb13-9"><a href=""></a><span class="cf">for</span> i, feature <span class="kw">in</span> <span class="bu">enumerate</span>(X.columns):</span>
-<span id="cb13-10"><a href=""></a>    coef <span class="op">=</span> model.coef_[i]</span>
-<span id="cb13-11"><a href=""></a>    value <span class="op">=</span> X_test.iloc[<span class="dv">0</span>][feature]</span>
-<span id="cb13-12"><a href=""></a>    mean <span class="op">=</span> X_train[feature].mean()</span>
-<span id="cb13-13"><a href=""></a>    expected_shap <span class="op">=</span> coef <span class="op">*</span> (value <span class="op">-</span> mean)</span>
-<span id="cb13-14"><a href=""></a>    actual_shap <span class="op">=</span> shap_values.values[<span class="dv">0</span>][i]</span>
-<span id="cb13-15"><a href=""></a>    match <span class="op">=</span> <span class="st">"✓"</span> <span class="cf">if</span> np.isclose(expected_shap, actual_shap, rtol<span class="op">=</span><span class="fl">1e-3</span>) <span class="cf">else</span> <span class="st">"✗"</span></span>
-<span id="cb13-16"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>feature<span class="sc">:&lt;25}</span><span class="ss"> </span><span class="sc">{</span>coef<span class="sc">:&gt;12.4f}</span><span class="ss"> </span><span class="sc">{</span>value<span class="sc">:&gt;10.2f}</span><span class="ss"> </span><span class="sc">{</span>mean<span class="sc">:&gt;10.2f}</span><span class="ss"> </span><span class="sc">{</span>value<span class="op">-</span>mean<span class="sc">:&gt;12.2f}</span><span class="ss"> </span><span class="sc">{</span>actual_shap<span class="sc">:&gt;12.4f}</span><span class="ss"> </span><span class="sc">{</span>match<span class="sc">:&gt;8}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d06d4cff" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="co"># For linear models: SHAP = coefficient × (x - mean(x))</span></span>
+<span id="cb15-2"><a href=""></a><span class="co"># Let's verify this relationship</span></span>
+<span id="cb15-3"><a href=""></a></span>
+<span id="cb15-4"><a href=""></a><span class="bu">print</span>(<span class="st">"Verification: SHAP values = coefficient × (feature - mean)"</span>)</span>
+<span id="cb15-5"><a href=""></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">For the first test instance:"</span>)</span>
+<span id="cb15-6"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Feature'</span><span class="sc">:&lt;25}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Coefficient'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Value'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Mean'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'(Val-Mean)'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'SHAP Value'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Match?'</span><span class="sc">:&gt;8}</span><span class="ss">"</span>)</span>
+<span id="cb15-7"><a href=""></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">105</span>)</span>
+<span id="cb15-8"><a href=""></a></span>
+<span id="cb15-9"><a href=""></a><span class="cf">for</span> i, feature <span class="kw">in</span> <span class="bu">enumerate</span>(X.columns):</span>
+<span id="cb15-10"><a href=""></a>    coef <span class="op">=</span> model.coef_[i]</span>
+<span id="cb15-11"><a href=""></a>    value <span class="op">=</span> X_test.iloc[<span class="dv">0</span>][feature]</span>
+<span id="cb15-12"><a href=""></a>    mean <span class="op">=</span> X_train[feature].mean()</span>
+<span id="cb15-13"><a href=""></a>    expected_shap <span class="op">=</span> coef <span class="op">*</span> (value <span class="op">-</span> mean)</span>
+<span id="cb15-14"><a href=""></a>    actual_shap <span class="op">=</span> shap_values.values[<span class="dv">0</span>][i]</span>
+<span id="cb15-15"><a href=""></a>    match <span class="op">=</span> <span class="st">"✓"</span> <span class="cf">if</span> np.isclose(expected_shap, actual_shap, rtol<span class="op">=</span><span class="fl">1e-3</span>) <span class="cf">else</span> <span class="st">"✗"</span></span>
+<span id="cb15-16"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>feature<span class="sc">:&lt;25}</span><span class="ss"> </span><span class="sc">{</span>coef<span class="sc">:&gt;12.4f}</span><span class="ss"> </span><span class="sc">{</span>value<span class="sc">:&gt;10.2f}</span><span class="ss"> </span><span class="sc">{</span>mean<span class="sc">:&gt;10.2f}</span><span class="ss"> </span><span class="sc">{</span>value<span class="op">-</span>mean<span class="sc">:&gt;12.2f}</span><span class="ss"> </span><span class="sc">{</span>actual_shap<span class="sc">:&gt;12.4f}</span><span class="ss"> </span><span class="sc">{</span>match<span class="sc">:&gt;8}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Verification: SHAP values = coefficient × (feature - mean)
 
