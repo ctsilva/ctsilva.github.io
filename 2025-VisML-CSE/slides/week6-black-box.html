@@ -356,7 +356,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="2c7762d4" class="cell" data-execution_count="1">
+<div id="3d351496" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +401,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="24b56444" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="63">
+<div id="c1380eb2" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="70">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -558,16 +558,36 @@ Claudio Silva
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Case 1: High Rental Day</strong> <em>Prediction: ABOVE Trend</em></p>
-<div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
-<p><span style="color: #2ecc71; font-size: 1.5em;">▬▬▬▬▬▬▬▬▬▬</span> Temp &gt; 20°C <span style="color: #2ecc71; font-size: 1.5em;">▬▬▬▬▬▬▬</span> Windspeed Low <span style="color: #e74c3c; font-size: 1.5em;">▬▬▬</span> Holiday = False</p>
+<div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 15px;">
+<div style="margin-bottom: 15px;">
+<p><span style="color: #2ecc71; font-size: 1.6em; font-weight: bold;">▬▬▬▬▬▬▬▬▬▬</span> <span style="font-size: 1.1em;">Temp &gt; 20°C</span></p>
 </div>
+<div style="margin-bottom: 15px;">
+<p><span style="color: #2ecc71; font-size: 1.6em; font-weight: bold;">▬▬▬▬▬▬▬</span> <span style="font-size: 1.1em;">Windspeed Low</span></p>
+</div>
+<div style="margin-bottom: 10px;">
+<p><span style="color: #e74c3c; font-size: 1.6em; font-weight: bold;">▬▬▬</span> <span style="font-size: 1.1em;">Holiday = False</span></p>
+</div>
+</div>
+<div style="margin-top: 20px; font-size: 1.05em; line-height: 1.8;">
 <p>✓ Warm temperature strongly supports high rentals ✓ Low wind moderately supports ✗ Non-holiday slightly opposes</p>
+</div>
 </div><div class="column" style="width:50%;">
 <p><strong>Case 2: Low Rental Day</strong> <em>Prediction: BELOW Trend</em></p>
-<div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
-<p><span style="color: #e74c3c; font-size: 1.5em;">▬▬▬▬▬▬▬▬▬▬▬▬</span> Weather: Rain <span style="color: #e74c3c; font-size: 1.5em;">▬▬▬▬▬▬▬▬</span> Temp &lt; 5°C <span style="color: #2ecc71; font-size: 1.5em;">▬▬</span> Weekday = True</p>
+<div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 15px;">
+<div style="margin-bottom: 15px;">
+<p><span style="color: #e74c3c; font-size: 1.6em; font-weight: bold;">▬▬▬▬▬▬▬▬▬▬▬▬</span> <span style="font-size: 1.1em;">Weather: Rain</span></p>
 </div>
+<div style="margin-bottom: 15px;">
+<p><span style="color: #e74c3c; font-size: 1.6em; font-weight: bold;">▬▬▬▬▬▬▬▬</span> <span style="font-size: 1.1em;">Temp &lt; 5°C</span></p>
+</div>
+<div style="margin-bottom: 10px;">
+<p><span style="color: #2ecc71; font-size: 1.6em; font-weight: bold;">▬▬</span> <span style="font-size: 1.1em;">Weekday = True</span></p>
+</div>
+</div>
+<div style="margin-top: 20px; font-size: 1.05em; line-height: 1.8;">
 <p>✗ Rain strongly opposes high rentals ✗ Cold temperature opposes ✓ Weekday weakly supports</p>
+</div>
 </div></div>
 <aside class="notes">
 <p>Emphasize the visualization: <strong>Color</strong> (Green supports the prediction, Red opposes it), <strong>Length of Bar</strong> (magnitude of influence), and <strong>Sparsity</strong> (only a few features are shown—this makes it easy for a non-expert to trust). The bar chart is the key deliverable of LIME - it provides a contrastive explanation showing which features push toward vs away from the prediction. Compare the two cases: Case 1 is dominated by green (supporting features), while Case 2 is dominated by red (opposing features). This visual contrast makes the explanation immediately understandable.</p>
@@ -590,8 +610,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="9cd827e0" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="65">
+<div id="917d2399" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="72">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -612,8 +632,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="02b93c7d" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="66">
+<div id="48056258" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="73">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -652,7 +672,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="0b9b9f43" class="cell" data-execution_count="6">
+<div id="b361928d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -708,8 +728,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="5e7e49c6" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="68">
+<div id="687b640e" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="75">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
