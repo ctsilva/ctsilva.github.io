@@ -37,6 +37,8 @@ resources:
 
 3. SHAP (SHapley Additive exPlanations)
 
+4. Comparative Analysis and Trade-offs
+
 
 Examples and materials from Molnar's book:
            https://christophm.github.io/interpretable-ml-book/
@@ -83,6 +85,64 @@ Friedman, J. H. (2001). [*Greedy function approximation: A gradient boosting mac
 PDPs are one of the oldest and most intuitive model-agnostic interpretation methods. The key idea: marginalize over all other features to isolate the effect of one (or two) features on the prediction. Here we see bike rentals vs temperature - notice the non-linear relationship with a sweet spot around 20-25°C. The visualization immediately reveals this pattern that might be hidden in model coefficients. PDPs answer: "On average, how does changing this feature affect predictions?"
 :::
 
+## PDP Visualization: Interpreting Feature Effects
+
+:::: {.columns}
+
+::: {.column width="33%"}
+**1. Monotonic/Linear**
+
+<div style="text-align: center; font-size: 4em; line-height: 1.2em;">
+↗<br/>
+&nbsp;&nbsp;↗<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;↗
+</div>
+
+Straight diagonal line
+
+↑ Feature → ↑ Prediction
+
+Feature has consistent positive (or negative) effect
+:::
+
+::: {.column width="33%"}
+**2. Non-linear/Sweet Spot**
+
+<div style="text-align: center; font-size: 4em; line-height: 1.2em;">
+&nbsp;&nbsp;&nbsp;╱‾╲<br/>
+&nbsp;&nbsp;╱&nbsp;&nbsp;&nbsp;&nbsp;╲<br/>
+&nbsp;╱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;╲
+</div>
+
+Curve peaks and drops
+
+Optimal range exists
+
+(like temperature example)
+:::
+
+::: {.column width="33%"}
+**3. Flat Line**
+
+<div style="text-align: center; font-size: 4em; line-height: 1.2em;">
+<br/>
+━━━━━━━<br/>
+<br/>
+</div>
+
+Horizontal line
+
+No marginal effect
+
+Feature is globally unimportant
+:::
+
+::::
+
+::: {.notes}
+The key visual takeaway is the slope and shape of the line. The slope indicates the marginal effect. A flat line is a visually clear indicator of a globally unimportant feature. Contrast the flat line with the non-linear "sweet spot" of the temperature plot from the previous slide. When reviewing PDPs, look for: (1) Direction of effect (up/down), (2) Linearity vs non-linearity, (3) Interaction points where the effect changes dramatically.
+:::
+
 ## Partial Dependence Plot (PDP)
 
 High level idea: marginalizing the machine learning model output over the distributions of the all other features to show the relationship between the feature we are interested in and the predicted outcome.
@@ -103,6 +163,8 @@ High level idea: marginalizing the machine learning model output over the distri
 
 ::: {.notes}
 This animation shows the PDP computation process step by step. For each value of our feature of interest, we: (1) Replace that feature with a fixed value across ALL data points, (2) Get predictions for all those modified instances, (3) Average those predictions, (4) Repeat for different feature values. The result is a curve showing the average effect. Notice how we're effectively "scanning" through the feature space while averaging out the effects of all other features. This is powerful because it works with any black-box model.
+
+While the animation shows the calculation (marginalizing/averaging), remind students that the resulting simple 2D line plot is the visualization product we interpret. The computational complexity is hidden from the end user - they only see the clean, interpretable curve that reveals the feature's marginal effect.
 :::
 
 ## Partial Dependence Plot (PDP)
@@ -251,26 +313,50 @@ The official implementation uses a Ridge Classifier as the linear model for expl
 ::::
 
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+## LIME Visualization: Bar Charts for Local Explanations
 
-::: {.r-fit-text}
+**Primary LIME Output: Sparse Bar Charts**
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-Let us look at a concrete example. We go back to the bike rental data and turn the prediction problem into a classification: After taking into account the trend that the bicycle rental has become more popular over time, we want to know on a certain day whether the number of bicycles rented will be above or below the trend line. You can also interpret “above” as being above the average number of bicycles, but adjusted for the trend.
+**Case 1: High Rental Day**
+*Prediction: ABOVE Trend*
 
-First we train a random forest with 100 trees on the classification task. On what day will the number of rental bikes be above the trend-free average, based on weather and calendar information?
+<div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
 
-The explanations are created with 2 features. The results of the sparse local linear models trained for two instances with different predicted classes:
+<span style="color: #2ecc71; font-size: 1.5em;">▬▬▬▬▬▬▬▬▬▬</span> Temp > 20°C
+<span style="color: #2ecc71; font-size: 1.5em;">▬▬▬▬▬▬▬</span> Windspeed Low
+<span style="color: #e74c3c; font-size: 1.5em;">▬▬▬</span> Holiday = False
+
+</div>
+
+✓ Warm temperature strongly supports high rentals
+✓ Low wind moderately supports
+✗ Non-holiday slightly opposes
 :::
 
 ::: {.column width="50%"}
-![](figs/black-box/lime-example-result.jpg)
+**Case 2: Low Rental Day**
+*Prediction: BELOW Trend*
+
+<div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+
+<span style="color: #e74c3c; font-size: 1.5em;">▬▬▬▬▬▬▬▬▬▬▬▬</span> Weather: Rain
+<span style="color: #e74c3c; font-size: 1.5em;">▬▬▬▬▬▬▬▬</span> Temp < 5°C
+<span style="color: #2ecc71; font-size: 1.5em;">▬▬</span> Weekday = True
+
+</div>
+
+✗ Rain strongly opposes high rentals
+✗ Cold temperature opposes
+✓ Weekday weakly supports
 :::
 
 ::::
 
+::: {.notes}
+Emphasize the visualization: **Color** (Green supports the prediction, Red opposes it), **Length of Bar** (magnitude of influence), and **Sparsity** (only a few features are shown—this makes it easy for a non-expert to trust). The bar chart is the key deliverable of LIME - it provides a contrastive explanation showing which features push toward vs away from the prediction. Compare the two cases: Case 1 is dominated by green (supporting features), while Case 2 is dominated by red (opposing features). This visual contrast makes the explanation immediately understandable.
 :::
 
 ## Local Interpretable Model-agnostic Explanations (LIME)
@@ -400,15 +486,39 @@ Consider the following scenario: You have trained a machine learning model $f$ t
 
 ![](figs/black-box/shap-apartment-example.jpg)
 
-## From Shapley Values to SHAP
+## SHAP Visualization: Force Plot
 
-We want to evaluate the effort of cat-banned
+**Visualizing the Efficiency Axiom**
+
+<div style="background: #f8f9fa; padding: 30px; border-radius: 8px; margin: 20px 0;">
+
+**Base Value** (E[f(x)]) = $300K &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Output Value** f(x) = $450K
+
+<div style="margin: 30px 0;">
+<span style="color: #e74c3c; font-size: 2em;">▬▬▬▬▬▬</span> <span style="font-size: 1.2em;">**+$80K** Area=85m² (high pushes price up)</span><br/>
+<span style="color: #e74c3c; font-size: 2em;">▬▬▬▬</span> <span style="font-size: 1.2em;">**+$45K** Location=Downtown</span><br/>
+<span style="color: #e74c3c; font-size: 2em;">▬▬▬</span> <span style="font-size: 1.2em;">**+$30K** Year=2020 (new)</span><br/>
+<span style="color: #3498db; font-size: 2em;">▬▬</span> <span style="font-size: 1.2em;">**-$15K** Cat-banned=True</span><br/>
+<span style="color: #3498db; font-size: 2em;">▬</span> <span style="font-size: 1.2em;">**-$10K** Floor=1 (ground floor)</span>
+</div>
+
+**Sum: $300K + $80K + $45K + $30K - $15K - $10K = $450K ✓**
+
+</div>
+
+::: {.notes}
+This visualization directly maps the Efficiency Axiom from the theory section: the contributions (φᵢ) of all features (red/blue blocks) must sum up exactly from the Base Value (average prediction) to the Final Output (instance prediction). This is a powerful, rigorous local explanation. Red blocks push the prediction higher; blue blocks push it lower. The horizontal layout shows the additive nature - each feature's contribution stacks to reach the final prediction. This is fundamentally different from LIME which uses sampling; SHAP provides exact attributions based on game theory.
+:::
+
+## From Shapley Values to SHAP: Cat-Banned Feature
+
+We want to evaluate the effect of cat-banned feature
 
 ![](figs/black-box/shap-cat-banned.jpg)
 
-## From Shapley Values to SHAP
+## From Shapley Values to SHAP: Cat-Banned Feature
 
-We want to evaluate the effort of cat-banned
+Computing the Shapley value for cat-banned
 
 ![](figs/black-box/shap-cat-banned-2.jpg)
 
@@ -419,6 +529,55 @@ The Shapley value can be misinterpreted. The Shapley value of a feature value is
 The Shapley value is the wrong explanation method if you seek sparse explanations (explanations that contain few features). Explanations created with the Shapley value method **always use all the features.** Humans prefer selective explanations, such as those produced by LIME. LIME might be the better choice for explanations lay-persons have to deal with. 
 
 (From Molnar's book)
+
+## SHAP Visualization: Global Feature Analysis (Summary Plot)
+
+**From Local to Global: Understanding Feature Importance Across All Predictions**
+
+:::: {.columns}
+
+::: {.column width="60%"}
+<div style="background: #f8f9fa; padding: 30px; border-radius: 8px;">
+
+**Feature Importance** (Y-axis) ↓
+
+<div style="margin: 20px 0; font-size: 1.3em;">
+**Area (m²)** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #e74c3c;">●●●●●●●●●●</span><span style="color: #3498db;">●●●●</span><br/>
+**Location** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #e74c3c;">●●●●●●●</span><span style="color: #3498db;">●●●</span><br/>
+**Year Built** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #e74c3c;">●●●●●</span><span style="color: #3498db;">●●●●</span><br/>
+**Cat-banned** &nbsp;&nbsp; <span style="color: #e74c3c;">●●</span><span style="color: #3498db;">●●●</span><br/>
+**Floor** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #3498db;">●●●</span><span style="color: #e74c3c;">●●</span>
+</div>
+
+← Negative Impact &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **SHAP Value** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Positive Impact →
+
+<span style="color: #3498db;">● Blue = Low feature value</span> &nbsp;&nbsp; <span style="color: #e74c3c;">● Red = High feature value</span>
+
+</div>
+:::
+
+::: {.column width="40%"}
+**Dual Interpretation:**
+
+1. **Feature Importance** (Y-Axis vertical spread)
+   - Wider spread = more important
+   - Area has largest impact
+
+2. **Direction of Effect** (Color)
+   - Red (high) on right = positive impact
+   - Blue (low) on left = negative impact
+
+**Example Reading:**
+- High area (red) → strong positive SHAP
+- Low area (blue) → negative SHAP
+- Clear correlation!
+:::
+
+::::
+
+::: {.notes}
+Explain the dual interpretation of this plot: (1) **Feature Importance (Y-Axis)**: Vertical spread/density of points indicates a feature's overall importance (like traditional feature importance). Features at the top matter more globally across all predictions. (2) **Correlation (Color)**: The color coding (Red for high feature value, Blue for low) shows the relationship. For example, 'Red points on the far right' means high feature values are associated with high positive impact on the prediction. Area shows both high importance AND clear directionality - bigger apartments cost more. Compare this to cat-banned which has mixed effects and lower importance. This plot aggregates SHAP values across many instances to give a global view.
+:::
 
 ## SHAP (SHapley Additive exPlanations)
 
@@ -471,4 +630,21 @@ Kumar, I. E., et al. (2020). [*Problems with Shapley-value-based explanations as
 
 ::: {.notes}
 Despite SHAP's theoretical elegance, it has important limitations that practitioners must understand. The Kumar et al. paper provides crucial critiques: (1) SHAP assumes features can be independently varied, but real features are often correlated (e.g., house size and bedrooms), (2) SHAP values show associative, not causal relationships - they tell you "what" contributes but not "why", (3) Computational cost grows exponentially with features (though approximations like TreeSHAP and KernelSHAP help), (4) Explanations can be unstable under small data perturbations. Bottom line: SHAP is a powerful tool but not a magic bullet. Always validate explanations against domain knowledge.
+:::
+
+## Comparative Trade-offs: Choosing the Right XAI Tool
+
+| **Criterion** | **PDP** | **LIME** | **SHAP** |
+|--------------|---------|----------|----------|
+| **Scope** | Global (feature-level) | Local (instance-level) | Both (local + global) |
+| **Primary Visualization** | Line plot (2D curve) | Bar chart (sparse) | Force plot, Summary plot |
+| **Interpretability** | ★★★★★ Intuitive | ★★★★☆ Easy to understand | ★★★☆☆ Requires training |
+| **Computational Cost** | ★★★★☆ Moderate | ★★★☆☆ Fast sampling | ★★☆☆☆ Expensive |
+| **Theoretical Foundation** | Statistical (marginal effects) | Heuristic (local approximation) | Game theory (Shapley values) |
+| **Feature Coverage** | One at a time | Sparse (selected) | All features (dense) |
+| **Best For** | Understanding global trends | Quick local explanations | Rigorous feature attribution |
+| **Key Limitation** | Assumes independence | Unstable (sampling) | Computational cost |
+
+::: {.notes}
+This table provides a decision guide for practitioners. **Choose PDP** when you need to understand how a feature affects predictions globally - great for presentations to stakeholders. **Choose LIME** when you need fast, interpretable explanations for individual predictions - ideal for production systems where speed matters. **Choose SHAP** when you need theoretically grounded attributions and can afford the computational cost - best for research or high-stakes decisions. In practice, use multiple methods: PDP for global insights, LIME for quick checks, SHAP for final validation. Remember: no method is perfect - always validate against domain knowledge and use visualizations to communicate effectively.
 :::
