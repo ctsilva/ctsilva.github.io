@@ -129,11 +129,14 @@ author_profile: true
 - Building explanation interfaces
 - Interactive what-if analysis
 
+**Materials:**
+- [Black-box Model Interpretation](/2025-VisML-CSE/slides/week6-black-box.html)
+
 **Readings:**
 - Ribeiro et al. "Why Should I Trust You?" (LIME paper)
 - Lundberg & Lee "A Unified Approach to Interpreting Model Predictions" (SHAP)
 
-**Due:** Mini-Project 1  
+**Due:** Mini-Project 1
 **Project:** Final project proposals due
 
 ---
