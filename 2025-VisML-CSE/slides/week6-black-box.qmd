@@ -1079,9 +1079,80 @@ $$\phi_{j,v_1+v_2} = \phi_{j,v_1} + \phi_{j,v_2}$$
 
 ## From Shapley Values to SHAP
 
-Consider the following scenario: You have trained a machine learning model $f$ to predict apartment prices.
+**A Machine Learning Example**
 
-![](figs/black-box/shap-apartment-example.jpg)
+You have trained a model $f$ to predict apartment prices.
+
+**For a specific apartment $x^{(i)}$:**
+- Area: 50 m² (538 sq ft)
+- Floor: 2nd floor
+- Park: Nearby
+- Cats: Banned
+
+**Predictions:**
+- $f(x^{(i)}) = \text{€}300,000$ (this apartment)
+- $\mathbb{E}[f(X)] = \text{€}310,000$ (average)
+- **Difference: -€10,000**
+
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px;">
+**Goal:** Explain how each feature value contributed to the -€10,000 difference from average.
+</div>
+
+## Viewing a Prediction as a Coalitional Game
+
+**Key insight:** Each feature value is a "player" in a game where the "payout" is the prediction.
+
+| Game Theory Concept | Machine Learning Translation | Notation |
+|---------------------|------------------------------|----------|
+| Player | Feature index | $j$ |
+| Coalition | Set of features | $S \subseteq \{1, \ldots, p\}$ |
+| Not in coalition | Features not in $S$ | $C = \{1, \ldots, p\} \setminus S$ |
+| Coalition size | Number of features in $S$ | $\|S\|$ |
+| Total players | Number of features | $p$ |
+| **Total payout** | **Prediction - Average** | $f(x^{(i)}) - \mathbb{E}[f(X)]$ |
+| **Value function** | **Prediction for coalition** | $v_{f,x^{(i)}}(S)$ |
+| **Shapley value** | **SHAP value (contribution)** | $\phi_j^{(i)}$ |
+
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 20px;">
+We translate concepts from game theory to machine learning predictions → **SHAP**
+</div>
+
+## The SHAP Value Function
+
+**How do we handle "absent" features in a coalition?**
+
+$$v_{f,x^{(i)}}(S) = \int f(x_S^{(i)} \cup X_C) d\mathbb{P}_{X_C} - \mathbb{E}[f(X)]$$
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Key components:**
+
+1. $x_S^{(i)}$: Known feature values (in coalition $S$)
+2. $X_C$: Unknown features (random variables)
+3. $\int \ldots d\mathbb{P}_{X_C}$: **Marginalization** - integrate over distribution
+4. $-\mathbb{E}[f(X)]$: Ensures $v(\emptyset) = 0$
+
+**Marginalization:** Treat absent features as random variables, weight predictions by their likelihood
+:::
+
+::: {.column width="50%"}
+**Apartment example:**
+
+For coalition $S = \{\text{park}, \text{floor}\}$:
+
+$$v(\{park, floor\}) = \int f(x_{park}, X_{cat}, X_{area}, x_{floor}) d\mathbb{P}_{cat,area}$$
+
+- $x_{park} = \text{nearby}$ (known)
+- $x_{floor} = 2$ (known)
+- $X_{cat}$, $X_{area}$ (random - integrated over)
+
+<div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 15px; font-size: 0.9em;">
+**Present** features input directly; **absent** features marginalized out
+</div>
+:::
+
+::::
 
 ## SHAP Visualization: Force Plot
 
@@ -1107,25 +1178,112 @@ Consider the following scenario: You have trained a machine learning model $f$ t
 This visualization directly maps the Efficiency Axiom from the theory section: the contributions (φᵢ) of all features (red/blue blocks) must sum up exactly from the Base Value (average prediction) to the Final Output (instance prediction). This is a powerful, rigorous local explanation. Red blocks push the prediction higher; blue blocks push it lower. The horizontal layout shows the additive nature - each feature's contribution stacks to reach the final prediction. This is fundamentally different from LIME which uses sampling; SHAP provides exact attributions based on game theory.
 :::
 
-## From Shapley Values to SHAP: Cat-Banned Feature
+## Putting It All Together: The SHAP Formula
 
-We want to evaluate the effect of cat-banned feature
+**Combining all terms into the SHAP equation:**
 
-![](figs/black-box/shap-cat-banned.jpg)
+$$\phi_j^{(i)} = \sum_{S \subseteq \{1,\ldots,p\} \setminus j} \frac{|S|! (p - |S| - 1)!}{p!} \cdot \left( \int f(x_{S \cup j}^{(i)} \cup X_{C \setminus j}) d\mathbb{P}_{X_{C \setminus j}} - \int f(x_S^{(i)} \cup X_C) d\mathbb{P}_{X_C} \right)$$
 
-## From Shapley Values to SHAP: Cat-Banned Feature
+<div style="background: #e8f5e9; padding: 25px; border-radius: 8px; margin-top: 30px;">
+**In words:** The SHAP value $\phi_j^{(i)}$ of feature $j$ is the **weighted average marginal contribution** of feature value $x_j^{(i)}$ across all possible coalitions of features.
+</div>
 
-Computing the Shapley value for cat-banned
+**This is Shapley values with an ML-specific value function!**
 
-![](figs/black-box/shap-cat-banned-2.jpg)
+::: {.notes}
+This formula looks complex but it's the same Shapley formula we saw before, just with the ML-specific value function plugged in. The integral handles absent features through marginalization. In practice, we can't compute this exactly (we don't know the true distribution), so we estimate it.
+:::
 
-## Interpreting SHAP values
+## Interpreting SHAP Values Through Axioms
 
-The Shapley value can be misinterpreted. The Shapley value of a feature value is not the difference of the predicted value after removing the feature from the model training. The interpretation of the Shapley value is: **Given the current set of feature values, the contribution of a feature value to the difference between the actual prediction and the mean prediction is the estimated Shapley value.**
+**Since SHAP values are Shapley values, they satisfy the four axioms:**
 
-The Shapley value is the wrong explanation method if you seek sparse explanations (explanations that contain few features). Explanations created with the Shapley value method **always use all the features.** Humans prefer selective explanations, such as those produced by LIME. LIME might be the better choice for explanations lay-persons have to deal with. 
+:::: {.columns}
 
-(From Molnar's book)
+::: {.column width="50%"}
+**1. Efficiency**
+
+$$\sum_{j=1}^p \phi_j^{(i)} = f(x^{(i)}) - \mathbb{E}[f(X)]$$
+
+**Implications:**
+- SHAP values sum to deviation from average
+- Attributions on same scale as output
+- Unlike gradients, which don't sum to prediction
+- Enables force plot visualizations
+
+**2. Symmetry**
+
+Features with equal contributions get equal SHAP values
+
+**Implications:**
+- Feature order doesn't matter
+- Essential for feature importance ranking
+- Unlike breakdown method which depends on order
+:::
+
+::: {.column width="50%"}
+**3. Dummy**
+
+Unused features get SHAP value of zero
+
+**Implications:**
+- If feature doesn't affect prediction → $\phi_j = 0$
+- Makes sense for sparse models
+- E.g., Lasso with $\beta_j = 0$ → $\phi_j^{(i)} = 0$ for all $i$
+
+**4. Additivity**
+
+For ensemble models: $\phi_j(v_1 + v_2) = \phi_j(v_1) + \phi_j(v_2)$
+
+**Implications:**
+- For random forest: compute SHAP per tree, then average
+- For additive ensembles: sum individual SHAP values
+- Enables TreeSHAP efficiency
+:::
+
+::::
+
+::: footer
+Štrumbelj & Kononenko (2010, 2014); Lundberg & Lee (2017)
+:::
+
+## Key Differences: LIME vs. SHAP
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**LIME**
+- Heuristic local approximation
+- Sparse explanations (few features)
+- Faster to compute
+- Good for lay audiences
+- No theoretical guarantees
+
+<div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+Best when: You want **simple**, **sparse** explanations with only most important features highlighted
+</div>
+:::
+
+::: {.column width="50%"}
+**SHAP**
+- Rigorous game-theoretic foundation
+- Always uses **all features**
+- Computationally expensive
+- Satisfies fairness axioms
+- Unique solution
+
+<div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+Best when: You need **complete**, **theoretically grounded** feature attributions with fairness guarantees
+</div>
+:::
+
+::::
+
+**Important:** SHAP values measure contribution to deviation from average, NOT the effect of removing features from training.
+
+::: footer
+Source: Molnar, C. (2024). Interpretable Machine Learning.
+:::
 
 ## SHAP Visualization: Global Feature Analysis (Summary Plot)
 

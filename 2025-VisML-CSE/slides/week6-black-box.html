@@ -356,7 +356,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>PDP: Code Example with scikit-learn</h2>
 <p><strong>Dataset:</strong> California Housing - median house value prediction (8 features)</p>
-<div id="c28c2041" class="cell" data-execution_count="1">
+<div id="6d6ddee9" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
 <span id="cb1-3"><a href=""></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
@@ -401,8 +401,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>PDP: Output Visualization</h2>
-<div id="ca18b4f0" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div id="0262ae1d" class="cell" data-fig-height="6" data-fig-width="14" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-3-output-1.png" width="823" height="429"></p>
@@ -610,8 +610,8 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>High Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_high[1]:.2f}“</strong> probability ABOVE trend</p>
-<div id="04c1ba17" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div id="4d6780b2" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-5-output-1.png" width="949" height="470"></p>
@@ -632,8 +632,8 @@ Claudio Silva
 </div><div class="column" style="width:50%;">
 <p><strong>Low Rental Day</strong></p>
 <p>Prediction: <strong>{python} f”{pred_low[0]:.2f}“</strong> probability BELOW trend</p>
-<div id="ae472b1c" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div id="35bb75e5" class="cell" data-fig-height="4.5" data-fig-width="6.5" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-6-output-1.png" width="949" height="470"></p>
@@ -714,7 +714,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>LIME: Code Example</h2>
 <p><strong>Dataset:</strong> California Housing (same model as PDP example)</p>
-<div id="1cccf135" class="cell" data-execution_count="6">
+<div id="2f4547b7" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">import</span> lime</span>
 <span id="cb2-2"><a href=""></a><span class="im">import</span> lime.lime_tabular</span>
 <span id="cb2-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -770,8 +770,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>LIME: Output Visualization</h2>
-<div id="c8249304" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div id="e3fb4b96" class="cell" data-fig-height="7" data-fig-width="12" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 <figure>
 <p><img data-src="week6-black-box_files/figure-revealjs/cell-8-output-1.png" width="951" height="469"></p>
@@ -1278,9 +1278,105 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>From Shapley Values to SHAP</h2>
-<p>Consider the following scenario: You have trained a machine learning model <span class="math inline">\(f\)</span> to predict apartment prices.</p>
-
-<img data-src="figs/black-box/shap-apartment-example.jpg" class="r-stretch"></section>
+<p><strong>A Machine Learning Example</strong></p>
+<p>You have trained a model <span class="math inline">\(f\)</span> to predict apartment prices.</p>
+<p><strong>For a specific apartment <span class="math inline">\(x^{(i)}\)</span>:</strong> - Area: 50 m² (538 sq ft) - Floor: 2nd floor - Park: Nearby - Cats: Banned</p>
+<p><strong>Predictions:</strong> - <span class="math inline">\(f(x^{(i)}) = \text{€}300,000\)</span> (this apartment) - <span class="math inline">\(\mathbb{E}[f(X)] = \text{€}310,000\)</span> (average) - <strong>Difference: -€10,000</strong></p>
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px;">
+<p><strong>Goal:</strong> Explain how each feature value contributed to the -€10,000 difference from average.</p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Viewing a Prediction as a Coalitional Game</h2>
+<p><strong>Key insight:</strong> Each feature value is a “player” in a game where the “payout” is the prediction.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 49%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Game Theory Concept</th>
+<th>Machine Learning Translation</th>
+<th>Notation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Player</td>
+<td>Feature index</td>
+<td><span class="math inline">\(j\)</span></td>
+</tr>
+<tr class="even">
+<td>Coalition</td>
+<td>Set of features</td>
+<td><span class="math inline">\(S \subseteq \{1, \ldots, p\}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Not in coalition</td>
+<td>Features not in <span class="math inline">\(S\)</span></td>
+<td><span class="math inline">\(C = \{1, \ldots, p\} \setminus S\)</span></td>
+</tr>
+<tr class="even">
+<td>Coalition size</td>
+<td>Number of features in <span class="math inline">\(S\)</span></td>
+<td><span class="math inline">\(\|S\|\)</span></td>
+</tr>
+<tr class="odd">
+<td>Total players</td>
+<td>Number of features</td>
+<td><span class="math inline">\(p\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Total payout</strong></td>
+<td><strong>Prediction - Average</strong></td>
+<td><span class="math inline">\(f(x^{(i)}) - \mathbb{E}[f(X)]\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Value function</strong></td>
+<td><strong>Prediction for coalition</strong></td>
+<td><span class="math inline">\(v_{f,x^{(i)}}(S)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Shapley value</strong></td>
+<td><strong>SHAP value (contribution)</strong></td>
+<td><span class="math inline">\(\phi_j^{(i)}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 20px;">
+<p>We translate concepts from game theory to machine learning predictions → <strong>SHAP</strong></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>The SHAP Value Function</h2>
+<p><strong>How do we handle “absent” features in a coalition?</strong></p>
+<p><span class="math display">\[v_{f,x^{(i)}}(S) = \int f(x_S^{(i)} \cup X_C) d\mathbb{P}_{X_C} - \mathbb{E}[f(X)]\]</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Key components:</strong></p>
+<ol type="1">
+<li><span class="math inline">\(x_S^{(i)}\)</span>: Known feature values (in coalition <span class="math inline">\(S\)</span>)</li>
+<li><span class="math inline">\(X_C\)</span>: Unknown features (random variables)</li>
+<li><span class="math inline">\(\int \ldots d\mathbb{P}_{X_C}\)</span>: <strong>Marginalization</strong> - integrate over distribution</li>
+<li><span class="math inline">\(-\mathbb{E}[f(X)]\)</span>: Ensures <span class="math inline">\(v(\emptyset) = 0\)</span></li>
+</ol>
+<p><strong>Marginalization:</strong> Treat absent features as random variables, weight predictions by their likelihood</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Apartment example:</strong></p>
+<p>For coalition <span class="math inline">\(S = \{\text{park}, \text{floor}\}\)</span>:</p>
+<p><span class="math display">\[v(\{park, floor\}) = \int f(x_{park}, X_{cat}, X_{area}, x_{floor}) d\mathbb{P}_{cat,area}\]</span></p>
+<ul>
+<li><span class="math inline">\(x_{park} = \text{nearby}\)</span> (known)</li>
+<li><span class="math inline">\(x_{floor} = 2\)</span> (known)</li>
+<li><span class="math inline">\(X_{cat}\)</span>, <span class="math inline">\(X_{area}\)</span> (random - integrated over)</li>
+</ul>
+<div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 15px; font-size: 0.9em;">
+<p><strong>Present</strong> features input directly; <strong>absent</strong> features marginalized out</p>
+</div>
+</div></div>
+</section>
 <section class="slide level2">
 <h2>SHAP Visualization: Force Plot</h2>
 <p><strong>Visualizing the Efficiency Axiom</strong></p>
@@ -1306,20 +1402,68 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>From Shapley Values to SHAP: Cat-Banned Feature</h2>
-<p>We want to evaluate the effect of cat-banned feature</p>
-
-<img data-src="figs/black-box/shap-cat-banned.jpg" class="r-stretch"></section>
+<h2>Putting It All Together: The SHAP Formula</h2>
+<p><strong>Combining all terms into the SHAP equation:</strong></p>
+<p><span class="math display">\[\phi_j^{(i)} = \sum_{S \subseteq \{1,\ldots,p\} \setminus j} \frac{|S|! (p - |S| - 1)!}{p!} \cdot \left( \int f(x_{S \cup j}^{(i)} \cup X_{C \setminus j}) d\mathbb{P}_{X_{C \setminus j}} - \int f(x_S^{(i)} \cup X_C) d\mathbb{P}_{X_C} \right)\]</span></p>
+<div style="background: #e8f5e9; padding: 25px; border-radius: 8px; margin-top: 30px;">
+<p><strong>In words:</strong> The SHAP value <span class="math inline">\(\phi_j^{(i)}\)</span> of feature <span class="math inline">\(j\)</span> is the <strong>weighted average marginal contribution</strong> of feature value <span class="math inline">\(x_j^{(i)}\)</span> across all possible coalitions of features.</p>
+</div>
+<p><strong>This is Shapley values with an ML-specific value function!</strong></p>
+<aside class="notes">
+<p>This formula looks complex but it’s the same Shapley formula we saw before, just with the ML-specific value function plugged in. The integral handles absent features through marginalization. In practice, we can’t compute this exactly (we don’t know the true distribution), so we estimate it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section class="slide level2">
-<h2>From Shapley Values to SHAP: Cat-Banned Feature</h2>
-<p>Computing the Shapley value for cat-banned</p>
-
-<img data-src="figs/black-box/shap-cat-banned-2.jpg" class="r-stretch"></section>
+<h2>Interpreting SHAP Values Through Axioms</h2>
+<p><strong>Since SHAP values are Shapley values, they satisfy the four axioms:</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>1. Efficiency</strong></p>
+<p><span class="math display">\[\sum_{j=1}^p \phi_j^{(i)} = f(x^{(i)}) - \mathbb{E}[f(X)]\]</span></p>
+<p><strong>Implications:</strong> - SHAP values sum to deviation from average - Attributions on same scale as output - Unlike gradients, which don’t sum to prediction - Enables force plot visualizations</p>
+<p><strong>2. Symmetry</strong></p>
+<p>Features with equal contributions get equal SHAP values</p>
+<p><strong>Implications:</strong> - Feature order doesn’t matter - Essential for feature importance ranking - Unlike breakdown method which depends on order</p>
+</div><div class="column" style="width:50%;">
+<p><strong>3. Dummy</strong></p>
+<p>Unused features get SHAP value of zero</p>
+<p><strong>Implications:</strong> - If feature doesn’t affect prediction → <span class="math inline">\(\phi_j = 0\)</span> - Makes sense for sparse models - E.g., Lasso with <span class="math inline">\(\beta_j = 0\)</span> → <span class="math inline">\(\phi_j^{(i)} = 0\)</span> for all <span class="math inline">\(i\)</span></p>
+<p><strong>4. Additivity</strong></p>
+<p>For ensemble models: <span class="math inline">\(\phi_j(v_1 + v_2) = \phi_j(v_1) + \phi_j(v_2)\)</span></p>
+<p><strong>Implications:</strong> - For random forest: compute SHAP per tree, then average - For additive ensembles: sum individual SHAP values - Enables TreeSHAP efficiency</p>
+</div></div>
+<div class="footer">
+<p>Štrumbelj &amp; Kononenko (2010, 2014); Lundberg &amp; Lee (2017)</p>
+</div>
+</section>
 <section class="slide level2">
-<h2>Interpreting SHAP values</h2>
-<p>The Shapley value can be misinterpreted. The Shapley value of a feature value is not the difference of the predicted value after removing the feature from the model training. The interpretation of the Shapley value is: <strong>Given the current set of feature values, the contribution of a feature value to the difference between the actual prediction and the mean prediction is the estimated Shapley value.</strong></p>
-<p>The Shapley value is the wrong explanation method if you seek sparse explanations (explanations that contain few features). Explanations created with the Shapley value method <strong>always use all the features.</strong> Humans prefer selective explanations, such as those produced by LIME. LIME might be the better choice for explanations lay-persons have to deal with.</p>
-<p>(From Molnar’s book)</p>
+<h2>Key Differences: LIME vs.&nbsp;SHAP</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>LIME</strong> - Heuristic local approximation - Sparse explanations (few features) - Faster to compute - Good for lay audiences - No theoretical guarantees</p>
+<div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+<p>Best when: You want <strong>simple</strong>, <strong>sparse</strong> explanations with only most important features highlighted</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>SHAP</strong> - Rigorous game-theoretic foundation - Always uses <strong>all features</strong> - Computationally expensive - Satisfies fairness axioms - Unique solution</p>
+<div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+<p>Best when: You need <strong>complete</strong>, <strong>theoretically grounded</strong> feature attributions with fairness guarantees</p>
+</div>
+</div></div>
+<p><strong>Important:</strong> SHAP values measure contribution to deviation from average, NOT the effect of removing features from training.</p>
+<div class="footer">
+<p>Source: Molnar, C. (2024). Interpretable Machine Learning.</p>
+</div>
 </section>
 <section class="slide level2">
 <h2>SHAP Visualization: Global Feature Analysis (Summary Plot)</h2>
