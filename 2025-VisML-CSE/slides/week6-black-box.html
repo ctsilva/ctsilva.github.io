@@ -6,10 +6,12 @@
 <script src="week6-black-box_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week6-black-box_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week6-black-box_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week6-black-box_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.34">
+<link href="week6-black-box_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
 
-  <title>Visualization for Machine Learning</title>
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2025-10-06">
+  <title>Black-box Model Interpretation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,12 +30,10 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="week6-black-box_files/libs/revealjs/dist/theme/quarto-e18a912597b61ff1d4c20b1bb0a9113b.css">
+  <link rel="stylesheet" href="week6-black-box_files/libs/revealjs/dist/theme/quarto-743137726eb562984e8d4ff610b648a8.css">
   <link href="week6-black-box_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week6-black-box_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week6-black-box_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="week6-black-box_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="week6-black-box_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="week6-black-box_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -127,24 +127,33 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Visualization for Machine Learning</h1>
-  <p class="subtitle">Spring 2024</p>
+<section class="quarto-title-block center">
+  <h1 class="title">Black-box Model Interpretation</h1>
+  <p class="subtitle">CS-GY 9223 - Fall 2025</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Tandon School of Engineering
+          </p>
+    </div>
 </div>
 
+  <p class="date">2025-10-06</p>
 </section>
 <section>
-<section id="black-box-model-assessment" class="title-slide slide level1 center">
+<section class="title-slide slide level1 center">
 <h1>Black Box Model Assessment</h1>
 
 </section>
-<section id="agenda" class="slide level2">
+<section class="slide level2">
 <h2>Agenda</h2>
 <p><br>
 </p>
-<h3 id="goal-study-model-agnostic-interpretability-methods.-these-should-help-to-explain-any-type-of-ml-models.">Goal: Study Model Agnostic Interpretability Methods. These should help to explain any type of ML Models.</h3>
+<h3>Goal: Study Model Agnostic Interpretability Methods. These should help to explain any type of ML Models.</h3>
 <ol type="1">
 <li><p>Partial Dependence Plot (PDP)</p></li>
 <li><p>Local Interpretable Model-agnostic Explanations (LIME)</p></li>
@@ -152,7 +161,7 @@
 </ol>
 <p>Examples and materials from Molnar’s book: https://christophm.github.io/interpretable-ml-book/</p>
 </section>
-<section id="bike-rentals-regression" class="slide level2">
+<section class="slide level2">
 <h2>Bike Rentals (Regression)</h2>
 <div class="r-fit-text">
 <p>This dataset contains daily counts of rented bicycles from the bicycle rental company Capital-Bikeshare in Washington D.C., along with weather and seasonal information. The goal is to predict how many bikes will be rented depending on the weather and the day. The data can be downloaded from the UCI Machine Learning Repository.</p>
@@ -171,24 +180,24 @@
 </ul>
 </div>
 </section>
-<section id="partial-dependence-plot-pdp" class="slide level2">
+<section class="slide level2">
 <h2>Partial Dependence Plot (PDP)</h2>
 <p>Shows the marginal effect one or two features have on the predicted outcome of a machine learning model (J. H. Friedman 2001).</p>
 
-<img data-src="figs/bike-use-temperature.jpg" class="r-stretch"></section>
-<section id="partial-dependence-plot-pdp-1" class="slide level2">
+<img data-src="figs/black-box/bike-use-temperature.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>Partial Dependence Plot (PDP)</h2>
 <p>High level idea: marginalizing the machine learning model output over the distributions of the all other features to show the relationship between the feature we are interested in and the predicted outcome.</p>
 <div class="r-stack">
-<p><img data-src="figs/pdp-feature1.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/pdp-feature2.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/pdp-feature3.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/pdp-feature4.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/pdp-feature5.jpg" class="fragment" width="950" height="450"></p>
-<p><img data-src="figs/pdp-feature6.jpg" class="fragment" width="950" height="450"></p>
+<p><img data-src="figs/black-box/pdp-feature1.jpg" class="fragment" width="950" height="450"></p>
+<p><img data-src="figs/black-box/pdp-feature2.jpg" class="fragment" width="950" height="450"></p>
+<p><img data-src="figs/black-box/pdp-feature3.jpg" class="fragment" width="950" height="450"></p>
+<p><img data-src="figs/black-box/pdp-feature4.jpg" class="fragment" width="950" height="450"></p>
+<p><img data-src="figs/black-box/pdp-feature5.jpg" class="fragment" width="950" height="450"></p>
+<p><img data-src="figs/black-box/pdp-feature6.jpg" class="fragment" width="950" height="450"></p>
 </div>
 </section>
-<section id="partial-dependence-plot-pdp-2" class="slide level2">
+<section class="slide level2">
 <h2>Partial Dependence Plot (PDP)</h2>
 <div class="fragment">
 <p><strong>Pros</strong></p>
@@ -207,18 +216,18 @@
 </ul>
 </div>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <p>Training local surrograte models to explain <em>individual</em> predictions</p>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figs/lime-global-decision-boundaries.jpg"></p>
+<p><img data-src="figs/black-box/lime-global-decision-boundaries.jpg"></p>
 </div><div class="column" style="width:40%;">
-<p><img data-src="figs/lime-paper.jpg"></p>
+<p><img data-src="figs/black-box/lime-paper.jpg"></p>
 </div></div>
 <p>https://arxiv.org/pdf/1602.04938.pdf</p>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-1" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <div class="r-fit-text">
 <p>The idea is quite intuitive.</p>
@@ -230,14 +239,14 @@
 </div>
 <p>https://christophm.github.io/interpretable-ml-book/</p>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-2" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 
-<img data-src="figs/lime-equations.jpg" class="r-stretch"><p>https://arxiv.org/pdf/1602.04938.pdf</p>
+<img data-src="figs/black-box/lime-equations.jpg" class="r-stretch"><p>https://arxiv.org/pdf/1602.04938.pdf</p>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-3" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
-<h3 id="algorithm">Algorithm</h3>
+<h3>Algorithm</h3>
 <ol type="1">
 <li>Pick an input that you want an explanation for.</li>
 <li>Sample the neighbors of the selected input (i.e.&nbsp;perturbation).</li>
@@ -245,46 +254,46 @@
 <li>The weights on the linear classifier is the explanation.</li>
 </ol>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-4" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figs/lime-random-forest-model.jpg"></p>
+<p><img data-src="figs/black-box/lime-random-forest-model.jpg"></p>
 </div><div class="column" style="width:40%;">
 <p>Random forest predictions given features x1 and x2.</p>
 <p>Predicted classes: 1 (dark) or 0 (light).</p>
 </div></div>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-5" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figs/lime-random-forest-sampling.jpg"></p>
+<p><img data-src="figs/black-box/lime-random-forest-sampling.jpg"></p>
 </div><div class="column" style="width:40%;">
 <p>Instance of interest (big yellow dot) and data sampled from a normal distribution (small dots).</p>
 </div></div>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-6" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figs/lime-random-forest-weighting.jpg"></p>
+<p><img data-src="figs/black-box/lime-random-forest-weighting.jpg"></p>
 </div><div class="column" style="width:40%;">
 <p>Assign higher weight to points near the instance of interest. I.e., <span class="math inline">\(weight(p) = \sqrt{\frac{e^{-d^2}}{w^2}}\)</span> where <span class="math inline">\(d\)</span> is the distance between <span class="math inline">\(p\)</span> and the instantce of interest, and <span class="math inline">\(w\)</span> is the kernel width (self-defined).</p>
 </div></div>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-7" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figs/lime-random-forest-line.jpg"></p>
+<p><img data-src="figs/black-box/lime-random-forest-line.jpg"></p>
 </div><div class="column" style="width:40%;">
 <p>Use both the samples and sample weights to train a linear classifier.</p>
 <p>Signs of the grid show the classifications of the locally learned model from the weighted samples. The red line marks the decision boundary (P(class=1) = 0.5).</p>
 <p>The official implementation uses a Ridge Classifier as the linear model for explanation.</p>
 </div></div>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-8" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <div class="r-fit-text">
 <div class="columns">
@@ -293,11 +302,11 @@
 <p>First we train a random forest with 100 trees on the classification task. On what day will the number of rental bikes be above the trend-free average, based on weather and calendar information?</p>
 <p>The explanations are created with 2 features. The results of the sparse local linear models trained for two instances with different predicted classes:</p>
 </div><div class="column" style="width:50%;">
-<p><img data-src="figs/lime-example-result.jpg"></p>
+<p><img data-src="figs/black-box/lime-example-result.jpg"></p>
 </div></div>
 </div>
 </section>
-<section id="local-interpretable-model-agnostic-explanations-lime-9" class="slide level2">
+<section class="slide level2">
 <h2>Local Interpretable Model-agnostic Explanations (LIME)</h2>
 <div class="fragment">
 <p><strong>Pros</strong></p>
@@ -318,17 +327,17 @@
 </ul>
 </div>
 </section>
-<section id="shap-shapley-additive-explanations" class="slide level2">
+<section class="slide level2">
 <h2>SHAP (SHapley Additive exPlanations)</h2>
 <p>Examples and materials from Molnar’s new book: https://christophmolnar.com/books/shap/</p>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figs/shap-example.jpg"></p>
+<p><img data-src="figs/black-box/shap-example.jpg"></p>
 </div><div class="column" style="width:40%;">
 <p>SHAP (Lundberg and Lee 2017a) is a game-theory-inspired method created to explain predictions made by machine learning models. SHAP generates one value per input feature (also known as SHAP values) that indicates how the feature contributes to the prediction of the specified data point.</p>
 </div></div>
 </section>
-<section id="a-short-history-of-shapley-values-and-shap" class="slide level2">
+<section class="slide level2">
 <h2>A Short History of Shapley Values and SHAP</h2>
 <ul>
 <li>1953: The introduction of Shapley values in game theory (by Lloyd Shapley).</li>
@@ -339,21 +348,21 @@
 <li>2017: The advent of SHAP (by Lundberg and Lee), a turning point in machine learning.</li>
 </ul>
 </section>
-<section id="theory-of-shapley-values" class="slide level2">
+<section class="slide level2">
 <h2>Theory of Shapley Values</h2>
 <p>Who’s going to pay for that taxi?</p>
 <p>Alice, Bob, and Charlie have dinner together and share a taxi ride home. The total cost is $51. The question is, how should they divide the costs fairly?</p>
 
-<img data-src="figs/shap-taxi.jpg" class="r-stretch"></section>
-<section id="theory-of-shapley-values-1" class="slide level2">
+<img data-src="figs/black-box/shap-taxi.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>Theory of Shapley Values</h2>
 <p>The <strong>marginal contribution</strong> of a player to a coalition is the value of the coali- tion with the player minus the value of the coalition without the player. In the taxi example, the value of a coalition is equal to the cost of the ride as detailed in the above table. Therefore, the marginal contribution of, for instance, Charlie to a taxi already containing Bob is the cost of the taxi with Bob and Charlie, minus the cost of the taxi with Bob alone.</p>
 </section>
-<section id="theory-of-shapley-values-2" class="slide level2">
+<section class="slide level2">
 <h2>Theory of Shapley Values</h2>
 
-<img data-src="figs/shap-marginal-contribution.jpg" class="r-stretch"></section>
-<section id="theory-of-shapley-values-3" class="slide level2">
+<img data-src="figs/black-box/shap-marginal-contribution.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>Theory of Shapley Values</h2>
 <p>How to average these marginal contributions per passenger?</p>
 <p>One way to answer this question is by considering all possible permutations of Alice, Bob, and Charlie. There are 3! = 3 * 2 * 1 = 6 possible permutations of passengers:</p>
@@ -367,24 +376,24 @@
 </ul>
 <p>We can use these permutations to form coalitions, for example, for Alice.</p>
 </section>
-<section id="theory-of-shapley-values-4" class="slide level2">
+<section class="slide level2">
 <h2>Theory of Shapley Values</h2>
 <p>In two of these cases, Alice was added to an empty taxi, and in one case, she was added to a taxi with only Bob. By weighting the marginal contributions accordingly, we calculate the following weighted average marginal contribution for Alice, abbreviating Alice, Bob, and Charlie to A, B, and C:</p>
 
-<img data-src="figs/shap-marginal-alice.jpg" class="r-stretch"></section>
-<section id="theory-of-shapley-values-5" class="slide level2">
+<img data-src="figs/black-box/shap-marginal-alice.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>Theory of Shapley Values</h2>
 <p>for Bob:</p>
-<p><img data-src="figs/shap-marginal-bob.jpg"></p>
+<p><img data-src="figs/black-box/shap-marginal-bob.jpg"></p>
 <p>for Charlie:</p>
-<p><img data-src="figs/shap-marginal-charlie.jpg"></p>
+<p><img data-src="figs/black-box/shap-marginal-charlie.jpg"></p>
 </section>
-<section id="calculating-shapley-values" class="slide level2">
+<section class="slide level2">
 <h2>Calculating Shapley values</h2>
 
-<img data-src="figs/shap-general-formation.jpg" class="r-stretch"><p><strong>The Shapley value is the weighted average of a player’s marginal contribu- tions to all possible coalitions.</strong></p>
+<img data-src="figs/black-box/shap-general-formation.jpg" class="r-stretch"><p><strong>The Shapley value is the weighted average of a player’s marginal contribu- tions to all possible coalitions.</strong></p>
 </section>
-<section id="the-axioms-behind-shapley-values" class="slide level2">
+<section class="slide level2">
 <h2>The axioms behind Shapley values</h2>
 <ul>
 <li><p>Efficiency: The sum of the contributions must precisely add up to the payout.</p></li>
@@ -394,28 +403,28 @@
 </ul>
 <p><strong>These four axioms ensure the uniqueness of the Shapley values.</strong></p>
 </section>
-<section id="from-shapley-values-to-shap" class="slide level2">
+<section class="slide level2">
 <h2>From Shapley Values to SHAP</h2>
 <p>Consider the following scenario: You have trained a machine learning model <span class="math inline">\(f\)</span> to predict apartment prices.</p>
 
-<img data-src="figs/shap-apartment-example.jpg" class="r-stretch"></section>
-<section id="from-shapley-values-to-shap-1" class="slide level2">
+<img data-src="figs/black-box/shap-apartment-example.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>From Shapley Values to SHAP</h2>
 <p>We want to evaluate the effort of cat-banned</p>
 
-<img data-src="figs/shap-cat-banned.jpg" class="r-stretch"></section>
-<section id="from-shapley-values-to-shap-2" class="slide level2">
+<img data-src="figs/black-box/shap-cat-banned.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>From Shapley Values to SHAP</h2>
 <p>We want to evaluate the effort of cat-banned</p>
 
-<img data-src="figs/shap-cat-banned-2.jpg" class="r-stretch"></section>
-<section id="interpreting-shap-values" class="slide level2">
+<img data-src="figs/black-box/shap-cat-banned-2.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>Interpreting SHAP values</h2>
 <p>The Shapley value can be misinterpreted. The Shapley value of a feature value is not the difference of the predicted value after removing the feature from the model training. The interpretation of the Shapley value is: <strong>Given the current set of feature values, the contribution of a feature value to the difference between the actual prediction and the mean prediction is the estimated Shapley value.</strong></p>
 <p>The Shapley value is the wrong explanation method if you seek sparse explanations (explanations that contain few features). Explanations created with the Shapley value method <strong>always use all the features.</strong> Humans prefer selective explanations, such as those produced by LIME. LIME might be the better choice for explanations lay-persons have to deal with.</p>
 <p>(From Molnar’s book)</p>
 </section>
-<section id="shap-shapley-additive-explanations-1" class="slide level2">
+<section class="slide level2">
 <h2>SHAP (SHapley Additive exPlanations)</h2>
 <div class="fragment">
 <p><strong>Pros</strong></p>
@@ -433,15 +442,15 @@
 </ul>
 </div>
 </section>
-<section id="shap-shapley-additive-explanations-2" class="slide level2">
+<section class="slide level2">
 <h2>SHAP (SHapley Additive exPlanations)</h2>
 
-<img data-src="figs/shap-figure-waterfall.jpg" class="r-stretch"></section>
-<section id="shap-limitations" class="slide level2">
+<img data-src="figs/black-box/shap-figure-waterfall.jpg" class="r-stretch"></section>
+<section class="slide level2">
 <h2>SHAP limitations</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="figs/shap-problems.jpg"></p>
+<p><img data-src="figs/black-box/shap-problems.jpg"></p>
 <p>http://proceedings.mlr.press/v119/kumar20e/kumar20e.pdf</p>
 </div><div class="column" style="width:40%;">
 
@@ -452,7 +461,7 @@
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="figs/vida.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
 </div>
 </div></div>
 
@@ -463,7 +472,6 @@
   <script src="week6-black-box_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="week6-black-box_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="week6-black-box_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="week6-black-box_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="week6-black-box_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -485,8 +493,7 @@
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":false},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -612,10 +619,10 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'fade',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
@@ -632,15 +639,15 @@
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1920,
 
-        height: 700,
+        height: 1080,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -657,7 +664,7 @@
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
@@ -714,13 +721,14 @@
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

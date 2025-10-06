@@ -66,6 +66,19 @@ author_profile: true
   - Tree-based Models and Visualization Techniques
   - Decision Rules and Global Surrogate Models
 
+### Week 6 (Oct 6)
+- **Topics:** Black-box Model Interpretation
+- **Materials:**
+  - [Black-box Model Interpretation](/2025-VisML-CSE/slides/week6-black-box.html)
+  - Lab: *Materials to be posted*
+- **Recommended Readings:**
+  - ["Why Should I Trust You?" Explaining the Predictions of Any Classifier](https://doi.org/10.1145/2939672.2939778) (Ribeiro et al., 2016, KDD)
+  - [SHAP Book: A Unified Approach to Interpreting Model Predictions](https://christophmolnar.com/books/shap) (Molnar, 2024)
+- **Content:**
+  - Partial Dependence Plots (PDP)
+  - Local Interpretable Model-agnostic Explanations (LIME)
+  - SHAP (SHapley Additive exPlanations)
+
 ## Assignments
 
 ### Weekly Assignments (50% of grade)
