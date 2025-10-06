@@ -127,7 +127,7 @@ author_profile: true
 
 **Materials:**
 - [Black-box Model Interpretation](/2025-VisML-CSE/slides/week6-black-box.html)
-- [Project Discussion](/2025-VisML-CSE/slides/week7-project-discussion.html)
+- [Project Discussion](/2025-VisML-CSE/slides/week6-project-discussion.html)
 
 **Lab Session:**
 - Implementing SHAP visualizations
