@@ -70,7 +70,7 @@ author_profile: true
 - **Topics:** Black-box Model Interpretation
 - **Materials:**
   - [Black-box Model Interpretation](/2025-VisML-CSE/slides/week6-black-box.html)
-  - Lab: *Materials to be posted*
+  - [Lab: Black-box Explainability Methods](2025-VisML-CSE/labs/week6-lab/VisML-Lab-Week6-slides.html)
 - **Recommended Readings:**
   - ["Why Should I Trust You?" Explaining the Predictions of Any Classifier](https://doi.org/10.1145/2939672.2939778) (Ribeiro et al., 2016, KDD)
   - [SHAP Book: A Unified Approach to Interpreting Model Predictions](https://christophmolnar.com/books/shap) (Molnar, 2024)

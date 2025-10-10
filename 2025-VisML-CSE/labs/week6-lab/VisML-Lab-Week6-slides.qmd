@@ -1,7 +1,7 @@
 ---
 title: "VisML Lab Week 6"
 subtitle: "CS-GY 9223 - Fall 2025 - Interpreting Black Box Models"
-author: "TBD - Teaching Assistant"
+author: "Parikshit Solunke"
 institute: "NYU Tandon School of Engineering"
 date: "October 6, 2025"
 format:
@@ -10,7 +10,6 @@ format:
     slide-number: c/t
     show-slide-number: all
     hash-type: number
-    logo: ../../slides/figs/vida.jpg
     width: 1920
     height: 1080
     preview-links: auto
@@ -91,6 +90,7 @@ We first import the relevant libraries:
 
 ``` {python}
 import pandas as pd, numpy as np
+from IPython.display import display, HTML
 from sklearn import datasets
 from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
@@ -176,7 +176,7 @@ lime_values = explainer1.explain_instance(X_test.values[10], classifier.predict_
 
 ``` {python}
 
-lime_values.show_in_notebook()
+display(HTML(lime_values.as_html()))
 ```
 
 ## Shapley Values (SHAP)
@@ -301,10 +301,8 @@ shap_values = explainer2.shap_values(X_test)
 </ul>
 
 ``` {python}
-
-class_idx  = 0
-shap.summary_plot(shap_values[class_idx], X_test, plot_type="dot") 
-
+class_idx = 0  # or 1, depending on which class you want to explain
+shap.summary_plot(shap_values[:, :, class_idx], X_test, plot_type="dot")
 ```
 
 ## SHAP Examples in Python
@@ -322,7 +320,10 @@ shap.summary_plot(shap_values[class_idx], X_test, plot_type="dot")
 
 feature_name = "petal length (cm)" 	
 interaction  = "sepal width (cm)"	  
-shap.dependence_plot(feature_name, shap_values[class_idx], X_test, interaction_index=interaction)
+
+shap_values_class_0 = shap_values[:, :, 0]  # Get SHAP values for class 0
+
+shap.dependence_plot(feature_name, shap_values_class_0, X_test, interaction_index=interaction)
 
 ```
 
@@ -331,17 +332,34 @@ shap.dependence_plot(feature_name, shap_values[class_idx], X_test, interaction_i
 Finally, force plots can be thought of as a condensed waterfall plot:
 
 ``` {python}
-shap.initjs()
 sample_idx = 10
-shap.force_plot(explainer2.expected_value[class_idx], shap_values[class_idx][sample_idx], X_test.values[sample_idx])
+
+# Extract SHAP values for class 0
+shap_values_class_0 = shap_values[:, :, 0]  # shape: (20, 4)
+
+# Now everything matches in shape
+shap.initjs()
+shap.force_plot(explainer2.expected_value[0], shap_values_class_0[sample_idx], X_test.iloc[sample_idx])
+
 ```
 
 ## SHAP Examples in Python
 
 ``` {python}
 shap.initjs()
-class_idx  = 1
-shap.force_plot(explainer2.expected_value[class_idx], shap_values[class_idx][sample_idx], X_test.values[sample_idx])
+
+sample_idx = 10        # choose a valid sample index
+class_idx = 1          # class index (0 or 1 for binary classification)
+
+# Slice SHAP values correctly: get SHAP values for the specified class
+shap_values_for_class = shap_values[:, :, class_idx]  # shape: (20, 4)
+
+# Now plot for a single sample
+shap.force_plot(
+    explainer2.expected_value[class_idx],         # base value for class 1
+    shap_values_for_class[sample_idx],            # SHAP values for that sample
+    X_test.iloc[sample_idx]                       # feature values for that sample
+)
 ```
 
 ## Further SHAP Reading
