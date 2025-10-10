@@ -63,7 +63,7 @@ author_profile: true
 - **Optional Reference:** *Visual Thinking for Information Design* (2nd Ed.) by Colin Ware - Chapters on color
 
 ### Week 6 (Oct 10) - Group Projects and Design Ethics
-- **Slides:** [Group Projects](/2025-InfoVis-CSE/slides/week6-group-projects.html)
+- **Slides:** [Group Projects](/2025-InfoVis-CSE/slides/week6-group-projects.html) | [Lab: Intro to Interactions and Deceptive Visualizations](/2025-InfoVis-CSE/labs/week6-lab.html)
 - **Topics:** Group project overview, 5 milestones (Proposal through Final), Team formation, Dataset selection, Deceptive visualization and ethics
 - **Lab:** Team formation activities, Dataset exploration, Project brainstorming
 - **Action Items:**

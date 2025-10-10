@@ -1,0 +1,132 @@
+---
+title: "Week 6 Lab: Intro to Interactions and Deceptive Visualizations"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Ryan Kim"
+institute: "New York University"
+date: "October 10, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    css: lab-light-theme.css
+---
+
+## Week 6 Lab Overview
+
+|User Interface|Graphics Library|Notebook|
+|:--|:--|:--|
+|[observablehq.com](https://observablehq.com)|[D3](https://d3js.org/)|[Week 6 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-6-lab)|
+
+### Today's Lab Activities
+
+Today we will be a exploring the following topics:
+
+1. Review: HTML DOM and Event Handling
+2. Basic Example: Buttons and Observable
+3. New Chart: Pie Chart
+4. Mouse Interactions
+5. Group Activity
+6. Wrap up & Sharing
+
+## Resources for You
+
+[Notebook Gallery](https://observablehq.com/@rk2546/2025-infovis-cse_notebook-gallery)
+
+![](./week6-lab_files/figs/notebook_gallery.png){width="100%"}
+
+## Review: DOM and Event Handling
+
+![](./week6-lab_files/figs/dom_tree.webp){width="1000px"}
+
+_Image souce:_ [GeekForGeeks](https://www.geeksforgeeks.org/javascript/dom-document-object-model/)
+
+
+## Manipulating the DOM
+
+:::{.incremental width="75%"}
+- **Direct manipulation**: Users interact directly with the data in the visualizations (e.g., by clicking the bar or item). This must be implemented as part of the visualization itself and requires JS event handling.
+- **Indirect manipulation**: Users interact with a separate, but linked interactive element (e.g., search field to filter). In Observable we can use the Input library for the input forms; in normal HTML5 websites, we need use form elements such as `<button>` and `<input>`.
+:::
+
+## Example: 
+
+<iframe width="100%" height="134" frameborder="0" src="https://observablehq.com/embed/@rk2546/2025-infovis-cse_week-6-lab?cells=interactivity"></iframe>
+
+````js
+interactivity = {
+  const svg = d3.create("svg")
+    .attr('width', width)
+    .attr('height', 50);
+  
+  const data = [1, 2, 3];
+  const circles = svg.selectAll("circle")
+    .data(data)
+    .enter()
+      .append("circle")
+        .attr("r", 10)
+        .attr("cy", 25)
+        .attr("cx", (d, i) => 30 + i * 30)
+        .on("click", function (event, d) {
+          console.log(`clicked on: ${d}`);
+          const circle = d3.select(this); // can't use arrow scoping
+          circle.style("stroke", "orange").style("stroke-width", "3px");
+        });
+
+  return svg.node();
+}
+````
+
+## Event Handling Syntax
+
+````js
+.on("click", function(event, d) { ... });
+````
+
+<br />
+
+:::{.incremental}
+- `.on(<EVENT>, <HANDLER FUNCTION>)` = We are attaching the `<HANDLER FUNCTION>` onto the `<EVENT>`.
+- `"click"` = We want to attach our function to whenever the user mouse-clicks onto a circle.
+- `function(event, d)` = This handler function has access to the event details as well as the data binded to it.
+:::
+
+<br />
+
+[_W3Schools_](https://www.w3schools.com/jsref/dom_obj_event.asp) to look up the common event types and their functions
+
+## Basic Input Types
+
+- [Button](https://observablehq.com/@observablehq/input-button) - do something when a button is clicked
+- [Toggle](https://observablehq.com/@observablehq/input-toggle) - toggle between two values (on or off)
+- [Checkbox](https://observablehq.com/@observablehq/input-checkbox) - choose any from a set
+- [Radio](https://observablehq.com/@observablehq/input-radio) - choose one from a set
+- [Range](https://observablehq.com/@observablehq/input-range) or [Number](https://observablehq.com/@observablehq/input-range) - choose a number in a range (slider)
+- [Select](https://observablehq.com/@observablehq/input-select) - choose one or any from a set (drop-down menu)
+- [Text](https://observablehq.com/@observablehq/input-text) - enter freeform single-line text
+- [Textarea](https://observablehq.com/@observablehq/input-textarea) - enter freeform multi-line text
+- [Date](https://observablehq.com/@observablehq/input-date) or [Datetime](https://observablehq.com/@observablehq/input-date) - choose a date
+- [Color](https://observablehq.com/@observablehq/input-color) - choose a color
+- [File](https://observablehq.com/@observablehq/input-file) - choose a local file
+
+## Deceptive Visualizations: A Poll
+
+<div class="strawpoll-embed" id="strawpoll_ajnE1oRdknW" style="height: 516px; width: 100%; margin: 0 auto; display: flex; flex-direction: column;"><iframe title="StrawPoll Embed" id="strawpoll_iframe_ajnE1oRdknW" src="https://strawpoll.com/embed/ajnE1oRdknW" style="position: static; visibility: visible; display: block; width: 100%; flex-grow: 1;" frameborder="0" allowfullscreen allowtransparency>Loading...</iframe><script async src="https://cdn.strawpoll.com/dist/widgets.js" charset="utf-8"></script></div>
+
+## Deceptive Visualizations: Group Activity [30m]
+
+:::{.incremental}
+1. Form a 2-person group **NOT** sitting next to you (mingle around).
+2. Find a dataset online - can be anything from [_Vega-Lite's example datasets_](https://github.com/vega/vega-datasets) or a custom dataset you find on websites such as Kaggle.
+3. Create two different visualizations:
+    - One that does its absolute best to provide the most **incorrect** or **discombobulated** narrative.
+    - Another that shows a better visualization that's (more) honest.
+4. We will pick 3 groups to come up and present their visualizations.
+:::

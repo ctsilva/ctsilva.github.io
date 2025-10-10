@@ -157,7 +157,7 @@ author_profile: true
 - [Truncating the Y-Axis: Threat or Menace?](https://arxiv.org/pdf/1907.02035.pdf). Correll, Bertini & Franconeri. 2020.
 - [Viral Visualizations: How Coronavirus Skeptics Use Orthodox Data Practices to Promote Unorthodox Science Online](https://arxiv.org/pdf/2101.07993.pdf). Lee et al. ACM CHI 2021.
 
-**Lab:**
+**Lab:** [Lab: Intro to Interactions and Deceptive Visualizations](/2025-InfoVis-CSE/labs/week6-lab.html)
 - Team formation activities
 - NYC Open Data exploration
 - Project brainstorming and proposal planning
