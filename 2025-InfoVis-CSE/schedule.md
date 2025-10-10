@@ -138,15 +138,16 @@ author_profile: true
 
 **Assignment:** Exercise 5 - Color design with D3 scales (due Oct 9)
 
-### **Week 6** (Oct 10) - Deceptive Visualization and Design Ethics
-**Learning Objectives:** Identify misleading visualizations; understand ethical design principles; recognize cognitive biases
+### **Week 6** (Oct 10) - Group Projects and Design Ethics
+**Learning Objectives:** Understand group project requirements and milestones; identify misleading visualizations; recognize ethical design principles
 
-**Lecture:**
-- Types of misleading visualizations
-- Intentional vs. unintentional deception
-- Cognitive biases in visualization interpretation
-- Ethical responsibilities of designers
-- Case studies of deceptive visualizations in media
+**Lecture:** [Week 6 - Group Projects](slides/week6-group-projects.html)
+- Group project overview and timeline
+- Five milestones: Proposal, Data & Sketches, First Draft, Second Draft, Final
+- Team formation and collaboration strategies
+- Choosing topics and datasets (focus on NYC urban data)
+- Example projects and evaluation criteria
+- **Plus:** Deceptive visualization and design ethics discussion
 
 **Required Readings:**
 - Chapter 2: Graphical Integrity, in *The Visual Display of Quantitative Information*. Edward Tufte. 2001.
@@ -157,12 +158,15 @@ author_profile: true
 - [Viral Visualizations: How Coronavirus Skeptics Use Orthodox Data Practices to Promote Unorthodox Science Online](https://arxiv.org/pdf/2101.07993.pdf). Lee et al. ACM CHI 2021.
 
 **Lab:**
-- Analyze deceptive visualization examples
-- Create misleading and honest versions of same data
-- Redesign problematic visualizations
-- Discussion and critique session
+- Team formation activities
+- NYC Open Data exploration
+- Project brainstorming and proposal planning
+- Start forming teams on Discord #project-teams
 
-**Assignment:** Exercise 6 - Design misleading vs. honest versions of same data (due Oct 16)
+**Assignment:**
+- Form teams by Oct 17
+- Browse NYC Open Data for project ideas
+- Exercise 6 - Design misleading vs. honest versions of same data (due Oct 16)
 
 ### **Fall Break** (Oct 11-13) - **NO CLASS**
 
