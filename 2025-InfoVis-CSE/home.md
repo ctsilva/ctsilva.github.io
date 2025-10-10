@@ -14,6 +14,8 @@ author_profile: true
 
 ## Announcements
 
+**Week 6 Materials Ready (Oct 10):** Group Projects lecture is now available! Form teams by Oct 17, proposal due Oct 20. See [slides](/2025-InfoVis-CSE/slides/week6-group-projects.html) for full details.
+
 **Week 5 Materials Ready (Sept 30):** Color Theory and D3 Scales slides are now available with comprehensive coverage of color perception, spaces, and practical implementation in D3.
 
 *Course materials will be posted as the semester progresses*
@@ -60,6 +62,19 @@ author_profile: true
   - [D3 Scale Chromatic](https://observablehq.com/@d3/color-schemes) - Observable notebook
 - **Optional Reference:** *Visual Thinking for Information Design* (2nd Ed.) by Colin Ware - Chapters on color
 
+### Week 6 (Oct 10) - Group Projects and Design Ethics
+- **Slides:** [Group Projects](/2025-InfoVis-CSE/slides/week6-group-projects.html)
+- **Topics:** Group project overview, 5 milestones (Proposal through Final), Team formation, Dataset selection, Deceptive visualization and ethics
+- **Lab:** Team formation activities, Dataset exploration, Project brainstorming
+- **Action Items:**
+  - Form teams by Oct 17 (use Discord #project-teams)
+  - Browse datasets for project ideas
+  - Exercise 6 - Misleading vs. honest visualization (due Oct 16)
+  - **Project Proposal due Oct 20**
+- **Required Readings:**
+  - Tufte Ch 2 - Graphical Integrity
+  - [Misinformed by Visualization](https://arxiv.org/pdf/2104.14332.pdf) - Lo, Gupta & Shigyo (EuroVis 2022)
+
 ## Assignments
 
 ### Exercises (35% of grade)
@@ -76,9 +91,11 @@ author_profile: true
 - Mini-Project 3: Network data visualization - *Details TBA*
 
 ### Group Project (25% of grade)
-- Team formation - *Week 3*
-- Project milestones - *Throughout semester*
-- Final presentations - *Weeks 14-15*
+- **Milestone 1:** Project Proposal - *Due Oct 20*
+- **Milestone 2:** Data Analysis & Sketches - *Due Nov 3*
+- **Milestone 3:** First Draft (D3 implementations) - *Due Nov 17*
+- **Milestone 4:** Second Draft (Complete article) - *Due Dec 1*
+- **Milestone 5:** Final Submission & Presentations - *Due Dec 8* (Presentations Dec 5 & 12)
 
 ## Quick Links
 
