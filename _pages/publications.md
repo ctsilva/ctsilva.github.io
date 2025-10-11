@@ -226,6 +226,102 @@ My papers can be found on Google Scholar and DBLP.
   [[IEEE Xplore]](https://ieeexplore.ieee.org/document/565068) [[ResearchGate]](https://www.researchgate.net/publication/3628917_Fast_rendering_of_irregular_grids) [[NYU Scholars]](https://nyuscholars.nyu.edu/en/publications/fast-rendering-of-irregular-grids)  
   **🏆 IEEE VolVis 1996 Best Paper Finalist**
 
+## Student Theses
+
+### PhD Dissertations
+
+- **Nivan Ferreira** (2015)
+  *Visual Analytics Techniques for Exploration of Spatiotemporal Data*
+  PhD Dissertation, New York University Polytechnic School of Engineering
+  [[PDF]](../thesis/nivan-ferreira-thesis.pdf)
+
+- **Jorge Poco** (2015)
+  *Visual Intercomparison of Multifaceted Climate Data*
+  PhD Dissertation, New York University Polytechnic School of Engineering
+  [[PDF]](../thesis/jorge-poco-thesis.pdf)
+
+- **Tiago Etiene** (2013)
+  *Towards the Theory and Practice of Verifying Visualizations*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/tiago-etiene-thesis.pdf)
+
+- **Matthew Berger** (2013)
+  *Shape Analysis of Defect-Laden Data*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/matthew-berger-thesis.pdf)
+
+- **David Koop** (2012)
+  *Managing Provenance for Knowledge Discovery and Reuse*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/david-koop-thesis.pdf)
+
+- **Erik Anderson** (2011)
+  *The Analysis and Visualization of Electroencephalography Data Using a Provenance-Enabled Environment and Its Applications to Visualization*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/erik-anderson-phd-thesis.pdf)
+
+- **Huy Vo** (2011)
+  *Designing a Parallel Dataflow Architecture for Streaming Large-Scale Visualization on Heterogeneous Platforms*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/huy-vo-thesis.pdf)
+
+- **Linh Ha** (2011)
+  *High Performance Multiscale Image Processing Framework on Multigpus with Applications to Unbiased Diffeomorphic Atlas Construction*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/linh-ha-thesis.pdf)
+
+- **Carlos Scheidegger** (2009)
+  *Provenance of Exploratory Tasks in Scientific Visualization: Management and Applications*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/carlos-scheidegger-thesis-draft.pdf)
+
+- **Emanuele Santos** (2010)
+  *Simplifying the Creation and Deployment of Collaborative Data Analysis and Visualization Tools*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/emanuele-santos-thesis.pdf)
+
+- **Joel Daniels** (2009)
+  *Feature-Aligned, Semi-Regular, Quadrilateral-only Mesh Generation*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/joel-daniels-thesis.pdf)
+
+- **John Schreiner** (2008)
+  *Uniform and Adaptive (Re)Meshing of Surfaces*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/john-schreiner-thesis.pdf)
+
+- **Steve Callahan** (2008)
+  *Adaptive Visualization of Dynamic Unstructured Meshes*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/steve-callahan-phd-thesis.pdf)
+
+- **Wagner Correa** (2003)
+  *New Techniques for Out-Of-Core Visualization of Large Datasets*
+  PhD Dissertation, Princeton University
+  [[PDF]](../thesis/wagner-correa-thesis.pdf)
+
+- **Ricardo Farias** (2001)
+  *Efficient Rendering of Irregular Volumetric Grids*
+  PhD Dissertation, State University of New York at Stony Brook
+  [[PDF]](../thesis/ricardo-farias-thesis.pdf)
+
+### Master's Theses
+
+- **Claurissa Tuttle** (2011)
+  *PedVis: A structured, space-efficient technique for pedigree visualization*
+  MS Thesis, University of Utah
+  [[PDF]](../thesis/claurissa-tuttle-ms-thesis.pdf)
+
+- **Louis Bavoil** (2006)
+  *Efficient Multi-Fragment Effects on the GPU*
+  MS Thesis, University of Utah
+  [[PDF]](../thesis/louis-bavoil-ms-thesis.pdf)
+
+- **Steve Callahan** (2005)
+  *The k-Buffer and Its Applications to Volume Rendering*
+  MS Thesis, University of Utah
+  [[PDF]](../thesis/steve-callahan-ms-thesis.pdf)
+
 <!-- {% if author.googlescholar %}
   You can also find my articles on <u><a href="{{author.googlescholar}}">my Google Scholar profile</a>.</u>
 {% endif %}
