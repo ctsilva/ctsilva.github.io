@@ -245,14 +245,14 @@ My papers can be found on Google Scholar and DBLP.
   PhD Dissertation, New York University
   [[PDF]](../thesis/shaoyu-chen-thesis.pdf)
 
-- **Peter Xenopolous** (2022)
-  *Title TBD*
-  PhD Dissertation, New York University
-
 - **Yurii Piadyk** (2023)
   *Real-Time Multimodal Sensing and Understanding of Complex Physical Environments*
   PhD Dissertation, New York University
   [[PDF]](../thesis/yurii-piadyk-thesis.pdf)
+
+- **Peter Xenopolous** (2022)
+  *Title TBD*
+  PhD Dissertation, New York University
 
 - **Maryam Hosseini** (2022)
   *A Walk in the City: Using Large Data Sets to Analyze Urban Sidewalks*
@@ -316,15 +316,15 @@ My papers can be found on Google Scholar and DBLP.
   PhD Dissertation, University of Utah
   [[PDF]](../thesis/linh-ha-thesis.pdf)
 
-- **Carlos Scheidegger** (2009)
-  *Provenance of Exploratory Tasks in Scientific Visualization: Management and Applications*
-  PhD Dissertation, University of Utah
-  [[PDF]](../thesis/carlos-scheidegger-thesis-draft.pdf)
-
 - **Emanuele Santos** (2010)
   *Simplifying the Creation and Deployment of Collaborative Data Analysis and Visualization Tools*
   PhD Dissertation, University of Utah
   [[PDF]](../thesis/emanuele-santos-thesis.pdf)
+
+- **Carlos Scheidegger** (2009)
+  *Provenance of Exploratory Tasks in Scientific Visualization: Management and Applications*
+  PhD Dissertation, University of Utah
+  [[PDF]](../thesis/carlos-scheidegger-thesis-draft.pdf)
 
 - **Joel Daniels** (2009)
   *Feature-Aligned, Semi-Regular, Quadrilateral-only Mesh Generation*
