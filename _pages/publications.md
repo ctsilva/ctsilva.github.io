@@ -230,14 +230,60 @@ My papers can be found on Google Scholar and DBLP.
 
 ### PhD Dissertations
 
+- **Guande Wu** (2025)
+  *Towards Adaptive and Holistic AR Task Guidance*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/guande-wu-thesis.pdf)
+
+- **João Rulff** (2025)
+  *Visual Analysis of Multimodal Sensor Data*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/joao-rulff-thesis.pdf)
+
+- **Shaoyu Chen** (2024)
+  *3D Memory for Augmented Reality*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/shaoyu-chen-thesis.pdf)
+
+- **Peter Xenopolous** (2022)
+  *Title TBD*
+  PhD Dissertation, New York University
+
+- **Yurii Piadyk** (2023)
+  *Real-Time Multimodal Sensing and Understanding of Complex Physical Environments*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/yurii-piadyk-thesis.pdf)
+
+- **Maryam Hosseini** (2022)
+  *A Walk in the City: Using Large Data Sets to Analyze Urban Sidewalks*
+  PhD Dissertation, Rutgers University
+  [[PDF]](../thesis/maryam-hosseini-thesis.pdf)
+
+- **Jorge Ono** (2021)
+  *Title TBD*
+  PhD Dissertation, New York University
+
+- **Gromit Chan** (2021)
+  *Data Summaries for Scalable Visual Analysis*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/gromit-chan-thesis.pdf)
+
+- **Fabio Miranda** (2018)
+  *Title TBD*
+  PhD Dissertation, New York University
+
+- **Bowen Yu** (2018)
+  *Title TBD*
+  PhD Dissertation, New York University
+
 - **Nivan Ferreira** (2015)
   *Visual Analytics Techniques for Exploration of Spatiotemporal Data*
-  PhD Dissertation, New York University Polytechnic School of Engineering
+  PhD Dissertation, New York University
   [[PDF]](../thesis/nivan-ferreira-thesis.pdf)
 
 - **Jorge Poco** (2015)
   *Visual Intercomparison of Multifaceted Climate Data*
-  PhD Dissertation, New York University Polytechnic School of Engineering
+  PhD Dissertation, New York University
   [[PDF]](../thesis/jorge-poco-thesis.pdf)
 
 - **Tiago Etiene** (2013)
@@ -306,6 +352,11 @@ My papers can be found on Google Scholar and DBLP.
   [[PDF]](../thesis/ricardo-farias-thesis.pdf)
 
 ### Master's Theses
+
+- **Yichen Xie** (2024)
+  *Towards the Development of Multi-View Reconstruction System for Paleontological Fossils*
+  MS Thesis, New York University
+  [[PDF]](../thesis/yichen-xie-thesis.pdf)
 
 - **Claurissa Tuttle** (2011)
   *PedVis: A structured, space-efficient technique for pedigree visualization*
