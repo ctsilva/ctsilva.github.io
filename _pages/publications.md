@@ -5,7 +5,7 @@ permalink: /publications/
 author_profile: true
 ---
 
-My research spans visualization, urban analytics, machine learning interpretability, and augmented reality. Below are selected recent publications, with additional pages for award-winning work and student dissertations.
+My research spans visualization, computer graphics, geometry processing, urban analytics, machine learning interpretability, augmented reality, and sports analytics. Below are selected recent publications, with additional pages for award-winning work and student dissertations.
 
 - [Google Scholar](https://scholar.google.com/citations?user=YIwiAAsAAAAJ)
 - [DBLP](https://dblp.org/pid/s/ClaudioTSilva.html)
