@@ -6,10 +6,12 @@
 <script src="week9-dimensionality_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week9-dimensionality_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week9-dimensionality_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week9-dimensionality_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.34">
+<link href="week9-dimensionality_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
 
-  <title>Visualization for Machine Learning</title>
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2025-10-27">
+  <title>Advanced Dimensionality Reduction</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,12 +30,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="week9-dimensionality_files/libs/revealjs/dist/theme/quarto-e18a912597b61ff1d4c20b1bb0a9113b.css">
+  <link rel="stylesheet" href="week9-dimensionality_files/libs/revealjs/dist/theme/quarto-743137726eb562984e8d4ff610b648a8.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week9-dimensionality_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week9-dimensionality_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week9-dimensionality_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="week9-dimensionality_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="week9-dimensionality_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="week9-dimensionality_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -127,19 +128,64 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Visualization for Machine Learning</h1>
-  <p class="subtitle">Spring 2024</p>
+<section class="quarto-title-block center">
+  <h1 class="title">Advanced Dimensionality Reduction</h1>
+  <p class="subtitle">CS-GY 9223 - Fall 2025</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Tandon School of Engineering
+          </p>
+    </div>
 </div>
 
+  <p class="date">2025-10-27</p>
 </section>
-<section id="graph-layout-using-force-based-approach" class="slide level2">
+<section class="slide level2">
+<h2>Recap: Last Week</h2>
+<ul>
+<li>Covered clustering (K-means, DBSCAN, hierarchical)</li>
+<li>Introduced dimensionality reduction motivation</li>
+<li>Deep dive into PCA (eigenvectors, covariance, SVD)</li>
+<li>Introduced non-linear methods (LLE)</li>
+<li>Brief mention of t-SNE and UMAP</li>
+</ul>
+<aside class="notes">
+<p>Last week we covered the fundamentals of clustering and dimensionality reduction. We went deep on PCA, understanding the linear algebra behind it. We also introduced LLE as an example of a non-linear method that can unfold manifolds. Today we’re going to do a deep dive into t-SNE and UMAP - the two most popular non-linear dimensionality reduction methods for visualization. These are incredibly powerful but also easy to misuse, so we’ll focus on how to use them correctly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Graph Layout using force based approach</h2>
 <p><a href="https://www.youtube.com/watch?v=_Oidv5M-fuw">video link</a></p>
+<aside class="notes">
+<p>Before diving into t-SNE, let’s watch this video on force-directed graph layout. This is important because t-SNE and UMAP work on similar principles - they treat your data points as nodes in a graph and use attractive/repulsive forces to arrange them in 2D. Understanding force-directed layout gives you intuition for how these algorithms work. The key idea: similar points attract each other, dissimilar points repel, and we run a physics simulation until things settle into a stable configuration.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="sne-and-t-sne" class="slide level2">
+<section class="slide level2">
 <h2>SNE and t-SNE</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -152,7 +198,7 @@
 
  -->
 </section>
-<section id="digression-point-set-surfaces" class="slide level2">
+<section class="slide level2">
 <h2>Digression: Point Set Surfaces</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -161,20 +207,33 @@
 <p><img data-src="figs/pss-h.jpg"></p>
 </div></div>
 </section>
-<section id="wattenberg-viégas-and-johnson-2016" class="slide level2">
+<section class="slide level2">
 <h2>Wattenberg, Viégas, and Johnson, 2016</h2>
 
 <img data-src="figs/using-tsne.jpg" class="r-stretch"><p>https://distill.pub/2016/misread-tsne/</p>
 </section>
-<section id="t-sne" class="slide level2">
+<section class="slide level2">
 <h2>t-SNE</h2>
 <ul>
 <li><p>Wattenberg et al writes “A popular method for exploring high-dimensional data is something called t-SNE… it has an almost magical ability to create compelling two-dimensonal “maps” from data with hundreds or even thousands of dimensions. Although impressive, these images can be tempting to misread.”</p></li>
 <li><p>Wattenberg: “The algorithm is <strong>non-linear</strong> and adapts to the underlying data, performing <strong>different transformations on different regions</strong>. Those differences can be a major source of confusion.”</p></li>
 <li><p>Watternberg: “A second feature of t-SNE is a tuneable parameter, <strong>“perplexity,”</strong> which says (loosely) how to balance attention between local and global aspects of your data. The parameter is, in a sense, a guess about the number of close neighbors each point has. The perplexity value has a complex effect on the resulting pictures.”</p></li>
 </ul>
+<aside class="notes">
+<p>This is THE critical article to read before using t-SNE. Wattenberg, Viégas, and Johnson from Google Brain systematically explore how t-SNE can be misread. Key point #1: t-SNE is non-linear and does different transformations in different regions - you can’t directly compare distances. Key point #2: perplexity is crucial - it’s roughly the number of close neighbors each point should have. Too low and you get disconnected clusters, too high and everything merges. We’ll see concrete examples next.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="t-sne-1" class="slide level2">
+<section class="slide level2">
 <h2>t-SNE</h2>
 <ul>
 <li>“Those hyperparameters really matter”</li>
@@ -183,15 +242,41 @@
 <img data-src="figs/tsneperplexity.jpg" class="r-stretch"><ul>
 <li>“The image for perplexity 100, with merged clusters, illustrates a pitfall: for the algorithm to operate properly, the perplexity really should be smaller than the number of points.”</li>
 </ul>
+<aside class="notes">
+<p>Look at these four perplexity values on the same dataset. At perplexity=2, everything breaks into tiny clusters - it’s too local. At perplexity=30, we see nice separation. At perplexity=50, still looks good but slightly different structure. At perplexity=100, clusters start merging - it’s too global. The lesson: ALWAYS try multiple perplexity values (typically 5-50 works well). Don’t trust a single t-SNE plot! Also, perplexity should be much smaller than the number of points - here they correctly use perplexity &lt; 300 for 300 points.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="t-sne-2" class="slide level2">
+<section class="slide level2">
 <h2>t-SNE</h2>
 <ul>
 <li>“Each of the plots above was made with 5,000 iterations with a learning rate (often called “epsilon”) of 10, and had reached a point of stability by step 5,000. How much of a difference do those values make?”</li>
 </ul>
 
-<img data-src="figs/tsnesteps.jpg" class="r-stretch"></section>
-<section id="t-sne-3" class="slide level2">
+<img data-src="figs/tsnesteps.jpg" class="r-stretch"><aside class="notes">
+<p>This shows convergence. At 10 iterations, it’s garbage - the algorithm hasn’t had time to organize the points. At 250 iterations, structure is emerging. At 500 iterations, it looks stable. At 1000 iterations, roughly the same - it’s converged. Lesson: run enough iterations! Modern implementations often need 1000-5000 iterations. Thelearning rate (epsilon) also matters - too high and it won’t converge, too low and it’s slow. The defaults in sklearn are usually reasonable (epsilon=200, max_iter=1000).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>t-SNE</h2>
 <ul>
 <li>“Cluster sizes in a t-SNE plot mean nothing”</li>
@@ -202,80 +287,197 @@
 <li><p>“The t-SNE algorithm adapts its notion of “distance” to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes.”</p></li>
 </ul>
 </section>
-<section id="t-sne-4" class="slide level2">
+<section class="slide level2">
 <h2>t-SNE</h2>
 <ul>
 <li><p>“Distances between clusters might not mean anything”</p></li>
 <li><p>“The next diagrams show three Gaussians of 50 points each, one pair being 5 times as far apart as another pair.”</p></li>
 </ul>
 
-<img data-src="figs/tsneclusterdistances.jpg" class="r-stretch"></section>
-<section id="t-sne-5" class="slide level2">
+<img data-src="figs/tsneclusterdistances.jpg" class="r-stretch"><aside class="notes">
+<p>Another CRITICAL INSIGHT: Distances between clusters mean NOTHING! The left shows true data - two Gaussians close together, one far away. Middle shows one t-SNE run, right shows another run with different random initialization. The relative distances between clusters change! Sometimes the far cluster looks close, sometimes not. Why? t-SNE only cares about local neighborhoods - it doesn’t preserve global distances. You can’t say “these two clusters are related because they’re close” - that’s wrong. Only trust within-cluster structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>t-SNE</h2>
 <ul>
 <li><p>“Random noise doesn’t always look random.”</p></li>
 <li><p>“The next diagrams show genuinely random data, 500 points drawn from a unit Gaussian distribution in 100 dimensions. The left image is a projection onto the first two coordinates.”</p></li>
 </ul>
 
-<img data-src="figs/tsnerandom.jpg" class="r-stretch"></section>
-<section id="t-sne-6" class="slide level2">
+<img data-src="figs/tsnerandom.jpg" class="r-stretch"><aside class="notes">
+<p>This is wild: pure random noise, no structure whatsoever. Left is PCA - correctly shows a cloud with no clusters. Right is t-SNE - shows apparent clusters! This is because t-SNE emphasizes local structure SO much that it can create apparent clusters from noise. Lesson: Don’t assume clusters in t-SNE are real! Always validate with other methods or domain knowledge. This is why we need multiple perplexity values and comparison with PCA/UMAP.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>t-SNE</h2>
 <ul>
 <li><p>“For topology, you may need more than one plot”</p></li>
 <li><p>“The plots below show two groups of 75 points in 50 dimensional space. Both are sampled from symmetric Gaussian distributions centered at the origin, but one is 50 times more tightly dispersed than the other. The “small” distribution is in effect contained in the large one.”</p></li>
 </ul>
 
-<img data-src="figs/tsnetopology.jpg" class="r-stretch"></section>
-<section id="topomap-doraiswamy-et-al" class="slide level2">
+<img data-src="figs/tsnetopology.jpg" class="r-stretch"><aside class="notes">
+<p>Complex topological relationships may not be preserved. Here two Gaussians of different sizes - one contained in the other. Different perplexity values give completely different topologies! Low perplexity breaks them apart, high perplexity merges them. The true containment relationship is lost. This is a fundamental limitation - t-SNE is designed for local structure, not global topology. Methods like Topomap (next slide) try to address this by explicitly preserving topological features.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>Topomap (Doraiswamy et al)</h2>
 
 <img data-src="figs/topomap.jpg" class="r-stretch"><ul>
 <li>Topomap preserves the 0-dimensional persistence diagram of the Rips filtration of the high-dimensional data.</li>
 </ul>
+<aside class="notes">
+<p>Topomap is recent work from Harish Doraiswamy and colleagues that addresses t-SNE’s topology problem. It uses topological data analysis (TDA) - specifically persistence diagrams - to preserve the number of connected components at different scales. This is more advanced math (algebraic topology), but the intuition is: capture which points are connected at different distance thresholds, and preserve that in the low-D embedding. It’s slower than t-SNE but gives topological guarantees. Good for when you care about connectivity and holes in your data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="section" class="slide level2">
+<section class="slide level2">
 <h2></h2>
 
 <img data-src="figs/understanding-umap.jpg" class="r-stretch"><p>https://pair-code.github.io/understanding-umap/</p>
+<aside class="notes">
+<p>Now let’s talk about UMAP - the newer and increasingly popular alternative to t-SNE. This interactive article from Google’s PAIR team is THE best resource for understanding UMAP. It has interactive visualizations showing exactly how the algorithm works. UMAP stands for Uniform Manifold Approximation and Projection - fancy name, but the core idea is similar to t-SNE: build a graph of neighborhoods and optimize a layout. The key differences: UMAP is faster, scales better, and arguably preserves more global structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="umap" class="slide level2">
+<section class="slide level2">
 <h2>UMAP</h2>
 <ul>
 <li>Coenen and Pearce: “UMAP is fast, scaling well in terms of both dataset size and dimensionality. … UMAP can project the 784-dimensional, 70,000-point MNIST dataset in less than 3 minutes, compared to 45 minutes for scikit-learn’s t-SNE implementation. Additionally, UMAP tends to better preserve the global structure of the data.”</li>
 </ul>
 
-<img data-src="figs/umapvstsne.jpg" class="r-stretch"></section>
-<section id="umap-1" class="slide level2">
+<img data-src="figs/umapvstsne.jpg" class="r-stretch"><aside class="notes">
+<p>Key performance comparison: MNIST dataset (70K points, 784 dimensions). UMAP: 3 minutes. sklearn t-SNE: 45 minutes! That’s 15x faster. This matters hugely when you want to try different parameters or work with larger datasets. Also notice the structure: UMAP tends to show cleaner separation of digit classes and better preserves the global manifold structure - digits that are similar (like 4 and 9) are closer together. t-SNE also works but the global layout is less meaningful.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>UMAP</h2>
 <ul>
 <li>“UMAP, at its core, works very similarly to t-SNE - both use graph layout algorithms to arrange data in low-dimensional space.”</li>
 </ul>
 
-<img data-src="figs/umapfuzzygraph.jpg" class="r-stretch"></section>
-<section id="umap-parameters" class="slide level2">
+<img data-src="figs/umapfuzzygraph.jpg" class="r-stretch"><aside class="notes">
+<p>How UMAP works: it builds a “fuzzy topological representation” of the high-dimensional data. Essentially, it creates a weighted graph where edges represent neighborhood relationships, but the weights are “fuzzy” (probabilistic) rather than binary. Then it tries to find a similar graph structure in low dimensions. The theoretical foundation involves category theory and Riemannian geometry - much more sophisticated than t-SNE’s probability distributions. But practically, you can think of it like force-directed graph layout with better math.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>UMAP parameters</h2>
 <ul>
 <li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
 <li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
 </ul>
 </section>
-<section id="umap-parameters-1" class="slide level2">
+<section class="slide level2">
 <h2>UMAP parameters</h2>
 <ul>
 <li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
 <li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
 </ul>
 
-<img data-src="figs/umapmindist-0.jpg" class="r-stretch"></section>
-<section id="umap-parameters-2" class="slide level2">
+<img data-src="figs/umapmindist-0.jpg" class="r-stretch"><aside class="notes">
+<p>UMAP has two key parameters. n_neighbors (similar to perplexity in t-SNE): controls how many neighbors to consider when building the graph. Low values (2-5) emphasize very local structure, high values (50-200) capture more global structure. This slide shows min_dist=0, which allows points to be very tightly packed. You can see very tight clusters. This is good for seeing fine structure but can make clusters merge visually.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>UMAP parameters</h2>
 <ul>
 <li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
 <li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
 </ul>
 
-<img data-src="figs/umapmindist-0.8.jpg" class="r-stretch"></section>
-<section id="umap-2" class="slide level2">
+<img data-src="figs/umapmindist-0.8.jpg" class="r-stretch"><aside class="notes">
+<p>Here’s min_dist=0.8 with the same data. Now points are spread out more - there’s minimum spacing between them. This makes it easier to see individual points and prevents over-plotting, but tight clusters look artificially expanded. Typical values: min_dist=0.1 for cluster analysis, min_dist=0.5 for exploring individual points. Like t-SNE’s perplexity, you should try a few values. But unlike t-SNE, UMAP is fast enough that trying multiple parameters is practical!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>UMAP</h2>
 <ul>
 <li><p>“However, it’s important to note that, because UMAP and t-SNE both necessarily warp the high-dimensional shape of the data when projecting to lower dimensions, <strong>any given axis or distance in lower dimensions still isn’t directly interpretable in the way of techniques such as PCA.</strong>”</p></li>
@@ -286,20 +488,46 @@
 </ul></li>
 </ul>
 </section>
-<section id="umap-3" class="slide level2">
+<section class="slide level2">
 <h2>UMAP</h2>
 
-<img data-src="figs/umapvstsne-param.jpg" class="r-stretch"></section>
-<section id="what-about-user-interaction" class="slide level2">
+<img data-src="figs/umapvstsne-param.jpg" class="r-stretch"><aside class="notes">
+<p>Nice comparison showing how parameters affect both methods. t-SNE perplexity and UMAP n_neighbors serve similar roles - controlling local vs global balance. But notice UMAP is more stable - parameters don’t change the structure as dramatically. Also UMAP min_dist gives you extra control over cluster “tightness” that t-SNE lacks. Bottom line: UMAP is becoming the default choice for many applications because it’s faster, more stable, and gives better global structure. But t-SNE is still valuable and the Distill article’s lessons apply to both.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>What about user interaction?</h2>
 
+<img data-src="figs/projections.jpg" class="r-stretch"><aside class="notes">
+<p>Final topic: interactive dimensionality reduction. All the methods we’ve discussed compute a static embedding. But what if you want to guide the process? What if you know certain points should be close together? This system lets users add constraints, adjust parameters interactively, and see results in real-time. This combines algorithmic power (finding structure) with human insight (domain knowledge). Active research area with systems like iPCA, linear-projection, and various constraint-based approaches. For your projects, think about how interaction could help refine your visualizations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
-<img data-src="figs/projections.jpg" class="r-stretch"></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="figs/vida.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
 </div>
 </div></div>
 
@@ -310,7 +538,6 @@
   <script src="week9-dimensionality_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="week9-dimensionality_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="week9-dimensionality_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="week9-dimensionality_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="week9-dimensionality_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -332,8 +559,7 @@
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":false},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -459,10 +685,10 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'fade',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
@@ -479,15 +705,15 @@
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1920,
 
-        height: 700,
+        height: 1080,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -504,7 +730,7 @@
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
@@ -561,13 +787,14 @@
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
