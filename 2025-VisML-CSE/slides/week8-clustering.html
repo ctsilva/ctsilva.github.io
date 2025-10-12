@@ -227,7 +227,7 @@ Claudio Silva
 <li class="fragment">Eigenvectors, eigenvalues, and covariance matrices</li>
 <li class="fragment">Singular Value Decomposition (SVD)</li>
 <li class="fragment">Local Linear Embedding (LLE)</li>
-<li class="fragment">Preview: Non-linear methods (t-SNE, UMAP)</li>
+<li class="fragment">Preview: Non-linear Manifold Learning (t-SNE, UMAP)</li>
 </ul></li>
 </ol>
 <aside class="notes">
@@ -296,7 +296,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>IRIS</h2>
-<div id="5342a8c9" class="cell" data-execution_count="1">
+<div id="50a93533" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -306,7 +306,7 @@ Claudio Silva
 </div>
 </div>
 <aside class="notes">
-<p>This is the actual scatter plot generated from the code. Notice that without color coding by species, it’s not immediately obvious that there are three distinct groups. This is where clustering algorithms come in - they can help us discover these natural groupings automatically. In this 2D projection, we can see some structure, but the full dataset has 4 dimensions, so we’re only seeing part of the picture.</p>
+<p>This unlabeled visualization highlights the core challenge of unsupervised learning. While some structure exists in this 2D projection, the full structure in the 4D space is harder to discern. Our goal with clustering is to algorithmically discover these natural groupings that are not visually obvious without labels. Notice that without color coding by species, it’s not immediately obvious that there are three distinct groups. This is where clustering algorithms come in - they can help us discover these natural groupings automatically.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -321,12 +321,17 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>IRIS – another look</h2>
-
-<img data-src="figs/iris-bernard.jpg" class="r-stretch"><div class="footer">
-<p>Slides based on material from Prof.&nbsp;Bernard</p>
+<div id="d1b8c35e" class="cell" data-fig-height="6" data-fig-width="9" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-3-output-1.png" width="1335" height="885"></p>
+</figure>
+</div>
+</div>
 </div>
 <aside class="notes">
-<p>This is from Etienne Bernard’s excellent book on machine learning. Here we see a more polished visualization of the IRIS dataset with the true class labels shown. Notice how the three species form relatively distinct clusters, though there is some overlap between two of them. This visualization hints that clustering algorithms should be able to recover these groupings reasonably well.</p>
+<p>This plot, now colored by the true species labels, confirms the inherent structure we are looking to discover. Note the clear separation of the Setosa species (blue), but also the significant overlap between Versicolor (red) and Virginica (green). This overlap explains why even simple clustering methods like K-means will struggle to achieve 100% agreement with the true labels, demonstrating the practical limits of clustering even on ‘simple’ data. The visualization uses petal length and sepal width, which provide good separation between species while still showing the challenging overlap between two classes.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -411,11 +416,11 @@ Claudio Silva
 <h2>IRIS - classes</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div id="5d091106" class="cell" data-execution_count="2">
+<div id="1781fb67" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week8-clustering_files/figure-revealjs/cell-3-output-1.png" width="812" height="432"></p>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-4-output-1.png" width="812" height="432"></p>
 </figure>
 </div>
 </div>
@@ -424,7 +429,7 @@ Claudio Silva
 <p><img data-src="figs/iris-bernard-clustering-kmeans-crop.jpg"></p>
 </div></div>
 <aside class="notes">
-<p>Here we compare the true class labels (left) with the K-means clustering result (right). This is a common way to evaluate clustering when you do have ground truth labels available - though remember, in real clustering scenarios, you often don’t have labels. The comparison shows that K-means does a decent job but isn’t perfect. One species is well-separated, but the other two overlap somewhat. This is typical - clustering algorithms work best when clusters are well-separated in the feature space.</p>
+<p>This side-by-side comparison is essential for understanding clustering performance. The left shows the ground truth (true labels), and the right shows the clusters discovered by K-means. While K-means accurately isolates the well-separated cluster, it struggles with the overlapped classes, often resulting in label-switching or mixing of points. This visually demonstrates the difference between classification (predicting known labels) and clustering (discovering structure). Remember, in real clustering scenarios, you often don’t have labels - this comparison is primarily for pedagogical purposes and algorithm evaluation.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -508,10 +513,7 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Dimensionality Reduction</h2>
-<ul>
-<li>Supposed a dataset of “3s” perturbed in various ways</li>
-</ul>
+<h2>Visualizing the Manifold Hypothesis: Images of ‘3’ Perturbed by Non-linear Operations</h2>
 
 <img data-src="figs/perturbed-3.jpg" class="r-stretch"><ul>
 <li><p>What operations did we perform? What’s the intrinsic dimensionality?</p></li>
@@ -556,8 +558,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Digits - 0</h2>
-<div id="89e008c9" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div id="4a36db03" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>array([[ 0.,  0.,  5., 13.,  9.,  1.,  0.,  0.],
        [ 0.,  0., 13., 15., 10., 15.,  5.,  0.],
        [ 0.,  3., 15.,  2.,  0., 11.,  8.,  0.],
@@ -584,8 +586,8 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Digits - 1</h2>
-<div id="c8c80d9e" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div id="0b371483" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>array([[ 0.,  0.,  0., 12., 13.,  5.,  0.,  0.],
        [ 0.,  0.,  0., 11., 16.,  9.,  0.,  0.],
        [ 0.,  0.,  3., 15., 16.,  6.,  0.,  0.],
@@ -612,11 +614,11 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Digits</h2>
-<div id="1fead8d8" class="cell" data-execution_count="5">
+<div id="f8657cb5" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week8-clustering_files/figure-revealjs/cell-6-output-1.png" width="558" height="520"></p>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-7-output-1.png" width="558" height="520"></p>
 </figure>
 </div>
 </div>
@@ -637,7 +639,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Digits</h2>
-<div id="47ce623c" class="cell" data-execution_count="6">
+<div id="92617e0b" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>Computing Random projection embedding...
 Computing Truncated SVD embedding...
@@ -656,11 +658,24 @@ Computing NCA embedding...</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week8-clustering_files/figure-revealjs/cell-7-output-2.png" width="763" height="409"></p>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-8-output-2.png" width="763" height="409"></p>
 </figure>
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>This slide lists many popular dimensionality reduction algorithms. The figure (populated by the results) is a powerful tool for comparison. It demonstrates that the choice of algorithm—linear (like PCA/SVD) vs.&nbsp;non-linear (like t-SNE/LLE)—radically changes the resulting low-dimensional structure. This comparison motivates why we need to understand the underlying math and assumptions of each method. Notice how t-SNE creates distinct, well-separated clusters of digits, which is characteristic of non-linear manifold learning methods that preserve local neighborhood structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Principal Component Analysis</h2>
@@ -851,11 +866,11 @@ Computing NCA embedding...</code></pre>
 </section>
 <section class="slide level2">
 <h2>PCA of digits</h2>
-<div id="927a2eac" class="cell" data-execution_count="7">
+<div id="892daa37" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week8-clustering_files/figure-revealjs/cell-8-output-1.png" width="801" height="414"></p>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-9-output-1.png" width="801" height="414"></p>
 </figure>
 </div>
 </div>
@@ -876,11 +891,11 @@ Computing NCA embedding...</code></pre>
 </section>
 <section class="slide level2">
 <h2>PCA of digits</h2>
-<div id="21e169ba" class="cell" data-execution_count="8">
+<div id="498499a5" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="week8-clustering_files/figure-revealjs/cell-9-output-1.png" width="801" height="414"></p>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-10-output-1.png" width="801" height="414"></p>
 </figure>
 </div>
 </div>
@@ -915,7 +930,7 @@ Computing NCA embedding...</code></pre>
 </ul></li>
 </ul>
 <aside class="notes">
-<p>A practical issue: for high-dimensional data, computing the full covariance matrix and all its eigenvectors is computationally expensive. For 10,000 features, the covariance matrix has 100 million entries! SVD provides an efficient alternative - it can directly compute the top k principal components without forming the covariance matrix. In practice, sklearn’s PCA uses randomized SVD for efficiency. This makes PCA tractable even for very high-dimensional data.</p>
+<p>A practical issue: for high-dimensional data, computing the full covariance matrix and all its eigenvectors is computationally expensive. For 10,000 features, the covariance matrix has 100 million entries! SVD provides an efficient alternative - it can directly compute the top k principal components without forming the covariance matrix. Furthermore, SVD is generally more numerically stable than computing the eigenvalues of the covariance matrix directly, especially in the presence of noise or highly correlated features. This is why SVD is the practical computational backbone for PCA in modern machine learning libraries like scikit-learn. In practice, sklearn’s PCA uses randomized SVD for efficiency, making PCA tractable even for very high-dimensional data.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -995,15 +1010,54 @@ Computing NCA embedding...</code></pre>
 <section class="slide level2">
 <h2>Preserving Local Manifold Neighborhoods</h2>
 
-<img data-src="figs/preserving-local-neighborhoods.jpg" class="r-stretch"></section>
+<img data-src="figs/preserving-local-neighborhoods.jpg" class="r-stretch"><aside class="notes">
+<p>Non-linear dimensionality reduction, particularly methods like LLE, relies on the assumption that the local geometry of the high-dimensional data is a good proxy for the global structure. As illustrated here, the goal is to find a mapping that preserves the local neighborhood relationships (who is connected to whom) in the low-dimensional space, effectively ‘unrolling’ the manifold without tearing it apart. This is fundamentally different from PCA which only preserves global variance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section class="slide level2">
 <h2>LLE</h2>
 
 <img data-src="figs/lle-algorithm.jpg" class="r-stretch"><p>https://www.science.org/doi/10.1126/science.290.5500.2323</p>
+<aside class="notes">
+<p>Local Linear Embedding (LLE) works by first finding the set of weights that best reconstructs each data point from its neighbors in the high-dimensional space. The algorithm then searches for a low-dimensional embedding where these same reconstruction weights hold true. Unlike PCA, LLE is not based on maximizing variance; it’s based entirely on preserving these local linear dependencies. This makes LLE powerful for unrolling non-linear manifolds while maintaining neighborhood structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>PCA vs LLE</h2>
 <p><img data-src="figs/pca-vs-lle.jpg" height="600"></p>
+<aside class="notes">
+<p>This figure is the canonical example illustrating the difference between linear (PCA) and non-linear (LLE) methods. PCA finds the direction of maximum variance, but since it is a straight line projection, it cannot ‘unroll’ the curved ‘Swiss Roll’ dataset, resulting in heavy overlap. LLE, by preserving local relationships, successfully unrolls the manifold into a clean 2D representation, demonstrating the power of non-linear methods when the intrinsic data manifold is curved. This is why we need both linear and non-linear methods in our toolkit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Beyond PCA: Non-linear Methods</h2>

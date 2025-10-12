@@ -37,7 +37,7 @@ resources:
    - Eigenvectors, eigenvalues, and covariance matrices
    - Singular Value Decomposition (SVD)
    - Local Linear Embedding (LLE)
-   - Preview: Non-linear methods (t-SNE, UMAP)
+   - Preview: Non-linear Manifold Learning (t-SNE, UMAP)
 :::
 
 ::: {.notes}
@@ -97,19 +97,46 @@ _ = ax.legend(
 ```
 
 ::: {.notes}
-This is the actual scatter plot generated from the code. Notice that without color coding by species, it's not immediately obvious that there are three distinct groups. This is where clustering algorithms come in - they can help us discover these natural groupings automatically. In this 2D projection, we can see some structure, but the full dataset has 4 dimensions, so we're only seeing part of the picture.
+This unlabeled visualization highlights the core challenge of unsupervised learning. While some structure exists in this 2D projection, the full structure in the 4D space is harder to discern. Our goal with clustering is to algorithmically discover these natural groupings that are not visually obvious without labels. Notice that without color coding by species, it's not immediately obvious that there are three distinct groups. This is where clustering algorithms come in - they can help us discover these natural groupings automatically.
 :::
 
 ## IRIS -- another look
 
-![](figs/iris-bernard.jpg)
+```{python}
+#| fig-width: 9
+#| fig-height: 6
 
-:::: footer
-Slides based on material from Prof. Bernard
-:::
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn import datasets
+
+# Load iris dataset
+iris = datasets.load_iris()
+
+# Create DataFrame for easier plotting
+df = pd.DataFrame({
+    'Petal Length (cm)': iris.data[:, 2],
+    'Sepal Width (cm)': iris.data[:, 1],
+    'Species': [iris.target_names[i] for i in iris.target]
+})
+
+# Create high-quality plot with colors similar to DarkRainbow
+colors = ['#4477AA', '#EE6677', '#228833']  # Professional color palette
+plt.figure(figsize=(9, 6), dpi=150)
+sns.scatterplot(data=df, x='Petal Length (cm)', y='Sepal Width (cm)',
+                hue='Species', palette=colors, s=120, alpha=0.7,
+                edgecolor='black', linewidth=0.8)
+plt.grid(True, alpha=0.3, linestyle='--')
+plt.legend(title='Species', frameon=True, loc='upper left', fontsize=11)
+plt.xlabel('Petal Length (cm)', fontsize=12, fontweight='bold')
+plt.ylabel('Sepal Width (cm)', fontsize=12, fontweight='bold')
+plt.tight_layout()
+plt.show()
+```
 
 ::: {.notes}
-This is from Etienne Bernard's excellent book on machine learning. Here we see a more polished visualization of the IRIS dataset with the true class labels shown. Notice how the three species form relatively distinct clusters, though there is some overlap between two of them. This visualization hints that clustering algorithms should be able to recover these groupings reasonably well.
+This plot, now colored by the true species labels, confirms the inherent structure we are looking to discover. Note the clear separation of the Setosa species (blue), but also the significant overlap between Versicolor (red) and Virginica (green). This overlap explains why even simple clustering methods like K-means will struggle to achieve 100% agreement with the true labels, demonstrating the practical limits of clustering even on 'simple' data. The visualization uses petal length and sepal width, which provide good separation between species while still showing the challenging overlap between two classes.
 :::
 
 ## IRIS -- clustering
@@ -173,7 +200,7 @@ _ = ax.legend(
 ::::
 
 ::: {.notes}
-Here we compare the true class labels (left) with the K-means clustering result (right). This is a common way to evaluate clustering when you do have ground truth labels available - though remember, in real clustering scenarios, you often don't have labels. The comparison shows that K-means does a decent job but isn't perfect. One species is well-separated, but the other two overlap somewhat. This is typical - clustering algorithms work best when clusters are well-separated in the feature space.
+This side-by-side comparison is essential for understanding clustering performance. The left shows the ground truth (true labels), and the right shows the clusters discovered by K-means. While K-means accurately isolates the well-separated cluster, it struggles with the overlapped classes, often resulting in label-switching or mixing of points. This visually demonstrates the difference between classification (predicting known labels) and clustering (discovering structure). Remember, in real clustering scenarios, you often don't have labels - this comparison is primarily for pedagogical purposes and algorithm evaluation.
 :::
 
 ## Recommended reading
@@ -217,9 +244,7 @@ Slides based on material from Prof. Yi Zhang
 This is the key insight: even though our data might be represented with thousands of features, it often lies on or near a much lower-dimensional manifold. Think about images of faces - each pixel is a dimension, so a 100x100 image is 10,000 dimensional. But faces don't fill that entire space - they have structure (two eyes, one nose, etc.). The actual degrees of freedom are much fewer - perhaps orientation, expression, lighting, identity. Dimensionality reduction tries to find these underlying degrees of freedom. This is the manifold hypothesis that underlies much of machine learning.
 :::
 
-## Dimensionality Reduction
-
-* Supposed a dataset of "3s" perturbed in various ways
+## Visualizing the Manifold Hypothesis: Images of '3' Perturbed by Non-linear Operations
 
 ![](figs/perturbed-3.jpg)
 
@@ -413,6 +438,10 @@ for name in timing:
 plt.show()
 ```
 
+::: {.notes}
+This slide lists many popular dimensionality reduction algorithms. The figure (populated by the results) is a powerful tool for comparison. It demonstrates that the choice of algorithm—linear (like PCA/SVD) vs. non-linear (like t-SNE/LLE)—radically changes the resulting low-dimensional structure. This comparison motivates why we need to understand the underlying math and assumptions of each method. Notice how t-SNE creates distinct, well-separated clusters of digits, which is characteristic of non-linear manifold learning methods that preserve local neighborhood structure.
+:::
+
 
 ## Principal Component Analysis
 
@@ -564,7 +593,7 @@ Now with color labels showing the true digit classes. You can see that PCA does 
   - Widely implemented robustly in major packages
 
 ::: {.notes}
-A practical issue: for high-dimensional data, computing the full covariance matrix and all its eigenvectors is computationally expensive. For 10,000 features, the covariance matrix has 100 million entries! SVD provides an efficient alternative - it can directly compute the top k principal components without forming the covariance matrix. In practice, sklearn's PCA uses randomized SVD for efficiency. This makes PCA tractable even for very high-dimensional data.
+A practical issue: for high-dimensional data, computing the full covariance matrix and all its eigenvectors is computationally expensive. For 10,000 features, the covariance matrix has 100 million entries! SVD provides an efficient alternative - it can directly compute the top k principal components without forming the covariance matrix. Furthermore, SVD is generally more numerically stable than computing the eigenvalues of the covariance matrix directly, especially in the presence of noise or highly correlated features. This is why SVD is the practical computational backbone for PCA in modern machine learning libraries like scikit-learn. In practice, sklearn's PCA uses randomized SVD for efficiency, making PCA tractable even for very high-dimensional data.
 :::
 
 ## Singular Value Decomposition (SVD)
@@ -603,16 +632,28 @@ LLE is a non-linear dimensionality reduction technique that's designed to preser
 
 ![](figs/preserving-local-neighborhoods.jpg)
 
+::: {.notes}
+Non-linear dimensionality reduction, particularly methods like LLE, relies on the assumption that the local geometry of the high-dimensional data is a good proxy for the global structure. As illustrated here, the goal is to find a mapping that preserves the local neighborhood relationships (who is connected to whom) in the low-dimensional space, effectively 'unrolling' the manifold without tearing it apart. This is fundamentally different from PCA which only preserves global variance.
+:::
+
 ## LLE
 
 ![](figs/lle-algorithm.jpg)
 
 https://www.science.org/doi/10.1126/science.290.5500.2323
 
+::: {.notes}
+Local Linear Embedding (LLE) works by first finding the set of weights that best reconstructs each data point from its neighbors in the high-dimensional space. The algorithm then searches for a low-dimensional embedding where these same reconstruction weights hold true. Unlike PCA, LLE is not based on maximizing variance; it's based entirely on preserving these local linear dependencies. This makes LLE powerful for unrolling non-linear manifolds while maintaining neighborhood structure.
+:::
+
 
 ## PCA vs LLE
 
 ![](figs/pca-vs-lle.jpg){height="600"}
+
+::: {.notes}
+This figure is the canonical example illustrating the difference between linear (PCA) and non-linear (LLE) methods. PCA finds the direction of maximum variance, but since it is a straight line projection, it cannot 'unroll' the curved 'Swiss Roll' dataset, resulting in heavy overlap. LLE, by preserving local relationships, successfully unrolls the manifold into a clean 2D representation, demonstrating the power of non-linear methods when the intrinsic data manifold is curved. This is why we need both linear and non-linear methods in our toolkit.
+:::
 
 
 
