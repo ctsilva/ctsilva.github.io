@@ -30,6 +30,7 @@ Software (Source Code)
 * TetMesh Comparator (tmc) - For measuring errors between two tet meshes, by Louis Bavoil
 * GTB: Graphics Toolbox - Includes implementation of Correa's PhD thesis (in particular, iWalk)
 * GcTin - Greedy-Cuts terrain triangulation
+  * [GitHub repository](https://github.com/ctsilva/gctin)
 * ZSWEEP - Implementation by R. Farias of the ZSWEEP algorithm. (Note: Kitware has implemented ZSWEEP in VTK as [vtkUnstructuredGridVolumeZSweepMapper](https://vtk.org/doc/nightly/html/classvtkUnstructuredGridVolumeZSweepMapper.html), which is fully integrated into both VTK and ParaView and is the preferred way to generate high-quality images of unstructured grids)
 * Raytrace - Unstructured-grid ray tracer, by Bunyk. (Also implemented in VTK as [vtkUnstructuredGridBunykRayCastFunction](https://vtk.org/doc/nightly/html/classvtkUnstructuredGridBunykRayCastFunction.html))
   * [spx.off](spx.off) - Sample dataset
