@@ -30,6 +30,10 @@ resources:
 1. Clustering
 2. Dimensionality Reduction
 
+::: {.notes}
+Today we're covering two fundamental unsupervised learning techniques that are crucial for understanding and visualizing machine learning models. Clustering helps us find natural groupings in data, while dimensionality reduction helps us visualize and understand high-dimensional data. Both are essential tools for exploratory data analysis and understanding model behavior.
+:::
+
 <!-- Examples and materials from... -->
 
 ## Clustering
@@ -37,6 +41,10 @@ resources:
 Etienne Bernard: "... the goal of clustering is to separate a set of examples into groups called clusters"
 
 ![](figs/iris.jpg)
+
+::: {.notes}
+Clustering is an unsupervised learning task where we try to find natural groupings in data without having labeled examples. Unlike classification, where we know the classes ahead of time, clustering discovers structure in the data. This is particularly useful for exploratory data analysis, customer segmentation, anomaly detection, and understanding the structure of your data before applying supervised learning methods. The IRIS dataset shown here is one of the classic examples in machine learning, containing measurements of iris flowers from three different species.
+:::
 
 ## IRIS
 
@@ -58,6 +66,10 @@ _ = ax.legend(
 )
 ```
 
+::: {.notes}
+Here's the code to load and visualize the IRIS dataset. The IRIS dataset has 4 features (sepal length, sepal width, petal length, petal width) and 3 species classes. We're plotting just two dimensions here (petal width vs sepal width) to make it easy to visualize. Notice we're using sklearn's built-in datasets module which makes it very easy to load standard benchmark datasets.
+:::
+
 ## IRIS
 
 ```{python}
@@ -74,25 +86,49 @@ _ = ax.legend(
 )
 ```
 
+::: {.notes}
+This is the actual scatter plot generated from the code. Notice that without color coding by species, it's not immediately obvious that there are three distinct groups. This is where clustering algorithms come in - they can help us discover these natural groupings automatically. In this 2D projection, we can see some structure, but the full dataset has 4 dimensions, so we're only seeing part of the picture.
+:::
+
 ## IRIS -- another look (Bernard)
 
 ![](figs/iris-bernard.jpg)
+
+::: {.notes}
+This is from Etienne Bernard's excellent book on machine learning. Here we see a more polished visualization of the IRIS dataset with the true class labels shown. Notice how the three species form relatively distinct clusters, though there is some overlap between two of them. This visualization hints that clustering algorithms should be able to recover these groupings reasonably well.
+:::
 
 ## IRIS -- clustering
 
 ![](figs/iris-bernard-clustering.jpg)
 
+::: {.notes}
+This slide shows different clustering results on the IRIS dataset. Different clustering algorithms will find different groupings based on their underlying assumptions about cluster shape, density, and separation. Some algorithms assume spherical clusters (like K-means), while others can find arbitrary shapes (like DBSCAN). The quality of clustering can be evaluated both visually and using metrics like silhouette score or within-cluster sum of squares.
+:::
+
 ## IRIS -- k-means
 
 ![](figs/iris-bernard-clustering-kmeans.jpg)
+
+::: {.notes}
+K-means is one of the most popular clustering algorithms due to its simplicity and efficiency. It works by iteratively assigning points to the nearest cluster center (centroid) and then recomputing the centroids. The algorithm requires you to specify K (the number of clusters) in advance. For IRIS with K=3, it does a reasonable job of recovering the three species. K-means works well when clusters are roughly spherical and similar in size, but can struggle with elongated or irregular-shaped clusters. The algorithm is also sensitive to initialization, though techniques like K-means++ help address this.
+:::
 
 ## Wolfram Mathematica FindClusters
 
 ![](figs/findclusters-methods.jpg)
 
+::: {.notes}
+Wolfram Mathematica's FindClusters function provides a nice overview of different clustering methods available. Each method has different strengths: K-means is fast and simple, hierarchical methods build tree structures of clusters, DBSCAN can find arbitrary shapes and identify outliers, spectral clustering works well with non-convex clusters. The choice of method depends on your data characteristics, domain knowledge, and what properties you want your clusters to have. In practice, it's often worth trying multiple methods and comparing results.
+:::
+
 ## Wolfram Mathematica FindClusters
 
 ![](figs/findclusters-methods-examples.jpg)
+
+::: {.notes}
+This slide shows visual examples of how different clustering methods partition the same dataset. Notice how they produce very different results! K-means creates roughly circular boundaries, hierarchical methods create nested groupings, DBSCAN identifies dense regions and can mark sparse areas as outliers. This illustrates an important point: there's no single "correct" clustering - the best method depends on what structure you're trying to discover in your data. Visualization is crucial for understanding what each method is doing and whether the results make sense for your application.
+:::
 
 
 ## IRIS - classes
@@ -122,6 +158,10 @@ _ = ax.legend(
 
 ::::
 
+::: {.notes}
+Here we compare the true class labels (left) with the K-means clustering result (right). This is a common way to evaluate clustering when you do have ground truth labels available - though remember, in real clustering scenarios, you often don't have labels. The comparison shows that K-means does a decent job but isn't perfect. One species is well-separated, but the other two overlap somewhat. This is typical - clustering algorithms work best when clusters are well-separated in the feature space.
+:::
+
 ## Recommended reading
 
 * **Required** https://www.wolfram.com/language/introduction-machine-learning/clustering/ [link](https://www.wolfram.com/language/introduction-machine-learning/clustering/)
@@ -132,6 +172,9 @@ _ = ax.legend(
 
 * https://en.wikipedia.org/wiki/DBSCAN
 
+::: {.notes}
+The Wolfram tutorial is required reading - it provides excellent interactive examples of different clustering methods. The Wikipedia articles provide good mathematical background. I particularly recommend the DBSCAN article as it introduces density-based clustering, which can find clusters of arbitrary shape unlike K-means. For your projects, understanding multiple clustering approaches will help you choose the right tool for your data.
+:::
 
 ## Dimensionality Reduction
 
@@ -142,12 +185,19 @@ _ = ax.legend(
   - visualization -- show high-dimensional data in 2D or 3D
   - discover "intrinsic dimensionality" of the data
 
+::: {.notes}
+Now we transition to dimensionality reduction, which is closely related to clustering but serves a different purpose. While clustering groups similar items, dimensionality reduction finds lower-dimensional representations of high-dimensional data. This is crucial in machine learning because: 1) it helps us visualize data that otherwise couldn't be plotted, 2) it reduces computational cost and memory requirements, 3) it can improve model performance by removing noise and redundant features (curse of dimensionality), and 4) it helps us understand the intrinsic structure of the data. Many real-world datasets live on lower-dimensional manifolds embedded in high-dimensional space - DR helps us find these manifolds.
+:::
+
 ## Dimensionality Reduction (Yi Zhang)
 
 * Assumption: data lies on a lower dimensional space
 
 ![](figs/dm-data-is-low-dimensional.jpg)
 
+::: {.notes}
+This is the key insight: even though our data might be represented with thousands of features, it often lies on or near a much lower-dimensional manifold. Think about images of faces - each pixel is a dimension, so a 100x100 image is 10,000 dimensional. But faces don't fill that entire space - they have structure (two eyes, one nose, etc.). The actual degrees of freedom are much fewer - perhaps orientation, expression, lighting, identity. Dimensionality reduction tries to find these underlying degrees of freedom. This is the manifold hypothesis that underlies much of machine learning.
+:::
 
 ## Dimensionality Reduction (Bishop)
 
@@ -159,6 +209,10 @@ _ = ax.legend(
 
 * Here the underlying **manifold** is **non-linear**
 
+::: {.notes}
+This is a great example from Christopher Bishop's book. These images of the digit "3" are all different - they're rotated, translated, scaled, and slightly deformed. Each image might be 28x28 = 784 dimensions. But how many degrees of freedom do we really have? We have rotation angle, x/y position, scale, and maybe a few shape parameters. So perhaps 5-7 dimensions really capture the variation. This is what we mean by intrinsic dimensionality. Crucially, notice these transformations are non-linear - small changes in rotation don't correspond to linear changes in pixel values. This is why we need non-linear dimensionality reduction methods like t-SNE and UMAP, not just linear methods like PCA.
+:::
+
 ## Digits
 
 ``` python
@@ -167,6 +221,10 @@ from sklearn.datasets import load_digits
 digits = load_digits(n_class=6)
 X, y = digits.data, digits.target
 ```
+
+::: {.notes}
+Now we'll work with the digits dataset, which is a great playground for dimensionality reduction. It consists of 8x8 pixel images of handwritten digits (0-9). Each image is 64-dimensional (8x8), which is small enough to work with quickly but high enough dimensional that we can't visualize it directly. We'll load just 6 classes to keep visualization cleaner.
+:::
 
 ## Digits - 0
 
@@ -177,6 +235,10 @@ digits = load_digits(n_class=6)
 digits.images[0]
 ```
 
+::: {.notes}
+This is what a single digit image looks like as an 8x8 array of pixel intensities. Each value represents the grayscale intensity at that pixel. This array gets flattened into a 64-dimensional vector for machine learning algorithms. Even though we show it as a 2D grid, the algorithm sees it as a point in 64D space.
+:::
+
 ## Digits - 1
 
 ```{python}
@@ -185,6 +247,10 @@ from sklearn.datasets import load_digits
 digits = load_digits(n_class=6)
 digits.images[1]
 ```
+
+::: {.notes}
+Here's another digit. Notice the variation in writing style even within the same digit class. Dimensionality reduction should ideally map similar digits close together in the low-dimensional space, regardless of these minor variations.
+:::
 
 ## Digits
 
@@ -204,6 +270,10 @@ for idx, ax in enumerate(axs.ravel()):
     ax.axis("off")
 _ = fig.suptitle("A selection from the 64-dimensional digits dataset", fontsize=16)
 ```
+
+::: {.notes}
+Here's a grid showing 100 different digit images from our dataset. Notice the variety - different digits, different writing styles, different positions. Our goal with dimensionality reduction is to create a 2D or 3D representation where similar-looking digits are close together. This will help us visualize the structure of the data and understand how well different algorithms capture the similarity relationships.
+:::
 
 ## Digits
 ```{python}
@@ -330,6 +400,10 @@ plt.show()
 -   Lets so make a quick review of eigenvectors, eigenvalues, and covariance matrices.
 :::
 
+::: {.notes}
+Now we'll dive deep into PCA, which is the most fundamental dimensionality reduction technique. PCA is a linear method - it finds the best linear projection of the data. While it can't capture complex non-linear structure like t-SNE can, it's extremely fast, robust, well-understood mathematically, and often works surprisingly well. Plus understanding PCA gives you the foundation for understanding more complex methods. These slides are from Luis Gustavo Nonato's excellent lectures. We'll review the linear algebra foundations first.
+:::
+
 ## Eigenvectors and Eigenvalues
 
 Given a $d \times d$ matrix $A$, a pair $(\lambda, u)$ that satisfies
@@ -337,6 +411,10 @@ Given a $d \times d$ matrix $A$, a pair $(\lambda, u)$ that satisfies
 $A u = \lambda u$
 
 is called eigenvalue $\lambda$ and corresponding eigenvector $u$ of $A$.
+
+::: {.notes}
+Quick linear algebra review: An eigenvector is a special vector that, when you multiply it by a matrix, just gets scaled - it doesn't change direction. The scaling factor is the eigenvalue. This is crucial for PCA because the eigenvectors of the covariance matrix tell us the directions of maximum variance in the data, and the eigenvalues tell us how much variance there is in each direction. The largest eigenvectors become our principal components.
+:::
 
 ## Symmetric Matrices
 
@@ -346,9 +424,17 @@ is called eigenvalue $\lambda$ and corresponding eigenvector $u$ of $A$.
 
 ![](figs/pca-spectral-decomposition.jpg)
 
+::: {.notes}
+Covariance matrices are symmetric, which is great news! It means all eigenvalues are real (not complex), and the eigenvectors are orthogonal to each other. This orthogonality is why principal components form a nice coordinate system - each component is independent. The spectral decomposition shown here is how we can decompose any symmetric matrix into its eigenvectors and eigenvalues.
+:::
+
 ## Covariance Matrix
 
 ![](figs/covariance-matrix.jpg)
+
+::: {.notes}
+The covariance matrix captures how features vary together. The diagonal elements are variances (how much each feature varies), and the off-diagonal elements are covariances (how pairs of features vary together). A large positive covariance means when one feature is large, the other tends to be large. A large negative covariance means they vary in opposite directions. Zero covariance means they're uncorrelated.
+:::
 
 ## Covariance Matrix
 
@@ -364,28 +450,51 @@ is called eigenvalue $\lambda$ and corresponding eigenvector $u$ of $A$.
 
 ::::
 
+::: {.notes}
+Visual intuition: On the left, we see highly correlated data - when X increases, Y tends to increase too. This shows up as a large covariance. On the right, the features are uncorrelated - knowing X tells you nothing about Y. The covariance is near zero. PCA finds directions that maximize variance, which means it finds the directions where data spreads out the most.
+:::
+
 ## Covariance Matrix
 
 ![](figs/covariance-summary.jpg)
+
+::: {.notes}
+Summary slide showing the mathematical formula for covariance. Remember that we typically center the data (subtract the mean) before computing PCA, which is why we see (x-μ) terms here. The covariance matrix is the average of the outer product of centered data points.
+:::
 
 ## Principal Component Analysis:  intuition
 
 ![](figs/pca-intuition.jpg)
 
+::: {.notes}
+Here's the geometric intuition for PCA. Imagine you have a cloud of points in high-dimensional space. PCA finds the direction where the data varies the most (the first principal component), then the direction of next-most variation that's orthogonal to the first (second PC), and so on. Geometrically, we're finding the axes of the ellipsoid that best fits the data. Projecting onto the first few principal components gives us a lower-dimensional representation that captures most of the variance.
+:::
+
 ## Principal Component Analysis:  intuition
 
 ![](figs/pca-intuition2.jpg)
 
+::: {.notes}
+Another view: the red line shows the first principal component - the direction of maximum variance. If we project all points onto this line, we get a 1D representation. The key insight is that even though we're throwing away information (the perpendicular distance to the line), we're keeping the most important information (the spread along the line). This is why PCA works well for compression and visualization - it discards the dimensions with least variance, which are often noise.
+:::
 
 ## Principal Component Analysis
 
 ![](figs/pca-description.jpg)
 
+::: {.notes}
+The formal algorithm: 1) Center the data by subtracting the mean, 2) Compute the covariance matrix, 3) Find its eigenvectors and eigenvalues, 4) Sort eigenvectors by eigenvalue (largest first), 5) Project data onto the top k eigenvectors. The eigenvectors are your principal components, and the eigenvalues tell you how much variance each component explains. You can plot the cumulative explained variance to decide how many components to keep.
+:::
+
 ## Principal Component Analysis
 
 ![](figs/pca-filtering.jpg)
 
-## PCA of digits  
+::: {.notes}
+PCA can also be viewed as a filtering operation - keeping the signal (high variance directions) and removing noise (low variance directions). This is why PCA is used for denoising. You project into PCA space, keep only the top components, and project back. The assumption is that noise is spread across many dimensions while signal is concentrated in a few. This works surprisingly well for many types of data.
+:::
+
+## PCA of digits
 
 ```{python}
 
@@ -396,6 +505,10 @@ reduced_data=pca.fit_transform(data)
 plt.scatter(reduced_data[:, 0], reduced_data[:, 1])
 plt.show()
 ```
+
+::: {.notes}
+Here's PCA applied to the full digits dataset (all 10 classes). We're reducing from 64 dimensions down to 2. Notice there's some structure - the points aren't randomly scattered - but it's not super clean. Without the color labels, it's hard to see the digit classes. PCA is a linear method, so it can't capture the complex non-linear structure of digit manifolds. But it's fast and gives us a reasonable starting point.
+:::
 
 ## PCA of digits
 
@@ -409,6 +522,10 @@ plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=labels)
 plt.show()
 ```
 
+::: {.notes}
+Now with color labels showing the true digit classes. You can see that PCA does capture some structure - there are some clusters corresponding to digit classes - but there's substantial overlap. The digit "1" is somewhat separated (probably because it's sparse - lots of empty space), but most other digits are mixed together. This is a limitation of linear methods for non-linear data. We'll see that t-SNE does much better.
+:::
+
 ## Scaling Up
 
 * Covariance matrix can be really big!
@@ -420,12 +537,19 @@ plt.show()
   - Finds the $k$ largest eigenvectors
   - Widely implemented robustly in major packages
 
+::: {.notes}
+A practical issue: for high-dimensional data, computing the full covariance matrix and all its eigenvectors is computationally expensive. For 10,000 features, the covariance matrix has 100 million entries! SVD provides an efficient alternative - it can directly compute the top k principal components without forming the covariance matrix. In practice, sklearn's PCA uses randomized SVD for efficiency. This makes PCA tractable even for very high-dimensional data.
+:::
 
 ## Singular Value Decomposition (SVD)
 
 * https://en.wikipedia.org/wiki/Singular_value_decomposition
 
 ![](figs/svd.jpg)
+
+::: {.notes}
+SVD decomposes any matrix into three matrices: U (left singular vectors), Sigma (singular values), and V (right singular vectors). For PCA, the right singular vectors V are the principal components, and the singular values squared are the eigenvalues. SVD is more numerically stable than computing eigenvalues of the covariance matrix directly. It's the standard way to compute PCA in practice.
+:::
 
 ## Dimensionality Reduction Techniques
 
@@ -437,9 +561,17 @@ plt.show()
   - UMAP
   - **many others**
 
+::: {.notes}
+There are many dimensionality reduction techniques beyond PCA. Linear methods like LDA consider class labels. Non-negative matrix factorization (NMF) constrains components to be non-negative, which is useful for parts-based representations. t-SNE and UMAP are non-linear methods that can capture complex manifold structure. Each has different strengths and use cases. For visualization, t-SNE and UMAP are popular because they preserve local neighborhood structure well.
+:::
+
 ## Local Linear Embedding
 
 ![](figs/lle.jpg)
+
+::: {.notes}
+LLE is a non-linear dimensionality reduction technique that's designed to preserve local neighborhoods. The idea is simple but powerful: each point should be reconstructible as a weighted sum of its neighbors, and this reconstruction should be preserved in the low-dimensional space. This means if points are close in high-dimensional space, they'll be close in low-dimensional space. LLE can "unfold" non-linear manifolds in a way that linear PCA cannot.
+:::
 
 ## Preserving Local Manifold Neighborhoods
 
@@ -501,4 +633,9 @@ https://pair-code.github.io/understanding-umap/
 ## What about user interaction?
 
 ![](figs/projections.jpg)
+
+
+::: {.notes}
+The key idea of manifold learning methods: preserve local structure. Points that are neighbors in high-dimensional space should remain neighbors in low-dimensional space. Different methods define "neighborhood" and "preserve" differently, but this is the core principle. LLE, Isomap, and t-SNE all try to maintain local neighborhoods while allowing global structure to change.
+:::
 
