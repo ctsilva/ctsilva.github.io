@@ -25,6 +25,7 @@ Software (Source Code)
 
 * [VisTrails](http://www.vistrails.org)
 * [AFront](http://afront.sourceforge.net) - Advancing front surface reconstruction, by Schreiner, Scheidegger, Fleishman and others
+  * [GitHub repository](https://github.com/ctsilva/afront)
 * [HAVS](http://havs.sourceforge.net) - Implementation of the Hardware-Assisted Visibility Sorting (HAVS) algorithm for rendering unstructured grids, by Callahan, Ikits, and others. (Note: Also available in VTK as [vtkHAVSVolumeMapper](https://vtk.org/doc/nightly/html/classvtkHAVSVolumeMapper.html))
 * GPU-based ray caster for Unstructured Meshes, by Bernardon and Comba
 * TetMesh Comparator (tmc) - For measuring errors between two tet meshes, by Louis Bavoil
