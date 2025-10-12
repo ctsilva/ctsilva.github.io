@@ -132,14 +132,14 @@ PhD dissertations and Master's theses completed under my supervision.
   PhD Dissertation, Princeton University  
   [[PDF]](../thesis/wagner-correa-thesis.pdf)
 
-- **Ricardo Farias** (2001)
-  *Efficient Rendering of Irregular Volumetric Grids*
-  PhD Dissertation, State University of New York at Stony Brook
+- **Ricardo Farias** (2001)  
+  *Efficient Rendering of Irregular Volumetric Grids*  
+  PhD Dissertation, State University of New York at Stony Brook  
   [[PDF]](../thesis/ricardo-farias-thesis.pdf)
 
-- **Tsung-Chin Ho** (1999)
-  *Simplification of Polygonal Surface Models*
-  PhD Dissertation, State University of New York at Stony Brook
+- **Tsung-Chin Ho** (1999)  
+  *Simplification of Polygonal Surface Models*  
+  PhD Dissertation, State University of New York at Stony Brook  
   [[PDF]](../thesis/ho-phd.pdf)
 
 ## Master's Theses
