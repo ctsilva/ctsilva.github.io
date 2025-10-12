@@ -193,6 +193,19 @@ Claudio Silva
 </div><div class="column" style="width:40%;">
 <p><img data-src="figs/tsne.jpg"></p>
 </div></div>
+<aside class="notes">
+<p>SNE (Stochastic Neighbor Embedding), the predecessor, defines probability distributions over the high-dimensional data, where neighbors have high probability. It then tries to replicate these probabilities in low-dimensional space. The key addition of t-SNE is using the Student’s t-distribution in the low-dimensional space. This distribution has a ‘heavy tail,’ which means it allows points that are far apart in the low-dimensional space to still model moderately small distances in the high-dimensional space. This heavy-tail property is what creates the excellent separation between clusters compared to SNE. It prevents the “crowding problem” where all points try to squeeze into the center.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <p>HERE is an excellent talk by t-SNE creator: <a href="https://www.youtube.com/watch?v=RJVL80Gg3lA&amp;list=UUtXKDgv1AVoG88PLl8nGXmw">video link</a></p>
 <!-- ##
 
@@ -206,11 +219,37 @@ Claudio Silva
 </div><div class="column" style="width:40%;">
 <p><img data-src="figs/pss-h.jpg"></p>
 </div></div>
+<aside class="notes">
+<p>This digression relates back to the concept of the manifold hypothesis from last week. Manifold learning, which includes LLE, t-SNE, and UMAP, is essentially trying to reconstruct a lower-dimensional surface (like this Point Set Surface) from high-dimensional points. Understanding how local geometry (the neighborhood around a point) can define a surface helps build intuition for why these non-linear methods focus on preserving local connections, rather than global distances or overall shape. Just as we reconstruct surfaces from point clouds using local neighborhoods, these algorithms reconstruct low-dimensional manifolds using local neighborhood relationships.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Wattenberg, Viégas, and Johnson, 2016</h2>
 
 <img data-src="figs/using-tsne.jpg" class="r-stretch"><p>https://distill.pub/2016/misread-tsne/</p>
+<aside class="notes">
+<p>This article, ‘How to Use t-SNE Effectively,’ is essential reading. It represents a pivot point in the visualization community, moving from simply celebrating t-SNE’s results to critically analyzing its pitfalls. The authors demonstrate, using controlled experiments, which visual properties are meaningful and which are not. The main takeaway is that t-SNE is a visualization tool, not a clustering tool—its output must be treated as a suggestion of structure, not a definitive map of reality. This paper should be required reading for anyone using t-SNE in their work.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>t-SNE</h2>
@@ -283,9 +322,22 @@ Claudio Silva
 </ul>
 
 <img data-src="figs/tsneclustersizes.jpg" class="r-stretch"><ul>
-<li><p>“By size we mean bounding box measurements, not number of points.”</p></li>
-<li><p>“The t-SNE algorithm adapts its notion of “distance” to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes.”</p></li>
+<li><p>“Size refers to spatial extent/area, not the number of points in the cluster.”</p></li>
+<li><p>“The t-SNE algorithm adapts its notion of”distance” to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes.”</p></li>
 </ul>
+<aside class="notes">
+<p>The reason t-SNE expands dense clusters and contracts sparse ones is due to its cost function, specifically the use of the heavy-tailed t-distribution, which is designed to resolve points within a cluster clearly. If a cluster is naturally dense, t-SNE must push points further apart in the low-dimensional embedding to satisfy the local probability distribution, effectively equalizing the density of the clusters in 2D space. Therefore, the area or size of a cluster in a t-SNE plot is not proportional to the cluster’s density or variance in the original space. This is a feature, not a bug - it ensures all clusters are visible, but it means you can’t compare cluster sizes visually.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>t-SNE</h2>
@@ -357,7 +409,7 @@ Claudio Silva
 <li>Topomap preserves the 0-dimensional persistence diagram of the Rips filtration of the high-dimensional data.</li>
 </ul>
 <aside class="notes">
-<p>Topomap is recent work from Harish Doraiswamy and colleagues that addresses t-SNE’s topology problem. It uses topological data analysis (TDA) - specifically persistence diagrams - to preserve the number of connected components at different scales. This is more advanced math (algebraic topology), but the intuition is: capture which points are connected at different distance thresholds, and preserve that in the low-D embedding. It’s slower than t-SNE but gives topological guarantees. Good for when you care about connectivity and holes in your data.</p>
+<p>Topomap aims to provide topological guarantees that t-SNE and UMAP lack. It uses Topological Data Analysis (TDA), specifically persistent homology, to extract ‘topological features’ like the number of connected components or holes in the high-dimensional data. The algorithm then minimizes a cost function that forces the low-dimensional embedding to have the same persistent features, making it ideal for datasets where the connectivity, holes, or overall shape of the manifold is important. For example, if your high-D data has 3 connected components at a certain scale, Topomap ensures the 2D embedding also has 3 components. It’s more computationally expensive than t-SNE but provides mathematical guarantees about topological structure preservation.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -375,7 +427,7 @@ Claudio Silva
 
 <img data-src="figs/understanding-umap.jpg" class="r-stretch"><p>https://pair-code.github.io/understanding-umap/</p>
 <aside class="notes">
-<p>Now let’s talk about UMAP - the newer and increasingly popular alternative to t-SNE. This interactive article from Google’s PAIR team is THE best resource for understanding UMAP. It has interactive visualizations showing exactly how the algorithm works. UMAP stands for Uniform Manifold Approximation and Projection - fancy name, but the core idea is similar to t-SNE: build a graph of neighborhoods and optimize a layout. The key differences: UMAP is faster, scales better, and arguably preserves more global structure.</p>
+<p>We transition now to UMAP (Uniform Manifold Approximation and Projection). UMAP has rapidly replaced t-SNE as the go-to default for many visualization tasks. It shares the same philosophy as t-SNE—preserving local neighborhood structure—but it is built on a more rigorous theoretical foundation derived from Riemannian geometry and algebraic topology. This foundation is why UMAP is typically faster, scales better, and is often cited as better at preserving global data structure. This interactive article from Google’s PAIR team is THE best resource for understanding UMAP, with interactive visualizations showing exactly how the algorithm works.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -434,6 +486,19 @@ Claudio Silva
 <li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
 <li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
 </ul>
+<aside class="notes">
+<p>The two core UMAP parameters, n_neighbors and min_dist, allow precise control over the resulting visualization. n_neighbors dictates the local/global balance (high value = more global view, lower value = more local focus). min_dist acts as a repulsion force, ensuring a minimum separation between points. These two parameters are typically tuned together to find an embedding that maximizes the visualization of the data’s inherent structure. Unlike t-SNE’s perplexity which can dramatically change results, UMAP parameters tend to be more stable and intuitive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>UMAP parameters</h2>
@@ -492,7 +557,7 @@ Claudio Silva
 <h2>UMAP</h2>
 
 <img data-src="figs/umapvstsne-param.jpg" class="r-stretch"><aside class="notes">
-<p>Nice comparison showing how parameters affect both methods. t-SNE perplexity and UMAP n_neighbors serve similar roles - controlling local vs global balance. But notice UMAP is more stable - parameters don’t change the structure as dramatically. Also UMAP min_dist gives you extra control over cluster “tightness” that t-SNE lacks. Bottom line: UMAP is becoming the default choice for many applications because it’s faster, more stable, and gives better global structure. But t-SNE is still valuable and the Distill article’s lessons apply to both.</p>
+<p>Nice comparison showing how parameters affect both methods. t-SNE perplexity and UMAP n_neighbors serve similar roles - controlling local vs global balance. But notice UMAP is more stable - parameters don’t change the structure as dramatically. Also UMAP min_dist gives you extra control over cluster “tightness” that t-SNE lacks. The choice between the two often comes down to: Speed and Global Structure Preservation (choose UMAP) vs.&nbsp;Familiarity or Maximum Local Separation (t-SNE). Since UMAP is faster and its parameters are more stable and interpretable, it is highly recommended as the starting point for most high-dimensional visualization projects. However, t-SNE is still valuable and the Distill article’s lessons about misinterpretation apply to both methods.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
