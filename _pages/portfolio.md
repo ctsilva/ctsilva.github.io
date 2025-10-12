@@ -32,6 +32,7 @@ Software (Source Code)
 * GcTin - Greedy-Cuts terrain triangulation
   * [GitHub repository](https://github.com/ctsilva/gctin)
 * ZSWEEP - Implementation by R. Farias of the ZSWEEP algorithm. (Note: Kitware has implemented ZSWEEP in VTK as [vtkUnstructuredGridVolumeZSweepMapper](https://vtk.org/doc/nightly/html/classvtkUnstructuredGridVolumeZSweepMapper.html), which is fully integrated into both VTK and ParaView and is the preferred way to generate high-quality images of unstructured grids)
+  * [GitHub repository](https://github.com/ctsilva/demo-zsweep)
 * Raytrace - Unstructured-grid ray tracer, by Bunyk. (Also implemented in VTK as [vtkUnstructuredGridBunykRayCastFunction](https://vtk.org/doc/nightly/html/classvtkUnstructuredGridBunykRayCastFunction.html))
   * [spx.off](spx.off) - Sample dataset
 * Vertex program source code for rendering a tetrahedron by Wylie et al (See their paper at VolVis 2002 for details)
