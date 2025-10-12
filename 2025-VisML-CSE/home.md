@@ -79,6 +79,29 @@ author_profile: true
   - Local Interpretable Model-agnostic Explanations (LIME)
   - SHAP (SHapley Additive exPlanations)
 
+### Week 7 (Oct 14 - Tuesday Make-up Class)
+- **Topics:** Clustering and Dimensionality Reduction
+- **Materials:**
+  - [Clustering and Dimensionality Reduction](/2025-VisML-CSE/slides/week8-clustering.html)
+- **Content:**
+  - Introduction to Unsupervised Learning
+  - K-means Clustering and DBSCAN
+  - The Manifold Hypothesis and Intrinsic Dimensionality
+  - Principal Component Analysis (PCA)
+  - Eigenvectors, Eigenvalues, and Covariance Matrices
+  - Singular Value Decomposition (SVD)
+  - Local Linear Embedding (LLE)
+
+### Week 8 (Oct 20)
+- **Topics:** Dimensionality Reduction (continued)
+- **Materials:**
+  - [Dimensionality Reduction (continued)](/2025-VisML-CSE/slides/week9-dimensionality.html)
+- **Content:**
+  - t-SNE: Theory and Pitfalls
+  - UMAP: Uniform Manifold Approximation and Projection
+  - Topomap: Topologically-Constrained Dimensionality Reduction
+  - Interactive Dimensionality Reduction Techniques
+
 ## Assignments
 
 ### Weekly Assignments (50% of grade)
