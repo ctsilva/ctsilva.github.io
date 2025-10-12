@@ -83,6 +83,10 @@ author_profile: true
 - **Topics:** Clustering and Dimensionality Reduction
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2025-VisML-CSE/slides/week8-clustering.html)
+- **Recommended Readings:**
+  - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - **Required**
+  - [A Tutorial on Principal Component Analysis](https://arxiv.org/abs/1404.1100) (Shlens, 2014)
+  - [Scikit-learn PCA User Guide](https://scikit-learn.org/stable/modules/decomposition.html#pca)
 - **Content:**
   - Introduction to Unsupervised Learning
   - K-means Clustering and DBSCAN
@@ -96,6 +100,11 @@ author_profile: true
 - **Topics:** Dimensionality Reduction (continued)
 - **Materials:**
   - [Dimensionality Reduction (continued)](/2025-VisML-CSE/slides/week9-dimensionality.html)
+- **Recommended Readings:**
+  - [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) (Wattenberg, Viégas, Johnson, 2016) - **Required**
+  - [Visualizing Data using t-SNE](https://www.jmlr.org/papers/v9/vandermaaten08a.html) (van der Maaten & Hinton, 2008)
+  - [UMAP: Uniform Manifold Approximation and Projection](https://arxiv.org/abs/1802.03426) (McInnes, Healy, Melville, 2018)
+  - [Understanding UMAP](https://pair-code.github.io/understanding-umap/) (Coenen & Pearce)
 - **Content:**
   - t-SNE: Theory and Pitfalls
   - UMAP: Uniform Manifold Approximation and Projection
