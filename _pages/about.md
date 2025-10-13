@@ -22,11 +22,11 @@ I received my BS in Mathematics from the Universidade Federal do Ceará (Brazil)
 
 I was a co-founder of NYU's [Center for Data Science (CDS)](http://cds.nyu.edu) and the [Center for Urban Science and Progress (CUSP)](http://cusp.nyu.edu). Currently, I serve as Co-Director of the [Visualization, Imaging and Data Analysis (VIDA) Center](http://vida.engineering.nyu.edu), located on the 11th floor of 370 Jay Street in Brooklyn, NY. I am also part of [ai@nyu](https://cims.nyu.edu/ai/).
 
-A significant part of my career has been dedicated to mentoring the next generation of researchers through advising doctoral and masters students, as well as collaborating with post-doctoral associates and departmental fellows.
+A significant part of my career has been dedicated to mentoring the next generation of researchers through advising doctoral and masters students, post-doctoral associates, and departmental fellows.
 
 ## Recognition and Service
 
-I am a Fellow of both the ACM (2024) and IEEE (2013), and have received the IEEE Visualization Technical Achievement Award. I served as the elected Chair of the IEEE Technical Committee on Visualization and Computer Graphics from 2015–2018.
+I am a Fellow of the ACM (2024) and IEEE (2013), and have received the IEEE Visualization Technical Achievement Award. I served as the elected Chair of the IEEE Technical Committee on Visualization and Computer Graphics from 2015–2018.
 
 From 2012-2017, I was the senior technology consultant for MLB Advanced Media's Statcast player tracking system, which received a 2018 Technology & Engineering Emmy Award from the National Academy of Television Arts & Sciences (NATAS). 
 

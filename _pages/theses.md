@@ -41,9 +41,10 @@ PhD dissertations and Master's theses completed under my supervision.
   PhD Dissertation, Rutgers University  
   [[PDF]](../thesis/maryam-hosseini-thesis.pdf)
 
-- **Jorge Ono** (2021)  
-  *Title TBD*  
-  PhD Dissertation, New York University  
+- **Jorge Henrique Piazentin Ono** (2021)
+  *Visualization Methods for Sports Data Collection and Analysis*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/jorge-ono-thesis.pdf)
   **🏆 Pearl Brownstein Doctoral Research Award**
 
 - **Gromit Chan** (2021)  
