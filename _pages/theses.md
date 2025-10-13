@@ -52,9 +52,10 @@ PhD dissertations and Master's theses completed under my supervision.
   PhD Dissertation, New York University  
   [[PDF]](../thesis/gromit-chan-thesis.pdf)
 
-- **Fabio Miranda** (2018)  
-  *Title TBD*  
-  PhD Dissertation, New York University  
+- **Fabio Miranda** (2018)
+  *Data Structures for the Interactive Visual Analysis of Urban Data*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/fabio-miranda-thesis.pdf)
   **🏆 Pearl Brownstein Doctoral Research Award**
 
 - **Bowen Yu** (2018)  

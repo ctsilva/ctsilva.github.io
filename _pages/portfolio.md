@@ -24,6 +24,8 @@ Software (Source Code)
 *Note: This section currently contains mostly historical software (pre-2011) and will be updated.*
 
 * [VisTrails](http://www.vistrails.org)
+* fsort - External sorting algorithms for large files that exceed available memory, by Huy T. Vo
+  * [GitHub repository](https://github.com/ctsilva/fsort)
 * AFront - Advancing front surface reconstruction, by Schreiner, Scheidegger, Fleishman and others
   * [GitHub repository](https://github.com/ctsilva/afront)
 * [HAVS](http://havs.sourceforge.net) - Implementation of the Hardware-Assisted Visibility Sorting (HAVS) algorithm for rendering unstructured grids, by Callahan, Ikits, and others. (Note: Also available in VTK as [vtkHAVSVolumeMapper](https://vtk.org/doc/nightly/html/classvtkHAVSVolumeMapper.html))
