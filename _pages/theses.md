@@ -42,10 +42,10 @@ PhD dissertations and Master's theses completed under my supervision.
   [[PDF]](../thesis/maryam-hosseini-thesis.pdf)
 
 - **Jorge Henrique Piazentin Ono** (2021)
-  *Visualization Methods for Sports Data Collection and Analysis*
-  PhD Dissertation, New York University
-  [[PDF]](../thesis/jorge-ono-thesis.pdf)
-  **🏆 Pearl Brownstein Doctoral Research Award**
+  *Visualization Methods for Sports Data Collection and Analysis* 
+  PhD Dissertation, New York University 
+  [[PDF]](../thesis/jorge-ono-thesis.pdf) 
+  **🏆 Pearl Brownstein Doctoral Research Award** 
 
 - **Gromit Chan** (2021)  
   *Data Summaries for Scalable Visual Analysis*  
@@ -53,10 +53,10 @@ PhD dissertations and Master's theses completed under my supervision.
   [[PDF]](../thesis/gromit-chan-thesis.pdf)
 
 - **Fabio Miranda** (2018)
-  *Data Structures for the Interactive Visual Analysis of Urban Data*
-  PhD Dissertation, New York University
-  [[PDF]](../thesis/fabio-miranda-thesis.pdf)
-  **🏆 Pearl Brownstein Doctoral Research Award**
+  *Data Structures for the Interactive Visual Analysis of Urban Data* 
+  PhD Dissertation, New York University 
+  [[PDF]](../thesis/fabio-miranda-thesis.pdf) 
+  **🏆 Pearl Brownstein Doctoral Research Award** 
 
 - **Bowen Yu** (2018)  
   *Title TBD*  
