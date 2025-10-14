@@ -67,10 +67,11 @@ author_profile: true
   - Decision Rules and Global Surrogate Models
 
 ### Week 6 (Oct 6)
-- **Topics:** Black-box Model Interpretation
+- **Topics:** Black-box Model Interpretation, Project Discussion
 - **Materials:**
   - [Black-box Model Interpretation](/2025-VisML-CSE/slides/week6-black-box.html)
   - [Lab: Black-box Explainability Methods](2025-VisML-CSE/labs/week6-lab/VisML-Lab-Week6-slides.html)
+  - [Project Discussion](/2025-VisML-CSE/slides/week6-project.html)
 - **Recommended Readings:**
   - ["Why Should I Trust You?" Explaining the Predictions of Any Classifier](https://doi.org/10.1145/2939672.2939778) (Ribeiro et al., 2016, KDD)
   - [SHAP Book: A Unified Approach to Interpreting Model Predictions](https://christophmolnar.com/books/shap) (Molnar, 2024)
@@ -78,15 +79,18 @@ author_profile: true
   - Partial Dependence Plots (PDP)
   - Local Interpretable Model-agnostic Explanations (LIME)
   - SHAP (SHapley Additive exPlanations)
+  - Project Ideas and Guidelines
 
 ### Week 7 (Oct 14 - Tuesday Make-up Class)
-- **Topics:** Clustering and Dimensionality Reduction
+- **Topics:** Clustering and Dimensionality Reduction, Default Project Details
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2025-VisML-CSE/slides/week8-clustering.html)
+  - [Default Project: Visual Analytics for AI-Generated Urban Infrastructure Maps](/2025-VisML-CSE/slides/default-project.html)
 - **Recommended Readings:**
   - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - **Required**
   - [A Tutorial on Principal Component Analysis](https://arxiv.org/abs/1404.1100) (Shlens, 2014)
   - [Scikit-learn PCA User Guide](https://scikit-learn.org/stable/modules/decomposition.html#pca)
+  - [Mapping the walk: A scalable computer vision approach for generating sidewalk network datasets from aerial imagery](https://doi.org/10.1016/j.compenvurbsys.2023.101950) (Hosseini et al., 2023)
 - **Content:**
   - Introduction to Unsupervised Learning
   - K-means Clustering and DBSCAN
@@ -95,6 +99,7 @@ author_profile: true
   - Eigenvectors, Eigenvalues, and Covariance Matrices
   - Singular Value Decomposition (SVD)
   - Local Linear Embedding (LLE)
+  - Default Project Overview and Ideas
 
 ### Week 8 (Oct 20)
 - **Topics:** Dimensionality Reduction (continued)
