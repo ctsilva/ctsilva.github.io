@@ -52,15 +52,16 @@ PhD dissertations and Master's theses completed under my supervision.
   PhD Dissertation, New York University  
   [[PDF]](../thesis/gromit-chan-thesis.pdf)
 
-- **Fabio Miranda** (2018)
-  *Data Structures for the Interactive Visual Analysis of Urban Data* 
-  PhD Dissertation, New York University 
-  [[PDF]](../thesis/fabio-miranda-thesis.pdf) 
-  **🏆 Pearl Brownstein Doctoral Research Award** 
+- **Bowen Yu** (2019)
+  *VisFlow: A Web-Based Dataflow Framework for Visual Data Exploration*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/bowen-yu-thesis.pdf)
 
-- **Bowen Yu** (2018)  
-  *Title TBD*  
-  PhD Dissertation, New York University  
+- **Fabio Miranda** (2018)
+  *Data Structures for the Interactive Visual Analysis of Urban Data*
+  PhD Dissertation, New York University
+  [[PDF]](../thesis/fabio-miranda-thesis.pdf)
+  **🏆 Pearl Brownstein Doctoral Research Award**
 
 - **Nivan Ferreira** (2015)  
   *Visual Analytics Techniques for Exploration of Spatiotemporal Data*  
