@@ -86,6 +86,7 @@ author_profile: true
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2025-VisML-CSE/slides/week8-clustering.html)
   - [Default Project: Visual Analytics for AI-Generated Urban Infrastructure Maps](/2025-VisML-CSE/slides/default-project.html)
+  - [Lab: Dimensionality Reduction](/2025-VisML-CSE/labs/week7-lab/VisML-Lab-Week7-slides.html)
 - **Recommended Readings:**
   - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - **Required**
   - [A Tutorial on Principal Component Analysis](https://arxiv.org/abs/1404.1100) (Shlens, 2014)
