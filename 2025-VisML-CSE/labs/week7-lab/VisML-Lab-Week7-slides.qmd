@@ -33,6 +33,10 @@ bibliography: lab_references.bib
 * Various methods of projecting data into low-dimensional space
 * Next week: Deep Learning Visualization
 
+::: {.notes}
+Today we'll explore how to visualize high-dimensional data by projecting it into lower dimensions. We'll apply various dimensionality reduction techniques to the MNIST dataset and compare their effectiveness.
+:::
+
 ## Dimensionality Reduction
 
 * Various methods of projecting data into a low-dimensional space while preserving the clusters from the high-dimensional space
@@ -43,6 +47,10 @@ bibliography: lab_references.bib
     * t-Distributed Stochastic Neighbor Embedding (t-SNE)
     * Uniform Manifold Approximation and Projection (UMAP) 
 
+::: {.notes}
+These methods help us understand complex high-dimensional data by creating meaningful 2D or 3D visualizations. Each technique has different strengths in preserving either local neighborhood structure or global geometric relationships.
+:::
+
 ## MNIST Dataset
 
 * Dataset of 28x28 pixel images of handwritten digits
@@ -51,6 +59,11 @@ bibliography: lab_references.bib
 
 ::: footer
 Ref: @Olah_2014
+:::
+
+
+::: {.notes}
+MNIST contains 70,000 images of handwritten digits from 0-9. Each 28x28 pixel grayscale image will serve as our test case for dimensionality reduction techniques.
 :::
 
 ## MNIST Dataset
@@ -71,6 +84,10 @@ Ref: @Olah_2014
 Ref: @Olah_2014
 :::
 
+::: {.notes}
+Each image is represented as a matrix of pixel intensities from 0 to 1. By flattening this matrix, we transform each image into a single 784-dimensional vector.
+:::
+
 ## MNIST Dataset
 
 * But not all vectors in this 784-dimensional space are MNIST digits! Typical points in this space are very different 
@@ -80,6 +97,10 @@ Ref: @Olah_2014
 
 ::: footer
 Ref: @Olah_2014
+:::
+
+::: {.notes}
+Random 784-dimensional vectors produce noise, not digits. This demonstrates that meaningful digit images occupy only a tiny, structured subset of the possible 784-dimensional space.
 :::
 
 ## MNIST Dataset
@@ -103,6 +124,10 @@ Ref: @Olah_2014
 Ref: @Olah_2014
 :::
 
+::: {.notes}
+MNIST digits likely exist on a lower-dimensional manifold within the 784-dimensional space. While several theories attempt to explain this structure, the true geometric nature remains an open question.
+:::
+
 ## MNIST Cube
 
 <ul>
@@ -123,6 +148,10 @@ Ref: @Olah_2014
 Ref: @Olah_2014
 :::
 
+::: {.notes}
+Visualizing MNIST as points in a 784-dimensional hypercube helps us understand the challenge. Each dimension represents one pixel, and digit images occupy specific regions based on their visual patterns.
+:::
+
 ## MNIST Cube
 
 * What qualities would the ‘perfect’ visualization of MNIST have? What should our goal be?
@@ -131,6 +160,10 @@ Ref: @Olah_2014
 
 ::: footer
 Ref: @Olah_2014
+:::
+
+::: {.notes}
+We want visualizations that preserve meaningful relationships between digits while separating distinct classes. Let's apply the clustering techniques from last week to see how well they work.
 :::
 
 ## Principal Component Analysis Recap
@@ -161,6 +194,10 @@ Ref: @Olah_2014
 Ref: @Team_2018a
 :::
 
+::: {.notes}
+PCA finds the directions of maximum variance in high-dimensional data. By projecting onto the top principal components, we can visualize complex datasets while retaining the most important information.
+:::
+
 ## PCA on MNIST
 
 Import libraries:
@@ -181,6 +218,10 @@ from sklearn.decomposition import PCA
 import plotly.graph_objects as go
 from umap import UMAP
 ```
+
+::: {.notes}
+We'll use scikit-learn for dimensionality reduction algorithms and plotly for interactive 3D visualizations. These tools provide efficient implementations of all the methods we'll explore today.
+:::
 
 ## PCA on MNIST 
 
@@ -210,6 +251,10 @@ def plot_clustering(X_red, labels, title=None):
     plt.axis("off")
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 ```
+
+::: {.notes}
+This helper function creates a 2D scatter plot where each digit is displayed as its numeric character. This makes it easy to visually assess how well the dimensionality reduction separates different digit classes.
+:::
 
 ## PCA on MNIST 
 
@@ -245,6 +290,10 @@ def plot_3d_clustering(X_red, labels, title=None):
     fig.show()
 ```
 
+::: {.notes}
+The 3D visualization uses color-coding and interactive rotation to explore cluster structure. Hovering over points reveals both the true digit label and data point index.
+:::
+
 ## PCA on MNIST
 
 Load the MNIST dataset:
@@ -258,6 +307,11 @@ print("Samples: " + str(n_samples))
 print("Features: " + str(n_features))
 ```
 
+
+::: {.notes}
+We're loading a subset with 6 digit classes for clearer visualization. With 1,083 samples and 64 features each, this gives us a manageable dataset to explore.
+:::
+
 ## PCA on MNIST 
 
 Peform PCA:
@@ -269,6 +323,10 @@ X_trans = pca.transform(X)
 print("Singular values: " + str(pca.singular_values_))
 ```
 
+::: {.notes}
+We fit PCA to reduce from 64 dimensions down to 2. The singular values indicate how much variance each principal component explains in the original data.
+:::
+
 ## PCA on MNIST 
 
 <ul style="font-size:25px";>
@@ -279,6 +337,10 @@ We see that we are able to reasonbly cluster the data by digit using PCA:
 plt.scatter(X_trans[:,0],X_trans[:,1])
 ```
 
+::: {.notes}
+This basic scatter plot shows the data projected onto the first two principal components. We can already see some clustering structure emerging, though the digit classes aren't labeled yet.
+:::
+
 ## PCA on MNIST 
 
 <ul style="font-size:25px";>
@@ -288,6 +350,10 @@ We see that we are able to reasonbly cluster the data by digit using PCA:
 ``` {python}
 plot_clustering(X_trans, "", "PCA")
 ```
+
+::: {.notes}
+With digit labels displayed, we see PCA achieves reasonable separation between some classes. However, there's still significant overlap, particularly between visually similar digits.
+:::
 
 ## PCA on MNIST 
 
@@ -300,6 +366,9 @@ pca_3d = PCA(n_components=3)
 X_trans_3d = pca_3d.fit_transform(X)
 plot_3d_clustering(X_trans_3d, "", "PCA")
 ```
+::: {.notes}
+Adding a third principal component provides additional separation between clusters. The interactive 3D view lets us explore the data from different angles to better understand the cluster structure.
+:::
 
 ## Optimization-Based Dimensionality Reduction
 
@@ -324,6 +393,10 @@ plot_3d_clustering(X_trans_3d, "", "PCA")
 Ref: @Olah_2014
 :::
 
+::: {.notes}
+Instead of maximizing variance, we can optimize to preserve distances between points. This cost function penalizes differences between original high-dimensional distances and visualization distances.
+:::
+
 ## Multidimensional Scaling (MDS)
 
 ![](MDS_cost.png)
@@ -336,22 +409,34 @@ Ref: @Olah_2014
 Ref: @Olah_2014
 :::
 
+::: {.notes}
+MDS uses gradient descent to minimize the distance preservation cost function. Starting from random positions, it iteratively adjusts point locations to match original distances as closely as possible.
+:::
+
 ## MDS on MNIST
 
 ``` {python}
-mds = MDS(n_components=2, n_init=1, max_iter=120, n_jobs=2)
+mds = MDS(n_components=2, n_init=1, max_iter=120, n_jobs=1)
 X_mds = mds.fit_transform(X)
 plot_clustering(X_mds, "", "MDS")
 ```
+::: {.notes}
+MDS creates a different projection than PCA, often better preserving global structure. Notice how the relative positions of digit clusters reflect their relationships in the original high-dimensional space.
+:::
+
 
 ## MDS on MNIST
 
 ``` {python}
-mds_3d = MDS(n_components=3, n_init=1, max_iter=120, n_jobs=2)
+mds_3d = MDS(n_components=3, n_init=1, max_iter=120, n_jobs=1)
 mds_3d.fit(X)
 X_mds_3d = mds_3d.fit_transform(X)
 plot_3d_clustering(X_mds_3d, "", "MDS")
 ```
+
+::: {.notes}
+The 3D MDS embedding provides clearer separation between some digit classes. However, MDS can be computationally expensive for large datasets since it must consider all pairwise distances.
+:::
 
 ## Sammon's Mapping
 
@@ -370,6 +455,10 @@ plot_3d_clustering(X_mds_3d, "", "MDS")
 
 ::: footer
 Ref: @Olah_2014
+:::
+
+::: {.notes}
+Sammon's Mapping modifies MDS to emphasize preserving local structure over global structure. By dividing by original distances, it prioritizes maintaining relationships between nearby points.
 :::
 
 ## Sparse Random Projection
@@ -391,6 +480,11 @@ Ref: @Olah_2014
 Ref: @scikit
 :::
 
+::: {.notes}
+This method projects data through a sparse random matrix, providing computational efficiency. The sparsity reduces memory requirements while theoretical guarantees ensure the projection preserves distances with high probability.
+:::
+
+
 ## Sparse Random Projection on MNIST 
 
 ``` {python}
@@ -398,6 +492,10 @@ srp=SparseRandomProjection(n_components=2, random_state=42)
 X_srp=srp.fit_transform(X)
 plot_clustering(X_srp, "", "Sparse Random Projection")
 ```
+
+::: {.notes}
+Random projection surprisingly preserves cluster structure despite its simplicity. While not as refined as optimization-based methods, it runs much faster and scales well to large datasets.
+:::
 
 ## Sparse Random Projection on MNIST 
 
@@ -407,6 +505,10 @@ X_srp_3d=srp_3d.fit(X)
 X_srp_3d=srp_3d.fit_transform(X)
 plot_3d_clustering(X_srp_3d, "", "Sparse Random Projection")
 ```
+
+::: {.notes}
+The 3D random projection shows reasonable digit separation with minimal computational cost. This makes it useful for quick exploratory analysis before applying more sophisticated methods.
+:::
 
 ## Locally Linear Embedding
 
@@ -420,6 +522,10 @@ plot_3d_clustering(X_srp_3d, "", "Sparse Random Projection")
 Ref: @Mihir_2024
 :::
 
+::: {.notes}
+LLE assumes the manifold is locally linear, approximating each point as a weighted combination of neighbors. The key parameter K determines neighborhood size and must balance local geometry preservation.
+:::
+
 ## Locally Linear Embedding
 
 * Finally, it computes the weights that best reconstruct the vectors from its neighbors, then produce the low-dimensional vectors best reconstructed by these weights. 
@@ -427,6 +533,10 @@ Ref: @Mihir_2024
 
 ::: footer
 Ref: @Mihir_2024
+:::
+
+::: {.notes}
+After computing weights that reconstruct each point from its neighbors, LLE finds a low-dimensional embedding that preserves these reconstruction relationships. This maintains local neighborhood structure in the visualization.
 :::
 
 ## Locally Linear Embedding
@@ -437,6 +547,10 @@ Ref: @Mihir_2024
 Ref: @Mihir_2024
 :::
 
+::: {.notes}
+The algorithm preserves local geometric relationships while unfolding the global manifold structure. Points that were neighbors in high dimensions remain neighbors in the low-dimensional embedding.
+:::
+
 ## LLE on MNIST
 
 ``` {python}
@@ -445,6 +559,9 @@ X_lle=lle.fit(X)
 X_lle=lle.fit_transform(X)
 plot_clustering(X_lle, "", "LLE")
 ```
+::: {.notes}
+LLE often creates more tightly clustered digit groups compared to PCA or MDS. The focus on local structure can better separate classes that differ in fine details.
+:::
 
 ## LLE on MNIST
 
@@ -454,6 +571,9 @@ X_lle_3d=lle_3d.fit(X)
 X_lle_3d=lle_3d.fit_transform(X)
 plot_3d_clustering(X_lle_3d, "", "LLE")
 ```
+::: {.notes}
+The 3D LLE embedding shows distinct digit clusters with clear boundaries. The neighborhood parameter significantly affects results, so experimentation is often needed for optimal visualization.
+:::
 
 ## t-Distributed Stochastic Neighbor Embedding (t-SNE)
 
@@ -465,12 +585,20 @@ plot_3d_clustering(X_lle_3d, "", "LLE")
 Ref: @Olah_2014
 :::
 
+::: {.notes}
+t-SNE has become extremely popular for visualizing deep learning embeddings. It constructs probability distributions over neighbors and optimizes the low-dimensional embedding to match these distributions.
+:::
+
 ## t-SNE
 
 {{< video https://www.youtube.com/watch?v=NEaUSP4YerM&ab_channel=StatQuestwithJoshStarmer width="1000" height="700" >}}
 
 ::: footer
 Ref: @Starmer_2017a
+:::
+
+::: {.notes}
+t-SNE has become extremely popular for visualizing deep learning embeddings. It constructs probability distributions over neighbors and optimizes the low-dimensional embedding to match these distributions.
 :::
 
 ## t-SNE on MNIST
@@ -480,6 +608,9 @@ tsne = sklearn.manifold.TSNE()
 X_tsne = tsne.fit_transform(X)
 plot_clustering(X_tsne, "", "T-SNE")
 ```
+::: {.notes}
+t-SNE typically produces very clean, well-separated clusters for MNIST. The distinct digit groups emerge naturally from the algorithm's focus on preserving local neighborhood topology.
+:::
 
 ## t-SNE on MNIST
 
@@ -488,6 +619,11 @@ tsne_3d = sklearn.manifold.TSNE(3)
 X_tsne_3d = tsne_3d.fit_transform(X)
 plot_3d_clustering(X_tsne_3d, "", "T-SNE")
 ```
+
+::: {.notes}
+Even in 3D, t-SNE creates visually striking cluster separation. However, remember that hyperparameters like perplexity strongly influence the results and must be tuned carefully.
+:::
+
 
 ## Using t-SNE Effectively
 * t-SNE plots are popular and can be useful, but only if you avoid common misreadings
@@ -502,6 +638,10 @@ plot_3d_clustering(X_tsne_3d, "", "T-SNE")
 Ref: @Wattenberg_Viégas_Johnson_2016
 :::
 
+::: {.notes}
+While t-SNE plots are visually appealing, they can be misleading if misinterpreted. Cluster sizes and inter-cluster distances don't necessarily reflect true relationships in the original high-dimensional space.
+:::
+
 ## Uniform Manifold Approximation and Projection (UMAP)
 
 * Similar to t-SNE, but with some advantages:
@@ -510,6 +650,10 @@ Ref: @Wattenberg_Viégas_Johnson_2016
 
 ::: footer
 Ref: @Coenen_Pearce
+:::
+
+::: {.notes}
+UMAP has emerged as a strong alternative to t-SNE with faster runtime and better global structure preservation. It's becoming increasingly popular in single-cell genomics and other fields.
 :::
 
 ## Uniform Manifold Approximation and Projection (UMAP)
@@ -529,6 +673,10 @@ Ref: @Coenen_Pearce
 Ref: @Coenen_Pearce
 :::
 
+::: {.notes}
+UMAP builds a fuzzy topological representation using local connectivity radii. By ensuring each point connects to its nearest neighbor, it balances local and global structure preservation.
+:::
+
 ## UMAP on MNIST
 
 ``` {python}
@@ -537,6 +685,10 @@ ump.fit(X)
 X_umap=ump.fit_transform(X)
 plot_clustering(X_umap, "not used", "UMAP")
 ```
+
+::: {.notes}
+UMAP creates clean cluster separation similar to t-SNE but runs significantly faster on large datasets. The visualization often better preserves relationships between clusters compared to t-SNE.
+:::
 
 ## References (Good for Further Reading)
 

@@ -32,6 +32,10 @@ bibliography: lab_references.bib
 * Also: Principal Component Analysis (PCA) if time permits
 * Next week: Deep Learning Visualization 
 
+::: {.notes}
+Today’s lab is all about understanding black box models — models that make accurate predictions but are hard to interpret. We’ll focus on two popular techniques, LIME and SHAP, to explain model predictions. If time allows, we’ll also look at Principal Component Analysis, and next week we’ll move into visualizing deep learning models.
+:::
+
 ## Interpreting Black Box Models
 
 * Not as intuitive as white box models, can be hard to define a model’s decision boundary in a human-understandable manner
@@ -39,11 +43,17 @@ bibliography: lab_references.bib
   * LIME
   * SHAP
 
+::: {.notes}
+When we talk about black box models, we mean models like random forests or neural networks where it’s hard to understand why they make certain predictions. Unlike white box models, they don’t offer simple rules or equations. But we do have techniques to peek inside — tools like LIME and SHAP help us understand which features are influencing the model’s decisions.
+:::
+
 ## Local Interpretable Model-Agnostic Explanations (LIME)
 
 * What is LIME?
-  * LIME is a python library that explains the prediction of any classifier by learning an interpretable model locally around the prediction
-
+  * LIME is a method that explains the prediction of any classifier by learning an interpretable model locally around the prediction
+::: {.notes}
+LIME, or Local Interpretable Model-Agnostic Explanations, is a method for understanding individual predictions made by complex models. The key idea is that instead of trying to explain the entire model, LIME focuses locally — it builds a simple, interpretable model around one specific prediction to show which features influenced it the most.
+:::
 
 ## LIME
 * Why is LIME a good model explainer?
@@ -52,8 +62,14 @@ bibliography: lab_references.bib
   * Model agnostic (does not make any assumptions about the model) 
   * Global perspective (when used on a representative set, LIME can provide a global intuition of the model)
 
+
+
 ::: footer
 Ref: @Sharma_2020
+:::
+
+::: {.notes}
+LIME is useful because it balances interpretability and flexibility. It’s easy for non-experts to understand since it explains predictions with a simple, local model. It also maintains local fidelity, meaning it closely mimics the black box model’s behavior near the instance of interest. Plus, it’s model-agnostic, so it works with any classifier. And when applied across many samples, it can even give a global sense of how the model behaves overall.
 :::
 
 ## LIME
@@ -83,6 +99,27 @@ Ref: @Sharma_2020
 ::: footer
 Ref: @Sharma_2020
 :::
+
+
+::: {.notes}
+We start with our original model f, and an instance x that we want to explain. LIME generates many perturbed samples around x, called z', and uses a proximity function πₓ to assign higher weights to samples that are closer to x—ensuring we stay local.
+Next, we train an interpretable model g—like a linear model or a shallow decision tree—on this neighborhood. The goal is for g to mimic the behavior of f around x, while remaining easy to understand.
+This process is captured in the equation shown:
+
+Here:
+L(f,g,πx)\mathcal{L}(f, g, \pi_x)L(f,g,πx​) is the local fidelity loss, which measures how well g approximates f near x, weighted by the proximity function πₓ.
+
+
+Ω(g)\Omega(g)Ω(g) is a complexity penalty on the explanation model g, encouraging simpler explanations—for example, by penalizing deeper trees or more complex models.
+
+
+So, LIME is all about balancing two objectives:
+Fidelity: staying true to the original model's predictions locally, and
+
+
+Interpretability: keeping the explanation simple enough for humans to understand.
+:::
+
 
 ## LIME Example in Python
 
@@ -191,6 +228,10 @@ display(HTML(lime_values.as_html()))
 Refs: @Molnar_2023, @ADataOdyssey_2023
 :::
 
+::: {.notes}
+SHAP is based on the concept of Shapley values from game theory — it treats each feature as a player contributing to the final prediction. The idea is to fairly distribute credit among features for how much each one influences the output. In this setup, the game is the prediction task, and the gain is how much the prediction differs from the average. SHAP is powerful for debugging models and explaining individual predictions in a consistent, mathematically grounded way.
+:::
+
 ## SHAP Example
 
 * Suppose the HR dept of your company has asked you to build a model that predicts the annual bonus for each of the company’s employees 
@@ -231,6 +272,9 @@ Ref: @ADataOdyssey_2023
 Ref: @ADataOdyssey_2023
 :::
 
+::: {.notes}
+Traditional feature importance tells us which features matter most overall, but it misses key details. It doesn’t explain how a feature affects individual predictions, whether it tends to increase or decrease the output, or how it influences class probabilities in classification tasks. That’s where SHAP comes in — it fills these gaps by showing both the direction and magnitude of each feature’s impact.
+:::
 ## SHAP Example (Waterfall Plot)
  
 ![](SHAP_waterfall.png)
@@ -239,6 +283,10 @@ Ref: @ADataOdyssey_2023
 
 ::: footer
 Ref: @ADataOdyssey_2023
+:::
+
+::: {.notes}
+This waterfall plot shows how SHAP values explain a single prediction — in this case, the predicted bonus for an employee. We start at the average predicted bonus, shown on the left, and then each feature pushes the prediction up or down. For example, having a degree increases the predicted bonus by about $16.9, while sales slightly decreases it. The final prediction on the right combines all these contributions, giving us a transparent view of how each feature influenced the outcome.
 :::
 
 ## SHAP Example (Classification) 
