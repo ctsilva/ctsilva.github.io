@@ -1,0 +1,415 @@
+---
+title: "Week 7 Lab: Local Observable Frameworks, D3 Interactions"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Ryan Kim"
+institute: "New York University"
+date: "October 17, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    css: lab-light-theme.css
+---
+
+## Week 7 Lab Overview
+
+|User Interface|Graphics Library|Notebook(s)|
+|:--|:--|:--|
+|[observablehq.com](https://observablehq.com)|[D3](https://d3js.org/)<br />[Framework](https://observablehq.com/framework/)|[Local Observable Frameworks](https://observablehq.com/@rk2546/guide-local_observable_setup)<br />[Week 7 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-7-lab)|
+
+### Today's Lab Activities
+
+Today we will be a exploring the following topics:
+
+1. How to set up a local instance of Observable via _Framework_
+2. Main Lab Activities:
+    1. Examples: Observable & Interactions
+    2. Concept: Persistent Variables in JavaScript
+    3. Review: Observable Inputs Library
+    4. Application #1: Changing Visible Data
+    5. Application #2: Mouse Tooltips
+
+## Running Observable Locally: "Framework"
+
+In prep for your group projects, it would be ideal to work on your own local instances of Observable...ness. The same group behind Observable also has released [Framework](https://observablehq.com/framework/), a JavaScript ecosystem for generating dashboards and web apps with Observable functionality.
+
+:::{.columns}
+::::{.column width="50%"}
+We will focus a bit on making sure you are ready with a _Framework_ project that you can upload to Github. Make sure to open the first notebook, [Local Observable Frameworks](https://observablehq.com/@rk2546/guide-local_observable_setup), and follow the instructions.
+
+<br />
+<span style="color:blue; font-size:0.9em;">**[Note]**: _Framework_ is one of **many** options you can use for your project. We're introducing it because it's the closest to the Observable notebooks we've generated thus far.</span>
+::::
+::::{.column width="50%"}
+![](./week7-lab_files/figs/Framework.png){width="100%"}
+::::
+:::
+
+## Framework Prerequisites
+
+
+<div style="display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-evenly;align-items:baseline;width:100%;">
+  <a href="https://github.com/" target="_blank" style="display:flex;flex-direction:column;justify-content:center;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" style='width:100%; max-width:300px;margin-left:auto;margin-right:auto;'/>
+    <p style="text-align:center"><strong>Github</strong></p>
+  </a>
+  <a href="https://nodejs.org/en" target="_blank" style="display:flex;flex-direction:column;justify-content:center;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" style='width:100%; max-width:300px;margin-left:auto;margin-right:auto;'/>
+    <p style="text-align:center"><strong>Node.js</strong></p>
+  </a>
+  <a href="https://code.visualstudio.com/" target="_blank" style="display:flex;flex-direction:column;justify-content:center;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" style='width:100%; max-width:300px;margin-left:auto;margin-right:auto;'/>
+    <p style="text-align:center"><strong>A Code Editor<br />(e.g. _Visual Studio Code_)</strong></p>
+  </a>
+</div>
+
+<p style="text-align:center;margin-top:64px;">Our guide assumes that you have a Github account.<br />If you do not, please make an account.</p>
+
+## Installing Node.js and npm/pnpm: Mac OSX
+
+1.  Open a shell (in VS Code or open Terminal.app). 
+2.  Paste and run the command, which downloads and installs `pnpm`: 
+   
+    ````sh
+    curl -fsSL https://get.pnpm.io/install.sh | sh -
+    ````
+
+    (or follow any other directions on the [_install_](https://pnpm.io/installation) page). 
+3.  Paste and run the command. This will install the latest long-term support version of _Node.js_:
+
+    ````sh
+    pnpm env use --global lts
+    ````
+
+## Installing Node.js and npm/pnpm:  Windows
+
+1.  Open [_PowerShell as an administrator_](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/starting-windows-powershell?view=powershell-7.4#with-administrative-privileges-run-as-administrator). If it produces an error, you can try alternative techniques from pnpm's [_installation page_](https://pnpm.io/installation).
+2. Paste and run the command, which downloads and installs _pnpm_:
+
+    ````sh
+    Invoke-WebRequest https://get.pnpm.io/install.ps1 -UseBasicParsing | Invoke-Expression
+    ````
+3.  Open a new shell (in VS Code, for example) and paste + run the command. This will install the latest long-term support version of _Node.js_: 
+
+    ````sh
+    pnpm env use --global lts
+    ````
+
+## Creating a Framework Project
+
+1. Open a terminal window (either _Terminal.app_ on MacOS, _Command Prompt_ on Windows, or _VS Code_ on either MacOS or Windows). 
+2. Navigate to any folder or location where you will be comfortable creating a new folder (e.g. the `Documents/` directory on MacOS or the `Desktop/` on Windows). You can navigate to that location using the following command:
+
+    ````sh
+    cd <PATH>/<TO>/<LOCATION>
+    ````
+
+3. Paste and run the command:
+
+    ````sh
+    pnpm dlx @observablehq/framework@latest create
+    ````
+
+4. New instructions will be prompted from you in the terminal window. Answer all the directions that appear. The defaults are fine, but **when the instructions ask to "Install dependencies" you must pick "No"**.
+
+At this point, _Framework_ will create a brand new folder for you with all the code necessary to run a Framework project locally. If you ran with defaults, then the new folder will be titled "hello-framework".
+
+## Installing Dependencies, Running a Dev Server
+
+### Installing Dependencies 
+
+Navigate into your new folder by using the `cd` command. Once inside, install dependencies by running the following command:
+
+````sh
+pnpm i
+````
+
+<br />
+
+### Running a Development Server
+
+Once you've installed your dependencies, we are ready to run a local server that we can use for development. Run the following command inside your project folder:
+
+````sh
+pnpm dev
+````
+
+Your _Framework_ webpage should then be loaded into a `localhost` server that you can view via the browser. The _Framework_ architecture tracks any changes to any files and updates in real-time every time you **save changes in a file**.
+
+## Version Control via Github
+
+After these steps, you should be able to push changes to your Github repository and pull them when needed.
+
+1. Online, create an empty Github repository and feel free to name it anything you want (though generally you should try to match project names when possible).
+2. Locally (via command line or via Github tool), add and commit all files in your project window.
+3. Set the branch to "main", add a new remote origin, and push your changes. The 3 commands to do so are provided below, as an example:
+
+    ````sh
+    git branch -M main
+    git remote add origin git@github.com:<USERNAME>/<PROJECT_NAME>.git
+    git push -u origin main
+    ````
+
+<br />
+<span style="color:blue; font-size:0.9em;">**[Note]**: Whenever you clone your repo to another folder or device, you **must** install dependencies again.</span>
+
+## Framework Setup: Command Line Summary
+
+````sh
+# Step 1: Install pnpm, for MacOS or Windows
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+Invoke-WebRequest https://get.pnpm.io/install.ps1 -UseBasicParsing | Invoke-Expression
+
+# Step 2: Install _Node.js_
+pnpm env use --global lts
+
+# Step 3: Create a _Framework_ Project
+pnpm dlx @observablehq/framework@latest create
+
+# Step 4: Install Dependencies, run a dev server
+pnpm i
+pnpm dev
+
+# Step 5: Connecting an Empty Github Repo
+git add -A
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:<USERNAME>/<PROJECT_NAME>.git
+git push -u origin main
+````
+
+## How Framework Works
+
+### General Operations:
+:::{.incremental}
+- _Framework_ generates webpages from _Markdown_ files.
+- Markdown files can mix and combine Markdown syntax, HTML, and JavaScript.
+- Helper functions can be written in separate scripts and imported into Markdown files.
+- NPM and Observable modules can be imported.
+
+### Best Practices
+- Try to keep most dev files (major scripts, datasets, etc.) inside of the `src/` folder.
+- [Avoid dashboard rot](https://observablehq.com/blog/five-strategies-fight-dashboard-rot) by knowing beforehand what to create (i.e. a script, a database, a notebook) and keeping efficient/accessible/interactive design practices in mind.
+:::
+
+**Let's Run a Live Demo!**
+
+## Lab: Interactables
+
+We have a second notebook for today's lab, which further elaborates on some interactable elements.
+
+[Week 7 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-7-lab)
+
+:::{.columns}
+::::{.column width="30%"}
+![](week7-lab_files/figs/ex1.gif){width=300}
+::::
+::::{.column width="30%"}
+![](week7-lab_files/figs/ex2.gif){width=500}
+::::
+::::{.column width="30%"}
+![](week7-lab_files/figs/ex3.gif){width=300}
+::::
+:::
+
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+:::{.columns}
+::::{.column width="15%"}
+![](week7-lab_files/figs/ex1.gif){width="100%"}
+::::
+::::{.column width="40%"}
+````js
+// Manipulation
+viewof replay = Inputs.button("Replay");
+````
+<br />
+````js
+{
+  replay;
+  // ....
+  const circle = svg.append("circle")
+      .attr("r", 10)
+      .attr("cx", 25)
+      .attr("cy", 25)
+      .attr("fill", "steelblue")
+      .call(reveal);    // Event Handling
+
+  return svg.node();
+}
+````
+::::
+::::{.column width="40%"}
+```js
+// Daisy-change of events to this circle
+reveal = circle => {
+  circle
+    .interrupt()      // 1. Stop previous animation
+    .attr("cx", 25)   // 2. Place at origin (25,25)
+    .attr("cy", 25)
+    .transition()     // 3. Start a transition
+    .duration(1500)   // 4. Run for 1.5sec
+    .attr("cx", 175)  // 5. Set new pos (175,175)
+    .attr("cy", 175);
+}
+````
+::::
+:::
+
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+:::{.columns}
+::::{.column width="15%"}
+![](week7-lab_files/figs/ex2.gif){width="100%"}
+::::
+::::{.column width="75%"}
+````js
+// Manipulation
+viewof radius = Inputs.range([15, 75], {label: "Orbit radius", value: 25, step: 1})
+````
+
+````js
+// Create two PERSISTENT variables that will be used across multiple functions within this code block.
+let angle = 0;        // Relative to +x
+const speed = 0.02;   // degrees per frame
+
+// Event Handler that runs every frame. Animates the cirlce
+function animate() {
+    
+  // Update angle since it's a new frame
+  angle += speed;
+    
+  // We grab the value set by our slider variable at this current frame
+  const r = viewof radius.value;
+
+  // Modify the x and y positions of our orbiting circle, mathematically
+  const x = pivot.x + r * Math.cos(angle);
+  const y = pivot.y + r * Math.sin(angle);
+  orbit.attr("cx", x).attr("cy", y);
+
+  // This is a special DOM function that calls `animate()` again when the next frame
+  // of the window is updated. So `animate()` will run at every frame.
+  requestAnimationFrame(animate);
+}
+
+// Call `animate()` to get things rolling when this code block runs
+animate();
+````
+::::
+:::
+
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+:::{.columns}
+::::{.column width="15%"}
+![](week7-lab_files/figs/ex3.gif){width="100%"}
+::::
+::::{.column width="75%"}
+
+````js
+// Mouse event handlers
+  const onmousemove = (event) => {
+    const [x, y] = d3.pointer(event);   // Grab the mouse position
+    vLine                               // Modify the position of our vertical line
+      .attr("x1", x)
+      .attr("x2", x)
+      .style("visibility", "visible");  // And make it visbile
+    hLine                               // Same with the horiontal line.
+      .attr("y1", y)
+      .attr("y2", y)
+      .style("visibility", "visible");
+    text.text(`x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`);    // We modify the coordinates text.
+  };
+
+  const onmouseleave = (event) => {
+    vLine.style("visibility", "hidden");    // Make the vertical and horizontal lines invisible
+    hLine.style("visibility", "hidden");
+    text.text("");                          // We make the text empty.
+  };
+
+  // Connect events to handlers.
+  svg.on("mousemove", onmousemove);
+  svg.on("mouseleave", onmouseleave);
+````
+::::
+:::
+
+## Persistence in JavaScript
+
+**Persistent variables** are those that are maintained and are referenced across multiple components, functions, etc. In JavaScript, variables remain persistent **within the context they are defined**.
+
+<br />
+
+#### Example #2:
+
+````js
+let angle = 0;        // Relative to +x
+const speed = 0.02;   // degrees per frame
+````
+
+<br />
+
+#### Example #3:
+
+````js
+// We must generate our crosshair lines pre-emptively as elements of our svg.
+// We create the vertical line, with some styling
+const vLine = svg.append("line")
+  // ...
+
+// We create a horizontal line, with some styling
+const hLine = svg.append("line")
+  // ...
+
+// Similar to the crosshair lines, we also pre-generate a text display showing the mouse coordinates.
+const text = svg.append("text")
+  // ...
+````
+
+## Review: Basic Input Types
+
+- [Button](https://observablehq.com/@observablehq/input-button) - do something when a button is clicked
+- [Toggle](https://observablehq.com/@observablehq/input-toggle) - toggle between two values (on or off)
+- [Checkbox](https://observablehq.com/@observablehq/input-checkbox) - choose any from a set
+- [Radio](https://observablehq.com/@observablehq/input-radio) - choose one from a set
+- [Range](https://observablehq.com/@observablehq/input-range) or [Number](https://observablehq.com/@observablehq/input-range) - choose a number in a range (slider)
+- [Select](https://observablehq.com/@observablehq/input-select) - choose one or any from a set (drop-down menu)
+- [Text](https://observablehq.com/@observablehq/input-text) - enter freeform single-line text
+- [Textarea](https://observablehq.com/@observablehq/input-textarea) - enter freeform multi-line text
+- [Date](https://observablehq.com/@observablehq/input-date) or [Datetime](https://observablehq.com/@observablehq/input-date) - choose a date
+- [Color](https://observablehq.com/@observablehq/input-color) - choose a color
+- [File](https://observablehq.com/@observablehq/input-file) - choose a local file
+
+## Try For Yourselves
+
+Our lab notebook has two application examples as exercises. Try them for yourselves!
+
+<br />
+
+![](week7-lab_files/figs/ex4.gif){width="100%"}
