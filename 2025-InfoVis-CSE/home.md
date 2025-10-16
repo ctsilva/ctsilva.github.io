@@ -14,9 +14,9 @@ author_profile: true
 
 ## Announcements
 
-**Week 6 Materials Ready (Oct 10):** Group Projects lecture is now available! Form teams by Oct 17, proposal due Oct 20. See [slides](/2025-InfoVis-CSE/slides/week6-group-projects.html) for full details.
+**Week 7 Materials Ready (Oct 16):** Interaction in Visualization lecture is now available! Covers Shneiderman's Mantra, the 12 interactive dynamics taxonomy, and modern interaction frameworks. See [slides](/2025-InfoVis-CSE/slides/week7-interaction.html).
 
-**Week 5 Materials Ready (Sept 30):** Color Theory and D3 Scales slides are now available with comprehensive coverage of color perception, spaces, and practical implementation in D3.
+**Week 6 Materials Ready (Oct 10):** Group Projects lecture is now available! Form teams by Oct 17, proposal due Oct 20. See [slides](/2025-InfoVis-CSE/slides/week6-group-projects.html) for full details.
 
 *Course materials will be posted as the semester progresses*
 
@@ -74,6 +74,19 @@ author_profile: true
 - **Required Readings:**
   - Tufte Ch 2 - Graphical Integrity
   - [Misinformed by Visualization](https://arxiv.org/pdf/2104.14332.pdf) - Lo, Gupta & Shigyo (EuroVis 2022)
+
+### Week 7 (Oct 17) - Interaction in Visualization
+- **Slides:** [Interactivity in Information Visualization](/2025-InfoVis-CSE/slides/week7-interaction.html) | [Lab: Building Interactive Visualizations](/2025-InfoVis-CSE/labs/week7-lab.html)
+- **Topics:** Why interaction matters, Shneiderman's Mantra, 12 interactive dynamics (Visualize, Filter, Sort, Derive, Select, Navigate, Coordinate, Organize, Record, Annotate, Share, Guide), Modern interaction frameworks (Libra)
+- **Lab:** Interactive D3 techniques, Brushing and linking, Dynamic queries
+- **Assignment:** Exercise 7 - Interactive visualization design and implementation (due Oct 23)
+- **Required Readings:**
+  - [Shneiderman (1996) - The Eyes Have It](/2025-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf)
+  - [Heer & Shneiderman (2012) - Interactive Dynamics for Visual Analysis](/2025-InfoVis-CSE/refs/Heer_Shneiderman_2012_Interactive_Dynamics_Visual_Analysis.pdf)
+- **Recommended Readings:**
+  - [Yi et al. (2007) - Toward a Deeper Understanding of Interaction](/2025-InfoVis-CSE/refs/Yi_2007_Toward_Deeper_Understanding_Interaction.pdf)
+  - [Pike et al. (2009) - The Science of Interaction](/2025-InfoVis-CSE/refs/Pike_2009_Science_of_Interaction.pdf)
+  - [Zhao et al. (2025) - Libra: Composable Interactions](/2025-InfoVis-CSE/refs/Zhao_2025_Libra_Composable_Interactions.pdf)
 
 ## Assignments
 

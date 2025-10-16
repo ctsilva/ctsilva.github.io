@@ -170,32 +170,37 @@ author_profile: true
 
 ### **Fall Break** (Oct 11-13) - **NO CLASS**
 
-### **Week 7** (Oct 17) - Interaction and Animation
-**Learning Objectives:** Design effective interactions; implement smooth animations and transitions
+### **Week 7** (Oct 17) - Interaction in Visualization
+**Learning Objectives:** Understand why interaction is essential for data exploration; master the 12 interactive dynamics; design effective interactive visualizations
 
-**Lecture:** 
-- Interaction design principles
-- Types of interaction (selection, filtering, details-on-demand)
-- Animation theory and when to use it
-- Easing functions and timing
-- Coordinated multiple views
+**Lecture:** [Week 7 - Interactivity in Information Visualization](slides/week7-interaction.html)
+- Why interaction matters: From presentation to exploration
+- Bridging the gulfs (HCI concepts)
+- Shneiderman's Visual Information Seeking Mantra
+- The 12 interactive dynamics (Heer & Shneiderman taxonomy):
+  - **Data & View Specification:** Visualize, Filter, Sort, Derive
+  - **View Manipulation:** Select, Navigate, Coordinate, Organize
+  - **Process & Provenance:** Record, Annotate, Share, Guide
+- Modern interaction frameworks (Libra)
+- Case studies: FilmFinder, VisTrails, TaxiVis
 
 **Required Readings:**
-- [Interactive Dynamics for Visual Analysis](http://portal.acm.org/ft_gateway.cfm?id=2146416&type=pdf). Heer & Shneiderman. 2012.
-- [Effectiveness of Animation in Trend Visualization](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tvcg2008-trendvis.pdf). Robertson et al. InfoVis 2008.
-- [Easing Functions Cheat Sheet](http://easings.net/)
+- [The Eyes Have It: A Task by Data Type Taxonomy](/2025-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf). Shneiderman. IEEE VIS 1996.
+- [Interactive Dynamics for Visual Analysis](/2025-InfoVis-CSE/refs/Heer_Shneiderman_2012_Interactive_Dynamics_Visual_Analysis.pdf). Heer & Shneiderman. ACM Queue 2012.
 
-**Optional Readings:**
-- [What is Interaction for Data Visualization?](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/interaction/dimara2019what.pdf) Dimara & Perin. IEEE TVCG, 2019.
-- [Animated Transitions in Statistical Data Graphics](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/animation/2007-AnimatedTransitions-InfoVis.pdf). Heer & Robertson. IEEE InfoVis 2007.
+**Recommended Readings:**
+- [Toward a Deeper Understanding of the Role of Interaction in Information Visualization](/2025-InfoVis-CSE/refs/Yi_2007_Toward_Deeper_Understanding_Interaction.pdf). Yi et al. IEEE TVCG 2007.
+- [The Science of Interaction](/2025-InfoVis-CSE/refs/Pike_2009_Science_of_Interaction.pdf). Pike et al. Information Visualization 2009.
+- [Libra: Composable Interactions](/2025-InfoVis-CSE/refs/Zhao_2025_Libra_Composable_Interactions.pdf). Zhao et al. CHI 2025.
 
-**Lab:** 
+**Lab:** [Lab: Building Interactive Visualizations](labs/week7-lab.html)
 - D3 event handling (hover, click, brush)
-- Creating smooth transitions and animations
-- Implementing tooltip and details-on-demand
-- Coordinating multiple views
+- Implementing filtering and dynamic queries
+- Tooltip and details-on-demand
+- Brushing and linking across multiple views
+- Creating coordinated visualizations
 
-**Assignment:** Exercise 7 - Interactive visualization with smooth transitions (due Oct 23)
+**Assignment:** Exercise 7 - Interactive visualization design and implementation (due Oct 23)
 
 ### **Week 8** (Oct 24) - Geographic and Urban Visualization I
 **Learning Objectives:** Understand map projections and geographic data; create effective choropleth and point maps
