@@ -1,0 +1,1117 @@
+---
+title: "Urban Visualization II"
+subtitle: "Form, Design & Simulation (3D + Impact) - CS-GY 6313 - Fall 2025"
+author: "Claudio Silva"
+date: "November 7, 2025"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    logo: figs/vida.jpg
+    width: 1920
+    height: 1080
+    transition: slide
+    slide-number: true
+---
+
+# Welcome to the Third Dimension {background-color="#2c5f77"}
+
+## Our Journey Through Geovisualization
+
+::: {.columns}
+::: {.column width="33%"}
+### Week 8: 2D Static Maps
+
+![Choropleth map example](figs/week10/recap-choropleth.png){fig-align="center"}
+
+Critical foundations, projection, normalization
+:::
+
+::: {.column width="33%"}
+### Week 9: 2D + Time
+
+![TaxiVis interface](figs/week10/recap-taxivis.png){fig-align="center"}
+
+Urban flows, interactivity, linked views
+:::
+
+::: {.column width="33%"}
+### Week 10: 3D + Simulation
+
+![3D city model](figs/week10/urbane-title-3d-city.png){fig-align="center"}
+
+Built environment, form, impact analysis
+:::
+:::
+
+::: {.notes}
+Welcome to our final lecture on geovisualization. In Lecture 1, we learned the critical rules of 2D static maps. In Lecture 2, we made those maps interactive to explore 2D+Time *flows*. Today, we're adding the third dimension. We're looking at the *built environment*—the city's 3D *form*.
+:::
+
+## Today's Focus: The Built Environment
+
+::: {.r-fit-text}
+**From flat maps to the three-dimensional form of the city**
+:::
+
+::: {.incremental}
+- **Week 8**: Geography as abstract areas and boundaries
+- **Week 9**: Movement and flows across 2D space
+- **Week 10**: Physical structures—buildings, streets, skylines
+:::
+
+::: {.fragment}
+### Today's Goal:
+
+Explore how 3D visualization is used for urban planning, architectural design, and impact simulation.
+:::
+
+---
+
+# Part 1: Why 3D? The Human Experience {background-color="#2c5f77"}
+
+## Kevin Lynch's "Image of the City" (1960)
+
+::: {.columns}
+::: {.column width="50%"}
+**The Fundamental Question:**
+
+How do people mentally map a city?
+
+::: {.fragment}
+**Lynch's Answer:**
+
+Not through abstract 2D maps, but through **five types of 3D elements**:
+:::
+:::
+
+::: {.column width="50%"}
+![Lynch's five elements diagram](figs/week10/lynch-five-elements.png){fig-align="center" width="100%"}
+:::
+:::
+
+::: {.notes}
+Why 3D? Because we *experience* the city in 3D. A classic 1960s framework from urban planner Kevin Lynch argued that we don't navigate by 2D maps. We navigate using a mental map of 3D forms, paths, and landmarks.
+:::
+
+## Lynch's Five Elements
+
+::: {.columns}
+::: {.column width="50%"}
+### 1. Paths
+Streets, walkways, transit lines—channels of movement
+
+### 2. Edges
+Shorelines, walls, boundaries—linear breaks in continuity
+
+### 3. Districts
+Neighborhoods, zones—areas with common character
+
+### 4. Nodes
+Plazas, intersections—focal points of activity
+
+### 5. Landmarks
+Key buildings, monuments—unique reference points
+:::
+
+::: {.column width="50%"}
+![Examples of Lynch's elements in a real city](figs/week10/lynch-elements-examples.png){fig-align="center"}
+:::
+:::
+
+::: {.fragment}
+**All of these are fundamentally 3D spatial concepts.**
+
+To visualize the city as we experience it, we need to go to 3D.
+:::
+
+## The Experiential Dimension
+
+::: {.columns}
+::: {.column width="50%"}
+**2D maps show:**
+
+- Location
+- Proximity
+- Area
+- Connectivity (topology)
+
+**But they miss:**
+
+- Height and mass
+- Shadows and light
+- Visual prominence
+- Sense of enclosure
+:::
+
+::: {.column width="50%"}
+**3D visualization reveals:**
+
+- Building heights and skylines
+- Shadow patterns throughout the day
+- Sight lines and viewsheds
+- Spatial enclosure and openness
+
+::: {.fragment}
+These are **essential** for understanding how a city *feels* to inhabit.
+:::
+:::
+:::
+
+---
+
+# Part 2: The Urban Planning Challenge {background-color="#2c5f77"}
+
+## Rapid Global Urbanization
+
+::: {.r-fit-text}
+**By 2050: 68% of the world's population will live in cities**
+:::
+
+::: {.fragment}
+### The Challenge:
+
+Making decisions about massive new developments:
+
+- 80-story residential towers
+- Transit mega-projects
+- Urban renewal districts
+:::
+
+::: {.fragment}
+### The Question:
+
+How do we know the *impact* of these developments on neighborhoods, residents, and the urban fabric?
+:::
+
+## Current Scenario: Limited Tools
+
+![Current urban planning scenario diagram](figs/week10/urbane-current-scenario.png){fig-align="center" width="80%"}
+
+::: {.incremental}
+- **Decisions based on:** Intuition, experience, political pressure
+- **Analysis tools:** Limited, fragmented, not interactive
+- **Visualization:** A few static pre-rendered images
+- **Data integration:** Poor—data exists but isn't accessible to decision-makers
+:::
+
+::: {.notes}
+When a developer proposes a new 80-story skyscraper, how do city planners *actually* know its impact on the neighborhood? As the Urbane authors point out, these decisions are often based on experience and a few static, pre-rendered images, *not* on comprehensive data. What if we could build a tool for data-driven, *interactive* decision-making?
+:::
+
+## The Gap: Need for Data-Driven Tools
+
+::: {.columns}
+::: {.column width="50%"}
+### What's Missing:
+
+::: {.incremental}
+1. **Integrated data access**
+   - Building characteristics
+   - Environmental metrics
+   - Social/economic data
+
+2. **Interactive exploration**
+   - Query and filter dynamically
+   - Linked visualizations
+
+3. **Impact simulation**
+   - "What-if" scenarios
+   - Real-time feedback
+
+4. **Decision support**
+   - Trade-off analysis
+   - Multi-objective optimization
+:::
+:::
+
+::: {.column width="50%"}
+### What We Need:
+
+![Ideal interactive urban planning tool](figs/week10/urbane-ideal-scenario.png){fig-align="center"}
+
+A tool that combines 3D visualization, data analytics, and simulation for comprehensive decision-making
+:::
+:::
+
+---
+
+# Part 3: Case Study - Urbane {background-color="#2c5f77"}
+
+## Urbane: A 3D Framework for Urban Planning
+
+::: {.r-fit-text}
+**A 3D framework to support data-driven decision-making in urban development**
+:::
+
+::: {.fragment}
+![Full Urbane interface showing 3D city + 2D charts](figs/week10/urbane-full-interface.png){fig-align="center" width="85%"}
+:::
+
+::: {.notes}
+This is the Urbane system. Just like TaxiVis, it's a set of linked views. But now, the primary view is a 3D city model, not a 2D map. It links this 3D view to 2D abstract charts, like scatterplots and parallel coordinates, which can show data with many dimensions.
+:::
+
+## Urbane: Interface Components
+
+::: {.columns}
+::: {.column width="60%"}
+![Urbane interface with labeled components](figs/week10/urbane-labeled-interface.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+### Three Main Views:
+
+1. **3D City Model (Center)**
+   - Interactive 3D visualization
+   - Boston test case
+   - Building-level detail
+
+2. **Scatterplot (Bottom Left)**
+   - 2D projection of building attributes
+   - Axes can be any metric
+
+3. **Parallel Coordinates (Bottom Right)**
+   - Multi-dimensional data view
+   - Filter across multiple attributes
+:::
+:::
+
+## The Power of Linked Views in 3D
+
+::: {.r-fit-text}
+**Brushing and linking works in 3D, too!**
+:::
+
+::: {.columns .fragment}
+::: {.column width="50%"}
+### 3D → 2D
+
+Select buildings in the 3D view
+
+↓
+
+See them as points in the 2D scatterplot
+
+**Use case:** "What are the characteristics of buildings in this neighborhood?"
+:::
+
+::: {.column width="50%"}
+### 2D → 3D
+
+Select points in the 2D scatterplot/parallel coordinates
+
+↓
+
+See them highlighted in the 3D view
+
+**Use case:** "Show me all buildings with high energy use"
+:::
+:::
+
+::: {.notes}
+This is the same "brushing and linking" from Lecture 2! I can select a building in the 3D world and instantly see its data properties (energy use, price, year built) in the 2D charts. Even more powerfully, I can filter in the 2D *data world*.
+:::
+
+---
+
+# Part 4: 3D → 2D Linking {background-color="#2c5f77"}
+
+## Interaction: Select in 3D Space
+
+![User selecting buildings in the 3D view](figs/week10/urbane-3d-selection.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+By clicking and dragging in the 3D view, the user selects a set of buildings.
+:::
+
+## Result: Highlighted in 2D Data Space
+
+![Selected buildings shown in scatterplot](figs/week10/urbane-scatterplot-highlight.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+The selected buildings appear highlighted in the scatterplot, revealing their data properties.
+:::
+
+::: {.fragment}
+**Insight:** "These tall buildings in the waterfront district all have relatively low energy efficiency."
+:::
+
+---
+
+# Part 5: 2D → 3D Linking {background-color="#2c5f77"}
+
+## Interaction: Query in Data Space
+
+::: {.columns}
+::: {.column width="50%"}
+**Using Parallel Coordinates:**
+
+![Brushing on parallel coordinates plot](figs/week10/urbane-parallel-coords-brush.png){fig-align="center"}
+
+Filter: "Buildings built before 1950 with high energy use"
+:::
+
+::: {.column width="50%"}
+**Using Scatterplot:**
+
+![Brushing on scatterplot](figs/week10/urbane-scatterplot-brush.png){fig-align="center"}
+
+Filter: "Low property value + high density"
+:::
+:::
+
+::: {.notes}
+I can filter in the 2D *data world*. "Show me all buildings built before 1950 with high energy use" (I'd select them on the parallel coordinates plot), and the 3D model will *instantly* highlight those buildings for me.
+:::
+
+## Result: Spatial Pattern Revealed
+
+![3D view highlighting filtered buildings](figs/week10/urbane-3d-filtered-result.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+The 3D view highlights the buildings matching the data query.
+:::
+
+::: {.fragment}
+**Insight:** "Oh! These historic, inefficient buildings are clustered in the old downtown district. This could inform a targeted weatherization program."
+:::
+
+::: {.fragment}
+This is the power of linking abstract data views to spatial/physical representations.
+:::
+
+---
+
+# Part 6: Interactive Impact Analysis {background-color="#2c5f77"}
+
+## From Visualization to Simulation
+
+::: {.r-fit-text}
+**The most powerful feature: "What-if" analysis**
+:::
+
+::: {.incremental}
+- Not just *viewing* static data
+- But *simulating* the impact of proposed changes
+- In real-time, interactively
+:::
+
+::: {.fragment}
+### The Question:
+
+**"How will a new development change its neighborhood?"**
+:::
+
+## Impact Metrics: What Can We Measure?
+
+::: {.incremental}
+1. **Sky Exposure**
+   - How much sky is visible from streets and buildings?
+   - Blocked by new tall structures
+
+2. **Shadow Patterns**
+   - Where do shadows fall throughout the day/year?
+   - Impact on parks, plazas, sidewalks
+
+3. **Visibility & Viewsheds**
+   - What can be seen from this location?
+   - Which landmarks become hidden?
+
+4. **Density & Floor Area Ratio (FAR)**
+   - How does this change the neighborhood character?
+
+5. **Environmental Impacts**
+   - Wind patterns, heat island effects
+:::
+
+## Urbane: Adding a New Building
+
+### Step 1: Insert Proposed Design
+
+![New large building being added to 3D model](figs/week10/urbane-new-building-insert.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+The planner drops in the 3D model of a proposed new tower.
+:::
+
+## Urbane: Calculating Impact
+
+### Step 2: Real-Time Computation
+
+![System computing sky exposure changes](figs/week10/urbane-computing-impact.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+The system recalculates environmental metrics in real-time:
+
+- Ray-tracing for shadows and sky exposure
+- Viewshed analysis
+- Density calculations
+:::
+
+## Urbane: Visualizing Sky Exposure Impact
+
+### Step 3: Impact Visualization
+
+![Sky exposure heatmap showing impact of new building](figs/week10/urbane-sky-exposure-before-after.png){fig-align="center" width="90%"}
+
+::: {.fragment}
+**Red areas:** Loss of sky exposure due to the new building
+
+**Blue areas:** Minimal impact
+:::
+
+::: {.notes}
+This is the real power of Urbane. It's not just *viewing* static data. It's a "what-if" engine. The planner can drop in the proposed 3D model for a new building and the system *in real time* recalculates and re-visualizes the impact. This map shows the change in "sky exposure" on the surrounding streets and buildings. The red areas are where the view of the sky is now blocked. This is a massive leap from a few static renderings.
+:::
+
+## The Value of Interactive Simulation
+
+::: {.columns}
+::: {.column width="50%"}
+### Traditional Approach:
+
+1. Developer provides 2-3 static renderings
+2. Planner reviews documents
+3. Public hearing with limited visuals
+4. Vote with incomplete information
+
+**Timeline:** Weeks to months
+
+**Iterations:** 1-2 maximum
+:::
+
+::: {.column width="50%"}
+### Urbane Approach:
+
+1. Load proposed design into 3D model
+2. Instantly visualize impact
+3. Adjust design parameters
+4. Re-compute and compare
+5. Iterate rapidly
+
+**Timeline:** Minutes to hours
+
+**Iterations:** Dozens, exploring design space
+:::
+:::
+
+::: {.fragment}
+**Result:** More informed decisions, better outcomes, stakeholder engagement
+:::
+
+---
+
+# Part 7: Performance-Driven Design {background-color="#2c5f77"}
+
+## Taking It Further: Exploring Design Space
+
+::: {.r-fit-text}
+**Why test *one* design? Let's explore *thousands*.**
+:::
+
+::: {.fragment}
+### The Vision:
+
+Move from testing a single proposed design to exploring a vast **design parameter space** of possibilities.
+:::
+
+::: {.fragment}
+![SIGGRAPH Asia title slide](figs/week10/urbane-sigasia-title.png){fig-align="center" width="60%"}
+
+*Urbane's second paper, presented at SIGGRAPH Asia*
+:::
+
+::: {.notes}
+The second Urbane paper, which was presented at SIGGRAPH Asia, takes this a step further. Instead of a planner testing *one* design, what if we could help them explore a *catalogue* of thousands, or even millions, of possible designs? This is moving from "impact analysis" to "performance-driven design."
+:::
+
+## The Challenge: Massive Search Problem
+
+::: {.columns}
+::: {.column width="50%"}
+### Design Parameters:
+
+For a single tower on a given plot:
+
+- Height: 20-100 floors
+- Footprint shape: rectangular, circular, irregular
+- Profile: straight, tapered, twisted
+- Facade: glass ratio, material
+- Floor plate variations
+:::
+
+::: {.column width="50%"}
+### Constraints:
+
+- Zoning regulations (FAR, setbacks)
+- Structural feasibility
+- Budget limits
+- Accessibility codes
+
+::: {.fragment}
+**Result:** Millions of possible designs
+:::
+:::
+:::
+
+::: {.fragment}
+### The Question:
+
+How do we find the **optimal** designs that balance competing objectives?
+:::
+
+## Case Study: View-Enhanced Tower Designs
+
+::: {.columns}
+::: {.column width="60%"}
+![Design space showing various tower shapes](figs/week10/urbane-design-space-towers.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+### Goal:
+
+Find tower designs that **maximize view quality** for residents while meeting other constraints
+
+### Challenges:
+
+- What is "view quality"?
+- How to compute it for every window?
+- How to search millions of designs?
+:::
+:::
+
+::: {.notes}
+The goal here is to explore a huge "design parameter space"—all the possible building shapes you could create on a given plot. This specific case study looks at "view quality." How can we find designs that give residents the best possible views of landmarks or the ocean? The challenge is that this is a *massive* search problem.
+:::
+
+## Quantifying View Quality
+
+::: {.columns}
+::: {.column width="50%"}
+### What Makes a Good View?
+
+::: {.incremental}
+1. **Visibility of landmarks**
+   - Statue of Liberty, Central Park, waterfront
+
+2. **Openness & distance**
+   - Prefer views of horizon over nearby walls
+
+3. **Variety**
+   - Mix of natural and built features
+
+4. **Elevation**
+   - Higher floors generally better
+:::
+:::
+
+::: {.column width="50%"}
+![Diagram illustrating view score calculation](figs/week10/urbane-view-score-diagram.png){fig-align="center"}
+
+**View Score:** Computed for each window, aggregated to whole building
+:::
+:::
+
+::: {.fragment}
+**The computational challenge:** Calculating view scores for *every possible window* of *every possible building design*
+:::
+
+---
+
+# Part 8: The Solution - Precomputation & Exploration {background-color="#2c5f77"}
+
+## Two-Phase Approach
+
+::: {.columns}
+::: {.column width="50%"}
+### Phase 1: Precomputation
+
+![4D texture precomputation diagram](figs/week10/urbane-4d-texture.png){fig-align="center"}
+
+**Clever preprocessing:**
+
+Create a "4D texture" encoding view quality for every (x, y, z, direction) in the city
+:::
+
+::: {.column width="50%"}
+### Phase 2: Interactive Exploration
+
+![Exploration interface with scatterplot](figs/week10/urbane-exploration-interface.png){fig-align="center"}
+
+**Fast queries:**
+
+Instantly compute view score for any proposed building design
+:::
+:::
+
+::: {.notes}
+They solve the speed problem with a very clever pre-computation step. This allows them to build an interface where the architect can *explore trade-offs*.
+:::
+
+## The 4D View Texture
+
+::: {.columns}
+::: {.column width="40%"}
+**Concept:**
+
+For every location (x, y, z) and every viewing direction (θ, φ), precompute what is visible and its "value"
+
+**Structure:**
+
+5D data structure:
+- 3D spatial position
+- 2D viewing direction
+:::
+
+::: {.column width="60%"}
+![Visualization of 4D texture data structure](figs/week10/urbane-4d-texture-detail.png){fig-align="center"}
+:::
+:::
+
+::: {.fragment}
+**Key insight:** This precomputation happens *once*. Then, evaluating any building design becomes a simple texture lookup operation—incredibly fast.
+:::
+
+## Interactive Exploration Interface
+
+![Scatterplot showing view score vs cost with linked 3D models](figs/week10/urbane-tradeoff-scatterplot.png){fig-align="center" width="85%"}
+
+::: {.fragment}
+**X-axis:** Construction cost
+**Y-axis:** Total view score
+**Each point:** A different building design
+:::
+
+## Exploring the Trade-Off Space
+
+::: {.columns}
+::: {.column width="50%"}
+### The Interaction:
+
+1. Brush a region on the scatterplot
+2. See the 3D models of selected designs
+3. Compare visually and quantitatively
+4. Refine selection criteria
+5. Iterate
+
+### Example Query:
+
+"Show me buildings in the **sweet spot**: low cost but high view score"
+:::
+
+::: {.column width="50%"}
+![Brushed region showing selected designs](figs/week10/urbane-scatterplot-brushed.png){fig-align="center"}
+
+![3D models of selected building designs](figs/week10/urbane-selected-designs-3d.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+This scatterplot is the key. The X-axis could be "Construction Cost" and the Y-axis could be "Total View Score." The architect can now ask, "Show me all buildings in this 'sweet spot' of low cost but high view score." They brush that region on the scatterplot, and the 3D view shows them what those buildings actually *look like*. This is the frontier of data-driven architectural design.
+:::
+
+## Performance-Driven Design: The Paradigm Shift
+
+::: {.columns}
+::: {.column width="50%"}
+### Traditional Design:
+
+1. Architect sketches 2-3 options
+2. Each is manually evaluated
+3. Client picks one
+4. Refinement begins
+
+**Exploration:** Minimal
+**Optimization:** Manual, intuitive
+:::
+
+::: {.column width="50%"}
+### Performance-Driven Design:
+
+1. Define objectives & constraints
+2. Generate thousands of variants
+3. Evaluate all automatically
+4. Explore trade-offs visually
+5. Select and refine optimal designs
+
+**Exploration:** Comprehensive
+**Optimization:** Data-driven, multi-objective
+:::
+:::
+
+::: {.fragment}
+**Urbane enables the shift from manual trial-and-error to systematic exploration of design possibilities.**
+:::
+
+---
+
+# Part 9: Critical Reflection - When to Use 3D? {background-color="#2c5f77"}
+
+## A Question from the Urbane Authors Themselves
+
+::: {.r-fit-text}
+**"Is 3D visualization the right way to go?"**
+:::
+
+::: {.fragment}
+![Discussion slide from Urbane presentation](figs/week10/urbane-discussion-slide.png){fig-align="center" width="70%"}
+:::
+
+::: {.fragment}
+Let's think critically about when 3D helps and when it hurts.
+:::
+
+::: {.notes}
+I want to end with this critical question from the Urbane authors themselves. 3D looks cool, but is it *always* better? Not necessarily.
+:::
+
+## The Case FOR 3D
+
+::: {.incremental}
+1. **Matches human experience**
+   - We experience cities in 3D
+   - More intuitive for non-experts
+
+2. **Essential for certain metrics**
+   - Shadows and sky exposure
+   - Viewsheds and sightlines
+   - Sense of enclosure
+
+3. **Better for public communication**
+   - Stakeholders can "see" the impact
+   - Supports participatory planning
+
+4. **Reveals spatial relationships**
+   - Height disparities
+   - Clustering patterns
+   - Neighborhood character
+:::
+
+## The Case AGAINST 3D
+
+::: {.incremental}
+1. **Occlusion**
+   - Buildings hide other buildings
+   - Hard to see "behind" structures
+   - Information loss
+
+2. **Navigation complexity**
+   - Easy to get disoriented
+   - "Where am I? What am I looking at?"
+   - Cognitive overhead
+
+3. **Can be "chart junk"**
+   - 3D adds visual complexity
+   - Sometimes 2D is clearer
+   - Form over function
+
+4. **Computational cost**
+   - Rendering overhead
+   - Interaction lag
+   - Requires more powerful hardware
+:::
+
+## Guidelines: When to Use 3D
+
+::: {.columns}
+::: {.column width="50%"}
+### Use 3D when:
+
+✓ The question is **inherently 3D**
+- "What's the view from this window?"
+- "Where does the shadow fall?"
+- "How tall is this compared to neighbors?"
+
+✓ You need to **communicate with the public**
+- More accessible than abstract 2D
+- Builds intuition
+
+✓ You're analyzing **3D form**
+- Building massing
+- Skyline
+- Spatial enclosure
+:::
+
+::: {.column width="50%"}
+### Use 2D when:
+
+✓ The question is **statistical/analytical**
+- "Which district has the highest density?"
+- "Show me crime rate patterns"
+- Better with choropleth or bar chart
+
+✓ You need **precise comparison**
+- Ranking, exact values
+- Charts are clearer
+
+✓ You want to **avoid occlusion**
+- See all data simultaneously
+- No hidden elements
+
+✓ The data is **abstract/non-spatial**
+- Network relationships
+- Temporal patterns
+:::
+:::
+
+## The Hybrid Approach: Best of Both Worlds
+
+::: {.r-fit-text}
+**Urbane's solution: Link 3D and 2D views**
+:::
+
+::: {.columns .fragment}
+::: {.column width="50%"}
+**3D for:**
+
+- Spatial context
+- Impact visualization
+- Intuitive exploration
+- Public communication
+:::
+
+::: {.column width="50%"}
+**2D for:**
+
+- Precise filtering
+- Multi-dimensional queries
+- Statistical overview
+- Quantitative comparison
+:::
+:::
+
+::: {.fragment}
+By linking them, you get the strengths of both without the weaknesses of either.
+:::
+
+---
+
+# Part 10: Grand Synthesis {background-color="#2c5f77"}
+
+## The Three-Week Journey
+
+::: {.columns}
+::: {.column width="33%"}
+### Week 8: 2D Static Maps
+
+![Choropleth map](figs/week10/recap-week8-choropleth.png){fig-align="center"}
+
+**Lessons:**
+- Projection matters
+- Normalize your data
+- Color carefully
+- Beware MAUP
+
+**Question:** When is spatial encoding the right choice?
+:::
+
+::: {.column width="33%"}
+### Week 9: 2D + Time
+
+![TaxiVis interface](figs/week10/recap-week9-taxivis.png){fig-align="center"}
+
+**Lessons:**
+- Interactivity enables exploration
+- Linked views support queries
+- Temporal patterns matter
+- Visual queries work
+
+**Question:** How do we explore massive, dynamic flows?
+:::
+
+::: {.column width="33%"}
+### Week 10: 3D + Simulation
+
+![Urbane interface](figs/week10/recap-week10-urbane.png){fig-align="center"}
+
+**Lessons:**
+- 3D for form & experience
+- Simulation enables "what-if"
+- Trade-off exploration
+- Use 3D thoughtfully
+
+**Question:** When is the third dimension essential?
+:::
+:::
+
+## From Presentation to Exploration to Simulation
+
+::: {.incremental}
+**Week 8: Static Presentation**
+- One fixed view
+- Designer's perspective
+- "Here is the data"
+
+**Week 9: Interactive Exploration**
+- User-driven queries
+- Multiple perspectives
+- "Ask your own questions"
+
+**Week 10: Interactive Simulation**
+- Generative design
+- Impact prediction
+- "Create and test scenarios"
+:::
+
+::: {.fragment}
+### The Evolution:
+
+**Passive viewing → Active exploration → Creative design**
+:::
+
+## Core Principles Across All Three Weeks
+
+::: {.incremental}
+1. **Match the visualization to the question**
+   - Map for spatial patterns
+   - Chart for ranking
+   - 3D for form and impact
+
+2. **Normalize and contextualize your data**
+   - No raw counts on choropleths
+   - Show distributions, not just aggregates
+
+3. **Interactivity enables deeper insight**
+   - Linked views support complex queries
+   - Let users ask their own questions
+
+4. **Link abstract and concrete views**
+   - TaxiVis: Map + time series
+   - Urbane: 3D city + scatterplot
+
+5. **Be critical and reflective**
+   - Question your design choices
+   - Know when simpler is better
+:::
+
+## The Future of Urban Visualization
+
+::: {.columns}
+::: {.column width="50%"}
+### Emerging Trends:
+
+1. **Real-time urban sensing**
+   - IoT sensors everywhere
+   - Live city dashboards
+
+2. **AI-assisted design**
+   - Generative models
+   - Automated optimization
+
+3. **Virtual & augmented reality**
+   - Immersive urban planning
+   - On-site impact preview
+
+4. **Participatory planning**
+   - Public-facing tools
+   - Democratic decision-making
+:::
+
+::: {.column width="50%"}
+### Ongoing Challenges:
+
+1. **Scalability**
+   - City-scale → planet-scale
+   - Real-time analysis
+
+2. **Accessibility**
+   - Tools for non-experts
+   - Equity in representation
+
+3. **Validation**
+   - Are simulations accurate?
+   - Uncertainty quantification
+
+4. **Ethics**
+   - Whose data? Whose benefit?
+   - Privacy concerns
+:::
+:::
+
+## Geovisualization in Your Future
+
+::: {.incremental}
+**For your projects and careers:**
+
+- **Always ask:** Is the spatial dimension essential to my question?
+- **Remember:** Normalization is not optional
+- **Embrace:** Interactivity as a tool for thinking, not just presentation
+- **Link:** Multiple views to support complex analysis
+- **Reflect:** On whether 3D adds value or just visual complexity
+- **Design:** For your audience—experts vs. public have different needs
+:::
+
+::: {.fragment}
+### Most importantly:
+
+**Be skeptical consumers and thoughtful creators of geographic visualizations.**
+:::
+
+---
+
+# Conclusion {background-color="#2c5f77"}
+
+## The Power and Responsibility of Geovisualization
+
+::: {.r-fit-text}
+**Maps, flows, and 3D models shape how we understand and change our world**
+:::
+
+::: {.fragment}
+From John Snow's cholera map in 1854 to Urbane's interactive urban planning in 2015, **geographic visualization has always been about more than pretty pictures.**
+:::
+
+::: {.fragment}
+It's about:
+- **Understanding** complex spatial phenomena
+- **Communicating** insights to stakeholders
+- **Supporting** critical decisions
+- **Shaping** the future of our cities and planet
+:::
+
+## Your Toolkit: Three Lenses
+
+When approaching any geographic visualization problem, ask:
+
+::: {.incremental}
+1. **The 2D Lens (Week 8)**
+   - Is the projection appropriate?
+   - Is the data normalized?
+   - Are the colors perceptually valid?
+   - Is the geography misleading?
+
+2. **The Temporal Lens (Week 9)**
+   - How does the pattern change over time?
+   - What interactions enable exploration?
+   - Are spatial and temporal views linked?
+
+3. **The 3D Lens (Week 10)**
+   - Is the question inherently about form?
+   - Does 3D add value or complexity?
+   - Can I simulate impact interactively?
+:::
+
+## Thank You
+
+::: {.r-fit-text}
+**Questions?**
+:::
+
+::: {.fragment}
+### Next Steps:
+
+- Apply these principles in your projects
+- Explore the tools: D3.js, Kepler.gl, Deck.gl, CesiumJS
+- Read the papers (links in syllabus)
+- Think critically about every map you see
+:::
+
+::: {.fragment}
+### Remember:
+
+Every visualization makes choices. Make yours **deliberately, defensibly, and ethically**.
+:::
+
+::: {.notes}
+This is the journey we've been on. From static, 2D "lies"... to interactive 2D+Time exploratory tools... and finally to 3D "what-if" engines for simulation. The future of this field is in creating more powerful, interactive, and accessible tools like these, not just for experts but for the public (participatory planning). Thank you. Questions?
+:::

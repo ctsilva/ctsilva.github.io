@@ -1,0 +1,750 @@
+---
+title: "Foundations of Geovisualization"
+subtitle: "The 2D Map - CS-GY 6313 - Fall 2025"
+author: "Claudio Silva"
+date: "October 24, 2025"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    logo: figs/vida.jpg
+    width: 1920
+    height: 1080
+    transition: slide
+    slide-number: true
+---
+
+# Welcome {background-color="#2c5f77"}
+
+::: {.notes}
+Welcome. Today we're starting a three-part series on geovisualization. Before we can get to the complex 3D and interactive systems, we *must* understand the fundamentals. We'll be focusing on the most common and, as we'll see, the most *misused* form of visualization: the 2D static map. Our goal today is to learn how to read and create these maps *critically*.
+:::
+
+## Three Maps That Changed the World
+
+::: {.columns}
+::: {.column width="33%"}
+![John Snow's Cholera Map (1854)](figs/week8/snow-cholera-map.png){fig-align="center"}
+:::
+
+::: {.column width="33%"}
+![Minard's Napoleon March (1869)](figs/week8/minard-napoleon.png){fig-align="center"}
+:::
+
+::: {.column width="33%"}
+![NYT 2020 Election Map](figs/week8/nyt-election-2020.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+These three maps represent the power and the challenge of geovisualization. Snow's cholera map solved a mystery through spatial analysis. Minard's flow map told a story of tragedy with multiple variables. The NYT election map sparked debates about how we represent geographic data. Each teaches us something essential about creating honest, effective visualizations.
+:::
+
+---
+
+# Part 1: The Power of Spatial Analysis {background-color="#2c5f77"}
+
+## John Snow's 1854 Cholera Map
+
+::: {.columns}
+::: {.column width="50%"}
+**What is a map for?**
+
+- Analysis
+- Communication
+
+**Snow's Innovation:**
+
+- He didn't just plot data
+- He used spatial relationships to solve a problem
+- Deaths clustered around the Broad Street pump
+- Had the handle removed → outbreak stopped
+:::
+
+::: {.column width="50%"}
+![John Snow's Cholera Map showing death locations and water pumps](figs/week8/snow-cholera-detailed.png){fig-align="center" width="100%"}
+:::
+:::
+
+::: {.notes}
+This is the foundational story of geovisualization. In 1854, cholera was a mystery. John Snow plotted the deaths (the black bars) on a map of London. He saw they clustered around one water pump—the Broad Street pump. He had the handle removed, and the outbreak stopped. This is the "why" of what we do. He didn't just make a picture; he used the spatial relationship between deaths and pumps to form a hypothesis and take action.
+:::
+
+## Historical Milestones in Cartography
+
+::: {.columns}
+::: {.column width="50%"}
+### Ptolemy's Geographica (c. 150 AD)
+
+- Foundation of modern cartography
+- Latitude and longitude coordinate system
+- Over 2000 years of influence
+
+![Ptolemy's World Map](figs/week8/ptolemy-map.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+### Minard's Flow Map (1869)
+
+- Multiple variables in one visualization:
+  - Troop size (width)
+  - Temperature (bottom scale)
+  - Location (geography)
+  - Direction (color: tan = advance, black = retreat)
+
+![Minard's Map of Napoleon's Russian Campaign](figs/week8/minard-napoleon-detailed.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+Maps are not new. Ptolemy laid the groundwork for using latitude and longitude over 2000 years ago. On the right is one of the most famous visualizations ever, by Charles Joseph Minard. It shows the devastating losses of Napoleon's army in Russia. The thick tan band shows the army size shrinking on the way to Moscow, and the thin black line shows its utter collapse on the retreat, plotted against temperature. This is a brilliant *flow map*.
+:::
+
+---
+
+# Part 2: When to Use a Map? {background-color="#2c5f77"}
+
+## The Critical Question
+
+::: {.r-fit-text}
+**"Not all geographical data should be on a map."**
+:::
+
+::: {.fragment}
+### When is the bar chart better?
+
+- For **ranking** and **lookup** tasks
+- "Which state has the highest sales?"
+- "What are the top 5 states?"
+:::
+
+::: {.fragment}
+### When is the map better?
+
+- For finding **spatial patterns**
+- For identifying **clusters**
+- For understanding **geographic relationships**
+- "Are sales clustered in the Midwest?"
+:::
+
+::: {.notes}
+This is the *most important* question you must ask every time. Just because you have spatial data (like states) doesn't mean you *must* use a map.
+:::
+
+## Map vs. Bar Chart: The Same Data
+
+::: {.columns}
+::: {.column width="50%"}
+![Map of US states colored by sales value](figs/week8/sales-map.png){fig-align="center"}
+
+**Better for:** Spatial patterns, regional clustering
+:::
+
+::: {.column width="50%"}
+![Bar chart of sales by state, sorted](figs/week8/sales-barchart.png){fig-align="center"}
+
+**Better for:** Ranking, exact value lookup
+:::
+:::
+
+::: {.notes}
+Look at these two charts. If my question is, "Which state has the highest sales?" or "What are the top 5 states?" the bar chart is *infinitely* better. If my question is, "Are sales clustered? Is there a pattern in the Midwest?" the map is the only way to see that.
+:::
+
+---
+
+# Part 3: The Fundamental Problem {background-color="#2c5f77"}
+
+## Projections: Mapping 3D to 2D
+
+::: {.columns}
+::: {.column width="50%"}
+**The Challenge:**
+
+- Earth is a 3D sphere
+- Screens and paper are 2D planes
+- You **cannot** flatten a sphere without distortion
+
+::: {.fragment}
+**You must choose what to distort:**
+
+- Shape
+- Area
+- Distance
+:::
+:::
+
+::: {.column width="50%"}
+![Diagram showing sphere unpeeling onto flat surface](figs/week8/projection-concept.png){fig-align="center"}
+:::
+:::
+
+::: {.r-fit-text .fragment}
+**Any 2D map is a lie. The question is: what kind of lie?**
+:::
+
+::: {.notes}
+This is the fundamental challenge of all cartography. The Earth is a sphere (well, an oblate spheroid). A screen or piece of paper is flat. Any 2D map *is a lie*. It's a distorted view of reality. The question is, what *kind* of "lie" (distortion) are you choosing, and is it appropriate for your task?
+:::
+
+## Projection Types: What They Preserve
+
+::: {.columns}
+::: {.column width="33%"}
+### Conformal
+*Preserves shape & angles*
+
+![Mercator projection](figs/week8/mercator-projection.png){fig-align="center"}
+
+**Use:** Navigation (constant compass bearing)
+:::
+
+::: {.column width="33%"}
+### Equal-Area
+*Preserves relative area*
+
+![Albers Equal-Area projection](figs/week8/albers-projection.png){fig-align="center"}
+
+**Use:** Thematic maps (choropleths)
+:::
+
+::: {.column width="33%"}
+### Equidistant
+*Preserves distance from center*
+
+![Azimuthal Equidistant projection](figs/week8/azimuthal-projection.png){fig-align="center"}
+
+**Use:** Distance calculations
+:::
+:::
+
+::: {.notes}
+These are the three main categories of projections, each preserving different properties. Conformal projections preserve shape and angles, which is why Mercator was great for sailing. Equal-area projections preserve relative sizes, which is critical for thematic maps. Equidistant projections preserve distances from a center point.
+:::
+
+## Tissot's Indicatrix: Visualizing Distortion
+
+::: {.columns}
+::: {.column width="50%"}
+### Mercator (Conformal)
+
+![Tissot circles on Mercator projection](figs/week8/tissot-mercator.png){fig-align="center"}
+
+- Circles remain circles (shape preserved)
+- But circles get **huge** near poles (area distorted)
+:::
+
+::: {.column width="50%"}
+### Equal-Area
+
+![Tissot circles on equal-area projection](figs/week8/tissot-equal-area.png){fig-align="center"}
+
+- Circles become ellipses (shape distorted)
+- But all have **same area** (area preserved)
+:::
+:::
+
+::: {.notes}
+These are the tradeoffs. The Mercator projection, on the left, preserves *shape*. This is why it was great for sailing—a straight line on the map is a constant compass bearing. But look at the area distortion. The projection on the right is *equal-area*. It preserves the *size* of regions, which is critical for the maps we're about to discuss, but it has to distort the shapes.
+:::
+
+## Projection Hall of Shame/Fame
+
+::: {.columns}
+::: {.column width="50%"}
+### Mercator: The Infamous Example
+
+![Mercator showing Greenland vs Africa](figs/week8/mercator-greenland-africa.png){fig-align="center"}
+
+**The Problem:** Greenland looks bigger than Africa
+
+**Reality:** Africa is **14× larger** than Greenland
+:::
+
+::: {.column width="50%"}
+### Albers Equal-Area: The Fix
+
+![Albers projection showing true relative sizes](figs/week8/albers-us.png){fig-align="center"}
+
+**The Solution:** Use equal-area for thematic maps
+:::
+:::
+
+::: {.r-fit-text .fragment}
+**Rule: If you shade areas, you MUST use an equal-area projection.**
+:::
+
+::: {.notes}
+This is the classic, infamous example. On the Mercator projection, Greenland looks massive, larger than Africa. In reality, Africa is 14 times larger than Greenland. This is fine for sailing, but if you make a choropleth map of "GDP" on a Mercator projection, you are visually lying, giving far too much prominence to countries near the poles. **If you are making a choropleth map, you must use an equal-area projection.**
+:::
+
+---
+
+# Part 4: Taxonomy of Thematic Maps {background-color="#2c5f77"}
+
+## Type 1: Choropleth Map
+
+::: {.columns}
+::: {.column width="60%"}
+![NYT 2020 Election: By Winner (choropleth)](figs/week8/nyt-choropleth-winner.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+**Definition:**
+
+Regions are shaded based on a value
+
+**Use Cases:**
+
+- Categorical data (winner/loser)
+- Rates and percentages
+- Density measures
+
+**Good for:** Seeing broad regional patterns
+:::
+:::
+
+::: {.notes}
+This is a **choropleth**. Each county is shaded by *who won*. This is good for seeing broad regional patterns. The NYT is a master of this type of visualization.
+:::
+
+## Type 2: Proportional Symbol Map
+
+::: {.columns}
+::: {.column width="60%"}
+![NYT 2020 Election: Size of Lead (proportional symbols)](figs/week8/nyt-proportional-lead.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+**Definition:**
+
+Symbols (e.g., circles) are scaled based on a value
+
+**Use Cases:**
+
+- Absolute quantities
+- Magnitude comparisons
+- Population distributions
+
+**Good for:** Showing *where* the values are, not just the land area
+:::
+:::
+
+::: {.notes}
+This is a **proportional symbol map**. Each circle is scaled by the *size of the lead*. This is a very different story—it shows *where* the votes are, not just *land area*.
+:::
+
+## Type 3: Cartogram
+
+::: {.columns}
+::: {.column width="60%"}
+![NYT Electoral College Cartogram (one square = one electoral vote)](figs/week8/nyt-cartogram-electoral.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+**Definition:**
+
+Geometry (area) is distorted to represent a quantity
+
+**Use Cases:**
+
+- Population-based metrics
+- Electoral votes
+- Economic measures
+
+**Good for:** De-emphasizing misleading land area
+:::
+:::
+
+::: {.notes}
+This is a **cartogram**. This is a brilliant solution to the election map problem. It *abandons* true geography and instead sizes each state by its electoral votes.
+:::
+
+## Type 4: Flow Map
+
+::: {.columns}
+::: {.column width="60%"}
+![Minard's British Coal Exports (1864)](figs/week8/minard-coal-exports.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+**Definition:**
+
+Shows movement or connections between regions
+
+**Use Cases:**
+
+- Trade routes
+- Migration patterns
+- Transportation networks
+
+**Visual encoding:** Line width ∝ quantity flowing
+:::
+:::
+
+::: {.notes}
+This is a **flow map** by Minard again, showing coal exports. The width of the line is proportional to the amount of coal being exported along each route.
+:::
+
+---
+
+# Part 5: Four Critical Pitfalls {background-color="#2c5f77"}
+
+::: {.notes}
+We're going to spend the next few minutes on how *not* to lie with maps. Most of the "bad" maps you see are choropleths that fall into one of these four traps.
+:::
+
+## Choropleth Maps: Handle with Care
+
+::: {.r-fit-text}
+Choropleth maps are the most **common** and most **misused** type of map.
+:::
+
+### Four Major Pitfalls:
+
+::: {.incremental}
+1. **Normalization** (Base Rate Bias)
+2. **Classification** (Binning)
+3. **Color**
+4. **Geography** (MAUP)
+:::
+
+::: {.fragment}
+::: {.r-fit-text}
+⚠️ Avoid these traps to create honest visualizations ⚠️
+:::
+:::
+
+---
+
+# Pitfall 1: Normalization {background-color="#c23b22"}
+
+## The Base Rate Bias Problem
+
+::: {.r-fit-text}
+**NEVER USE RAW COUNTS ON A CHOROPLETH MAP**
+:::
+
+::: {.fragment}
+A map of "Total Crimes" is just a map of "Total People"
+:::
+
+::: {.fragment}
+### You MUST normalize your data:
+
+- **Per Capita** (e.g., crimes per 1,000 people)
+- **Density** (e.g., crimes per square mile)
+- **Rate** (e.g., unemployment rate, percentage)
+:::
+
+## Bad vs. Good: Twitter Users
+
+::: {.columns}
+::: {.column width="50%"}
+### ❌ BAD: Raw Counts
+
+![Number of Twitter Users (just a population map)](figs/week8/twitter-raw-counts.png){fig-align="center"}
+
+**This shows:** Where people live
+
+**This tells you:** Nothing about Twitter usage
+:::
+
+::: {.column width="50%"}
+### ✓ GOOD: Normalized
+
+![Percentage of Population on Twitter](figs/week8/twitter-percentage.png){fig-align="center"}
+
+**This shows:** Twitter adoption rates
+
+**This tells you:** A meaningful story about usage patterns
+:::
+:::
+
+::: {.r-fit-text .fragment}
+**If you put raw counts on a choropleth, you are lying.**
+:::
+
+::: {.notes}
+This is the *single biggest mistake* people make. Look at the map on the left: "Number of Twitter Users." What does it show? It just shows where people live—California, Texas, New York. It's a population map. It tells you *nothing* about Twitter usage. The map on the right is normalized. It shows "Percentage of Population on Twitter." This is a *useful* map, and it tells a completely different story.
+:::
+
+---
+
+# Pitfall 2: Classification (Binning) {background-color="#c23b22"}
+
+## How You Bin Changes the Story
+
+::: {.columns}
+::: {.column width="40%"}
+**Same data, different binning methods:**
+
+### Equal Interval
+Divides range into equal steps
+
+- Prone to outliers
+- Can leave bins empty
+
+### Quantile
+Same number of items per bin
+
+- Good for ranking
+- Can be misleading if data is clustered
+
+### Natural Breaks (Jenks)
+Finds "natural" clusters
+
+- Minimizes within-class variance
+- More complex to compute
+:::
+
+::: {.column width="60%"}
+![Three maps showing same data with different classification methods](figs/week8/binning-comparison.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+Look at these three maps. They show the *exact same data*. The only difference is how we defined the cut-off points for the colors. Equal Interval is skewed by outliers like California. Quantile forces an equal number of states into each color. Natural Breaks uses an algorithm to find "natural" gaps in the data. There is no single "right" answer, but you *must* be aware of your choice and be able to defend it.
+:::
+
+## Classification Methods Compared
+
+| Method | Best For | Pitfall |
+|--------|----------|---------|
+| **Equal Interval** | Evenly distributed data | Dominated by outliers |
+| **Quantile** | Ranking & comparison | Hides natural clustering |
+| **Natural Breaks** | Data with natural groups | Can be arbitrary with uniform data |
+| **Manual** | Expert knowledge | Subjective, hard to defend |
+
+::: {.fragment}
+::: {.callout-important}
+## Key Takeaway
+There is no single "right" method, but you must be **aware** of your choice and able to **defend** it.
+:::
+:::
+
+---
+
+# Pitfall 3: Color {background-color="#c23b22"}
+
+## Stop Using Rainbow Color Scales
+
+::: {.columns}
+::: {.column width="50%"}
+### ❌ BAD: Rainbow
+
+![Map with rainbow color scale](figs/week8/rainbow-colorscale-bad.png){fig-align="center"}
+
+**Problems:**
+
+- Not perceptually uniform
+- No intuitive order (is yellow > green?)
+- Creates false boundaries
+- Misleading visual jumps
+:::
+
+::: {.column width="50%"}
+### ✓ GOOD: Perceptual Scales
+
+![Map with proper sequential scale](figs/week8/good-sequential-scale.png){fig-align="center"}
+
+![Map with diverging scale](figs/week8/good-diverging-scale.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+Rainbows are bad for data. Why? They aren't perceptually ordered. Is yellow "more" or "less" than green? The jump from yellow to green *looks* more dramatic than the jump from blue to purple, even if the data change is the same.
+:::
+
+## Choose the Right Color Scale
+
+### Sequential (Light → Dark)
+
+For data from **low to high** with no meaningful middle:
+
+- Population density
+- Income levels
+- Temperature (0-100°F)
+
+**Examples:** Viridis, Blues, YlOrRd
+
+### Diverging (Color A → Neutral → Color B)
+
+For data with a **meaningful midpoint**:
+
+- Above/below average
+- Gain/loss
+- Pro/con
+
+**Examples:** RdBu (Red-White-Blue), BrBG, PiYG
+
+::: {.fragment}
+::: {.callout-tip}
+## Use ColorBrewer
+[colorbrewer2.org](https://colorbrewer2.org) provides perceptually-uniform, colorblind-safe palettes
+:::
+:::
+
+---
+
+# Pitfall 4: Geography (MAUP) {background-color="#c23b22"}
+
+## The Modifiable Areal Unit Problem
+
+::: {.r-fit-text}
+**Large, sparse regions visually dominate small, dense regions**
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+![2016 Election map looking "all red"](figs/week8/election-2016-red.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+**The Problem:**
+
+- Your eyes are drawn to **area**, not **value**
+- Rural counties: few people, huge land area
+- Urban counties: millions of people, tiny area
+- This map shows **land area** colored by votes, not **votes**
+:::
+:::
+
+::: {.notes}
+This is the fundamental *problem with geography itself*. Our eyes are drawn to *area*, not *value*. This map of the 2016 election is famously misleading. It looks "all red." Why? Because Republican-leaning counties, while sparsely populated, take up a *ton* of land area. The tiny, dense, blue urban counties are almost invisible but contain millions more people. This map isn't a map of *votes*; it's a map of *land area* colored by votes.
+:::
+
+## Solutions to the Geography Problem
+
+::: {.columns}
+::: {.column width="33%"}
+### ❌ Misleading
+
+![Standard choropleth](figs/week8/election-choropleth-bad.png){fig-align="center"}
+
+Land area dominates
+:::
+
+::: {.column width="33%"}
+### ✓ Solution 1: Symbols
+
+![NYT Size of Lead symbol map](figs/week8/nyt-proportional-lead-solution.png){fig-align="center"}
+
+Shows where votes are
+:::
+
+::: {.column width="33%"}
+### ✓ Solution 2: Cartogram
+
+![NYT Electoral College cartogram](figs/week8/nyt-cartogram-solution.png){fig-align="center"}
+
+Distorts geography by value
+:::
+:::
+
+::: {.notes}
+How do we *honestly* show the election data? The NYT has great solutions. The symbol map shows *where* the votes are and *how big* the leads are, ignoring the land area. The cartogram *distorts* the geography to make each state's size proportional to its actual power (its electoral votes). Both of these are arguably more "truthful" representations of the election than the standard map.
+:::
+
+---
+
+# Part 6: Beyond Geographic Accuracy {background-color="#2c5f77"}
+
+## Sometimes, the Best Map Abandons Geography
+
+::: {.columns}
+::: {.column width="50%"}
+### Beck's London Tube Diagram (1933)
+
+![Harry Beck's London Underground map](figs/week8/beck-tube-map.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+**Geographically "wrong" but topologically "right"**
+
+**What Beck realized:**
+
+- For subway riders, exact geographic paths don't matter
+- What matters: sequence of stops and where to transfer
+
+**His innovations:**
+
+- Straightened lines
+- Regularized angles (45° or 90°)
+- Even spacing between stations
+- Prioritized **topology** over **geography**
+:::
+:::
+
+::: {.notes}
+I want to end today by bridging to our next lecture. This is one of the most famous and successful visualizations ever made. And it's almost completely *wrong*, geographically. Beck, an engineer, realized that for a subway rider, the *exact* geographic path doesn't matter. What matters is the *sequence of stops* and *where to transfer*. He straightened the lines, regularized the angles, and spaced the stations evenly. He prioritized *topological* accuracy over *geographic* accuracy. This is a classic *urban* visualization, which is where we'll pick up next time.
+:::
+
+## Bridge to Next Lecture: Urban Visualization
+
+::: {.incremental}
+- Today: **Geographic maps** (accurate spatial representation)
+- Next week: **Urban visualizations** (prioritize usability and patterns)
+- Week 10: **3D & Interactive geo-spatial systems** (combining both)
+:::
+
+::: {.fragment}
+The tube map is our bridge: it shows that **sometimes the most effective visualization deliberately distorts reality** to better serve the user's task.
+:::
+
+---
+
+# Summary & Key Takeaways {background-color="#2c5f77"}
+
+## Five Critical Lessons
+
+::: {.incremental}
+1. **Use a map only when the spatial question matters**
+   - Bar charts are better for ranking and lookup
+
+2. **Projections always distort—choose wisely**
+   - Equal-area for choropleths (if you shade areas)
+
+3. **NEVER use raw counts on choropleths**
+   - Always normalize: per capita, density, or rate
+
+4. **Choose classification and colors carefully**
+   - Binning method changes the story
+   - Sequential vs. diverging scales
+
+5. **Geography itself can mislead (MAUP)**
+   - Consider symbols, cartograms, or other encodings
+:::
+
+## Be a Critical Consumer
+
+::: {.columns}
+::: {.column width="50%"}
+**When you see a map, ask:**
+
+- What's the projection?
+- Is it normalized?
+- What's the classification method?
+- What's the color scale?
+- Is land area misleading the message?
+:::
+
+::: {.column width="50%"}
+**When you make a map, remember:**
+
+- Is a map the right choice?
+- Have I used equal-area projection?
+- Have I normalized my data?
+- Are my bins defensible?
+- Are my colors perceptually uniform?
+:::
+:::
+
+::: {.fragment}
+::: {.r-fit-text}
+**Next Time:** Urban Visualization & Network-Geographic Hybrids
+:::
+:::
+
+::: {.notes}
+So, to recap: be skeptical. When you see a map, ask these questions. What's the projection? Is it normalized? What's the binning? What's the color scale? Next time, we'll take these fundamentals and apply them to the complex, dynamic world of urban data, where interactivity becomes essential. Questions?
+:::

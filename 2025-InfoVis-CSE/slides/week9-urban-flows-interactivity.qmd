@@ -1,0 +1,809 @@
+---
+title: "Urban Visualization I"
+subtitle: "Flows, Time & Interactivity (2D + Time) - CS-GY 6313 - Fall 2025"
+author: "Claudio Silva"
+date: "October 31, 2025"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    logo: figs/vida.jpg
+    width: 1920
+    height: 1080
+    transition: slide
+    slide-number: true
+---
+
+# From Static Maps to Dynamic Urban Systems {background-color="#2c5f77"}
+
+## The Yellow Blob Problem
+
+::: {.columns}
+::: {.column width="50%"}
+**What happens when we apply static techniques to massive urban datasets?**
+
+::: {.fragment}
+This is 140 million NYC taxi trips visualized as a static heatmap.
+:::
+
+::: {.fragment}
+**What can you learn from this?**
+
+Nothing. It's a "yellow blob."
+:::
+:::
+
+::: {.column width="50%"}
+![Static heatmap of 140 million NYC taxi trips](figs/week9/yellow-blob-taxi-heatmap.png){fig-align="center" width="100%"}
+:::
+:::
+
+::: {.notes}
+Welcome back. Last time, we learned the rules of static 2D maps. Today, we're diving into *urban* data. This is what happens when you try to apply a static technique (like a heatmap) to a massive, dynamic dataset. This is 140 million taxi trips. What can you learn from this? Nothing. It's a "yellow blob." The problem isn't the data. It's the *lack of interactivity*. Today is about how we move from static pictures to *exploratory tools*.
+:::
+
+## Today's Goal
+
+::: {.r-fit-text}
+Learn to visualize urban **dynamics**—movement and time—using interactive, linked views
+:::
+
+::: {.incremental}
+- **Challenge:** Urban data is massive, dense, and dynamic
+- **Solution:** Turn visualization into an exploration tool
+- **Case Study:** TaxiVis—a system for exploring NYC taxi flows
+:::
+
+::: {.fragment}
+We'll learn how to move from this "yellow blob" to meaningful insights about urban mobility patterns.
+:::
+
+---
+
+# Part 1: Understanding Urban Data {background-color="#2c5f77"}
+
+## What Makes Urban Data Different?
+
+::: {.columns}
+::: {.column width="50%"}
+### Four Defining Characteristics:
+
+::: {.incremental}
+1. **Scale**
+   - Human-level to metro-level
+   - Millions of individual events
+
+2. **Density**
+   - Massive overplotting
+   - Traditional techniques fail
+
+3. **Complexity**
+   - Interconnected systems
+   - Transit, traffic, social networks
+
+4. **Dynamism**
+   - The city is defined by *time* and *movement*
+   - Static snapshots miss the essence
+:::
+:::
+
+::: {.column width="50%"}
+![Urban mobility patterns at different scales](figs/week9/urban-data-scales.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+Urban data presents unique challenges. We're dealing with scale—from individual pedestrians to metro-wide patterns. We face density—so many overlapping events that traditional visualizations create meaningless blobs. There's complexity—interconnected systems where transit affects traffic affects social gatherings. And most importantly, there's dynamism—the city is fundamentally about movement and time. A static snapshot misses what makes a city a city.
+:::
+
+## Hägerstrand's Space-Time Cube (1970)
+
+::: {.columns}
+::: {.column width="40%"}
+**The Classic Framework for Movement Analysis**
+
+- X, Y dimensions: Geographic space
+- Z dimension: Time
+- Each person's life: a line through the cube
+
+::: {.fragment}
+**The Urban Challenge:**
+
+Understanding *millions* of these paths, all interacting simultaneously
+:::
+:::
+
+::: {.column width="60%"}
+![Hägerstrand's Space-Time Cube showing individual trajectories](figs/week9/hagerstrand-space-time-cube.png){fig-align="center" width="100%"}
+:::
+:::
+
+::: {.notes}
+The classic framework for thinking about movement in space is Hägerstrand's "Space-Time Cube" from the 1970s. It plots an individual's path in 3D: X, Y, and Time. Your life is a line in this cube. Urban visualization is about understanding *millions* of these paths, all interacting. This is why a static 2D map fails.
+:::
+
+---
+
+# Part 2: The Need for Interactivity {background-color="#2c5f77"}
+
+## Why Static Fails: A Fundamental Mismatch
+
+::: {.columns}
+::: {.column width="50%"}
+### Static Visualization
+
+**Role:** Presentation
+
+- Answers questions the designer anticipated
+- Fixed perspective
+- One-way communication
+
+::: {.fragment}
+**Limitation:** Cannot handle 140 million data points
+:::
+:::
+
+::: {.column width="50%"}
+### Interactive Visualization
+
+**Role:** Exploration
+
+- Enables users to ask their own questions
+- Dynamic perspectives
+- **Dialogue with data**
+
+::: {.fragment}
+**Power:** Query and filter to reveal patterns
+:::
+:::
+:::
+
+::: {.notes}
+We can't *see* 140 million trips in a static image. We need to *query* the data. We need a "dialogue with data." Static visualization equals presentation—it shows what the designer thought to show. Interactive visualization equals exploration—it lets you ask your own questions.
+:::
+
+## The Visual Information Seeking Mantra
+
+::: {.r-fit-text}
+**"Overview first, Zoom and Filter, then Details-on-Demand"**
+:::
+
+::: {.fragment}
+— Ben Shneiderman (1996)
+:::
+
+::: {.columns .fragment}
+::: {.column width="33%"}
+### 1. Overview
+
+![Overview of all data](figs/week9/mantra-overview.png){fig-align="center"}
+
+Start with the big picture (even if it's a "yellow blob")
+:::
+
+::: {.column width="33%"}
+### 2. Zoom & Filter
+
+![Filtered subset of data](figs/week9/mantra-filter.png){fig-align="center"}
+
+Focus on items of interest
+:::
+
+::: {.column width="33%"}
+### 3. Details-on-Demand
+
+![Detailed information display](figs/week9/mantra-details.png){fig-align="center"}
+
+Get specifics when needed
+:::
+:::
+
+::: {.notes}
+The "yellow blob" is our *overview*. It's not useless; it's just the first step. To get insight, we need to *zoom and filter*. We need to ask questions: "Show me just rush hour." "Show me just trips to the airport." "Show me just Saturdays." This requires turning the visualization from a static *presentation* into an *exploratory tool*.
+:::
+
+---
+
+# Part 3: Case Study - TaxiVis {background-color="#2c5f77"}
+
+## TaxiVis: An Exploratory System
+
+::: {.columns}
+::: {.column width="60%"}
+![The TaxiVis interface showing linked views](figs/week9/taxivis-full-interface.png){fig-align="center" width="100%"}
+:::
+
+::: {.column width="40%"}
+**An exploratory visualization and analysis system for NYC taxi data**
+
+### Key Innovation:
+
+A dashboard of **linked views** where actions in one view are immediately reflected in all others
+:::
+:::
+
+::: {.notes}
+This is our main case study for today. It looks complex, but it's just a set of simple components linked together. We have our map, a control panel for time, and a set of 2D charts for showing temporal patterns. The *magic* is not in any one of these charts; it's in how they are connected.
+:::
+
+## TaxiVis: Interface Components
+
+![TaxiVis interface with labeled components](figs/week9/taxivis-labeled-components.png){fig-align="center"}
+
+::: {.columns}
+::: {.column width="33%"}
+### 1. Map View (Left)
+
+- Geographic visualization
+- Interactive region selection
+- Origin-destination flows
+:::
+
+::: {.column width="33%"}
+### 2. Control Panel (Top)
+
+- Time range selection
+- Query type controls
+- Data aggregation settings
+:::
+
+::: {.column width="33%"}
+### 3. Temporal Views (Right)
+
+- Time series plots
+- Histograms
+- Daily/weekly patterns
+:::
+:::
+
+::: {.notes}
+Let's break down the interface. On the left, we have the map view for geographic visualization. At the top, there's a control panel for managing time and query parameters. On the right, we have temporal views—time series plots and histograms that show patterns over time. Each component is simple on its own, but together they form a powerful exploratory system.
+:::
+
+---
+
+# Part 4: Linked Views & Brushing {background-color="#2c5f77"}
+
+## Core Concept: Brushing and Linking
+
+::: {.r-fit-text}
+**Actions in one view are reflected in all other views**
+:::
+
+::: {.fragment}
+This creates a "dialogue" where you can ask questions by interacting with any visualization component, and all views update to answer your question.
+:::
+
+::: {.fragment}
+### Example: Spatial Selection → Temporal Pattern
+
+"What is the temporal pattern for trips from JFK Airport?"
+:::
+
+## Linked Views in Action: Step 1
+
+### Default View: All Data
+
+![TaxiVis showing all taxi trips](figs/week9/taxivis-step1-default.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+The map shows the "yellow blob"—all trips. The time series shows aggregate patterns for the entire city.
+:::
+
+::: {.notes}
+This is the default view. The map shows all 140 million trips—our yellow blob. The time series on the right shows the aggregate temporal pattern for the entire city. It's an overview, but we need to dig deeper.
+:::
+
+## Linked Views in Action: Step 2
+
+### User Brushes a Region (JFK Airport)
+
+![User selecting JFK region on the map](figs/week9/taxivis-step2-brush-jfk.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+By clicking and dragging, the user selects a geographic region. In this case, the area around JFK Airport.
+:::
+
+::: {.notes}
+This is the fundamental interaction. I select a region *on the map*. I'm essentially asking, "Tell me about this area." The system is now ready to filter all data to just this region.
+:::
+
+## Linked Views in Action: Step 3
+
+### All Views Update Automatically
+
+![Time series and charts update to show only JFK data](figs/week9/taxivis-step3-jfk-temporal.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+The time series and histograms now show the temporal pattern for *only* trips from the JFK area.
+:::
+
+::: {.notes}
+Now I can see the daily pickup pattern for *just* the JFK area. Notice the peaks—probably corresponding to flight arrival times. This is a powerful visual query that I performed in one click, turning my "yellow blob" into a targeted insight. This is what we mean by "linked views"—my action in the map view immediately updated all other views.
+:::
+
+## The Power of Bidirectional Linking
+
+::: {.r-fit-text}
+**The linking works in both directions**
+:::
+
+::: {.incremental}
+- **Spatial → Temporal:** Select a region → see temporal patterns
+- **Temporal → Spatial:** Select a time range → see spatial patterns
+:::
+
+::: {.fragment}
+This bidirectional dialogue enables exploratory analysis that would be impossible with static visualizations.
+:::
+
+---
+
+# Part 5: Temporal Queries {background-color="#2c5f77"}
+
+## Temporal Slicing: Time → Space
+
+::: {.columns}
+::: {.column width="50%"}
+### The Question:
+
+"Where do trips go during morning rush hour?"
+
+### The Interaction:
+
+1. Select time range on the time series (8am-10am)
+2. Map updates to show *only* trips from that time period
+
+### The Insight:
+
+Reveals spatial patterns specific to that time slice
+:::
+
+::: {.column width="50%"}
+![Time series with highlighted time range](figs/week9/taxivis-time-slice-selection.png){fig-align="center"}
+
+![Map showing spatial pattern for selected time](figs/week9/taxivis-time-slice-map.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+This is the reverse query. Now I want to ask, "Where do trips go during morning rush hour?" I select that time range on the line chart, and the *map* updates. This "dialogue" between the spatial and temporal views is what enables analysis.
+:::
+
+## Advanced Temporal Queries: Recurrent Selection
+
+::: {.columns}
+::: {.column width="40%"}
+### The Challenge:
+
+What if I want to see a **pattern**, not just a single time slice?
+
+::: {.fragment}
+### The Solution: Recurrent Selection
+
+Select recurring time periods:
+
+- All Mondays, 8am-10am
+- Every Saturday night
+- Weekday rush hours only
+:::
+
+::: {.fragment}
+This reveals **periodic behavior**—the heartbeat of the city
+:::
+:::
+
+::: {.column width="60%"}
+![Recurrent Selection interface with day-of-week checkboxes](figs/week9/taxivis-recurrent-selection-ui.png){fig-align="center" width="100%"}
+:::
+:::
+
+::: {.notes}
+This is a much more powerful query. Instead of just one time slice, I can ask for a *periodic pattern*. "Show me all Saturday nights." "Show me every Monday-Friday rush hour for the whole month." This lets us find and analyze weekly, daily, or hourly periodic behavior, which is the heartbeat of the city.
+:::
+
+## Recurrent Selection Example
+
+### Question: "How do weekend nights differ from weekday mornings?"
+
+::: {.columns}
+::: {.column width="50%"}
+**Weekday Mornings (Mon-Fri, 7-9am)**
+
+![Map showing weekday morning trip patterns](figs/week9/taxivis-recurrent-weekday-morning.png){fig-align="center"}
+
+Inbound commuter patterns
+:::
+
+::: {.column width="50%"}
+**Weekend Nights (Sat-Sun, 10pm-2am)**
+
+![Map showing weekend night trip patterns](figs/week9/taxivis-recurrent-weekend-night.png){fig-align="center"}
+
+Entertainment district activity
+:::
+:::
+
+::: {.fragment}
+Recurrent selection reveals systematic differences in urban activity patterns.
+:::
+
+---
+
+# Part 6: Spatial Queries & Grouping {background-color="#2c5f77"}
+
+## Solving MAUP: Interactive Region Merging
+
+::: {.columns}
+::: {.column width="50%"}
+**Remember the Modifiable Areal Unit Problem from Week 8?**
+
+::: {.fragment}
+The default boundaries might be wrong for your analysis.
+:::
+
+::: {.fragment}
+### TaxiVis Solution:
+
+**Merging Regions** - Users can interactively select and merge multiple regions into a custom area
+:::
+
+::: {.fragment}
+**Example:** Create your own "Midtown" by merging adjacent census tracts
+:::
+:::
+
+::: {.column width="50%"}
+![Default census tract boundaries](figs/week9/taxivis-default-boundaries.png){fig-align="center"}
+
+::: {.fragment}
+![Custom merged region for "Midtown"](figs/week9/taxivis-merged-midtown.png){fig-align="center"}
+:::
+:::
+:::
+
+::: {.notes}
+This is a direct solution to the Modifiable Areal Unit Problem we discussed last week. What if the default census tracts are too small or don't match your mental model of neighborhoods? The tool lets the *analyst* redefine the boundaries on the fly.
+:::
+
+## Merging Regions: Step-by-Step
+
+### Step 1: Select Multiple Regions
+
+![Double-click to select multiple adjacent regions](figs/week9/taxivis-merge-step1-select.png){fig-align="center" width="70%"}
+
+Double-click or Ctrl+click to select multiple adjacent regions on the map
+
+## Merging Regions: Step 2 & 3
+
+::: {.columns}
+::: {.column width="50%"}
+### Step 2: Press Merge
+
+![Merge button in control panel](figs/week9/taxivis-merge-step2-button.png){fig-align="center"}
+
+Click the "Merge" button in the control panel
+:::
+
+::: {.column width="50%"}
+### Step 3: All Views Update
+
+![Map and charts showing merged region as single entity](figs/week9/taxivis-merge-step3-result.png){fig-align="center"}
+
+The merged region is now treated as a single entity in all visualizations
+:::
+:::
+
+::: {.fragment}
+The tool adapts to your analysis. You define the boundaries that make sense for your question.
+:::
+
+::: {.notes}
+I can create my *own* definition of "Midtown" or "Financial District" and all the charts will update. The tool adapts to my analysis. This is the kind of flexibility you need when working with real urban data where administrative boundaries rarely match analytical needs.
+:::
+
+---
+
+# Part 7: Origin-Destination Queries {background-color="#2c5f77"}
+
+## The Most Powerful Query: Flows
+
+::: {.r-fit-text}
+**Asking about movement between specific locations**
+:::
+
+::: {.columns .fragment}
+::: {.column width="50%"}
+### Traditional Approach:
+
+```sql
+SELECT * FROM trips
+WHERE origin = 'JFK'
+AND destination = 'LGA'
+AND time BETWEEN '8:00' AND '10:00'
+```
+
+Complex, requires knowing SQL and field names
+:::
+
+::: {.column width="50%"}
+### TaxiVis Approach:
+
+**Draw an arrow**
+
+Simple, visual, intuitive
+:::
+:::
+
+::: {.fragment}
+This is what we mean by **"visual query"**—you draw your question, the system answers.
+:::
+
+## The Arrow Tool: Step 1
+
+### Select the Arrow Tool
+
+![Arrow tool selected in toolbar](figs/week9/taxivis-arrow-step1-select-tool.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+The arrow tool lets you create origin-destination (OD) queries by drawing directly on the map.
+:::
+
+::: {.notes}
+User selects the "Arrow" tool from the toolbar. This puts the interface into OD query mode. Instead of typing a complex SQL query, the user is about to *draw their question*.
+:::
+
+## The Arrow Tool: Step 2
+
+### Draw Arrow from Origin to Destination
+
+![User drawing arrow from JFK to LGA](figs/week9/taxivis-arrow-step2-draw.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+Example: Draw an arrow from JFK Airport to LaGuardia Airport to ask:
+
+**"Show me all trips that went from JFK to LGA"**
+:::
+
+::: {.notes}
+User draws an arrow from the JFK region to the LGA region on the map. This is a brilliant example of a "visual query." Instead of typing a complex SQL query, the user *draws their question*.
+:::
+
+## The Arrow Tool: Step 3
+
+### All Views Update to Show Only That Flow
+
+![Dashboard showing only JFK→LGA trips](figs/week9/taxivis-arrow-step3-result.png){fig-align="center" width="80%"}
+
+::: {.fragment}
+- Map highlights the origin-destination pair
+- Time series shows when these trips occur
+- Histograms reveal patterns in this specific flow
+:::
+
+::: {.notes}
+The map and charts update to show *only* trips that match that specific flow. You can now see when people make this inter-airport transfer, how long it takes, how much it costs, etc. This is what we mean by a "dialogue with data." The user points, and the system answers.
+:::
+
+## Visual Queries: Why They Matter
+
+::: {.incremental}
+1. **Lower cognitive load**
+   - No need to remember field names or syntax
+   - Direct manipulation of the data representation
+
+2. **Immediate feedback**
+   - See results instantly as you interact
+   - Iterate quickly through hypotheses
+
+3. **Support exploration**
+   - Encourages "what if" questions
+   - Makes serendipitous discovery possible
+
+4. **Democratize analysis**
+   - Analysts without SQL/programming skills can explore
+   - Domain experts can directly investigate questions
+:::
+
+::: {.fragment}
+**The visualization *is* the interface.**
+:::
+
+---
+
+# Part 8: Synthesis & Takeaways {background-color="#2c5f77"}
+
+## From Yellow Blob to Insight
+
+::: {.columns}
+::: {.column width="50%"}
+### We Started With:
+
+![Static yellow blob heatmap](figs/week9/yellow-blob-taxi-heatmap-repeat.png){fig-align="center"}
+
+Overwhelming, uninformative
+:::
+
+::: {.column width="50%"}
+### We Ended With:
+
+![TaxiVis exploratory dashboard](figs/week9/taxivis-full-interface-repeat.png){fig-align="center"}
+
+Interactive, explorable, insightful
+:::
+:::
+
+::: {.fragment}
+**The difference:** Turning visualization into a dialogue with data through linked views and interactive queries.
+:::
+
+## Key Interaction Techniques
+
+::: {.columns}
+::: {.column width="50%"}
+### 1. Brushing & Linking
+
+- Actions in one view update all views
+- Bidirectional spatial ↔ temporal queries
+
+### 2. Temporal Slicing
+
+- Single time range selection
+- Recurrent selection for periodic patterns
+
+### 3. Spatial Grouping
+
+- Merge regions interactively
+- Solve MAUP on-the-fly
+:::
+
+::: {.column width="50%"}
+### 4. Origin-Destination Queries
+
+- Visual queries via arrow tool
+- Direct manipulation interface
+
+### 5. Details-on-Demand
+
+- Hover for specifics
+- Drill down progressively
+:::
+:::
+
+::: {.fragment}
+These techniques transform the analyst from passive viewer to active explorer.
+:::
+
+## Design Principles for Urban Flow Visualization
+
+::: {.incremental}
+1. **Provide multiple coordinated views**
+   - Spatial and temporal perspectives
+   - Link them bidirectionally
+
+2. **Support visual queries**
+   - Let users draw questions
+   - Provide immediate visual answers
+
+3. **Enable progressive refinement**
+   - Overview → Filter → Details
+   - Make iteration fast and fluid
+
+4. **Adapt to user needs**
+   - Allow custom aggregations
+   - Support flexible boundaries
+
+5. **Show the data, reveal the patterns**
+   - Balance abstraction and detail
+   - Aggregate intelligently but allow drill-down
+:::
+
+## The Bigger Picture: Urban Informatics
+
+::: {.r-fit-text}
+**Cities generate unprecedented amounts of data**
+:::
+
+::: {.incremental}
+- Taxi/rideshare GPS traces
+- Transit smartcard data
+- Mobile phone location data
+- Social media check-ins
+- Bike-share systems
+- Traffic sensors
+:::
+
+::: {.fragment}
+### The Challenge:
+
+Making sense of these massive, dynamic, interconnected datasets to understand and improve urban systems.
+:::
+
+::: {.fragment}
+### The Tool:
+
+Interactive visualization systems that enable dialogue between analysts and data.
+:::
+
+---
+
+# Bridge to Next Lecture {background-color="#2c5f77"}
+
+## What We've Covered So Far
+
+::: {.columns}
+::: {.column width="50%"}
+### Week 8: 2D Static Maps
+
+- Projections and distortions
+- Choropleth pitfalls
+- When to use maps
+- Critical cartography
+:::
+
+::: {.column width="50%"}
+### Week 9: 2D + Time (Today)
+
+- Urban flow dynamics
+- Interactive linked views
+- Visual queries
+- Temporal patterns
+:::
+:::
+
+::: {.fragment}
+### What's Missing?
+
+Both lectures treat the city as **flat**—a 2D surface with time.
+:::
+
+## Next Week: Adding the Third Dimension
+
+::: {.r-fit-text}
+**Urban Visualization II: 3D & Immersive Geo-Spatial Systems**
+:::
+
+::: {.incremental}
+- What about the **physical form** of the city?
+- Buildings, streets, skylines, vertical structure
+- When does 3D help? When does it hurt?
+- Immersive visualization and virtual cities
+:::
+
+::: {.fragment}
+We'll explore how adding the third spatial dimension changes both the challenges and opportunities for urban visualization.
+:::
+
+---
+
+# Summary {background-color="#2c5f77"}
+
+## Today's Key Takeaways
+
+::: {.incremental}
+1. **Static techniques fail for massive, dynamic urban data**
+   - The "yellow blob" problem
+
+2. **Interactivity transforms visualization from presentation to exploration**
+   - Enable a "dialogue with data"
+
+3. **Linked views are the foundation of exploratory systems**
+   - Spatial ↔ Temporal queries
+   - Bidirectional brushing
+
+4. **Visual queries lower barriers to exploration**
+   - Draw your question, get visual answers
+   - No SQL required
+
+5. **For complex urban flow data (2D + Time), the visualization IS the interface**
+   - Not just a picture, but a tool for thinking
+:::
+
+## Questions?
+
+::: {.r-fit-text}
+Next week: **3D & Immersive Urban Visualization**
+:::
+
+::: {.notes}
+So, we've solved our "yellow blob" problem. By adding interactivity and linked views, we've turned a useless picture into a powerful exploratory tool. But... this is all still 2D. We're looking at the city as a flat map. What about the 3D *form* of the city? The buildings, the streets, the skyline? That's what we'll cover in our final lecture.
+:::
