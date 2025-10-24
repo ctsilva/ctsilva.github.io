@@ -220,7 +220,7 @@ author_profile: true
 - [When Maps Shouldn't Be Maps](http://uxblog.idvsolutions.com/2011/10/when-maps-shouldnt-be-maps.html). Matthew Ericson. 2011.
 - [Surprise! Bayesian Weighting for De-Biasing Thematic Maps](https://idl.cs.washington.edu/files/2013-BayesianSurpriseMaps-InfoVis.pdf). Correll & Heer. IEEE InfoVis 2017.
   
-**Lab:** 
+**Lab:** [Plotting and Troubleshooting GeoJSON with D3](/2025-InfoVis-CSE/labs/week8-lab.html)
 - D3 geo projection setup
 - Loading and displaying maps
 - Creating choropleth maps with real data
