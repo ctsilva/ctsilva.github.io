@@ -59,13 +59,59 @@ We'll learn how to move from this "yellow blob" to meaningful insights about urb
 
 ---
 
-# Part 1: Understanding Urban Data {background-color="#2c5f77"}
+# Part 1: The Urban Context {background-color="#2c5f77"}
 
-## What Makes Urban Data Different?
+## Why This Matters
 
 ::: {.columns}
 ::: {.column width="50%"}
-### Four Defining Characteristics:
+### The Urban Challenge:
+
+- Over 50% of world's population in cities
+- **+2.5 billion more by 2050**
+- Cities = centers of innovation
+- But also: sprawl, pollution, inequality
+
+::: {.fragment}
+**How do we make better decisions about urban development?**
+:::
+:::
+
+::: {.column width="50%"}
+### The Data Opportunity:
+
+::: {.incremental}
+- We can now collect, store, and **open** massive urban datasets
+- Benefits:
+  - **Government:** Operations & planning
+  - **Science:** Discovery
+  - **Residents:** Participation
+  - **Industry:** Innovation
+:::
+:::
+:::
+
+::: {.notes}
+Before we get into the "how," let's establish the "why." Urban data analysis isn't just an academic exercise—it has real impact on how cities operate and plan. The trend toward open data means we have unprecedented access to understand cities. But this opportunity comes with a challenge: the data is massive and complex.
+:::
+
+## What Makes Urban Data Unique?
+
+::: {.columns}
+::: {.column width="50%"}
+### Three Interacting Components:
+
+1. **Residents** - People and their behavior
+2. **Infrastructure** - Physical systems and policies
+3. **Environment** - Natural and built surroundings
+
+::: {.fragment}
+To understand a city, we must explore how these interact over **space** and **time**.
+:::
+:::
+
+::: {.column width="50%"}
+### Four Key Characteristics:
 
 ::: {.incremental}
 1. **Scale**
@@ -81,18 +127,14 @@ We'll learn how to move from this "yellow blob" to meaningful insights about urb
    - Transit, traffic, social networks
 
 4. **Dynamism**
-   - The city is defined by *time* and *movement*
+   - Cities defined by time & movement
    - Static snapshots miss the essence
 :::
-:::
-
-::: {.column width="50%"}
-![Urban mobility patterns at different scales](figs/week9/urban-data-scales.png){fig-align="center"}
 :::
 :::
 
 ::: {.notes}
-Urban data presents unique challenges. We're dealing with scale—from individual pedestrians to metro-wide patterns. We face density—so many overlapping events that traditional visualizations create meaningless blobs. There's complexity—interconnected systems where transit affects traffic affects social gatherings. And most importantly, there's dynamism—the city is fundamentally about movement and time. A static snapshot misses what makes a city a city.
+Urban data isn't just "big data"—it has unique properties. To understand a city, we must explore how residents, infrastructure, and environment interact over space and time.
 :::
 
 ## Hägerstrand's Space-Time Cube (1970)
@@ -123,9 +165,90 @@ The classic framework for thinking about movement in space is Hägerstrand's "Sp
 
 ---
 
-# Part 2: The Need for Interactivity {background-color="#2c5f77"}
+# Part 2: Why Traditional Analysis Fails {background-color="#2c5f77"}
 
-## Why Static Fails: A Fundamental Mismatch
+## The Old Workflow (Confirmatory Data Analysis)
+
+::: {.columns}
+::: {.column width="60%"}
+![Traditional analysis pipeline](figs/week9/traditional-workflow.png){fig-align="center"}
+:::
+
+::: {.column width="40%"}
+### The Process:
+
+1. Domain experts formulate hypotheses
+2. Data scientists select data
+3. Run analyses (SQL, R, Python)
+4. Domain experts inspect results
+5. Repeat...
+:::
+:::
+
+## The Problems with Traditional Workflows
+
+::: {.incremental}
+❌ **Cognitive overload** - Generates overwhelming numbers of plots/tables
+
+❌ **Batch-oriented** - No exploration, just predetermined queries
+
+❌ **Distances experts from data** - Requires intermediary (data scientist)
+
+❌ **Cannot scale** - Modern data volumes overwhelm traditional tools
+
+❌ **Result:** The "yellow blob" problem
+:::
+
+::: {.fragment}
+::: {.r-fit-text}
+**Even simple questions require generating dozens of individual plots, each manually programmed**
+:::
+:::
+
+::: {.notes}
+This is how urban data analysis has traditionally worked—and why it doesn't work anymore. Even simple questions require generating dozens of individual plots, each manually programmed. The lack of interactivity means you can't follow up on interesting patterns. Domain experts who understand cities are separated from the data by data scientists. This process simply cannot scale to 140 million trips.
+:::
+
+## The Problem with Current Tools
+
+::: {.columns}
+::: {.column width="50%"}
+### Current practice for domain experts:
+
+- Load small slices into R, MATLAB, Stata, ArcGIS, Excel
+- Write SQL queries or code to analyze subsets
+- Generate individual plots manually
+- Repeat for each new question
+
+::: {.fragment}
+**This is tedious, slow, and limiting**
+:::
+:::
+
+::: {.column width="50%"}
+### Why this fails:
+
+❌ Tools can't handle 170M trips
+
+❌ Requires programming/database expertise
+
+❌ Time-consuming and frustrating
+
+❌ Distances experts from the data
+
+❌ Hard to explore, compare, or follow up on patterns
+:::
+:::
+
+::: {.notes}
+Domain experts (traffic engineers, economists) know cities but not necessarily coding. They're forced to pre-select tiny slices without knowing what's interesting. This is exactly the problem we talked about earlier - confirmatory analysis when you need exploratory analysis.
+:::
+
+---
+
+# Part 3: The Need for Interactivity {background-color="#2c5f77"}
+
+## The Paradigm Shift
 
 ::: {.columns}
 ::: {.column width="50%"}
@@ -149,16 +272,12 @@ The classic framework for thinking about movement in space is Hägerstrand's "Sp
 
 - Enables users to ask their own questions
 - Dynamic perspectives
-- **Dialogue with data**
+- **"Dialogue with data"**
 
 ::: {.fragment}
 **Power:** Query and filter to reveal patterns
 :::
 :::
-:::
-
-::: {.notes}
-We can't *see* 140 million trips in a static image. We need to *query* the data. We need a "dialogue with data." Static visualization equals presentation—it shows what the designer thought to show. Interactive visualization equals exploration—it lets you ask your own questions.
 :::
 
 ## The Visual Information Seeking Mantra
@@ -201,31 +320,196 @@ Get specifics when needed
 The "yellow blob" is our *overview*. It's not useless; it's just the first step. To get insight, we need to *zoom and filter*. We need to ask questions: "Show me just rush hour." "Show me just trips to the airport." "Show me just Saturdays." This requires turning the visualization from a static *presentation* into an *exploratory tool*.
 :::
 
+## Why Interactivity Matters
+
+::: {.incremental}
+1. **Performance is critical**
+   - Even **500ms latency** significantly reduces exploration, observations, and hypothesis generation
+   - Sub-second response enables iterative analysis
+
+2. **Perception over cognition**
+   - Well-designed systems let you **see** patterns rather than calculate them
+   - Visual queries are faster than SQL
+
+3. **Empowers domain experts**
+   - No programming required
+   - Direct manipulation of visualizations
+   - Experts can explore data themselves
+:::
+
+::: {.fragment}
+Research shows that even a half-second delay dramatically impacts analysis quality.
+:::
+
 ---
 
-# Part 3: Case Study - TaxiVis {background-color="#2c5f77"}
+# Part 4: Enter TaxiVis {background-color="#2c5f77"}
 
-## TaxiVis: An Exploratory System
+## The NYC Taxi Dataset
 
 ::: {.columns}
-::: {.column width="60%"}
-![The TaxiVis interface showing linked views](figs/week9/taxivis-full-interface.png){fig-align="center" width="100%"}
+::: {.column width="50%"}
+### The Data:
+
+- **13,000 taxis**
+- **500,000 trips/day**
+- **170 million trips/year**
+
+### Each trip includes:
+
+- Pickup/dropoff locations & times
+- Distance traveled
+- Fare amount
+- Tip amount
 :::
 
-::: {.column width="40%"}
-**An exploratory visualization and analysis system for NYC taxi data**
+::: {.column width="50%"}
+### What can taxi data tell us?
 
-### Key Innovation:
+::: {.incremental}
+- Economic activity and human behavior
+- Mobility patterns across the city
+- Response to major events (hurricanes, holidays)
+- Social inequalities in service
+:::
 
-A dashboard of **linked views** where actions in one view are immediately reflected in all others
+::: {.fragment}
+**Challenge:** How do we make sense of this data?
 :::
 :::
+:::
+
+## Taxi Patterns and Anomalies
+
+![Taxi activity patterns showing regularity and anomalies](figs/week9/taxi-patterns-anomalies.png){fig-align="center" width="85%"}
+
+::: {.incremental}
+- **Regular patterns:** Thanksgiving, Christmas drops in activity
+- **Anomalies:** Hurricane Irene, Hurricane Sandy disruptions
+- **Events:** Five Boro Bike Tour (taxis disappeared along 6th Avenue)
+:::
+
+::: {.notes}
+Taxis are valuable sensors of city life. This is a perfect example of urban data that's too complex for traditional analysis. Notice the regularity (Thanksgiving, Christmas drops) and anomalies (Hurricane Irene, Hurricane Sandy). The bottom maps show how taxis disappeared along 6th Avenue during the Five Boro Bike Tour.
+:::
+
+---
+
+# Part 5: Design Requirements {background-color="#2c5f77"}
+
+## What We Need (From Domain Experts)
+
+::: {.columns}
+::: {.column width="50%"}
+### Query Needs:
+
+::: {.incremental}
+1. **Understand dynamics**
+   - "How do patterns vary over space and time?"
+
+2. **Explore events**
+   - "What happened during Hurricane Sandy?"
+
+3. **Compare regions**
+   - "Midtown vs. Harlem taxi frequency?"
+
+4. **Study movement**
+   - "Where do people go from JFK?"
+:::
+:::
+
+::: {.column width="50%"}
+### System Requirements:
+
+::: {.incremental}
+- **Interactive** - Sub-second response times
+- **Expressive** - Support complex spatio-temporal queries
+- **Usable** - No SQL or programming required
+- **Scalable** - Handle all 170M trips, not samples
+- **Comparative** - Easy to compare regions and time periods
+:::
+:::
+:::
+
+::: {.notes}
+These requirements came from actual domain experts—traffic engineers and urban economists. Note the tension: needs to be simple enough for non-programmers but powerful enough for complex analysis. This is the design challenge we need to solve.
+:::
+
+---
+
+# Part 6: The Visual Query Model {background-color="#2c5f77"}
+
+## Core Idea: Direct Manipulation
+
+::: {.r-fit-text}
+**Let users query data through direct manipulation of visualizations**
+:::
+
+::: {.columns .fragment}
+::: {.column width="33%"}
+### Spatial
+
+**Where?**
+
+- Pickup regions
+- Dropoff regions
+- Draw polygons on map
+:::
+
+::: {.column width="33%"}
+### Temporal
+
+**When?**
+
+- Time ranges
+- Recurrence patterns
+- Day of week
+:::
+
+::: {.column width="33%"}
+### Attribute
+
+**What?**
+
+- Fare amount
+- Distance
+- Trip duration
+:::
+:::
+
+::: {.fragment}
+Instead of writing `SELECT * FROM trips WHERE...`, you **draw on a map**
+:::
+
+## Visual Representation of Queries
+
+![TaxiVis interface showing visual query components](figs/week9/taxivis-visual-query-model.png){fig-align="center" width="85%"}
+
+::: {.incremental}
+- **Blue polygons** on map = pickup regions
+- **Orange polygons** = dropoff regions
+- **Arrows** = origin-destination queries
+- **Time widgets** = temporal constraints
+- **Histograms** = attribute constraints
+:::
+
+::: {.notes}
+The key is that queries are visual and direct—you're manipulating the map and visualizations, not writing code. Each query returns a set of trips that can be further refined.
+:::
+
+---
+
+# Part 7: TaxiVis Interface {background-color="#2c5f77"}
+
+## The Complete System
+
+![Full TaxiVis interface showing linked views](figs/week9/taxivis-full-interface.png){fig-align="center" width="85%"}
 
 ::: {.notes}
 This is our main case study for today. It looks complex, but it's just a set of simple components linked together. We have our map, a control panel for time, and a set of 2D charts for showing temporal patterns. The *magic* is not in any one of these charts; it's in how they are connected.
 :::
 
-## TaxiVis: Interface Components
+## Interface Components
 
 ![TaxiVis interface with labeled components](figs/week9/taxivis-labeled-components.png){fig-align="center"}
 
@@ -255,13 +539,236 @@ This is our main case study for today. It looks complex, but it's just a set of 
 :::
 :::
 
+---
+
+# Part 8: Visual Queries in Action {background-color="#2c5f77"}
+
+## Example: Airport Comparison
+
+::: {.columns}
+::: {.column width="50%"}
+### The Question:
+
+"How do trips to JFK vs. LGA differ on Sundays vs. Mondays?"
+
+### The Visual Query:
+
+1. Draw region around Lower Manhattan (pickup)
+2. Draw regions around JFK and LGA (dropoffs)
+3. Connect with arrows (directional constraints)
+4. Select Sunday vs. Monday (temporal constraints)
+:::
+
+::: {.column width="50%"}
+![Airport comparison query results](figs/week9/airport-comparison-query.png){fig-align="center"}
+:::
+:::
+
+## The Results & Discovery
+
+![Side-by-side comparison of Sunday vs Monday airport trips](figs/week9/airport-comparison-results.png){fig-align="center" width="85%"}
+
+::: {.incremental}
+- Side-by-side map comparison
+- Scatter plots: hour of day vs. trip duration
+- **Discovery:** Monday trips 3-5PM take much longer (rush hour!)
+- **Implication:** Creates economic disincentive for drivers to accept airport trips
+:::
+
 ::: {.notes}
-Let's break down the interface. On the left, we have the map view for geographic visualization. At the top, there's a control panel for managing time and query parameters. On the right, we have temporal views—time series plots and histograms that show patterns over time. Each component is simple on its own, but together they form a powerful exploratory system.
+This query would be painful to write in SQL. But visually? Draw two regions, connect them, select the days. The system handles the complexity—you just express your question visually.
 :::
 
 ---
 
-# Part 4: Linked Views & Brushing {background-color="#2c5f77"}
+# Part 9: Query Expressiveness {background-color="#2c5f77"}
+
+## Peuquet's Triad Framework
+
+::: {.r-fit-text}
+**All three fundamental spatio-temporal query types:**
+:::
+
+::: {.columns}
+::: {.column width="33%"}
+### when + where → what
+
+"What taxis were in Midtown at rush hour?"
+:::
+
+::: {.column width="33%"}
+### when + what → where
+
+"Where were high-fare trips on New Year's Eve?"
+:::
+
+::: {.column width="33%"}
+### where + what → when
+
+"When do trips to airports peak?"
+:::
+:::
+
+::: {.fragment}
+### Plus: Query Composition
+
+- Queries can be **refined, combined, compared**
+- Results can be visualized multiple ways
+- Supports both atomic queries and complex queries (unions)
+:::
+
+::: {.notes}
+This is more than just a pretty interface—it's mathematically expressive. The model can express queries that would be difficult even for database experts. And it does so through simple visual operations.
+:::
+
+---
+
+# Part 10: Making It Interactive {background-color="#2c5f77"}
+
+## The Performance Challenge
+
+::: {.columns}
+::: {.column width="50%"}
+### The Problem:
+
+- 170M trips = traditional databases too slow
+- **PostgreSQL:** 24 seconds for 100k-trip query
+- **SQLite:** 85 seconds for same query
+- **Goal:** Sub-second response
+:::
+
+::: {.column width="50%"}
+### The TaxiVis Solution:
+
+::: {.incremental}
+- Custom **k-d tree index**
+  - 30GB vs. 200GB for PostgreSQL
+  - Build time: 28 min vs. 13 hours
+- **Query time:**
+  - 2 seconds for 100k trips
+  - 0.2s for 1k trips
+- Adaptive level-of-detail rendering
+- Smart heat maps and aggregation
+:::
+:::
+:::
+
+::: {.notes}
+This is critical—without interactive performance, the visual model doesn't work. You can't explore if you're waiting 30 seconds for every query. The system achieves interactivity through specialized indexing and rendering.
+:::
+
+---
+
+# Part 11: Visualization Techniques {background-color="#2c5f77"}
+
+## The "Yellow Blob" Rendering Problem
+
+::: {.columns}
+::: {.column width="50%"}
+### The Challenge:
+
+- 500,000 trips/day as point cloud = complete clutter
+- Can't see patterns, just noise
+- Traditional scatter plots fail at this scale
+:::
+
+::: {.column width="50%"}
+![Completely cluttered map with all points](figs/week9/rendering-cluttered.png){fig-align="center"}
+
+**We need multiple visualization strategies**
+:::
+:::
+
+::: {.notes}
+Remember our opening slide? This is what happens when you render all the data naively. Every pixel is covered—you learn nothing. This is a fundamental challenge in big data visualization. We need multiple visualization strategies to handle different scales and questions.
+:::
+
+## Solution 1: Adaptive Level of Detail (LOD)
+
+::: {.columns}
+::: {.column width="50%"}
+### Strategy: Render only what you can see
+
+**How it works:**
+
+- Z-order curve hierarchical sampling
+- Sort points spatially, build binary tree
+- First *n* elements = hierarchical subsample of size *n*
+- *n* scales with zoom level
+
+**Result:** Clear visualization at every zoom level
+:::
+
+::: {.column width="50%"}
+![Level of detail rendering in action](figs/week9/rendering-lod.png){fig-align="center"}
+
+As you zoom in, you see more detail. As you zoom out, you see a representative sample.
+:::
+:::
+
+::: {.notes}
+The key is "hierarchical"—it's not random sampling, it preserves spatial structure. This runs in real-time as you interact with the map.
+:::
+
+## Solution 2: Heat Maps
+
+::: {.columns}
+::: {.column width="50%"}
+### Continuous Heat Maps
+
+![Pixel-based density heat map](figs/week9/rendering-heatmap-continuous.png){fig-align="center"}
+
+- Pixel-based density
+- Darker = more activity
+- Shows overall distribution patterns
+:::
+
+::: {.column width="50%"}
+### Grid Maps
+
+![Grid-based aggregation map](figs/week9/rendering-heatmap-grid.png){fig-align="center"}
+
+- Aggregate by meaningful regions
+- Neighborhoods, zip codes, boroughs
+- Hover for exact counts
+:::
+:::
+
+::: {.fragment}
+**When to use:** Heat maps for overview and patterns, LOD for specific trip details, Grid maps for comparing defined regions
+:::
+
+## Solution 3: Multiple Coordinated Views
+
+::: {.columns}
+::: {.column width="40%"}
+### The Comparison Problem:
+
+- "How do Sundays differ from Mondays?"
+- "JFK vs. LGA patterns?"
+- "This year vs. last year?"
+
+### Solution:
+
+- Side-by-side views
+- Each view = one query (color-coded)
+- Synchronized spatial extent
+- Linked plots and summaries
+- Interactive refinement
+:::
+
+::: {.column width="60%"}
+![Sunday vs Monday airport comparison](figs/week9/multiple-views-comparison.png){fig-align="center"}
+:::
+:::
+
+::: {.notes}
+This is where the visual query model really shines. You're not just looking at data—you're comparing queries side by side. All views stay synchronized as you explore. This would be extremely difficult with traditional tools.
+:::
+
+---
+
+# Part 12: Linked Views & Brushing {background-color="#2c5f77"}
 
 ## Core Concept: Brushing and Linking
 
@@ -338,7 +845,7 @@ This bidirectional dialogue enables exploratory analysis that would be impossibl
 
 ---
 
-# Part 5: Temporal Queries {background-color="#2c5f77"}
+# Part 13: Temporal Queries {background-color="#2c5f77"}
 
 ## Temporal Slicing: Time → Space
 
@@ -429,7 +936,7 @@ Recurrent selection reveals systematic differences in urban activity patterns.
 
 ---
 
-# Part 6: Spatial Queries & Grouping {background-color="#2c5f77"}
+# Part 14: Spatial Queries & Grouping {background-color="#2c5f77"}
 
 ## Solving MAUP: Interactive Region Merging
 
@@ -497,13 +1004,9 @@ The merged region is now treated as a single entity in all visualizations
 The tool adapts to your analysis. You define the boundaries that make sense for your question.
 :::
 
-::: {.notes}
-I can create my *own* definition of "Midtown" or "Financial District" and all the charts will update. The tool adapts to my analysis. This is the kind of flexibility you need when working with real urban data where administrative boundaries rarely match analytical needs.
-:::
-
 ---
 
-# Part 7: Origin-Destination Queries {background-color="#2c5f77"}
+# Part 15: Origin-Destination Queries {background-color="#2c5f77"}
 
 ## The Most Powerful Query: Flows
 
@@ -548,10 +1051,6 @@ This is what we mean by **"visual query"**—you draw your question, the system 
 The arrow tool lets you create origin-destination (OD) queries by drawing directly on the map.
 :::
 
-::: {.notes}
-User selects the "Arrow" tool from the toolbar. This puts the interface into OD query mode. Instead of typing a complex SQL query, the user is about to *draw their question*.
-:::
-
 ## The Arrow Tool: Step 2
 
 ### Draw Arrow from Origin to Destination
@@ -564,10 +1063,6 @@ Example: Draw an arrow from JFK Airport to LaGuardia Airport to ask:
 **"Show me all trips that went from JFK to LGA"**
 :::
 
-::: {.notes}
-User draws an arrow from the JFK region to the LGA region on the map. This is a brilliant example of a "visual query." Instead of typing a complex SQL query, the user *draws their question*.
-:::
-
 ## The Arrow Tool: Step 3
 
 ### All Views Update to Show Only That Flow
@@ -578,10 +1073,6 @@ User draws an arrow from the JFK region to the LGA region on the map. This is a 
 - Map highlights the origin-destination pair
 - Time series shows when these trips occur
 - Histograms reveal patterns in this specific flow
-:::
-
-::: {.notes}
-The map and charts update to show *only* trips that match that specific flow. You can now see when people make this inter-airport transfer, how long it takes, how much it costs, etc. This is what we mean by a "dialogue with data." The user points, and the system answers.
 :::
 
 ## Visual Queries: Why They Matter
@@ -610,198 +1101,412 @@ The map and charts update to show *only* trips that match that specific flow. Yo
 
 ---
 
-# Part 8: Synthesis & Takeaways {background-color="#2c5f77"}
+# Part 16: Case Study 1 - Social Inequality {background-color="#2c5f77"}
 
-## From Yellow Blob to Insight
-
-::: {.columns}
-::: {.column width="50%"}
-### We Started With:
-
-![Static yellow blob heatmap](figs/week9/yellow-blob-taxi-heatmap-repeat.png){fig-align="center"}
-
-Overwhelming, uninformative
-:::
-
-::: {.column width="50%"}
-### We Ended With:
-
-![TaxiVis exploratory dashboard](figs/week9/taxivis-full-interface-repeat.png){fig-align="center"}
-
-Interactive, explorable, insightful
-:::
-:::
-
-::: {.fragment}
-**The difference:** Turning visualization into a dialogue with data through linked views and interactive queries.
-:::
-
-## Key Interaction Techniques
+## Question: "Are some neighborhoods underserved by taxis?"
 
 ::: {.columns}
 ::: {.column width="50%"}
-### 1. Brushing & Linking
+### The Analysis:
 
-- Actions in one view update all views
-- Bidirectional spatial ↔ temporal queries
-
-### 2. Temporal Slicing
-
-- Single time range selection
-- Recurrent selection for periodic patterns
-
-### 3. Spatial Grouping
-
-- Merge regions interactively
-- Solve MAUP on-the-fly
+- Compare taxi activity across neighborhoods
+- Midtown, Upper East Side, Greenwich Village, Harlem
+- Look at pickups and dropoffs over one week
 :::
 
 ::: {.column width="50%"}
-### 4. Origin-Destination Queries
-
-- Visual queries via arrow tool
-- Direct manipulation interface
-
-### 5. Details-on-Demand
-
-- Hover for specifics
-- Drill down progressively
+![Taxi activity comparison across neighborhoods](figs/week9/case-study-inequality.png){fig-align="center"}
 :::
 :::
 
-::: {.fragment}
-These techniques transform the analyst from passive viewer to active explorer.
-:::
+## The Discovery: Over 10x Difference
 
-## Design Principles for Urban Flow Visualization
+![Harlem vs other neighborhoods taxi activity](figs/week9/case-study-inequality-comparison.png){fig-align="center" width="80%"}
 
 ::: {.incremental}
-1. **Provide multiple coordinated views**
-   - Spatial and temporal perspectives
-   - Link them bidirectionally
-
-2. **Support visual queries**
-   - Let users draw questions
-   - Provide immediate visual answers
-
-3. **Enable progressive refinement**
-   - Overview → Filter → Details
-   - Make iteration fast and fluid
-
-4. **Adapt to user needs**
-   - Allow custom aggregations
-   - Support flexible boundaries
-
-5. **Show the data, reveal the patterns**
-   - Balance abstraction and detail
-   - Aggregate intelligently but allow drill-down
+- Harlem has very few pickups despite many dropoffs
+- People can take taxis **TO** Harlem but can't get one **FROM** there
+- Over one order of magnitude difference from Midtown
 :::
 
-## The Bigger Picture: Urban Informatics
-
-::: {.r-fit-text}
-**Cities generate unprecedented amounts of data**
+::: {.notes}
+This analysis confirmed what Harlem residents had been saying for years. But now there's data to back it up.
 :::
+
+## Follow-Up Investigation
+
+### The exploration followed a natural path:
 
 ::: {.incremental}
-- Taxi/rideshare GPS traces
-- Transit smartcard data
-- Mobile phone location data
-- Social media check-ins
-- Bike-share systems
-- Traffic sensors
+1. **Initial pattern:** Harlem has fewer pickups
+2. **Hypothesis:** Is this an economic issue?
+3. **Investigation 1:** "Are tips different in Harlem?"
+   - **Discovery:** Yes! Higher tips
+4. **Investigation 2:** "Is fare/mile different?"
+   - **Discovery:** Yes! Lower fare/mile
+5. **Insight:** Less economic incentive for drivers to go to Harlem, despite higher tips
 :::
 
 ::: {.fragment}
-### The Challenge:
-
-Making sense of these massive, dynamic, interconnected datasets to understand and improve urban systems.
+![Tips and fare analysis for Harlem](figs/week9/case-study-inequality-tips.png){fig-align="center" width="60%"}
 :::
 
-::: {.fragment}
-### The Tool:
-
-Interactive visualization systems that enable dialogue between analysts and data.
+::: {.notes}
+Notice how the exploration followed a natural path: overview → pattern → hypothesis → investigation. This is exploratory data analysis in action.
 :::
 
 ---
 
-# Bridge to Next Lecture {background-color="#2c5f77"}
+# Part 17: Case Study 2 - Transportation Hubs {background-color="#2c5f77"}
 
-## What We've Covered So Far
+## Question: "How do people move through NYC's transportation infrastructure?"
 
 ::: {.columns}
 ::: {.column width="50%"}
-### Week 8: 2D Static Maps
+### The Setup:
 
-- Projections and distortions
-- Choropleth pitfalls
-- When to use maps
-- Critical cartography
+- Compare JFK, LGA, Penn Station, Grand Central
+- Use grouping to combine regions
+- Examine pickup patterns over one week
 :::
 
 ::: {.column width="50%"}
-### Week 9: 2D + Time (Today)
+![Transportation hubs comparison](figs/week9/case-study-hubs.png){fig-align="center"}
+:::
+:::
 
-- Urban flow dynamics
-- Interactive linked views
-- Visual queries
-- Temporal patterns
+## Key Findings
+
+::: {.incremental}
+1. **More pickups at LGA than JFK** (most days)
+
+2. **Train stations >> airports** for pickups
+
+3. **Weekday pattern:** Train station pickups constant Mon-Thu, drop Fri-Sat
+   - Reflects commuter behavior
+
+4. **Rush hour problem:** Airport trips take much longer 3-5PM
+   - Creates economic disincentive for drivers
+   - Explains why taxis illegally refuse airport trips
+:::
+
+::: {.notes}
+Started with simple question, led to deeper insights about taxi economics. The visual query model made it easy to group regions and compare. Could instantly switch between pickups and dropoffs with one button click.
+:::
+
+---
+
+# Part 18: Case Study 3 - Temporal Exploration {background-color="#2c5f77"}
+
+## Time-Space Exploration
+
+::: {.columns}
+::: {.column width="50%"}
+### Feature:
+
+- Select multiple time slices automatically
+- Compare same time across different days/weeks/months
+- Each slice gets its own map and plot line (color-coded)
+
+### Example: Memorial Day Analysis
+
+- All Mondays in May 2011 and May 2012
+:::
+
+::: {.column width="50%"}
+![Grid of maps showing each Monday in May](figs/week9/case-study-memorial-day.png){fig-align="center"}
+:::
+:::
+
+## Discovery: Memorial Day Pattern
+
+![Memorial Day vs regular Mondays](figs/week9/case-study-memorial-day-comparison.png){fig-align="center" width="80%"}
+
+::: {.incremental}
+- **Discovery:** Memorial Day has significantly fewer trips than regular Mondays
+- **Implication:** Could reduce fleet size on holidays to save costs
+:::
+
+::: {.notes}
+This is the recurrent time selection widget in action. Would be tedious to set up manually: "give me the 5/2, 5/9, 5/16, 5/23, 5/30..." Instead: "give me all Mondays in May." The system generates the views automatically.
+:::
+
+---
+
+# Part 19: Case Study 4 - Hurricane Sandy {background-color="#2c5f77"}
+
+## Question: "How did Hurricane Sandy affect NYC?"
+
+::: {.columns}
+::: {.column width="50%"}
+### The Analysis:
+
+- One week of taxi activity
+- Sunday before through Saturday after
+- Heat maps for each day
+- Compare spatial patterns
+:::
+
+::: {.column width="50%"}
+### The Timeline:
+
+- **Sunday (before):** Normal activity
+- **Monday (hurricane hits):** Virtually no taxis citywide
+- **Tuesday-Friday:** Activity returns everywhere **EXCEPT Lower Manhattan**
+- **Saturday:** Finally returns to normal
+:::
+:::
+
+## The Story the Data Tells
+
+![Daily heat maps showing Hurricane Sandy impact](figs/week9/case-study-hurricane-sandy.png){fig-align="center" width="85%"}
+
+::: {.fragment}
+**Why?** Lower Manhattan had a **5-day power outage**
+
+You can literally see the power outage as a dark region on the map.
+:::
+
+## Comparison to Hurricane Irene
+
+![Hurricane Irene impact on taxi trips](figs/week9/case-study-hurricane-irene.png){fig-align="center" width="70%"}
+
+::: {.incremental}
+- Shorter disruption but more complete
+- Only **1,076 trips** on hurricane day (vs. average 500,000)
+- Faster recovery
+:::
+
+::: {.notes}
+The heat maps make the story immediately visible. This kind of event analysis would be very difficult without spatial visualization. Shows how urban data can capture and explain major events.
+:::
+
+---
+
+# Part 20: What We Learned {background-color="#2c5f77"}
+
+## Design Insights from Building TaxiVis
+
+::: {.incremental}
+1. **Visual queries work**
+   - Domain experts could use it without training
+   - No SQL, no programming required
+   - Direct manipulation is intuitive
+
+2. **Performance is non-negotiable**
+   - Sub-second response enables exploration
+   - Custom indexing beat general databases by 10x
+   - Adaptive rendering essential for large results
+
+3. **Multiple views are essential**
+   - Comparison is core to analysis
+   - Side-by-side queries, synchronized views
+   - Linked plots and maps
+
+4. **Different visualizations for different questions**
+   - LOD for details, heat maps for patterns, grid maps for regions
+
+5. **Query composition is powerful**
+   - Build complex queries from simple ones
+   - Grouping, refinement, generalization
+   - Each result is a new dataset to explore
+:::
+
+---
+
+# Part 21: Real-World Impact {background-color="#2c5f77"}
+
+## Who's Using TaxiVis?
+
+::: {.columns}
+::: {.column width="50%"}
+### Users:
+
+- NYC Department of Transportation
+- NYC Taxi & Limousine Commission
+- Traffic engineers and urban planners
+- Economists studying urban mobility
+:::
+
+::: {.column width="50%"}
+### What They've Learned:
+
+- Social inequalities in taxi service (Harlem)
+- Economic incentives affecting driver behavior
+- Impact of major events on city mobility
+- Transportation hub usage patterns
 :::
 :::
 
 ::: {.fragment}
-### What's Missing?
+### Beyond Taxis:
 
-Both lectures treat the city as **flat**—a 2D surface with time.
+- Model applies to other origin-destination data
+- Generalizes to other spatio-temporal datasets
+- Principles useful for any urban data exploration
 :::
 
-## Next Week: Adding the Third Dimension
+::: {.notes}
+This isn't just an academic exercise—it's being used by actual city agencies. The insights have informed policy discussions. The visual query model has influenced other urban data tools.
+:::
+
+---
+
+# Part 22: Key Takeaways {background-color="#2c5f77"}
+
+## The Big Ideas
+
+::: {.incremental}
+1. **Urban data is fundamentally spatio-temporal**
+   - Space, time, and attributes all matter
+   - Need to explore interactions, not just individual dimensions
+
+2. **Static visualization is not enough**
+   - Interactivity transforms presentation into exploration
+   - "Dialogue with data" through visual queries
+
+3. **Design for domain experts, not data scientists**
+   - Visual operations instead of code
+   - Direct manipulation over programming
+   - But don't sacrifice expressiveness
+
+4. **Performance enables exploration**
+   - Sub-second response changes how people think
+   - Specialized systems beat general solutions
+   - Trade generality for interactivity
+
+5. **Multiple coordinated views for comparison**
+   - Urban analysis is inherently comparative
+   - Same model, different slices
+   - Build complex understanding from simple queries
+:::
+
+---
+
+# Part 23: From TaxiVis to Urban Analytics {background-color="#2c5f77"}
+
+## The Broader Vision
+
+::: {.columns}
+::: {.column width="50%"}
+### TaxiVis is One Example
+
+Other urban data:
+
+- Bikeshare systems
+- 311 service calls
+- Building permits
+- Transit ridership
+- Crime reports
+- Traffic sensors
+
+**Same challenges:** Scale, complexity, spatio-temporal nature
+:::
+
+::: {.column width="50%"}
+### The Visual Analytics Framework
+
+![Visual analytics pipeline](figs/week9/visual-analytics-framework.png){fig-align="center"}
+
+1. **Visualization:** Multiple representations and query models
+2. **Data Analysis:** Topology, ML, pattern detection
+3. **Data Management:** Specialized indices, GPU acceleration
+:::
+:::
+
+## Moving to 3D
 
 ::: {.r-fit-text}
-**Urban Visualization II: 3D & Immersive Geo-Spatial Systems**
+**Cities are vertical, not just horizontal**
 :::
 
 ::: {.incremental}
-- What about the **physical form** of the city?
-- Buildings, streets, skylines, vertical structure
-- When does 3D help? When does it hurt?
-- Immersive visualization and virtual cities
+- Shadow analysis
+- Views and sight lines
+- Sky exposure
+- Building massing
 :::
 
 ::: {.fragment}
-We'll explore how adding the third spatial dimension changes both the challenges and opportunities for urban visualization.
+### Next Lecture:
+
+We'll extend these ideas to **3D urban visualization** and the **Urbane** framework
+
+Same principles apply: **interactive, visual, scalable**
 :::
 
 ---
 
 # Summary {background-color="#2c5f77"}
 
-## Today's Key Takeaways
+## The Visual Analytics Pipeline for Urban Data
+
+### What We've Covered Today:
+
+::: {.columns}
+::: {.column width="50%"}
+**The Problem:**
+
+- Urban data is big, complex, spatio-temporal
+- Traditional tools don't scale
+- Confirmation vs. exploration gap
+:::
+
+::: {.column width="50%"}
+**The Solution:**
+
+- Visual query models for direct manipulation
+- Interactive performance through specialized systems
+- Multiple visualizations for different questions
+- Comparison through coordinated views
+:::
+:::
+
+::: {.fragment}
+**The Result:**
+
+- Domain experts can explore without programming
+- Discoveries about social inequality, economics, events
+- Real impact on city operations and policy
+:::
+
+## Try It Yourself - Exploration Exercise
+
+::: {.r-fit-text}
+**If you had access to TaxiVis, what would you explore?**
+:::
+
+Think about:
 
 ::: {.incremental}
-1. **Static techniques fail for massive, dynamic urban data**
-   - The "yellow blob" problem
+- A neighborhood you're curious about
+- A time pattern (weekday vs. weekend, holidays, events)
+- A comparison (this year vs. last year, two locations)
+- A hypothesis about urban behavior
+:::
 
-2. **Interactivity transforms visualization from presentation to exploration**
-   - Enable a "dialogue with data"
+::: {.fragment}
+**Discussion:**
 
-3. **Linked views are the foundation of exploratory systems**
-   - Spatial ↔ Temporal queries
-   - Bidirectional brushing
-
-4. **Visual queries lower barriers to exploration**
-   - Draw your question, get visual answers
-   - No SQL required
-
-5. **For complex urban flow data (2D + Time), the visualization IS the interface**
-   - Not just a picture, but a tool for thinking
+- What question would you ask?
+- What spatial regions would you select?
+- What time slices would you compare?
+- What would you expect to find?
 :::
 
 ## Questions?
 
 ::: {.r-fit-text}
 Next week: **3D & Immersive Urban Visualization**
+:::
+
+::: {.fragment}
+### Preview:
+
+- Urbane framework for 3D urban planning
+- Interactive impact analysis (shadows, views, sky exposure)
+- Performance-driven architectural design
+- When to use 3D (and when not to)
 :::
 
 ::: {.notes}
