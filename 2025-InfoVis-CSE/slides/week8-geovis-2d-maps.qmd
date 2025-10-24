@@ -243,6 +243,10 @@ These are the three main categories of projections, each preserving different pr
 :::
 :::
 
+:::footer
+Interactive Tissot tool: [mgimond.github.io/tissot](https://mgimond.github.io/tissot/)
+:::
+
 ::: {.notes}
 These are the tradeoffs. The Mercator projection, on the left, preserves *shape*. This is why it was great for sailing—a straight line on the map is a constant compass bearing. But look at the area distortion. The projection on the right is *equal-area*. It preserves the *size* of regions, which is critical for the maps we're about to discuss, but it has to distort the shapes.
 :::
@@ -275,6 +279,14 @@ These are the tradeoffs. The Mercator projection, on the left, preserves *shape*
 
 ::: {.notes}
 This is the classic, infamous example. On the Mercator projection, Greenland looks massive, larger than Africa. In reality, Africa is 14 times larger than Greenland. This is fine for sailing, but if you make a choropleth map of "GDP" on a Mercator projection, you are visually lying, giving far too much prominence to countries near the poles. **If you are making a choropleth map, you must use an equal-area projection.**
+:::
+
+## The True Size of Countries
+
+<iframe width="1600" height="900" src="https://www.youtube.com/embed/kIID5FDi2JQ" title="The True Size Of ..." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: block; margin: 0 auto;"></iframe>
+
+::: {.notes}
+This video demonstrates an interactive tool that lets you drag countries around on the Mercator projection and watch them change size as they move to different latitudes. It's a powerful demonstration of how dramatically the Mercator projection distorts area. Watch how Greenland shrinks when you drag it to the equator, or how Africa expands when moved northward. This is why choosing the right projection for your data visualization task is so critical.
 :::
 
 ---
@@ -436,36 +448,32 @@ A map of "Total Crimes" is just a map of "Total People"
 - **Rate** (e.g., unemployment rate, percentage)
 :::
 
-## Bad vs. Good: Twitter Users
+## Projection Distortion: An Example
 
 ::: {.columns}
 ::: {.column width="50%"}
-### ❌ BAD: Raw Counts
+### Equirectangular Projection
 
-![Number of Twitter Users (just a population map)](figs/week8/twitter-raw-counts.png){fig-align="center"}
+![Equal circles at regular intervals](figs/week8/tissot-equirectangular.png){fig-align="center"}
 
-**This shows:** Where people live
-
-**This tells you:** Nothing about Twitter usage
+**What we expect:** Regular grid, equal-sized circles
 :::
 
 ::: {.column width="50%"}
-### ✓ GOOD: Normalized
+### After Projection
 
-![Percentage of Population on Twitter](figs/week8/twitter-percentage.png){fig-align="center"}
+![Same data, different sizes appear](figs/week8/tissot-circles-comparison.png){fig-align="center"}
 
-**This shows:** Twitter adoption rates
-
-**This tells you:** A meaningful story about usage patterns
+**What we see:** Circle sizes vary dramatically by latitude
 :::
 :::
 
 ::: {.r-fit-text .fragment}
-**If you put raw counts on a choropleth, you are lying.**
+**The same principle applies to data: you must normalize to avoid misleading comparisons.**
 :::
 
 ::: {.notes}
-This is the *single biggest mistake* people make. Look at the map on the left: "Number of Twitter Users." What does it show? It just shows where people live—California, Texas, New York. It's a population map. It tells you *nothing* about Twitter usage. The map on the right is normalized. It shows "Percentage of Population on Twitter." This is a *useful* map, and it tells a completely different story.
+Here's a perfect demonstration of why normalization matters. These maps show the exact same data—equal-sized circles at regular intervals. But on different projections, they appear vastly different in size. The circles near the poles look enormous compared to those at the equator. This is exactly what happens when you plot raw counts on a map: you're showing population density, not the phenomenon you actually care about. Just as these circles need to be "normalized" for the projection, your data needs to be normalized (per capita, density, rate) to show meaningful patterns.
 :::
 
 ---
@@ -748,3 +756,25 @@ The tube map is our bridge: it shows that **sometimes the most effective visuali
 ::: {.notes}
 So, to recap: be skeptical. When you see a map, ask these questions. What's the projection? Is it normalized? What's the binning? What's the color scale? Next time, we'll take these fundamentals and apply them to the complex, dynamic world of urban data, where interactivity becomes essential. Questions?
 :::
+
+---
+
+# Further Reading {background-color="#2c5f77"}
+
+## Essential Resources
+
+### Choropleth Map Best Practices
+- [**Datawrapper Guide to Choropleth Maps**](https://www.datawrapper.de/blog/choroplethmaps)
+  - Comprehensive guide to creating effective choropleth maps
+  - Covers normalization, classification, and color choices
+  - Practical examples and common pitfalls
+
+### When Not to Use Maps
+- [**When Maps Shouldn't Be Maps**](https://www.ericson.net/content/2011/10/when-maps-shouldnt-be-maps/) by Matthew Ericson (NYT)
+  - Critical discussion of map vs. alternative visualizations
+  - Real-world examples from data journalism
+  - Decision framework for choosing visualization types
+
+### Interactive Tools
+- [Tissot's Indicatrix Explorer](https://mgimond.github.io/tissot/) - Interactive projection distortion
+- [The True Size Of...](https://thetruesize.com/) - Drag countries to see size changes
