@@ -11,6 +11,7 @@ format:
     height: 1080
     transition: slide
     slide-number: true
+    highlight-style: github
 ---
 
 # Foundations of Geovisualization {background-color="#2c5f77"}
@@ -791,4 +792,360 @@ This lecture was developed using materials from:
 
 ::: {.notes}
 Special thanks to Professors Bertini and Heer for their excellent foundational materials on geovisualization, which served as the basis for this lecture.
+:::
+
+---
+
+# SUPPLEMENTAL MATERIAL {background-color="#4a5568"}
+
+## Implementation & Tooling
+
+::: {.notes}
+The following slides provide supplemental material on data formats, classification methods, and practical coding examples. These bridge the theoretical concepts we've covered with real-world implementation.
+:::
+
+---
+
+# Part 7: When to Use a Map? {background-color="#2c5f77"}
+
+## The Fundamental Question
+
+::: {.r-fit-text}
+**Not all geographical data needs a map.**
+:::
+
+::: {.fragment}
+### The Trade-off
+
+Maps use the `x` and `y` spatial dimensions to encode **geography**.
+
+This means `x` and `y` **cannot** be used to encode other data variables (unlike a bar chart or scatterplot).
+:::
+
+::: {.fragment}
+**So when is a map the right choice?**
+:::
+
+::: {.notes}
+This is the most fundamental question in geovisualization. Just because your data has geographic attributes doesn't mean you must use a map. Remember: maps lock up your two most powerful visual channels—position x and position y—for geography alone.
+:::
+
+## When to Use a Map: Decision Framework
+
+::: {.columns}
+::: {.column width="50%"}
+### ✓ Good Use: Spatial Questions
+
+::: {.incremental}
+- "How are these phenomena **clustered**?"
+- "What is **near** this location?"
+- "How does this value change **continuously** over a region?"
+- "Where is the **path** from A to B?"
+- "What are the **boundaries** between regions?"
+:::
+
+**Use a map when:** The spatial relationship is the question.
+:::
+
+::: {.column width="50%"}
+### ✗ Bad Use: Aggregate Comparisons
+
+::: {.incremental}
+- "Which state has the **highest** value?"
+- "What are the **top 5** regions?"
+- "How do these **rank**?"
+:::
+
+**Use a bar chart when:** You need precise comparisons or rankings.
+
+**Why?** Maps introduce **area bias**—Montana looks more "important" than Rhode Island simply due to land area.
+:::
+:::
+
+::: {.notes}
+Ask yourself: Is the user trying to understand WHERE something happens, or HOW MUCH? If it's purely "how much," a sorted bar chart will almost always be clearer and more honest than a map.
+:::
+
+---
+
+# Part 8: Geographic Data Formats {background-color="#2c5f77"}
+
+## GeoJSON: The Web Standard
+
+**GeoJSON** is the *lingua franca* of web mapping.
+
+::: {.incremental}
+- It's a JSON format that describes geographic features
+- Human-readable and machine-parsable
+- Supported by nearly all modern mapping libraries
+:::
+
+::: {.fragment}
+### Key Components
+
+- `FeatureCollection`: A list of all features
+- `Feature`: A single geographic "thing" (park, city, road)
+- `geometry`: The shape (`Point`, `LineString`, `Polygon`)
+- `properties`: Non-spatial data (name, population, ID)
+:::
+
+::: {.notes}
+GeoJSON has become the de facto standard for web mapping because it's simple, readable, and works seamlessly with JavaScript. You'll see it everywhere in modern geovisualization.
+:::
+
+## GeoJSON Structure: Example
+
+```{.json code-line-numbers="|2|5|9-12|18-24|30-37"}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NYU Bobst Library",
+        "type": "Library"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-73.997421, 40.729454]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "W 4th Street", "type": "Street" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-74.000277, 40.731868],
+          [-73.997873, 40.731557]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Washington Square Park" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-73.999, 40.732], [-73.996, 40.732],
+            [-73.996, 40.730], [-73.999, 40.730],
+            [-73.999, 40.732]
+          ]
+        ]
+      }
+    }
+  ]
+}
+```
+
+::: {.notes}
+Notice the three geometry types here: Point for a location, LineString for a path or street, and Polygon for an area. Each feature has properties that store the actual data you want to visualize.
+:::
+
+## TopoJSON: Optimized Geography
+
+**TopoJSON** is an optimized version of GeoJSON.
+
+::: {.columns}
+::: {.column width="50%"}
+### Key Advantages
+
+- **Compressed**: Much smaller file sizes
+- **Topology-aware**: Stores shared boundaries only once
+- **Better for web**: Faster downloads and parsing
+
+### The Insight
+
+Instead of storing the border between Colorado and Utah **twice**, TopoJSON stores the arc **once** and notes it's shared by both states.
+:::
+
+::: {.column width="50%"}
+### When to Use
+
+- Large geographic datasets (countries, states)
+- Web applications (file size matters)
+- When features share boundaries
+
+### Tools
+
+- **MapShaper**: Convert, simplify, and edit
+- **topojson-client**: Convert back to GeoJSON
+:::
+:::
+
+::: {.notes}
+TopoJSON can reduce file sizes by 80% or more for datasets like US state boundaries. The trade-off is that you need to convert it back to GeoJSON before most libraries can use it, but this is trivial with tools like topojson-client.
+:::
+
+---
+
+# Part 9: Data Classification Methods {background-color="#2c5f77"}
+
+## The Binning Problem
+
+For **choropleth maps**, how you "bin" your data into color classes can **completely change the story**.
+
+::: {.fragment}
+![Three maps, same data, different classification methods](figs/week8/binning-comparison.png){fig-align="center" width="80%"}
+:::
+
+::: {.fragment}
+::: {.r-fit-text}
+**Same data. Different bins. Different conclusions.**
+:::
+:::
+
+::: {.notes}
+This is one of the most critical decisions you'll make when creating a choropleth map, yet it's often done automatically by software with no thought. Let's understand the three main methods.
+:::
+
+## Classification Methods Compared
+
+### Equal Interval
+Divides the **range** into equal-sized steps (e.g., 0-10, 10-20, 20-30).
+
+- ✓ Easy to understand and explain
+- ✗ **Problem:** Outliers can skew all data into one or two bins
+
+### Quantile (Equal Count)
+Puts the **same number** of data points in each bin.
+
+- ✓ Good for showing relative **ranking**
+- ✗ **Problem:** Can be misleading if values are naturally clustered
+
+### Jenks Natural Breaks
+Finds "natural" clusters/gaps in the data using statistical optimization.
+
+- ✓ Often the most **honest** default
+- ✗ **Problem:** Can be arbitrary if data is uniformly distributed
+
+::: {.notes}
+There is no single "right" method. Equal Interval is good for data with a meaningful zero and regular intervals (like temperature). Quantile is good for highly skewed data where you want to emphasize differences. Jenks tries to find natural groupings and is a good starting point for most cases.
+:::
+
+## Choosing Your Classification
+
+| Method | Best For | Watch Out For |
+|--------|----------|---------------|
+| **Equal Interval** | Evenly distributed data; meaningful intervals | Outliers dominating the map |
+| **Quantile** | Ranking; highly skewed data | Hiding natural clustering; arbitrary bin edges |
+| **Jenks Natural Breaks** | Data with natural groups/gaps | Uniform data; hard to explain to audience |
+| **Manual** | Expert knowledge; specific breakpoints | Subjectivity; cherry-picking |
+
+::: {.callout-important}
+## Key Takeaway
+Always **justify** your choice. Show the data distribution (histogram) and explain why your classification makes sense for your story.
+:::
+
+---
+
+# Part 10: Practical Implementation with Leaflet.js {background-color="#2c5f77"}
+
+## Leaflet.js: Simple Web Mapping
+
+**Leaflet** is a lightweight, open-source JavaScript library for interactive maps.
+
+::: {.incremental}
+- **Simple API**: Easy to learn, powerful results
+- **Tile-based**: Handles the "slippy map" (zoom, pan) automatically
+- **Extensible**: Plugins for everything from clustering to heat maps
+- **Perfect for**: Adding interactive maps to web applications
+:::
+
+::: {.fragment}
+**Let's build a simple example using our NYU GeoJSON data.**
+:::
+
+::: {.notes}
+Leaflet is probably the most popular web mapping library for good reason—it's simple, well-documented, and "just works." We're going to walk through a minimal example that you can adapt for your own projects.
+:::
+
+## Leaflet: HTML Setup
+
+```{.html code-line-numbers="|2-3|6-8|11-13"}
+<!-- 1. Include Leaflet CSS & JS from a CDN -->
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- 2. Style the map container to fill the screen -->
+<style>
+    #map { height: 100vh; }
+</style>
+
+<!-- 3. Create the map div -->
+<body>
+    <div id="map"></div>
+</body>
+```
+
+::: {.notes}
+That's it for the HTML. Three simple steps: include the library, style your container, and create a div. The library will take care of the rest.
+:::
+
+## Leaflet: Initialize the Map
+
+```{.javascript code-line-numbers="|2|5-8"}
+// 1. Initialize the map and set view [lat, long], zoom
+const map = L.map('map').setView([40.7308, -73.9973], 14);
+
+// 2. Add a tile layer (the base map)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 19
+}).addTo(map);
+```
+
+::: {.notes}
+Line 2 creates the map object and centers it on NYU's campus at zoom level 14. Lines 5-8 add the base map tiles from OpenStreetMap. These tiles are the actual street map imagery you see.
+:::
+
+## Leaflet: Add GeoJSON Data
+
+```{.javascript code-line-numbers="|2|5-14|16-22"}
+// 3. Define our GeoJSON data
+const myGeoJSON = { /* ... from example.geojson ... */ };
+
+// 4. Add GeoJSON layer to the map
+L.geoJSON(myGeoJSON, {
+    // For each feature, bind a popup with its name
+    onEachFeature: function (feature, layer) {
+        if (feature.properties && feature.properties.name) {
+            let popup = '<h4>' + feature.properties.name + '</h4>';
+            popup += '<p>' + feature.properties.description + '</p>';
+            layer.bindPopup(popup);
+        }
+    }
+}).addTo(map);
+
+// Points, lines, and polygons are automatically styled
+// Click any feature to see its popup
+// Pan and zoom the map to explore
+```
+
+::: {.notes}
+The magic happens here. L.geoJSON takes our GeoJSON data and automatically renders it—points become markers, lines become paths, polygons become shapes. We're using onEachFeature to bind a popup to each feature so users can click to see details.
+:::
+
+## Live Demo
+
+::: {.r-fit-text}
+**Let's see it in action!**
+:::
+
+Open: `examples/leaflet_example.html`
+
+::: {.incremental}
+- Base map tiles loading
+- Pan and zoom controls
+- GeoJSON features rendered:
+  - **Point**: NYU Bobst Library (red circle)
+  - **LineString**: W 4th Street (blue line)
+  - **Polygon**: Washington Square Park (green area)
+- Click any feature to see its popup
+:::
+
+::: {.notes}
+Instructor should open the HTML file in a browser now. Show: (1) the base tiles, (2) pan/zoom, (3) the three geometry types rendered, (4) click a feature to show popup. Emphasize how little code this took—maybe 30 lines total.
 :::

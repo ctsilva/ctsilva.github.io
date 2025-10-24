@@ -14,9 +14,9 @@ author_profile: true
 
 ## Announcements
 
-**Week 7 Materials Ready (Oct 16):** Interaction in Visualization lecture is now available! Covers Shneiderman's Mantra, the 12 interactive dynamics taxonomy, and modern interaction frameworks. See [slides](/2025-InfoVis-CSE/slides/week7-interaction.html).
+**Week 8 Materials Ready (Oct 24):** Foundations of Geovisualization (2D Maps) lecture is now available! Covers map projections, choropleth pitfalls, data classification, and practical Leaflet.js implementation. See [slides](/2025-InfoVis-CSE/slides/week8-geovis-2d-maps.html).
 
-**Week 6 Materials Ready (Oct 10):** Group Projects lecture is now available! Form teams by Oct 17, proposal due Oct 20. See [slides](/2025-InfoVis-CSE/slides/week6-group-projects.html) for full details.
+**Week 7 Materials Ready (Oct 16):** Interaction in Visualization lecture is now available! Covers Shneiderman's Mantra, the 12 interactive dynamics taxonomy, and modern interaction frameworks. See [slides](/2025-InfoVis-CSE/slides/week7-interaction.html).
 
 *Course materials will be posted as the semester progresses*
 
@@ -87,6 +87,20 @@ author_profile: true
   - [Yi et al. (2007) - Toward a Deeper Understanding of Interaction](/2025-InfoVis-CSE/refs/Yi_2007_Toward_Deeper_Understanding_Interaction.pdf)
   - [Pike et al. (2009) - The Science of Interaction](/2025-InfoVis-CSE/refs/Pike_2009_Science_of_Interaction.pdf)
   - [Zhao et al. (2025) - Libra: Composable Interactions](/2025-InfoVis-CSE/refs/Zhao_2025_Libra_Composable_Interactions.pdf)
+
+### Week 8 (Oct 24) - Foundations of Geovisualization: 2D Maps
+- **Slides:** [Foundations of Geovisualization](/2025-InfoVis-CSE/slides/week8-geovis-2d-maps.html) | [Live Demo: Leaflet.js](/2025-InfoVis-CSE/slides/examples/leaflet_example.html)
+- **Topics:** Map projections (Mercator, Albers, Azimuthal), Choropleth pitfalls (normalization, classification, color, MAUP), Map taxonomy (choropleth, proportional symbol, cartogram, flow), GeoJSON/TopoJSON formats, Leaflet.js implementation
+- **Lab:** Creating interactive geographic visualizations with Leaflet and D3
+- **Assignment:** Exercise 8 - Geographic visualization with proper normalization and projection (due Oct 30)
+- **Required Readings:**
+  - [Datawrapper Guide to Choropleth Maps](https://www.datawrapper.de/blog/choroplethmaps)
+  - [When Maps Shouldn't Be Maps](https://www.ericson.net/content/2011/10/when-maps-shouldnt-be-maps/) - Matthew Ericson (NYT)
+- **Recommended Resources:**
+  - [The True Size Of...](https://thetruesize.com/) - Interactive projection demo
+  - [Reuters: The True Size of Africa](https://www.reuters.com/graphics/AFRICA-MAP/lgpdaqrdyvo/)
+  - [Tissot's Indicatrix Explorer](https://mgimond.github.io/tissot/)
+- **Supplemental Material:** GeoJSON format, TopoJSON optimization, Data classification methods (Equal Interval, Quantile, Jenks), Leaflet.js tutorial
 
 ## Assignments
 
