@@ -142,49 +142,14 @@ Claudio Silva
   <p class="date">2025-10-24</p>
 </section>
 <section>
-<section id="welcome" class="title-slide slide level1 center" data-background-color="#2c5f77">
-<h1>Welcome</h1>
+<section id="foundations-of-geovisualization" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Foundations of Geovisualization</h1>
+
+</section>
+<section id="the-2d-map" class="slide level2">
+<h2>The 2D Map</h2>
 <aside class="notes">
 <p>Welcome. Today we’re starting a three-part series on geovisualization. Before we can get to the complex 3D and interactive systems, we <em>must</em> understand the fundamentals. We’ll be focusing on the most common and, as we’ll see, the most <em>misused</em> form of visualization: the 2D static map. Our goal today is to learn how to read and create these maps <em>critically</em>.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="three-maps-that-changed-the-world" class="slide level2">
-<h2>Three Maps That Changed the World</h2>
-<div class="columns">
-<div class="column" style="width:33%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/week8/snow-cholera-map.png"></p>
-<figcaption>John Snow’s Cholera Map (1854)</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:33%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/week8/minard-napoleon.png"></p>
-<figcaption>Minard’s Napoleon March (1869)</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:33%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/week8/nyt-election-2020.png"></p>
-<figcaption>NYT 2020 Election Map</figcaption>
-</figure>
-</div>
-</div></div>
-<aside class="notes">
-<p>These three maps represent the power and the challenge of geovisualization. Snow’s cholera map solved a mystery through spatial analysis. Minard’s flow map told a story of tragedy with multiple variables. The NYT election map sparked debates about how we represent geographic data. Each teaches us something essential about creating honest, effective visualizations.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -530,7 +495,7 @@ Claudio Silva
 <h3 id="albers-equal-area-the-fix">Albers Equal-Area: The Fix</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/week8/albers-us.png"></p>
+<p><img data-src="figs/week8/albers.png"></p>
 <figcaption>Albers projection showing true relative sizes</figcaption>
 </figure>
 </div>
@@ -559,6 +524,26 @@ Claudio Silva
 </iframe>
 <aside class="notes">
 <p>This video demonstrates an interactive tool that lets you drag countries around on the Mercator projection and watch them change size as they move to different latitudes. It’s a powerful demonstration of how dramatically the Mercator projection distorts area. Watch how Greenland shrinks when you drag it to the equator, or how Africa expands when moved northward. This is why choosing the right projection for your data visualization task is so critical.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="understanding-mercator-distortion" class="slide level2">
+<h2>Understanding Mercator Distortion</h2>
+
+<img data-src="figs/week8/mercador.png" style="width:90.0%" class="r-stretch quarto-figure-center"><p class="caption">How Mercator exaggerates territories far from the equator</p><div class="footer">
+<p>Source: <a href="https://www.reuters.com/graphics/AFRICA-MAP/lgpdaqrdyvo/">Reuters Graphics - The True Size of Africa</a></p>
+</div>
+<aside class="notes">
+<p>This beautiful diagram from Reuters shows exactly how the Mercator projection works and why it distorts size. On the left, you see the globe with Africa and Greenland in their true relative sizes. In the middle, the cylindrical projection process is shown—the globe is “unrolled” onto a cylinder. On the right, you see the flat map result. Notice how Greenland, being far from the equator, gets stretched enormously, while Africa, which straddles the equator, maintains a size closer to reality. This is not a flaw for navigation—Mercator was designed for this purpose. But it becomes a serious problem when we use it for data visualization.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -601,7 +586,7 @@ Claudio Silva
 <p><strong>Good for:</strong> Seeing broad regional patterns</p>
 </div></div>
 <aside class="notes">
-<p>This is a <strong>choropleth</strong>. Each county is shaded by <em>who won</em>. This is good for seeing broad regional patterns. The NYT is a master of this type of visualization.</p>
+<p>This is a <strong>choropleth</strong>. Each county is shaded by <em>who won</em>. This is good for seeing broad regional patterns. The NYT is a master of this type of visualization. Note that this is a <em>categorical</em> choropleth—it shows categories (red vs blue, winner vs loser). The pitfalls we’re about to discuss in Part 5 apply primarily to <em>quantitative</em> choropleths, where you’re shading by a numerical value or rate. Those are far more common and much easier to get wrong.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -636,7 +621,7 @@ Claudio Silva
 <p><strong>Good for:</strong> Showing <em>where</em> the values are, not just the land area</p>
 </div></div>
 <aside class="notes">
-<p>This is a <strong>proportional symbol map</strong>. Each circle is scaled by the <em>size of the lead</em>. This is a very different story—it shows <em>where</em> the votes are, not just <em>land area</em>.</p>
+<p>This is a <strong>proportional symbol map</strong>. Each circle is scaled by the <em>size of the lead</em>. This is a very different story—it shows <em>where</em> the votes are, not just <em>land area</em>. Pay close attention to this technique. We’ll see it again later as a powerful solution to one of the major pitfalls of choropleth maps.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -671,7 +656,7 @@ Claudio Silva
 <p><strong>Good for:</strong> De-emphasizing misleading land area</p>
 </div></div>
 <aside class="notes">
-<p>This is a <strong>cartogram</strong>. This is a brilliant solution to the election map problem. It <em>abandons</em> true geography and instead sizes each state by its electoral votes.</p>
+<p>This is a <strong>cartogram</strong>. This is a brilliant solution to the election map problem. It <em>abandons</em> true geography and instead sizes each state by its electoral votes. Like the proportional symbol map we just saw, this technique will reappear later when we discuss how to fix misleading choropleths.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1273,6 +1258,43 @@ Claudio Silva
 <li><a href="https://mgimond.github.io/tissot/">Tissot’s Indicatrix Explorer</a> - Interactive projection distortion</li>
 <li><a href="https://thetruesize.com/">The True Size Of…</a> - Drag countries to see size changes</li>
 </ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="acknowledgments" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Acknowledgments</h1>
+
+</section>
+<section id="course-materials" class="slide level2">
+<h2>Course Materials</h2>
+<p>This lecture was developed using materials from:</p>
+<ul>
+<li><strong>Prof.&nbsp;Enrico Bertini</strong> (NYU Tandon)
+<ul>
+<li>Visualizing Geographical Data lecture slides</li>
+<li>Information Visualization course materials</li>
+</ul></li>
+<li><strong>Prof.&nbsp;Jeff Heer</strong> (University of Washington)
+<ul>
+<li>CSE512: Data Visualization course</li>
+<li>Maps and Cartography lecture materials</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Special thanks to Professors Bertini and Heer for their excellent foundational materials on geovisualization, which served as the basis for this lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 </section></section>
     </div>
