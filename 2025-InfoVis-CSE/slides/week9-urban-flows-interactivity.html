@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week9-urban-flows-interactivity_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week9-urban-flows-interactivity_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week9-urban-flows-interactivity_files/libs/quarto-html/popper.min.js"></script>
+<script src="week9-urban-flows-interactivity_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week9-urban-flows-interactivity_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week9-urban-flows-interactivity_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week9-urban-flows-interactivity_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2025-10-31">
+  <title>Urban Visualization I</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week9-urban-flows-interactivity_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week9-urban-flows-interactivity_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="week9-urban-flows-interactivity_files/libs/revealjs/dist/theme/quarto-e55469e18d4f1b644de49769da31cbe0.css">
+  <link href="week9-urban-flows-interactivity_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week9-urban-flows-interactivity_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week9-urban-flows-interactivity_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week9-urban-flows-interactivity_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Urban Visualization I</h1>
+  <p class="subtitle">Flows, Time &amp; Interactivity (2D + Time) - CS-GY 6313 - Fall 2025</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+</div>
+</div>
+
+  <p class="date">2025-10-31</p>
+</section>
+<section>
+<section id="from-static-maps-to-dynamic-urban-systems" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>From Static Maps to Dynamic Urban Systems</h1>
+
+</section>
+<section id="the-yellow-blob-problem" class="slide level2">
+<h2>The Yellow Blob Problem</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>What happens when we apply static techniques to massive urban datasets?</strong></p>
+<div class="fragment">
+<p>This is 140 million NYC taxi trips visualized as a static heatmap.</p>
+</div>
+<div class="fragment">
+<p><strong>What can you learn from this?</strong></p>
+<p>Nothing. It’s a “yellow blob.”</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/yellow-blob-taxi-heatmap.png" style="width:100.0%"></p>
+<figcaption>Static heatmap of 140 million NYC taxi trips</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Welcome back. Last time, we learned the rules of static 2D maps. Today, we’re diving into <em>urban</em> data. This is what happens when you try to apply a static technique (like a heatmap) to a massive, dynamic dataset. This is 140 million taxi trips. What can you learn from this? Nothing. It’s a “yellow blob.” The problem isn’t the data. It’s the <em>lack of interactivity</em>. Today is about how we move from static pictures to <em>exploratory tools</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="todays-goal" class="slide level2">
+<h2>Today’s Goal</h2>
+<div class="r-fit-text">
+<p>Learn to visualize urban <strong>dynamics</strong>—movement and time—using interactive, linked views</p>
+</div>
+<ul>
+<li class="fragment"><strong>Challenge:</strong> Urban data is massive, dense, and dynamic</li>
+<li class="fragment"><strong>Solution:</strong> Turn visualization into an exploration tool</li>
+<li class="fragment"><strong>Case Study:</strong> TaxiVis—a system for exploring NYC taxi flows</li>
+</ul>
+<div class="fragment">
+<p>We’ll learn how to move from this “yellow blob” to meaningful insights about urban mobility patterns.</p>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-1-the-urban-context" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 1: The Urban Context</h1>
+
+</section>
+<section id="why-this-matters" class="slide level2">
+<h2>Why This Matters</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-urban-challenge">The Urban Challenge:</h3>
+<ul>
+<li>Over 50% of world’s population in cities</li>
+<li><strong>+2.5 billion more by 2050</strong></li>
+<li>Cities = centers of innovation</li>
+<li>But also: sprawl, pollution, inequality</li>
+</ul>
+<div class="fragment">
+<p><strong>How do we make better decisions about urban development?</strong></p>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="the-data-opportunity">The Data Opportunity:</h3>
+<ul>
+<li class="fragment">We can now collect, store, and <strong>open</strong> massive urban datasets</li>
+<li class="fragment">Benefits:
+<ul>
+<li class="fragment"><strong>Government:</strong> Operations &amp; planning</li>
+<li class="fragment"><strong>Science:</strong> Discovery</li>
+<li class="fragment"><strong>Residents:</strong> Participation</li>
+<li class="fragment"><strong>Industry:</strong> Innovation</li>
+</ul></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Before we get into the “how,” let’s establish the “why.” Urban data analysis isn’t just an academic exercise—it has real impact on how cities operate and plan. The trend toward open data means we have unprecedented access to understand cities. But this opportunity comes with a challenge: the data is massive and complex.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-makes-urban-data-unique" class="slide level2">
+<h2>What Makes Urban Data Unique?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="three-interacting-components">Three Interacting Components:</h3>
+<ol type="1">
+<li><strong>Residents</strong> - People and their behavior</li>
+<li><strong>Infrastructure</strong> - Physical systems and policies</li>
+<li><strong>Environment</strong> - Natural and built surroundings</li>
+</ol>
+<div class="fragment">
+<p>To understand a city, we must explore how these interact over <strong>space</strong> and <strong>time</strong>.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="four-key-characteristics">Four Key Characteristics:</h3>
+<ol type="1">
+<li class="fragment"><strong>Scale</strong>
+<ul>
+<li class="fragment">Human-level to metro-level</li>
+<li class="fragment">Millions of individual events</li>
+</ul></li>
+<li class="fragment"><strong>Density</strong>
+<ul>
+<li class="fragment">Massive overplotting</li>
+<li class="fragment">Traditional techniques fail</li>
+</ul></li>
+<li class="fragment"><strong>Complexity</strong>
+<ul>
+<li class="fragment">Interconnected systems</li>
+<li class="fragment">Transit, traffic, social networks</li>
+</ul></li>
+<li class="fragment"><strong>Dynamism</strong>
+<ul>
+<li class="fragment">Cities defined by time &amp; movement</li>
+<li class="fragment">Static snapshots miss the essence</li>
+</ul></li>
+</ol>
+</div></div>
+<aside class="notes">
+<p>Urban data isn’t just “big data”—it has unique properties. To understand a city, we must explore how residents, infrastructure, and environment interact over space and time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="hägerstrands-space-time-cube-1970" class="slide level2">
+<h2>Hägerstrand’s Space-Time Cube (1970)</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>The Classic Framework for Movement Analysis</strong></p>
+<ul>
+<li>X, Y dimensions: Geographic space</li>
+<li>Z dimension: Time</li>
+<li>Each person’s life: a line through the cube</li>
+</ul>
+<div class="fragment">
+<p><strong>The Urban Challenge:</strong></p>
+<p>Understanding <em>millions</em> of these paths, all interacting simultaneously</p>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/hagerstrand-space-time-cube.png" style="width:100.0%"></p>
+<figcaption>Hägerstrand’s Space-Time Cube showing individual trajectories</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>The classic framework for thinking about movement in space is Hägerstrand’s “Space-Time Cube” from the 1970s. It plots an individual’s path in 3D: X, Y, and Time. Your life is a line in this cube. Urban visualization is about understanding <em>millions</em> of these paths, all interacting. This is why a static 2D map fails.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-2-why-traditional-analysis-fails" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 2: Why Traditional Analysis Fails</h1>
+
+</section>
+<section id="the-old-workflow-confirmatory-data-analysis" class="slide level2">
+<h2>The Old Workflow (Confirmatory Data Analysis)</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/traditional-workflow.png"></p>
+<figcaption>Traditional analysis pipeline</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<h3 id="the-process">The Process:</h3>
+<ol type="1">
+<li>Domain experts formulate hypotheses</li>
+<li>Data scientists select data</li>
+<li>Run analyses (SQL, R, Python)</li>
+<li>Domain experts inspect results</li>
+<li>Repeat…</li>
+</ol>
+</div></div>
+</section>
+<section id="the-problems-with-traditional-workflows" class="slide level2">
+<h2>The Problems with Traditional Workflows</h2>
+<p>❌ <strong>Cognitive overload</strong> - Generates overwhelming numbers of plots/tables</p>
+<p>❌ <strong>Batch-oriented</strong> - No exploration, just predetermined queries</p>
+<p>❌ <strong>Distances experts from data</strong> - Requires intermediary (data scientist)</p>
+<p>❌ <strong>Cannot scale</strong> - Modern data volumes overwhelm traditional tools</p>
+<p>❌ <strong>Result:</strong> The “yellow blob” problem</p>
+<div class="fragment">
+<div class="r-fit-text">
+<p><strong>Even simple questions require generating dozens of individual plots, each manually programmed</strong></p>
+</div>
+</div>
+<aside class="notes">
+<p>This is how urban data analysis has traditionally worked—and why it doesn’t work anymore. Even simple questions require generating dozens of individual plots, each manually programmed. The lack of interactivity means you can’t follow up on interesting patterns. Domain experts who understand cities are separated from the data by data scientists. This process simply cannot scale to 140 million trips.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-problem-with-current-tools" class="slide level2">
+<h2>The Problem with Current Tools</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="current-practice-for-domain-experts">Current practice for domain experts:</h3>
+<ul>
+<li>Load small slices into R, MATLAB, Stata, ArcGIS, Excel</li>
+<li>Write SQL queries or code to analyze subsets</li>
+<li>Generate individual plots manually</li>
+<li>Repeat for each new question</li>
+</ul>
+<div class="fragment">
+<p><strong>This is tedious, slow, and limiting</strong></p>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="why-this-fails">Why this fails:</h3>
+<p>❌ Tools can’t handle 170M trips</p>
+<p>❌ Requires programming/database expertise</p>
+<p>❌ Time-consuming and frustrating</p>
+<p>❌ Distances experts from the data</p>
+<p>❌ Hard to explore, compare, or follow up on patterns</p>
+</div></div>
+<aside class="notes">
+<p>Domain experts (traffic engineers, economists) know cities but not necessarily coding. They’re forced to pre-select tiny slices without knowing what’s interesting. This is exactly the problem we talked about earlier - confirmatory analysis when you need exploratory analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-3-the-need-for-interactivity" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 3: The Need for Interactivity</h1>
+
+</section>
+<section id="the-paradigm-shift" class="slide level2">
+<h2>The Paradigm Shift</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="static-visualization">Static Visualization</h3>
+<p><strong>Role:</strong> Presentation</p>
+<ul>
+<li>Answers questions the designer anticipated</li>
+<li>Fixed perspective</li>
+<li>One-way communication</li>
+</ul>
+<div class="fragment">
+<p><strong>Limitation:</strong> Cannot handle 140 million data points</p>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="interactive-visualization">Interactive Visualization</h3>
+<p><strong>Role:</strong> Exploration</p>
+<ul>
+<li>Enables users to ask their own questions</li>
+<li>Dynamic perspectives</li>
+<li><strong>“Dialogue with data”</strong></li>
+</ul>
+<div class="fragment">
+<p><strong>Power:</strong> Query and filter to reveal patterns</p>
+</div>
+</div></div>
+</section>
+<section id="the-visual-information-seeking-mantra" class="slide level2">
+<h2>The Visual Information Seeking Mantra</h2>
+<div class="r-fit-text">
+<p><strong>“Overview first, Zoom and Filter, then Details-on-Demand”</strong></p>
+</div>
+<div class="fragment">
+<p>— Ben Shneiderman (1996)</p>
+</div>
+<div class="columns fragment">
+<div class="column" style="width:33%;">
+<h3 id="overview">1. Overview</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/mantra-overview.png"></p>
+<figcaption>Overview of all data</figcaption>
+</figure>
+</div>
+<p>Start with the big picture (even if it’s a “yellow blob”)</p>
+</div><div class="column" style="width:33%;">
+<h3 id="zoom-filter">2. Zoom &amp; Filter</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/mantra-filter.png"></p>
+<figcaption>Filtered subset of data</figcaption>
+</figure>
+</div>
+<p>Focus on items of interest</p>
+</div><div class="column" style="width:33%;">
+<h3 id="details-on-demand">3. Details-on-Demand</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/mantra-details.png"></p>
+<figcaption>Detailed information display</figcaption>
+</figure>
+</div>
+<p>Get specifics when needed</p>
+</div></div>
+<aside class="notes">
+<p>The “yellow blob” is our <em>overview</em>. It’s not useless; it’s just the first step. To get insight, we need to <em>zoom and filter</em>. We need to ask questions: “Show me just rush hour.” “Show me just trips to the airport.” “Show me just Saturdays.” This requires turning the visualization from a static <em>presentation</em> into an <em>exploratory tool</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-interactivity-matters" class="slide level2">
+<h2>Why Interactivity Matters</h2>
+<ol type="1">
+<li class="fragment"><strong>Performance is critical</strong>
+<ul>
+<li class="fragment">Even <strong>500ms latency</strong> significantly reduces exploration, observations, and hypothesis generation</li>
+<li class="fragment">Sub-second response enables iterative analysis</li>
+</ul></li>
+<li class="fragment"><strong>Perception over cognition</strong>
+<ul>
+<li class="fragment">Well-designed systems let you <strong>see</strong> patterns rather than calculate them</li>
+<li class="fragment">Visual queries are faster than SQL</li>
+</ul></li>
+<li class="fragment"><strong>Empowers domain experts</strong>
+<ul>
+<li class="fragment">No programming required</li>
+<li class="fragment">Direct manipulation of visualizations</li>
+<li class="fragment">Experts can explore data themselves</li>
+</ul></li>
+</ol>
+<div class="fragment">
+<p>Research shows that even a half-second delay dramatically impacts analysis quality.</p>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-4-enter-taxivis" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 4: Enter TaxiVis</h1>
+
+</section>
+<section id="the-nyc-taxi-dataset" class="slide level2">
+<h2>The NYC Taxi Dataset</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-data">The Data:</h3>
+<ul>
+<li><strong>13,000 taxis</strong></li>
+<li><strong>500,000 trips/day</strong></li>
+<li><strong>170 million trips/year</strong></li>
+</ul>
+<h3 id="each-trip-includes">Each trip includes:</h3>
+<ul>
+<li>Pickup/dropoff locations &amp; times</li>
+<li>Distance traveled</li>
+<li>Fare amount</li>
+<li>Tip amount</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="what-can-taxi-data-tell-us">What can taxi data tell us?</h3>
+<ul>
+<li class="fragment">Economic activity and human behavior</li>
+<li class="fragment">Mobility patterns across the city</li>
+<li class="fragment">Response to major events (hurricanes, holidays)</li>
+<li class="fragment">Social inequalities in service</li>
+</ul>
+<div class="fragment">
+<p><strong>Challenge:</strong> How do we make sense of this data?</p>
+</div>
+</div></div>
+</section>
+<section id="taxi-patterns-and-anomalies" class="slide level2">
+<h2>Taxi Patterns and Anomalies</h2>
+
+<img data-src="figs/week9/taxi-patterns-anomalies.png" style="width:85.0%" class="r-stretch quarto-figure-center"><p class="caption">Taxi activity patterns showing regularity and anomalies</p><ul>
+<li class="fragment"><strong>Regular patterns:</strong> Thanksgiving, Christmas drops in activity</li>
+<li class="fragment"><strong>Anomalies:</strong> Hurricane Irene, Hurricane Sandy disruptions</li>
+<li class="fragment"><strong>Events:</strong> Five Boro Bike Tour (taxis disappeared along 6th Avenue)</li>
+</ul>
+<aside class="notes">
+<p>Taxis are valuable sensors of city life. This is a perfect example of urban data that’s too complex for traditional analysis. Notice the regularity (Thanksgiving, Christmas drops) and anomalies (Hurricane Irene, Hurricane Sandy). The bottom maps show how taxis disappeared along 6th Avenue during the Five Boro Bike Tour.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-5-design-requirements" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 5: Design Requirements</h1>
+
+</section>
+<section id="what-we-need-from-domain-experts" class="slide level2">
+<h2>What We Need (From Domain Experts)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="query-needs">Query Needs:</h3>
+<ol type="1">
+<li class="fragment"><strong>Understand dynamics</strong>
+<ul>
+<li class="fragment">“How do patterns vary over space and time?”</li>
+</ul></li>
+<li class="fragment"><strong>Explore events</strong>
+<ul>
+<li class="fragment">“What happened during Hurricane Sandy?”</li>
+</ul></li>
+<li class="fragment"><strong>Compare regions</strong>
+<ul>
+<li class="fragment">“Midtown vs.&nbsp;Harlem taxi frequency?”</li>
+</ul></li>
+<li class="fragment"><strong>Study movement</strong>
+<ul>
+<li class="fragment">“Where do people go from JFK?”</li>
+</ul></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<h3 id="system-requirements">System Requirements:</h3>
+<ul>
+<li class="fragment"><strong>Interactive</strong> - Sub-second response times</li>
+<li class="fragment"><strong>Expressive</strong> - Support complex spatio-temporal queries</li>
+<li class="fragment"><strong>Usable</strong> - No SQL or programming required</li>
+<li class="fragment"><strong>Scalable</strong> - Handle all 170M trips, not samples</li>
+<li class="fragment"><strong>Comparative</strong> - Easy to compare regions and time periods</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>These requirements came from actual domain experts—traffic engineers and urban economists. Note the tension: needs to be simple enough for non-programmers but powerful enough for complex analysis. This is the design challenge we need to solve.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-6-the-visual-query-model" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 6: The Visual Query Model</h1>
+
+</section>
+<section id="core-idea-direct-manipulation" class="slide level2">
+<h2>Core Idea: Direct Manipulation</h2>
+<div class="r-fit-text">
+<p><strong>Let users query data through direct manipulation of visualizations</strong></p>
+</div>
+<div class="columns fragment">
+<div class="column" style="width:33%;">
+<h3 id="spatial">Spatial</h3>
+<p><strong>Where?</strong></p>
+<ul>
+<li>Pickup regions</li>
+<li>Dropoff regions</li>
+<li>Draw polygons on map</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="temporal">Temporal</h3>
+<p><strong>When?</strong></p>
+<ul>
+<li>Time ranges</li>
+<li>Recurrence patterns</li>
+<li>Day of week</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="attribute">Attribute</h3>
+<p><strong>What?</strong></p>
+<ul>
+<li>Fare amount</li>
+<li>Distance</li>
+<li>Trip duration</li>
+</ul>
+</div></div>
+<div class="fragment">
+<p>Instead of writing <code>SELECT * FROM trips WHERE...</code>, you <strong>draw on a map</strong></p>
+</div>
+</section>
+<section id="visual-representation-of-queries" class="slide level2">
+<h2>Visual Representation of Queries</h2>
+
+<img data-src="figs/week9/taxivis-visual-query-model.png" style="width:85.0%" class="r-stretch quarto-figure-center"><p class="caption">TaxiVis interface showing visual query components</p><ul>
+<li class="fragment"><strong>Blue polygons</strong> on map = pickup regions</li>
+<li class="fragment"><strong>Orange polygons</strong> = dropoff regions</li>
+<li class="fragment"><strong>Arrows</strong> = origin-destination queries</li>
+<li class="fragment"><strong>Time widgets</strong> = temporal constraints</li>
+<li class="fragment"><strong>Histograms</strong> = attribute constraints</li>
+</ul>
+<aside class="notes">
+<p>The key is that queries are visual and direct—you’re manipulating the map and visualizations, not writing code. Each query returns a set of trips that can be further refined.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-7-taxivis-interface" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 7: TaxiVis Interface</h1>
+
+</section>
+<section id="the-complete-system" class="slide level2">
+<h2>The Complete System</h2>
+
+<img data-src="figs/week9/taxivis-full-interface.png" style="width:85.0%" class="r-stretch quarto-figure-center"><p class="caption">Full TaxiVis interface showing linked views</p><aside class="notes">
+<p>This is our main case study for today. It looks complex, but it’s just a set of simple components linked together. We have our map, a control panel for time, and a set of 2D charts for showing temporal patterns. The <em>magic</em> is not in any one of these charts; it’s in how they are connected.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interface-components" class="slide level2">
+<h2>Interface Components</h2>
+
+<img data-src="figs/week9/taxivis-labeled-components.png" class="r-stretch quarto-figure-center"><p class="caption">TaxiVis interface with labeled components</p><div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="map-view-left">1. Map View (Left)</h3>
+<ul>
+<li>Geographic visualization</li>
+<li>Interactive region selection</li>
+<li>Origin-destination flows</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="control-panel-top">2. Control Panel (Top)</h3>
+<ul>
+<li>Time range selection</li>
+<li>Query type controls</li>
+<li>Data aggregation settings</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="temporal-views-right">3. Temporal Views (Right)</h3>
+<ul>
+<li>Time series plots</li>
+<li>Histograms</li>
+<li>Daily/weekly patterns</li>
+</ul>
+</div></div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-8-visual-queries-in-action" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 8: Visual Queries in Action</h1>
+
+</section>
+<section id="example-airport-comparison" class="slide level2">
+<h2>Example: Airport Comparison</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-question">The Question:</h3>
+<p>“How do trips to JFK vs.&nbsp;LGA differ on Sundays vs.&nbsp;Mondays?”</p>
+<h3 id="the-visual-query">The Visual Query:</h3>
+<ol type="1">
+<li>Draw region around Lower Manhattan (pickup)</li>
+<li>Draw regions around JFK and LGA (dropoffs)</li>
+<li>Connect with arrows (directional constraints)</li>
+<li>Select Sunday vs.&nbsp;Monday (temporal constraints)</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/airport-comparison-query.png"></p>
+<figcaption>Airport comparison query results</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="the-results-discovery" class="slide level2">
+<h2>The Results &amp; Discovery</h2>
+
+<img data-src="figs/week9/airport-comparison-results.png" style="width:85.0%" class="r-stretch quarto-figure-center"><p class="caption">Side-by-side comparison of Sunday vs Monday airport trips</p><ul>
+<li class="fragment">Side-by-side map comparison</li>
+<li class="fragment">Scatter plots: hour of day vs.&nbsp;trip duration</li>
+<li class="fragment"><strong>Discovery:</strong> Monday trips 3-5PM take much longer (rush hour!)</li>
+<li class="fragment"><strong>Implication:</strong> Creates economic disincentive for drivers to accept airport trips</li>
+</ul>
+<aside class="notes">
+<p>This query would be painful to write in SQL. But visually? Draw two regions, connect them, select the days. The system handles the complexity—you just express your question visually.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-9-query-expressiveness" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 9: Query Expressiveness</h1>
+
+</section>
+<section id="peuquets-triad-framework" class="slide level2">
+<h2>Peuquet’s Triad Framework</h2>
+<div class="r-fit-text">
+<p><strong>All three fundamental spatio-temporal query types:</strong></p>
+</div>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="when-where-what">when + where → what</h3>
+<p>“What taxis were in Midtown at rush hour?”</p>
+</div><div class="column" style="width:33%;">
+<h3 id="when-what-where">when + what → where</h3>
+<p>“Where were high-fare trips on New Year’s Eve?”</p>
+</div><div class="column" style="width:33%;">
+<h3 id="where-what-when">where + what → when</h3>
+<p>“When do trips to airports peak?”</p>
+</div></div>
+<div class="fragment">
+<h3 id="plus-query-composition">Plus: Query Composition</h3>
+<ul>
+<li>Queries can be <strong>refined, combined, compared</strong></li>
+<li>Results can be visualized multiple ways</li>
+<li>Supports both atomic queries and complex queries (unions)</li>
+</ul>
+</div>
+<aside class="notes">
+<p>This is more than just a pretty interface—it’s mathematically expressive. The model can express queries that would be difficult even for database experts. And it does so through simple visual operations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-10-making-it-interactive" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 10: Making It Interactive</h1>
+
+</section>
+<section id="the-performance-challenge" class="slide level2">
+<h2>The Performance Challenge</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-problem">The Problem:</h3>
+<ul>
+<li>170M trips = traditional databases too slow</li>
+<li><strong>PostgreSQL:</strong> 24 seconds for 100k-trip query</li>
+<li><strong>SQLite:</strong> 85 seconds for same query</li>
+<li><strong>Goal:</strong> Sub-second response</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="the-taxivis-solution">The TaxiVis Solution:</h3>
+<ul>
+<li class="fragment">Custom <strong>k-d tree index</strong>
+<ul>
+<li class="fragment">30GB vs.&nbsp;200GB for PostgreSQL</li>
+<li class="fragment">Build time: 28 min vs.&nbsp;13 hours</li>
+</ul></li>
+<li class="fragment"><strong>Query time:</strong>
+<ul>
+<li class="fragment">2 seconds for 100k trips</li>
+<li class="fragment">0.2s for 1k trips</li>
+</ul></li>
+<li class="fragment">Adaptive level-of-detail rendering</li>
+<li class="fragment">Smart heat maps and aggregation</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>This is critical—without interactive performance, the visual model doesn’t work. You can’t explore if you’re waiting 30 seconds for every query. The system achieves interactivity through specialized indexing and rendering.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-11-visualization-techniques" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 11: Visualization Techniques</h1>
+
+</section>
+<section id="the-yellow-blob-rendering-problem" class="slide level2">
+<h2>The “Yellow Blob” Rendering Problem</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-challenge">The Challenge:</h3>
+<ul>
+<li>500,000 trips/day as point cloud = complete clutter</li>
+<li>Can’t see patterns, just noise</li>
+<li>Traditional scatter plots fail at this scale</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/rendering-cluttered.png"></p>
+<figcaption>Completely cluttered map with all points</figcaption>
+</figure>
+</div>
+<p><strong>We need multiple visualization strategies</strong></p>
+</div></div>
+<aside class="notes">
+<p>Remember our opening slide? This is what happens when you render all the data naively. Every pixel is covered—you learn nothing. This is a fundamental challenge in big data visualization. We need multiple visualization strategies to handle different scales and questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="solution-1-adaptive-level-of-detail-lod" class="slide level2">
+<h2>Solution 1: Adaptive Level of Detail (LOD)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="strategy-render-only-what-you-can-see">Strategy: Render only what you can see</h3>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>Z-order curve hierarchical sampling</li>
+<li>Sort points spatially, build binary tree</li>
+<li>First <em>n</em> elements = hierarchical subsample of size <em>n</em></li>
+<li><em>n</em> scales with zoom level</li>
+</ul>
+<p><strong>Result:</strong> Clear visualization at every zoom level</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/rendering-lod.png"></p>
+<figcaption>Level of detail rendering in action</figcaption>
+</figure>
+</div>
+<p>As you zoom in, you see more detail. As you zoom out, you see a representative sample.</p>
+</div></div>
+<aside class="notes">
+<p>The key is “hierarchical”—it’s not random sampling, it preserves spatial structure. This runs in real-time as you interact with the map.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="solution-2-heat-maps" class="slide level2">
+<h2>Solution 2: Heat Maps</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="continuous-heat-maps">Continuous Heat Maps</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/rendering-heatmap-continuous.png"></p>
+<figcaption>Pixel-based density heat map</figcaption>
+</figure>
+</div>
+<ul>
+<li>Pixel-based density</li>
+<li>Darker = more activity</li>
+<li>Shows overall distribution patterns</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="grid-maps">Grid Maps</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/rendering-heatmap-grid.png"></p>
+<figcaption>Grid-based aggregation map</figcaption>
+</figure>
+</div>
+<ul>
+<li>Aggregate by meaningful regions</li>
+<li>Neighborhoods, zip codes, boroughs</li>
+<li>Hover for exact counts</li>
+</ul>
+</div></div>
+<div class="fragment">
+<p><strong>When to use:</strong> Heat maps for overview and patterns, LOD for specific trip details, Grid maps for comparing defined regions</p>
+</div>
+</section>
+<section id="solution-3-multiple-coordinated-views" class="slide level2">
+<h2>Solution 3: Multiple Coordinated Views</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<h3 id="the-comparison-problem">The Comparison Problem:</h3>
+<ul>
+<li>“How do Sundays differ from Mondays?”</li>
+<li>“JFK vs.&nbsp;LGA patterns?”</li>
+<li>“This year vs.&nbsp;last year?”</li>
+</ul>
+<h3 id="solution">Solution:</h3>
+<ul>
+<li>Side-by-side views</li>
+<li>Each view = one query (color-coded)</li>
+<li>Synchronized spatial extent</li>
+<li>Linked plots and summaries</li>
+<li>Interactive refinement</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/multiple-views-comparison.png"></p>
+<figcaption>Sunday vs Monday airport comparison</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>This is where the visual query model really shines. You’re not just looking at data—you’re comparing queries side by side. All views stay synchronized as you explore. This would be extremely difficult with traditional tools.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-12-linked-views-brushing" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 12: Linked Views &amp; Brushing</h1>
+
+</section>
+<section id="core-concept-brushing-and-linking" class="slide level2">
+<h2>Core Concept: Brushing and Linking</h2>
+<div class="r-fit-text">
+<p><strong>Actions in one view are reflected in all other views</strong></p>
+</div>
+<div class="fragment">
+<p>This creates a “dialogue” where you can ask questions by interacting with any visualization component, and all views update to answer your question.</p>
+</div>
+<div class="fragment">
+<h3 id="example-spatial-selection-temporal-pattern">Example: Spatial Selection → Temporal Pattern</h3>
+<p>“What is the temporal pattern for trips from JFK Airport?”</p>
+</div>
+</section>
+<section id="linked-views-in-action-step-1" class="slide level2">
+<h2>Linked Views in Action: Step 1</h2>
+<h3 id="default-view-all-data">Default View: All Data</h3>
+
+<img data-src="figs/week9/taxivis-step1-default.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">TaxiVis showing all taxi trips</p><div class="fragment">
+<p>The map shows the “yellow blob”—all trips. The time series shows aggregate patterns for the entire city.</p>
+</div>
+<aside class="notes">
+<p>This is the default view. The map shows all 140 million trips—our yellow blob. The time series on the right shows the aggregate temporal pattern for the entire city. It’s an overview, but we need to dig deeper.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linked-views-in-action-step-2" class="slide level2">
+<h2>Linked Views in Action: Step 2</h2>
+<h3 id="user-brushes-a-region-jfk-airport">User Brushes a Region (JFK Airport)</h3>
+
+<img data-src="figs/week9/taxivis-step2-brush-jfk.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">User selecting JFK region on the map</p><div class="fragment">
+<p>By clicking and dragging, the user selects a geographic region. In this case, the area around JFK Airport.</p>
+</div>
+<aside class="notes">
+<p>This is the fundamental interaction. I select a region <em>on the map</em>. I’m essentially asking, “Tell me about this area.” The system is now ready to filter all data to just this region.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linked-views-in-action-step-3" class="slide level2">
+<h2>Linked Views in Action: Step 3</h2>
+<h3 id="all-views-update-automatically">All Views Update Automatically</h3>
+
+<img data-src="figs/week9/taxivis-step3-jfk-temporal.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Time series and charts update to show only JFK data</p><div class="fragment">
+<p>The time series and histograms now show the temporal pattern for <em>only</em> trips from the JFK area.</p>
+</div>
+<aside class="notes">
+<p>Now I can see the daily pickup pattern for <em>just</em> the JFK area. Notice the peaks—probably corresponding to flight arrival times. This is a powerful visual query that I performed in one click, turning my “yellow blob” into a targeted insight. This is what we mean by “linked views”—my action in the map view immediately updated all other views.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-power-of-bidirectional-linking" class="slide level2">
+<h2>The Power of Bidirectional Linking</h2>
+<div class="r-fit-text">
+<p><strong>The linking works in both directions</strong></p>
+</div>
+<ul>
+<li class="fragment"><strong>Spatial → Temporal:</strong> Select a region → see temporal patterns</li>
+<li class="fragment"><strong>Temporal → Spatial:</strong> Select a time range → see spatial patterns</li>
+</ul>
+<div class="fragment">
+<p>This bidirectional dialogue enables exploratory analysis that would be impossible with static visualizations.</p>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-13-temporal-queries" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 13: Temporal Queries</h1>
+
+</section>
+<section id="temporal-slicing-time-space" class="slide level2">
+<h2>Temporal Slicing: Time → Space</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-question-1">The Question:</h3>
+<p>“Where do trips go during morning rush hour?”</p>
+<h3 id="the-interaction">The Interaction:</h3>
+<ol type="1">
+<li>Select time range on the time series (8am-10am)</li>
+<li>Map updates to show <em>only</em> trips from that time period</li>
+</ol>
+<h3 id="the-insight">The Insight:</h3>
+<p>Reveals spatial patterns specific to that time slice</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-time-slice-selection.png"></p>
+<figcaption>Time series with highlighted time range</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-time-slice-map.png"></p>
+<figcaption>Map showing spatial pattern for selected time</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>This is the reverse query. Now I want to ask, “Where do trips go during morning rush hour?” I select that time range on the line chart, and the <em>map</em> updates. This “dialogue” between the spatial and temporal views is what enables analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="advanced-temporal-queries-recurrent-selection" class="slide level2">
+<h2>Advanced Temporal Queries: Recurrent Selection</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<h3 id="the-challenge-1">The Challenge:</h3>
+<p>What if I want to see a <strong>pattern</strong>, not just a single time slice?</p>
+<div class="fragment">
+<h3 id="the-solution-recurrent-selection">The Solution: Recurrent Selection</h3>
+<p>Select recurring time periods:</p>
+<ul>
+<li>All Mondays, 8am-10am</li>
+<li>Every Saturday night</li>
+<li>Weekday rush hours only</li>
+</ul>
+</div>
+<div class="fragment">
+<p>This reveals <strong>periodic behavior</strong>—the heartbeat of the city</p>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-recurrent-selection-ui.png" style="width:100.0%"></p>
+<figcaption>Recurrent Selection interface with day-of-week checkboxes</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>This is a much more powerful query. Instead of just one time slice, I can ask for a <em>periodic pattern</em>. “Show me all Saturday nights.” “Show me every Monday-Friday rush hour for the whole month.” This lets us find and analyze weekly, daily, or hourly periodic behavior, which is the heartbeat of the city.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="recurrent-selection-example" class="slide level2">
+<h2>Recurrent Selection Example</h2>
+<h3 id="question-how-do-weekend-nights-differ-from-weekday-mornings">Question: “How do weekend nights differ from weekday mornings?”</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Weekday Mornings (Mon-Fri, 7-9am)</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-recurrent-weekday-morning.png"></p>
+<figcaption>Map showing weekday morning trip patterns</figcaption>
+</figure>
+</div>
+<p>Inbound commuter patterns</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Weekend Nights (Sat-Sun, 10pm-2am)</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-recurrent-weekend-night.png"></p>
+<figcaption>Map showing weekend night trip patterns</figcaption>
+</figure>
+</div>
+<p>Entertainment district activity</p>
+</div></div>
+<div class="fragment">
+<p>Recurrent selection reveals systematic differences in urban activity patterns.</p>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-14-spatial-queries-grouping" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 14: Spatial Queries &amp; Grouping</h1>
+
+</section>
+<section id="solving-maup-interactive-region-merging" class="slide level2">
+<h2>Solving MAUP: Interactive Region Merging</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Remember the Modifiable Areal Unit Problem from Week 8?</strong></p>
+<div class="fragment">
+<p>The default boundaries might be wrong for your analysis.</p>
+</div>
+<div class="fragment">
+<h3 id="taxivis-solution">TaxiVis Solution:</h3>
+<p><strong>Merging Regions</strong> - Users can interactively select and merge multiple regions into a custom area</p>
+</div>
+<div class="fragment">
+<p><strong>Example:</strong> Create your own “Midtown” by merging adjacent census tracts</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-default-boundaries.png"></p>
+<figcaption>Default census tract boundaries</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-merged-midtown.png"></p>
+<figcaption>Custom merged region for “Midtown”</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>This is a direct solution to the Modifiable Areal Unit Problem we discussed last week. What if the default census tracts are too small or don’t match your mental model of neighborhoods? The tool lets the <em>analyst</em> redefine the boundaries on the fly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="merging-regions-step-by-step" class="slide level2">
+<h2>Merging Regions: Step-by-Step</h2>
+<h3 id="step-1-select-multiple-regions">Step 1: Select Multiple Regions</h3>
+
+<img data-src="figs/week9/taxivis-merge-step1-select.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Double-click to select multiple adjacent regions</p><p>Double-click or Ctrl+click to select multiple adjacent regions on the map</p>
+</section>
+<section id="merging-regions-step-2-3" class="slide level2">
+<h2>Merging Regions: Step 2 &amp; 3</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="step-2-press-merge">Step 2: Press Merge</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-merge-step2-button.png"></p>
+<figcaption>Merge button in control panel</figcaption>
+</figure>
+</div>
+<p>Click the “Merge” button in the control panel</p>
+</div><div class="column" style="width:50%;">
+<h3 id="step-3-all-views-update">Step 3: All Views Update</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/taxivis-merge-step3-result.png"></p>
+<figcaption>Map and charts showing merged region as single entity</figcaption>
+</figure>
+</div>
+<p>The merged region is now treated as a single entity in all visualizations</p>
+</div></div>
+<div class="fragment">
+<p>The tool adapts to your analysis. You define the boundaries that make sense for your question.</p>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-15-origin-destination-queries" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 15: Origin-Destination Queries</h1>
+
+</section>
+<section id="the-most-powerful-query-flows" class="slide level2">
+<h2>The Most Powerful Query: Flows</h2>
+<div class="r-fit-text">
+<p><strong>Asking about movement between specific locations</strong></p>
+</div>
+<div class="columns fragment">
+<div class="column" style="width:50%;">
+<h3 id="traditional-approach">Traditional Approach:</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> trips</span>
+<span id="cb1-2"><a href=""></a><span class="kw">WHERE</span> origin <span class="op">=</span> <span class="st">'JFK'</span></span>
+<span id="cb1-3"><a href=""></a><span class="kw">AND</span> destination <span class="op">=</span> <span class="st">'LGA'</span></span>
+<span id="cb1-4"><a href=""></a><span class="kw">AND</span> <span class="dt">time</span> <span class="kw">BETWEEN</span> <span class="st">'8:00'</span> <span class="kw">AND</span> <span class="st">'10:00'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Complex, requires knowing SQL and field names</p>
+</div><div class="column" style="width:50%;">
+<h3 id="taxivis-approach">TaxiVis Approach:</h3>
+<p><strong>Draw an arrow</strong></p>
+<p>Simple, visual, intuitive</p>
+</div></div>
+<div class="fragment">
+<p>This is what we mean by <strong>“visual query”</strong>—you draw your question, the system answers.</p>
+</div>
+</section>
+<section id="the-arrow-tool-step-1" class="slide level2">
+<h2>The Arrow Tool: Step 1</h2>
+<h3 id="select-the-arrow-tool">Select the Arrow Tool</h3>
+
+<img data-src="figs/week9/taxivis-arrow-step1-select-tool.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Arrow tool selected in toolbar</p><div class="fragment">
+<p>The arrow tool lets you create origin-destination (OD) queries by drawing directly on the map.</p>
+</div>
+</section>
+<section id="the-arrow-tool-step-2" class="slide level2">
+<h2>The Arrow Tool: Step 2</h2>
+<h3 id="draw-arrow-from-origin-to-destination">Draw Arrow from Origin to Destination</h3>
+
+<img data-src="figs/week9/taxivis-arrow-step2-draw.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">User drawing arrow from JFK to LGA</p><div class="fragment">
+<p>Example: Draw an arrow from JFK Airport to LaGuardia Airport to ask:</p>
+<p><strong>“Show me all trips that went from JFK to LGA”</strong></p>
+</div>
+</section>
+<section id="the-arrow-tool-step-3" class="slide level2">
+<h2>The Arrow Tool: Step 3</h2>
+<h3 id="all-views-update-to-show-only-that-flow">All Views Update to Show Only That Flow</h3>
+
+<img data-src="figs/week9/taxivis-arrow-step3-result.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Dashboard showing only JFK→LGA trips</p><div class="fragment">
+<ul>
+<li>Map highlights the origin-destination pair</li>
+<li>Time series shows when these trips occur</li>
+<li>Histograms reveal patterns in this specific flow</li>
+</ul>
+</div>
+</section>
+<section id="visual-queries-why-they-matter" class="slide level2">
+<h2>Visual Queries: Why They Matter</h2>
+<ol type="1">
+<li class="fragment"><strong>Lower cognitive load</strong>
+<ul>
+<li class="fragment">No need to remember field names or syntax</li>
+<li class="fragment">Direct manipulation of the data representation</li>
+</ul></li>
+<li class="fragment"><strong>Immediate feedback</strong>
+<ul>
+<li class="fragment">See results instantly as you interact</li>
+<li class="fragment">Iterate quickly through hypotheses</li>
+</ul></li>
+<li class="fragment"><strong>Support exploration</strong>
+<ul>
+<li class="fragment">Encourages “what if” questions</li>
+<li class="fragment">Makes serendipitous discovery possible</li>
+</ul></li>
+<li class="fragment"><strong>Democratize analysis</strong>
+<ul>
+<li class="fragment">Analysts without SQL/programming skills can explore</li>
+<li class="fragment">Domain experts can directly investigate questions</li>
+</ul></li>
+</ol>
+<div class="fragment">
+<p><strong>The visualization <em>is</em> the interface.</strong></p>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-16-case-study-1---social-inequality" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 16: Case Study 1 - Social Inequality</h1>
+
+</section>
+<section id="question-are-some-neighborhoods-underserved-by-taxis" class="slide level2">
+<h2>Question: “Are some neighborhoods underserved by taxis?”</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-analysis">The Analysis:</h3>
+<ul>
+<li>Compare taxi activity across neighborhoods</li>
+<li>Midtown, Upper East Side, Greenwich Village, Harlem</li>
+<li>Look at pickups and dropoffs over one week</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/case-study-inequality.png"></p>
+<figcaption>Taxi activity comparison across neighborhoods</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="the-discovery-over-10x-difference" class="slide level2">
+<h2>The Discovery: Over 10x Difference</h2>
+
+<img data-src="figs/week9/case-study-inequality-comparison.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Harlem vs other neighborhoods taxi activity</p><ul>
+<li class="fragment">Harlem has very few pickups despite many dropoffs</li>
+<li class="fragment">People can take taxis <strong>TO</strong> Harlem but can’t get one <strong>FROM</strong> there</li>
+<li class="fragment">Over one order of magnitude difference from Midtown</li>
+</ul>
+<aside class="notes">
+<p>This analysis confirmed what Harlem residents had been saying for years. But now there’s data to back it up.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="follow-up-investigation" class="slide level2">
+<h2>Follow-Up Investigation</h2>
+<h3 id="the-exploration-followed-a-natural-path">The exploration followed a natural path:</h3>
+<ol type="1">
+<li class="fragment"><strong>Initial pattern:</strong> Harlem has fewer pickups</li>
+<li class="fragment"><strong>Hypothesis:</strong> Is this an economic issue?</li>
+<li class="fragment"><strong>Investigation 1:</strong> “Are tips different in Harlem?”
+<ul>
+<li class="fragment"><strong>Discovery:</strong> Yes! Higher tips</li>
+</ul></li>
+<li class="fragment"><strong>Investigation 2:</strong> “Is fare/mile different?”
+<ul>
+<li class="fragment"><strong>Discovery:</strong> Yes! Lower fare/mile</li>
+</ul></li>
+<li class="fragment"><strong>Insight:</strong> Less economic incentive for drivers to go to Harlem, despite higher tips</li>
+</ol>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/case-study-inequality-tips.png" style="width:60.0%"></p>
+<figcaption>Tips and fare analysis for Harlem</figcaption>
+</figure>
+</div>
+</div>
+<aside class="notes">
+<p>Notice how the exploration followed a natural path: overview → pattern → hypothesis → investigation. This is exploratory data analysis in action.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-17-case-study-2---transportation-hubs" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 17: Case Study 2 - Transportation Hubs</h1>
+
+</section>
+<section id="question-how-do-people-move-through-nycs-transportation-infrastructure" class="slide level2">
+<h2>Question: “How do people move through NYC’s transportation infrastructure?”</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-setup">The Setup:</h3>
+<ul>
+<li>Compare JFK, LGA, Penn Station, Grand Central</li>
+<li>Use grouping to combine regions</li>
+<li>Examine pickup patterns over one week</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/case-study-hubs.png"></p>
+<figcaption>Transportation hubs comparison</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="key-findings" class="slide level2">
+<h2>Key Findings</h2>
+<ol type="1">
+<li class="fragment"><p><strong>More pickups at LGA than JFK</strong> (most days)</p></li>
+<li class="fragment"><p><strong>Train stations &gt;&gt; airports</strong> for pickups</p></li>
+<li class="fragment"><p><strong>Weekday pattern:</strong> Train station pickups constant Mon-Thu, drop Fri-Sat</p>
+<ul>
+<li class="fragment">Reflects commuter behavior</li>
+</ul></li>
+<li class="fragment"><p><strong>Rush hour problem:</strong> Airport trips take much longer 3-5PM</p>
+<ul>
+<li class="fragment">Creates economic disincentive for drivers</li>
+<li class="fragment">Explains why taxis illegally refuse airport trips</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Started with simple question, led to deeper insights about taxi economics. The visual query model made it easy to group regions and compare. Could instantly switch between pickups and dropoffs with one button click.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-18-case-study-3---temporal-exploration" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 18: Case Study 3 - Temporal Exploration</h1>
+
+</section>
+<section id="time-space-exploration" class="slide level2">
+<h2>Time-Space Exploration</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="feature">Feature:</h3>
+<ul>
+<li>Select multiple time slices automatically</li>
+<li>Compare same time across different days/weeks/months</li>
+<li>Each slice gets its own map and plot line (color-coded)</li>
+</ul>
+<h3 id="example-memorial-day-analysis">Example: Memorial Day Analysis</h3>
+<ul>
+<li>All Mondays in May 2011 and May 2012</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/case-study-memorial-day.png"></p>
+<figcaption>Grid of maps showing each Monday in May</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="discovery-memorial-day-pattern" class="slide level2">
+<h2>Discovery: Memorial Day Pattern</h2>
+
+<img data-src="figs/week9/case-study-memorial-day-comparison.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Memorial Day vs regular Mondays</p><ul>
+<li class="fragment"><strong>Discovery:</strong> Memorial Day has significantly fewer trips than regular Mondays</li>
+<li class="fragment"><strong>Implication:</strong> Could reduce fleet size on holidays to save costs</li>
+</ul>
+<aside class="notes">
+<p>This is the recurrent time selection widget in action. Would be tedious to set up manually: “give me the 5/2, 5/9, 5/16, 5/23, 5/30…” Instead: “give me all Mondays in May.” The system generates the views automatically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-19-case-study-4---hurricane-sandy" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 19: Case Study 4 - Hurricane Sandy</h1>
+
+</section>
+<section id="question-how-did-hurricane-sandy-affect-nyc" class="slide level2">
+<h2>Question: “How did Hurricane Sandy affect NYC?”</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="the-analysis-1">The Analysis:</h3>
+<ul>
+<li>One week of taxi activity</li>
+<li>Sunday before through Saturday after</li>
+<li>Heat maps for each day</li>
+<li>Compare spatial patterns</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="the-timeline">The Timeline:</h3>
+<ul>
+<li><strong>Sunday (before):</strong> Normal activity</li>
+<li><strong>Monday (hurricane hits):</strong> Virtually no taxis citywide</li>
+<li><strong>Tuesday-Friday:</strong> Activity returns everywhere <strong>EXCEPT Lower Manhattan</strong></li>
+<li><strong>Saturday:</strong> Finally returns to normal</li>
+</ul>
+</div></div>
+</section>
+<section id="the-story-the-data-tells" class="slide level2">
+<h2>The Story the Data Tells</h2>
+
+<img data-src="figs/week9/case-study-hurricane-sandy.png" style="width:85.0%" class="r-stretch quarto-figure-center"><p class="caption">Daily heat maps showing Hurricane Sandy impact</p><div class="fragment">
+<p><strong>Why?</strong> Lower Manhattan had a <strong>5-day power outage</strong></p>
+<p>You can literally see the power outage as a dark region on the map.</p>
+</div>
+</section>
+<section id="comparison-to-hurricane-irene" class="slide level2">
+<h2>Comparison to Hurricane Irene</h2>
+
+<img data-src="figs/week9/case-study-hurricane-irene.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Hurricane Irene impact on taxi trips</p><ul>
+<li class="fragment">Shorter disruption but more complete</li>
+<li class="fragment">Only <strong>1,076 trips</strong> on hurricane day (vs.&nbsp;average 500,000)</li>
+<li class="fragment">Faster recovery</li>
+</ul>
+<aside class="notes">
+<p>The heat maps make the story immediately visible. This kind of event analysis would be very difficult without spatial visualization. Shows how urban data can capture and explain major events.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-20-what-we-learned" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 20: What We Learned</h1>
+
+</section>
+<section id="design-insights-from-building-taxivis" class="slide level2">
+<h2>Design Insights from Building TaxiVis</h2>
+<ol type="1">
+<li class="fragment"><strong>Visual queries work</strong>
+<ul>
+<li class="fragment">Domain experts could use it without training</li>
+<li class="fragment">No SQL, no programming required</li>
+<li class="fragment">Direct manipulation is intuitive</li>
+</ul></li>
+<li class="fragment"><strong>Performance is non-negotiable</strong>
+<ul>
+<li class="fragment">Sub-second response enables exploration</li>
+<li class="fragment">Custom indexing beat general databases by 10x</li>
+<li class="fragment">Adaptive rendering essential for large results</li>
+</ul></li>
+<li class="fragment"><strong>Multiple views are essential</strong>
+<ul>
+<li class="fragment">Comparison is core to analysis</li>
+<li class="fragment">Side-by-side queries, synchronized views</li>
+<li class="fragment">Linked plots and maps</li>
+</ul></li>
+<li class="fragment"><strong>Different visualizations for different questions</strong>
+<ul>
+<li class="fragment">LOD for details, heat maps for patterns, grid maps for regions</li>
+</ul></li>
+<li class="fragment"><strong>Query composition is powerful</strong>
+<ul>
+<li class="fragment">Build complex queries from simple ones</li>
+<li class="fragment">Grouping, refinement, generalization</li>
+<li class="fragment">Each result is a new dataset to explore</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-21-real-world-impact" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 21: Real-World Impact</h1>
+
+</section>
+<section id="whos-using-taxivis" class="slide level2">
+<h2>Who’s Using TaxiVis?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="users">Users:</h3>
+<ul>
+<li>NYC Department of Transportation</li>
+<li>NYC Taxi &amp; Limousine Commission</li>
+<li>Traffic engineers and urban planners</li>
+<li>Economists studying urban mobility</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="what-theyve-learned">What They’ve Learned:</h3>
+<ul>
+<li>Social inequalities in taxi service (Harlem)</li>
+<li>Economic incentives affecting driver behavior</li>
+<li>Impact of major events on city mobility</li>
+<li>Transportation hub usage patterns</li>
+</ul>
+</div></div>
+<div class="fragment">
+<h3 id="beyond-taxis">Beyond Taxis:</h3>
+<ul>
+<li>Model applies to other origin-destination data</li>
+<li>Generalizes to other spatio-temporal datasets</li>
+<li>Principles useful for any urban data exploration</li>
+</ul>
+</div>
+<aside class="notes">
+<p>This isn’t just an academic exercise—it’s being used by actual city agencies. The insights have informed policy discussions. The visual query model has influenced other urban data tools.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-22-key-takeaways" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 22: Key Takeaways</h1>
+
+</section>
+<section id="the-big-ideas" class="slide level2">
+<h2>The Big Ideas</h2>
+<ol type="1">
+<li class="fragment"><strong>Urban data is fundamentally spatio-temporal</strong>
+<ul>
+<li class="fragment">Space, time, and attributes all matter</li>
+<li class="fragment">Need to explore interactions, not just individual dimensions</li>
+</ul></li>
+<li class="fragment"><strong>Static visualization is not enough</strong>
+<ul>
+<li class="fragment">Interactivity transforms presentation into exploration</li>
+<li class="fragment">“Dialogue with data” through visual queries</li>
+</ul></li>
+<li class="fragment"><strong>Design for domain experts, not data scientists</strong>
+<ul>
+<li class="fragment">Visual operations instead of code</li>
+<li class="fragment">Direct manipulation over programming</li>
+<li class="fragment">But don’t sacrifice expressiveness</li>
+</ul></li>
+<li class="fragment"><strong>Performance enables exploration</strong>
+<ul>
+<li class="fragment">Sub-second response changes how people think</li>
+<li class="fragment">Specialized systems beat general solutions</li>
+<li class="fragment">Trade generality for interactivity</li>
+</ul></li>
+<li class="fragment"><strong>Multiple coordinated views for comparison</strong>
+<ul>
+<li class="fragment">Urban analysis is inherently comparative</li>
+<li class="fragment">Same model, different slices</li>
+<li class="fragment">Build complex understanding from simple queries</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="part-23-from-taxivis-to-urban-analytics" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Part 23: From TaxiVis to Urban Analytics</h1>
+
+</section>
+<section id="the-broader-vision" class="slide level2">
+<h2>The Broader Vision</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="taxivis-is-one-example">TaxiVis is One Example</h3>
+<p>Other urban data:</p>
+<ul>
+<li>Bikeshare systems</li>
+<li>311 service calls</li>
+<li>Building permits</li>
+<li>Transit ridership</li>
+<li>Crime reports</li>
+<li>Traffic sensors</li>
+</ul>
+<p><strong>Same challenges:</strong> Scale, complexity, spatio-temporal nature</p>
+</div><div class="column" style="width:50%;">
+<h3 id="the-visual-analytics-framework">The Visual Analytics Framework</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week9/visual-analytics-framework.png"></p>
+<figcaption>Visual analytics pipeline</figcaption>
+</figure>
+</div>
+<ol type="1">
+<li><strong>Visualization:</strong> Multiple representations and query models</li>
+<li><strong>Data Analysis:</strong> Topology, ML, pattern detection</li>
+<li><strong>Data Management:</strong> Specialized indices, GPU acceleration</li>
+</ol>
+</div></div>
+</section>
+<section id="moving-to-3d" class="slide level2">
+<h2>Moving to 3D</h2>
+<div class="r-fit-text">
+<p><strong>Cities are vertical, not just horizontal</strong></p>
+</div>
+<ul>
+<li class="fragment">Shadow analysis</li>
+<li class="fragment">Views and sight lines</li>
+<li class="fragment">Sky exposure</li>
+<li class="fragment">Building massing</li>
+</ul>
+<div class="fragment">
+<h3 id="next-lecture">Next Lecture:</h3>
+<p>We’ll extend these ideas to <strong>3D urban visualization</strong> and the <strong>Urbane</strong> framework</p>
+<p>Same principles apply: <strong>interactive, visual, scalable</strong></p>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center" data-background-color="#2c5f77">
+<h1>Summary</h1>
+
+</section>
+<section id="the-visual-analytics-pipeline-for-urban-data" class="slide level2">
+<h2>The Visual Analytics Pipeline for Urban Data</h2>
+<h3 id="what-weve-covered-today">What We’ve Covered Today:</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>The Problem:</strong></p>
+<ul>
+<li>Urban data is big, complex, spatio-temporal</li>
+<li>Traditional tools don’t scale</li>
+<li>Confirmation vs.&nbsp;exploration gap</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>The Solution:</strong></p>
+<ul>
+<li>Visual query models for direct manipulation</li>
+<li>Interactive performance through specialized systems</li>
+<li>Multiple visualizations for different questions</li>
+<li>Comparison through coordinated views</li>
+</ul>
+</div></div>
+<div class="fragment">
+<p><strong>The Result:</strong></p>
+<ul>
+<li>Domain experts can explore without programming</li>
+<li>Discoveries about social inequality, economics, events</li>
+<li>Real impact on city operations and policy</li>
+</ul>
+</div>
+</section>
+<section id="try-it-yourself---exploration-exercise" class="slide level2">
+<h2>Try It Yourself - Exploration Exercise</h2>
+<div class="r-fit-text">
+<p><strong>If you had access to TaxiVis, what would you explore?</strong></p>
+</div>
+<p>Think about:</p>
+<ul>
+<li class="fragment">A neighborhood you’re curious about</li>
+<li class="fragment">A time pattern (weekday vs.&nbsp;weekend, holidays, events)</li>
+<li class="fragment">A comparison (this year vs.&nbsp;last year, two locations)</li>
+<li class="fragment">A hypothesis about urban behavior</li>
+</ul>
+<div class="fragment">
+<p><strong>Discussion:</strong></p>
+<ul>
+<li>What question would you ask?</li>
+<li>What spatial regions would you select?</li>
+<li>What time slices would you compare?</li>
+<li>What would you expect to find?</li>
+</ul>
+</div>
+</section>
+<section id="questions" class="slide level2">
+<h2>Questions?</h2>
+<div class="r-fit-text">
+<p>Next week: <strong>3D &amp; Immersive Urban Visualization</strong></p>
+</div>
+<div class="fragment">
+<h3 id="preview">Preview:</h3>
+<ul>
+<li>Urbane framework for 3D urban planning</li>
+<li>Interactive impact analysis (shadows, views, sky exposure)</li>
+<li>Performance-driven architectural design</li>
+<li>When to use 3D (and when not to)</li>
+</ul>
+</div>
+<aside class="notes">
+<p>So, we’ve solved our “yellow blob” problem. By adding interactivity and linked views, we’ve turned a useless picture into a powerful exploratory tool. But… this is all still 2D. We’re looking at the city as a flat map. What about the 3D <em>form</em> of the city? The buildings, the streets, the skyline? That’s what we’ll cover in our final lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week9-urban-flows-interactivity_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
