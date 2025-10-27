@@ -102,6 +102,33 @@ author_profile: true
   - [Tissot's Indicatrix Explorer](https://mgimond.github.io/tissot/)
 - **Supplemental Material:** GeoJSON format, TopoJSON optimization, Data classification methods (Equal Interval, Quantile, Jenks), Leaflet.js tutorial
 
+### Week 9 (Oct 31) - Urban Visualization I: Flows, Time & Interactivity **[WIP - DRAFT]**
+- **Slides:** [Urban Visualization I](/2025-InfoVis-CSE/slides/week9-urban-flows-interactivity.html) *(draft - figures needed)* | **Lab:** TBA
+- **Topics:** Urban data characteristics (scale, density, complexity, dynamism), Visual query models, TaxiVis case study (brushing & linking, temporal/spatial queries, origin-destination flows), Performance optimization (k-d trees, LOD rendering), Case studies (social inequality, transportation hubs, Hurricane Sandy)
+- **Lab:** Building interactive spatio-temporal visualizations, Implementing linked views
+- **Assignment:** Exercise 9 - Urban data exploration and visual queries (due Nov 6)
+- **Required Readings:**
+  - Ferreira et al. (2013) - [TaxiVis: An Interactive Visualization System for Taxi Trajectories](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/TaxiVis.pdf) - IEEE VAST 2013
+  - [NYC Taxi Open Data](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
+- **Recommended Resources:**
+  - [Hägerstrand's Space-Time Cube](https://en.wikipedia.org/wiki/Space-time_cube)
+  - [Peuquet's Triad Framework](https://doi.org/10.1111/j.1538-4632.1994.tb00302.x)
+- **Supplemental Material:** Visual analytics framework, Confirmatory vs exploratory analysis, Real-time data indexing
+
+### Week 10 (Nov 7) - Urban Visualization II: 3D Form, Design & Simulation **[WIP - DRAFT]**
+- **Slides:** [Urban Visualization II](/2025-InfoVis-CSE/slides/week10-urban-3d-simulation.html) *(draft - figures needed)* | **Lab:** TBA
+- **Topics:** Kevin Lynch's "Image of the City", 3D urban planning challenges, Urbane framework (linking 3D city models with 2D data views), Interactive impact analysis (sky exposure, shadows, viewsheds), Performance-driven design (exploring thousands of building variants), Critical reflection on when to use 3D
+- **Lab:** 3D geovisualization with CesiumJS or Deck.gl, Building height extrusion
+- **Assignment:** Exercise 10 - 3D urban visualization and impact analysis (due Nov 13)
+- **Required Readings:**
+  - Poco et al. (2015) - [Exploring the Design Space of Interactive Urban Visualization](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/urbane-2015.pdf) - IEEE VIS 2015
+  - Lynch (1960) - The Image of the City (excerpts)
+- **Recommended Resources:**
+  - [CesiumJS](https://cesium.com/platform/cesiumjs/) - 3D geospatial visualization
+  - [Deck.gl](https://deck.gl/) - GPU-powered visualization layers
+  - [3D Building Models](https://www.openstreetmap.org/#map=5/38.007/-95.844)
+- **Supplemental Material:** When to use 2D vs 3D, Hybrid visualization approaches, Precomputation for real-time queries
+
 ## Assignments
 
 ### Exercises (35% of grade)
