@@ -81,22 +81,7 @@ author_profile: true
   - SHAP (SHapley Additive exPlanations)
   - Project Ideas and Guidelines
 
-### Week 7 (Oct 27)
-- **Topics:** Deep Learning Visualization Fundamentals
-- **Materials:**
-  - [Deep Learning Visualization](/2025-VisML-CSE/slides/week7-deep-learning.html)
-- **Recommended Readings:**
-  - [Understanding Deep Learning](https://udlbook.github.io/udlbook/) (Prince, 2023) - Chapters 2-4
-  - [TensorFlow Playground](https://playground.tensorflow.org) - Interactive neural network visualization
-  - [CNN Explainer](https://poloclub.github.io/cnn-explainer/) - Interactive CNN visualization
-- **Content:**
-  - Deep Learning Terminology and Foundations
-  - Linear Models and Loss Functions
-  - Shallow Neural Networks and Activation Functions
-  - Deep Neural Networks and Composition
-  - Interactive Visualization Tools
-
-### Week 8 (Oct 14 - Tuesday Make-up Class)
+### Week 7 (Oct 14 - Tuesday Make-up Class)
 - **Topics:** Clustering and Dimensionality Reduction, Default Project Details
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2025-VisML-CSE/slides/week8-clustering.html)
@@ -117,7 +102,7 @@ author_profile: true
   - Local Linear Embedding (LLE)
   - Default Project Overview and Ideas
 
-### Week 9 (Oct 20)
+### Week 8 (Oct 20)
 - **Topics:** Dimensionality Reduction (continued)
 - **Materials:**
   - [Dimensionality Reduction (continued)](/2025-VisML-CSE/slides/week9-dimensionality.html)
@@ -131,6 +116,21 @@ author_profile: true
   - UMAP: Uniform Manifold Approximation and Projection
   - Topomap: Topologically-Constrained Dimensionality Reduction
   - Interactive Dimensionality Reduction Techniques
+
+### Week 9 (Oct 27)
+- **Topics:** Deep Learning Visualization Fundamentals
+- **Materials:**
+  - [Deep Learning Visualization](/2025-VisML-CSE/slides/week7-deep-learning.html)
+- **Recommended Readings:**
+  - [Understanding Deep Learning](https://udlbook.github.io/udlbook/) (Prince, 2023) - Chapters 2-4
+  - [TensorFlow Playground](https://playground.tensorflow.org) - Interactive neural network visualization
+  - [CNN Explainer](https://poloclub.github.io/cnn-explainer/) - Interactive CNN visualization
+- **Content:**
+  - Deep Learning Terminology and Foundations
+  - Linear Models and Loss Functions
+  - Shallow Neural Networks and Activation Functions
+  - Deep Neural Networks and Composition
+  - Interactive Visualization Tools
 
 ## Assignments
 
