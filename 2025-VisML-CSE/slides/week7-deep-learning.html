@@ -6,10 +6,12 @@
 <script src="week7-deep-learning_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week7-deep-learning_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week7-deep-learning_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week7-deep-learning_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.34">
+<link href="week7-deep-learning_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
 
-  <title>Visualization for Machine Learning</title>
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2025-10-27">
+  <title>Deep Learning Visualization</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,12 +30,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="week7-deep-learning_files/libs/revealjs/dist/theme/quarto-e18a912597b61ff1d4c20b1bb0a9113b.css">
+  <link rel="stylesheet" href="week7-deep-learning_files/libs/revealjs/dist/theme/quarto-743137726eb562984e8d4ff610b648a8.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week7-deep-learning_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week7-deep-learning_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week7-deep-learning_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="week7-deep-learning_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="week7-deep-learning_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="week7-deep-learning_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -127,147 +128,860 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Visualization for Machine Learning</h1>
-  <p class="subtitle">Spring 2024</p>
+<section class="quarto-title-block center">
+  <h1 class="title">Deep Learning Visualization</h1>
+  <p class="subtitle">CS-GY 9223 - Fall 2025</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Tandon School of Engineering
+          </p>
+    </div>
 </div>
 
+  <p class="date">2025-10-27</p>
 </section>
-<section id="deep-learning" class="slide level2">
-<h2>Deep Learning</h2>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Deep Learning Fundamentals</h1>
+
+</section>
+<section class="slide level2">
+<h2>Agenda</h2>
+<p><br>
+</p>
+<h3>Goal: Understand deep learning concepts and visualization techniques for neural networks</h3>
+<ol type="1">
+<li><p>Deep Learning Terminology and Foundations</p></li>
+<li><p>Linear Models and Loss Functions</p></li>
+<li><p>Shallow Neural Networks and Activation Functions</p></li>
+<li><p>Deep Neural Networks and Composition</p></li>
+<li><p>Interactive Visualization Tools</p></li>
+</ol>
+<p><strong>Acknowledgments:</strong></p>
+<p>Materials adapted from:</p>
 <ul>
-<li>We will start by reviewing concepts of Deep Learning.</li>
+<li>Prince, S. J. D. (2023). <a href="https://udlbook.github.io/udlbook/"><em>Understanding Deep Learning</em></a>. MIT Press.</li>
 </ul>
+<aside class="notes">
+<p>Today we transition from traditional ML interpretation methods to deep learning visualization. Deep learning models are the ultimate “black boxes” - millions of parameters organized in complex hierarchical structures. This lecture provides foundational understanding of how neural networks work, which is essential for understanding visualization techniques in future lectures. We’ll progress from simple linear regression through shallow networks to deep architectures, building intuition step by step. The Understanding Deep Learning book by Simon Prince provides excellent visualizations that make these concepts accessible. This is intentionally a lighter lecture focusing on fundamentals, as it sets up more advanced topics like CNN visualization, attention mechanisms, and activation analysis in later sessions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="deep-learning-1" class="slide level2">
-<h2>Deep Learning</h2>
+<section class="slide level2">
+<h2>Understanding Deep Learning</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Understanding Deep Learning by Simon J.D. Prince. Published by MIT Press, 2023.</p>
-<p>https://udlbook.github.io/udlbook</p>
+<p><strong>Understanding Deep Learning</strong> by Simon J.D. Prince</p>
+<p>Published by MIT Press, 2023</p>
+<p>Available free online: <a href="https://udlbook.github.io/udlbook" class="uri">https://udlbook.github.io/udlbook</a></p>
+<p><strong>Why this book?</strong></p>
+<ul>
+<li>Modern treatment (includes transformers, diffusion models)</li>
+<li>Excellent visual explanations</li>
+<li>Free and accessible</li>
+<li>Strong mathematical foundations with intuitive explanations</li>
+</ul>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/UDLCoverSmall.jpg" class="quarto-figure quarto-figure-center"></p>
+<p><img data-src="figs/UDLCoverSmall.jpg" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
 </figure>
 </div>
 </div></div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <a href="https://udlbook.github.io/udlbook/"><em>Understanding Deep Learning</em></a>. MIT Press.</p>
+</div>
+<aside class="notes">
+<p>The Understanding Deep Learning book by Simon Prince is an outstanding modern resource that covers everything from neural network basics to cutting-edge architectures like transformers and diffusion models. Unlike older deep learning texts, it includes recent developments and provides exceptionally clear visual explanations. The book is freely available online, making it accessible to all students. Prince strikes a balance between mathematical rigor and intuitive explanation - he provides the equations but also explains the “why” behind them. The figures we’ll see today are adapted from Chapters 2-4, which cover supervised learning, shallow networks, and deep networks respectively.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="deep-learning-terminology" class="slide level2">
+<section class="slide level2">
 <h2>Deep Learning Terminology</h2>
-<ul>
-<li><p>Inference: <span class="math inline">\(y = f[x, \Phi]\)</span></p></li>
-<li><p><span class="math inline">\(y\)</span>: prediction</p></li>
-<li><p><span class="math inline">\(x\)</span>: input</p></li>
-<li><p><span class="math inline">\(\Phi\)</span>: model parameters</p></li>
-<li><p>We “learn” the parameters from pairs of “training data” <span class="math inline">\(\{x_i, y_i\}\)</span></p></li>
-<li><p>We quantify the accuracy by using a (scalar) loss function <span class="math inline">\(L[\Phi]\)</span>. The smaller the loss, the better our model “fits” the data.</p></li>
-<li><p>To check the “generalization” of the model, we run the model on “test data”, which is separate from the training data.</p></li>
-</ul>
+<p><strong>The Supervised Learning Framework:</strong></p>
+<p><span class="math display">\[y = f[x, \Phi]\]</span></p>
+<div style="margin-top: 40px;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y\)</span></td>
+<td><strong>Prediction</strong> (model output)</td>
+<td>House price: $450,000</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(x\)</span></td>
+<td><strong>Input</strong> (features)</td>
+<td>Square footage: 2000 sq ft, Bedrooms: 3</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Phi\)</span></td>
+<td><strong>Model parameters</strong> (weights, biases)</td>
+<td>Millions of numbers learned from data</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f[\cdot]\)</span></td>
+<td><strong>Model function</strong> (architecture)</td>
+<td>Neural network with multiple layers</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="background: #e3f2fd; padding: 25px; border-radius: 8px; margin-top: 40px;">
+<p><strong>Key Insight:</strong> Deep learning <strong>learns</strong> the parameters <span class="math inline">\(\Phi\)</span> from training data pairs <span class="math inline">\(\{x_i, y_i\}\)</span> to minimize prediction errors.</p>
+</div>
+<aside class="notes">
+<p>This slide establishes the fundamental notation we’ll use throughout. The prediction y is our model’s output. The input x contains all features describing the data point. The parameters Φ (phi) are what the model learns during training - in deep networks this could be millions or even billions of numbers. The function f defines the model architecture - how inputs flow through layers to produce outputs. The key distinction of deep learning from traditional ML: the model learns hierarchical representations automatically rather than requiring hand-crafted features. We learn Φ by showing the model many examples {x_i, y_i} and adjusting parameters to minimize errors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="d-linear-regression-model" class="slide level2">
-<h2>1-D linear regression model</h2>
+<section class="slide level2">
+<h2>The Learning Process</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Training Data:</strong></p>
+<p>Pairs of inputs and outputs: <span class="math inline">\(\{x_i, y_i\}\)</span></p>
+<p><strong>Loss Function:</strong></p>
+<p>Quantifies prediction accuracy: <span class="math inline">\(L[\Phi]\)</span></p>
 <ul>
-<li><span class="math inline">\(y = f[x, \Phi] = \Phi_0 + \Phi_1 x\)</span></li>
+<li><strong>Lower loss</strong> = better fit to training data</li>
+<li>Guides parameter updates during training</li>
 </ul>
-
-<img data-src="figs/UDLChap2PDF/SupervisedLinear.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="d-linear-regression-model-loss" class="slide level2">
-<h2>1-D linear regression model: Loss</h2>
-
-<img data-src="figs/UDLChap2PDF/SupervisedLinearFitError.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="d-linear-regression-model-loss-1" class="slide level2">
-<h2>1-D linear regression model: Loss</h2>
-
-<img data-src="figs/UDLChap2PDF/SupervisedLinearFitError.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="d-linear-regression-model-loss-surface" class="slide level2">
-<h2>1-D linear regression model: Loss Surface</h2>
-
-<img data-src="figs/UDLChap2PDF/SupervisedSurface.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="d-linear-regression-model-optimization" class="slide level2">
-<h2>1-D linear regression model: Optimization</h2>
-
-<img data-src="figs/UDLChap2PDF/SupervisedOpt.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="shallow-neural-networks" class="slide level2">
-<h2>Shallow neural networks</h2>
-<ul>
-<li><p><span class="math inline">\(y = f[x, \Phi] = \Phi_0 \\
-+ \Phi_1 a[ \Theta_{10} + \Theta_{11} x] \\
-+ \Phi_2 a[ \Theta_{20} + \Theta_{21} x] \\
-+ \Phi_3 a[ \Theta_{30} + \Theta_{31} x]\)</span></p></li>
-<li><p>We now have 10 parameters</p></li>
-<li><p>And also, an “activation” function <span class="math inline">\(a[]\)</span></p></li>
-</ul>
-</section>
-<section id="shallow-neural-networks-activation-function-relu" class="slide level2">
-<h2>Shallow neural networks: Activation function ReLU</h2>
-
-<img data-src="figs/UDLChap3PDF/ShallowReLU.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="shallow-neural-networks-neural-network-intuition" class="slide level2">
-<h2>Shallow neural networks: Neural network intuition</h2>
-
-<img data-src="figs/UDLChap3PDF/ShallowFunctions.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="shallow-neural-networks-neural-network-intuition-1" class="slide level2">
-<h2>Shallow neural networks: Neural network intuition</h2>
-
-<img data-src="figs/UDLChap3PDF/ShallowBuildUp.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="shallow-neural-networks-neural-network-intuition-2" class="slide level2">
-<h2>Shallow neural networks: Neural network intuition</h2>
-
-<img data-src="figs/UDLChap3PDF/ShallowNet.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="shallow-neural-networks-universal-approximation-theorem" class="slide level2">
-<h2>Shallow neural networks: Universal Approximation Theorem</h2>
-
-<img data-src="figs/UDLChap3PDF/ShallowApproximate.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="shallow-neural-networks-terminology" class="slide level2">
-<h2>Shallow neural networks: Terminology</h2>
-<ul>
-<li>Neural networks is composed of “layers”</li>
-<li>“input” layer, “hidden” layers, “output layer”</li>
-<li>Hidden units are called “neurons”</li>
-<li>As data passes through, the values are called “pre-activation” and “activations”</li>
-</ul>
-</section>
-<section id="deep-neural-networks-composing-multiple-networks" class="slide level2">
-<h2>Deep neural networks: Composing multiple networks</h2>
-
-<img data-src="figs/UDLChap4PDF/DeepConcat.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="deep-neural-networks-folding-input-space" class="slide level2">
-<h2>Deep neural networks: Folding Input Space</h2>
-
-<img data-src="figs/UDLChap4PDF/DeepFold.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="deep-neural-networks-two-hidden-layers" class="slide level2">
-<h2>Deep neural networks: Two hidden layers</h2>
-
-<img data-src="figs/UDLChap4PDF/DeepTwoLayer.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="deep-neural-networks-multiple-hidden-layers" class="slide level2">
-<h2>Deep neural networks: Multiple hidden layers</h2>
-
-<img data-src="figs/UDLChap4PDF/DeepKLayer.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="httpsplayground.tensorflow.org" class="slide level2">
-<h2>https://playground.tensorflow.org</h2>
-
-<img data-src="figs/tensorflow-playground.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="httpspoloclub.github.iocnn-explainer" class="slide level2">
-<h2>https://poloclub.github.io/cnn-explainer/</h2>
-
-<img data-src="figs/cnnexplainer.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="further-references" class="slide level2">
-<h2>Further References</h2>
-<ul>
-<li><p>https://distill.pub/2020/grand-tour/</p></li>
-<li><p>http://projector.tensorflow.org/</p></li>
-<li><p>https://ml4a.github.io/ml4a/looking_inside_neural_nets/</p></li>
-</ul>
+<p><strong>Goal:</strong></p>
+<p>Find parameters <span class="math inline">\(\Phi\)</span> that minimize <span class="math inline">\(L[\Phi]\)</span></p>
+<p><span class="math display">\[\Phi^* = \arg\min_{\Phi} L[\Phi]\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Generalization:</strong></p>
+<p>Test on <strong>separate data</strong> not seen during training</p>
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px;">
+<p><strong>The Challenge:</strong></p>
+<p>We don’t want to just memorize training data!</p>
+<p>We want models that <strong>generalize</strong> to new, unseen examples.</p>
+<p>→ This is why we split data into train/validation/test sets.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>The learning process has three key components: (1) TRAINING DATA: pairs of inputs and corresponding correct outputs. For image classification, this would be images paired with labels. For regression, features paired with target values. (2) LOSS FUNCTION: a scalar value that measures how well our current parameters perform. Common losses: mean squared error for regression, cross-entropy for classification. The loss is computed by comparing predictions f[x,Φ] to true outputs y across all training examples. (3) OPTIMIZATION: systematically adjusting Φ to reduce the loss. This is typically done with gradient descent and backpropagation. The critical concept: we care about GENERALIZATION not just training performance. A model that memorizes training data but fails on new data is useless. This is why we evaluate on held-out test data and why techniques like dropout and regularization are important.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Linear Models: Building Intuition</h1>
 
 </section>
+<section class="slide level2">
+<h2>1-D Linear Regression Model</h2>
+<p><strong>The simplest supervised learning model:</strong></p>
+<p><span class="math display">\[y = f[x, \Phi] = \Phi_0 + \Phi_1 x\]</span></p>
+<div style="margin-top: 20px;">
+<ul>
+<li><span class="math inline">\(\Phi_0\)</span>: <strong>Intercept</strong> (bias term)</li>
+<li><span class="math inline">\(\Phi_1\)</span>: <strong>Slope</strong> (weight)</li>
+<li>Only <strong>2 parameters</strong> to learn</li>
+</ul>
+</div>
+
+<img data-src="figs/UDLChap2PDF/SupervisedLinear.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 2: Supervised Learning.</p>
+</div>
+<aside class="notes">
+<p>Let’s start with the absolute simplest case: linear regression in one dimension. We have one input feature x and one output y. The model has just two parameters: Φ₀ (intercept/bias) and Φ₁ (slope/weight). This is the familiar y = mx + b from algebra. The figure shows training data as dots and the fitted line. Even though this model is simple, it introduces all the key concepts: we have parameters to learn, we make predictions, and we can measure how good our predictions are. The limitations are obvious - many real-world relationships are non-linear. But understanding this simple case makes it easier to understand neural networks, which are essentially compositions of many non-linear transformations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Linear Regression: Measuring Error</h2>
+<p><strong>How do we quantify “good fit”?</strong></p>
+
+<img data-src="figs/UDLChap2PDF/SupervisedLinearFitError.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:75.0%"><p><strong>Loss Function:</strong> Sum of squared errors</p>
+<p><span class="math display">\[L[\Phi] = \sum_{i=1}^{N} (y_i - f[x_i, \Phi])^2\]</span></p>
+<div style="background: #e8f5e9; padding: 20px; border-radius: 8px; margin-top: 25px;">
+<p>Vertical distance from each data point to the line → squared → summed = <strong>total error</strong></p>
+</div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 2: Supervised Learning.</p>
+</div>
+<aside class="notes">
+<p>This visualization shows the concept of prediction error geometrically. For each training point (x_i, y_i), we compute the model’s prediction f[x_i, Φ]. The difference between true value y_i and prediction is the error (shown as vertical lines). We square these errors to make them all positive and penalize large errors more heavily. Summing across all training points gives the total loss. The goal of training is to adjust the line’s position and slope to minimize this total squared error. Why square the errors? (1) Makes all errors positive (otherwise errors could cancel), (2) Penalizes large errors more than small ones (quadratic penalty), (3) Makes the math work out nicely for optimization (differentiable). This is the classic least squares regression that has been used for centuries, but the same principle extends to deep learning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Loss Surface</h2>
+<p><strong>Visualizing all possible parameter combinations:</strong></p>
+
+<img data-src="figs/UDLChap2PDF/SupervisedSurface.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:75.0%"><div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>X-axis:</strong> Slope <span class="math inline">\(\Phi_1\)</span></li>
+<li><strong>Y-axis:</strong> Intercept <span class="math inline">\(\Phi_0\)</span></li>
+<li><strong>Z-axis (color):</strong> Loss <span class="math inline">\(L[\Phi]\)</span></li>
+</ul>
+<div style="margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 8px;">
+<p><strong>Goal:</strong> Find the lowest point (dark blue valley)</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Key Observations:</strong></p>
+<ol type="1">
+<li><strong>Single global minimum</strong> - bowl-shaped surface</li>
+<li><strong>Smooth</strong> - we can use gradients to navigate</li>
+<li><strong>Convex</strong> - any path downhill leads to optimum</li>
+</ol>
+<div style="margin-top: 20px; font-size: 0.9em;">
+<p>For linear models, optimization is easy! Deep networks have much more complex loss landscapes…</p>
+</div>
+</div></div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 2: Supervised Learning.</p>
+</div>
+<aside class="notes">
+<p>This is one of the most important visualizations for understanding optimization. Each point on this surface represents a different choice of parameters (Φ₀, Φ₁). The height/color represents the loss for those parameters. We start at some random point on this surface and want to reach the lowest point (minimum loss). For linear regression, this surface is convex (bowl-shaped) which makes optimization straightforward - just follow the gradient (steepest descent direction) and you’re guaranteed to reach the global minimum. Notice the smooth contours - this tells us the loss function is differentiable, which enables gradient-based optimization. IMPORTANT CONTRAST: Deep neural networks have extremely complex loss surfaces with many local minima, saddle points, and plateaus. The smooth bowl shape we see here is the exception not the rule. This is why training deep networks is challenging and requires careful techniques like adaptive learning rates, momentum, and batch normalization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Optimization: Gradient Descent</h2>
+<p><strong>How do we find the minimum?</strong></p>
+
+<img data-src="figs/UDLChap2PDF/SupervisedOpt.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:75.0%"><p><strong>Algorithm:</strong> Iteratively move downhill</p>
+<ol type="1">
+<li>Start at random position</li>
+<li>Compute gradient (slope direction)</li>
+<li>Take small step opposite to gradient</li>
+<li>Repeat until convergence</li>
+</ol>
+<p><span class="math display">\[\Phi_{new} = \Phi_{old} - \alpha \nabla L[\Phi]\]</span></p>
+<p>(<span class="math inline">\(\alpha\)</span> = learning rate)</p>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 2: Supervised Learning.</p>
+</div>
+<aside class="notes">
+<p>This visualization shows the optimization trajectory - the path taken through parameter space to reach the minimum. We start at a random initialization (usually small random values) and compute the gradient of the loss with respect to parameters. The gradient points in the direction of steepest ASCENT, so we move in the OPPOSITE direction to descend. The learning rate α controls step size. The figure shows several iterations converging to the optimal parameters (center of the bowl). KEY HYPERPARAMETER: Learning rate. Too large → overshoot and diverge. Too small → very slow convergence. For deep learning we use sophisticated optimizers (Adam, RMSprop) that adaptively adjust learning rates. The update rule shown is the foundation of all deep learning training - this same principle (backpropagation + gradient descent) is used whether you have 2 parameters or 2 billion parameters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Shallow Neural Networks</h1>
+
+</section>
+<section class="slide level2">
+<h2>From Linear to Non-linear</h2>
+<p><strong>Linear models are limited - they can only learn straight lines!</strong></p>
+<div style="background: #fff3cd; padding: 25px; border-radius: 8px; margin: 30px 0;">
+<p><strong>Solution:</strong> Add non-linearity through <strong>activation functions</strong></p>
+<p>Transform linear combinations with a non-linear function → enables learning complex patterns</p>
+</div>
+<p><strong>Shallow Neural Network (1 hidden layer):</strong></p>
+<p><span class="math display">\[y = f[x, \Phi] = \Phi_0 + \sum_{i=1}^{3} \Phi_i \cdot a[ \Theta_{i0} + \Theta_{i1} x]\]</span></p>
+<div style="margin-top: 25px;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Description</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\Theta_{ij}\)</span></td>
+<td>First layer parameters</td>
+<td>6 parameters</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\Phi_i\)</span></td>
+<td>Second layer parameters</td>
+<td>4 parameters</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(a[\cdot]\)</span></td>
+<td><strong>Activation function</strong></td>
+<td>Non-linearity!</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: 10 parameters</strong> (vs 2 for linear model)</p>
+</div>
+<aside class="notes">
+<p>This is the critical leap from linear models to neural networks. A linear model can only learn linear relationships - straight lines in 1D, planes in higher dimensions. Real-world data often has non-linear patterns. The solution: compose multiple linear transformations with non-linear activation functions between them. The equation shows a shallow network with 3 hidden units. The input x is first transformed by 3 linear functions (with parameters Θ), then passed through activation function a[·], then linearly combined (with parameters Φ) to produce output y. We’ve gone from 2 parameters to 10 parameters, giving much more expressive power. The activation function is crucial - without it, composing linear transformations would just give another linear transformation. The non-linearity is what enables neural networks to approximate arbitrary functions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Activation Functions: ReLU</h2>
+<p><strong>ReLU (Rectified Linear Unit): The most popular activation function</strong></p>
+<p><span class="math display">\[a[z] = \max(0, z) = \begin{cases} z &amp; \text{if } z &gt; 0 \\ 0 &amp; \text{if } z \leq 0 \end{cases}\]</span></p>
+
+<img data-src="figs/UDLChap3PDF/ShallowReLU.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"><p><strong>Why ReLU?</strong></p>
+<p>✓ <strong>Simple:</strong> Easy to compute and differentiate ✓ <strong>Efficient:</strong> Avoids vanishing gradient problem ✓ <strong>Sparse:</strong> Many activations are exactly zero ✓ <strong>Biological:</strong> Neurons either fire or they don’t</p>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 3: Shallow Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>ReLU is the workhorse activation function of modern deep learning. It’s incredibly simple: output the input if positive, otherwise output zero. This creates a “bent” linear function - linear for positive inputs, flat for negative. The figure shows how ReLU transforms various inputs. Why is this simple function so powerful? (1) COMPUTATIONAL EFFICIENCY: Just a comparison and max operation, much faster than sigmoid or tanh which require exponentials. (2) GRADIENT FLOW: For positive inputs, gradient is 1, which helps avoid the vanishing gradient problem that plagued older networks. (3) SPARSITY: Roughly half of activations are exactly zero, which can improve generalization and efficiency. (4) BIOLOGICAL PLAUSIBILITY: Resembles neuron behavior - neurons have a threshold below which they don’t fire. There are variants (Leaky ReLU, Parametric ReLU, GELU) but standard ReLU remains the most common. The simplicity is a feature not a bug - it works remarkably well in practice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Building Intuition: Composing ReLUs</h2>
+<p><strong>How do multiple ReLU activations combine to approximate complex functions?</strong></p>
+
+<img data-src="figs/UDLChap3PDF/ShallowFunctions.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Each hidden unit:</strong></p>
+<ol type="1">
+<li>Computes linear function of input</li>
+<li>Applies ReLU → bent line</li>
+<li>Gets weighted and summed</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<p><strong>Combining multiple units:</strong></p>
+<ul>
+<li>Different slopes and bends</li>
+<li>Sum creates complex shapes</li>
+<li>More units → more flexibility</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 3: Shallow Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>This visualization shows how individual ReLU units (bent lines) combine to approximate a more complex function. Each row shows a different hidden unit’s contribution: (1) a linear transformation of the input, (2) ReLU applied (creating the bend), (3) weighted by the second-layer parameter Φ. The bottom row shows the sum of all these bent lines, which can approximate surprisingly complex shapes. Think of each hidden unit as creating a “hinge” in the function at a different location and with a different angle. By combining multiple hinges, we can approximate nearly any continuous function. The more hidden units, the more hinges, the more complex the function we can represent. This builds intuition for why neural networks are such powerful function approximators.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Neural Network Computation</h2>
+<p><strong>Step-by-step: How a shallow network processes an input</strong></p>
+
+<img data-src="figs/UDLChap3PDF/ShallowBuildUp.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><div style="margin-top: 20px;">
+<p><strong>Process:</strong></p>
+<ol type="1">
+<li>Input <span class="math inline">\(x\)</span> (left) enters the network</li>
+<li>Each hidden unit computes: <span class="math inline">\(h_i = a[\Theta_{i0} + \Theta_{i1} x]\)</span></li>
+<li>Weighted combination: <span class="math inline">\(y = \Phi_0 + \sum_i \Phi_i h_i\)</span></li>
+<li>Final output <span class="math inline">\(y\)</span> (right)</li>
+</ol>
+</div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 3: Shallow Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>This sequential visualization shows the forward pass through a shallow network. We start with input x on the left. This input is sent to each of 3 hidden units in parallel. Each hidden unit computes a weighted sum (linear transformation) and applies ReLU. These hidden activations are then weighted and summed to produce the final output y. This is called “forward propagation” - information flows forward from input to output. During training, we also need “backward propagation” - computing gradients of the loss with respect to all parameters by applying the chain rule backwards through the network. The figure helps visualize the layer structure: input layer (just the raw features), hidden layer (computed representations), output layer (final prediction). Modern deep networks have many hidden layers, but the principle is the same.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Neural Network Diagram</h2>
+<p><strong>Standard visualization: Network architecture</strong></p>
+
+<img data-src="figs/UDLChap3PDF/ShallowNet.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"><div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Components:</strong></p>
+<ul>
+<li>⚫ <strong>Input layer:</strong> Raw features</li>
+<li>🔵 <strong>Hidden layer:</strong> Learned representations</li>
+<li>⚫ <strong>Output layer:</strong> Prediction</li>
+<li>→ <strong>Connections:</strong> Weighted parameters</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Terminology:</strong></p>
+<ul>
+<li><strong>Hidden units/neurons:</strong> Computed values in middle</li>
+<li><strong>Pre-activations:</strong> Before ReLU</li>
+<li><strong>Activations:</strong> After ReLU</li>
+<li><strong>Fully connected:</strong> Every unit connects to all units in next layer</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 3: Shallow Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>This is the classic neural network diagram you see everywhere. Each circle represents a unit (neuron), lines represent weighted connections (parameters). Information flows left to right during forward propagation. LAYER TERMINOLOGY: (1) INPUT LAYER: Not really a “layer” - just the input features. No computation happens here. (2) HIDDEN LAYER: Called “hidden” because these values are internal to the model, not directly observable. This is where the learning happens - the network learns useful representations. (3) OUTPUT LAYER: Final prediction. For regression this is one unit, for multi-class classification it’s one unit per class. FULLY CONNECTED: Each unit connects to all units in the next layer. This is also called “dense” layer. Modern architectures (CNNs, Transformers) use different connectivity patterns, but fully-connected is the building block. The term “shallow” means just one hidden layer. “Deep” means multiple hidden layers stacked.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Universal Approximation Theorem</h2>
+<p><strong>Theoretical Foundation: Shallow networks can approximate any continuous function!</strong></p>
+
+<img data-src="figs/UDLChap3PDF/ShallowApproximate.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div style="background: #e3f2fd; padding: 25px; border-radius: 8px; margin: 30px 0;">
+<p><strong>Theorem</strong> (Cybenko 1989, Hornik 1991):</p>
+<p>A shallow neural network with enough hidden units can approximate <strong>any continuous function</strong> to arbitrary accuracy on a compact domain.</p>
+</div>
+<p><strong>But…</strong></p>
+<ul>
+<li>May require <strong>exponentially many</strong> hidden units</li>
+<li>Doesn’t tell us <strong>how to find</strong> the parameters</li>
+<li><strong>Deep networks</strong> are often more efficient</li>
+</ul>
+<div class="footer">
+<p>Cybenko, G. (1989). Approximation by superpositions of a sigmoidal function. <em>Mathematics of Control, Signals and Systems</em>, 2(4), 303-314.</p>
+</div>
+<aside class="notes">
+<p>The Universal Approximation Theorem is a profound theoretical result. It says that given enough hidden units, a shallow network (just one hidden layer) can approximate any continuous function you can draw. The figure illustrates this - as we add more hidden units, the approximation gets better and better. This is why neural networks are so powerful! HOWEVER, there are crucial caveats: (1) “Enough hidden units” might mean exponentially many as the input dimension grows. For complex functions in high dimensions, a shallow network might need billions of units. (2) The theorem says such a network EXISTS but doesn’t tell us how to find the right parameters through training. (3) Even if we could find the parameters, the network might generalize poorly. This is why we use DEEP networks - by stacking multiple hidden layers, we can represent complex functions much more efficiently. Deep networks exploit compositionality and hierarchy. Think of it like computer code: you COULD write any program as one giant function, but it’s much more efficient to compose smaller functions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Deep Neural Networks</h1>
+
+</section>
+<section class="slide level2">
+<h2>Why Go Deep?</h2>
+<p><strong>Deep networks compose simple transformations to build complex representations</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Shallow network limitations:</strong></p>
+<ul>
+<li>Requires many hidden units</li>
+<li>Doesn’t exploit structure</li>
+<li>Inefficient representation</li>
+</ul>
+<p><strong>Deep network advantages:</strong></p>
+<ul>
+<li><strong>Hierarchical learning</strong></li>
+<li><strong>Compositional structure</strong></li>
+<li><strong>Parameter efficiency</strong></li>
+<li><strong>Feature reuse</strong> across layers</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="background: #e8f5e9; padding: 25px; border-radius: 8px;">
+<p><strong>Intuition from vision:</strong></p>
+<p><strong>Layer 1:</strong> Edges, colors ↓ <strong>Layer 2:</strong> Textures, simple shapes ↓ <strong>Layer 3:</strong> Object parts ↓ <strong>Layer 4:</strong> Object categories</p>
+<p>Each layer builds on previous representations!</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>This slide motivates why deep architectures are so powerful. Shallow networks can theoretically approximate any function, but deep networks do it much more efficiently by exploiting compositional structure. Think about how humans understand images: we don’t process pixels directly into “cat” or “dog”. We first detect edges, then combine edges into textures, textures into parts (ears, nose), parts into objects. This is HIERARCHICAL composition - each level builds on the previous. Deep networks learn similar hierarchies automatically! Early layers learn simple features (edges in images, syllables in audio), middle layers combine them into parts (object parts, words), late layers capture high-level concepts (object categories, sentence meaning). This compositionality gives exponential representational power - k layers with n units per layer can represent exponentially more functions than kn units in a single layer. This is similar to how compound words work - “black”, “board” → “blackboard” has new meaning beyond the parts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Composing Networks</h2>
+<p><strong>Building deep networks: Stack multiple hidden layers</strong></p>
+
+<img data-src="figs/UDLChap4PDF/DeepConcat.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p><strong>Each layer:</strong></p>
+<p><span class="math display">\[h^{(k)} = a[W^{(k)} h^{(k-1)} + b^{(k)}]\]</span></p>
+<div style="margin-top: 20px;">
+<ul>
+<li><span class="math inline">\(h^{(k)}\)</span>: Activations at layer <span class="math inline">\(k\)</span></li>
+<li><span class="math inline">\(W^{(k)}\)</span>, <span class="math inline">\(b^{(k)}\)</span>: Parameters for layer <span class="math inline">\(k\)</span></li>
+<li>Composition: <span class="math inline">\(f = f_K \circ f_{K-1} \circ \ldots \circ f_1\)</span></li>
+</ul>
+</div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 4: Deep Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>This visualization shows how we build deep networks by composing multiple layers. Each layer performs the same operation: linear transformation (W*h + b) followed by non-linearity (activation function a). The output of layer k becomes the input to layer k+1. The overall function is a composition f = f_K ∘ f_{K-1} ∘ … ∘ f_1, where each f_k represents one layer. The notation h^(k) represents the hidden activations at layer k - these are the learned representations at that depth. Early layers (close to input) learn low-level features, later layers (close to output) learn high-level concepts. This composition is what gives deep learning its power. During backpropagation, gradients flow backwards through this composition using the chain rule - this is how we learn parameters for all layers simultaneously.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How Deep Networks Transform Space</h2>
+<p><strong>Geometric intuition: Each layer performs a non-linear transformation of the representation space</strong></p>
+
+<img data-src="figs/UDLChap4PDF/DeepFold.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:75.0%"><div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Layer 1:</strong></p>
+<p>Stretches, rotates, bends space with ReLU</p>
+<p><strong>Layer 2:</strong></p>
+<p>Further transforms the already-bent space</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Result:</strong></p>
+<p>Complex folding of input space</p>
+<p>→ Can separate classes that were originally intertwined</p>
+</div></div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 4: Deep Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>This is a beautiful geometric visualization of what deep networks do. Think of the input space as a rubber sheet. Each layer applies a transformation that stretches, compresses, rotates, and folds this sheet. ReLU creates sharp bends (folding). Linear transformations create stretching and rotation. The figure shows how two classes (two different colors) that might be intertwined in the original input space get separated into distinct regions after the transformations. This is why deep networks can solve complex classification problems - they learn to warp the input space in ways that make classes linearly separable in the final layer. This geometric view helps understand: (1) Why depth matters - more folding operations can handle more complex decision boundaries. (2) Why ReLU matters - piecewise linear functions create the folds. (3) How representations change - each layer creates a new geometric space with different properties.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Two Hidden Layers</h2>
+<p><strong>Adding depth: 2 hidden layers → more complex functions</strong></p>
+
+<img data-src="figs/UDLChap4PDF/DeepTwoLayer.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><div style="margin-top: 25px;">
+<p><strong>Key difference from shallow networks:</strong></p>
+<ul>
+<li>First layer creates <strong>intermediate representations</strong></li>
+<li>Second layer operates on those representations, not raw inputs</li>
+<li>Can capture <strong>compositional structure</strong></li>
+</ul>
+<p><strong>Example:</strong> First layer detects edges, second layer combines edges into shapes</p>
+</div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 4: Deep Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>This shows the architecture of a network with two hidden layers. The key insight: the second hidden layer doesn’t see the raw input - it sees the TRANSFORMED representations from the first hidden layer. This enables hierarchical feature learning. Each layer builds on the features learned by previous layers. With just two layers, we’re already seeing significant gains in representational power. The first layer might learn to detect simple patterns (edges, corners in images; phonemes in audio; word presence in text). The second layer combines these simple patterns into more complex ones (object parts; words; sentence structure). This composition is much more powerful and parameter-efficient than having one huge hidden layer. Modern deep networks typically have dozens or hundreds of layers, each learning progressively more abstract representations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>K Hidden Layers: Deep Architecture</h2>
+<p><strong>Modern deep learning: Many layers stacked together</strong></p>
+
+<img data-src="figs/UDLChap4PDF/DeepKLayer.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><p><strong>Deep Network Characteristics:</strong></p>
+<ul>
+<li><strong>Input layer:</strong> Raw features (e.g., pixel values)</li>
+<li><strong>Hidden layer 1:</strong> Low-level features (edges, textures)</li>
+<li><strong>Hidden layer 2:</strong> Mid-level features (parts, patterns)</li>
+<li><strong>Hidden layer K:</strong> High-level features (concepts, objects)</li>
+<li><strong>Output layer:</strong> Final prediction</li>
+</ul>
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 25px;">
+<p><strong>Modern architectures:</strong> ResNet (152 layers), GPT-3 (96 layers), Vision Transformers (24+ layers)</p>
+</div>
+<div class="footer">
+<p>Prince, S. J. D. (2023). <em>Understanding Deep Learning</em>. Chapter 4: Deep Neural Networks.</p>
+</div>
+<aside class="notes">
+<p>This diagram shows a fully deep architecture with K hidden layers. Modern deep networks typically have many layers - ResNets for computer vision use 50-152 layers, transformer models like GPT-3 use 96 layers, and some experimental architectures exceed 1000 layers! Each additional layer allows the network to learn more abstract and compositional features. However, simply stacking layers creates challenges: (1) VANISHING GRADIENTS: Gradients become exponentially small as they backpropagate through many layers, making early layers hard to train. (2) DEGRADATION: Very deep networks can perform worse than shallower ones if not designed carefully. Modern architectures address these with techniques like: Residual connections (ResNet) that create shortcuts for gradient flow, Batch normalization that stabilizes activations, Careful initialization schemes, Adaptive optimizers like Adam. The visualization helps understand the information flow: data enters at the bottom/left, gets progressively transformed, and emerges as a prediction at the top/right.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Interactive Visualization Tools</h1>
+
+</section>
+<section class="slide level2">
+<h2>TensorFlow Playground</h2>
+<p><strong>Interactive tool for understanding neural networks</strong></p>
+<p><a href="https://playground.tensorflow.org" class="uri">https://playground.tensorflow.org</a></p>
+
+<img data-src="figs/tensorflow-playground.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><div class="footer">
+<p>Smilkov, D., &amp; Carter, S. (2016). <a href="https://playground.tensorflow.org"><em>TensorFlow Playground</em></a>. Google Brain.</p>
+</div>
+<aside class="notes">
+<p>TensorFlow Playground is an outstanding interactive visualization for building intuition about neural networks. You can: (1) Choose different 2D datasets (spirals, circles, XOR, etc.) and see how networks learn decision boundaries. (2) Add/remove hidden layers and neurons to see how architecture affects learning. (3) Adjust learning rate and activation functions. (4) Watch training in real-time - see how decision boundaries evolve. (5) Observe individual neuron activations and how they combine. KEY INSIGHTS students gain: (1) Seeing how adding layers helps with complex patterns - try the spiral dataset with 1 vs 2 vs 4 hidden layers. (2) Understanding overfitting - watch what happens with too many neurons. (3) Observing feature learning - each neuron learns to detect a particular pattern. (4) Experiencing the effect of learning rate - too high causes oscillation, too low is very slow. I highly recommend students spend time experimenting with this. It’s far more intuitive than equations alone. Try the spiral dataset with different architectures - it’s a great demonstration of why depth matters!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>CNN Explainer</h2>
+<p><strong>Interactive visualization for understanding Convolutional Neural Networks</strong></p>
+<p><a href="https://poloclub.github.io/cnn-explainer/" class="uri">https://poloclub.github.io/cnn-explainer/</a></p>
+
+<img data-src="figs/cnnexplainer.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><div class="footer">
+<p>Wang, Z. J., et al.&nbsp;(2020). <a href="https://arxiv.org/abs/2004.15004"><em>CNN Explainer: Learning Convolutional Neural Networks with Interactive Visualization</em></a>. IEEE VIS.</p>
+</div>
+<aside class="notes">
+<p>CNN Explainer is a brilliant interactive tool from Georgia Tech that visualizes how convolutional neural networks process images. It shows: (1) LAYER-BY-LAYER visualization: See exactly how feature maps are computed at each layer. (2) FILTER VISUALIZATION: Examine what patterns individual convolutional filters detect. (3) ACTIVATION MAPS: Observe which parts of the image activate each neuron. (4) ARCHITECTURE OVERVIEW: Understand how conv layers, pooling, and fully-connected layers connect. (5) INTERACTIVE EXPLORATION: Click on neurons to trace their computation. This is particularly valuable because CNNs are the dominant architecture for computer vision, and understanding convolution operations is crucial. Students can: Upload their own images and watch them propagate through the network. See why early layers detect edges and later layers detect complex objects. Understand pooling (spatial downsampling) and how it provides translation invariance. We’ll cover CNNs in more detail in a future lecture on deep learning visualization, but this tool is excellent for building initial intuition.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Further Exploration</h2>
+<p><strong>Recommended interactive visualizations and resources:</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Neural Network Visualization:</strong></p>
+<ul>
+<li><p><a href="https://distill.pub/2020/grand-tour/"><strong>Distill.pub: The Building Blocks of Interpretability</strong></a> Comprehensive visual explanations</p></li>
+<li><p><a href="http://projector.tensorflow.org/"><strong>TensorFlow Embedding Projector</strong></a> Explore high-dimensional embeddings</p></li>
+<li><p><a href="https://ml4a.github.io/ml4a/looking_inside_neural_nets/"><strong>ML4A: Looking Inside Neural Nets</strong></a> Interactive tutorials and visualizations</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Understanding Deep Learning:</strong></p>
+<div style="background: #e3f2fd; padding: 20px; border-radius: 8px;">
+<p>📖 <a href="https://udlbook.github.io/udlbook/"><strong>udlbook.github.io/udlbook</strong></a></p>
+<p>Free online textbook with: - Interactive Python notebooks - Video lectures - Extensive visualizations - Modern coverage (transformers, diffusion models)</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>These resources provide excellent ways to deepen understanding beyond this lecture. DISTILL.PUB has become the gold standard for visual explanations of ML concepts - their articles on neural network interpretability are outstanding, combining interactive visualizations with rigorous explanations. The TensorFlow Embedding Projector lets you explore high-dimensional data (like word embeddings) using dimensionality reduction techniques like PCA and t-SNE. ML4A (Machine Learning for Artists) provides accessible tutorials with beautiful interactive visualizations. The Understanding Deep Learning book website has companion materials including Python notebooks that implement everything from scratch, making it perfect for hands-on learning. ENCOURAGE STUDENTS to explore these interactively. Reading about neural networks is good, but SEEING and MANIPULATING visualizations builds much deeper intuition. Spend 30 minutes playing with TensorFlow Playground and you’ll understand neural networks better than reading 100 pages of equations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Summary: Deep Learning Foundations</h2>
+<p><strong>Key Takeaways:</strong></p>
+<ol type="1">
+<li><p><strong>Supervised Learning:</strong> Learn parameters <span class="math inline">\(\Phi\)</span> from data pairs <span class="math inline">\(\{x_i, y_i\}\)</span> to minimize loss <span class="math inline">\(L[\Phi]\)</span></p></li>
+<li><p><strong>From Linear to Non-linear:</strong> Activation functions (ReLU) enable learning complex patterns</p></li>
+<li><p><strong>Shallow Networks:</strong> Single hidden layer can approximate any function (Universal Approximation Theorem)</p></li>
+<li><p><strong>Deep Networks:</strong> Multiple layers learn hierarchical representations more efficiently</p></li>
+<li><p><strong>Geometric View:</strong> Networks transform input space through non-linear folding to separate classes</p></li>
+</ol>
+<div style="background: #e8f5e9; padding: 25px; border-radius: 8px; margin-top: 30px;">
+<p><strong>Next lectures:</strong> We’ll explore specialized visualizations for CNNs, attention mechanisms, activation analysis, and network interpretability</p>
+</div>
+<aside class="notes">
+<p>Let’s consolidate what we’ve learned. We started with the basic supervised learning setup - learning a function that maps inputs to outputs by minimizing a loss function. We saw how linear models are limited and how adding non-linear activation functions (especially ReLU) enables neural networks to approximate complex functions. The Universal Approximation Theorem gives theoretical justification - shallow networks have tremendous representational power. However, deep networks are more practical because they exploit compositional structure and learn hierarchical representations efficiently. We developed geometric intuition: networks progressively transform the input space through non-linear warping, separating classes that were originally intertwined. LOOKING AHEAD: This lecture established foundations. In future lectures we’ll dive deeper into visualization techniques specific to different architectures: How to visualize what CNN filters detect, How attention mechanisms work in transformers, Techniques for activation maximization and feature visualization, Methods for network interpretability and debugging. The interactive tools (TensorFlow Playground, CNN Explainer) are excellent for building continued intuition.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Next Week: Topological Data Analysis</h2>
+<p><strong>Preview of upcoming topic:</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Topology meets machine learning</strong></p>
+<ul>
+<li>Persistence diagrams and barcodes</li>
+<li>Mapper algorithm for visualization</li>
+<li>Reeb graphs</li>
+<li>Applications in ML and deep learning</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px;">
+<p><strong>Why it matters:</strong></p>
+<p>Topological Data Analysis (TDA) provides robust methods for understanding the shape and structure of high-dimensional data.</p>
+<p>Essential for analyzing neural network representations, clustering, and feature spaces!</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>Next week we’ll explore Topological Data Analysis (TDA) - a powerful mathematical framework for understanding the shape and structure of complex, high-dimensional data. TDA provides tools that are robust to noise and capture global geometric properties that traditional methods miss. We’ll cover: Persistence diagrams and barcodes that summarize topological features across scales, The Mapper algorithm for creating insightful visualizations of high-dimensional datasets, Reeb graphs for understanding data topology, Applications to neural network analysis and representation learning. TDA is particularly valuable for ML because: It reveals clustering structure without choosing the number of clusters, It identifies loops, voids, and connected components in data, It’s robust to noise and outliers, It connects naturally to deep learning representations. The combination of today’s deep learning foundations plus next week’s TDA will give you powerful tools for understanding what complex models learn.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="figs/vida.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
 </div>
 </div></div>
 
@@ -278,7 +992,6 @@
   <script src="week7-deep-learning_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="week7-deep-learning_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="week7-deep-learning_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="week7-deep-learning_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="week7-deep-learning_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -300,8 +1013,7 @@
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":false},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -427,10 +1139,10 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'fade',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
@@ -447,15 +1159,15 @@
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1920,
 
-        height: 700,
+        height: 1080,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -472,7 +1184,7 @@
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
@@ -529,13 +1241,14 @@
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
