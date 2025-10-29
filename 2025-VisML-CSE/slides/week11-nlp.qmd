@@ -3,7 +3,7 @@ title: "Visualization for NLP and LLMs"
 subtitle: "CS-GY 9223 - Fall 2025"
 author: "Claudio Silva"
 institute: "NYU Tandon School of Engineering"
-date: "November 10, 2025"
+date: "November 3, 2025"
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -18,13 +18,32 @@ format:
     transition-speed: fast
     footer: <https://engineering.nyu.edu>
     fontsize: 24pt
+    css: lab-light-theme.css
 ---
 
-## Visualization for NLP
-- NLP Basic
-- Visualizing Traditional NLP Model's Internal Structure
-- Visualizing Traditional NLP Model's Behavior
-- Visualizing LLMs
+# NLP and Large Language Models
+
+## Today's Agenda
+
+1. **NLP Fundamentals**
+   - Text processing pipeline
+   - Traditional vs modern approaches
+
+2. **Visualizing Model Internals**
+   - RNN gradient flow
+   - Hidden state analysis
+
+3. **Behavioral Analysis**
+   - Error discovery patterns
+   - Counterfactual generation
+
+4. **LLM Visualization**
+   - Attention mechanisms
+   - Prompt engineering tools
+
+::: {.notes}
+Natural Language Processing has undergone a revolution with the advent of large language models. Today's lecture bridges traditional NLP visualization techniques with modern LLM analysis methods. We'll start with fundamental text processing concepts, then explore how visualization helps us understand both classical models like RNNs and modern transformer-based architectures. The transition from traditional NLP to LLMs represents not just a scale change but a fundamental shift in how we approach language understanding. Visualization plays a crucial role in making these black-box models more interpretable.
+:::
 
 
 ## Visualization for NLP
@@ -34,45 +53,80 @@ format:
 - <span style="color: grey;">Visualizing LLMs</span>
 
 
-## NLP Basic
-![](./vis4ml_figures/slide1.png)
+## NLP Basic: Text Processing Pipeline
 
-## NLP Basic
-![](./vis4ml_figures/slide2.png)
+![](figs/week11-nlp/slide1.png){fig-align="center"}
 
-## NLP Basic
-![](./vis4ml_figures/slide3.png)
+::: {.notes}
+The NLP pipeline begins with raw text and transforms it through multiple stages into a form suitable for machine learning. Tokenization splits text into units (words, subwords, or characters). Normalization handles case, punctuation, and special characters. Vectorization converts tokens to numbers - from simple one-hot encoding to sophisticated contextual embeddings. Each stage involves design decisions that significantly impact downstream performance. For example, aggressive normalization might remove important signals (like capitalization indicating proper nouns), while preserving too much variation increases vocabulary size and sparsity.
+:::
 
-## NLP Basic
-![](./vis4ml_figures/slide4.png)
+## NLP Basic: Word Embeddings
 
-## NLP Basic
-![](./vis4ml_figures/slide5.png)
+![](figs/week11-nlp/slide2.png){fig-align="center"}
 
-## NLP Basic
-![](./vis4ml_figures/slide6.png)
+::: {.notes}
+Word embeddings revolutionized NLP by providing dense, continuous representations where similar words have similar vectors. The key insight is the distributional hypothesis: words appearing in similar contexts have similar meanings. Word2Vec uses shallow neural networks to predict context words (CBOW) or target words (Skip-gram). GloVe combines global matrix factorization with local context windows. FastText extends Word2Vec by using character n-grams, helping with out-of-vocabulary words. These embeddings capture surprising regularities - the famous "king - man + woman = queen" demonstrates that vector arithmetic can encode analogical reasoning.
+:::
+
+## NLP Basic: Sequence Models
+
+![](figs/week11-nlp/slide3.png){fig-align="center"}
+
+::: {.notes}
+Sequence modeling is central to NLP because language is inherently sequential. RNNs maintain a hidden state that gets updated at each time step, theoretically capturing all previous context. However, standard RNNs suffer from vanishing gradients, making it hard to learn long-range dependencies. LSTMs and GRUs address this with gating mechanisms that control information flow. Bidirectional RNNs process sequences in both directions, capturing both past and future context. The sequential nature of RNNs makes them slow to train and inference, motivating the development of parallelizable architectures like Transformers.
+:::
+
+## NLP Basic: Text Preprocessing
+
+![](figs/week11-nlp/slide4.png){fig-align="center"}
+
+::: {.notes}
+Text preprocessing is crucial but often underappreciated. Common steps include lowercasing (but this loses information like proper nouns), removing stop words (but they're important for understanding negation and questions), stemming/lemmatization (reducing words to root forms), and handling special tokens like URLs, numbers, and emojis. Modern deep learning approaches often use minimal preprocessing, letting the model learn what's important. However, careful preprocessing can significantly reduce vocabulary size and improve generalization, especially with limited training data. The key is understanding your task - sentiment analysis might benefit from preserving emoticons, while topic modeling might safely remove them.
+:::
+
+## NLP Basic: Feature Extraction
+
+![](figs/week11-nlp/slide5.png){fig-align="center"}
+
+::: {.notes}
+Feature extraction transforms text into numerical features for machine learning. Traditional approaches include bag-of-words (word counts), TF-IDF (term frequency-inverse document frequency), and n-grams (sequences of n words). These create sparse, high-dimensional representations. Modern approaches learn dense features: word embeddings, sentence encoders, and contextual representations from transformers. The choice depends on your task and data. Sparse features work well for many classification tasks with limited data, while dense representations excel at capturing semantic similarity and transfer learning. Visualization plays a key role in understanding what features your model learns and relies upon.
+:::
+
+## NLP Basic: Language Model Architectures
+
+![](figs/week11-nlp/slide6.png){fig-align="center"}
+
+::: {.notes}
+Language model architectures have evolved from simple n-gram models to sophisticated neural architectures. N-gram models estimate probabilities based on local context but suffer from data sparsity. RNN language models maintain hidden states to capture longer context but process sequentially. Transformer-based models like GPT and BERT use self-attention to model global dependencies efficiently. The key innovation is attention mechanisms that allow models to focus on relevant parts of the input. Pre-trained language models have become the foundation of modern NLP, providing rich representations that transfer across tasks. Understanding these architectures helps in choosing the right model and visualization technique for your application.
+:::
 
 
-## NLP Basic: Tasks
+## NLP Tasks Taxonomy
+
+::: {.notes}
+NLP tasks span from low-level syntactic analysis to high-level semantic understanding and generation. Token-level tasks like POS tagging and NER identify properties of individual words. Sequence-level tasks like machine translation and summarization transform entire texts. Classification tasks like sentiment analysis and topic modeling categorize documents. Generation tasks create new text. This taxonomy matters for visualization because different tasks benefit from different visual representations. Token-level tasks use attention heatmaps and dependency graphs. Document-level tasks use embedding projections and clustering visualizations. Understanding task requirements helps select appropriate models and interpretability methods.
+:::
+
 ::: {.columns}
 ::: {.column width="50%"}
-### Low-Level Tasks
-Named entity recognition
-Relation extraction
-Text classification
-Keyword extraction
-Parts-of-speech tagging
-Grammatical error correction
+### Token & Syntax Level
+- Named entity recognition
+- Parts-of-speech tagging
+- Dependency parsing
+- Grammatical error correction
+- Word sense disambiguation
+- Coreference resolution
 :::
 
 ::: {.column width="50%"}
-### High-Level Tasks
-Text summarization
-Text Q&A
-Text generation
-Image/video caption
-Fake news detection
-Dialogue understanding
+### Document & Semantic Level
+- Text summarization
+- Question answering
+- Machine translation
+- Sentiment analysis
+- Topic modeling
+- Dialogue systems
 :::
 :::
 
@@ -96,33 +150,68 @@ Dialogue understanding
 - <span style="color: grey;">Visualizing LLMs</span>
 
 
-## Visualizing Internal Structure: RNN
+## RNNbow: Visualizing Gradient Flow
+
 ::: {.columns}
 ::: {.column width="50%"}
-RNNbow: Visualizing Learning Via Backpropagation Gradients in RNNs
-Cashman et al. CGA 2018
+### Key Innovation
+- Visualizes backpropagation gradients in RNNs
+- Reveals vanishing/exploding gradient problems
+- Tracks learning dynamics across epochs
+
+### Applications
+- Model debugging
+- Architecture comparison
+- Training optimization
 :::
 
 ::: {.column width="50%"}
-![](./vis4ml_figures/paper17-1.png)
+![](figs/week11-nlp/paper17-1.png)
 :::
 :::
 
-## Visualizing Internal Structure: RNN
-![](./vis4ml_figures/paper17-2.png)
+::: footer
+Cashman et al. (2018). [RNNbow: Visualizing Learning Via Backpropagation Gradients in RNNs](https://doi.org/10.1109/MCG.2018.042731661). IEEE CG&A.
+:::
 
-## Visualizing Internal Structure: RNN
-![](./vis4ml_figures/paper17-3.png)
+::: {.notes}
+RNNbow addresses a fundamental challenge in training recurrent networks: understanding gradient flow through time. The visualization reveals how gradients propagate backwards through the network, exposing the vanishing gradient problem that plagued early RNNs. This tool was instrumental in motivating architectural innovations like LSTMs and GRUs. The ability to compare gradients across different training epochs provides insights into learning dynamics that are impossible to obtain from scalar metrics alone.
+:::
 
-## Visualizing Internal Structure: RNN
+## RNN Architecture Visualization
+
+![](figs/week11-nlp/paper17-2.png){fig-align="center"}
+
+::: {.notes}
+This visualization shows how RNNs process sequences by maintaining and updating hidden states over time. Each node represents a hidden state vector, and edges show the flow of information. The recurrent connections (horizontal arrows) carry information from previous time steps, while vertical connections show input/output flow. Color coding often represents activation magnitudes or gradient values. This unrolled view makes clear why RNNs struggle with long sequences - information must pass through many nonlinear transformations, leading to signal degradation. Understanding this architecture is crucial for interpreting gradient flow visualizations and diagnosing training problems.
+:::
+
+## Gradient Flow Analysis
+
+![](figs/week11-nlp/paper17-3.png){fig-align="center"}
+
+::: {.notes}
+Gradient flow visualization is essential for understanding RNN training dynamics. This diagram traces how gradients propagate backward through time during backpropagation. Line thickness or color intensity represents gradient magnitude. The vanishing gradient problem becomes visually apparent - gradients exponentially decay as they flow backward, making it impossible to learn long-range dependencies. This visualization technique has been instrumental in motivating architectural improvements. LSTMs and GRUs include "gradient highways" - paths where gradients can flow with minimal attenuation. Gradient clipping and careful initialization also help, but the fundamental sequential bottleneck remains.
+:::
+
+## Training Dynamics: Epoch Comparison
+
 ::: {.columns}
 ::: {.column width="45%"}
-Comparing gradients at different epochs of training:
+### Gradient Evolution
+- Early epochs: chaotic gradients
+- Middle epochs: pattern emergence
+- Late epochs: stable flow
+- Convergence indicators
 :::
 
 ::: {.column width="55%"}
-![](./vis4ml_figures/paper17-4.png)
+![](figs/week11-nlp/paper17-4.png)
 :::
+:::
+
+::: {.notes}
+Comparing gradient flow across training epochs reveals how RNNs learn. Early in training, gradients are chaotic and unstable, reflecting the random initial weights. As training progresses, gradient patterns stabilize and become more structured. Successful training shows gradients maintaining reasonable magnitudes throughout the sequence. Failed training often shows gradients vanishing (approaching zero) or exploding (growing exponentially). This visualization helps identify when to stop training, adjust learning rates, or modify architectures. It also reveals which parts of the sequence contribute most to learning - often later time steps dominate due to shorter gradient paths.
 :::
 
 ## Visualizing Internal Structure: RNN
@@ -132,7 +221,7 @@ Comparing gradients at different epochs of training:
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper17-6.png)
+![](figs/week11-nlp/paper17-6.png)
 :::
 :::
 
@@ -143,7 +232,7 @@ Exploring vanishing gradient
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper17-5.png)
+![](figs/week11-nlp/paper17-5.png)
 :::
 :::
 ## Visualizing Internal Structure: RNN
@@ -153,13 +242,22 @@ Poorly Learning C
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper17-5.png)
+![](figs/week11-nlp/paper17-5.png)
 :::
 :::
 
 
-## Visualizing Internal Structure: Hidden States
-![](./vis4ml_figures/paper13.png)
+## LSTMVis: Understanding Hidden States
+
+![](figs/week11-nlp/paper13.png){fig-align="center"}
+
+::: footer
+Strobelt et al. (2017). [LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in RNNs](https://doi.org/10.1109/TVCG.2017.2744158). IEEE TVCG.
+:::
+
+::: {.notes}
+LSTMVis pioneered the visual analysis of RNN hidden states, revealing how these models encode linguistic information. The tool allows users to select phrases and see which hidden units activate, discovering that different units specialize in different linguistic phenomena. This work demonstrated that RNNs learn interpretable representations despite not being explicitly trained to do so.
+:::
 
 
 ## Visualizing Internal Structure: Hidden States
@@ -169,7 +267,7 @@ Hidden values in LSTM/RNN
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper13-2.png)
+![](figs/week11-nlp/paper13-2.png)
 :::
 :::
 
@@ -183,7 +281,7 @@ What are some options for visualization?
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper18-2.png)
+![](figs/week11-nlp/paper18-2.png)
 :::
 :::
 
@@ -197,7 +295,7 @@ What are some options for visualization?
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper18-2.png)
+![](figs/week11-nlp/paper18-2.png)
 :::
 :::
 
@@ -211,7 +309,7 @@ What are some options for visualization?
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper13-5.png)
+![](figs/week11-nlp/paper13-5.png)
 :::
 :::
 
@@ -226,7 +324,7 @@ Configurable threshold: all hidden states in the selected sequence must exceed t
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper18-3.png)
+![](figs/week11-nlp/paper18-3.png)
 :::
 :::
 
@@ -239,21 +337,28 @@ Configurable threshold: all hidden states in the selected sequence must exceed t
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper13-6.png)
+![](figs/week11-nlp/paper13-6.png)
 :::
 :::
 
-## Visualizing Internal Structure: Hidden States
-
+## Collection-Level Hidden State Analysis
 
 ::: {.columns}
 ::: {.column width="30%"}
-How to visualize the collection-level hidden states?
+### Visualization Challenges
+- High dimensionality
+- Temporal dynamics
+- Multiple sequences
+- Pattern discovery
 :::
 
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper13-1.png)
+![](figs/week11-nlp/paper13-1.png)
 :::
+:::
+
+::: {.notes}
+Visualizing hidden states across an entire dataset presents unique challenges. We need to understand patterns across three dimensions: hidden units, time steps, and different input sequences. Dimensionality reduction techniques like PCA or t-SNE can reveal clusters of similar hidden states, suggesting that the model groups similar inputs. Trajectory visualizations show how hidden states evolve over time for different input types. Statistical aggregations reveal which units are most active and when. This collection-level view helps identify model capacity issues (are all units being used?), specialization patterns (do units have consistent roles?), and dataset biases (do certain inputs always produce similar hidden states?).
 :::
 
 
@@ -265,12 +370,24 @@ How to visualize the collection-level hidden states?
 
 
 
-## Visualizing Behavior: iSea
-![](./vis4ml_figures/paper19-3.png)
-Overall Accuracy on Test Set: 80%
+## iSea: Semantic Error Analysis
+
+![](figs/week11-nlp/paper19-3.png){fig-align="center" height="600"}
+
+::: {style="text-align: center; font-size: 1.2em;"}
+**Overall Accuracy: 80%** - But where are the failures?
+:::
+
+::: footer
+Wu et al. (2019). [iSea: Interactive Semantic Error Analysis](https://doi.org/10.1145/3290605.3300343). CHI 2019.
+:::
+
+::: {.notes}
+A model with 80% accuracy might seem good, but understanding the 20% of failures is crucial for improvement. iSea moves beyond aggregate metrics to identify systematic error patterns. Rather than looking at random failures, it discovers semantically coherent subpopulations where the model consistently fails. This approach has revealed biases, dataset artifacts, and fundamental model limitations that would be invisible in traditional evaluation.
+:::
 
 ## Visualizing Behavior: iSea
-![](./vis4ml_figures/paper19-3.png)
+![](figs/week11-nlp/paper19-3.png)
 
 Where does the model make mistakes?
 
@@ -282,13 +399,13 @@ How can we improve the model performance?
 
 ## Visualizing Behavior: iSea
 Subpopulation-Level Error Analysis is Common for NLP Models
-![](./vis4ml_figures/paper19-4.png)
+![](figs/week11-nlp/paper19-4.png)
 
 
 
 ## Visualizing Behavior: iSea
 Subpopulation-Level Error Analysis is Common for NLP Models
-![](./vis4ml_figures/paper19-4.png)
+![](figs/week11-nlp/paper19-4.png)
 
 Not able to capture the errors grounded in specific semantic concepts.
 
@@ -297,11 +414,11 @@ Requires prior knowledge to construct subpopulations.
 
 ## Visualizing Behavior: iSea
 
-![](./vis4ml_figures/paper19-1.png)
+![](figs/week11-nlp/paper19-1.png)
 
 ## Visualizing Behavior: iSea
 
-![](./vis4ml_figures/paper19-5.png)
+![](figs/week11-nlp/paper19-5.png)
 
 ## Visualizing Behavior: iSea
 Features to Describe A Subpopulation
@@ -318,7 +435,7 @@ Features to Describe A Subpopulation
 
 ## Visualizing Behavior: iSea
 To describe error-prone subpopulations, we use a set of if-then rules.
-![](./vis4ml_figures/paper19-6.png)
+![](figs/week11-nlp/paper19-6.png)
 
 
 ## Visualizing Behavior: iSea
@@ -335,68 +452,84 @@ Through iterative design process, we identified four principles of presenting th
 
 ## Visualizing Behavior: iSea
 Automatic Error Discovery
-![](./vis4ml_figures/paper19-8.png)
+![](figs/week11-nlp/paper19-8.png)
 
 ## Visualizing Behavior: iSea
 Automatic Error Discovery
-![](./vis4ml_figures/paper19-9.png)
+![](figs/week11-nlp/paper19-9.png)
 
 ## Visualizing Behavior: iSea
 Automatic Error Discovery
-![](./vis4ml_figures/paper19-10.png)
+![](figs/week11-nlp/paper19-10.png)
 
 ## Visualizing Behavior: iSea
 Views to Support Learning
-![](./vis4ml_figures/paper19-7.png)
+![](figs/week11-nlp/paper19-7.png)
 
 ## Visualizing Behavior: iSea
 Validating
-![](./vis4ml_figures/paper19-11.png)
+![](figs/week11-nlp/paper19-11.png)
 
 ## Visualizing Behavior: iSea
 Validating
-![](./vis4ml_figures/paper19-12.png)
+![](figs/week11-nlp/paper19-12.png)
 
 ## Visualizing Behavior: iSea
 Validating
-![](./vis4ml_figures/paper19-13.png)
+![](figs/week11-nlp/paper19-13.png)
 
 
 ## Visualizing Behavior: iSea
 Interpret Errors Causes
-![](./vis4ml_figures/paper19-14.png)
+![](figs/week11-nlp/paper19-14.png)
 
 ## Visualizing Behavior: iSea
 Hypothesis Testing
-![](./vis4ml_figures/paper19-15.png)
+![](figs/week11-nlp/paper19-15.png)
 
 ## Visualizing Behavior: iSea
 Rule Editing & Concept Construction
-![](./vis4ml_figures/paper19-16.png)
+![](figs/week11-nlp/paper19-16.png)
 
 
 
 
 ## Visualizing Behavior: iSea
-![](./vis4ml_figures/paper19-2.png)
+![](figs/week11-nlp/paper19-2.png)
 
 
-## Visualizing Behavior: Polyjuice
+## Polyjuice: Counterfactual Generation
+
 ::: {.columns}
-::: {.column width="30%"}
-Generating various counterfactuals
+::: {.column width="35%"}
+### Key Features
+- Generates diverse counterfactuals
+- Controls perturbation types
+- Reveals model robustness issues
 
+### Applications
+- Data augmentation
+- Robustness testing
+- Bias detection
 :::
 
-::: {.column width="70%"}
-![](./vis4ml_figures/paper20-1.png)
+::: {.column width="65%"}
+![](figs/week11-nlp/paper20-1.png)
 :::
+:::
+
+::: footer
+Wu et al. (2021). [Polyjuice: Generating Counterfactuals for Explaining, Evaluating, and Improving Models](https://doi.org/10.18653/v1/2021.acl-long.523). ACL 2021.
+:::
+
+::: {.notes}
+Polyjuice addresses a critical challenge in NLP model evaluation: understanding robustness to input variations. By generating controlled counterfactuals, it reveals whether models rely on spurious correlations or genuine understanding. This tool has been instrumental in discovering dataset biases and improving model robustness through targeted data augmentation.
 :::
 
 
 
 ## Visualizing Behavior: Polyjuice
-![](./vis4ml_figures/paper20-2.png)
+![](figs/week11-nlp/paper20-2.png)
 
 
 
@@ -408,38 +541,57 @@ Generating various counterfactuals
 
 
 
-## Visualizing LLMs
-![](./vis4ml_figures/paper1.png)
+## Attention Visualization in Transformers
 
-## Visualizing LLMs
-![](./vis4ml_figures/paper2.png)
+![](figs/week11-nlp/paper1.png){fig-align="center"}
 
-## Visualizing LLMs
+::: footer
+Vig (2019). [A Multiscale Visualization of Attention in the Transformer Model](https://doi.org/10.18653/v1/P19-3007). ACL 2019.
+:::
+
+::: {.notes}
+Attention mechanisms are the core of modern LLMs, but understanding what models "attend to" is challenging. This visualization reveals how different attention heads specialize in different linguistic phenomena: some track syntax, others capture semantic relationships, and some focus on positional patterns. The multi-scale approach allows exploration from individual token relationships to aggregate patterns across layers.
+:::
+
+## LLM Architecture: Self-Attention
+
+![](figs/week11-nlp/paper2.png){fig-align="center"}
+
+::: {.notes}
+Self-attention is the core mechanism that enables transformers to model long-range dependencies efficiently. Unlike RNNs that process sequentially, attention computes relationships between all pairs of positions simultaneously. The attention matrix shows which tokens the model "looks at" when processing each token. Multiple attention heads learn different relationship types - some track syntax (subject-verb agreement), others capture semantic relationships (coreference), and some focus on position (attending to adjacent tokens). Visualizing attention patterns helps understand model decisions and identify potential biases or failure modes. However, attention doesn't always equal explanation - high attention doesn't necessarily mean high importance for the final prediction.
+:::
+
+## Multi-Head Attention Patterns
+
 ::: {.columns}
 ::: {.column width="70%"}
-![](./vis4ml_figures/paper3-1.png)
+![](figs/week11-nlp/paper3-1.png)
 :::
 
 ::: {.column width="30%"}
-![](./vis4ml_figures/paper3-2.png)
-![](./vis4ml_figures/paper3-3.png)
+![](figs/week11-nlp/paper3-2.png)
+![](figs/week11-nlp/paper3-3.png)
 :::
 :::
 
-## Visualizing LLMs
-![](./vis4ml_figures/paper4.png)
+::: {.notes}
+Transformers use multiple attention heads that learn to focus on different types of information. This visualization shows how different heads specialize: some become "positional" heads attending to nearby tokens, others are "syntactic" heads tracking grammatical dependencies, and some are "semantic" heads linking related concepts. The multi-head design provides redundancy and allows the model to simultaneously attend to information at different positions and representation subspaces. Analyzing head specialization helps understand model capabilities and can guide model pruning - some heads can be removed with minimal performance impact. This visualization technique has revealed that many heads in large models are redundant or inactive.
+:::
 
 ## Visualizing LLMs
-![](./vis4ml_figures/paper5.png)
+![](figs/week11-nlp/paper4.png)
+
+## Visualizing LLMs
+![](figs/week11-nlp/paper5.png)
 
 ## Visualizing LLMs
 ::: {.columns}
 ::: {.column width="40%"}
-![](./vis4ml_figures/paper6-1.png)
+![](figs/week11-nlp/paper6-1.png)
 :::
 
 ::: {.column width="60%"}
-![](./vis4ml_figures/paper6-2.png)
+![](figs/week11-nlp/paper6-2.png)
 :::
 :::
 
@@ -449,43 +601,43 @@ Generating various counterfactuals
 ## Visualizing LLMs
 ::: {.columns}
 ::: {.column width="50%"}
-![](./vis4ml_figures/paper7-1.png)
+![](figs/week11-nlp/paper7-1.png)
 :::
 
 ::: {.column width="50%"}
-![](./vis4ml_figures/paper7-2.png)
+![](figs/week11-nlp/paper7-2.png)
 :::
 :::
 
 ## Visualizing LLMs
-![](./vis4ml_figures/paper8.png)
+![](figs/week11-nlp/paper8.png)
 
 ## Visualizing LLMs
-![](./vis4ml_figures/paper9.png)
+![](figs/week11-nlp/paper9.png)
 
 ## Visualizing LLMs
 ::: {.columns}
 ::: {.column width="55%"}
-![](./vis4ml_figures/paper10-1.png)
+![](figs/week11-nlp/paper10-1.png)
 :::
 
 ::: {.column width="45%"}
-![](./vis4ml_figures/paper10-2.png)
-![](./vis4ml_figures/paper10-3.png)
+![](figs/week11-nlp/paper10-2.png)
+![](figs/week11-nlp/paper10-3.png)
 :::
 :::
 
 ## Visualizing LLMs
 ::: {.columns}
 ::: {.column width="35%"}
-![](./vis4ml_figures/paper11-1.png)
+![](figs/week11-nlp/paper11-1.png)
 :::
 
 ::: {.column width="40%"}
-![](./vis4ml_figures/paper11-2.png)
+![](figs/week11-nlp/paper11-2.png)
 :::
 ::: {.column width="25%"}
-![](./vis4ml_figures/paper11-3.png)
+![](figs/week11-nlp/paper11-3.png)
 :::
 :::
 
@@ -493,49 +645,57 @@ Generating various counterfactuals
 
 ::: {.columns}
 ::: {.column width="55%"}
-![](./vis4ml_figures/paper12-1.png)
+![](figs/week11-nlp/paper12-1.png)
 :::
 
 ::: {.column width="45%"}
-![](./vis4ml_figures/paper12-2.png)
+![](figs/week11-nlp/paper12-2.png)
 :::
 :::
 
 ## Visualizing LLMs
-![](./vis4ml_figures/paper14.png)
+![](figs/week11-nlp/paper14.png)
 
 ## Visualizing LLMs
 ::: {.columns}
 ::: {.column width="55%"}
-![](./vis4ml_figures/paper15-1.png)
+![](figs/week11-nlp/paper15-1.png)
 :::
 
 ::: {.column width="45%"}
-![](./vis4ml_figures/paper15-2.png)
-![](./vis4ml_figures/paper15-3.png)
+![](figs/week11-nlp/paper15-2.png)
+![](figs/week11-nlp/paper15-3.png)
 :::
 :::
 
 ## Visualizing LLMs
 ::: {.columns}
 ::: {.column width="45%"}
-![](./vis4ml_figures/paper16-1.png)
+![](figs/week11-nlp/paper16-1.png)
 :::
 
 ::: {.column width="55%"}
-![](./vis4ml_figures/paper16-2.png)
+![](figs/week11-nlp/paper16-2.png)
 :::
 :::
 
 
-## Visualizing LLMs
-POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning of Large Language Models
-![](./vis4ml_figures/paper21-1.png)
+## POEM: Prompt Engineering for Multimodal LLMs
+
+![](figs/week11-nlp/paper21-1.png){fig-align="center"}
+
+::: footer
+Guan et al. (2024). [POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning](https://arxiv.org/abs/2406.03843). arXiv preprint.
+:::
+
+::: {.notes}
+POEM represents the frontier of LLM interaction design, addressing the challenge of prompt engineering for multimodal models. As LLMs become capable of processing images, video, and text together, understanding how to craft effective prompts becomes increasingly complex. POEM provides visual feedback on prompt effectiveness, suggests improvements, and helps users understand the model's reasoning process across modalities. This is particularly important as prompt engineering has become a critical skill for effectively using LLMs.
+:::
 
 
 ## Visualizing LLMs
 Multi-Modal Interaction
-![](./vis4ml_figures/paper21-3.png)
+![](figs/week11-nlp/paper21-3.png)
 
 ## Visualizing LLMs
 
@@ -543,11 +703,11 @@ POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning of Larg
 
 ::: {.columns}
 ::: {.column width="50%"}
-![](./vis4ml_figures/paper21-2.png)
+![](figs/week11-nlp/paper21-2.png)
 :::
 
 ::: {.column width="50%"}
-![](./vis4ml_figures/paper21-4.png)
+![](figs/week11-nlp/paper21-4.png)
 :::
 :::
 

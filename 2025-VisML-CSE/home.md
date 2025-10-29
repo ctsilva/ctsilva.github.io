@@ -132,6 +132,24 @@ author_profile: true
   - Deep Neural Networks and Composition
   - Interactive Visualization Tools
 
+### Week 10 (Nov 3)
+- **Topics:** Visualization for NLP and Large Language Models
+- **Materials:**
+  - [NLP and LLM Visualization](/2025-VisML-CSE/slides/week11-nlp.html)
+  - Lab: *Materials to be posted*
+- **Recommended Readings:**
+  - [Attention is All You Need](https://arxiv.org/abs/1706.03762) (Vaswani et al., 2017) - **Foundational**
+  - [BertViz: A Tool for Visualizing Multi-Head Self-Attention](https://arxiv.org/abs/1908.08593) (Vig, 2019)
+  - [LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in RNNs](https://doi.org/10.1109/TVCG.2017.2744158) (Strobelt et al., 2017)
+  - [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165) (Brown et al., 2020) - GPT-3 Paper
+- **Content:**
+  - NLP Fundamentals: Text Processing Pipeline
+  - Visualizing RNN/LSTM Hidden States and Gradient Flow
+  - Attention Mechanism Visualization
+  - Error Analysis and Counterfactual Generation
+  - Interactive Tools for LLM Understanding
+  - Prompt Engineering Visualization
+
 ## Assignments
 
 ### Weekly Assignments (50% of grade)
