@@ -77,7 +77,7 @@ Capital One, MLB Advanced Media, C2SMART US DOT Tier-1 University Transportation
 - **MLB Advanced Media Statcast System**  
   *Senior Technology Consultant* (2012-2017)  
   [[2018 Technology Emmy Award]](https://www.newsweek.com/2014/09/12/can-baseball-get-more-interesting-watch-big-data-267590.html)  
-  Pioneered player tracking and visualization systems for Major League Baseball, now deployed in all 30 MLB stadiums. Work expanded to include other sports analytics research.
+  Pioneered player tracking and visualization systems for Major League Baseball, now deployed in all 30 MLB stadiums. My work and interests in the area of sports analytics expanded to include other sports analytics research over time.
 
 ## Contact
 

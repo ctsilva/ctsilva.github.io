@@ -5,7 +5,7 @@ permalink: /theses/
 author_profile: true
 ---
 
-PhD dissertations and Master's theses completed under my supervision.
+PhD dissertations and Master's theses completed under my supervision or co-supervision.
 
 [← Back to Publications](/publications/)
 
