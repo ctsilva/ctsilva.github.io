@@ -103,7 +103,7 @@ author_profile: true
 - **Supplemental Material:** GeoJSON format, TopoJSON optimization, Data classification methods (Equal Interval, Quantile, Jenks), Leaflet.js tutorial
 
 ### Week 9 (Oct 31) - Urban Visualization I: Flows, Time & Interactivity **[WIP - DRAFT]**
-- **Slides:** [Urban Visualization I](/2025-InfoVis-CSE/slides/week9-urban-flows-interactivity.html) *(draft - figures needed)* | **Lab:** TBA
+- **Slides:** [Urban Visualization I](/2025-InfoVis-CSE/slides/week9-urban-flows-interactivity.html) *(draft - figures needed)* | **Lab:** [Building interactive spatio-temporal visualization](/2025-InfoVis-CSE/labs/week9-lab.html)
 - **Topics:** Urban data characteristics (scale, density, complexity, dynamism), Visual query models, TaxiVis case study (brushing & linking, temporal/spatial queries, origin-destination flows), Performance optimization (k-d trees, LOD rendering), Case studies (social inequality, transportation hubs, Hurricane Sandy)
 - **Lab:** Building interactive spatio-temporal visualizations, Implementing linked views
 - **Assignment:** Exercise 9 - Urban data exploration and visual queries (due Nov 6)

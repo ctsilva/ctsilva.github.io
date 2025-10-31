@@ -1,0 +1,191 @@
+---
+title: "Week 9 Lab: Building interactive spatio-temporal visualizations"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Ryan Kim"
+institute: "New York University"
+date: "October 31, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    css: lab-light-theme.css
+---
+
+## Week 9 Lab Overview
+
+|User Interface|Graphics Library|Notebook(s)|
+|:--|:--|:--|
+|[observablehq.com](https://observablehq.com)|[D3](https://d3js.org/)|[Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab)|
+
+### Today's Lab Activities
+
+Today we will be a exploring the following topics:
+
+1. Group and Mini Projects: Reminders
+2. Main Lab Activities:
+    1. Understanding Time and JavaScript/D3
+    2. Creating new columns from timestamps
+    3. Creating scatterplots with timescales
+    4. `d3.rollup()` and lookup dictionaries
+    5. Mapping geodata to NYC taxi trips
+
+## Group and Mini Projects: Reminders
+
+| **Assignment** | **Due Date** | **Details** |
+|---------------|--------------|-------------|
+| **Data Analysis & Sketches** | Nov. 3 | Data tables and visualization sketches |
+| **Mini-Project #1** | Nov. 6 | |
+
+## Group Project Milestone 2: Deliverables
+
+For each of your domain questions:
+
+1. **Transform the data** to extract the information needed
+2. **Create a data table** showing the results (sample of the processed data)
+3. **Sketch the visualization** you plan to create
+
+**Sketches can be:**
+
+* Hand-drawn (pen and paper, or tablet)
+* Created with drawing software (Figma, Excalidraw, etc.)
+* Generated with data viz tools (Tableau, Matplotlib, Vega-Lite)
+
+**Important:** It's okay (and expected!) to refine your questions at this stage based on what you discover in the data.
+
+## Timestamps and ISO-8601
+
+- **Problem**: Everyone has a different way to encode timestamps. You may see date types from `2020-01-15` to "January 15, 2020" to even crazy ones like `2020-01-15T10:30:00`. How do you parse this consistently? 
+- **Solution**: <a href="https://www.iso.org/iso-8601-date-and-time-format.html" target="_blank">ISO-8601</a>
+
+> ISO 8601 tackles this uncertainty by setting out an internationally agreed way to represent dates:
+> YYYY-MM-DD
+
+> Therefore, the order of the elements used to express date and time in ISO 8601 is as follows: year, month, day, hour, minutes, seconds, and milliseconds.
+
+> For example, September 27, 2022 at 6 p.m. is represented as `2022-09-27 18:00:00.000`.
+
+JavaScript and D3 prefer to encode dates in this ISO-8601 format. However, you must consider certain _caveats_...
+
+## Timestamps, JavaScript, and D3
+
+:::{.columns}
+::::{.column width="50%"}
+### JavaScript: `Date()` object class
+
+- This object class **expects your timestamp to already be in the ISO-8601 format**.
+- this class gives you some nifty functions, such as using `.getYear()` or `.getMonth()` to extract the year and month of a timestamp.
+-  You can look up the properties and functions of the `Date()` class <a href="https://www.w3schools.com/jsref/jsref_obj_Date.asp" target="_blank">here</a>.
+
+```js
+// Returns "2020-01-15T15:30Z"
+new Date("2020-01-15T10:30:00");
+
+// ERORR: Not ISO-8601 Format; this will return `null`
+new Date("15-01-2020");
+```
+::::
+::::{.column width="50%"}
+### D3: `d3.timeParse()`
+
+- Unlike JavaScript's `Date()` object class, D3 lets you **define the expected format of your input string**. 
+- The output is generally the same: it'll return a `Date()` object class in the ISO-8601 format.
+
+```js
+// Returns "2020-01-15T15:30Z"
+const parser1 = d3.timeParse("%Y-%m-%dT%H:%M:%S");
+parser1("2020-01-15T10:30:00");
+
+// Will return successfully: "2020-01-15T05:00Z"
+const parser2 = d3.timeParse("%d-%m-%Y");
+parser2("15-01-2020");
+```
+::::
+:::
+
+<br />
+<span style="color:blue;">When working with D3 and need to work with time-series data, you are **heavily encouraged** to use `d3.timeParse()` to force timestamps into a `Date()` object with the ISO-8601 format. You'll know if you've implemented it correctly if `d3.timeParse()` doesn't return `null`.</span>
+
+## `d3.timeParse()` and Time Formatting
+
+- If we want to work with `d3.timeParse()` then we need to know how to define something like `"%d-%m-%Y"` to begin with. How do we do that?
+- D3's time format system uses the same kind of syntax that was first pioneered by C's `strtime` function (Python also uses this too, actually). Read more about it <a href="https://www.geeksforgeeks.org/cpp/strftime-function-in-c/" target="_blank">here</a>. 
+
+| Directive | Meaning                                   | Example           |
+| --------- | ----------------------------------------- | ----------------- |
+| `%Y`      | 4-digit year                              | `2025`            |
+| `%m`      | Month number (01–12)                      | `03`              |
+| `%b`      | Abbreviated month name                    | `Jan`, `Feb`      |
+| `%d`      | Day of month (01–31)                      | `09`              |
+
+... and so on.
+
+
+## Practice: Time Formatting (10-15 mins)
+
+In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab), complete the code blocks from `ex1` to `ex10`.
+
+
+## Application: Why Do All This?
+
+- **Primary Reason**: Converting timestamps of varying formats into a stndardized ISO-8601.
+- **Secondary Reason**: Creating new columns from timestamp columns, for easier management.
+
+---
+
+### Modifying Datasets in JavaScript: Reminders
+
+|JavaScript code|Description|
+|:--|:--|
+|`Array.map()`|Modifies each element without changing the order or number of items in the Array.|
+|`Array.filter()`|Removes elements of an Array that do not match some criteria, but doesn't modify the elements.|
+|`Array.agg()`|Condenses large datasets into smaller data types, such as scalar values or smaller arrays.|
+|`[...old_data, /* new items */]`|Create a new Array by adopting values from an existing Array, then appending new items|
+
+## Practice: Implementing Time-Series Charts [~20 mins]
+
+In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab), we've imported the ["Daily Climate time series data"](https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data) dataset, which features climate data from Delhi from 2013 to 2017. The data is imported under the variable `climate_data`.
+
+1. Using either `Array.map` or `forEach()`, create a new version of the climate data called `climate_data_2` that features two new columns: a new "year" column extracted from the existing "date" column, and a new "day_month" column that keeps the day and month of the "date" but sets the year to some constant (e.g. 2020).
+2. Using `climate_data_2`, produce a simple scatter plot where:
+    1. The chart is a 600px wide and 400px tall chart, with margins of 50px on all sides.
+    2. Each point represents a single row.
+    3. The X-axis represents "date".
+    4. The Y-axis represents "meantemp".
+    5. The color represents "year".
+
+
+## NYC Taxi Data
+
+We covered the [NYC Taxi Open Dataset](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page), which gives us a lot of juicy info about taxi pickups across many years in NYC. Let's look at one specific subset of that data: the week of Thanksgiving in November, 2024.
+
+- `yellow_tripdata_2024-11_thanksgiving.csv`: The taxi data was originally formatted in the `.parquet` format, which JavaScript and D3 cannot read. We've pre-processed the dataset, removed some unnecessary columns, and converted it into a `.csv` for you.
+    - <a href="https://drive.google.com/file/d/1XiztOBkjIdhCR-2Fx02DHM8WPmzifRvo/view?usp=sharing" target="_blank">Google Drive alternative</a>
+    - <a href="https://colab.research.google.com/drive/13ZkUkrp2Y1aNND7nEYNfMh9SjoF1of43?usp=sharing" target="_blank">this Google Colab Pre-Processing</a>
+- `taxi_zones_wgs84.json`: The same data repository provides shapefiles for taxi regions in NYC. However, this geodata's coordinates were localized to the **New York State Plane coordinates (EPSG:2263).** We converted all coordinates to **EPSG:4326 (longitude/latitude)** as well as transform it into GeoJSON for you.
+    - <a href="https://drive.google.com/file/d/1pQVP2cG02i1BwlalvZwWWQ-GzkBK-UKf/view?usp=sharing" target="_blank">Google Drive alternative</a>
+    - <a href="https://colab.research.google.com/drive/1kudazfffDDM8ONahEFI3WRPxzHtJCt4-?usp=sharing" target="_blank">Google Colab Pre-Processing</a>
+
+
+## `d3.Rollup()`
+
+```js
+d3.rollup(data,
+         v => // the aggregated rows as an array
+         d => d.key);
+```
+
+## Practice: Plotting GeoJSON of NYC with Taxi Data (~30 mins)
+
+In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab), complete the code blocks to plot a geovisualization using
+
+- Dropdown inputs
+- `d3.rollup()` => dictionary lookup
+- Geovisualization with Zoom

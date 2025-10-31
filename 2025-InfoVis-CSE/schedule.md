@@ -246,7 +246,7 @@ author_profile: true
 - [Graphical Perception of Multiple Time Series](https://idl.cs.washington.edu/files/2009-GraphicalPerceptionMultiple-InfoVis.pdf). Heer, Kong & Agrawala. IEEE InfoVis 2009.
 - [The Connected Scatterplot for Presenting Paired Time Series](https://eagereyes.org/papers/the-connected-scatterplot-for-presenting-paired-time-series). Haroz, Kosara & Franconeri. IEEE TVCG 2016.
 
-**Lab:** 
+**Lab:** [Building interactive spatio-temporal visualization](/2025-InfoVis-CSE/labs/week9-lab.html)
 - D3 time scales and axes
 - Line charts and area charts for time series
 - Brushing and zooming for temporal data
