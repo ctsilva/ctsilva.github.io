@@ -3,7 +3,7 @@ title: "Topological Data Analysis"
 subtitle: "CS-GY 9223 - Fall 2025"
 author: "Claudio Silva"
 institute: "NYU Tandon School of Engineering"
-date: "November 3, 2025"
+date: "November 17, 2025"
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -18,23 +18,50 @@ format:
     transition-speed: fast
     footer: <https://engineering.nyu.edu>
     fontsize: 24pt
+    css: lab-light-theme.css
 resources:
   - tda.pdf
 ---
 
 # Topological Data Analysis
 
-## What is topology? 
+## Today's Agenda
+
+1. **Introduction to Topology**
+   - Shape analysis beyond geometry
+   - Topological equivalence and connectivity
+
+2. **Persistence and Betti Numbers**
+   - Counting holes and connected components
+   - Persistence diagrams
+
+3. **Simplicial Complexes**
+   - Vietoris-Rips construction
+   - From point clouds to topology
+
+4. **The Mapper Algorithm**
+   - Data skeleton construction
+   - Practical applications
+
+::: {.notes}
+Topological Data Analysis (TDA) provides powerful mathematical tools for understanding the "shape" of data. Unlike traditional dimensionality reduction techniques that focus on preserving distances, TDA captures global structural features like connected components, loops, and voids that persist across multiple scales. This lecture introduces two main strategies: persistent homology (analyzing how topological features appear and disappear across scales) and the Mapper algorithm (constructing data skeletons that summarize structure). These techniques have found applications in diverse fields from biology and chemistry to machine learning and data science.
+:::
+
+## What is topology?
 
 - Topology studies the *shape* of mathematical objects
 
 - Unlike Geometry, it is not concerned with sizes, angles, nor coordinates
 
-- It is concerned with the *connectivity* (or lack of) between different “parts” of the object
+- It is concerned with the *connectivity* (or lack of) between different "parts" of the object
 
 - Two objects are topologically equivalent if we can transform one into another with continuous transformations (without tearing the object)
 
 ![](figs/tda_figs/cube-sphere.png){fig-align="center"}
+
+::: {.notes}
+Topology is often called "rubber-sheet geometry" because it studies properties that remain unchanged under continuous deformations like stretching, twisting, and bending—but not tearing or gluing. A cube and a sphere are topologically equivalent because you can continuously deform one into the other without cutting. This focus on connectivity rather than precise measurements makes topology particularly useful for analyzing high-dimensional data where exact distances may be noisy or less meaningful than structural relationships.
+:::
 
 ## What is topology?
 
@@ -42,6 +69,10 @@ resources:
 
 ::: footer
 [Source](https://www.youtube.com/watch?v=9NlqYr6-TpA)
+:::
+
+::: {.notes}
+The classic example: a coffee mug and a donut (torus) are topologically equivalent! Both have exactly one hole. You can imagine molding the mug's handle into a ring while flattening the cup portion—all without tearing. This illustrates a fundamental topological invariant: the number of holes. In TDA, we'll formalize this intuition and use it to characterize datasets.
 :::
 
 ## Why topology?
@@ -98,6 +129,10 @@ The $d^{th}$ Betti number counts the number of $d$-dimensional holes. It can be 
 
 :::footer
 Slides based on Bastian Rieck's [Topological Data Analysis for Machine Learning](https://bastian.rieck.me/talks/ecml_pkdd_2020/)
+:::
+
+::: {.notes}
+Betti numbers formalize our intuition about holes. β₀ counts connected components (separate pieces), β₁ counts 1-dimensional holes (like loops or tunnels), and β₂ counts 2-dimensional voids (like hollow cavities). For example, a sphere has β₀=1 (one piece), β₁=0 (no loops), and β₂=1 (one void inside). A torus has β₀=1, β₁=2 (two independent loops), and β₂=1. These numbers provide a compact topological signature for data.
 :::
 
 ## First Example - Map
@@ -367,6 +402,10 @@ Slides based on Vincent Divol's [CDS Lunch Seminar](https://cds.nyu.edu/data-sci
 Slides based on Vincent Divol's [CDS Lunch Seminar](https://cds.nyu.edu/data-science-lunch-seminar-series/) presentation
 :::
 
+::: {.notes}
+A persistence diagram is a scatter plot where each point (b,d) represents a topological feature that appeared (birth) at scale b and disappeared (death) at scale d. Points far from the diagonal represent persistent features—likely to be signal. Points near the diagonal are short-lived, often noise. This visualization provides a complete summary of how topological features evolve across scales, making it possible to automatically identify significant structures in data.
+:::
+
 ## Distance between persistence diagrams
 
 \
@@ -558,6 +597,10 @@ Equivalently, $\mathcal{V}_\epsilon$ contains all simplices whose *diameter* is 
 
 :::footer
 Slides based on Bastian Rieck's [Topological Data Analysis for Machine Learning](https://bastian.rieck.me/talks/ecml_pkdd_2020/)
+:::
+
+::: {.notes}
+The Vietoris-Rips complex transforms a point cloud into a simplicial complex. At scale ε, we connect all points within distance ε, creating edges. We then fill in triangles when three points are mutually connected, tetrahedra when four points form a complete graph, and so on. This construction captures the shape of the data at a given scale. By varying ε from 0 to infinity, we get a filtration—a sequence of nested complexes that reveals how topological features appear and disappear.
 :::
 
 ## Vietoris-Rips construction
@@ -930,6 +973,10 @@ We need to adjust the "Math World" view to bring the algorithm into the "Data Wo
 Slides based on Anthony Bak's [Stanford Seminar - Topological Data Analysis](https://www.youtube.com/watch?v=x3Hl85OBuc0) presentation
 :::
 
+::: {.notes}
+The Mapper algorithm creates a simplified graph representation of high-dimensional data by: (1) projecting data through a "lens" function (like PCA or density), (2) covering the lens range with overlapping intervals, (3) clustering points in each interval's preimage, and (4) connecting clusters that share points. The result is a network that captures the data's topological structure, making it easy to identify branches, loops, and other features. Choice of lens function is crucial—different lenses reveal different aspects of the data structure.
+:::
+
 ## Data World - Mapper
 
 ![](figs/tda_figs/mapper-22.png){fig-align="center"}
@@ -1047,31 +1094,34 @@ Slides based on Anthony Bak's [Stanford Seminar - Topological Data Analysis](htt
 
 - For a course in TDA, see Raphaël Tinarrage's [Topological Data Analysis with Persistent Homology](https://raphaeltinarrage.github.io/EMAp.html) summer course
 
-## References
+## References - Books
 
-Some books of interest:
+**Foundational Textbooks:**
 
-- Edelsbrunner, Herbert, and John L. Harer. Computational topology: an introduction. American Mathematical Society, 2022.
+- Edelsbrunner, H., & Harer, J. L. (2022). *Computational Topology: An Introduction*. American Mathematical Society. [DOI: 10.1090/mbk/069](https://doi.org/10.1090/mbk/069)
 
-- Dey, Tamal Krishna, and Yusu Wang. Computational topology for data analysis. Cambridge University Press, 2022.
+- Dey, T. K., & Wang, Y. (2022). *Computational Topology for Data Analysis*. Cambridge University Press. [DOI: 10.1017/9781009099950](https://doi.org/10.1017/9781009099950)
 
-- Carlsson, Gunnar, and Mikael Vejdemo-Johansson. Topological data analysis with applications. Cambridge University Press, 2021.
+- Carlsson, G., & Vejdemo-Johansson, M. (2021). *Topological Data Analysis with Applications*. Cambridge University Press. [DOI: 10.1017/9781108975704](https://doi.org/10.1017/9781108975704)
 
-Introductory paper:
+**Introductory Paper:**
 
-- Chazal, Frédéric, and Bertrand Michel. "An introduction to topological data analysis: fundamental and practical aspects for data scientists." Frontiers in artificial intelligence 4 (2021): 108.
+- Chazal, F., & Michel, B. (2021). [An Introduction to Topological Data Analysis: Fundamental and Practical Aspects for Data Scientists](https://doi.org/10.3389/frai.2021.667963). *Frontiers in Artificial Intelligence*, 4, 108.
 
-## References
+## References - Software & Applications
 
-TDA in Python:
+**TDA in Python:**
 
-- For overall TDA data structures and algorithms: [GUDHI](https://gudhi.inria.fr/) (both C++ and Python) or [scikit-tda](https://docs.scikit-tda.org/en/latest/)
-- For a faster implementation of the Vietoris-Rips: [Ripser.py](https://ripser.scikit-tda.org/en/latest/)
-- For a faster implementation of the Mapper: [KeplerMapper](https://kepler-mapper.scikit-tda.org/en/latest/)
+- [GUDHI](https://gudhi.inria.fr/) - Comprehensive TDA library (C++ and Python)
+- [scikit-tda](https://docs.scikit-tda.org/en/latest/) - Scikit-learn compatible TDA tools
+- [Ripser.py](https://ripser.scikit-tda.org/en/latest/) - Fast Vietoris-Rips implementation
+- [KeplerMapper](https://kepler-mapper.scikit-tda.org/en/latest/) - Fast Mapper implementation
 
-For an open-source library and software collection for topological data analysis and visualization: [Topology ToolKit](https://topology-tool-kit.github.io/)
+**Visualization Tools:**
 
-For more examples of TDA aplications:
+- [Topology ToolKit](https://topology-tool-kit.github.io/) - Open-source TDA visualization library
+
+**Applications & Examples:**
 
 - [DONUT - Database of Original & Non-Theoretical Uses of Topology](https://donut.topology.rocks/)
-- Applied Algebraic Topology Research Network [seminar series](https://www.aatrn.net/seminar)
+- [Applied Algebraic Topology Research Network](https://www.aatrn.net/seminar) - Seminar series

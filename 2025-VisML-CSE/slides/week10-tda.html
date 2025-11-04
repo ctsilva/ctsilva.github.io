@@ -6,10 +6,12 @@
 <script src="week10-tda_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week10-tda_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week10-tda_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week10-tda_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.34">
+<link href="week10-tda_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
 
-  <title>Visualization for Machine Learning</title>
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2025-11-17">
+  <title>Topological Data Analysis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,12 +30,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="week10-tda_files/libs/revealjs/dist/theme/quarto-e18a912597b61ff1d4c20b1bb0a9113b.css">
+  <link rel="stylesheet" href="week10-tda_files/libs/revealjs/dist/theme/quarto-743137726eb562984e8d4ff610b648a8.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week10-tda_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week10-tda_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week10-tda_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="week10-tda_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="week10-tda_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="week10-tda_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -127,20 +128,67 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Visualization for Machine Learning</h1>
-  <p class="subtitle">Spring 2024</p>
+<section class="quarto-title-block center">
+  <h1 class="title">Topological Data Analysis</h1>
+  <p class="subtitle">CS-GY 9223 - Fall 2025</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Tandon School of Engineering
+          </p>
+    </div>
 </div>
 
+  <p class="date">2025-11-17</p>
 </section>
 <section>
-<section id="topological-data-analysis" class="title-slide slide level1 center">
+<section class="title-slide slide level1 center">
 <h1>Topological Data Analysis</h1>
 
 </section>
-<section id="what-is-topology" class="slide level2">
+<section class="slide level2">
+<h2>Today’s Agenda</h2>
+<ol type="1">
+<li><strong>Introduction to Topology</strong>
+<ul>
+<li>Shape analysis beyond geometry</li>
+<li>Topological equivalence and connectivity</li>
+</ul></li>
+<li><strong>Persistence and Betti Numbers</strong>
+<ul>
+<li>Counting holes and connected components</li>
+<li>Persistence diagrams</li>
+</ul></li>
+<li><strong>Simplicial Complexes</strong>
+<ul>
+<li>Vietoris-Rips construction</li>
+<li>From point clouds to topology</li>
+</ul></li>
+<li><strong>The Mapper Algorithm</strong>
+<ul>
+<li>Data skeleton construction</li>
+<li>Practical applications</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Topological Data Analysis (TDA) provides powerful mathematical tools for understanding the “shape” of data. Unlike traditional dimensionality reduction techniques that focus on preserving distances, TDA captures global structural features like connected components, loops, and voids that persist across multiple scales. This lecture introduces two main strategies: persistent homology (analyzing how topological features appear and disappear across scales) and the Mapper algorithm (constructing data skeletons that summarize structure). These techniques have found applications in diverse fields from biology and chemistry to machine learning and data science.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>What is topology?</h2>
 <ul>
 <li><p>Topology studies the <em>shape</em> of mathematical objects</p></li>
@@ -149,15 +197,41 @@
 <li><p>Two objects are topologically equivalent if we can transform one into another with continuous transformations (without tearing the object)</p></li>
 </ul>
 
-<img data-src="figs/tda_figs/cube-sphere.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="what-is-topology-1" class="slide level2">
+<img data-src="figs/tda_figs/cube-sphere.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Topology is often called “rubber-sheet geometry” because it studies properties that remain unchanged under continuous deformations like stretching, twisting, and bending—but not tearing or gluing. A cube and a sphere are topologically equivalent because you can continuously deform one into the other without cutting. This focus on connectivity rather than precise measurements makes topology particularly useful for analyzing high-dimensional data where exact distances may be noisy or less meaningful than structural relationships.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>What is topology?</h2>
 
 <img data-src="figs/tda_figs/mug-donnut.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p><a href="https://www.youtube.com/watch?v=9NlqYr6-TpA">Source</a></p>
 </div>
+<aside class="notes">
+<p>The classic example: a coffee mug and a donut (torus) are topologically equivalent! Both have exactly one hole. You can imagine molding the mug’s handle into a ring while flattening the cup portion—all without tearing. This illustrates a fundamental topological invariant: the number of holes. In TDA, we’ll formalize this intuition and use it to characterize datasets.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="why-topology" class="slide level2">
+<section class="slide level2">
 <h2>Why topology?</h2>
 <ul>
 <li><p>Since topology analyzes the shape while discarding possibly unnecessary information, it is frequently used for analyzing high-dimensional objects</p></li>
@@ -165,35 +239,35 @@
 <li><p>To do this, it is necessary to construct topological representations of the dataset’s points</p></li>
 </ul>
 </section>
-<section id="why-topology---an-example-in-chemistry" class="slide level2">
+<section class="slide level2">
 <h2>Why topology? - An example in chemistry</h2>
 
 <img data-src="figs/tda_figs/chemistry-1.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Raphaël Tinarrage’s <a href="https://raphaeltinarrage.github.io/files/Slides_SSDS_I.pdf">From Algebraic Topology to Data Analysis</a></p>
 </div>
 </section>
-<section id="why-topology---an-example-in-chemistry-1" class="slide level2">
+<section class="slide level2">
 <h2>Why topology? - An example in chemistry</h2>
 
 <img data-src="figs/tda_figs/chemistry-2.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Raphaël Tinarrage’s <a href="https://raphaeltinarrage.github.io/files/Slides_SSDS_I.pdf">From Algebraic Topology to Data Analysis</a></p>
 </div>
 </section>
-<section id="why-topology---an-example-in-chemistry-2" class="slide level2">
+<section class="slide level2">
 <h2>Why topology? - An example in chemistry</h2>
 
 <img data-src="figs/tda_figs/chemistry-3.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Raphaël Tinarrage’s <a href="https://raphaeltinarrage.github.io/files/Slides_SSDS_I.pdf">From Algebraic Topology to Data Analysis</a></p>
 </div>
 </section>
-<section id="why-topology---an-example-in-biology" class="slide level2">
+<section class="slide level2">
 <h2>Why topology? - An example in biology</h2>
 
 <img data-src="figs/tda_figs/biology.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Raphaël Tinarrage’s <a href="https://raphaeltinarrage.github.io/files/Slides_SSDS_I.pdf">From Algebraic Topology to Data Analysis</a></p>
 </div>
 </section>
-<section id="betti-numbers" class="slide level2">
+<section class="slide level2">
 <h2>Betti numbers</h2>
 <p>The <span class="math inline">\(d^{th}\)</span> Betti number counts the number of <span class="math inline">\(d\)</span>-dimensional holes. It can be used to distinguish between spaces.</p>
 <ul>
@@ -205,8 +279,21 @@
 <img data-src="figs/tda_figs/betti-numbers-examples.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
+<aside class="notes">
+<p>Betti numbers formalize our intuition about holes. β₀ counts connected components (separate pieces), β₁ counts 1-dimensional holes (like loops or tunnels), and β₂ counts 2-dimensional voids (like hollow cavities). For example, a sphere has β₀=1 (one piece), β₁=0 (no loops), and β₂=1 (one void inside). A torus has β₀=1, β₁=2 (two independent loops), and β₂=1. These numbers provide a compact topological signature for data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="first-example---map" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -218,7 +305,7 @@ What is a peak?
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-1" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -231,7 +318,7 @@ First idea: Using local maximum
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-2" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -244,7 +331,7 @@ Second idea: flooding
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-3" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -257,7 +344,7 @@ Second idea: flooding
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-4" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -270,7 +357,7 @@ Second idea: flooding
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-5" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -283,7 +370,7 @@ Second idea: flooding
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-6" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -296,7 +383,7 @@ Second idea: flooding
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-7" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -309,7 +396,7 @@ Second idea: flooding
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-8" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 What is a peak?
@@ -322,7 +409,7 @@ Second idea: flooding
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-9" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 The island <span class="math inline">\(I\)</span> appears at sea level <span class="math inline">\(b\)</span> (its <strong>birth time</strong>)…
@@ -334,7 +421,7 @@ The island <span class="math inline">\(I\)</span> appears at sea level <span cla
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-10" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 <p style="text-align: center;">
 The island <span class="math inline">\(I\)</span> appears at sea level <span class="math inline">\(b\)</span> (its <strong>birth time</strong>)…
@@ -350,7 +437,7 @@ The point <span class="math inline">\(x\)</span> is a peak if the <strong>persis
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-11" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 
 <img data-src="figs/tda_figs/example-map-persistence.png" class="quarto-figure quarto-figure-center r-stretch"><p>The persistence diagram (PD) of the elevation function is the collection of the points <span class="math inline">\((b,d)\)</span>, where <span class="math inline">\((b,d)\)</span> corresponds to the birth/death of an island.</p>
@@ -358,7 +445,7 @@ The point <span class="math inline">\(x\)</span> is a peak if the <strong>persis
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="first-example---map-12" class="slide level2">
+<section class="slide level2">
 <h2>First Example - Map</h2>
 
 <img data-src="figs/tda_figs/example-map-persistence-2.png" class="quarto-figure quarto-figure-center r-stretch"><p>The persistence diagram (PD) of the elevation function is the collection of the points <span class="math inline">\((b,d)\)</span>, where <span class="math inline">\((b,d)\)</span> corresponds to the birth/death of an island.</p>
@@ -366,105 +453,118 @@ The point <span class="math inline">\(x\)</span> is a peak if the <strong>persis
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-1.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-1" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-2.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-2" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-3.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-3" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-4.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-4" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-5.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-5" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-6.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-6" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-7.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-7" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-8.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-8" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-9.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-9" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-10.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-10" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-11.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-11" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-12.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="second-example-12" class="slide level2">
+<section class="slide level2">
 <h2>Second Example</h2>
 
 <img data-src="figs/tda_figs/example-persistence-13.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="persistence-diagram" class="slide level2">
+<section class="slide level2">
 <h2>Persistence diagram</h2>
 
 <img data-src="figs/tda_figs/example-persistence-diagram.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
+<aside class="notes">
+<p>A persistence diagram is a scatter plot where each point (b,d) represents a topological feature that appeared (birth) at scale b and disappeared (death) at scale d.&nbsp;Points far from the diagonal represent persistent features—likely to be signal. Points near the diagonal are short-lived, often noise. This visualization provides a complete summary of how topological features evolve across scales, making it possible to automatically identify significant structures in data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="distance-between-persistence-diagrams" class="slide level2">
+<section class="slide level2">
 <h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
@@ -476,7 +576,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="distance-between-persistence-diagrams-1" class="slide level2">
+<section class="slide level2">
 <h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
@@ -494,7 +594,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="distance-between-persistence-diagrams-2" class="slide level2">
+<section class="slide level2">
 <h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
@@ -513,7 +613,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="distance-between-persistence-diagrams-3" class="slide level2">
+<section class="slide level2">
 <h2>Distance between persistence diagrams</h2>
 <p><br>
 </p>
@@ -533,7 +633,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation</p>
 </div>
 </section>
-<section id="simplicial-complexes" class="slide level2">
+<section class="slide level2">
 <h2>Simplicial complexes</h2>
 <p><strong>Definition</strong></p>
 <p>We call a non-empty family of sets <span class="math inline">\(K\)</span> with a collection of non-empty subsets <span class="math inline">\(S\)</span> an <em>abstract simplicial complex</em> if:</p>
@@ -547,7 +647,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="simplicial-complexes-1" class="slide level2">
+<section class="slide level2">
 <h2>Simplicial complexes</h2>
 <p><strong>Example</strong></p>
 <p>Simplicial complexes can be decomposed into their skeletons, which only contain simplices of a certain dimension.</p>
@@ -556,7 +656,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="simplicial-complexes-2" class="slide level2">
+<section class="slide level2">
 <h2>Simplicial complexes</h2>
 <p><strong>Example</strong></p>
 <p>Simplicial complexes can be decomposed into their skeletons, which only contain simplices of a certain dimension.</p>
@@ -565,7 +665,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="simplicial-complexes-3" class="slide level2">
+<section class="slide level2">
 <h2>Simplicial complexes</h2>
 <p><strong>Example</strong></p>
 <p>Simplicial complexes can be decomposed into their skeletons, which only contain simplices of a certain dimension.</p>
@@ -574,7 +674,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="simplicial-complexes-4" class="slide level2">
+<section class="slide level2">
 <h2>Simplicial complexes</h2>
 <p><strong>Example</strong></p>
 <p>Simplicial complexes can be decomposed into their skeletons, which only contain simplices of a certain dimension.</p>
@@ -583,7 +683,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="simplicial-complexes-5" class="slide level2">
+<section class="slide level2">
 <h2>Simplicial complexes</h2>
 <p><strong>Non-example</strong></p>
 <p>This is <em>not</em> a simplicial complex because some higher-dimensional simplices do not intersect in a lower dimensional one!</p>
@@ -592,7 +692,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="simplicial-complexes-6" class="slide level2">
+<section class="slide level2">
 <h2>Simplicial complexes</h2>
 <p><strong>Example</strong></p>
 
@@ -602,22 +702,22 @@ If we have more than one persistence diagram, how do we measure the distance bet
 </div>
 </section></section>
 <section>
-<section id="from-points-clouds-to-simplicial-complexes" class="title-slide slide level1 center">
+<section class="title-slide slide level1 center">
 <h1>From points clouds to simplicial complexes</h1>
 
 </section>
-<section id="from-points-clouds-to-simplicial-complexes-1" class="slide level2">
+<section class="slide level2">
 <h2>From points clouds to simplicial complexes</h2>
 <p><br>
 </p>
 
 <img data-src="figs/tda_figs/torus-points.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="from-points-clouds-to-simplicial-complexes-2" class="slide level2">
+<section class="slide level2">
 <h2>From points clouds to simplicial complexes</h2>
 
 <img data-src="figs/tda_figs/torus-reconstructed.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
 <section>
-<section id="section" class="title-slide slide level1 center">
+<section class="title-slide slide level1 center">
 <h1></h1>
 <div style="font-size: 180%;">
 <p><strong>Strategy 1: Triangulation</strong></p>
@@ -626,7 +726,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Constructing the data’s simplicial complex</p>
 </div>
 </section>
-<section id="vietoris-rips-construction" class="slide level2">
+<section class="slide level2">
 <h2>Vietoris-Rips construction</h2>
 <p><strong>Definition</strong></p>
 <p>Given a set of points <span class="math inline">\(\mathcal{X} = \{x_1,\dots,x_n\}\)</span> and a metric <span class="math inline">\(dist\)</span> (such as the Euclidean distance), pick a threshold <span class="math inline">\(\epsilon\)</span> and build the Vietoris-Rips complex <span class="math inline">\(\mathcal{V}_\epsilon\)</span> defined as:</p>
@@ -635,8 +735,21 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <div class="footer">
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
+<aside class="notes">
+<p>The Vietoris-Rips complex transforms a point cloud into a simplicial complex. At scale ε, we connect all points within distance ε, creating edges. We then fill in triangles when three points are mutually connected, tetrahedra when four points form a complete graph, and so on. This construction captures the shape of the data at a given scale. By varying ε from 0 to infinity, we get a filtration—a sequence of nested complexes that reveals how topological features appear and disappear.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="vietoris-rips-construction-1" class="slide level2">
+<section class="slide level2">
 <h2>Vietoris-Rips construction</h2>
 <p><strong>Example</strong></p>
 
@@ -645,7 +758,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="some-details-about-this-construction" class="slide level2">
+<section class="slide level2">
 <h2>Some details about this construction</h2>
 <div class="columns">
 <div class="column" style="width:30%;">
@@ -666,7 +779,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="the-betti-numbers-of-a-vietoris-rips-complex" class="slide level2">
+<section class="slide level2">
 <h2>The betti numbers of a Vietoris-Rips complex</h2>
 <p><strong>Example</strong></p>
 
@@ -674,7 +787,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="issues-with-this-approach" class="slide level2">
+<section class="slide level2">
 <h2>Issues with this approach</h2>
 <p><br>
 </p>
@@ -689,7 +802,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="picking-epsilon---topological-persistence" class="slide level2">
+<section class="slide level2">
 <h2>Picking <span class="math inline">\(\epsilon\)</span> - Topological Persistence</h2>
 <p><strong>Intuition:</strong> Go through all scales and track the topological features</p>
 <div class="columns">
@@ -700,7 +813,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="picking-epsilon---topological-persistence-1" class="slide level2">
+<section class="slide level2">
 <h2>Picking <span class="math inline">\(\epsilon\)</span> - Topological Persistence</h2>
 <p><strong>Intuition:</strong> Go through all scales and track the topological features</p>
 <div class="columns">
@@ -711,7 +824,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="picking-epsilon---topological-persistence-2" class="slide level2">
+<section class="slide level2">
 <h2>Picking <span class="math inline">\(\epsilon\)</span> - Topological Persistence</h2>
 <p><strong>Intuition:</strong> Go through all scales and track the topological features</p>
 <div class="columns">
@@ -722,7 +835,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="picking-epsilon---topological-persistence-3" class="slide level2">
+<section class="slide level2">
 <h2>Picking <span class="math inline">\(\epsilon\)</span> - Topological Persistence</h2>
 <p><strong>Intuition:</strong> Go through all scales and track the topological features</p>
 <div class="columns">
@@ -733,7 +846,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Bastian Rieck’s <a href="https://bastian.rieck.me/talks/ecml_pkdd_2020/">Topological Data Analysis for Machine Learning</a></p>
 </div>
 </section>
-<section id="picking-epsilon---topological-persistence-4" class="slide level2">
+<section class="slide level2">
 <h2>Picking <span class="math inline">\(\epsilon\)</span> - Topological Persistence</h2>
 <p><strong>Intuition:</strong> Go through all scales and track the topological features</p>
 <div class="columns">
@@ -747,7 +860,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 </div>
 </section></section>
 <section>
-<section id="section-1" class="title-slide slide level1 center">
+<section class="title-slide slide level1 center">
 <h1></h1>
 <div style="font-size: 180%;">
 <p><strong>Strategy 2: Data skeleton</strong></p>
@@ -756,7 +869,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>The Mapper Algortihm</p>
 </div>
 </section>
-<section id="math-world" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 <p><br>
 </p>
@@ -771,105 +884,105 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-1" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-1.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-2" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-2.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-3" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-3.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-4" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-4.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-5" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-5.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-6" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-6.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-7" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-7.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-8" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-8.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-9" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-9.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-10" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-10.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-11" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-11.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-12" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-12.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-13" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-13.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="math-world-14" class="slide level2">
+<section class="slide level2">
 <h2>Math World</h2>
 
 <img data-src="figs/tda_figs/mapper-14.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 
@@ -877,7 +990,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful-1" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 
@@ -885,7 +998,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful-2" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 
@@ -893,7 +1006,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful-3" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 
@@ -901,7 +1014,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful-4" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 
@@ -909,7 +1022,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful-5" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 
@@ -917,7 +1030,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful-6" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 
@@ -925,7 +1038,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="why-is-this-useful-7" class="slide level2">
+<section class="slide level2">
 <h2>Why is this useful?</h2>
 <p>We get “easy” understanding of the localizations of quantities of interest.</p>
 <ul>
@@ -937,7 +1050,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 <p>We need to adjust the “Math World” view to bring the algorithm into the “Data World”</p>
 <ul>
@@ -948,92 +1061,105 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
+<aside class="notes">
+<p>The Mapper algorithm creates a simplified graph representation of high-dimensional data by: (1) projecting data through a “lens” function (like PCA or density), (2) covering the lens range with overlapping intervals, (3) clustering points in each interval’s preimage, and (4) connecting clusters that share points. The result is a network that captures the data’s topological structure, making it easy to identify branches, loops, and other features. Choice of lens function is crucial—different lenses reveal different aspects of the data structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="data-world---mapper-1" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-22.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-2" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-23.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-3" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-24.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-4" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-25.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-5" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-26.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-6" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-27.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-7" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-28.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-8" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-29.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-9" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-30.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-10" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-31.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-11" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-32.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-12" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-33.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
 <p>Slides based on Anthony Bak’s <a href="https://www.youtube.com/watch?v=x3Hl85OBuc0">Stanford Seminar - Topological Data Analysis</a> presentation</p>
 </div>
 </section>
-<section id="data-world---mapper-13" class="slide level2">
+<section class="slide level2">
 <h2>Data World - Mapper</h2>
 
 <img data-src="figs/tda_figs/mapper-34.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
@@ -1041,11 +1167,11 @@ If we have more than one persistence diagram, how do we measure the distance bet
 </div>
 </section></section>
 <section>
-<section id="to-look-further" class="title-slide slide level1 center">
+<section class="title-slide slide level1 center">
 <h1>To look further</h1>
 
 </section>
-<section id="references" class="slide level2">
+<section class="slide level2">
 <h2>References</h2>
 <ul>
 <li><p>For more information about the persistence diagram, see Vincent Divol’s <a href="https://cds.nyu.edu/data-science-lunch-seminar-series/">CDS Lunch Seminar</a> presentation “Quantifying the topology of datasets using Topological Data Analysis”</p></li>
@@ -1054,32 +1180,36 @@ If we have more than one persistence diagram, how do we measure the distance bet
 <li><p>For a course in TDA, see Raphaël Tinarrage’s <a href="https://raphaeltinarrage.github.io/EMAp.html">Topological Data Analysis with Persistent Homology</a> summer course</p></li>
 </ul>
 </section>
-<section id="references-1" class="slide level2">
-<h2>References</h2>
-<p>Some books of interest:</p>
+<section class="slide level2">
+<h2>References - Books</h2>
+<p><strong>Foundational Textbooks:</strong></p>
 <ul>
-<li><p>Edelsbrunner, Herbert, and John L. Harer. Computational topology: an introduction. American Mathematical Society, 2022.</p></li>
-<li><p>Dey, Tamal Krishna, and Yusu Wang. Computational topology for data analysis. Cambridge University Press, 2022.</p></li>
-<li><p>Carlsson, Gunnar, and Mikael Vejdemo-Johansson. Topological data analysis with applications. Cambridge University Press, 2021.</p></li>
+<li><p>Edelsbrunner, H., &amp; Harer, J. L. (2022). <em>Computational Topology: An Introduction</em>. American Mathematical Society. <a href="https://doi.org/10.1090/mbk/069">DOI: 10.1090/mbk/069</a></p></li>
+<li><p>Dey, T. K., &amp; Wang, Y. (2022). <em>Computational Topology for Data Analysis</em>. Cambridge University Press. <a href="https://doi.org/10.1017/9781009099950">DOI: 10.1017/9781009099950</a></p></li>
+<li><p>Carlsson, G., &amp; Vejdemo-Johansson, M. (2021). <em>Topological Data Analysis with Applications</em>. Cambridge University Press. <a href="https://doi.org/10.1017/9781108975704">DOI: 10.1017/9781108975704</a></p></li>
 </ul>
-<p>Introductory paper:</p>
+<p><strong>Introductory Paper:</strong></p>
 <ul>
-<li>Chazal, Frédéric, and Bertrand Michel. “An introduction to topological data analysis: fundamental and practical aspects for data scientists.” Frontiers in artificial intelligence 4 (2021): 108.</li>
+<li>Chazal, F., &amp; Michel, B. (2021). <a href="https://doi.org/10.3389/frai.2021.667963">An Introduction to Topological Data Analysis: Fundamental and Practical Aspects for Data Scientists</a>. <em>Frontiers in Artificial Intelligence</em>, 4, 108.</li>
 </ul>
 </section>
-<section id="references-2" class="slide level2">
-<h2>References</h2>
-<p>TDA in Python:</p>
+<section class="slide level2">
+<h2>References - Software &amp; Applications</h2>
+<p><strong>TDA in Python:</strong></p>
 <ul>
-<li>For overall TDA data structures and algorithms: <a href="https://gudhi.inria.fr/">GUDHI</a> (both C++ and Python) or <a href="https://docs.scikit-tda.org/en/latest/">scikit-tda</a></li>
-<li>For a faster implementation of the Vietoris-Rips: <a href="https://ripser.scikit-tda.org/en/latest/">Ripser.py</a></li>
-<li>For a faster implementation of the Mapper: <a href="https://kepler-mapper.scikit-tda.org/en/latest/">KeplerMapper</a></li>
+<li><a href="https://gudhi.inria.fr/">GUDHI</a> - Comprehensive TDA library (C++ and Python)</li>
+<li><a href="https://docs.scikit-tda.org/en/latest/">scikit-tda</a> - Scikit-learn compatible TDA tools</li>
+<li><a href="https://ripser.scikit-tda.org/en/latest/">Ripser.py</a> - Fast Vietoris-Rips implementation</li>
+<li><a href="https://kepler-mapper.scikit-tda.org/en/latest/">KeplerMapper</a> - Fast Mapper implementation</li>
 </ul>
-<p>For an open-source library and software collection for topological data analysis and visualization: <a href="https://topology-tool-kit.github.io/">Topology ToolKit</a></p>
-<p>For more examples of TDA aplications:</p>
+<p><strong>Visualization Tools:</strong></p>
+<ul>
+<li><a href="https://topology-tool-kit.github.io/">Topology ToolKit</a> - Open-source TDA visualization library</li>
+</ul>
+<p><strong>Applications &amp; Examples:</strong></p>
 <ul>
 <li><a href="https://donut.topology.rocks/">DONUT - Database of Original &amp; Non-Theoretical Uses of Topology</a></li>
-<li>Applied Algebraic Topology Research Network <a href="https://www.aatrn.net/seminar">seminar series</a></li>
+<li><a href="https://www.aatrn.net/seminar">Applied Algebraic Topology Research Network</a> - Seminar series</li>
 </ul>
 
 </section></section>
@@ -1087,7 +1217,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="figs/vida.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
 </div>
 </div></div>
 
@@ -1098,7 +1228,6 @@ If we have more than one persistence diagram, how do we measure the distance bet
   <script src="week10-tda_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="week10-tda_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="week10-tda_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="week10-tda_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="week10-tda_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -1120,8 +1249,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":false},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1247,10 +1375,10 @@ If we have more than one persistence diagram, how do we measure the distance bet
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'fade',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
@@ -1267,15 +1395,15 @@ If we have more than one persistence diagram, how do we measure the distance bet
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1920,
 
-        height: 700,
+        height: 1080,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1292,7 +1420,7 @@ If we have more than one persistence diagram, how do we measure the distance bet
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
@@ -1349,13 +1477,14 @@ If we have more than one persistence diagram, how do we measure the distance bet
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

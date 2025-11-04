@@ -150,6 +150,23 @@ author_profile: true
   - Interactive Tools for LLM Understanding
   - Prompt Engineering Visualization
 
+### Week 11 (Nov 17)
+- **Topics:** Topological Data Analysis
+- **Materials:**
+  - [Topological Data Analysis](/2025-VisML-CSE/slides/week10-tda.html)
+  - Lab: *Materials to be posted*
+- **Recommended Readings:**
+  - [An Introduction to Topological Data Analysis: Fundamental and Practical Aspects for Data Scientists](https://doi.org/10.3389/frai.2021.667963) (Chazal & Michel, 2021) - **Required**
+  - [Computational Topology: An Introduction](https://doi.org/10.1090/mbk/069) (Edelsbrunner & Harer, 2022)
+  - [Topological Data Analysis for Machine Learning](https://bastian.rieck.me/talks/ecml_pkdd_2020/) (Rieck, 2020 Tutorial)
+- **Content:**
+  - Introduction to Topology and Betti Numbers
+  - Persistence Diagrams and Homology
+  - Simplicial Complexes and Vietoris-Rips Construction
+  - The Mapper Algorithm
+  - Applications in Biology, Chemistry, and Machine Learning
+  - TDA Software: GUDHI, scikit-tda, Ripser, KeplerMapper
+
 ## Assignments
 
 ### Weekly Assignments (50% of grade)
