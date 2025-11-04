@@ -138,17 +138,19 @@ author_profile: true
   - [NLP and LLM Visualization](/2025-VisML-CSE/slides/week11-nlp.html)
   - Lab: *Materials to be posted*
 - **Recommended Readings:**
+  - [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/)
+  - [Efficient estimation of word representations in vector space](https://arxiv.org/abs/1301.3781)
   - [Attention is All You Need](https://arxiv.org/abs/1706.03762) (Vaswani et al., 2017) - **Foundational**
   - [BertViz: A Tool for Visualizing Multi-Head Self-Attention](https://arxiv.org/abs/1908.08593) (Vig, 2019)
   - [LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in RNNs](https://doi.org/10.1109/TVCG.2017.2744158) (Strobelt et al., 2017)
   - [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165) (Brown et al., 2020) - GPT-3 Paper
+  - [Transformer Explainer](https://poloclub.github.io/transformer-explainer/) - Interactive Transformer visualization
 - **Content:**
-  - NLP Fundamentals: Text Processing Pipeline
-  - Visualizing RNN/LSTM Hidden States and Gradient Flow
-  - Attention Mechanism Visualization
-  - Error Analysis and Counterfactual Generation
-  - Interactive Tools for LLM Understanding
-  - Prompt Engineering Visualization
+  - NLP basics
+  - General Text Visualization
+  - Model agnostic explanation
+  - Examples of RNN Visualization
+  - Examples of LLM Visualization
 
 ### Week 11 (Nov 17)
 - **Topics:** Topological Data Analysis
