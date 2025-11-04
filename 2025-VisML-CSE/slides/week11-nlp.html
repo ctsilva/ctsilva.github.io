@@ -153,26 +153,21 @@ Claudio Silva
 <section class="slide level2">
 <h2>Today’s Agenda</h2>
 <ol type="1">
-<li><strong>NLP Fundamentals</strong>
+<li><strong>Natural Language Processing (NLP) basics</strong>
 <ul>
-<li>Text processing pipeline</li>
-<li>Traditional vs modern approaches</li>
+<li>Tasks and challenges</li>
+<li>Analysis and representation</li>
+<li>General resources</li>
+<li>Sparse and dense text representation</li>
+<li>Neural Network recap.</li>
 </ul></li>
-<li><strong>Visualizing Model Internals</strong>
+<li><span style="color: grey;">Visualization for NLP
 <ul>
-<li>RNN gradient flow</li>
-<li>Hidden state analysis</li>
-</ul></li>
-<li><strong>Behavioral Analysis</strong>
-<ul>
-<li>Error discovery patterns</li>
-<li>Counterfactual generation</li>
-</ul></li>
-<li><strong>LLM Visualization</strong>
-<ul>
-<li>Attention mechanisms</li>
-<li>Prompt engineering tools</li>
-</ul></li>
+<li>General Text Visualization</li>
+<li>Model agnostic explanation</li>
+<li>Recurrent Neural Network (RNN) Visualization</li>
+<li>Transformers (LLM) Visualization</li>
+</ul></span></li>
 </ol>
 <aside class="notes">
 <p>Natural Language Processing has undergone a revolution with the advent of large language models. Today’s lecture bridges traditional NLP visualization techniques with modern LLM analysis methods. We’ll start with fundamental text processing concepts, then explore how visualization helps us understand both classical models like RNNs and modern transformer-based architectures. The transition from traditional NLP to LLMs represents not just a scale change but a fundamental shift in how we approach language understanding. Visualization plays a crucial role in making these black-box models more interpretable.</p>
@@ -189,16 +184,7 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Visualization for NLP</h2>
-<ul>
-<li>NLP Basic</li>
-<li><span style="color: grey;">Visualizing Traditional NLP Model’s Internal Structure</span></li>
-<li><span style="color: grey;">Visualizing Traditional NLP Model’s Behavior</span></li>
-<li><span style="color: grey;">Visualizing LLMs</span></li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>NLP Basic: Text Processing Pipeline</h2>
+<h2>NLP basics: Tasks and challenges</h2>
 
 <img data-src="figs/week11-nlp/slide1.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
 <p>The NLP pipeline begins with raw text and transforms it through multiple stages into a form suitable for machine learning. Tokenization splits text into units (words, subwords, or characters). Normalization handles case, punctuation, and special characters. Vectorization converts tokens to numbers - from simple one-hot encoding to sophisticated contextual embeddings. Each stage involves design decisions that significantly impact downstream performance. For example, aggressive normalization might remove important signals (like capitalization indicating proper nouns), while preserving too much variation increases vocabulary size and sparsity.</p>
@@ -215,7 +201,7 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>NLP Basic: Word Embeddings</h2>
+<h2>NLP basics: Tasks and challenges</h2>
 
 <img data-src="figs/week11-nlp/slide2.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
 <p>Word embeddings revolutionized NLP by providing dense, continuous representations where similar words have similar vectors. The key insight is the distributional hypothesis: words appearing in similar contexts have similar meanings. Word2Vec uses shallow neural networks to predict context words (CBOW) or target words (Skip-gram). GloVe combines global matrix factorization with local context windows. FastText extends Word2Vec by using character n-grams, helping with out-of-vocabulary words. These embeddings capture surprising regularities - the famous “king - man + woman = queen” demonstrates that vector arithmetic can encode analogical reasoning.</p>
@@ -232,10 +218,57 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>NLP Basic: Sequence Models</h2>
-
-<img data-src="figs/week11-nlp/slide3.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Sequence modeling is central to NLP because language is inherently sequential. RNNs maintain a hidden state that gets updated at each time step, theoretically capturing all previous context. However, standard RNNs suffer from vanishing gradients, making it hard to learn long-range dependencies. LSTMs and GRUs address this with gating mechanisms that control information flow. Bidirectional RNNs process sequences in both directions, capturing both past and future context. The sequential nature of RNNs makes them slow to train and inference, motivating the development of parallelizable architectures like Transformers.</p>
+<h2>NLP basics: Tasks and challenges</h2>
+<div id="tbl-tasks" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tasks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: NLP can be divided into tasks related to acquisition, analysis, representation, etc.
+</figcaption>
+<div aria-describedby="tbl-tasks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>acquisition</th>
+<th>structure</th>
+<th>meaning</th>
+<th>representation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sound wave</td>
+<td>phonetics/phonology</td>
+<td>semantics</td>
+<td>bag-of-words</td>
+</tr>
+<tr class="even">
+<td>text corpus</td>
+<td>morphology</td>
+<td>pragmatics</td>
+<td>n-gram</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>syntax</td>
+<td>discourse</td>
+<td>word2vec</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<aside class="notes">
+<p>sound wave (signal captured by micropones, mixing consoles, audio interfaces) text corpus ()</p>
+<p>phonetics/phonology (knowledge about linguistic sounds) morphology (knowledge of the meaningful components of words)<br>
+syntax (knowledge of the structural relationships between word)</p>
+<p>semantics (knowledge of meaning) pragmatics (knowledge of the relationship of meaning to the goals and intentions of the speaker) discourse (knowledge about linguistic units larger than a single utterance)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -249,58 +282,7 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>NLP Basic: Text Preprocessing</h2>
-
-<img data-src="figs/week11-nlp/slide4.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Text preprocessing is crucial but often underappreciated. Common steps include lowercasing (but this loses information like proper nouns), removing stop words (but they’re important for understanding negation and questions), stemming/lemmatization (reducing words to root forms), and handling special tokens like URLs, numbers, and emojis. Modern deep learning approaches often use minimal preprocessing, letting the model learn what’s important. However, careful preprocessing can significantly reduce vocabulary size and improve generalization, especially with limited training data. The key is understanding your task - sentiment analysis might benefit from preserving emoticons, while topic modeling might safely remove them.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>NLP Basic: Feature Extraction</h2>
-
-<img data-src="figs/week11-nlp/slide5.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Feature extraction transforms text into numerical features for machine learning. Traditional approaches include bag-of-words (word counts), TF-IDF (term frequency-inverse document frequency), and n-grams (sequences of n words). These create sparse, high-dimensional representations. Modern approaches learn dense features: word embeddings, sentence encoders, and contextual representations from transformers. The choice depends on your task and data. Sparse features work well for many classification tasks with limited data, while dense representations excel at capturing semantic similarity and transfer learning. Visualization plays a key role in understanding what features your model learns and relies upon.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>NLP Basic: Language Model Architectures</h2>
-
-<img data-src="figs/week11-nlp/slide6.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Language model architectures have evolved from simple n-gram models to sophisticated neural architectures. N-gram models estimate probabilities based on local context but suffer from data sparsity. RNN language models maintain hidden states to capture longer context but process sequentially. Transformer-based models like GPT and BERT use self-attention to model global dependencies efficiently. The key innovation is attention mechanisms that allow models to focus on relevant parts of the input. Pre-trained language models have become the foundation of modern NLP, providing rich representations that transfer across tasks. Understanding these architectures helps in choosing the right model and visualization technique for your application.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>NLP Tasks Taxonomy</h2>
+<h2>NLP basics: Tasks and challenges</h2>
 <aside class="notes">
 <p>NLP tasks span from low-level syntactic analysis to high-level semantic understanding and generation. Token-level tasks like POS tagging and NER identify properties of individual words. Sequence-level tasks like machine translation and summarization transform entire texts. Classification tasks like sentiment analysis and topic modeling categorize documents. Generation tasks create new text. This taxonomy matters for visualization because different tasks benefit from different visual representations. Token-level tasks use attention heatmaps and dependency graphs. Document-level tasks use embedding projections and clustering visualizations. Understanding task requirements helps select appropriate models and interpretability methods.</p>
 <style type="text/css">
@@ -316,7 +298,7 @@ Claudio Silva
       }</style></aside>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3>Token &amp; Syntax Level</h3>
+<h3>Word &amp; Morphosyntactic Level</h3>
 <ul>
 <li>Named entity recognition</li>
 <li>Parts-of-speech tagging</li>
@@ -338,601 +320,364 @@ Claudio Silva
 </div></div>
 </section>
 <section class="slide level2">
-<h2>Visualization for NLP</h2>
-<ul>
-<li><span style="color: grey;">NLP Basic</span></li>
-<li>Visualizing Traditional NLP Model’s Internal Structure</li>
-<li>Visualizing Traditional NLP Model’s Behavior</li>
-<li>Visualizing LLMs</li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Visualization for NLP</h2>
-<ul>
-<li><span style="color: grey;">NLP Basic</span></li>
-<li>Visualizing Traditional NLP Model’s Internal Structure</li>
-<li><span style="color: grey;">Visualizing Traditional NLP Model’s Behavior</span></li>
-<li><span style="color: grey;">Visualizing LLMs</span></li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>RNNbow: Visualizing Gradient Flow</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3>Key Innovation</h3>
-<ul>
-<li>Visualizes backpropagation gradients in RNNs</li>
-<li>Reveals vanishing/exploding gradient problems</li>
-<li>Tracks learning dynamics across epochs</li>
-</ul>
-<h3>Applications</h3>
-<ul>
-<li>Model debugging</li>
-<li>Architecture comparison</li>
-<li>Training optimization</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><img data-src="figs/week11-nlp/paper17-1.png"></p>
-</div></div>
-<div class="footer">
-<p>Cashman et al.&nbsp;(2018). <a href="https://doi.org/10.1109/MCG.2018.042731661">RNNbow: Visualizing Learning Via Backpropagation Gradients in RNNs</a>. IEEE CG&amp;A.</p>
-</div>
-<aside class="notes">
-<p>RNNbow addresses a fundamental challenge in training recurrent networks: understanding gradient flow through time. The visualization reveals how gradients propagate backwards through the network, exposing the vanishing gradient problem that plagued early RNNs. This tool was instrumental in motivating architectural innovations like LSTMs and GRUs. The ability to compare gradients across different training epochs provides insights into learning dynamics that are impossible to obtain from scalar metrics alone.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>RNN Architecture Visualization</h2>
-
-<img data-src="figs/week11-nlp/paper17-2.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>This visualization shows how RNNs process sequences by maintaining and updating hidden states over time. Each node represents a hidden state vector, and edges show the flow of information. The recurrent connections (horizontal arrows) carry information from previous time steps, while vertical connections show input/output flow. Color coding often represents activation magnitudes or gradient values. This unrolled view makes clear why RNNs struggle with long sequences - information must pass through many nonlinear transformations, leading to signal degradation. Understanding this architecture is crucial for interpreting gradient flow visualizations and diagnosing training problems.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Gradient Flow Analysis</h2>
-
-<img data-src="figs/week11-nlp/paper17-3.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Gradient flow visualization is essential for understanding RNN training dynamics. This diagram traces how gradients propagate backward through time during backpropagation. Line thickness or color intensity represents gradient magnitude. The vanishing gradient problem becomes visually apparent - gradients exponentially decay as they flow backward, making it impossible to learn long-range dependencies. This visualization technique has been instrumental in motivating architectural improvements. LSTMs and GRUs include “gradient highways” - paths where gradients can flow with minimal attenuation. Gradient clipping and careful initialization also help, but the fundamental sequential bottleneck remains.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Training Dynamics: Epoch Comparison</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<h3>Gradient Evolution</h3>
-<ul>
-<li>Early epochs: chaotic gradients</li>
-<li>Middle epochs: pattern emergence</li>
-<li>Late epochs: stable flow</li>
-<li>Convergence indicators</li>
-</ul>
-</div><div class="column" style="width:55%;">
-<p><img data-src="figs/week11-nlp/paper17-4.png"></p>
-</div></div>
-<aside class="notes">
-<p>Comparing gradient flow across training epochs reveals how RNNs learn. Early in training, gradients are chaotic and unstable, reflecting the random initial weights. As training progresses, gradient patterns stabilize and become more structured. Successful training shows gradients maintaining reasonable magnitudes throughout the sequence. Failed training often shows gradients vanishing (approaching zero) or exploding (growing exponentially). This visualization helps identify when to stop training, adjust learning rates, or modify architectures. It also reveals which parts of the sequence contribute most to learning - often later time steps dominate due to shorter gradient paths.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: RNN</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Comparing gradients at different epochs of training:</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper17-6.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: RNN</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Exploring vanishing gradient</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper17-5.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: RNN</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Poorly Learning C</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper17-5.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>LSTMVis: Understanding Hidden States</h2>
-
-<img data-src="figs/week11-nlp/paper13.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
-<p>Strobelt et al.&nbsp;(2017). <a href="https://doi.org/10.1109/TVCG.2017.2744158">LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in RNNs</a>. IEEE TVCG.</p>
-</div>
-<aside class="notes">
-<p>LSTMVis pioneered the visual analysis of RNN hidden states, revealing how these models encode linguistic information. The tool allows users to select phrases and see which hidden units activate, discovering that different units specialize in different linguistic phenomena. This work demonstrated that RNNs learn interpretable representations despite not being explicitly trained to do so.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: Hidden States</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Hidden values in LSTM/RNN</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper13-2.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: Hidden States</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Hidden States Sequence of high-dimensional vectors. What are some options for visualization?</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper18-2.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: Hidden States</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Hidden States Sequence of high-dimensional vectors. What are some options for visualization?</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper18-2.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: Hidden States</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Hidden States Sequence of high-dimensional vectors. What are some options for visualization?</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper13-5.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: Hidden States</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>User selects sequences. Configurable threshold: all hidden states in the selected sequence must exceed threshold</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper18-3.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing Internal Structure: Hidden States</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>User selects sequences. Configurable threshold: all hidden states in the selected sequence must exceed threshold</p>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper13-6.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Collection-Level Hidden State Analysis</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<h3>Visualization Challenges</h3>
-<ul>
-<li>High dimensionality</li>
-<li>Temporal dynamics</li>
-<li>Multiple sequences</li>
-<li>Pattern discovery</li>
-</ul>
-</div><div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper13-1.png"></p>
-</div></div>
-<aside class="notes">
-<p>Visualizing hidden states across an entire dataset presents unique challenges. We need to understand patterns across three dimensions: hidden units, time steps, and different input sequences. Dimensionality reduction techniques like PCA or t-SNE can reveal clusters of similar hidden states, suggesting that the model groups similar inputs. Trajectory visualizations show how hidden states evolve over time for different input types. Statistical aggregations reveal which units are most active and when. This collection-level view helps identify model capacity issues (are all units being used?), specialization patterns (do units have consistent roles?), and dataset biases (do certain inputs always produce similar hidden states?).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Visualization for NLP</h2>
-<ul>
-<li><span style="color: grey;">NLP Basic</span></li>
-<li><span style="color: grey;">Visualizing Traditional NLP Model’s Internal Structure</span></li>
-<li>Visualizing Traditional NLP Model’s Behavior</li>
-<li><span style="color: grey;">Visualizing LLMs</span></li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>iSea: Semantic Error Analysis</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/week11-nlp/paper19-3.png" class="quarto-figure quarto-figure-center" height="600"></p>
-</figure>
-</div>
-<div style="text-align: center; font-size: 1.2em;">
-<p><strong>Overall Accuracy: 80%</strong> - But where are the failures?</p>
-</div>
-<div class="footer">
-<p>Wu et al.&nbsp;(2019). <a href="https://doi.org/10.1145/3290605.3300343">iSea: Interactive Semantic Error Analysis</a>. CHI 2019.</p>
-</div>
-<aside class="notes">
-<p>A model with 80% accuracy might seem good, but understanding the 20% of failures is crucial for improvement. iSea moves beyond aggregate metrics to identify systematic error patterns. Rather than looking at random failures, it discovers semantically coherent subpopulations where the model consistently fails. This approach has revealed biases, dataset artifacts, and fundamental model limitations that would be invisible in traditional evaluation.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-
-<img data-src="figs/week11-nlp/paper19-3.png" class="r-stretch"><p>Where does the model make mistakes?</p>
-<p>Why does the model make these mistakes?</p>
-<p>How can we improve the model performance?</p>
-<p>…</p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Subpopulation-Level Error Analysis is Common for NLP Models <img data-src="figs/week11-nlp/paper19-4.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Subpopulation-Level Error Analysis is Common for NLP Models <img data-src="figs/week11-nlp/paper19-4.png"></p>
-<p>Not able to capture the errors grounded in specific semantic concepts.</p>
-<p>Requires prior knowledge to construct subpopulations.</p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-
-<img data-src="figs/week11-nlp/paper19-1.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-
-<img data-src="figs/week11-nlp/paper19-5.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Features to Describe A Subpopulation</p>
-<ul>
-<li>Token
-<ul>
-<li>e.g., all the documents that contain “delicious”.</li>
-</ul></li>
-<li>Concept
-<ul>
-<li>e.g., all the documents that contain “delicious”/“tasty”/”yummy”/…</li>
-</ul></li>
-<li>High-level Features
-<ul>
-<li>e.g., all the documents that contain a high percentage of adjectives.</li>
-</ul></li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>To describe error-prone subpopulations, we use a set of if-then rules. <img data-src="figs/week11-nlp/paper19-6.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Through iterative design process, we identified four principles of presenting the error rules:</p>
-<ul>
-<li>Principle 1: Limit the number of conditions.
-<ul>
-<li>To keep the rule interpretable.</li>
-</ul></li>
-<li>Principle 2: Test significance.
-<ul>
-<li>To ensure the high error rate in the subpopulation does not occur by chance</li>
-</ul></li>
-<li>Principle 3: Limit the cardinality of features.
-<ul>
-<li>Use low/medium/high instead of actual values (e.g., &gt;20, &lt;30) to keep it interpretable.</li>
-</ul></li>
-<li>Principle 4: Avoid negation for tokens.
-<ul>
-<li>To ensure actionable insights.</li>
-</ul></li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Automatic Error Discovery <img data-src="figs/week11-nlp/paper19-8.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Automatic Error Discovery <img data-src="figs/week11-nlp/paper19-9.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Automatic Error Discovery <img data-src="figs/week11-nlp/paper19-10.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Views to Support Learning <img data-src="figs/week11-nlp/paper19-7.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Validating <img data-src="figs/week11-nlp/paper19-11.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Validating <img data-src="figs/week11-nlp/paper19-12.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Validating <img data-src="figs/week11-nlp/paper19-13.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Interpret Errors Causes <img data-src="figs/week11-nlp/paper19-14.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Hypothesis Testing <img data-src="figs/week11-nlp/paper19-15.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-<p>Rule Editing &amp; Concept Construction <img data-src="figs/week11-nlp/paper19-16.png"></p>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: iSea</h2>
-
-<img data-src="figs/week11-nlp/paper19-2.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Polyjuice: Counterfactual Generation</h2>
-<div class="columns">
-<div class="column" style="width:35%;">
-<h3>Key Features</h3>
-<ul>
-<li>Generates diverse counterfactuals</li>
-<li>Controls perturbation types</li>
-<li>Reveals model robustness issues</li>
-</ul>
-<h3>Applications</h3>
-<ul>
-<li>Data augmentation</li>
-<li>Robustness testing</li>
-<li>Bias detection</li>
-</ul>
-</div><div class="column" style="width:65%;">
-<p><img data-src="figs/week11-nlp/paper20-1.png"></p>
-</div></div>
-<div class="footer">
-<p>Wu et al.&nbsp;(2021). <a href="https://doi.org/10.18653/v1/2021.acl-long.523">Polyjuice: Generating Counterfactuals for Explaining, Evaluating, and Improving Models</a>. ACL 2021.</p>
-</div>
-<aside class="notes">
-<p>Polyjuice addresses a critical challenge in NLP model evaluation: understanding robustness to input variations. By generating controlled counterfactuals, it reveals whether models rely on spurious correlations or genuine understanding. This tool has been instrumental in discovering dataset biases and improving model robustness through targeted data augmentation.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Visualizing Behavior: Polyjuice</h2>
-
-<img data-src="figs/week11-nlp/paper20-2.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualization for NLP</h2>
-<ul>
-<li><span style="color: grey;">NLP Basic</span></li>
-<li><span style="color: grey;">Visualizing Traditional NLP Model’s Internal Structure</span></li>
-<li><span style="color: grey;">Visualizing Traditional NLP Model’s Behavior</span></li>
-<li>Visualizing LLMs</li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Attention Visualization in Transformers</h2>
-
-<img data-src="figs/week11-nlp/paper1.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
-<p>Vig (2019). <a href="https://doi.org/10.18653/v1/P19-3007">A Multiscale Visualization of Attention in the Transformer Model</a>. ACL 2019.</p>
-</div>
-<aside class="notes">
-<p>Attention mechanisms are the core of modern LLMs, but understanding what models “attend to” is challenging. This visualization reveals how different attention heads specialize in different linguistic phenomena: some track syntax, others capture semantic relationships, and some focus on positional patterns. The multi-scale approach allows exploration from individual token relationships to aggregate patterns across layers.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>LLM Architecture: Self-Attention</h2>
-
-<img data-src="figs/week11-nlp/paper2.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Self-attention is the core mechanism that enables transformers to model long-range dependencies efficiently. Unlike RNNs that process sequentially, attention computes relationships between all pairs of positions simultaneously. The attention matrix shows which tokens the model “looks at” when processing each token. Multiple attention heads learn different relationship types - some track syntax (subject-verb agreement), others capture semantic relationships (coreference), and some focus on position (attending to adjacent tokens). Visualizing attention patterns helps understand model decisions and identify potential biases or failure modes. However, attention doesn’t always equal explanation - high attention doesn’t necessarily mean high importance for the final prediction.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Multi-Head Attention Patterns</h2>
-<div class="columns">
-<div class="column" style="width:70%;">
-<p><img data-src="figs/week11-nlp/paper3-1.png"></p>
-</div><div class="column" style="width:30%;">
-<p><img data-src="figs/week11-nlp/paper3-2.png"> <img data-src="figs/week11-nlp/paper3-3.png"></p>
-</div></div>
-<aside class="notes">
-<p>Transformers use multiple attention heads that learn to focus on different types of information. This visualization shows how different heads specialize: some become “positional” heads attending to nearby tokens, others are “syntactic” heads tracking grammatical dependencies, and some are “semantic” heads linking related concepts. The multi-head design provides redundancy and allows the model to simultaneously attend to information at different positions and representation subspaces. Analyzing head specialization helps understand model capabilities and can guide model pruning - some heads can be removed with minimal performance impact. This visualization technique has revealed that many heads in large models are redundant or inactive.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-
-<img data-src="figs/week11-nlp/paper4.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-
-<img data-src="figs/week11-nlp/paper5.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
+<h2>NLP basics: Analysis and representation</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p><img data-src="figs/week11-nlp/paper6-1.png"></p>
+<ol type="1">
+<li><strong>Lexical and morphological analysis</strong>
+<ul>
+<li>Finite-state morphological parsers</li>
+</ul></li>
+<li><span style="color: grey;">Syntactic recognition and representation
+<ul>
+<li>Shallow parser or chunker</li>
+<li>Context-free Grammar</li>
+</ul></span></li>
+<li><span style="color: grey;">Morphosyntactic analysis
+<ul>
+<li>Part-of-Speech (POS) tagging</li>
+</ul></span></li>
+<li><span style="color: grey;">Representing Meaning
+<ul>
+<li>First-order logic</li>
+<li>Semantic Network</li>
+<li>Conceptual Dependency Diagram</li>
+<li>Frame-based approach</li>
+</ul></span></li>
+</ol>
 </div><div class="column" style="width:60%;">
-<p><img data-src="figs/week11-nlp/paper6-2.png"></p>
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="figs/week11-nlp/morph_parser.png"></p>
+<figcaption><a href="https://web.stanford.edu/~jurafsky/slp3/">Jurafsky, 2025</a></figcaption>
+</figure>
+</div>
 </div></div>
 </section>
 <section class="slide level2">
-<h2>Visualizing LLMs</h2>
+<h2>NLP basics: Analysis and representation</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ol type="1">
+<li><span style="color: grey;">Lexical and morphological analysis
+<ul>
+<li>Finite-state morphological parsers</li>
+</ul></span></li>
+<li><strong>Syntactic recognition and representation</strong>
+<ul>
+<li>Shallow parser or chunker</li>
+<li>Context-free Grammar</li>
+</ul></li>
+<li><span style="color: grey;">Morphosyntactic analysis
+<ul>
+<li>Part-of-Speech (POS) tagging</li>
+</ul></span></li>
+<li><span style="color: grey;">Representing Meaning
+<ul>
+<li>First-order logic</li>
+<li>Semantic Network</li>
+<li>Conceptual Dependency Diagram</li>
+<li>Frame-based approach</li>
+</ul></span></li>
+</ol>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/context-free_grammar.png"></p>
+<figcaption><a href="https://web.stanford.edu/~jurafsky/slp3/">Jurafsky, 2025</a></figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>NLP basics: Analysis and representation</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ol type="1">
+<li><span style="color: grey;">Lexical and morphological analysis
+<ul>
+<li>Finite-state morphological parsers</li>
+</ul></span></li>
+<li><span style="color: grey;">Syntactic recognition and representation
+<ul>
+<li>Shallow parser or chunker</li>
+<li>Context-free Grammar</li>
+</ul></span></li>
+<li><strong>Morphosyntactic analysis</strong>
+<ul>
+<li>Part-of-Speech (POS) tagging</li>
+</ul></li>
+<li><span style="color: grey;">Representing Meaning
+<ul>
+<li>First-order logic</li>
+<li>Semantic Network</li>
+<li>Conceptual Dependency Diagram</li>
+<li>Frame-based approach</li>
+</ul></span></li>
+</ol>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="figs/week11-nlp/pos_tagging.png"></p>
+<figcaption><a href="https://web.stanford.edu/~jurafsky/slp3/">Jurafsky, 2025</a></figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>NLP basics: Analysis and representation</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ol type="1">
+<li><span style="color: grey;">Lexical and morphological analysis
+<ul>
+<li>Finite-state morphological parsers</li>
+</ul></span></li>
+<li><span style="color: grey;">Syntactic recognition and representation
+<ul>
+<li>Shallow parser or chunker</li>
+<li>Context-free Grammar</li>
+</ul></span></li>
+<li><span style="color: grey;">Morphosyntactic analysis
+<ul>
+<li>Part-of-Speech (POS) tagging</li>
+</ul></span></li>
+<li><strong>Representing Meaning</strong>
+<ul>
+<li>First-order logic</li>
+<li>Semantic Network</li>
+<li>Conceptual Dependency Diagram</li>
+<li>Frame-based approach</li>
+</ul></li>
+</ol>
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/first-order-1.png"></p>
+<figcaption><a href="https://web.stanford.edu/~jurafsky/slp3/">Jurafsky, 2025</a></figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/first-order-2.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>NLP basics: General resources</h2>
+<ol type="1">
+<li><a href="https://openlexicon.fr/datasets-info/EnglishLexiconProject/README-ELP.html">Lexicon</a>: list of stems and affixes (prefix or suffix), together with basic information about them.</li>
+<li><a href="https://wordnet.princeton.edu/">Thesaurus</a>: list of words and their synonyms from a specific domain</li>
+<li><a href="https://repository.upenn.edu/bitstreams/560a804b-b3f7-40c7-8f57-052bdd5ca6cd/download">Treebank</a>: list of words labeled with syntatic (POS-tagging) trees</li>
+<li><a href="https://propbank.github.io/">Prop(osition) bank</a>: sentences annotated with semantic roles related to verbs</li>
+<li><a href="https://framenet.icsi.berkeley.edu/">FrameNet</a>: sentences annotated with semantic roles related to frames of words.</li>
+<li><a href="https://course.ccs.neu.edu/cs5100f11/resources/noy01.pdf">Ontology</a>: hierachy of concepts related to a domain</li>
+</ol>
+</section>
+<section class="slide level2">
+<h2>NLP basics: Sparse and dense text representation</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ol type="1">
+<li><strong>Sparse embeddings</strong> <sup>1</sup>
+<ol type="1">
+<li>One-hot encoding</li>
+<li><span style="color: grey;">Bag-of-Words (BoW)</span></li>
+<li><span style="color: grey;">Term Frequency-Inverse Document Frequency (TF-IDF)</span></li>
+</ol></li>
+<li><span style="color: grey;">Dense embeddings</span></li>
+</ol>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/one_hot.png"></p>
+<figcaption><a href="https://www.blog.trainindata.com/one-hot-encoding-categorical-variables/">Galli, 2023</a></figcaption>
+</figure>
+</div>
+</div><!-- https://www.blog.trainindata.com/one-hot-encoding-categorical-variables/ -->
+</div>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>We can represent words, n-grams, sentences, etc.</p></li></ol></aside></section>
+<section class="slide level2">
+<h2>NLP basics: Sparse and dense text representation</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ol type="1">
+<li><strong>Sparse embeddings</strong> <sup>1</sup>
+<ol type="1">
+<li><span style="color: grey;">One-hot encoding</span></li>
+<li>Bag-of-Words (BoW)</li>
+<li><span style="color: grey;">Term Frequency-Inverse Document Frequency (TF-IDF)</span></li>
+</ol></li>
+<li><span style="color: grey;">Dense embeddings</span></li>
+</ol>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/bow.png"></p>
+<figcaption><a href="https://medium.com/@shantanu_sharma/natural-language-processing-nlp-playlist-chapter-2-bag-of-words-n-gram-tf-idf-458a9669a746">Sharma, 2024</a></figcaption>
+</figure>
+</div>
+</div><!-- https://medium.com/@shantanu_sharma/natural-language-processing-nlp-playlist-chapter-2-bag-of-words-n-gram-tf-idf-458a9669a746 -->
+</div>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>We can represent words, n-grams, sentences, etc.</p></li></ol></aside></section>
+<section class="slide level2">
+<h2>NLP basics: Sparse and dense text representation</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ol type="1">
+<li><strong>Sparse embeddings</strong> <sup>1</sup>
+<ol type="1">
+<li><span style="color: grey;">One-hot encoding</span></li>
+<li><span style="color: grey;">Bag-of-Words (BoW)</span></li>
+<li>Term Frequency-Inverse Document Frequency (TF-IDF)</li>
+</ol></li>
+<li><span style="color: grey;">Dense embeddings</span></li>
+</ol>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/tfidf.png"></p>
+<figcaption><a href="https://ted-mei.medium.com/demystify-tf-idf-in-indexing-and-ranking-5c3ae88c3fa0">Mai, 2019</a></figcaption>
+</figure>
+</div>
+</div><!-- https://ted-mei.medium.com/demystify-tf-idf-in-indexing-and-ranking-5c3ae88c3fa0 -->
+</div>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>We can represent words, n-grams, sentences, etc.</p></li></ol></aside></section>
+<section class="slide level2">
+<h2>NLP basics: Sparse and dense text representation</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ol type="1">
+<li><span style="color: grey;">Sparse embeddings <sup>1</sup></span>
+<ol type="1">
+<li><span style="color: grey;">One-hot encoding</span></li>
+<li><span style="color: grey;">Bag-of-Words (BoW)</span></li>
+<li><span style="color: grey;">Term Frequency-Inverse Document Frequency (TF-IDF)</span></li>
+</ol></li>
+<li><strong>Dense embeddings</strong></li>
+</ol>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/word2vec.png"></p>
+<figcaption><a href="https://jalammar.github.io/illustrated-word2vec/">Alammar, 2019</a></figcaption>
+</figure>
+</div>
+</div><!-- https://jalammar.github.io/illustrated-word2vec/ -->
+</div>
+<aside><ol class="aside-footnotes"><li id="fn4"><p>We can represent words, n-grams, sentences, etc.</p></li></ol></aside></section>
+<section class="slide level2">
+<h2>NLP basics: Neural Network recap.</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="figs/week11-nlp/paper7-1.png"></p>
-</div><div class="column" style="width:50%;">
-<p><img data-src="figs/week11-nlp/paper7-2.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-
-<img data-src="figs/week11-nlp/paper8.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-
-<img data-src="figs/week11-nlp/paper9.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p><img data-src="figs/week11-nlp/paper10-1.png"></p>
-</div><div class="column" style="width:45%;">
-<p><img data-src="figs/week11-nlp/paper10-2.png"> <img data-src="figs/week11-nlp/paper10-3.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-<div class="columns">
-<div class="column" style="width:35%;">
-<p><img data-src="figs/week11-nlp/paper11-1.png"></p>
-</div><div class="column" style="width:40%;">
-<p><img data-src="figs/week11-nlp/paper11-2.png"></p>
-</div><div class="column" style="width:25%;">
-<p><img data-src="figs/week11-nlp/paper11-3.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p><img data-src="figs/week11-nlp/paper12-1.png"></p>
-</div><div class="column" style="width:45%;">
-<p><img data-src="figs/week11-nlp/paper12-2.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-
-<img data-src="figs/week11-nlp/paper14.png" class="r-stretch"></section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p><img data-src="figs/week11-nlp/paper15-1.png"></p>
-</div><div class="column" style="width:45%;">
-<p><img data-src="figs/week11-nlp/paper15-2.png"> <img data-src="figs/week11-nlp/paper15-3.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Visualizing LLMs</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img data-src="figs/week11-nlp/paper16-1.png"></p>
-</div><div class="column" style="width:55%;">
-<p><img data-src="figs/week11-nlp/paper16-2.png"></p>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>POEM: Prompt Engineering for Multimodal LLMs</h2>
-
-<img data-src="figs/week11-nlp/paper21-1.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
-<p>Guan et al.&nbsp;(2024). <a href="https://arxiv.org/abs/2406.03843">POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning</a>. arXiv preprint.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/mlp.png"></p>
+<figcaption>MLP - <a href="https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/">Jaokar, 2024</a></figcaption>
+</figure>
 </div>
-<aside class="notes">
-<p>POEM represents the frontier of LLM interaction design, addressing the challenge of prompt engineering for multimodal models. As LLMs become capable of processing images, video, and text together, understanding how to craft effective prompts becomes increasingly complex. POEM provides visual feedback on prompt effectiveness, suggests improvements, and helps users understand the model’s reasoning process across modalities. This is particularly important as prompt engineering has become a critical skill for effectively using LLMs.</p>
+</div><!-- https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/ --><div class="column" style="width:50%;">
+
+</div></div>
+</section>
+<section class="slide level2">
+<h2>NLP basics: Neural Network recap.</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/mlp.png"></p>
+<figcaption>MLP - <a href="https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/">Jaokar, 2024</a></figcaption>
+</figure>
+</div>
+</div><!-- https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/ --><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/rnn.png"></p>
+<figcaption>RNN - <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Colah, 2015</a></figcaption>
+</figure>
+</div>
+</div><!-- https://colah.github.io/posts/2015-08-Understanding-LSTMs/ -->
+</div>
+</section>
+<section class="slide level2">
+<h2>NLP basics: Neural Network recap.</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/transformer.png"></p>
+<figcaption>Transformer - <a href="https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html">Vaswani, 2017</a></figcaption>
+</figure>
+</div>
+</div><!-- Vaswani, Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017). --><div class="column" style="width:50%;">
+
+</div></div>
+</section>
+<section class="slide level2">
+<h2>NLP basics: Neural Network recap.</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/transformer.png"></p>
+<figcaption>Transformer - <a href="https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html">Vaswani, 2017</a></figcaption>
+</figure>
+</div>
+</div><!-- Vaswani, Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017). --><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/attention.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><!-- Vaswani, Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017). -->
+</div>
+</section>
+<section class="slide level2">
+<h2>NLP basics: Neural Network recap.</h2>
+
+<!-- Park, 2019. SANVis: Visual Analytics for Understanding Self-Attention Networks -->
+<img data-src="figs/week11-nlp/attention-v2.png" class="r-stretch quarto-figure-center"><p class="caption">Transformer - <a href="https://ieeexplore.ieee.org/abstract/document/8933677">Park, 2019</a></p></section>
+<section class="slide level2">
+<h2>Today’s Agenda</h2>
+<ol type="1">
+<li><span style="color: grey;">Natural Language Process (NLP) basics
+<ul>
+<li>Tasks and challenges</li>
+<li>Analysis and representation</li>
+<li>General resources</li>
+<li>Sparse and dense text representation</li>
+<li>Neural Network recap.</li>
+</ul></span></li>
+<li><strong>Visualization for NLP</strong>
+<ul>
+<li>General Text Visualization</li>
+<li>Model agnostic explanation</li>
+<li>Recurrent Neural Network (RNN) Visualization</li>
+<li>Transformers (LLM) Visualization</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: General Text Visualization</h2>
+<ol type="1">
+<li><a href="https://ids-pub.bsz-bw.de/frontdoor/deliver/index/docId/2622/file/Fankhauser_etc_Exploring%20and%20Visualizing_2014.pdf">Exploring and Visualizing Variation in Language Resources</a></li>
+<li><a href="https://dl.acm.org/doi/abs/10.1145/2254556.2254572">Termite: Visualization Techniques for Assessing Textual Topic Models</a></li>
+<li><a href="https://arxiv.org/abs/1703.00565">Scattertext: a Browser-Based Tool for Visualizing how Corpora Differ</a></li>
+</ol>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: General Text Visualization</h2>
+<ol type="1">
+<li><span style="color: grey;">Exploring and Visualizing Variation in Language Resources</span></li>
+<li><span style="color: grey;">Termite: Visualization Techniques for Assessing Textual Topic Models</span></li>
+<li><a href="https://arxiv.org/abs/1703.00565">Scattertext: a Browser-Based Tool for Visualizing how Corpora Differ</a></li>
+</ol>
+
+<img data-src="figs/week11-nlp/paper5.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Visualize linguistic variation between document categories in a language-independent way. The main visualization is a scatterplot of terms, using their frequencies as position and a probabilistic score that defines how strong the connection is between a word and a category. The authors tested it with a speech dataset from the 2012 Democratic and Republican conventions. In this case, Scattertext can highlight linguistic style and key themes of each dataset.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -946,20 +691,287 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Visualizing LLMs</h2>
-<p>Multi-Modal Interaction <img data-src="figs/week11-nlp/paper21-3.png"></p>
+<h2>Visualization for NLP: Model agnostic explanation</h2>
+<ol type="1">
+<li><a href="https://doi.org/10.1109/TVCG.2018.2865044">Seq2seq-Vis: A Visual Debugging Tool for Sequence-to-Sequence Models</a></li>
+<li><a href="https://doi.org/10.1109/TVCG.2017.2744718">ActiVis: Visual Exploration of Industry-Scale Deep Neural Network Models</a></li>
+<li><a href="https://dl.acm.org/doi/abs/10.1145/3490099.3511146">iSEA: An Interactive Pipeline for Semantic Error Analysis of NLP Models</a></li>
+</ol>
 </section>
 <section class="slide level2">
-<h2>Visualizing LLMs</h2>
-<p>POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning of Large Language Models</p>
+<h2>Visualization for NLP: Model agnostic explanation</h2>
+<ol type="1">
+<li><span style="color: grey;">Seq2seq-Vis: A Visual Debugging Tool for Sequence-to-Sequence Models</span></li>
+<li><span style="color: grey;">ActiVis: Visual Exploration of Industry-Scale Deep Neural Network Models</span></li>
+<li><a href="https://dl.acm.org/doi/abs/10.1145/3490099.3511146">iSEA: An Interactive Pipeline for Semantic Error Analysis of NLP Models</a></li>
+</ol>
+
+<img data-src="figs/week11-nlp/paper19-1.png" class="r-stretch"><aside class="notes">
+<p>Automatically discovers semantically-grounded subpopulations with high error rates in the context of a human-in-the-loop interactive system. The user can learn more, validate error sources, and test hypotheses about errors.</p>
+<ol type="1">
+<li>Model Performance Overview:</li>
+<li>Rule Discovery and 3) Rule Editor A rule is created by pattern mining that finds features combinations (rules) that frequencly occur in ‘model error cases’. That mining is applied over semantic and syntatic features, such as dependency labels, POS-tags, semantic roles, and lexical markers.</li>
+<li>Overall statistics</li>
+<li>Model prediction with SHAP tokens score, raw texts, ground-truth/predicted label<br>
+</li>
+<li>Concept construction enables a user to group Rules together.</li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: RNN Visualization</h2>
+<ol type="1">
+<li><a href="https://doi.org/10.1109/VAST.2017.8585721">Understanding Hidden Memories of Recurrent Neural Networks</a></li>
+<li><a href="https://doi.org/10.1109/MCG.2018.2878902">RNNbow: Visualizing Learning Via Backpropagation Gradients in RNNs</a></li>
+<li><a href="https://doi.org/10.1109/TVCG.2017.2744158">LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in Recurrent Neural Networks</a></li>
+</ol>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: RNN Visualization</h2>
+<ol type="1">
+<li><span style="color: grey;">Understanding Hidden Memories of Recurrent Neural Networks</span></li>
+<li><span style="color: grey;">RNNbow: Visualizing Learning Via Backpropagation Gradients in RNNs</span></li>
+<li><a href="https://doi.org/10.1109/TVCG.2017.2744158">LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in Recurrent Neural Networks</a></li>
+</ol>
+<aside class="notes">
+<ol type="1">
+<li>Select view</li>
+</ol>
+<ul>
+<li>Select a text section and define an activation threshold to highlight hidden states (blue lines)</li>
+<li>Extra information presented in the meta-track, such as word POS-tagging and top-k model predictions</li>
+</ul>
+<ol start="2" type="1">
+<li>Match View</li>
+</ol>
+<ul>
+<li>Shows similar hidden state patterns in the dataset</li>
+<li>Shows a heatmap with matched sentences (rows), hidden states (cols), and the activation value (color)</li>
+<li>Shows a second heatmap encoding POS-tag of sentence words</li>
+</ul>
+<p>Tests with datasets of 1) news from the wall street journal 2) parenthesis language 3) dna sequences, and 4) musical chord progressions</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+<img data-src="figs/week11-nlp/lstmvis.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol type="1">
+<li><a href="https://debug-ml-iclr2019.github.io/cameraready/DebugML-19_paper_2.pdf">BertViz: A tool for visualizing multihead self-attention in the BERT model</a></li>
+<li><a href="https://doi.org/10.1109/VISUAL.2019.8933677">Sanvis: Visual analytics for understanding self-attention networks</a></li>
+<li><a href="https://doi.org/10.1109/TVCG.2020.3028976">Attention flows: Analyzing and comparing attention mechanisms in language models</a></li>
+<li><a href="https://arxiv.org/abs/2103.14625">Dodrio: Exploring transformer models with interactive visualization</a></li>
+<li><a href="https://journals.sagepub.com/doi/full/10.1177/14738716231168671">TopoBERT: Exploring the topology of fine-tuned word representations</a></li>
+<li><a href="https://doi.org/10.1109/TVCG.2023.3327163">Attentionviz: A global view of transformer attention</a></li>
+<li><a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html">On the Biology of a Large Language Model</a></li>
+<li><a href="https://doi.org/10.1109/PacificVis64226.2025.00010">POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning of Large Language Models</a></li>
+</ol>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol start="2" type="1">
+<li><a href="https://doi.org/10.1109/VISUAL.2019.8933677">Sanvis: Visual analytics for understanding self-attention networks</a></li>
+</ol>
+
+<img data-src="figs/week11-nlp/sanvis.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ol type="1">
+<li>Attention piling (heatmap): key-words (x-axis), query-words (y-axis), and cell values are the attention score over the layer heads. Besides, instead of show information for all the layer heads, it aggregates them to show only one heatmap (piles).</li>
+<li>Small multiple: Heads showed with some sort criterion (Head number, Entropy, Position)</li>
+<li>Sanky diagram: how strong is the attention between two tokens</li>
+<li>Head leans: extended information about each layer head.</li>
+</ol>
+<p>comprehend the alignment between encoder and decoder and the relationship between tokens</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol start="4" type="1">
+<li><a href="https://arxiv.org/abs/2103.14625">Dodrio: Exploring transformer models with interactive visualization</a></li>
+</ol>
+
+<img data-src="figs/week11-nlp/dodrio.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ol type="1">
+<li>Dependency view: shows sintatic dependences between tokens like a dependency tree/graph or a saliency view</li>
+<li>Semantic attention graph: a graph that presents informations of a specific layer and head. Nodes are tokens and egdges are attention between them. Different views: radial, grid, and force</li>
+<li>Attention head overview: grid of layers (rows) per heads (columns). Color palette maps a semantic score (read) and syntatic score (blue). Besides, the circle size means an importance score.</li>
+</ol>
+<p>attention weights syntatic dependences semantic information</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol start="6" type="1">
+<li><a href="https://doi.org/10.1109/TVCG.2023.3327163">Attentionviz: A global view of transformer attention</a></li>
+</ol>
+
+<img data-src="figs/week11-nlp/attention_viz.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ol type="1">
+<li>Creates an aligned projected space of Query and Key embeddings</li>
+<li>In the main view, it shows a grid of projections per layer (rows) nad heads (columns)</li>
+<li>In a detailed view of text models, it shows a BertViz-like view that connects query-key tokens with their attention scores.</li>
+<li></li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol start="7" type="1">
+<li><a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html">On the Biology of a Large Language Model</a></li>
+</ol>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="figs/week11-nlp/paper21-2.png"></p>
+<h3>Does Claude plan its rhymes?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/claude_rhymes.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
 </div><div class="column" style="width:50%;">
-<p><img data-src="figs/week11-nlp/paper21-4.png"></p>
+<h3>Mental math</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/claude_math.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol start="7" type="1">
+<li><a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html">On the Biology of a Large Language Model</a></li>
+</ol>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Are Claude’s explanations always faithful?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/claude_faithful.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<h3>Multi-step reasoning</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11-nlp/claude_reasoning.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol start="7" type="1">
+<li><a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html">On the Biology of a Large Language Model</a></li>
+</ol>
+<h3>Hallucinations</h3>
+
+<!-- https://www.anthropic.com/research/tracing-thoughts-language-model -->
+<img data-src="figs/week11-nlp/claude_hallucinate.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>applying attribution graphs to study a particular language model</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualization for NLP: LLM Visualization</h2>
+<ol start="8" type="1">
+<li><a href="https://doi.org/10.1109/PacificVis64226.2025.00010">POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning of Large Language Models</a></li>
+</ol>
+
+<img data-src="figs/week11-nlp/paper21-1.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ol type="1">
+<li>Prompt panel: craft and edit prompts</li>
+<li>Reasoning panel:</li>
+<li>Evaluation panel: global and local evaluation with comparison of prompt editing history</li>
+</ol>
+<p>a visual analytics system to facilitate efficient prompt engineering for steering the multimodal reasoning performance of LLM</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Summary: NLP Foundations</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Key Takeaways:</strong></p>
+<ol type="1">
+<li>Even if human language is convoluted, we can still build advanced NLP systems that achieve good results.</li>
+<li>These systems are difficult to explain and interpret.</li>
+<li>Dense representations have much more information than sparse ones, such as the meaning, position, and relations between tokens.</li>
+<li>In a transformer, Q and K spaces are the mechanisms for selection (interpretable via patterns of relevance), while V space is the content being selected (abstract, combined, and thus harder to ground linguistically on its own).</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div style="background: #e8f5e9; padding: 25px; border-radius: 8px; margin-top: 30px;">
+
+</div>
 </div></div>
 
 </section></section>
+
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="figs/vida.jpg" class="slide-logo"></p>
