@@ -271,11 +271,13 @@ author_profile: true
 **Optional Reading:**
 - [When(ish) is My Bus? User-centered Visualizations of Uncertainty](http://idl.cs.washington.edu/papers/when-ish-is-my-bus/). Kay et al. ACM CHI 2016.
 
-**Lab:** 
-- Implementing uncertainty visualizations in D3
-- Confidence intervals and error representations
-- Alternative uncertainty encodings
-- User testing uncertainty representations
+**Lab:** [3D Visualization: Transformations](/2025-InfoVis-CSE/labs/week10-lab.html)
+- Common Libraries for 3D Visualizations
+- Re-Visiting Algebra
+- 2D Transformations
+- Homogeneous Coordinates
+- 3D Transformations
+- Model-View-Projection
 
 **Assignment:** Continue Mini-project 2 + Exercise 8 - Uncertainty visualization (due Nov 13)
 

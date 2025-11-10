@@ -116,9 +116,9 @@ author_profile: true
 - **Supplemental Material:** Visual analytics framework, Confirmatory vs exploratory analysis, Real-time data indexing
 
 ### Week 10 (Nov 7) - Urban Visualization II: 3D Form, Design & Simulation **[WIP - DRAFT]**
-- **Slides:** [Urban Visualization II](/2025-InfoVis-CSE/slides/week10-urban-3d-simulation.html) *(draft - figures needed)* | **Lab:** TBA
+- **Slides:** [Urban Visualization II](/2025-InfoVis-CSE/slides/week10-urban-3d-simulation.html) *(draft - figures needed)* | **Lab:** [3D Visualization: Transformations](/2025-InfoVis-CSE/labs/week10-lab.html)
 - **Topics:** Kevin Lynch's "Image of the City", 3D urban planning challenges, Urbane framework (linking 3D city models with 2D data views), Interactive impact analysis (sky exposure, shadows, viewsheds), Performance-driven design (exploring thousands of building variants), Critical reflection on when to use 3D
-- **Lab:** 3D geovisualization with CesiumJS or Deck.gl, Building height extrusion
+- **Lab:** 3D Visualization: Transformations, Matrix Operations, Model-View-Projections
 - **Assignment:** Exercise 10 - 3D urban visualization and impact analysis (due Nov 13)
 - **Required Readings:**
   - Poco et al. (2015) - [Exploring the Design Space of Interactive Urban Visualization](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/urbane-2015.pdf) - IEEE VIS 2015
