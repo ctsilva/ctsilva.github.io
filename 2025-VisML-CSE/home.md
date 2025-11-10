@@ -152,11 +152,12 @@ author_profile: true
   - Examples of RNN Visualization
   - Examples of LLM Visualization
 
-### Week 11 (Nov 17)
+### Week 11 (Nov 10)
 - **Topics:** Topological Data Analysis
 - **Materials:**
   - [Topological Data Analysis](/2025-VisML-CSE/slides/week10-tda.html)
-  - Lab: *Materials to be posted*
+  - [Lab](https://drive.google.com/file/d/1l-jLae9QP_o5v1vF74WuW75yrQiZcbCT/view?usp=sharing)
+  <!-- - [Lab](/2025-VisML-CSE/labs/VisML_TDA_Lab.ipynb) -->
 - **Recommended Readings:**
   - [An Introduction to Topological Data Analysis: Fundamental and Practical Aspects for Data Scientists](https://doi.org/10.3389/frai.2021.667963) (Chazal & Michel, 2021) - **Required**
   - [Computational Topology: An Introduction](https://doi.org/10.1090/mbk/069) (Edelsbrunner & Harer, 2022)
