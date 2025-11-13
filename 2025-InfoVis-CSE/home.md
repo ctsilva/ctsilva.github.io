@@ -14,9 +14,9 @@ author_profile: true
 
 ## Announcements
 
-**Week 8 Materials Ready (Oct 24):** Foundations of Geovisualization (2D Maps) lecture is now available! Covers map projections, choropleth pitfalls, data classification, and practical Leaflet.js implementation. See [slides](/2025-InfoVis-CSE/slides/week8-geovis-2d-maps.html).
+**Week 11 Materials Ready (Nov 13):** Visualizing Time-Oriented Data lecture is now available! Comprehensive coverage of temporal data types, time structures, line chart best practices (Banking to 45°), interaction techniques, heat maps, periodic patterns, horizon charts, and sparklines. Includes speaker notes for all key concepts. See [slides](/2025-InfoVis-CSE/slides/week11-temporal-data.html).
 
-**Week 7 Materials Ready (Oct 16):** Interaction in Visualization lecture is now available! Covers Shneiderman's Mantra, the 12 interactive dynamics taxonomy, and modern interaction frameworks. See [slides](/2025-InfoVis-CSE/slides/week7-interaction.html).
+**Week 8 Materials Ready (Oct 24):** Foundations of Geovisualization (2D Maps) lecture is now available! Covers map projections, choropleth pitfalls, data classification, and practical Leaflet.js implementation. See [slides](/2025-InfoVis-CSE/slides/week8-geovis-2d-maps.html).
 
 *Course materials will be posted as the semester progresses*
 
@@ -128,6 +128,20 @@ author_profile: true
   - [Deck.gl](https://deck.gl/) - GPU-powered visualization layers
   - [3D Building Models](https://www.openstreetmap.org/#map=5/38.007/-95.844)
 - **Supplemental Material:** When to use 2D vs 3D, Hybrid visualization approaches, Precomputation for real-time queries
+
+### Week 11 (Nov 14) - Visualizing Time-Oriented Data
+- **Slides:** [Visualizing Time-Oriented Data](/2025-InfoVis-CSE/slides/week11-temporal-data.html) | **Lab:** TBA
+- **Topics:** Temporal data fundamentals (event vs measurement data), Time structures (sequential, cyclic, hierarchical), Line charts and aspect ratios (Banking to 45°), Multiple time series (spaghetti plots, small multiples), Stacked area charts and limitations, Interaction techniques (semantic vs geometric zoom), Heat maps and calendar visualizations, Periodic patterns (radial layouts, spirals), Horizon charts and sparklines
+- **Lab:** Building temporal visualizations, Time series analysis with D3
+- **Assignment:** Exercise 11 - Temporal data visualization (due Nov 20)
+- **Required Readings:**
+  - Cleveland et al. (1988) - [The Shape Parameter of a Two-Variable Graph](https://doi.org/10.1080/01621459.1988.10478613) - JASA
+  - Heer et al. (2009) - [Sizing the Horizon: Chart Size and Layering Effects](https://doi.org/10.1145/1518701.1518897) - CHI
+- **Recommended Resources:**
+  - [WSJ Vaccine Impact Visualization](http://graphics.wsj.com/infectious-diseases-and-vaccines/) - Famous heat map example
+  - [D3 Time Scales Documentation](https://github.com/d3/d3-scale#time-scales)
+  - Weber et al. (2001) - [Visualizing Time-Series on Spirals](https://doi.org/10.1109/INFVIS.2001.963273) - IEEE InfoVis
+- **Supplemental Material:** Aggregation trade-offs, Baseline bias in stacked charts, When to use radial vs linear layouts
 
 ## Assignments
 
