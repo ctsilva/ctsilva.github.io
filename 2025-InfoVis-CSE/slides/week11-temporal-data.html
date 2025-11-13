@@ -145,6 +145,24 @@ Claudio Silva
 <section id="introduction" class="title-slide slide level1 center">
 <h1>Introduction</h1>
 <p>Based on materials by Enrico Bertini enrico.bertini@nyu.edu NYU Tandon School of Engineering</p>
+<aside class="notes">
+<p><strong>LECTURE TIMING GUIDANCE (150 min total)</strong></p>
+<p>This is a PACKED lecture with lots of content. Suggested timing:</p>
+<p><strong>Core Material (90-100 min):</strong> MUST COVER - Intro + Temporal Data Fundamentals (15 min): Types, structures, aggregation - Line Charts + Aspect Ratio + Banking to 45° (20 min): Cleveland’s research - Multiple Lines + Spaghetti Plots + Solutions (15 min): Critical problem - Small Multiples transition to Interaction (20 min): Zoom, brushing &amp; linking - Area Charts + Baseline Bias (10 min): Another critical limitation - Event Data + Gantt Charts (10 min): Practical techniques</p>
+<p><strong>Important but Optional (30-40 min):</strong> COVER IF TIME PERMITS - Heat Maps + WSJ Vaccine Example (15 min): Famous example, worth showing - Calendar Visualizations (10 min): Students will use these - Radial Layout Warnings (5 min): Important cautionary note</p>
+<p><strong>Advanced/Optional (20-30 min):</strong> READING ASSIGNMENT IF SHORT ON TIME - Spiral Plots (5 min) - Horizon Charts (15 min): Complex technique, needs slow walkthrough - Sparklines (5 min) - Alternative Encodings (5 min)</p>
+<p><strong>Strategy if running short:</strong> 1. Skip Spiral Plots entirely 2. Show Horizon Charts as “further reading” 3. Make sure to cover Banking to 45°, Spaghetti Plots, Baseline Bias (core perceptual issues)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="what-is-temporal-data" class="slide level2">
 <h2>What is Temporal Data?</h2>
@@ -153,8 +171,12 @@ Claudio Silva
 <aside class="notes">
 <ul>
 <li>This is a fundamental concept - time is not just an attribute, it’s THE organizing dimension</li>
+<li><strong>START WITH THIS QUESTION</strong>: “What datasets have you used or seen that have time in them?”
+<ul>
+<li>Get 3-4 student examples on the board</li>
+<li>For each example, ask: “How is time recorded? What’s the granularity?”</li>
+</ul></li>
 <li>Emphasize that temporal data requires explicit time recording - not just “ordered” data</li>
-<li>Ask students: “What datasets do you work with that have time? How is time recorded?”</li>
 <li>Common misconception: Students often think any sequential data is temporal (e.g., ranking lists)</li>
 <li>Key distinction: Temporal data has meaningful time stamps/intervals, not just ordering</li>
 </ul>
@@ -182,9 +204,16 @@ Claudio Silva
 <aside class="notes">
 <ul>
 <li>This appears to be crime or incident data - good real-world example</li>
-<li>Point out the explicit DAT and TIME columns - this is what makes it temporal</li>
+<li><strong>PHYSICALLY POINT</strong> to the DAT and TIME columns on screen with mouse/pointer
+<ul>
+<li>“See these columns? This is what makes this temporal data - explicit timestamps”</li>
+<li>Make sure image is zoomed/large enough for back row to see</li>
+</ul></li>
 <li>Note the other attributes (location, type) that we might want to analyze over time</li>
-<li>Questions to pose: “What patterns might we want to find? Daily patterns? Seasonal? Hot spots over time?”</li>
+<li>Questions to pose: “What patterns might we want to find? Daily patterns? Seasonal? Hot spots over time?”
+<ul>
+<li>Wait for answers - students might suggest: “crime by hour of day”, “seasonal trends”, “geographic patterns over time”</li>
+</ul></li>
 <li>This is event data (discrete occurrences) rather than continuous measurements</li>
 </ul>
 <style type="text/css">
@@ -273,9 +302,15 @@ Claudio Silva
 <p>Examples: Temperature, revenue, stock value</p>
 <aside class="notes">
 <ul>
+<li><strong>EXPLICIT CONTRAST WITH TYPE 1</strong>: “Remember Event Data? Tweet, Email, Alarm - something just <em>happened</em>. Measurement data is different - we’re recording a <em>value</em> at each time point.”</li>
 <li>Measurement data: Continuous or regularly sampled values over time</li>
 <li>Unlike events (which happen irregularly), measurements are typically taken at regular intervals</li>
 <li>Each measurement records one or more quantitative values at a timestamp</li>
+<li><strong>Side-by-side comparison to emphasize</strong>:
+<ul>
+<li>Event: “Email sent at 3:42 PM” (binary - it happened)</li>
+<li>Measurement: “Temperature was 72°F at 3:42 PM” (quantitative value)</li>
+</ul></li>
 <li>Examples to discuss:
 <ul>
 <li>Temperature: Recorded every hour → time series of temperature values</li>
@@ -306,6 +341,7 @@ Claudio Silva
 <li><strong>Interval</strong>: For how long? (duration)</li>
 <li><strong>Granularity</strong>: At what scale? (seconds, hours, days, years)</li>
 </ul>
+<p><strong>Example</strong>: A meeting starts at 2:00 PM (position), lasts 90 minutes (interval), measured in minutes (granularity)</p>
 <aside class="notes">
 <ul>
 <li>These three components help us fully characterize temporal data</li>
@@ -335,49 +371,6 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 </section>
-<section id="linking-data-types-to-time-structures" class="slide level2">
-<h2>Linking Data Types to Time Structures</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Event Data</strong></p>
-<p>Time + Object (Attributes)</p>
-<ul>
-<li>Sequential: Transaction logs over years</li>
-<li>Cyclic: User logins by day of week</li>
-<li>Hierarchical: System alerts by hour/day/month</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Measurement Data</strong></p>
-<p>Time + Measure(s)</p>
-<ul>
-<li>Sequential: Stock prices over time (line charts)</li>
-<li>Cyclic: Temperature patterns by season</li>
-<li>Hierarchical: Revenue by year/quarter/month</li>
-</ul>
-</div></div>
-<p><strong>Key Insight</strong>: Data type + time structure → visualization choice</p>
-<aside class="notes">
-<ul>
-<li>This slide connects the two fundamental concepts: data types AND time structures</li>
-<li>Both event and measurement data can have sequential, cyclic, or hierarchical patterns</li>
-<li>The combination determines the best visualization approach</li>
-<li>Sequential structure → line charts, area charts (show progression)</li>
-<li>Cyclic structure → radial layouts, calendars (emphasize repetition)</li>
-<li>Hierarchical structure → multi-scale views, drill-down interactions</li>
-<li>Ask students: “If you have daily website traffic, what structures might you see?” (Answer: Sequential trend over months, cyclic pattern by day of week, hierarchical hour/day/week)</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
 <section id="time-structures" class="slide level2">
 <h2>Time Structures</h2>
 <p>Three key structures for temporal data:</p>
@@ -386,6 +379,7 @@ Claudio Silva
 <li><strong>Cyclic</strong> - Repeating patterns (daily, weekly, seasonal)</li>
 <li><strong>Hierarchical</strong> - Nested time resolutions (year/month/day)</li>
 </ol>
+<p><strong>Key insight</strong>: Most real temporal data has ALL THREE structures simultaneously!</p>
 <aside class="notes">
 <ul>
 <li>These are the three fundamental ways time can be structured in data</li>
@@ -402,7 +396,11 @@ Claudio Silva
 <ul>
 <li>Example: Years contain quarters contain months contain weeks contain days</li>
 </ul></li>
-<li>Most real temporal data has ALL THREE structures simultaneously</li>
+<li><strong>EMPHASIZE THIS POINT</strong>: “Most real temporal data has ALL THREE structures simultaneously!”
+<ul>
+<li>Example: Website traffic has sequential trends (growing over years), cyclic patterns (weekday vs weekend), and hierarchical structure (hour/day/week/month)</li>
+<li>You choose which structure to visualize based on your question</li>
+</ul></li>
 <li>Visualization choice depends on which structure you want to emphasize</li>
 </ul>
 <style type="text/css">
@@ -439,6 +437,50 @@ Claudio Silva
 <li>Hours</li>
 </ul>
 </section>
+<section id="linking-data-types-to-time-structures" class="slide level2">
+<h2>Linking Data Types to Time Structures</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Event Data</strong></p>
+<p>Time + Object (Attributes)</p>
+<ul>
+<li>Sequential: Transaction logs over years</li>
+<li>Cyclic: User logins by day of week</li>
+<li>Hierarchical: System alerts by hour/day/month</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Measurement Data</strong></p>
+<p>Time + Measure(s)</p>
+<ul>
+<li>Sequential: Stock prices over time (line charts)</li>
+<li>Cyclic: Temperature patterns by season</li>
+<li>Hierarchical: Revenue by year/quarter/month</li>
+</ul>
+</div></div>
+<p><strong>Key Insight</strong>: Data type + time structure → visualization choice</p>
+<aside class="notes">
+<ul>
+<li><strong>NOW we can synthesize</strong>: You’ve seen Event vs Measurement AND Sequential/Cyclic/Hierarchical</li>
+<li>This slide connects the two fundamental concepts: data types AND time structures</li>
+<li>Both event and measurement data can have sequential, cyclic, or hierarchical patterns</li>
+<li>The combination determines the best visualization approach</li>
+<li>Sequential structure → line charts, area charts (show progression)</li>
+<li>Cyclic structure → radial layouts, calendars (emphasize repetition)</li>
+<li>Hierarchical structure → multi-scale views, drill-down interactions</li>
+<li>Ask students: “If you have daily website traffic, what structures might you see?” (Answer: Sequential trend over months, cyclic pattern by day of week, hierarchical hour/day/week)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="aggregation-trade-offs" class="slide level2">
 <h2>Aggregation Trade-offs</h2>
 <div class="columns">
@@ -457,11 +499,12 @@ Claudio Silva
 <li>Masks short-term events</li>
 <li>Loses extreme values</li>
 <li>Can hide critical peaks</li>
-<li>Simpson’s paradox</li>
+<li><strong>Simpson’s Paradox</strong></li>
 </ul>
 <p><em>Example</em>: A 1-hour server outage disappears in monthly view</p>
 </div></div>
 <p><strong>Design principle</strong>: Choose granularity based on the questions you need to answer</p>
+<p><strong>Warning</strong>: This is Simpson’s Paradox for temporal data - aggregation can completely reverse or hide patterns!</p>
 <aside class="notes">
 <ul>
 <li><strong>CRITICAL SLIDE</strong> - This is Simpson’s paradox for temporal data!</li>
@@ -691,6 +734,24 @@ Claudio Silva
 <section id="small-multiples" class="slide level2">
 <h2>Small Multiples</h2>
 <p>Small Multiple Line Charts and Area Charts</p>
+<aside class="notes">
+<ul>
+<li>Small multiples = static solution to spaghetti plots</li>
+<li>But note: Filtering and Highlighting are often INTERACTIVE techniques</li>
+<li>This leads us to the next major topic: Interaction</li>
+<li><strong>Transition</strong>: “We’ve seen static solutions - but in practice, filtering and highlighting are interactive. Let’s talk about interaction techniques for temporal data…”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="example-small-multiple-line-charts" class="slide level2">
 <h2>Example: Small Multiple Line Charts</h2>
@@ -728,7 +789,13 @@ Claudio Silva
 <li><strong>IMPORTANT PERCEPTUAL LIMITATION</strong> - students often misuse stacked area charts</li>
 <li>The bottom layer (touching x-axis) is easy to read - it has a stable baseline</li>
 <li>But upper layers “float” on changing baselines - very hard to judge their values or trends</li>
-<li>Ask: “Looking at the middle layer - is it increasing or decreasing?” (Hard to tell!)</li>
+<li><strong>INTERACTIVE DEMO</strong>: Point to an upper layer (e.g., green category) and ask:
+<ul>
+<li>“Did this category increase or decrease between these two time points?”</li>
+<li>“Can anyone tell me the actual value for this category in Q3?”</li>
+<li>Students will struggle - this proves the baseline bias!</li>
+<li>Then show: Only the bottom layer can be read accurately</li>
+</ul></li>
 <li>The total height is easy to read, but individual layer trends are ambiguous</li>
 <li>Example: If bottom layer increases sharply, upper layers appear to go up even if their actual values are flat</li>
 <li>When to use: When you care about total AND composition, and bottom layer is most important</li>
@@ -794,11 +861,13 @@ Claudio Silva
 <aside class="notes">
 <ul>
 <li>Two fundamentally different types of zoom - students often confuse these!</li>
+<li><strong>LINK BACK</strong>: “Remember our Aggregation Trade-offs slide? Semantic zoom is interactive aggregation!”</li>
 <li><strong>Semantic Zoom</strong> = change aggregation level (connect back to earlier aggregation slide)
 <ul>
 <li>Zoom out: Hourly → Daily (aggregate 24 hours into 1 point)</li>
 <li>Zoom in: Daily → Hourly (show finer resolution)</li>
 <li>Data actually changes - different level of detail</li>
+<li><strong>This lets you explore different aggregation levels interactively</strong> rather than committing to one upfront</li>
 <li>Example: Google Maps showing cities vs streets vs buildings</li>
 </ul></li>
 <li><strong>Geometric Zoom</strong> = magnify the view (like a magnifying glass)
@@ -848,6 +917,33 @@ Claudio Silva
 <p>Corresponding temporal data highlights automatically</p>
 </div></div>
 <p><strong>Power</strong>: Discover spatio-temporal patterns (e.g., “Sales peak in Region A during Q4”)</p>
+<aside class="notes">
+<ul>
+<li><strong>LIVE DEMO OPPORTUNITY</strong>: If you have a prepared D3 example, Tableau dashboard, or Observable notebook, SHOW THIS LIVE
+<ul>
+<li>Static images can’t convey the interactivity</li>
+<li>Seeing the linking happen in real-time is 100x more impactful</li>
+<li>Even a simple example (brush a time range, see map update) will make this memorable</li>
+</ul></li>
+<li>If no live demo available: At minimum, verbally walk through the interaction
+<ul>
+<li>“Imagine I click and drag on the map to select this region…”</li>
+<li>“…instantly, the time series highlights just those data points”</li>
+<li>“Now I can see: this region has a spike every December”</li>
+</ul></li>
+<li>This is the payoff of brushing &amp; linking - cross-view pattern discovery</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="dynamic-aggregation" class="slide level2">
 <h2>Dynamic Aggregation</h2>
@@ -921,7 +1017,41 @@ Claudio Silva
 <h2>Gantt Charts</h2>
 <p>Horizontal bars show event start, duration, and end times</p>
 
-<img data-src="figs/week11/gantt-chart-intro.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p></section>
+<img data-src="figs/week11/gantt-chart-intro.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p><aside class="notes">
+<ul>
+<li><strong>CONNECT BACK TO EVENT DATA</strong>: “Remember our Event Data definition? Events with duration? Gantt charts are THE classic visualization for this.”</li>
+<li><strong>Origin story</strong>: Named after Henry Gantt (1910s) - originally invented for project management
+<ul>
+<li>Shows tasks, dependencies, timelines</li>
+<li>Still dominates project management software (MS Project, Asana, Jira, etc.)</li>
+</ul></li>
+<li><strong>Modern applications</strong> have expanded far beyond projects:
+<ul>
+<li>Server/system activity monitoring (next slides)</li>
+<li>Resource allocation (people, machines, rooms)</li>
+<li>Manufacturing schedules</li>
+<li>Any scenario with concurrent activities over time</li>
+</ul></li>
+<li>Key visual features:
+<ul>
+<li>Time on x-axis</li>
+<li>Tasks/resources on y-axis</li>
+<li>Bars show start, duration, end</li>
+<li>Can show dependencies with arrows</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="example-gantt-chart" class="slide level2">
 <h2>Example: Gantt Chart</h2>
 <p>Project management: showing task dependencies and overlaps</p>
@@ -943,9 +1073,38 @@ Claudio Silva
 <section id="heat-maps-for-temporal-data" class="slide level2">
 <h2>Heat Maps for Temporal Data</h2>
 <p><strong>Matrix representation</strong>: Time units as rows/columns, color encodes values</p>
+<p><strong>Think of it as</strong>: A table where one axis is time, the other is categories, and color shows the value</p>
 <p><strong>Benefits</strong>: Compact, shows patterns across multiple dimensions</p>
 
-<img data-src="figs/week11/heatmap-temporal.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p></section>
+<img data-src="figs/week11/heatmap-temporal.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p><aside class="notes">
+<ul>
+<li><strong>Explicit mapping</strong>: Heat map = fancy table
+<ul>
+<li>Rows: Time units (hours, days, weeks, months)</li>
+<li>Columns: Categories (states, products, sensors)</li>
+<li>Cell color: The value at that time/category combination</li>
+</ul></li>
+<li>This is a 2D visualization of 3D data (time × category × value)</li>
+<li>Students often confuse heat maps with other color-based visualizations</li>
+<li>Key advantage: Can see patterns across BOTH dimensions simultaneously
+<ul>
+<li>Temporal patterns (when are values high?)</li>
+<li>Categorical patterns (which categories have high values?)</li>
+<li>Interactions (does Category A peak at different times than Category B?)</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="example-wsj-vaccine-impact-visualization" class="slide level2">
 <h2>Example: WSJ Vaccine Impact Visualization</h2>
 
@@ -1007,6 +1166,19 @@ Claudio Silva
 <section id="periodic-patterns" class="title-slide slide level1 center">
 <h1>Periodic Patterns</h1>
 <p>Calendars, radial layouts, and spirals</p>
+<aside class="notes">
+<p><strong>OPTIONAL SECTION</strong> - If running short on time, you can skip spirals and cover calendars quickly (10 min) - Calendars are most practical for students - Radial layout warnings are important (5 min) - Spirals are interesting but not essential</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="understanding-periodicity" class="slide level2">
 <h2>Understanding Periodicity</h2>
@@ -1088,10 +1260,43 @@ Claudio Silva
 </section>
 <section id="spiral-plots" class="slide level2">
 <h2>Spiral Plots</h2>
+<p><strong>Key insight</strong>: Spirals show BOTH cycles AND progression simultaneously</p>
+<ul>
+<li><strong>Cycles</strong>: Annual patterns repeat at the same angle</li>
+<li><strong>Progression</strong>: Long-term trend shows as spiral expanding/contracting outward</li>
+</ul>
 
 <img data-src="figs/week11/spiral-plot-concept.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p><div class="footer">
 <p>Weber, M., Alexa, M., &amp; Müller, W. (2001). <a href="https://doi.org/10.1109/INFVIS.2001.963273"><em>Visualizing time-series on spirals</em></a>. IEEE InfoVis.</p>
 </div>
+<aside class="notes">
+<ul>
+<li><strong>The brilliance of spirals</strong>: They encode TWO temporal structures at once
+<ul>
+<li><strong>Cyclic structure</strong>: Each complete rotation = one cycle (year, month, day)</li>
+<li><strong>Sequential structure</strong>: As you spiral outward = progression through time</li>
+</ul></li>
+<li>Temperature example (next slide):
+<ul>
+<li>Angle = month of year (seasonal cycle)</li>
+<li>Radius = which year (progression)</li>
+<li>Can immediately see: seasonal patterns + long-term warming trend</li>
+</ul></li>
+<li>Climate spiral makes this vivid: spiraling outward = getting warmer over time</li>
+<li>Trade-off: Harder to read precise values (radial layout limitations)</li>
+<li>Use when: The dual encoding (cycle + trend) is more important than precision</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="spiral-example-temperature-data" class="slide level2">
 <h2>Spiral Example: Temperature Data</h2>
@@ -1161,6 +1366,19 @@ Claudio Silva
 <section id="scalable-visualizations" class="title-slide slide level1 center">
 <h1>Scalable Visualizations</h1>
 <p>Horizon charts and sparklines for dense temporal data</p>
+<aside class="notes">
+<p><strong>ADVANCED/OPTIONAL SECTION</strong> - This can be assigned as reading if short on time - Horizon charts are complex and need 15 min to walk through properly - Sparklines are quick (5 min) and useful, show if you can - If pressed for time: Show the horizon chart concept but assign the step-by-step as reading - Students don’t NEED to build horizon charts, but should know they exist</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="horizon-charts" class="slide level2">
 <h2>Horizon Charts</h2>
@@ -1177,8 +1395,14 @@ Claudio Silva
 <li>Horizon charts compress vertical space by 2-4x while maintaining readability</li>
 <li>Used in: Server monitoring dashboards, financial data with hundreds of stocks, climate data arrays</li>
 <li>Key innovation: Trade vertical space for color intensity</li>
+<li><strong>CRITICAL</strong>: This looks like “magic” unless you understand the construction</li>
+<li><strong>Next slides walk through step-by-step</strong>: This is NOT optional - you MUST show the construction process
+<ul>
+<li>Without understanding HOW it’s built, students will just see a confusing colored chart</li>
+<li>The 4-step process (area → bands → flip → collapse) demystifies it</li>
+<li>Heer et al.’s paper/video has excellent animations of this - reference them</li>
+</ul></li>
 <li>Takes practice to read - not intuitive at first glance</li>
-<li>Walk through the construction steps slowly - students need to understand HOW it works</li>
 <li>Heer et al.’s CHI paper showed horizon charts can be as accurate as line charts but in 1/4 the space</li>
 <li>Real-world example: Cubism.js library for real-time dashboards</li>
 <li>When to use: When you have &gt;20 time series and need to see them all simultaneously</li>
@@ -1204,17 +1428,73 @@ Claudio Silva
 <h2>How Horizon Charts Work: Step 1</h2>
 <p>Start with a standard area chart</p>
 
-<img data-src="figs/week11/horizon-step1-area.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p></section>
+<img data-src="figs/week11/horizon-step1-area.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p><aside class="notes">
+<ul>
+<li><strong>SLOW DOWN</strong>: Take your time with these construction slides</li>
+<li>Step 1 is familiar - just a normal area chart</li>
+<li>“This is what we know - a regular area chart. Now watch what happens…”</li>
+<li>Make sure students understand this baseline before moving forward</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="step-2-discretizing-into-bands" class="slide level2">
 <h2>Step 2: Discretizing into Bands</h2>
 <p>Divide values into equal-height bands (e.g., 0-1, 1-2, 2-3)</p>
 
-<img data-src="figs/week11/horizon-step2-bands.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p></section>
+<img data-src="figs/week11/horizon-step2-bands.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p><aside class="notes">
+<ul>
+<li><strong>Key transformation #1</strong>: Chop the area into horizontal slices</li>
+<li>“We’re dividing the chart into bands of equal height”</li>
+<li>Point to each band: “0-1 gets one color, 1-2 gets another, 2-3 gets a darker shade”</li>
+<li>This is like creating a color scale for elevation on a topographic map</li>
+<li>Make sure students see: Same data, just segmented into layers</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="step-3-flipping-negative-values" class="slide level2">
 <h2>Step 3: Flipping Negative Values</h2>
 <p>Mirror negative values above the baseline (differentiated by color/saturation)</p>
 
-<img data-src="figs/week11/horizon-step3-flip.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p></section>
+<img data-src="figs/week11/horizon-step3-flip.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p><aside class="notes">
+<ul>
+<li><strong>Key transformation #2</strong>: Handle negative values</li>
+<li>“Notice negative values? We flip them UP above the baseline”</li>
+<li>Use different color (or saturation) to distinguish positive from negative</li>
+<li>“Red/orange for positive, blue for negative” is common convention</li>
+<li>Why flip? Because next step collapses everything - we need both directions in same vertical space</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="step-4-collapsing-bands" class="slide level2">
 <h2>Step 4: Collapsing Bands</h2>
 <p>Stack all bands on top of each other using color intensity to show magnitude</p>
@@ -1230,12 +1510,58 @@ Claudio Silva
 <figcaption>Image</figcaption>
 </figure>
 </div>
+<aside class="notes">
+<ul>
+<li><strong>THE MAGIC STEP</strong>: Now we collapse all the bands into the same vertical space</li>
+<li>“All those layers we created? We stack them on top of each other”</li>
+<li><strong>This is the key insight</strong>: Height → Color intensity
+<ul>
+<li>Band 1 (0-1): Light color</li>
+<li>Band 2 (1-2): Medium color (stacked on top, shows darker)</li>
+<li>Band 3 (2-3): Dark color (all three stacked)</li>
+</ul></li>
+<li>The result: Same temporal patterns, but 1/3 the height</li>
+<li>“Look at the before and after - same pattern, compressed vertically”</li>
+<li>This is why color intensity = magnitude in horizon charts</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="final-result-horizon-chart" class="slide level2">
 <h2>Final Result: Horizon Chart</h2>
 <p>Compact visualization preserving temporal patterns in minimal vertical space</p>
 
-<img data-src="figs/week11/horizon-final-result.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p></section>
+<img data-src="figs/week11/horizon-final-result.png" class="r-stretch quarto-figure-center"><p class="caption">Image</p><aside class="notes">
+<ul>
+<li><strong>Recap the transformation</strong>: “We went from area chart → banded → flipped → collapsed”</li>
+<li>Now students should understand WHY darker colors = higher values</li>
+<li>“Without understanding the construction, this just looks like random colored bands”</li>
+<li>“But now you know: it’s a compressed area chart where height became color intensity”</li>
+<li>Practical reading tip: Darker/more saturated = higher magnitude</li>
+<li>Point out: You can still see the temporal patterns (peaks and valleys), just compressed</li>
+<li><strong>Reference Heer’s work</strong>: “The original CHI paper and video show this animation - highly recommended”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="sparklines" class="slide level2">
 <h2>Sparklines</h2>
 <p>“Small, intense, word-sized graphics with typographic resolution. Sparklines can be placed anywhere that words or numbers can be: in sentences, maps, graphics, tables.”</p>

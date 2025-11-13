@@ -19,6 +19,35 @@ Based on materials by Enrico Bertini
 enrico.bertini@nyu.edu
 NYU Tandon School of Engineering
 
+::: notes
+**LECTURE TIMING GUIDANCE (150 min total)**
+
+This is a PACKED lecture with lots of content. Suggested timing:
+
+**Core Material (90-100 min):** MUST COVER
+- Intro + Temporal Data Fundamentals (15 min): Types, structures, aggregation
+- Line Charts + Aspect Ratio + Banking to 45° (20 min): Cleveland's research
+- Multiple Lines + Spaghetti Plots + Solutions (15 min): Critical problem
+- Small Multiples transition to Interaction (20 min): Zoom, brushing & linking
+- Area Charts + Baseline Bias (10 min): Another critical limitation
+- Event Data + Gantt Charts (10 min): Practical techniques
+
+**Important but Optional (30-40 min):** COVER IF TIME PERMITS
+- Heat Maps + WSJ Vaccine Example (15 min): Famous example, worth showing
+- Calendar Visualizations (10 min): Students will use these
+- Radial Layout Warnings (5 min): Important cautionary note
+
+**Advanced/Optional (20-30 min):** READING ASSIGNMENT IF SHORT ON TIME
+- Spiral Plots (5 min)
+- Horizon Charts (15 min): Complex technique, needs slow walkthrough
+- Sparklines (5 min)
+- Alternative Encodings (5 min)
+
+**Strategy if running short:**
+1. Skip Spiral Plots entirely
+2. Show Horizon Charts as "further reading"
+3. Make sure to cover Banking to 45°, Spaghetti Plots, Baseline Bias (core perceptual issues)
+:::
 
 ---
 
@@ -30,8 +59,10 @@ In other words: we track **when** things happened or **what values were** at spe
 
 ::: notes
 - This is a fundamental concept - time is not just an attribute, it's THE organizing dimension
+- **START WITH THIS QUESTION**: "What datasets have you used or seen that have time in them?"
+  - Get 3-4 student examples on the board
+  - For each example, ask: "How is time recorded? What's the granularity?"
 - Emphasize that temporal data requires explicit time recording - not just "ordered" data
-- Ask students: "What datasets do you work with that have time? How is time recorded?"
 - Common misconception: Students often think any sequential data is temporal (e.g., ranking lists)
 - Key distinction: Temporal data has meaningful time stamps/intervals, not just ordering
 :::
@@ -50,9 +81,12 @@ In other words: we track **when** things happened or **what values were** at spe
 
 ::: notes
 - This appears to be crime or incident data - good real-world example
-- Point out the explicit DAT and TIME columns - this is what makes it temporal
+- **PHYSICALLY POINT** to the DAT and TIME columns on screen with mouse/pointer
+  - "See these columns? This is what makes this temporal data - explicit timestamps"
+  - Make sure image is zoomed/large enough for back row to see
 - Note the other attributes (location, type) that we might want to analyze over time
 - Questions to pose: "What patterns might we want to find? Daily patterns? Seasonal? Hot spots over time?"
+  - Wait for answers - students might suggest: "crime by hour of day", "seasonal trends", "geographic patterns over time"
 - This is event data (discrete occurrences) rather than continuous measurements
 :::
 
@@ -112,9 +146,13 @@ Examples: Tweet, Email, Alarm
 Examples: Temperature, revenue, stock value
 
 ::: notes
+- **EXPLICIT CONTRAST WITH TYPE 1**: "Remember Event Data? Tweet, Email, Alarm - something just *happened*. Measurement data is different - we're recording a *value* at each time point."
 - Measurement data: Continuous or regularly sampled values over time
 - Unlike events (which happen irregularly), measurements are typically taken at regular intervals
 - Each measurement records one or more quantitative values at a timestamp
+- **Side-by-side comparison to emphasize**:
+  - Event: "Email sent at 3:42 PM" (binary - it happened)
+  - Measurement: "Temperature was 72°F at 3:42 PM" (quantitative value)
 - Examples to discuss:
   - Temperature: Recorded every hour → time series of temperature values
   - Revenue: Daily sales figures → continuous tracking of performance
@@ -134,6 +172,8 @@ Examples: Temperature, revenue, stock value
 - **Interval**: For how long? (duration)
 - **Granularity**: At what scale? (seconds, hours, days, years)
 
+**Example**: A meeting starts at 2:00 PM (position), lasts 90 minutes (interval), measured in minutes (granularity)
+
 ::: notes
 - These three components help us fully characterize temporal data
 - **Position (When)**: The anchor point in time - can be absolute (Jan 1, 2025, 3:00 PM) or relative (3 hours ago)
@@ -149,44 +189,6 @@ Examples: Temperature, revenue, stock value
 
 ---
 
-## Linking Data Types to Time Structures
-
-::: {.columns}
-::: {.column width="50%"}
-**Event Data**
-
-Time + Object (Attributes)
-
-- Sequential: Transaction logs over years
-- Cyclic: User logins by day of week
-- Hierarchical: System alerts by hour/day/month
-:::
-
-::: {.column width="50%"}
-**Measurement Data**
-
-Time + Measure(s)
-
-- Sequential: Stock prices over time (line charts)
-- Cyclic: Temperature patterns by season
-- Hierarchical: Revenue by year/quarter/month
-:::
-:::
-
-**Key Insight**: Data type + time structure → visualization choice
-
-::: notes
-- This slide connects the two fundamental concepts: data types AND time structures
-- Both event and measurement data can have sequential, cyclic, or hierarchical patterns
-- The combination determines the best visualization approach
-- Sequential structure → line charts, area charts (show progression)
-- Cyclic structure → radial layouts, calendars (emphasize repetition)
-- Hierarchical structure → multi-scale views, drill-down interactions
-- Ask students: "If you have daily website traffic, what structures might you see?" (Answer: Sequential trend over months, cyclic pattern by day of week, hierarchical hour/day/week)
-:::
-
----
-
 ## Time Structures
 
 Three key structures for temporal data:
@@ -194,6 +196,8 @@ Three key structures for temporal data:
 1. **Sequential** - Linear progression over time
 2. **Cyclic** - Repeating patterns (daily, weekly, seasonal)
 3. **Hierarchical** - Nested time resolutions (year/month/day)
+
+**Key insight**: Most real temporal data has ALL THREE structures simultaneously!
 
 ::: notes
 - These are the three fundamental ways time can be structured in data
@@ -204,7 +208,9 @@ Three key structures for temporal data:
   - Natural cycles: daily, weekly, monthly, yearly
 - **Hierarchical**: Multiple nested time scales - enables drill-down and multi-resolution analysis
   - Example: Years contain quarters contain months contain weeks contain days
-- Most real temporal data has ALL THREE structures simultaneously
+- **EMPHASIZE THIS POINT**: "Most real temporal data has ALL THREE structures simultaneously!"
+  - Example: Website traffic has sequential trends (growing over years), cyclic patterns (weekday vs weekend), and hierarchical structure (hour/day/week/month)
+  - You choose which structure to visualize based on your question
 - Visualization choice depends on which structure you want to emphasize
 :::
 
@@ -242,6 +248,45 @@ Three key structures for temporal data:
 
 ---
 
+## Linking Data Types to Time Structures
+
+::: {.columns}
+::: {.column width="50%"}
+**Event Data**
+
+Time + Object (Attributes)
+
+- Sequential: Transaction logs over years
+- Cyclic: User logins by day of week
+- Hierarchical: System alerts by hour/day/month
+:::
+
+::: {.column width="50%"}
+**Measurement Data**
+
+Time + Measure(s)
+
+- Sequential: Stock prices over time (line charts)
+- Cyclic: Temperature patterns by season
+- Hierarchical: Revenue by year/quarter/month
+:::
+:::
+
+**Key Insight**: Data type + time structure → visualization choice
+
+::: notes
+- **NOW we can synthesize**: You've seen Event vs Measurement AND Sequential/Cyclic/Hierarchical
+- This slide connects the two fundamental concepts: data types AND time structures
+- Both event and measurement data can have sequential, cyclic, or hierarchical patterns
+- The combination determines the best visualization approach
+- Sequential structure → line charts, area charts (show progression)
+- Cyclic structure → radial layouts, calendars (emphasize repetition)
+- Hierarchical structure → multi-scale views, drill-down interactions
+- Ask students: "If you have daily website traffic, what structures might you see?" (Answer: Sequential trend over months, cyclic pattern by day of week, hierarchical hour/day/week)
+:::
+
+---
+
 ## Aggregation Trade-offs
 
 ::: {.columns}
@@ -262,13 +307,15 @@ Three key structures for temporal data:
 - Masks short-term events
 - Loses extreme values
 - Can hide critical peaks
-- Simpson's paradox
+- **Simpson's Paradox**
 
 *Example*: A 1-hour server outage disappears in monthly view
 :::
 :::
 
 **Design principle**: Choose granularity based on the questions you need to answer
+
+**Warning**: This is Simpson's Paradox for temporal data - aggregation can completely reverse or hide patterns!
 
 ::: notes
 - **CRITICAL SLIDE** - This is Simpson's paradox for temporal data!
@@ -500,6 +547,12 @@ Possible Solutions ...
 
 Small Multiple Line Charts and Area Charts
 
+::: notes
+- Small multiples = static solution to spaghetti plots
+- But note: Filtering and Highlighting are often INTERACTIVE techniques
+- This leads us to the next major topic: Interaction
+- **Transition**: "We've seen static solutions - but in practice, filtering and highlighting are interactive. Let's talk about interaction techniques for temporal data..."
+:::
 
 ---
 
@@ -543,7 +596,11 @@ Problem: Temporal trends for upper layers are hard to interpret because they don
 - **IMPORTANT PERCEPTUAL LIMITATION** - students often misuse stacked area charts
 - The bottom layer (touching x-axis) is easy to read - it has a stable baseline
 - But upper layers "float" on changing baselines - very hard to judge their values or trends
-- Ask: "Looking at the middle layer - is it increasing or decreasing?" (Hard to tell!)
+- **INTERACTIVE DEMO**: Point to an upper layer (e.g., green category) and ask:
+  - "Did this category increase or decrease between these two time points?"
+  - "Can anyone tell me the actual value for this category in Q3?"
+  - Students will struggle - this proves the baseline bias!
+  - Then show: Only the bottom layer can be read accurately
 - The total height is easy to read, but individual layer trends are ambiguous
 - Example: If bottom layer increases sharply, upper layers appear to go up even if their actual values are flat
 - When to use: When you care about total AND composition, and bottom layer is most important
@@ -608,10 +665,12 @@ Critical for exploring temporal data
 
 ::: notes
 - Two fundamentally different types of zoom - students often confuse these!
+- **LINK BACK**: "Remember our Aggregation Trade-offs slide? Semantic zoom is interactive aggregation!"
 - **Semantic Zoom** = change aggregation level (connect back to earlier aggregation slide)
   - Zoom out: Hourly → Daily (aggregate 24 hours into 1 point)
   - Zoom in: Daily → Hourly (show finer resolution)
   - Data actually changes - different level of detail
+  - **This lets you explore different aggregation levels interactively** rather than committing to one upfront
   - Example: Google Maps showing cities vs streets vs buildings
 - **Geometric Zoom** = magnify the view (like a magnifying glass)
   - Same data points, just bigger
@@ -658,6 +717,17 @@ Corresponding temporal data highlights automatically
 
 **Power**: Discover spatio-temporal patterns (e.g., "Sales peak in Region A during Q4")
 
+::: notes
+- **LIVE DEMO OPPORTUNITY**: If you have a prepared D3 example, Tableau dashboard, or Observable notebook, SHOW THIS LIVE
+  - Static images can't convey the interactivity
+  - Seeing the linking happen in real-time is 100x more impactful
+  - Even a simple example (brush a time range, see map update) will make this memorable
+- If no live demo available: At minimum, verbally walk through the interaction
+  - "Imagine I click and drag on the map to select this region..."
+  - "...instantly, the time series highlights just those data points"
+  - "Now I can see: this region has a spike every December"
+- This is the payoff of brushing & linking - cross-view pattern discovery
+:::
 
 ---
 
@@ -752,6 +822,23 @@ Horizontal bars show event start, duration, and end times
 
 ![Image](figs/week11/gantt-chart-intro.png)
 
+::: notes
+- **CONNECT BACK TO EVENT DATA**: "Remember our Event Data definition? Events with duration? Gantt charts are THE classic visualization for this."
+- **Origin story**: Named after Henry Gantt (1910s) - originally invented for project management
+  - Shows tasks, dependencies, timelines
+  - Still dominates project management software (MS Project, Asana, Jira, etc.)
+- **Modern applications** have expanded far beyond projects:
+  - Server/system activity monitoring (next slides)
+  - Resource allocation (people, machines, rooms)
+  - Manufacturing schedules
+  - Any scenario with concurrent activities over time
+- Key visual features:
+  - Time on x-axis
+  - Tasks/resources on y-axis
+  - Bars show start, duration, end
+  - Can show dependencies with arrows
+:::
+
 ---
 
 ## Example: Gantt Chart
@@ -781,9 +868,24 @@ Heat maps and real-world examples
 
 **Matrix representation**: Time units as rows/columns, color encodes values
 
+**Think of it as**: A table where one axis is time, the other is categories, and color shows the value
+
 **Benefits**: Compact, shows patterns across multiple dimensions
 
 ![Image](figs/week11/heatmap-temporal.png)
+
+::: notes
+- **Explicit mapping**: Heat map = fancy table
+  - Rows: Time units (hours, days, weeks, months)
+  - Columns: Categories (states, products, sensors)
+  - Cell color: The value at that time/category combination
+- This is a 2D visualization of 3D data (time × category × value)
+- Students often confuse heat maps with other color-based visualizations
+- Key advantage: Can see patterns across BOTH dimensions simultaneously
+  - Temporal patterns (when are values high?)
+  - Categorical patterns (which categories have high values?)
+  - Interactions (does Category A peak at different times than Category B?)
+:::
 
 ---
 
@@ -843,6 +945,12 @@ Dense but information-rich: shows career trajectories and productivity over time
 
 Calendars, radial layouts, and spirals
 
+::: notes
+**OPTIONAL SECTION** - If running short on time, you can skip spirals and cover calendars quickly (10 min)
+- Calendars are most practical for students
+- Radial layout warnings are important (5 min)
+- Spirals are interesting but not essential
+:::
 
 ---
 
@@ -913,10 +1021,28 @@ Periodic phenomena are cyclical. Radial layouts can reduce temporal discontinuit
 
 ## Spiral Plots
 
+**Key insight**: Spirals show BOTH cycles AND progression simultaneously
+
+- **Cycles**: Annual patterns repeat at the same angle
+- **Progression**: Long-term trend shows as spiral expanding/contracting outward
+
 ![Image](figs/week11/spiral-plot-concept.png)
 
 :::footer
 Weber, M., Alexa, M., & Müller, W. (2001). [*Visualizing time-series on spirals*](https://doi.org/10.1109/INFVIS.2001.963273). IEEE InfoVis.
+:::
+
+::: notes
+- **The brilliance of spirals**: They encode TWO temporal structures at once
+  - **Cyclic structure**: Each complete rotation = one cycle (year, month, day)
+  - **Sequential structure**: As you spiral outward = progression through time
+- Temperature example (next slide):
+  - Angle = month of year (seasonal cycle)
+  - Radius = which year (progression)
+  - Can immediately see: seasonal patterns + long-term warming trend
+- Climate spiral makes this vivid: spiraling outward = getting warmer over time
+- Trade-off: Harder to read precise values (radial layout limitations)
+- Use when: The dual encoding (cycle + trend) is more important than precision
 :::
 
 ---
@@ -974,6 +1100,13 @@ Comparing values radially is harder than in Cartesian space - use only when cycl
 
 Horizon charts and sparklines for dense temporal data
 
+::: notes
+**ADVANCED/OPTIONAL SECTION** - This can be assigned as reading if short on time
+- Horizon charts are complex and need 15 min to walk through properly
+- Sparklines are quick (5 min) and useful, show if you can
+- If pressed for time: Show the horizon chart concept but assign the step-by-step as reading
+- Students don't NEED to build horizon charts, but should know they exist
+:::
 
 ---
 
@@ -995,8 +1128,12 @@ Heer, J., Kong, N., & Agrawala, M. (2009). [*Sizing the horizon: The effects of 
 - Horizon charts compress vertical space by 2-4x while maintaining readability
 - Used in: Server monitoring dashboards, financial data with hundreds of stocks, climate data arrays
 - Key innovation: Trade vertical space for color intensity
+- **CRITICAL**: This looks like "magic" unless you understand the construction
+- **Next slides walk through step-by-step**: This is NOT optional - you MUST show the construction process
+  - Without understanding HOW it's built, students will just see a confusing colored chart
+  - The 4-step process (area → bands → flip → collapse) demystifies it
+  - Heer et al.'s paper/video has excellent animations of this - reference them
 - Takes practice to read - not intuitive at first glance
-- Walk through the construction steps slowly - students need to understand HOW it works
 - Heer et al.'s CHI paper showed horizon charts can be as accurate as line charts but in 1/4 the space
 - Real-world example: Cubism.js library for real-time dashboards
 - When to use: When you have >20 time series and need to see them all simultaneously
@@ -1018,6 +1155,13 @@ Start with a standard area chart
 
 ![Image](figs/week11/horizon-step1-area.png)
 
+::: notes
+- **SLOW DOWN**: Take your time with these construction slides
+- Step 1 is familiar - just a normal area chart
+- "This is what we know - a regular area chart. Now watch what happens..."
+- Make sure students understand this baseline before moving forward
+:::
+
 ---
 
 ## Step 2: Discretizing into Bands
@@ -1026,6 +1170,14 @@ Divide values into equal-height bands (e.g., 0-1, 1-2, 2-3)
 
 ![Image](figs/week11/horizon-step2-bands.png)
 
+::: notes
+- **Key transformation #1**: Chop the area into horizontal slices
+- "We're dividing the chart into bands of equal height"
+- Point to each band: "0-1 gets one color, 1-2 gets another, 2-3 gets a darker shade"
+- This is like creating a color scale for elevation on a topographic map
+- Make sure students see: Same data, just segmented into layers
+:::
+
 ---
 
 ## Step 3: Flipping Negative Values
@@ -1033,6 +1185,14 @@ Divide values into equal-height bands (e.g., 0-1, 1-2, 2-3)
 Mirror negative values above the baseline (differentiated by color/saturation)
 
 ![Image](figs/week11/horizon-step3-flip.png)
+
+::: notes
+- **Key transformation #2**: Handle negative values
+- "Notice negative values? We flip them UP above the baseline"
+- Use different color (or saturation) to distinguish positive from negative
+- "Red/orange for positive, blue for negative" is common convention
+- Why flip? Because next step collapses everything - we need both directions in same vertical space
+:::
 
 ---
 
@@ -1044,6 +1204,18 @@ Stack all bands on top of each other using color intensity to show magnitude
 
 ![Image](figs/week11/horizon-step4-collapse-2.png)
 
+::: notes
+- **THE MAGIC STEP**: Now we collapse all the bands into the same vertical space
+- "All those layers we created? We stack them on top of each other"
+- **This is the key insight**: Height → Color intensity
+  - Band 1 (0-1): Light color
+  - Band 2 (1-2): Medium color (stacked on top, shows darker)
+  - Band 3 (2-3): Dark color (all three stacked)
+- The result: Same temporal patterns, but 1/3 the height
+- "Look at the before and after - same pattern, compressed vertically"
+- This is why color intensity = magnitude in horizon charts
+:::
+
 ---
 
 ## Final Result: Horizon Chart
@@ -1051,6 +1223,16 @@ Stack all bands on top of each other using color intensity to show magnitude
 Compact visualization preserving temporal patterns in minimal vertical space
 
 ![Image](figs/week11/horizon-final-result.png)
+
+::: notes
+- **Recap the transformation**: "We went from area chart → banded → flipped → collapsed"
+- Now students should understand WHY darker colors = higher values
+- "Without understanding the construction, this just looks like random colored bands"
+- "But now you know: it's a compressed area chart where height became color intensity"
+- Practical reading tip: Darker/more saturated = higher magnitude
+- Point out: You can still see the temporal patterns (peaks and valleys), just compressed
+- **Reference Heer's work**: "The original CHI paper and video show this animation - highly recommended"
+:::
 
 ---
 
