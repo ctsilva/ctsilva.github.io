@@ -1,0 +1,233 @@
+---
+title: "Week 11 Lab: Building temporal visualizations, Time series analysis with D3"
+subtitle: "CS-GY 6313 - Information Visualization"
+author: "Ryan Kim"
+institute: "New York University"
+date: "November 14, 2025"
+format:
+  revealjs:
+    theme: [default, ../slides/custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: ../slides/figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    css: lab-light-theme.css
+---
+
+## Week 9 Lab Overview
+
+|User Interface|Graphics Library|Notebook(s)|
+|:--|:--|:--|
+|[observablehq.com](https://observablehq.com)|[D3](https://d3js.org/)|[Week 11 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-11-lab)|
+
+### Today's Lab Activities
+
+Today we will be a exploring the following topics:
+
+1. Group and Mini Projects: Reminders
+2. Main Lab Activities:
+    1. Further Practice with `Date()` parsing
+    2. Aspect Ratios
+    3. Small Multiples:
+        1. Creating Subplots
+        2. Combining Plots
+    4. Example: Gantt Charts
+
+## Group and Mini Projects: Reminders
+
+| **Assignment** | **Due Date** | **Details** |
+|---------------|--------------|-------------|
+| **Milestone #3: First Draft** | Nov. 17 | Initial D3 implementations |
+| **Mini-Project #2** | Nov. 20 | Temporal Data Visualizations |
+
+## Group Project Milestone #3: Deliverables
+
+Submit an **Observable notebook** or a **Framework project** with:
+
+* Brief introduction to your project
+* For each question:
+  - State the question
+  - Show the D3 visualization
+  - Describe what the visualization shows
+  - Answer the question based on the visualization
+
+**At this stage:**
+
+* All visualizations should be implemented in D3
+* Focus on getting the basics working
+* Styling/polish can come later
+* Interactivity should be functional (if included)
+* It's still okay to refine questions if needed
+
+## Group Project Milestone #3: Reminders
+
+This is your first implementation milestone. 
+
+- **We expect working D3 code for all your visualizations.** 
+- Your visualizations don't need to be perfect, but they should work and show your data correctly.
+    - labels might be messy
+    - colors might be defaults
+    - interactions might be basic  
+- This is when you discover implementation challenges: 
+    - "This chart type is harder than I thought..."
+    - "The data is more complex than I realized..."
+- We'll give you feedback on what to improve for the next draft.
+
+## Review: Line Charts: Time + Quantity
+
+The fundamental temporal visualization: position encodes both time (x) and values (y)
+
+![Basic Line Chart](./week11-lab_files/figs/line-chart-basic.png)
+
+# Aspect Ratio
+
+How chart dimensions affect perception
+
+**Definition**: Aspect Ratio = Width / Height
+
+---
+
+## Impact on Trend Visibility
+
+Different ratios make trends more or less visible
+
+![](./week11-lab_files/figs//aspect-ratio-impact.png)
+
+**Rule of thumb:** Always test different aspect ratios to see which one best conveys your message
+
+## Review: Parsing Time Data in JavaScript
+
+
+:::{.columns}
+::::{.column width="50%"}
+### JavaScript: `Date()` object class
+
+- This object class **expects your timestamp to already be in the ISO-8601 format**.
+- this class gives you some nifty functions, such as using `.getYear()` or `.getMonth()` to extract the year and month of a timestamp.
+-  You can look up the properties and functions of the `Date()` class <a href="https://www.w3schools.com/jsref/jsref_obj_Date.asp" target="_blank">here</a>.
+
+```js
+// Returns "2020-01-15T15:30Z"
+new Date("2020-01-15T10:30:00");
+
+// ERORR: Not ISO-8601 Format; this will return `null`
+new Date("15-01-2020");
+```
+::::
+::::{.column width="50%"}
+### D3: `d3.timeParse()`
+
+- Unlike JavaScript's `Date()` object class, D3 lets you **define the expected format of your input string**. 
+- The output is generally the same: it'll return a `Date()` object class in the ISO-8601 format.
+
+```js
+// Returns "2020-01-15T15:30Z"
+const parser1 = d3.timeParse("%Y-%m-%dT%H:%M:%S");
+parser1("2020-01-15T10:30:00");
+
+// Will return successfully: "2020-01-15T05:00Z"
+const parser2 = d3.timeParse("%d-%m-%Y");
+parser2("15-01-2020");
+```
+::::
+:::
+
+
+## Let's Try: Basic Time Series Line Chart
+
+### Practice: Typecasting Date Types [5 mins]
+
+- We already imported the raw data from `ex_data_1@4.csv` into `raw_data`, without type-casting the data.
+- **Goal**: Use native JavaScript `Array.map()` to typecast the features in our raw data into the following:
+
+    - `date`: JavaScript `Date()` type
+    - `temperature`: Float type
+    - `humidity`: Integer type
+    - `co2`: Integer type
+
+## Let's Try: Basic Time Series Line Chart
+
+### Practice: Plotting Line Data [15min]
+
+:::{.columns3}
+::::{.column width="50%"}
+- You've been given a set of interactable elements. They output to a `dims` object. You must use this `dims` object to help you plot a dynamic line chart.
+- Once you plot the chart, play around with the chart's aspect ratio. Which aspect ratio seems to be the best for each y-axis feature?
+::::
+::::{.column width="5%"}
+::::
+::::{.column width="45%"}
+<iframe width="100%" height="260" frameborder="0"
+  src="https://observablehq.com/embed/4589d38d0f3f1be8?cells=viewof+dims%2Cviewof+aspect_ratio_calc"></iframe>
+::::
+:::
+
+# Solving Spaghetti Plots
+
+![](./week11-lab_files/figs/spaghetti.png)
+
+One solution: **Small Multiples**
+
+## Small Multiples - Implementation
+
+- **Core Idea**: Split the data into series or groups of data. Then visualize that data in separaet plots.
+- _Many_ ways to achieve this in programming.
+    - Individually plotting each chart by hand.
+    - Using fancy libraries to auto-separate the plots.
+    - Automating the process of generating charts.
+
+## How Do Small Multiples? Let's Think
+
+![](./week11-lab_files/figs/small_multiples.png)
+
+## A Possible Solution:
+
+![](./week11-lab_files/figs/multiples.png){fig-align="center"}
+
+## Let's Try: Solving Spaghetti Plots
+
+### Practice: Creating our Factory Function [10min]
+
+Let's create a **factory function** to help us generate a single subplot. Your job is to create this `create_subplot()` factory function with the following parameters:
+
+- `parent`: The parent element - usually `svg`.
+- `sensor`: An element from `sensors`.
+- `x_scale`: The scale used for our x-axis. Must be generated prior.
+- `c_scale`: The color scale. Must be generated prior.
+- `width`: The width of this subplot.
+- `height`: The height of this subplot.
+- `x_pos`: The x-position of this chart relative to the parent.
+- `y_pos`: The y-position of this chart relative to the parent.
+
+If succcessful, the function should append a new chart with all our data already plotted inside it and sized based on our parameters, alongside our axes and so on.
+
+## Let's Try: Solving Spaghetti Plots
+
+### Practice: Organizing our Subplots [10min]
+
+:::{.columns2}
+::::{.column width="50%"}
+- Once we have `create_subplot()` created, then we can see if it works.
+- Combine the scaffolded code we gave you with `create_subplot()`. Keep in mind that you need to calculate the position of each chart manually, given the provided SVG parameters!
+- If successful, you should see our solution plot to the right.
+::::
+::::{.column width="50%"}
+![](./week11-lab_files/figs/multiples.png){width="75%"}
+::::
+:::
+
+## A Personal Favorite: Gantt Charts
+
+![](./week11-lab_files/figs/gantt_example_2.png)
+
+## Group and Mini Projects: Reminders
+
+| **Assignment** | **Due Date** | **Details** |
+|---------------|--------------|-------------|
+| **Milestone #3: First Draft** | Nov. 17 | Initial D3 implementations |
+| **Mini-Project #2** | Nov. 20 | Temporal Data Visualizations |

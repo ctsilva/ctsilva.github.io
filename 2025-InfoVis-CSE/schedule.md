@@ -298,7 +298,7 @@ author_profile: true
 **Optional Reading:**
 - [ManyNets: An Interface for Multiple Network Analysis and Visualization](http://dmrussell.net/CHI2010/docs/p213.pdf). Freire et al. ACM CHI 2010.
 
-**Lab:** 
+**Lab:** [Building temporal visualizations, Time series analysis with D3](/2025-InfoVis-CSE/labs/week11-lab.html)
 - D3 force simulation setup
 - Creating node-link diagrams
 - Network layout algorithms

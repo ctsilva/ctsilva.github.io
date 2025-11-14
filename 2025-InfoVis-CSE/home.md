@@ -130,7 +130,7 @@ author_profile: true
 - **Supplemental Material:** When to use 2D vs 3D, Hybrid visualization approaches, Precomputation for real-time queries
 
 ### Week 11 (Nov 14) - Visualizing Time-Oriented Data
-- **Slides:** [Visualizing Time-Oriented Data](/2025-InfoVis-CSE/slides/week11-temporal-data.html) | **Lab:** TBA
+- **Slides:** [Visualizing Time-Oriented Data](/2025-InfoVis-CSE/slides/week11-temporal-data.html) | **Lab:** [Building temporal visualizations, Time series analysis with D3](/2025-InfoVis-CSE/labs/week11-lab.html)
 - **Topics:** Temporal data fundamentals (event vs measurement data), Time structures (sequential, cyclic, hierarchical), Line charts and aspect ratios (Banking to 45°), Multiple time series (spaghetti plots, small multiples), Stacked area charts and limitations, Interaction techniques (semantic vs geometric zoom), Heat maps and calendar visualizations, Periodic patterns (radial layouts, spirals), Horizon charts and sparklines
 - **Lab:** Building temporal visualizations, Time series analysis with D3
 - **Assignment:** Exercise 11 - Temporal data visualization (due Nov 20)
