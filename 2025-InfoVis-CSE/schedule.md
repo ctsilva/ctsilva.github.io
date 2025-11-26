@@ -306,31 +306,34 @@ author_profile: true
 
 **Assignment:** **Mini-project 3 begins** - Network visualization (due Dec 4)
 
-### **Week 12** (Nov 21) - Scalability and Performance
-**Learning Objectives:** Handle large datasets; optimize visualization performance; understand progressive loading
+### **Week 12** (Nov 21) - Clustering and Dimensionality Reduction
+**Learning Objectives:** Understand clustering visualization techniques; master PCA, t-SNE, and UMAP for high-dimensional data visualization; recognize critical pitfalls in dimensionality reduction
 
-**Lecture:** 
-- Challenges of large dataset visualization
-- Data aggregation and sampling strategies
-- Progressive loading and level-of-detail
-- Performance optimization techniques
-- Introduction to WebGL for visualization
+**Lecture:** [Week 12 - Clustering and Dimensionality Reduction](slides/week12-clustering-dimreduction.html)
+- Clustering visualization (K-means, DBSCAN, hierarchical methods)
+- Dimensionality reduction fundamentals
+- Principal Component Analysis (PCA)
+- t-SNE: power and pitfalls
+- UMAP: modern alternative
+- Critical visualization principles for non-linear methods
 
 **Required Readings:**
-- [A Structured Review of Data Management Technology for Interactive Visualization](https://homes.cs.washington.edu/~leibatt/static/papers/battle2020structured.pdf). Battle & Scheidegger. IEEE TVCG. 2020.
-- [Falcon: Balancing Interactive Latency and Resolution Sensitivity](http://idl.cs.washington.edu/papers/falcon/). Moritz, Howe & Heer. ACM CHI 2019.
+- [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/). Wattenberg, Viégas & Johnson. Distill 2016. **ESSENTIAL!**
+- [Understanding UMAP](https://pair-code.github.io/understanding-umap/). Coenen & Pearce. Google PAIR.
 
 **Optional Readings:**
-- [imMens: Real-time Visual Querying of Big Data](http://idl.cs.washington.edu/papers/immens). Liu, Jiang & Heer. EuroVis 2013.
-- [Trust, but Verify: Optimistic Visualizations of Approximate Queries](http://idl.cs.washington.edu/papers/trust-but-verify). Moritz et al. ACM CHI 2017.
+- [Visualizing Data using t-SNE](http://jmlr.org/papers/v9/vandermaaten08a.html). van der Maaten & Hinton. JMLR 2008.
+- [UMAP: Uniform Manifold Approximation and Projection](https://arxiv.org/abs/1802.03426). McInnes, Healy & Melville. ArXiv 2018.
+- [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/)
 
-**Lab:** 
-- Data aggregation techniques
-- Performance profiling and optimization
-- Canvas vs SVG performance comparison
-- Introduction to visualization with large datasets
+**Lab:**
+- Implementing PCA visualizations
+- Exploring t-SNE with multiple perplexity values
+- UMAP parameter tuning
+- Comparing dimensionality reduction methods
+- Avoiding common visualization pitfalls
 
-**Assignment:** Continue Mini-project 3 + optimization exercises (due Nov 25)
+**Assignment:** Continue Mini-project 3 + dimensionality reduction exercises (due Nov 25)
 
 ### **Make-up Class** (Nov 26 - Wednesday) - Geographic and Urban Visualization II  
 **Learning Objectives:** Advanced geographic techniques; intensive project development time

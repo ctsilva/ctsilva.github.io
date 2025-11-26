@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week12-clustering-dimreduction_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week12-clustering-dimreduction_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week12-clustering-dimreduction_files/libs/quarto-html/popper.min.js"></script>
+<script src="week12-clustering-dimreduction_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week12-clustering-dimreduction_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week12-clustering-dimreduction_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week12-clustering-dimreduction_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Claudio Silva">
+  <title>Clustering and Dimensionality Reduction</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week12-clustering-dimreduction_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week12-clustering-dimreduction_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="week12-clustering-dimreduction_files/libs/revealjs/dist/theme/quarto-e55469e18d4f1b644de49769da31cbe0.css">
+  <link href="week12-clustering-dimreduction_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week12-clustering-dimreduction_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week12-clustering-dimreduction_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week12-clustering-dimreduction_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Clustering and Dimensionality Reduction</h1>
+  <p class="subtitle">CS-GY 6313 - Fall 2025</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2">
+<h2>Agenda</h2>
+<ol type="1">
+<li class="fragment"><strong>Clustering Visualization</strong>
+<ul>
+<li class="fragment">Introduction to clustering analysis</li>
+<li class="fragment">K-means and visual patterns</li>
+<li class="fragment">Comparing clustering methods</li>
+</ul></li>
+<li class="fragment"><strong>Dimensionality Reduction for Visualization</strong>
+<ul>
+<li class="fragment">Why reduce dimensions?</li>
+<li class="fragment">Linear methods: PCA</li>
+<li class="fragment">Non-linear methods: t-SNE and UMAP</li>
+<li class="fragment">Critical visualization principles</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Today we’re covering two fundamental techniques for exploring and visualizing complex datasets: clustering and dimensionality reduction. These are unsupervised methods - they help us find structure in data without predefined labels. Clustering groups similar items together, while dimensionality reduction helps us visualize high-dimensional data in 2D or 3D. Both are essential tools for exploratory data analysis and create some of the most compelling visualizations in data science.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Clustering Visualization</h1>
+
+</section>
+<section class="slide level2">
+<h2>What is Clustering?</h2>
+<p>“… the goal of clustering is to separate a set of examples into groups called clusters”</p>
+
+<img data-src="figs/iris.jpg" class="r-stretch"><aside class="notes">
+<p>Clustering is an unsupervised learning task where we try to find natural groupings in data without having labeled examples. This is particularly useful for exploratory data analysis, customer segmentation, identifying patterns in urban data, and understanding the structure of your data. The IRIS dataset shown here is one of the classic examples - containing measurements of iris flowers from three different species. The challenge is: can we discover these groupings automatically?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing the IRIS Dataset</h2>
+<div id="f53ab392" class="cell" data-fig-height="6" data-fig-width="9" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week12-clustering-dimreduction_files/figure-revealjs/cell-2-output-1.png" width="1335" height="885"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This plot, colored by the true species labels, shows the structure we’re trying to discover through clustering. Note the clear separation of the Setosa species (blue), but also the significant overlap between Versicolor (red) and Virginica (green). This overlap is why clustering isn’t always perfect - and why visualization is crucial for understanding the results. We’re looking at just 2 of the 4 dimensions here, which makes visualization possible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Clustering Methods Comparison</h2>
+
+<img data-src="figs/iris-bernard-clustering.jpg" class="r-stretch"><aside class="notes">
+<p>Different clustering algorithms will find different groupings based on their underlying assumptions about cluster shape, density, and separation. Some algorithms assume spherical clusters (like K-means), while others can find arbitrary shapes (like DBSCAN). The quality of clustering can be evaluated both visually and using metrics like silhouette score. For visualization purposes, understanding what each method emphasizes helps you choose the right approach for your data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>K-means Clustering</h2>
+
+<img data-src="figs/iris-bernard-clustering-kmeans.jpg" class="r-stretch"><aside class="notes">
+<p>K-means is one of the most popular clustering algorithms due to its simplicity and efficiency. It works by iteratively assigning points to the nearest cluster center (centroid) and then recomputing the centroids. The algorithm requires you to specify K (the number of clusters) in advance. For IRIS with K=3, it does a reasonable job of recovering the three species. K-means works well when clusters are roughly spherical and similar in size, but can struggle with elongated or irregular-shaped clusters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Clustering Method Zoo</h2>
+
+<img data-src="figs/findclusters-methods.jpg" class="r-stretch"><aside class="notes">
+<p>There are many clustering methods available, each with different strengths: K-means is fast and simple, hierarchical methods build tree structures of clusters (great for dendrograms), DBSCAN can find arbitrary shapes and identify outliers, spectral clustering works well with non-convex clusters. The choice of method depends on your data characteristics and what properties you want your clusters to have. In practice, it’s often worth trying multiple methods and comparing results visually.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visual Comparison of Methods</h2>
+
+<img data-src="figs/findclusters-methods-examples.jpg" class="r-stretch"><aside class="notes">
+<p>This slide shows visual examples of how different clustering methods partition the same dataset. Notice how they produce very different results! K-means creates roughly circular boundaries, hierarchical methods create nested groupings, DBSCAN identifies dense regions and can mark sparse areas as outliers. This illustrates an important point: there’s no single “correct” clustering - the best method depends on what structure you’re trying to discover. Visualization is crucial for understanding what each method is doing and whether the results make sense.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Ground Truth vs K-means</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="8b8872bf" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week12-clustering-dimreduction_files/figure-revealjs/cell-3-output-1.png" width="812" height="432"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/iris-bernard-clustering-kmeans-crop.jpg"></p>
+</div></div>
+<aside class="notes">
+<p>This side-by-side comparison helps us evaluate clustering performance. The left shows the ground truth (true labels), and the right shows the clusters discovered by K-means. While K-means accurately isolates the well-separated cluster, it struggles with the overlapped classes. This visually demonstrates an important principle: clustering discovers structure, but that structure may not perfectly match our preconceived categories. For visualization projects, showing multiple views like this helps users understand the reliability of clustering results.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Dimensionality Reduction</h1>
+
+</section>
+<section class="slide level2">
+<h2>The Challenge: High-Dimensional Data</h2>
+<ul>
+<li>Real-world data often has hundreds or thousands of dimensions
+<ul>
+<li>Images: thousands of pixels</li>
+<li>Text: thousands of words</li>
+<li>Urban sensors: hundreds of measurements</li>
+<li>Customer data: dozens to hundreds of features</li>
+</ul></li>
+<li><strong>Problem</strong>: We can only visualize 2D or 3D!</li>
+</ul>
+<aside class="notes">
+<p>This is the fundamental challenge in information visualization: we need to show high-dimensional data on 2D screens. Dimensionality reduction helps us create meaningful 2D or 3D visualizations from data with many more dimensions. This isn’t just about compression - it’s about revealing structure that’s hidden in high dimensions. Good dimensionality reduction preserves the important relationships between data points while discarding less important variation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The Manifold Hypothesis</h2>
+<ul>
+<li><strong>Key insight</strong>: High-dimensional data often lies on lower-dimensional structures</li>
+</ul>
+
+<img data-src="figs/dm-data-is-low-dimensional.jpg" class="r-stretch"><aside class="notes">
+<p>The manifold hypothesis: even though our data might be represented with thousands of features, it often lies on or near a much lower-dimensional manifold. Think about images of faces - each pixel is a dimension, so a 100x100 image is 10,000 dimensional. But faces don’t fill that entire space - they have structure (two eyes, one nose, etc.). The actual degrees of freedom are much fewer. Dimensionality reduction tries to find these underlying degrees of freedom. This is what makes visualization of complex data possible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Non-linear Manifolds</h2>
+
+<img data-src="figs/perturbed-3.jpg" class="r-stretch"><ul>
+<li>Images of ‘3’ transformed by rotation, scaling, translation</li>
+<li>What’s the intrinsic dimensionality? (~5-7 dimensions)</li>
+<li>The underlying <strong>manifold</strong> is <strong>non-linear</strong></li>
+</ul>
+<aside class="notes">
+<p>This example shows images of the digit “3” with various transformations. Each image might be 28x28 = 784 dimensions. But how many degrees of freedom do we really have? Rotation angle, x/y position, scale, and maybe a few shape parameters - perhaps 5-7 dimensions total. Notice these transformations are non-linear - small changes in rotation don’t correspond to linear changes in pixel values. This is why we need non-linear dimensionality reduction methods like t-SNE and UMAP, not just linear methods like PCA.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Working Example: Digits Dataset</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb1-2"><a href=""></a></span>
+<span id="cb1-3"><a href=""></a>digits <span class="op">=</span> load_digits(n_class<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb1-4"><a href=""></a>X, y <span class="op">=</span> digits.data, digits.target</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>8×8 pixel images = 64 dimensions</li>
+<li>Can’t visualize 64D directly</li>
+<li>Goal: Create meaningful 2D visualization</li>
+</ul>
+<aside class="notes">
+<p>We’ll use the digits dataset as our working example. It consists of 8x8 pixel images of handwritten digits (0-9). Each image is 64-dimensional, which is high enough that we can’t visualize it directly, but small enough to compute quickly. Our challenge: how do we create a 2D visualization that preserves the similarity relationships between digits?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Digits Dataset Sample</h2>
+<div id="87528acc" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week12-clustering-dimreduction_files/figure-revealjs/cell-4-output-1.png" width="558" height="520"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Here’s a grid showing 100 different digit images from our dataset. Notice the variety - different digits, different writing styles, different positions. Our goal with dimensionality reduction is to create a 2D representation where similar-looking digits are close together. This will help us visualize the structure of the data and see patterns that aren’t obvious from looking at individual images.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Principal Component Analysis (PCA)</h1>
+
+</section>
+<section class="slide level2">
+<h2>PCA: The Foundation</h2>
+<ul>
+<li class="fragment">PCA finds directions of maximum variance in data</li>
+<li class="fragment">These directions are the eigenvectors of the covariance matrix</li>
+<li class="fragment">Projects data onto these principal directions</li>
+<li class="fragment"><strong>Linear</strong> method - assumes linear relationships</li>
+</ul>
+<aside class="notes">
+<p>PCA is the most fundamental dimensionality reduction technique. It’s a linear method that finds the directions where data varies the most. The first principal component points in the direction of maximum variance, the second is orthogonal and points to the next-most variance, and so on. While PCA can’t capture complex non-linear structure, it’s extremely fast, robust, well-understood, and often works surprisingly well as a first approach to visualization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA: Geometric Intuition</h2>
+
+<img data-src="figs/pca-intuition.jpg" class="r-stretch"><aside class="notes">
+<p>Here’s the geometric intuition for PCA. Imagine you have a cloud of points in high-dimensional space. PCA finds the direction where the data varies the most (the first principal component), then the direction of next-most variation that’s orthogonal to the first (second PC), and so on. Geometrically, we’re finding the axes of the ellipsoid that best fits the data. Projecting onto the first few principal components gives us a lower-dimensional representation that captures most of the variance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA: Another View</h2>
+
+<img data-src="figs/pca-intuition2.jpg" class="r-stretch"><aside class="notes">
+<p>Another view: the red line shows the first principal component - the direction of maximum variance. If we project all points onto this line, we get a 1D representation. The key insight is that even though we’re throwing away information (the perpendicular distance to the line), we’re keeping the most important information (the spread along the line). This is why PCA works well for visualization - it discards the dimensions with least variance, which are often noise or redundancy.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA Applied to Digits</h2>
+<div id="4826b43f" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week12-clustering-dimreduction_files/figure-revealjs/cell-5-output-1.png" width="639" height="523"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Here’s PCA applied to the full digits dataset (all 10 classes), reducing from 64 dimensions down to 2. With color labels showing the true digit classes, you can see that PCA captures some structure - there are some clusters corresponding to digit classes - but there’s substantial overlap. The digit “1” is somewhat separated (probably because it’s sparse), but most other digits are mixed together. This is a limitation of linear methods for non-linear data. But PCA is still valuable as a first exploration and as a baseline for comparison.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Non-linear Methods: t-SNE</h1>
+
+</section>
+<section class="slide level2">
+<h2>t-SNE: A Revolution in Visualization</h2>
+<ul>
+<li><strong>t-SNE</strong> (t-Distributed Stochastic Neighbor Embedding)
+<ul>
+<li>Preserves <strong>local neighborhood structure</strong></li>
+<li>Non-linear, adapts to different regions of data</li>
+<li>Creates compelling cluster visualizations</li>
+<li><strong>Warning</strong>: Can be easily misread!</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>t-SNE revolutionized high-dimensional data visualization when it was introduced. Unlike PCA, it’s non-linear and focuses on preserving local neighborhood relationships rather than global variance. This makes it excellent at revealing cluster structure. However, t-SNE has important limitations and is easy to misinterpret - which is why we’ll spend time on visualization principles for using it correctly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How t-SNE Works</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/sne.jpg"></p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figs/tsne.jpg"></p>
+</div></div>
+<aside class="notes">
+<p>t-SNE creates probability distributions over pairs of points in high-dimensional space, where nearby points have high probability. It then tries to replicate these probabilities in low-dimensional space. The key innovation is using the Student’s t-distribution (with heavy tails) in the low-dimensional space, which prevents the “crowding problem” where all points try to squeeze into the center. This creates the excellent separation between clusters that t-SNE is known for.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Critical Resource: “How to Use t-SNE Effectively”</h2>
+
+<img data-src="figs/using-tsne.jpg" class="r-stretch"><p>https://distill.pub/2016/misread-tsne/</p>
+<aside class="notes">
+<p>This Distill article by Wattenberg, Viégas, and Johnson is ESSENTIAL READING before using t-SNE. The authors demonstrate, using controlled experiments, which visual properties of t-SNE plots are meaningful and which are not. The main takeaway: t-SNE is a visualization tool that must be used carefully - its output is a suggestion of structure, not a definitive map of reality. We’ll cover the key lessons from this article.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Key Warning: Parameters Matter!</h2>
+<ul>
+<li>t-SNE has a critical parameter: <strong>perplexity</strong>
+<ul>
+<li>Roughly the number of close neighbors each point has</li>
+<li>Typical values: 5-50</li>
+<li>Different perplexities = different structures!</li>
+</ul></li>
+</ul>
+
+<img data-src="figs/tsneperplexity.jpg" class="r-stretch"><aside class="notes">
+<p>Look at these four perplexity values on the same dataset. At perplexity=2, everything breaks into tiny clusters - it’s too local. At perplexity=30, we see nice separation. At perplexity=50, still looks good but slightly different structure. At perplexity=100, clusters start merging - it’s too global. <strong>Critical lesson: ALWAYS try multiple perplexity values (typically 5-50).</strong> Don’t trust a single t-SNE plot! This is essential for proper visualization practice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Convergence: Run Enough Iterations!</h2>
+
+<img data-src="figs/tsnesteps.jpg" class="r-stretch"><aside class="notes">
+<p>This shows convergence over iterations. At 10 iterations, it’s garbage - the algorithm hasn’t had time to organize points. At 250 iterations, structure is emerging. At 500-1000 iterations, it’s converged and stable. Lesson: run enough iterations! Modern implementations often need 1000-5000 iterations. Don’t trust visualizations that haven’t converged. You can often watch the iteration count and stop when the layout stabilizes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Critical: Cluster Sizes Mean Nothing!</h2>
+
+<img data-src="figs/tsneclustersizes.jpg" class="r-stretch"><ul>
+<li><strong>t-SNE equalizes cluster densities</strong></li>
+<li>Large visual clusters ≠ large actual clusters</li>
+<li>Size refers to spatial extent, not number of points</li>
+</ul>
+<aside class="notes">
+<p>This is crucial for visualization: cluster sizes in t-SNE plots are meaningless! The algorithm naturally expands dense clusters and contracts sparse ones to equalize visual density. This ensures all clusters are visible, but it means you can’t compare cluster sizes visually. If you need to communicate cluster sizes, you must use other visual encoding (like point count labels) in addition to the t-SNE layout.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Critical: Distances Between Clusters Mean Nothing!</h2>
+
+<img data-src="figs/tsneclusterdistances.jpg" class="r-stretch"><aside class="notes">
+<p>Another CRITICAL INSIGHT for visualization: Distances between clusters are unreliable! The left shows true data - two Gaussians close together, one far away. Middle and right show different t-SNE runs. The relative distances between clusters change dramatically! Why? t-SNE only cares about local neighborhoods - it doesn’t preserve global distances. <strong>You cannot say “these clusters are related because they’re close” - that’s wrong interpretation.</strong> Only trust within-cluster structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Warning: Random Noise Can Look Structured</h2>
+
+<img data-src="figs/tsnerandom.jpg" class="r-stretch"><ul>
+<li>Left: PCA of random data (correctly shows no structure)</li>
+<li>Right: t-SNE of same data (shows apparent clusters!)</li>
+<li><strong>Lesson</strong>: Don’t assume clusters in t-SNE are real!</li>
+</ul>
+<aside class="notes">
+<p>This is wild: pure random noise with no structure. Left is PCA - correctly shows a cloud with no clusters. Right is t-SNE - shows apparent clusters! This is because t-SNE emphasizes local structure so much that it can create apparent patterns from noise. Lesson for visualization: Don’t assume clusters in t-SNE are real! Always validate with other methods, domain knowledge, or statistical tests. Show multiple views to your audience.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE Applied to Digits</h2>
+<div id="3b37e159" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week12-clustering-dimreduction_files/figure-revealjs/cell-6-output-1.png" width="763" height="631"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Here’s t-SNE applied to the digits dataset. Notice how it creates much cleaner, more separated clusters compared to PCA! Similar digits group together, and the clusters are well-separated. This is t-SNE’s strength - revealing local neighborhood structure. But remember all the warnings: don’t trust distances between clusters, don’t trust cluster sizes, and always validate with multiple perplexity values.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Non-linear Methods: UMAP</h1>
+
+</section>
+<section class="slide level2">
+<h2>UMAP: The Modern Alternative</h2>
+
+<img data-src="figs/understanding-umap.jpg" class="r-stretch"><p>https://pair-code.github.io/understanding-umap/</p>
+<aside class="notes">
+<p>UMAP (Uniform Manifold Approximation and Projection) has rapidly become the preferred alternative to t-SNE for many visualization tasks. It shares the same philosophy - preserving local neighborhood structure - but it’s built on more rigorous mathematical foundations from topology. UMAP is typically faster, scales better, and often better preserves global structure. This interactive article from Google’s PAIR team is THE best resource for understanding UMAP.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP vs t-SNE: Speed and Structure</h2>
+<ul>
+<li><strong>Speed</strong>: UMAP is 10-15x faster than t-SNE
+<ul>
+<li>MNIST (70K points, 784D): UMAP = 3 min, t-SNE = 45 min!</li>
+</ul></li>
+<li><strong>Global structure</strong>: UMAP better preserves relationships between clusters</li>
+</ul>
+
+<img data-src="figs/umapvstsne.jpg" class="r-stretch"><aside class="notes">
+<p>Key advantages: UMAP is dramatically faster - on the MNIST dataset it’s 15x faster than sklearn’s t-SNE! This matters hugely when you want to try different parameters or work with larger datasets. Also notice the structure: UMAP tends to better preserve global manifold structure - digits that are similar (like 4 and 9) are closer together. For visualization projects, this often makes UMAP the better default choice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How UMAP Works</h2>
+
+<img data-src="figs/umapfuzzygraph.jpg" class="r-stretch"><aside class="notes">
+<p>UMAP builds a “fuzzy topological representation” of the high-dimensional data. It creates a weighted graph where edges represent neighborhood relationships with probabilistic weights. Then it tries to find a similar graph structure in low dimensions. The theoretical foundation involves topology and manifolds - more sophisticated than t-SNE’s probability distributions. But practically, you can think of it like advanced force-directed graph layout.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP Parameters</h2>
+<ul>
+<li><strong>n_neighbors</strong> - balances local vs global structure
+<ul>
+<li>Low (2-5): very local structure</li>
+<li>High (50-200): more global structure</li>
+<li>Similar to t-SNE’s perplexity</li>
+</ul></li>
+<li><strong>min_dist</strong> - minimum spacing between points
+<ul>
+<li>Low (0.0): tight clusters</li>
+<li>High (0.5-0.8): spread out points</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>UMAP has two key parameters that control the visualization. n_neighbors works similarly to t-SNE’s perplexity - it controls the local/global balance. min_dist controls how tightly points can pack, giving you extra control over cluster appearance. Unlike t-SNE’s perplexity which can dramatically change results, UMAP parameters tend to be more stable and intuitive. Always try a few values to ensure your conclusions are robust.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP: min_dist = 0.0</h2>
+
+<img data-src="figs/umapmindist-0.jpg" class="r-stretch"><aside class="notes">
+<p>This shows min_dist=0.0, which allows points to be very tightly packed. You get very compact, distinct clusters. This is good for seeing fine structure within clusters but can make clusters appear to merge visually if they’re truly close in high-dimensional space. Good for cluster analysis where you want to see internal structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP: min_dist = 0.8</h2>
+
+<img data-src="figs/umapmindist-0.8.jpg" class="r-stretch"><aside class="notes">
+<p>Here’s min_dist=0.8 with the same data. Now points are spread out more - there’s minimum spacing between them. This makes it easier to see individual points and prevents over-plotting, but tight clusters look artificially expanded. This is better for exploring individual data points or when you need to show labels. Typical visualization practice: try min_dist=0.1 for cluster analysis, 0.5 for point exploration.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP: Critical Warnings Still Apply!</h2>
+<ul>
+<li>UMAP is non-linear like t-SNE</li>
+<li><strong>Distances are not directly interpretable</strong></li>
+<li><strong>Global positioning is better than t-SNE but still not perfect</strong></li>
+<li><strong>Always try multiple parameter values</strong></li>
+<li><strong>Validate findings with domain knowledge</strong></li>
+</ul>
+<aside class="notes">
+<p>Important: while UMAP is often better than t-SNE, the critical visualization warnings still apply! UMAP is non-linear and warps space, so distances aren’t directly interpretable like in PCA. Global structure is better preserved than t-SNE, but you still can’t fully trust distances between distant clusters. Always try multiple parameter values, compare with other methods, and validate with domain knowledge before drawing conclusions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Parameter Comparison: t-SNE vs UMAP</h2>
+
+<img data-src="figs/umapvstsne-param.jpg" class="r-stretch"><aside class="notes">
+<p>This comparison shows how parameters affect both methods. t-SNE perplexity and UMAP n_neighbors serve similar roles - controlling local vs global balance. But notice UMAP is more stable - parameters don’t change structure as drastically. Since UMAP is faster and more stable, it’s often the recommended starting point for visualization projects. However, both methods are valuable tools, and showing multiple views (PCA + t-SNE + UMAP) gives the most complete picture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Visualization Best Practices</h1>
+
+</section>
+<section class="slide level2">
+<h2>Dimensionality Reduction: Visualization Guidelines</h2>
+<ol type="1">
+<li><strong>Always show multiple views</strong>
+<ul>
+<li>PCA (linear baseline)</li>
+<li>t-SNE or UMAP (non-linear)</li>
+<li>Try multiple parameters</li>
+</ul></li>
+<li><strong>Don’t over-interpret</strong>
+<ul>
+<li>Cluster sizes may be misleading</li>
+<li>Inter-cluster distances may be unreliable</li>
+<li>Some structure may be artifacts</li>
+</ul></li>
+<li><strong>Validate findings</strong>
+<ul>
+<li>Check against domain knowledge</li>
+<li>Use complementary analyses</li>
+<li>Be transparent about limitations</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>For professional visualization work, follow these guidelines: (1) Always show multiple views - comparing PCA, t-SNE, and UMAP helps viewers understand what’s robust structure vs.&nbsp;method-specific artifacts. (2) Don’t over-interpret - educate your audience about the limitations of non-linear methods. (3) Validate findings through domain knowledge and complementary analyses. Good visualization practice means being transparent about what the methods can and cannot tell us.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interactive Dimensionality Reduction</h2>
+
+<img data-src="figs/projections.jpg" class="r-stretch"><aside class="notes">
+<p>An emerging area: interactive dimensionality reduction systems that let users guide the projection process. Users can add constraints (these points should be close), adjust parameters in real-time, and see results immediately. This combines algorithmic power (finding structure) with human insight (domain knowledge). For your projects, think about how interaction could help viewers explore and validate the dimensional reduction results.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li><strong>Clustering</strong> helps discover natural groups in data
+<ul>
+<li>Multiple methods reveal different structures</li>
+<li>Visualization is essential for interpretation</li>
+</ul></li>
+<li><strong>Dimensionality Reduction</strong> enables visualization of complex data
+<ul>
+<li>PCA: fast, interpretable, linear</li>
+<li>t-SNE: excellent clusters, requires care</li>
+<li>UMAP: faster, better global structure</li>
+</ul></li>
+<li><strong>Critical</strong>: Always validate, try multiple methods, understand limitations</li>
+</ul>
+<aside class="notes">
+<p>Today we covered two fundamental techniques for exploratory data visualization. Clustering helps us discover groups, while dimensionality reduction helps us visualize high-dimensional data. Both require careful application and interpretation. PCA is your reliable baseline, t-SNE and UMAP are powerful but need careful parameter tuning and interpretation. Always show multiple views, validate findings, and be transparent about limitations. These methods, used properly, are among the most powerful tools in information visualization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Resources and Further Reading</h2>
+<p><strong>Clustering:</strong> * <a href="https://www.wolfram.com/language/introduction-machine-learning/clustering/">Wolfram Clustering Tutorial</a> * <a href="https://en.wikipedia.org/wiki/Cluster_analysis">Cluster Analysis (Wikipedia)</a></p>
+<p><strong>Dimensionality Reduction:</strong> * <a href="https://distill.pub/2016/misread-tsne/">How to Use t-SNE Effectively</a> (Essential!) * <a href="https://pair-code.github.io/understanding-umap/">Understanding UMAP</a> * <a href="https://en.wikipedia.org/wiki/Dimensionality_reduction">Dimensionality Reduction (Wikipedia)</a></p>
+<aside class="notes">
+<p>The Distill article on t-SNE and the PAIR article on UMAP are must-reads. They provide interactive visualizations that show exactly how these algorithms work and how they can be misinterpreted. The Wolfram clustering tutorial has excellent interactive examples. Take time to explore these resources - they’ll make you much more effective at using these powerful visualization techniques.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week12-clustering-dimreduction_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
