@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week13-network-data_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week13-network-data_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week13-network-data_files/libs/quarto-html/popper.min.js"></script>
+<script src="week13-network-data_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week13-network-data_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week13-network-data_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week13-network-data_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2025-11-26">
+  <title>Visualizing Network Data</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week13-network-data_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week13-network-data_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="week13-network-data_files/libs/revealjs/dist/theme/quarto-e55469e18d4f1b644de49769da31cbe0.css">
+  <link href="week13-network-data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week13-network-data_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week13-network-data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week13-network-data_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Visualizing Network Data</h1>
+  <p class="subtitle">CS-GY 6313 - Fall 2025</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva 
+</div>
+</div>
+</div>
+
+  <p class="date">2025-11-26</p>
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Introduction</h1>
+<p>Based on materials by Enrico Bertini NYU Tandon School of Engineering</p>
+<aside class="notes">
+<p><strong>LECTURE TIMING GUIDANCE (150 min total)</strong></p>
+<p><strong>Part 1: Networks (70 min)</strong> - Network fundamentals (10 min) - Force-directed layouts (20 min) - Fixed layouts &amp; edge bundling (15 min) - Matrices &amp; clutter reduction (15 min) - Wrap-up &amp; quiz (10 min)</p>
+<p><strong>Part 2: Trees (70 min)</strong> - Tree fundamentals (10 min) - Node-link trees &amp; examples (15 min) - Dendrograms (10 min) - Decision trees (10 min) - Treemaps (20 min) - Sunburst/Icicle plots (5 min)</p>
+<p><strong>Wrap-up (10 min)</strong> - Summary &amp; programming assignments</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Part 1: Networks</h1>
+<p>Objects, relationships, and visualization approaches</p>
+</section>
+<section class="slide level2">
+<h2>Network Data Fundamentals</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Network Data = Objects + Relationships + Values</strong></p>
+<ul>
+<li><strong>Objects</strong>: Nodes (people, cities, genes)</li>
+<li><strong>Relationships</strong>: Edges (friendships, routes, interactions)</li>
+<li><strong>Values</strong>: Node attributes (age, size) &amp; edge attributes (weight, type)</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week13/network-structure-diagram.jpeg"></p>
+</div></div>
+<p><strong>Application Domains</strong>: Social networks, biological systems, transportation, web, infrastructure</p>
+<aside class="notes">
+<ul>
+<li>Network data is one of the most fundamental data structures</li>
+<li>Key distinction: We care about RELATIONSHIPS, not just entities</li>
+<li>Ask: “What networks do you interact with daily?”</li>
+<li>Examples: Facebook (social), protein networks (biological), airline routes (transportation)</li>
+<li>Values/attributes make networks meaningful beyond pure structure</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Example: Friendship Network</h2>
+
+<img data-src="figs/week13/friendship-network-example.png" style="width:60.0%" class="r-stretch"><ul>
+<li><strong>Nodes</strong>: People with attributes (name, age)</li>
+<li><strong>Edges</strong>: Friendship connections</li>
+<li><strong>Attributes</strong>: Could encode strength, duration, message count</li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Concrete example to ground abstract concepts</li>
+<li>This is undirected (friendship is mutual)</li>
+<li>Later: directed graphs (Twitter follows, citations)</li>
+<li>Question: “How would you find the most connected person?”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Fundamental Approaches</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>1. Node-Link Diagrams</strong></p>
+<ul>
+<li>Nodes = dots/markers</li>
+<li>Edges = connecting lines</li>
+<li>Two types: Force-directed (algorithmic) &amp; Fixed (meaningful positions)</li>
+</ul>
+<p><strong>2. Adjacency Matrices</strong></p>
+<ul>
+<li>Rows &amp; columns = nodes</li>
+<li>Cells = edges</li>
+<li>No line crossings, but less intuitive</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/force-directed-example.jpeg"></p>
+<figcaption>Force-Directed</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/matrix-example.jpeg"></p>
+<figcaption>Matrix</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Two fundamental paradigms - trade-offs between them</li>
+<li>Node-link: Intuitive, shows structure, but clutters</li>
+<li>Matrix: Scalable, precise, but unfamiliar</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Force-Directed Layouts</h1>
+<p>Physics simulation for automatic positioning</p>
+</section>
+<section class="slide level2">
+<h2>Force-Directed: How It Works</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Physical Analogy</strong>:</p>
+<ul>
+<li><strong>Edge Attraction</strong>: Connected nodes pull together (springs)</li>
+<li><strong>Node Repulsion</strong>: All nodes push apart (charged particles)</li>
+<li>System evolves until forces balance</li>
+</ul>
+<p><strong>Result</strong>: Clusters emerge, bridges visible, hubs toward center</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week13/force-diagram.png"></p>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Treat network as physical system - let physics arrange it</li>
+<li>NOT “correct” layout (networks have no inherent positions)</li>
+<li>BUT: Often reveals meaningful structure</li>
+<li>Many variants: Fruchterman-Reingold, Kamada-Kawai, ForceAtlas2, D3 force</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Force-Directed Algorithm</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Steps</strong>:</p>
+<ol type="1">
+<li><strong>Initialize</strong>: Random positions</li>
+<li><strong>Calculate</strong>: Net force on each node (attraction + repulsion)</li>
+<li><strong>Move</strong>: Displace nodes by force × step_size</li>
+<li><strong>Iterate</strong>: Repeat until convergence (50-500 iterations)</li>
+</ol>
+<p><strong>Complexity</strong>: O(n²) per iteration (expensive for large networks)</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/force-step1-random.png" height="200"></p>
+<figcaption>Step 1: Random</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/force-step4-iterate.png" height="200"></p>
+<figcaption>Step 4: Converged</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Start: Chaos (random dots)</li>
+<li>End: Structure (organized, balanced)</li>
+<li>Convergence criteria: low energy, max iterations, or negligible changes</li>
+<li>Modern optimizations use Barnes-Hut for O(n log n)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visual Encoding on Nodes &amp; Edges</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Node Encodings</strong>:</p>
+<ul>
+<li><strong>Size</strong>: Degree, importance, value</li>
+<li><strong>Color</strong>: Category, cluster, metric</li>
+<li><strong>Shape</strong>: Type (circles, squares, triangles)</li>
+</ul>
+<p><strong>Edge Encodings</strong>:</p>
+<ul>
+<li><strong>Thickness</strong>: Weight, strength, traffic</li>
+<li><strong>Pattern</strong>: Type (solid, dashed, dotted)</li>
+<li><strong>Color</strong>: Category, direction</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/friendship-network-encoded.png"></p>
+<figcaption>Encoded network</figcaption>
+</figure>
+</div>
+<p><strong>Example</strong>: Size=age, Color=gender, Thickness=messages, Pattern=old/new friendship</p>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Force-directed gives positions, but we have more visual channels!</li>
+<li>Link back to perception lectures: Visual channel hierarchy</li>
+<li>Warning: Don’t over-encode (too complex = unreadable)</li>
+<li>Example shows 4 encodings - approaching the limit</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Fixed Layouts</h1>
+<p>Meaningful node positions instead of algorithmic</p>
+</section>
+<section class="slide level2">
+<h2>Fixed Layouts: When &amp; Why</h2>
+<p><strong>When to use fixed instead of force-directed</strong>:</p>
+<ol type="1">
+<li>Nodes have meaningful attributes for positioning (geography, time, hierarchy)</li>
+<li>Emphasizing edges/flows more than clustering</li>
+<li>Need stable, reproducible layouts</li>
+</ol>
+<p><strong>Common patterns</strong>: Circular, linear, grid, spatial (geographic)</p>
+
+<img data-src="figs/week13/fixed-layout-patterns.png" style="width:70.0%" class="r-stretch"><aside class="notes">
+<ul>
+<li>Fixed = WE decide positions (not algorithm)</li>
+<li>Trade structure visibility for semantic positioning</li>
+<li>Example: Geographic networks (airports at real locations)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Circular Layouts &amp; Edge Bundling</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Circular Layout</strong>:</p>
+<ul>
+<li>Nodes evenly distributed around circle</li>
+<li><strong>Critical decision</strong>: Node ordering (alphabetical? by cluster? to minimize crossings?)</li>
+</ul>
+<p><strong>Edge Bundling</strong>:</p>
+<ul>
+<li>Route similar edges along common paths</li>
+<li>Reduces clutter, reveals flow patterns</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/hierarchical-edge-bundling.jpeg"></p>
+<figcaption>Hierarchical Edge Bundling</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Holten, D. (2006). <a href="https://doi.org/10.1109/TVCG.2006.147"><em>Hierarchical edge bundles</em></a>. IEEE TVCG.</p>
+</div>
+<aside class="notes">
+<ul>
+<li>Node order matters! Different orders reveal different patterns</li>
+<li>Edge bundling: Trade individual edge traceability for overall flow visibility</li>
+<li>Holten’s 2006 paper hugely influential - thousands of citations</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Spatial Networks &amp; Bundling</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Geographic Networks</strong>: Nodes at real locations (airports, cities, servers)</p>
+<p><strong>Problem</strong>: Edge clutter!</p>
+<p><strong>Solution</strong>: Edge bundling reveals corridors, hubs, regional patterns</p>
+<p><strong>Tools</strong>: qGIS, Gephi, D3.js</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/europe-flights-clutter.jpeg"></p>
+<figcaption>Before: Cluttered</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/europe-flights-bundled-after.jpeg"></p>
+<figcaption>After: Bundled</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p><a href="https://github.com/dts-ait/qgis-edge-bundling" class="uri">https://github.com/dts-ait/qgis-edge-bundling</a></p>
+</div>
+<aside class="notes">
+<ul>
+<li>Classic example: European flight network</li>
+<li>Before: Spaghetti! Can’t see anything</li>
+<li>After: Major travel corridors, hub cities visible</li>
+<li>Use when aggregate patterns &gt; individual connections</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Adjacency Matrices</h1>
+<p>Table representation of networks</p>
+</section>
+<section class="slide level2">
+<h2>Matrices: Concept &amp; Trade-offs</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Encoding</strong>:</p>
+<ul>
+<li>Rows &amp; columns = nodes</li>
+<li>Cell (i,j) = edge from node i to j</li>
+<li>Color/symbol = edge weight/presence</li>
+</ul>
+<p><strong>Advantages</strong>: ✓ All nodes visible, ✓ No crossings, ✓ Scalable to denser networks</p>
+<p><strong>Disadvantages</strong>: ✗ Less intuitive, ✗ Needs reordering, ✗ n² space, ✗ Hard to trace paths</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/network-to-matrix.jpeg"></p>
+<figcaption>Network → Matrix</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/les-miserables-matrix.jpeg" height="300"></p>
+<figcaption>Les Misérables</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Completely different paradigm from node-link</li>
+<li>User studies: Experts faster with matrices, novices prefer node-link</li>
+<li>Task matters: Degree queries easier with matrices, path queries easier with node-link</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The Hairball Problem &amp; Matrix Ordering</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>“Hairball”</strong>: Dense networks as node-link diagrams = unreadable</p>
+<p><strong>Solution</strong>: Switch to matrix OR apply clutter reduction</p>
+<p><strong>Critical</strong>: Matrix ordering reveals patterns!</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/hairball-problem.jpeg" height="250"></p>
+<figcaption>Hairball</figcaption>
+</figure>
+</div>
+<p><img data-src="figs/week13/matrix-ordering-random.jpeg" height="150" alt="Random vs Clustered ordering"> <img data-src="figs/week13/matrix-ordering-clustered.jpeg" height="150"></p>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Hairball = technical term for unreadable dense node-link</li>
+<li>Ordering is critical design parameter (like aspect ratio for line charts)</li>
+<li>Strategies: alphabetical, by degree, clustering, seriation algorithms</li>
+<li>NP-hard to find optimal ordering</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Directed Graphs &amp; Alternatives</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Directed Matrices</strong>:</p>
+<ul>
+<li>Asymmetric: (i,j) ≠ (j,i)</li>
+<li>Above diagonal = one direction</li>
+<li>Below diagonal = opposite direction</li>
+<li>Easy to see reciprocity</li>
+</ul>
+<p><strong>Alternative</strong>: Parallel axes (bipartite-like view)</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/directed-matrix.png"></p>
+<figcaption>Directed Matrix</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/parallel-axes.png"></p>
+<figcaption>Parallel Axes</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Directed graphs: Twitter follows, citations, email, transactions</li>
+<li>Matrix naturally handles direction (no overlapping arrows)</li>
+<li>Parallel axes: Compact, shows in/out degree, but edges cross</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Clutter Reduction Strategies</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>Five main techniques</strong>:</p>
+<ol type="1">
+<li><strong>Edge Bundling</strong>: Route similar edges together</li>
+<li><strong>Clustering</strong>: Group nodes into super-nodes</li>
+<li><strong>Filtering</strong>: Show subset (threshold, top-k, backbone)</li>
+<li><strong>On-Demand</strong>: Show edges only on hover/click</li>
+<li><strong>Motif Simplification</strong>: Replace patterns with glyphs (cliques, stars → symbols)</li>
+</ol>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figs/week13/filtering-before.jpeg" height="200" alt="Filtering"> <img data-src="figs/week13/filtering-after.jpeg" height="200"></p>
+</div></div>
+<div class="footer">
+<p>Dunne, C., &amp; Shneiderman, B. (2013). <a href="https://doi.org/10.1145/2470654.2466444"><em>Motif simplification</em></a>. CHI.</p>
+</div>
+<aside class="notes">
+<ul>
+<li>Dense networks need strategies to make them comprehensible</li>
+<li>Often combine multiple techniques (bundle + cluster + filter)</li>
+<li>Trade detail for clarity</li>
+<li>Best practice: Progressive disclosure (overview → drill-down)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Quiz: Fixed vs Force-Directed</h2>
+<p><strong>Question</strong>: The main advantage of a fixed layout over force-directed is:</p>
+<p>A. Less cluttered visualizations B. Node positions encode meaningful data C. Faster computation</p>
+<p><strong>Answer</strong>: B - Position can carry information (geography, time, category)</p>
+<aside class="notes">
+<ul>
+<li>A is wrong: Fixed can be MORE cluttered (many crossings)</li>
+<li>C is true but not the MAIN advantage (speed is secondary)</li>
+<li>B is correct: The key benefit is semantic positioning</li>
+<li>Choose fixed when attributes &gt; structure</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Part 2: Trees (Hierarchies)</h1>
+<p>Specialized networks with no cycles</p>
+</section>
+<section class="slide level2">
+<h2>Trees: Definition &amp; Applications</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Tree</strong>: Network with hierarchical structure, no cycles</p>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li>One <strong>root</strong> node</li>
+<li><strong>Parent-child</strong> relationships</li>
+<li><strong>Leaves</strong>: Nodes with no children</li>
+<li>Unique path between any two nodes</li>
+</ul>
+<p><strong>Real-world</strong>: File systems, org charts, evolutionary trees, taxonomies, syntax trees</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week13/tree-structure.jpeg"></p>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Trees are everywhere! One of most fundamental data structures</li>
+<li>Hierarchy is natural way humans organize information</li>
+<li>Reduces cognitive load (can’t remember 10,000 items, but can remember 7±2 categories with subcategories)</li>
+<li>This motivates specialized visualization techniques</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Two Approaches for Trees</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>1. Node-Link</strong></p>
+<ul>
+<li>Explicit parent-child connections</li>
+<li>Structure very visible</li>
+<li>Familiar, intuitive</li>
+<li><strong>Limitation</strong>: Doesn’t scale (exponential width growth)</li>
+</ul>
+<p><img data-src="figs/week13/node-link-tree.jpeg"></p>
+</div><div class="column" style="width:50%;">
+<p><strong>2. Space-Filling (Containment)</strong></p>
+<ul>
+<li>Nesting shows hierarchy</li>
+<li>No explicit edges</li>
+<li>Space-efficient, can show size</li>
+<li><strong>Limitation</strong>: Structure harder to see</li>
+</ul>
+<p><img data-src="figs/week13/treemap-containment.jpeg"></p>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Fundamental trade-off: Structure vs Scalability</li>
+<li>Node-link: Good for small trees (&lt;100 nodes)</li>
+<li>Space-filling: Good for large trees (1000s of nodes)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Node-Link Trees: Examples</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Top-Down</strong> <img data-src="figs/week13/filesystem-tree.jpeg"></p>
+<p>File systems, org charts</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Radial</strong> <img data-src="figs/week13/radial-tree-layout.jpeg"></p>
+<p>More space-efficient</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Indented List</strong> <img data-src="figs/week13/hierarchical-list.jpeg"></p>
+<p>Most compact</p>
+</div></div>
+<p><strong>Issues</strong>: Scalability (1D growth), labeling, limited encoding channels</p>
+<aside class="notes">
+<ul>
+<li>Top-down: Most familiar, matches mental model</li>
+<li>Radial: Uses 2D space radially, aesthetically pleasing</li>
+<li>Indented: Most compact, used in file browsers</li>
+<li>All struggle with large/deep trees</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Special Trees: Dendrograms</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Dendrogram</strong>: Tree showing hierarchical clustering results</p>
+<p><strong>Algorithm</strong> (Agglomerative): 1. Start: Each point = own cluster 2. Find two closest clusters 3. Merge them (height = distance) 4. Repeat until one cluster</p>
+<p><strong>Properties</strong>: - Binary tree structure - Branch height = dissimilarity at merge - Cutting at height defines # of clusters</p>
+<p><strong>Used in</strong>: Gene expression, customer segmentation, document clustering</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week13/dendrogram-example.jpeg"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/dendrogram-heatmap.jpeg"></p>
+<figcaption>With Heatmap</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Specific type of tree from hierarchical clustering algorithm</li>
+<li>Branch height is meaningful (unlike layout-only trees where height is just for layout)</li>
+<li>Algorithm is bottom-up: Start with individual points, iteratively merge closest clusters</li>
+<li>Height at which clusters merge represents their dissimilarity</li>
+<li>Cutting dendrogram horizontally at different heights gives different numbers of clusters</li>
+<li>Often paired with heatmaps for multivariate data (shown in image)</li>
+<li>Standard in biology, but useful across any domain where you can define distance/similarity</li>
+<li>Example: Gene expression (cluster genes by similar expression patterns)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Special Trees: Decision Trees</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Decision Tree</strong>: Each node = decision point</p>
+<p><strong>Two contexts</strong>:</p>
+<ol type="1">
+<li>Human decision-making (flowcharts, election scenarios)</li>
+<li>Machine learning (learned classification models)</li>
+</ol>
+<p><strong>Why visualize</strong>: Interpretability, debugging, trust, bias detection</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/nyt-decision-tree.jpeg"></p>
+<figcaption>NYT Election Tree</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/ml-decision-tree.jpeg"></p>
+<figcaption>ML Decision Tree</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>NYT 512 Paths: 2012 election scenarios (9 swing states, 2⁹=512 outcomes)</li>
+<li>ML trees: Algorithm learns rules from data (split on attributes)</li>
+<li>Unlike neural nets, you can SEE the model! (Explainable AI)</li>
+<li>Used in medicine, finance, criminal justice (require transparency)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Treemaps</h1>
+<p>Space-filling approach for large hierarchies</p>
+</section>
+<section class="slide level2">
+<h2>Treemaps: Origin &amp; Encoding</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Origin</strong> (Ben Shneiderman, 1990): “My hard disk is full - what’s using space?”</p>
+<p><strong>Encoding</strong>:</p>
+<ul>
+<li><strong>Area</strong>: Quantitative value (size, revenue, count)</li>
+<li><strong>Color</strong>: Category OR secondary metric</li>
+<li><strong>Nesting</strong>: Hierarchical structure</li>
+</ul>
+<p><strong>Key innovation</strong>: Shows BOTH hierarchy AND size</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week13/shneiderman-photo.jpeg" height="250"></p>
+<p><img data-src="figs/week13/treemap-filesystem.jpeg"></p>
+</div></div>
+<div class="footer">
+<p>Shneiderman, B. (1992). <a href="https://doi.org/10.1145/102377.115768"><em>Tree visualization with tree-maps</em></a>. ACM TOG.</p>
+</div>
+<aside class="notes">
+<ul>
+<li>Solving personal frustration → major innovation (5000+ citations)</li>
+<li>Area proportional to value, sum of children = parent</li>
+<li>Widely adopted: WinDirStat, DaisyDisk, Google Analytics, finance</li>
+<li>Can show 1000s of nodes (limited by screen resolution, not algorithm)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Treemap Algorithms: Squarified vs Slice-and-Dice</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Problem</strong>: Slice-and-Dice creates thin rectangles (bad aspect ratios)</p>
+<p><strong>Solution</strong>: Squarified algorithm optimizes for square-like shapes</p>
+<p><strong>Trade-off</strong>: Squarified is more readable but less stable (layout changes with data updates)</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/squarified-treemap.jpeg"></p>
+<figcaption>Squarified (better readability)</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/squarified-vs-slicedice.jpeg"></p>
+<figcaption>Comparison</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Bruls, M. et al.&nbsp;(2000). <a href="https://doi.org/10.1007/978-3-7091-6783-0_4"><em>Squarified treemaps</em></a>. Springer.</p>
+</div>
+<aside class="notes">
+<ul>
+<li>Perceptual research: Squares easier to compare than elongated rectangles</li>
+<li>Squarified: Greedy algorithm, local optimization of aspect ratios</li>
+<li>Use squarified for single snapshots, ordered treemaps for comparisons over time</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Treemap Examples</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>File Systems</strong> <img data-src="figs/week13/treemap-filesystem.jpeg"></p>
+<p>Disk usage tools</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Finance</strong> <img data-src="figs/week13/treemap-financial.jpeg"></p>
+<p>Stock market heat maps</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Code Analysis</strong> <img data-src="figs/week13/linux-kernel-treemap.jpeg"></p>
+<p>Linux kernel by file type</p>
+</div></div>
+<p><strong>Applications</strong>: Business dashboards, news (Newsmap), analytics, sports</p>
+<aside class="notes">
+<ul>
+<li>Stock markets: Area=market cap, color=% change, grouped by sector</li>
+<li>Code: Area=file size, color=file type, reveals codebase structure</li>
+<li>Interaction: Zoom, hover for details, search/filter</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Treemap Trade-offs</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Advantages</strong>:</p>
+<ul>
+<li>✓ Scalability (thousands of nodes)</li>
+<li>✓ All nodes visible</li>
+<li>✓ Encodes size + category</li>
+<li>✓ Space-efficient</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li>✗ Size less accurate than position</li>
+<li>✗ Structure harder to see</li>
+<li>✗ Layout algorithm affects readability</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week13/treemap-summary.jpeg"></p>
+</div></div>
+<aside class="notes">
+<ul>
+<li><strong>When to use</strong>:
+<ul>
+<li>Large hierarchies (&gt;100 nodes)</li>
+<li>Quantitative data at leaves (size matters)</li>
+<li>Need magnitude comparisons</li>
+</ul></li>
+<li><strong>When NOT</strong>:
+<ul>
+<li>Small trees (&lt;50 nodes) → node-link clearer</li>
+<li>Structure more important than size</li>
+<li>No meaningful quantitative attribute</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Sunburst &amp; Icicle Plots</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Middle ground</strong> between node-link and treemaps:</p>
+<ul>
+<li><strong>Sunburst</strong>: Radial (concentric rings)</li>
+<li><strong>Icicle</strong>: Linear (horizontal bands)</li>
+</ul>
+<p><strong>Space efficiency</strong>: Treemap &gt; Icicle &gt; Sunburst <strong>Hierarchy perception</strong>: Icicle ≈ Sunburst &gt; Treemap <strong>Familiarity</strong>: Treemap &gt; Icicle &gt; Sunburst</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/sunburst-detailed.jpeg"></p>
+<figcaption>Sunburst</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week13/sunburst-icicle-1.jpeg"></p>
+<figcaption>Icicle</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Use when both structure AND size matter</li>
+<li>Sunburst: Beautiful, angle=proportion, radius=depth</li>
+<li>Fixed height/width per level (less efficient than treemaps)</li>
+<li>Growing in popularity with interactive zoomable versions</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Summary &amp; Recommendations</h1>
+
+</section>
+<section class="slide level2">
+<h2>Visualization Method Summary</h2>
+<p><strong>Networks (General Graphs)</strong>:</p>
+<ul>
+<li><strong>Force-Directed</strong>: Unknown structure, exploration, &lt;100 nodes</li>
+<li><strong>Fixed Layout</strong>: Known groupings, spatial data, semantic positioning</li>
+<li><strong>Matrix</strong>: Dense networks, analytical tasks, expert users</li>
+</ul>
+<p><strong>Trees (Hierarchies)</strong>:</p>
+<ul>
+<li><strong>Node-Link</strong>: Small trees (&lt;100), structure focus, intuitive</li>
+<li><strong>Treemaps</strong>: Large trees (1000s), size focus, space-efficient</li>
+<li><strong>Sunburst/Icicle</strong>: Balance of structure + size, moderate depth</li>
+</ul>
+<p><strong>Key principle</strong>: No single “best” method - depends on data, task, audience</p>
+<aside class="notes">
+<ul>
+<li>Data size drives choice (sparse vs dense, small vs large)</li>
+<li>Task matters (structure vs values, paths vs clusters, overview vs details)</li>
+<li>Audience matters (experts vs general public, static vs interactive)</li>
+<li>Often use multiple views with linking</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Design Guidelines &amp; Trade-offs</h2>
+<p><strong>Key dimensions to consider</strong>:</p>
+<ol type="1">
+<li><strong>Clutter</strong>: How crowded?</li>
+<li><strong>Scalability</strong>: How many nodes/edges?</li>
+<li><strong>Structure visibility</strong>: How clear is topology?</li>
+<li><strong>Familiarity</strong>: How intuitive for audience?</li>
+<li><strong>Reordering needs</strong>: Preprocessing required?</li>
+</ol>
+<p><strong>Decision process</strong>: Try multiple approaches → prototype → user test → iterate</p>
+<aside class="notes">
+<ul>
+<li>No perfect visualization - all involve trade-offs</li>
+<li>Clutter: Node-link high (dense graphs), Matrix low</li>
+<li>Scalability: Node-link ~100, Matrix ~1000, Treemap ~10,000</li>
+<li>Structure: Force-directed high, Fixed low (unless meaningful)</li>
+<li>Best practice: Prototype multiple, use linked views, provide interaction</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Programming Assignments</h2>
+<p><strong>Create variants of each technique</strong>:</p>
+<ol type="1">
+<li><strong>Force-directed layout</strong>: Implement algorithm OR use D3.js, experiment with encodings</li>
+<li><strong>Circular/chord diagram</strong>: Fixed layout with edge bundling</li>
+<li><strong>Node-link tree</strong>: Top-down OR radial, with collapse/expand</li>
+<li><strong>Treemap</strong>: Squarified algorithm with zoom/drill-down</li>
+</ol>
+<p><strong>Explore</strong>:</p>
+<ul>
+<li>Visual encodings (size, color, thickness)</li>
+<li>Interaction (zoom, filter, details-on-demand)</li>
+<li>Real datasets (social, citations, file systems, hierarchical clustering)</li>
+</ul>
+<p><strong>Tools</strong>: D3.js, Gephi, Cytoscape, NetworkX (Python), igraph (R)</p>
+<aside class="notes">
+<ul>
+<li>Encourage: Implement from scratch (learn algorithms) AND use libraries (practical)</li>
+<li>Datasets available: Course website, Gephi sample data, D3 examples</li>
+<li>Focus on design decisions (encodings, interaction, layout parameters)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Resources &amp; References</h2>
+<p><strong>Essential readings</strong>:</p>
+<ul>
+<li>Shirley Wu: <a href="https://medium.com/@sxywu/understanding-the-force-ef1237017d5"><em>Understanding the Force</em></a></li>
+<li>Holten (2006): <em>Hierarchical Edge Bundling</em> - IEEE TVCG</li>
+<li>Shneiderman (1992): <em>Tree Visualization with Tree-maps</em> - ACM TOG</li>
+<li>Bruls et al.&nbsp;(2000): <em>Squarified Treemaps</em> - Springer</li>
+</ul>
+<p><strong>Advanced topics</strong>: Motif simplification (Dunne &amp; Shneiderman), semantic substrates, time-varying networks, multilayer networks</p>
+<p><strong>Interactive examples</strong>: Observable (D3.js), Gephi tutorials, Graph visualization survey papers</p>
+<aside class="notes">
+<ul>
+<li>Shirley Wu’s article is THE best force-directed tutorial</li>
+<li>Holten &amp; Shneiderman papers are foundational (must-reads)</li>
+<li>Observable has live, editable examples (great for learning)</li>
+<li>Encourage exploration of tools (Gephi for analysis, D3 for custom viz)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Thank You!</h2>
+<p><strong>Next class</strong>: Week 14 - Final Project Presentations</p>
+<p><strong>Questions?</strong></p>
+<aside class="notes">
+<ul>
+<li>Key takeaways:
+<ul>
+<li>Two paradigms: Node-link vs Matrix</li>
+<li>Trees enable specialized techniques</li>
+<li>Always consider: Data, Task, Audience</li>
+<li>Prototype multiple approaches</li>
+<li>Interaction overcomes static limitations</li>
+</ul></li>
+<li>Office hours: Available for project help</li>
+<li>Reminder: Programming assignments + readings</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week13-network-data_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week13-network-data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week13-network-data_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week13-network-data_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week13-network-data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week13-network-data_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week13-network-data_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week13-network-data_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week13-network-data_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week13-network-data_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

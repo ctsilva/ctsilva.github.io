@@ -1,0 +1,2934 @@
+---
+title: "Visualizing Network Data"
+subtitle: "CS-GY 6313 - Fall 2025"
+author: "Claudio Silva"
+date: "November 26, 2025"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    footer: <https://engineering.nyu.edu>
+---
+
+# Introduction
+
+Based on materials by Enrico Bertini
+enrico.bertini@nyu.edu
+NYU Tandon School of Engineering
+
+::: notes
+**LECTURE TIMING GUIDANCE (150 min total)**
+
+This lecture covers network and hierarchical data visualization - two of the most common data structures in real applications.
+
+**Part 1: Networks (60-70 min)** - CORE MATERIAL
+- Network data fundamentals (10 min)
+- Node-link diagrams: Force-directed layouts (15 min)
+- Node-link diagrams: Fixed layouts & edge bundling (15 min)
+- Adjacency matrices (10 min)
+- Clutter reduction techniques (10 min)
+
+**Part 2: Trees/Hierarchies (60-70 min)** - CORE MATERIAL
+- Tree fundamentals & node-link trees (15 min)
+- Dendrograms & hierarchical clustering (20 min)
+- Decision trees (10 min)
+- Treemaps (20 min)
+- Sunburst/Icicle plots (10 min)
+
+**Wrap-up (10-20 min)**
+- Summary & trade-offs
+- Programming assignments preview
+
+**IMPORTANT NOTE**: The hierarchical clustering animation (slides 89-95 in original) needs to be completed before lecture.
+
+**Strategy if running short:**
+- Part 1 and Part 2 are equally important - don't skip either
+- Can compress clutter reduction examples
+- Can make sunburst/icicle plots optional reading
+- Decision tree examples can be shown quickly
+:::
+
+---
+
+# Part 1: Network Data
+
+Understanding objects, relationships, and visualization approaches
+
+---
+
+## What is Network Data?
+
+**Network Data = Objects + Relationships + Values**
+
+- **Objects**: Nodes (vertices)
+- **Relationships**: Links/Edges (connections between nodes)
+- **Values**: Attributes associated with nodes and/or links
+
+::: notes
+- Network data (also called graph data) is one of the most fundamental data structures
+- The key distinction: We explicitly care about RELATIONSHIPS between entities, not just the entities themselves
+- Ask students: "What networks do you interact with daily?"
+  - Social networks (Facebook, LinkedIn - people + friendships)
+  - Transportation (cities + roads/flights)
+  - Web (pages + hyperlinks)
+  - Biological (proteins + interactions)
+- **Objects (Nodes)**: The "things" in your data (people, cities, computers, genes)
+- **Relationships (Links/Edges)**: How things are connected (friendship, flight route, hyperlink, interaction)
+- **Values**: Additional information about nodes (age, population) or links (message count, distance, bandwidth)
+- This is fundamentally different from tabular data - relationships are first-class citizens
+:::
+
+---
+
+## Network Data Structure
+
+![](figs/week13/network-structure-diagram.jpeg)
+
+::: notes
+- This diagram shows the conceptual structure of network data
+- Visual representation helps distinguish nodes from links
+- In data terms, you often have:
+  - Node table: ID, attributes (name, type, size, etc.)
+  - Edge table: Source node ID, Target node ID, attributes (weight, type, etc.)
+- This is the data model underlying graph databases (Neo4j, etc.)
+- Ask: "How would you represent this as data tables?"
+:::
+
+---
+
+## Example: Friendship Network
+
+![](figs/week13/friendship-network-example.png)
+
+**Nodes**: People (John, Jessica, Paul, Mandy)
+**Node attributes**: Age (25, 22, 24, 21)
+**Links**: Friendship connections
+**Link attributes**: Could include relationship strength, duration, etc.
+
+::: notes
+- Concrete example to make the abstract concept tangible
+- **Point to each element on the diagram**: "John is a node, this line is an edge"
+- The ages (25, 22, 24, 21) are node attributes - properties of the people
+- We could add link attributes: "How many messages exchanged? How long friends?"
+- This is a simple undirected network - friendship is mutual
+- Later we'll see directed networks where edges have direction (e.g., Twitter follows)
+- Real-world question: "How would you find the most connected person?" (degree centrality)
+:::
+
+---
+
+## Values in Network Data
+
+Values can be associated with:
+
+- **Nodes**: Size, type, category, importance, activity level
+- **Links**: Weight, strength, type, direction, capacity
+
+These attributes are critical for creating meaningful visualizations
+
+::: notes
+- Values/attributes are what make networks interesting beyond pure structure
+- **Node attributes** examples:
+  - Social network: Age, gender, location, influence score
+  - Transportation: Population, GDP, airport capacity
+  - Protein network: Function, location in cell, expression level
+- **Link attributes** examples:
+  - Social: Number of messages, relationship duration, interaction frequency
+  - Transportation: Distance, travel time, cost, capacity
+  - Protein: Binding strength, interaction type
+- These attributes will map to visual channels (size, color, thickness, etc.)
+- Without attributes, we only see structure - with attributes, we see MEANING
+:::
+
+---
+
+## Application Domains
+
+Many phenomena are naturally described by network structures:
+
+- **Social**: People, organizations, collaborations
+- **Biological**: Cells, proteins, genes, metabolic pathways
+- **Economic**: Companies, trade relationships, supply chains
+- **Infrastructure**: Cities, transportation, communication networks
+- **Information**: Web pages, citations, documents
+- **Technology**: Computers, software dependencies, APIs
+
+::: notes
+- Networks are EVERYWHERE - this is one of the most universal data structures
+- **Give specific examples for each domain**:
+  - Social: LinkedIn, Facebook, scientific collaborations
+  - Biological: Protein-protein interaction networks, neural connections (connectome)
+  - Economic: Company ownership networks, international trade
+  - Infrastructure: Power grid, road networks, airline routes
+  - Information: Wikipedia link structure, citation networks, knowledge graphs
+  - Technology: Internet topology, software package dependencies
+- Ask students: "In your projects or work, have you encountered network data?"
+- Key insight: Once you see the world as networks, you see them everywhere!
+- Visualization is critical because network structure is hard to understand from tables alone
+:::
+
+---
+
+# Visualization Techniques
+
+Two fundamental approaches for visualizing networks
+
+::: notes
+- We're about to cover the two main families of network visualization techniques
+- This is a important taxonomy - helps you choose the right approach
+- **Preview**: Node-link diagrams (intuitive, structural) vs Matrices (scalable, precise)
+:::
+
+---
+
+## Fundamental Visualization Approaches
+
+**1. Node-Link Diagrams**
+   - Force-Directed Layouts
+   - Fixed Layouts
+
+**2. Adjacency Matrices**
+
+![](figs/week13/force-directed-example.jpeg){width=30%}
+![](figs/week13/fixed-layout-example.jpeg){width=30%}
+![](figs/week13/matrix-example.jpeg){width=30%}
+
+::: notes
+- These are the two fundamental paradigms for network visualization
+- **Node-Link Diagrams**: The "classic" graph visualization everyone thinks of
+  - Nodes = dots/circles/markers
+  - Links = lines connecting them
+  - Two main variants: force-directed (algorithmic layout) and fixed (user-defined positions)
+  - Intuitive, shows structure clearly, but can become cluttered
+- **Adjacency Matrices**: Table-like representation
+  - Rows and columns = nodes
+  - Cells = presence/absence of edges
+  - No line crossings, scalable, but less intuitive
+- **Trade-offs**: We'll explore when to use each approach
+- Show images: Force-directed (organic layout), fixed (structured layout), matrix (grid)
+:::
+
+---
+
+# Node-Link Diagrams
+
+The intuitive approach to network visualization
+
+---
+
+## Node-Link Diagrams: Basic Concept
+
+**Visual Encoding**:
+
+- Nodes → Dots, circles, or other markers
+- Links → Lines connecting the nodes
+
+**The challenge**: How do we position the nodes?
+
+::: notes
+- This is the most natural way humans think about networks
+- We've been drawing network diagrams for centuries (org charts, family trees, circuit diagrams)
+- **The fundamental question**: Where do we put the nodes?
+  - Random positions? → Useless, reveals no structure
+  - Manual positioning? → Doesn't scale, subjective
+  - Algorithmic? → Force-directed layouts
+  - Meaningful positions? → Fixed layouts based on attributes
+- The positioning strategy completely changes what patterns you can see
+- Next slides: We'll explore both algorithmic (force-directed) and meaningful (fixed) positioning
+:::
+
+---
+
+# Force-Directed Layouts
+
+Algorithmic positioning based on physics simulation
+
+---
+
+## Force-Directed Layouts: Concept
+
+**Goal**: Automatically arrange nodes to reveal the network's structure
+
+**Method**: Simulate physical forces between nodes
+
+- **Edge attraction**: Connected nodes pull toward each other
+- **Node repulsion**: All nodes push away from each other
+
+The system evolves until forces balance → stable, readable layout
+
+::: notes
+- **The big idea**: Treat the network as a physical system and let physics arrange it
+- This is an algorithmic approach - the computer figures out good positions
+- **Physical analogy**:
+  - Edges are like springs - they pull connected nodes together
+  - Nodes are like magnets with same charge - they repel each other
+  - The system "settles" into a stable configuration
+- **What patterns emerge?**
+  - Clusters (densely connected groups) pull together
+  - Bridges between clusters become visible
+  - Important nodes (high degree) tend toward center
+- This is NOT the "correct" layout (networks don't have inherent positions) but often reveals meaningful structure
+- Many variants exist (Fruchterman-Reingold, Kamada-Kawai, ForceAtlas2) with different trade-offs
+:::
+
+---
+
+## How Force-Directed Layouts Work
+
+The algorithm simulates two opposing forces:
+
+![](figs/week13/force-diagram.png)
+
+- **Edge Attraction**: Nodes connected by edges are pulled together (like springs)
+- **Node Repulsion**: All nodes push away from each other (like charged particles)
+
+::: notes
+- Let's understand the algorithm step by step (next slides will show this visually)
+- **Edge Attraction (Spring Force)**:
+  - Only applies to connected nodes
+  - Force increases with distance (like stretching a spring)
+  - Pulls connected nodes closer together
+- **Node Repulsion (Coulomb/Electric Force)**:
+  - Applies to ALL pairs of nodes
+  - Force decreases with distance
+  - Prevents nodes from overlapping
+  - Creates spacing between unconnected nodes
+- **The balance**: Connected nodes pulled together, but repulsion prevents total collapse
+- This balance tends to: (1) Group clusters, (2) Spread out the network, (3) Minimize edge crossings
+:::
+
+---
+
+## Force-Directed Algorithm: Step 1
+
+**Initial Configuration**: Nodes placed in random positions
+
+![](figs/week13/force-step1-random.png)
+
+::: notes
+- **Step 1**: Start with random positions
+- This initial randomness means each run can produce slightly different layouts
+- At this stage, the visualization is meaningless - just random dots
+- But the algorithm will organize them!
+- **Note**: Some implementations use smarter initialization (e.g., circular layout) for faster convergence
+:::
+
+---
+
+## Force-Directed Algorithm: Step 2
+
+**Calculate Forces**: For each node, compute the sum of all forces acting on it
+
+![](figs/week13/force-step2-calculate.png)
+
+Nodes experience:
+- Attraction from connected neighbors
+- Repulsion from all other nodes
+
+::: notes
+- **Step 2**: Calculate net force on each node
+- For each node:
+  - Look at all edges → compute attraction force vectors
+  - Look at all other nodes → compute repulsion force vectors
+  - Sum all force vectors → net force (direction + magnitude)
+- **Computational note**: This is O(n²) for repulsion - expensive for large networks
+  - Modern algorithms use approximations (Barnes-Hut, multipole methods)
+- The arrows in the diagram show force vectors - length = magnitude, direction = direction
+:::
+
+---
+
+## Force-Directed Algorithm: Step 3
+
+**Move Nodes**: Displace each node according to its net force
+
+![](figs/week13/force-step3-move.png)
+
+Nodes move in the direction of the net force (scaled by a step size)
+
+::: notes
+- **Step 3**: Move each node based on its net force
+- Displacement = force × step_size (learning rate)
+- **Don't move too far!** Small steps ensure stability
+  - Too large: system oscillates, never converges
+  - Too small: convergence is very slow
+- Often use adaptive step sizes: large at first, then decrease (simulated annealing)
+- After this step, forces are recalculated (positions changed → forces changed)
+:::
+
+---
+
+## Force-Directed Algorithm: Step 4
+
+**Iterate**: Repeat force calculation and movement until the layout stabilizes
+
+![](figs/week13/force-step4-iterate.png)
+
+Stop when:
+- Forces are nearly balanced (low energy state)
+- Maximum iterations reached
+- Changes become negligible
+
+::: notes
+- **Step 4**: Keep repeating Steps 2-3 until convergence
+- **Convergence criteria**:
+  - Total energy below threshold (sum of all force magnitudes)
+  - Maximum displacement below threshold (nodes barely moving)
+  - Fixed iteration count (computational budget)
+- **Typical iterations**: 50-500 depending on network size and desired quality
+- The result: Nodes settle into positions where forces are balanced
+- **Show the progression**: From chaos (random) to structure (organized)
+- This reveals the "shape" of the network - clusters, hubs, bridges become visible
+:::
+
+---
+
+## Force-Directed Layout Variants
+
+Many variants exist, each optimizing different aspects:
+
+- **Fruchterman-Reingold**: General-purpose, good balance
+- **Kamada-Kawai**: Minimizes edge length variance, good for small graphs
+- **ForceAtlas2**: Designed for large networks, used in Gephi
+- **Barnes-Hut**: Approximation for faster computation on large graphs
+- **D3 force simulation**: Customizable, web-based, very popular
+
+::: notes
+- There's no single "best" force-directed algorithm - trade-offs everywhere!
+- **Fruchterman-Reingold** (1991):
+  - Classic algorithm, good general-purpose choice
+  - Treats edges as springs, nodes as charged particles
+- **Kamada-Kawai** (1989):
+  - Tries to make edge lengths uniform
+  - Better for smaller, denser graphs
+  - More expensive computationally
+- **ForceAtlas2** (2014):
+  - Designed for social networks and large graphs
+  - Used in Gephi (popular network analysis tool)
+  - Good at revealing communities
+- **D3.js force**:
+  - JavaScript library for web visualizations
+  - Very flexible, customizable forces
+  - Students will likely use this in projects
+- Different algorithms can reveal different aspects of the same network
+- **Best practice**: Try multiple algorithms, see which reveals your pattern of interest
+:::
+
+---
+
+## Encoding Additional Attributes
+
+Nodes and links can encode additional data through visual channels:
+
+**Nodes**:
+- **Shape**: Category, type
+- **Size**: Importance, degree, value
+- **Color**: Category, cluster, metric
+
+**Links**:
+- **Thickness**: Weight, strength, bandwidth
+- **Pattern**: Type (solid, dashed, dotted)
+- **Color**: Type, direction, strength
+
+::: notes
+- **LINK BACK to perception lectures**: Remember visual channels hierarchy!
+- Force-directed layout gives us positions, but we have more visual channels to use
+- **Node encodings** (in order of effectiveness):
+  - Position: Already used by layout algorithm
+  - Size: Very effective for quantitative data (degree centrality, pagerank, sales)
+  - Color: Good for categories (≤10) or diverging scales
+  - Shape: Limited palette (~5 shapes), use for broad categories
+- **Link encodings**:
+  - Thickness: Great for weight, traffic, strength (but thicker = more occlusion)
+  - Pattern: Dashing works for 2-3 categories (solid/dashed/dotted)
+  - Color: Use sparingly, links already create visual complexity
+- **Warning**: Don't over-encode! Too many visual channels = cluttered, unreadable
+- **Example coming**: Friendship network with age (size) and gender (color)
+:::
+
+---
+
+## Example: Node Color Encoding
+
+Color can represent node categories or clusters
+
+![](figs/week13/encoding-color.png)
+
+::: notes
+- Color is excellent for categorical data on nodes
+- Common uses:
+  - Community detection results (each cluster = different color)
+  - Node type in heterogeneous networks (users vs posts vs comments)
+  - Classification results (predicted class)
+- **Perceptual considerations**:
+  - Use colorblind-safe palettes
+  - Limit to 8-10 colors max (human discrimination limit)
+  - Use saturated, distinct colors
+- This example might show different communities or categories in the network
+:::
+
+---
+
+## Example: Node Shape Encoding
+
+Shape can distinguish different types of nodes
+
+![](figs/week13/encoding-shape.png)
+
+::: notes
+- Shape encoding works for **broad categories** with small numbers (2-5 types)
+- Examples:
+  - Heterogeneous networks: Circles for people, squares for organizations
+  - Biological networks: Different shapes for proteins, genes, metabolites
+- **Limitations**:
+  - Harder to distinguish than color
+  - Limited shape palette (circle, square, triangle, diamond, star)
+  - Doesn't work well for many categories
+- **Can combine with color**: Shape for type, color for subtype
+- In practice, color is more commonly used than shape for nodes
+:::
+
+---
+
+## Example: Node Size Encoding
+
+Size can represent importance, degree, or other quantitative metrics
+
+![](figs/week13/encoding-size.png)
+
+::: notes
+- **Size is powerful** for quantitative node attributes
+- Common metrics encoded as size:
+  - **Degree**: Number of connections (most connected = biggest)
+  - **Centrality**: Importance measures (betweenness, eigenvector centrality)
+  - **Values**: Sales, population, traffic, activity level
+- **Perceptual note**: Area is harder to judge than length
+  - People underestimate area differences
+  - Don't use tiny differences in size
+  - Use at least 2-3x size ratio for meaningful differences
+- **Practical issue**: Very large nodes can occlude many links
+  - Consider: Make large nodes slightly transparent
+  - Or: Use interaction (hover to highlight)
+- This is probably the most commonly used node encoding after color
+:::
+
+---
+
+## Example: Link Thickness Encoding
+
+Edge thickness can represent weight, strength, or frequency
+
+![](figs/week13/encoding-edge-thickness.png)
+
+::: notes
+- Link thickness (width) is excellent for quantitative edge attributes
+- Common uses:
+  - **Weight**: Strength of connection, similarity
+  - **Traffic**: Volume of communication, data flow
+  - **Frequency**: Number of interactions, co-occurrence count
+  - **Distance**: Sometimes inverse (thicker = closer)
+- **Trade-offs**:
+  - Very effective for showing important connections
+  - But: Thick edges create more occlusion
+  - Can make dense networks even more cluttered
+- **Design tips**:
+  - Use alpha/transparency on edges to reduce occlusion
+  - Limit maximum thickness
+  - Consider: Show only top-k strongest edges
+- Often combined with color or pattern for multi-attribute edges
+:::
+
+---
+
+## Example: Link Pattern Encoding
+
+Dashing patterns can distinguish edge types
+
+![](figs/week13/encoding-edge-pattern.png)
+
+::: notes
+- **Dashing/pattern** works for categorical edge attributes with few categories
+- Patterns: solid, dashed, dotted, dash-dot
+- Common uses:
+  - Edge type in multi-relational networks (friend vs colleague vs family)
+  - Edge direction indication (though arrows are better)
+  - Temporal: old vs new relationships
+  - Certainty: confirmed (solid) vs predicted (dashed)
+- **Limitations**:
+  - Only 2-3 patterns are reliably distinguishable
+  - Harder to see on short edges
+  - Doesn't work well in dense networks
+- **Alternative**: Use edge color instead (more distinguishable)
+- Less commonly used than thickness, but useful in specific contexts
+:::
+
+---
+
+## Complete Example: Friendship Network
+
+![](figs/week13/friendship-network-encoded.png)
+
+**Encodings**:
+- Node size → Age
+- Node color → Gender
+- Edge thickness → Number of messages
+- Edge pattern → Old (solid) vs New (dashed) friendship
+
+::: notes
+- **Synthesizing everything**: Multiple visual channels working together
+- **Walk through the encodings**:
+  - Bigger nodes = older people (size encodes age)
+  - Color shows gender (e.g., blue/pink or other palette)
+  - Thick edges = more messages exchanged (communication strength)
+  - Dashed edges = new friendships, solid = established friendships
+- **What insights emerge?**
+  - Can see if older people communicate more (size vs thickness correlation)
+  - Can see if gender affects network structure (homophily?)
+  - Can see if new friendships are forming in certain parts of the network
+- **Design critique**: Is this too much? Maybe!
+  - 4 encodings is approaching the limit of comprehension
+  - In practice, might use 2-3 and put rest in interaction (tooltip/hover)
+- **Ask students**: "What patterns do you see? What questions could you answer?"
+:::
+
+---
+
+## Directed Graphs
+
+How do we represent direction when edges are directional?
+
+**Solution**: Add arrows to indicate direction
+
+::: notes
+- So far we've shown undirected graphs (symmetrical relationships)
+- But many networks are **directed**:
+  - Twitter follows (A follows B ≠ B follows A)
+  - Web hyperlinks (Page A links to B ≠ B links to A)
+  - Email (sender → recipient)
+  - Citation networks (Paper A cites B ≠ B cites A)
+  - Transaction flows (buyer → seller)
+- **Visualization challenge**: Need to show direction clearly
+- **Standard solution**: Arrows/arrowheads on edges
+- **Alternative**: Color gradient along edge (source color → target color)
+- **Problem**: In dense networks, arrows become hard to see
+- Next section: Fixed layouts can help with directed graphs
+:::
+
+---
+
+# Fixed Layouts
+
+Placing nodes in meaningful positions
+
+---
+
+## Fixed Layouts: Concept
+
+**Alternative**: Place nodes in predetermined positions according to useful criteria
+
+Common fixed layout patterns:
+- **Circular**: Nodes arranged in a circle
+- **Linear**: Nodes along a line
+- **Grid**: Nodes in rows and columns
+- **Spatial**: Nodes positioned by geographic location
+
+::: notes
+- **Contrast with force-directed**: Instead of letting algorithm decide, WE decide node positions
+- **When is fixed layout better?**
+  1. When nodes have meaningful attributes for positioning (geography, time, hierarchy)
+  2. When you want node positions to be stable/predictable
+  3. When emphasizing edges more than node clustering
+- **Trade-off**:
+  - Force-directed: Reveals structural properties (clusters, hubs)
+  - Fixed: Uses position to encode other data dimensions
+- **Coming up**: We'll focus on circular layouts (most common fixed layout)
+:::
+
+---
+
+## Fixed Layout Patterns
+
+![](figs/week13/fixed-layout-patterns.png)
+
+- **Circular**: Nodes evenly distributed around circle
+- **Linear**: Nodes along horizontal or vertical axis
+- **Grid**: Nodes in matrix arrangement
+
+::: notes
+- **Circular**: Most common fixed layout
+  - Good for showing connections between entities in categorical groups
+  - Node order matters! (can reorder to reveal patterns)
+  - Works well with edge bundling (coming soon)
+- **Linear**: Less common but useful for:
+  - Temporal data (nodes ordered by time)
+  - Ordinal data (nodes ordered by rank/score)
+  - Bipartite graphs (two groups on opposite sides)
+- **Grid**: Rare for general networks, but useful for:
+  - Matrix-like data
+  - Geographic data (approximate positions)
+  - Regular lattice structures
+- Each pattern emphasizes different aspects of the data
+:::
+
+---
+
+## Circular Layouts
+
+Most common fixed layout for network visualization
+
+![](figs/week13/circular-layout.png)
+
+**Key consideration**: The ordering of nodes around the circle matters!
+
+::: notes
+- **Circular layout (chord diagram)**: Nodes arranged evenly around a circle
+- **Why circular?**
+  - Compact: All nodes equidistant from center
+  - Democratic: No node privileged by position
+  - Clear: All nodes visible, no occlusion
+  - Symmetric: Aesthetically pleasing
+- **The critical decision**: NODE ORDER
+  - Alphabetical? → Easy to find nodes, but ignores structure
+  - By cluster? → Groups similar nodes together
+  - To minimize edge crossings? → Clearer edge patterns
+  - By attribute (size, degree, etc.)? → Reveals correlations
+- **This is an optimization problem**: Finding best order is NP-hard!
+- Heuristics exist (spectral ordering, hierarchical clustering order)
+- Coming slide: When circular is better than force-directed
+:::
+
+---
+
+## When to Use Fixed Layouts Over Force-Directed
+
+**Fixed layouts are preferred when**:
+
+1. **Node groupings are known**: Meaningful categories exist
+2. **Node attributes matter more than structure**: Want to encode position
+3. **Edge properties are the focus**: Connections and flows
+4. **Stability is important**: Reproducible layouts across sessions
+
+**Force-directed layouts are preferred when**:
+
+- Network structure is unknown/exploratory
+- Clustering and communities need to be discovered
+- Graph structure is the primary focus
+
+::: notes
+- **This is a key design decision** - helps students choose the right approach
+- **Fixed layout advantages**:
+  - Predictable: Same layout every time
+  - Meaningful: Position can encode data (location, category, time)
+  - Visible: All nodes guaranteed to be shown
+  - Comparable: Can compare multiple networks with same node order
+- **Fixed layout disadvantages**:
+  - Doesn't reveal structural properties
+  - Can create excessive edge crossings
+  - Manual or heuristic node ordering needed
+- **Force-directed advantages**:
+  - Automatic: No manual positioning
+  - Structural: Reveals clusters, bridges, hubs
+  - Adaptive: Works for any network topology
+- **Force-directed disadvantages**:
+  - Unstable: Different each time (unless seeded)
+  - Cluttered: Can become "hairballs" for large/dense networks
+  - Occlusion: Some nodes may be hidden
+- **In practice**: Often try both and see which reveals your patterns!
+:::
+
+---
+
+## Example: Hierarchical Edge Bundling
+
+![](figs/week13/hierarchical-edge-bundling.jpeg)
+
+Circular fixed layout + edge bundling technique for hierarchical relationships
+
+:::footer
+Holten, D. (2006). [*Hierarchical edge bundles: Visualization of adjacency relations in hierarchical data*](https://doi.org/10.1109/TVCG.2006.147). IEEE TVCG, 12(5), 741-748.
+:::
+
+::: notes
+- **FAMOUS TECHNIQUE** - hierarchical edge bundling by Danny Holten (2006)
+- **The problem**: Software dependencies, call graphs, ontologies have thousands of edges → spaghetti!
+- **The solution**:
+  - Circular layout with nodes grouped by hierarchy (packages, modules, classes)
+  - Edges are "bundled" together based on hierarchical similarity
+  - Edges between related nodes follow similar paths → bundles emerge
+- **Visual effect**: Instead of straight lines crossing everywhere, edges form curves that bundle together
+- **When it works**: Hierarchical data (file systems, class hierarchies, org charts)
+- **Impact**: Hugely influential paper, led to many edge bundling variants
+- **Software**: Available in D3.js, Gephi, and other tools
+- Next: More general edge bundling techniques
+:::
+
+---
+
+## Edge Bundling Concept
+
+**Problem**: Many edges create visual clutter (spaghetti graphs)
+
+**Solution**: Route edges along similar paths to reduce clutter
+
+![](figs/week13/edge-bundling-before.jpeg)
+![](figs/week13/edge-bundling-after.jpeg)
+
+:::footer
+Holten, D. (2006). [*Hierarchical edge bundles*](https://doi.org/10.1109/TVCG.2006.147). IEEE TVCG.
+:::
+
+::: notes
+- **Edge bundling**: A family of techniques to reduce visual clutter
+- **The idea**: Instead of straight edges, curve edges to group with similar edges
+- **Visual benefit**:
+  - Empty space emerges (easier to see structure)
+  - Edge patterns become visible (bundles = common pathways)
+  - Individual edges may be harder to trace, but overall flow is clearer
+- **Trade-off**: Bundling loses some precision
+  - Harder to trace individual edges
+  - Can misrepresent the actual network (edges that aren't related may bundle)
+- **When to use**: Dense networks where structure matters more than individual edges
+- **Variants**:
+  - Hierarchical (based on node hierarchy - shown here)
+  - Force-directed (physical simulation)
+  - Geometric (based on spatial proximity)
+- Shows: Before (left - spaghetti) vs After (right - bundled, clearer)
+:::
+
+---
+
+# Fixed Layout: Spatial
+
+When nodes have geographic meaning
+
+---
+
+## Geographic/Spatial Layouts
+
+**Use case**: When nodes correspond to actual spatial locations
+
+- Nodes positioned by geographic coordinates (latitude/longitude)
+- Edges show connections, flows, or relationships
+
+![](figs/week13/spatial-network.jpeg)
+
+::: notes
+- **Special case of fixed layout**: Position determined by geography
+- **Classic examples**:
+  - Flight networks: Airports at actual locations, edges = routes
+  - Internet topology: Servers/routers at cities, edges = cables
+  - Trade networks: Countries at map positions, edges = trade relationships
+  - Migration flows: Cities/regions at locations, edges = migration paths
+- **Advantages**:
+  - Immediately recognizable (map context)
+  - Can see spatial patterns (regional clusters, long-distance connections)
+  - Familiar to general audiences
+- **Challenges**:
+  - Edge crossings! (many edges = visual mess)
+  - Overlap in dense regions (many airports in small area)
+  - Geographic position may not reflect network structure
+- Next slides: Edge bundling helps with spatial networks!
+:::
+
+---
+
+## Spatial Network Clutter Problem
+
+Example: Flight routes in Europe create visual clutter
+
+![](figs/week13/europe-flights-clutter.jpeg)
+
+::: notes
+- **The problem visualized**: This is a real flight network in Europe
+- Airports positioned at actual locations
+- Every flight is a line → hundreds/thousands of lines
+- Result: Complete visual mess! Can't see anything except "there are many flights"
+- **What's lost?**
+  - Can't identify major hubs clearly
+  - Can't see which routes are busiest
+  - Can't see regional patterns
+  - Individual routes impossible to trace
+- This is a perfect use case for edge bundling (next slide)
+- **Ask students**: "What would you want to see in this visualization? How could we improve it?"
+:::
+
+---
+
+## Edge Bundling for Spatial Networks
+
+Before and after: Edge bundling reveals structure in spatial networks
+
+![](figs/week13/europe-flights-bundled-before.jpeg){width=45%}
+![](figs/week13/europe-flights-bundled-after.jpeg){width=45%}
+
+:::footer
+Created with qGIS Edge Bundling library: <https://github.com/dts-ait/qgis-edge-bundling>
+:::
+
+::: notes
+- **Dramatic improvement!** Compare before (left) vs after (right)
+- **What edge bundling reveals**:
+  - Major travel corridors (thick bundles)
+  - Hub cities (bundles converge)
+  - Regional clusters (local bundles)
+  - Empty/sparse regions
+- **How it works**:
+  - Edges attracted to nearby edges with similar paths
+  - Iterative process similar to force-directed layout
+  - Edges become curves instead of straight lines
+- **Software note**: qGIS plugin available (link in footer)
+  - Also available in Gephi, D3.js, other tools
+- **Trade-off**: Can't trace individual routes anymore
+  - But: Can see overall flow patterns (often more important)
+- **Use case**: When showing aggregate patterns matters more than individual connections
+:::
+
+---
+
+## Example: Bundled Spatial Network
+
+![](figs/week13/spatial-bundled-final.jpeg)
+
+Major flow patterns and hubs become clearly visible
+
+::: notes
+- Another beautiful example of edge bundling on geographic network
+- Notice how bundles converge on major hubs (large cities, major airports)
+- The "highways" of the network become visible
+- This is powerful for:
+  - Transportation planning (where are bottlenecks?)
+  - Network optimization (which routes handle most traffic?)
+  - Communication to stakeholders (visually compelling)
+- **Design note**: Often combine with other encodings
+  - Edge thickness = traffic volume
+  - Color = route type or direction
+  - Node size = hub importance
+:::
+
+---
+
+## Quiz: Fixed Layout Advantages
+
+The main advantage of a fixed layout (over force-directed layout) is that:
+
+- ☐ It leads to less cluttered visual representations
+- ☐ The positioning of the nodes can be used to carry information about relevant data properties
+- ☐ It's faster to compute
+
+::: notes
+- **Interactive moment**: Ask students to vote/think before revealing answer
+- **Answer: Second option** - "positioning can carry information"
+- **Why not the others?**
+  - **Less cluttered?** NO! Fixed layouts can be MORE cluttered
+    - Example: Circular layout with many edges = tons of crossings
+    - Force-directed actually minimizes crossings
+  - **Faster to compute?** YES, but this is not the MAIN advantage
+    - Fixed layouts are O(1) - just place nodes
+    - Force-directed is O(n² × iterations) - expensive
+    - But speed isn't why we choose fixed layouts
+- **The real advantage**: Position encodes meaningful data
+  - Geographic position, temporal position, categorical grouping, hierarchy
+  - Force-directed positions are arbitrary (structure-based, but not data-based)
+- **When to choose fixed**: When node attributes are more important than network structure
+:::
+
+---
+
+# Clutter Reduction Methods
+
+Techniques for handling dense networks
+
+---
+
+## Strategies for Reducing Clutter
+
+When networks are too dense, several techniques can help:
+
+1. **Edge Bundling** (already covered)
+2. **Clustering** - Group similar nodes
+3. **Removing/Hiding Edges** - Show subset
+4. **Drawing Edges on Demand** - Interactive reveal
+5. **Aggregation/Simplification** - Reduce graph complexity
+
+::: notes
+- **The fundamental challenge**: Real networks are often TOO dense to visualize directly
+- Social networks: Thousands of people, millions of connections
+- Web graphs: Billions of pages
+- Biological networks: Tens of thousands of proteins
+- **We need strategies** to make these comprehensible
+- Coming slides: Examples of each technique
+- **Key principle**: Trade some detail for clarity
+- Often combine multiple techniques (bundle + cluster + filter)
+:::
+
+---
+
+## Clutter Reduction: Clustering Nodes
+
+![](figs/week13/clustering-clutter-reduction.jpeg)
+
+Group similar nodes into super-nodes, collapse details
+
+::: notes
+- **Node clustering**: Group related nodes into a single "super-node"
+- **How to group?**
+  - Community detection algorithms (modularity optimization, Louvain, etc.)
+  - Attribute similarity (k-means, hierarchical clustering)
+  - Manual grouping (domain knowledge)
+- **Visual result**:
+  - Instead of 1000 nodes → 10 clusters
+  - Edges between nodes in same cluster → self-loops or hidden
+  - Edges between clusters → inter-cluster edges
+- **Interaction**: Often allow drill-down (click cluster to expand)
+- **Use case**: Hierarchical analysis, understanding large-scale structure before details
+- **Example**: Social network → communities → individuals
+:::
+
+---
+
+## Clutter Reduction: Edge Filtering
+
+![](figs/week13/filtering-before.jpeg)
+![](figs/week13/filtering-after.jpeg)
+
+Show only important edges based on weight, type, or threshold
+
+::: notes
+- **Edge filtering**: Remove or hide less important edges
+- **Filtering strategies**:
+  - **Threshold**: Show edges with weight > X
+  - **Top-k**: Show only strongest k edges per node
+  - **Backbone extraction**: Keep structurally important edges (spanning tree + strong links)
+  - **Type**: Show only certain edge types (in multi-relational networks)
+- **Example shown**: Before (left - all edges) vs After (right - filtered)
+- **Risk**: May remove critical bridges or weak ties
+  - Weak ties can be important (Granovetter's "strength of weak ties")
+- **Best practice**: Make filtering interactive
+  - Slider to adjust threshold
+  - Toggle edge types on/off
+- **Use case**: When edge weights vary greatly, focus on strong connections
+:::
+
+---
+
+## Clutter Reduction: Interactive Edges
+
+![](figs/week13/interactive-edges.jpeg)
+
+Draw edges on demand: Show edges only when user interacts with a node
+
+::: notes
+- **Interactive edge display**: Edges hidden by default, shown on hover/click
+- **Interaction patterns**:
+  - **Hover node**: Show edges connected to that node
+  - **Select node**: Highlight ego network (node + neighbors + connecting edges)
+  - **Click edge**: Show path between two selected nodes
+- **Advantages**:
+  - Clean default view (just nodes)
+  - User controls complexity (show details when needed)
+  - Reduces cognitive load
+- **Disadvantages**:
+  - Can't see overall edge patterns at a glance
+  - Requires active exploration
+  - Not good for static presentations
+- **When to use**: Very dense networks (social networks, co-authorship networks)
+- **Example**: LinkedIn network - show connections only when viewing a profile
+:::
+
+---
+
+## Clutter Reduction: Motif Simplification
+
+![](figs/week13/motif-simplification.jpeg)
+
+Replace common structural patterns (cliques, stars, chains) with simplified glyphs
+
+:::footer
+Dunne, C., & Shneiderman, B. (2013). [*Motif simplification: Improving network visualization readability with fan, connector, and clique glyphs*](https://doi.org/10.1145/2470654.2466444). CHI.
+:::
+
+::: notes
+- **Motif simplification** (Dunne & Shneiderman, 2013): Identify and replace common patterns
+- **Common motifs**:
+  - **Cliques**: Fully connected subgraphs → pie chart or glyph
+  - **Stars**: Hub with many spokes → radial glyph showing spoke count
+  - **Chains**: Linear paths → simplified line
+  - **Bicliques**: Two groups fully connected → bipartite glyph
+- **Visual benefit**: Dramatically reduces visual elements while preserving structure
+- **Example**: 20-node clique = 190 edges → 1 glyph
+- **Interaction**: Click glyph to expand and see details
+- **Limitations**:
+  - Requires motif detection (computational cost)
+  - May hide important structural details
+- **Use case**: Social networks (many cliques), biological networks (pathway motifs)
+:::
+
+---
+
+## Motif Simplification Example
+
+![](figs/week13/motif-before.png){width=45%}
+![](figs/week13/motif-after.jpeg){width=45%}
+
+Before: Complex network with many patterns
+After: Simplified with glyphs for cliques and stars
+
+::: notes
+- **Dramatic difference!** Left (original) vs Right (simplified)
+- **What's been simplified**:
+  - Dense clusters replaced with glyphs
+  - Star patterns (hubs) replaced with radial glyphs
+  - Edge count reduced significantly
+- **What's preserved**:
+  - Overall structure
+  - Connections between motifs
+  - Important pathways
+- **Readability improvement**: Can now see the "skeleton" of the network
+- **Interactivity**: Would need expansion capability to see details within glyphs
+- This is an advanced technique - not always necessary, but powerful for very dense networks
+:::
+
+---
+
+## Summary: Clutter Reduction
+
+![](figs/week13/clutter-summary-1.jpeg)
+![](figs/week13/clutter-summary-2.jpeg)
+
+Multiple techniques can be combined for maximum effectiveness
+
+::: notes
+- **Summary of clutter reduction strategies**:
+  - Edge bundling: Route similar edges together
+  - Clustering: Group nodes hierarchically
+  - Filtering: Show subset of edges/nodes
+  - On-demand: Interactive reveal
+  - Simplification: Replace patterns with glyphs
+- **Best practice**: Combine multiple techniques
+  - Filter + bundle edges
+  - Cluster + interactive expansion
+  - Simplify + on-demand details
+- **Key principle**: Progressive disclosure
+  - Start with overview (simplified)
+  - Allow drill-down (details on demand)
+  - Support zooming between levels
+- **When NOT to simplify**: Small networks (<100 nodes, <500 edges) - just show everything!
+:::
+
+---
+
+# Adjacency Matrices
+
+An alternative to node-link diagrams
+
+---
+
+## Adjacency Matrix Representation
+
+**Concept**: Represent network as a table/grid
+
+- **Rows**: Source nodes
+- **Columns**: Target nodes
+- **Cells**: Presence (or weight) of edges
+
+![](figs/week13/matrix-concept.png)
+
+::: notes
+- **Completely different paradigm** from node-link diagrams
+- **The encoding**:
+  - Each node appears as both a row AND a column
+  - Cell (i,j) represents edge from node i to node j
+  - Cell color/symbol = edge exists (or edge weight)
+- **Visual properties**:
+  - No lines at all! No crossings!
+  - Every node visible (no occlusion)
+  - Fixed space: n×n grid regardless of edge count
+- **Reading the matrix**:
+  - Pick a row (source node)
+  - Look across columns (targets)
+  - Colored cells = edges from that source
+- **Undirected graphs**: Symmetric matrix (cell i,j = cell j,i)
+- **Directed graphs**: Potentially asymmetric matrix
+- Next: Examples and trade-offs
+:::
+
+---
+
+## From Network to Matrix
+
+![](figs/week13/network-to-matrix.jpeg)
+
+Same network, two representations: node-link vs adjacency matrix
+
+::: notes
+- **IMPORTANT SLIDE**: Shows the transformation from familiar node-link to matrix
+- **Left side**: Node-link diagram (what we've been looking at)
+- **Right side**: Same network as adjacency matrix
+- **Walk through the correspondence**:
+  - Each node in left → one row + one column in right
+  - Each edge in left → one filled cell in right
+- **Ask students**: "Can you verify that these show the same network?"
+  - Count nodes: Should match row/column count
+  - Count edges: Should match filled cells
+- **Which is better?** Depends on the task!
+  - Path tracing: Node-link easier
+  - Node degree: Matrix easier (count filled cells in row/column)
+  - Clusters: Depends on ordering (next slides)
+:::
+
+---
+
+## Example: Les Misérables Character Co-occurrence
+
+![](figs/week13/les-miserables-matrix.jpeg)
+
+Matrix showing character interactions in Victor Hugo's novel
+
+::: notes
+- **Classic example**: Character co-occurrence network from Les Misérables
+- **The data**:
+  - Nodes = characters
+  - Edges = appear in same chapter
+  - Edge weight = number of co-occurrences
+- **Matrix encoding**:
+  - Rows/columns = characters (alphabetical? clustered?)
+  - Cell color intensity = co-occurrence frequency
+  - Symmetric (if A appears with B, B appears with A)
+- **What patterns emerge?**
+  - Dark blocks along diagonal = groups of characters who interact frequently
+  - Main character (Valjean) likely has many connections (full row/column)
+  - Isolated characters = sparse rows/columns
+- **Compare to node-link**: This would be a "hairball" as node-link diagram!
+- Matrix makes it easier to see the block structure (communities)
+:::
+
+---
+
+## Matrix Advantages and Disadvantages
+
+**Advantages**:
+- ✓ All nodes visible (no occlusion)
+- ✓ No line crossings (no clutter from edges)
+- ✓ Scalable to denser networks
+- ✓ Easy to see node degree (count filled cells)
+
+**Disadvantages**:
+- ✗ Less familiar/intuitive than node-link
+- ✗ Requires more space (n² cells)
+- ✗ Pattern visibility depends on ordering (needs reordering)
+- ✗ Hard to trace paths (requires scanning)
+
+::: notes
+- **Critical trade-offs** between matrix and node-link representations
+- **When matrices WIN**:
+  - Dense networks (many edges)
+  - When you care about node-level statistics (degree, connections)
+  - When you need to compare multiple networks (same ordering)
+  - When precision matters more than intuition
+- **When node-link WINS**:
+  - Sparse networks (few edges)
+  - When showing paths and connectivity is key
+  - When communicating to general audiences (more intuitive)
+  - When network structure/topology is the focus
+- **User studies** (Henry, Fekete, McGuffin):
+  - Experts are faster with matrices for many tasks
+  - Novices strongly prefer node-link (familiarity)
+  - Task matters: connectivity queries easier with matrices, path queries easier with node-link
+- **The familiarity problem** is real - people find matrices harder initially
+- But for dense graphs, matrices are often the ONLY readable option
+:::
+
+---
+
+## The "Hairball" Problem
+
+![](figs/week13/hairball-problem.jpeg)
+
+Dense networks become unreadable as node-link diagrams
+
+::: notes
+- **"Hairball"**: The technical term for unreadable dense network visualizations!
+- This is what happens when you blindly use node-link diagrams on dense graphs
+- **Problems**:
+  - Can't distinguish individual nodes
+  - Can't trace edges
+  - Can't see any structure
+  - Completely useless for analysis
+- **What CAN you see?**
+  - "There are many nodes and edges" (not useful)
+  - Maybe rough density
+  - Outliers at periphery (if any)
+- **Solutions**:
+  - Switch to matrix representation
+  - Apply clutter reduction (bundling, filtering, clustering)
+  - Use interaction (show subsets, drill-down)
+- **When you see a hairball**: RED FLAG - wrong visualization choice!
+- Ask: "Has anyone seen visualizations like this in papers or presentations?" (Sadly common!)
+:::
+
+---
+
+## Matrix Reordering
+
+**Problem**: Pattern visibility depends critically on row/column order
+
+![](figs/week13/matrix-ordering-random.jpeg)
+![](figs/week13/matrix-ordering-clustered.jpeg)
+
+Different orderings reveal different patterns
+
+::: notes
+- **CRUCIAL INSIGHT**: Matrices can hide or reveal patterns depending on node order!
+- **Left**: Random or alphabetical ordering → no visible patterns
+- **Right**: Clustered ordering → block structure visible
+- **This is analogous to**:
+  - Choosing aspect ratio for line charts (banking to 45°)
+  - Choosing bin size for histograms
+  - Ordering is a critical design parameter!
+- **Ordering strategies**:
+  - **Alphabetical**: Easy to find nodes, ignores structure
+  - **Degree**: Nodes by connection count
+  - **Clustering**: Group similar nodes (hierarchical clustering, spectral clustering)
+  - **Similarity**: Seriation algorithms (minimize distance between connected nodes)
+  - **Domain-specific**: By time, category, importance, etc.
+- **NP-hard problem**: Finding optimal ordering is computationally expensive
+- **Tools**: Many graph vis tools have automatic reordering (Gephi, Cytoscape, etc.)
+- **Interactive**: Often useful to let users try different orderings
+:::
+
+---
+
+## Directed Graphs in Matrices
+
+Matrices can naturally show direction with elements above/below the diagonal
+
+![](figs/week13/directed-matrix-concept.png)
+
+- **Above diagonal**: Edges from row to column (one direction)
+- **Below diagonal**: Edges from column to row (opposite direction)
+- **Diagonal**: Self-loops
+
+::: notes
+- **Directed graphs** (asymmetric relationships) work naturally with matrices
+- **The encoding**:
+  - Cell (i,j) = edge from node i TO node j
+  - Cell (j,i) = edge from node j TO node i
+  - If different: directed edge
+  - If symmetric: bidirectional or undirected edge
+- **Visual reading**:
+  - Elements above diagonal = one direction
+  - Elements below diagonal = other direction
+  - Asymmetry is immediately visible
+- **Advantages over node-link for directed graphs**:
+  - No overlapping arrows
+  - Easy to see reciprocity (if both (i,j) and (j,i) filled)
+  - Can use different colors for directions
+- **Example**: Email network
+  - (Alice, Bob) = Alice sent to Bob
+  - (Bob, Alice) = Bob sent to Alice
+  - Can see who communicates with whom
+:::
+
+---
+
+## Undirected Graph Matrix
+
+![](figs/week13/undirected-matrix.png)
+
+Symmetric matrix: Redundant information above and below diagonal
+
+**Example labels**:
+- Nodes: A, B, C, D
+- Matrix shows symmetric relationships
+
+::: notes
+- **Undirected graphs**: Edges have no direction (friendship, collaboration, similarity)
+- **Matrix property**: Perfectly symmetric
+  - Cell (i,j) = Cell (j,i) always
+  - Diagonal is the mirror line
+- **Visual consequence**: Half the matrix is redundant!
+  - Could show only lower triangle
+  - Or: Use upper/lower for different encodings (coming in directed graph slide)
+- **Example shown**: Simple 4-node undirected network
+  - If A connects to B, then B connects to A
+  - Matrix is symmetric across diagonal
+:::
+
+---
+
+## Directed Graph Matrix
+
+![](figs/week13/directed-matrix.png)
+
+Asymmetric matrix: Rows = FROM, Columns = TO
+
+**Example labels**:
+- FROM (rows): Source nodes
+- TO (columns): Target nodes
+
+::: notes
+- **Directed graphs**: Edges have direction (follows, cites, sends to)
+- **Matrix is potentially asymmetric**:
+  - (A,B) can be filled while (B,A) is empty
+  - Shows directed relationships clearly
+- **Reading strategy**:
+  - Pick a row (source): "Who does this node send edges TO?"
+  - Pick a column (target): "Who sends edges TO this node?"
+- **Visual patterns**:
+  - Full row = high out-degree (sends to many)
+  - Full column = high in-degree (receives from many)
+  - Reciprocal edges = symmetric cells
+- **Examples**:
+  - Twitter: (Alice, Bob) = Alice follows Bob
+  - Citations: (Paper1, Paper2) = Paper1 cites Paper2
+  - Transactions: (Buyer, Seller) = Transaction flow
+:::
+
+---
+
+## Alternative: Parallel Axes for Directed Graphs
+
+![](figs/week13/parallel-axes.png)
+
+FROM (left axis) connects to TO (right axis) with lines
+
+::: notes
+- **Alternative representation**: Parallel coordinates / arc diagram for directed graphs
+- **Encoding**:
+  - Left axis: FROM nodes
+  - Right axis: TO nodes (same nodes, same order)
+  - Lines connect sources to targets
+- **Advantages**:
+  - Very compact
+  - Easy to see out-degree (lines emanating from left)
+  - Easy to see in-degree (lines arriving at right)
+  - Works well for bipartite-like patterns
+- **Disadvantages**:
+  - Edge crossings (like node-link)
+  - Hard to trace individual edges in dense networks
+  - Less familiar than matrix
+- **When to use**:
+  - Moderate-sized directed graphs
+  - When emphasizing flow from left to right
+  - When in/out degree is important
+- **Example**: Task dependencies, food webs, citation flows
+:::
+
+---
+
+# Part 2: Trees (Hierarchies)
+
+Visualizing hierarchical network structures
+
+::: notes
+- **TRANSITION**: We've covered general networks - now special case: trees
+- **What's a tree?**: A network with hierarchical structure (no cycles)
+- **Why separate section?**: Trees have special properties that enable specialized, more efficient visualizations
+- **Coming up**:
+  - What makes trees special
+  - Node-link tree visualizations
+  - Space-filling approaches (treemaps)
+  - Special tree types (dendrograms, decision trees)
+:::
+
+---
+
+## What Are Trees?
+
+**Tree**: A special type of network where nodes are organized in a hierarchical structure
+
+**Properties**:
+- One **root node** (top of hierarchy)
+- **Parent-child relationships** (directed edges)
+- No cycles (unique path between any two nodes)
+- **Leaves**: Nodes with no children
+
+![](figs/week13/tree-structure.jpeg)
+
+::: notes
+- **Trees are everywhere!** One of the most fundamental data structures
+- **Mathematical definition**: Connected acyclic graph
+- **Key components**:
+  - **Root**: The top node (unless showing a forest - multiple trees)
+  - **Parent/Child**: Directed hierarchical relationship
+  - **Siblings**: Nodes with same parent
+  - **Leaves/Terminal nodes**: No children (end of branches)
+  - **Internal nodes**: Have children
+  - **Depth/Level**: Distance from root
+  - **Height**: Maximum depth
+- **Why important?**: Hierarchy is a natural way humans organize information
+- **Examples coming**: File systems, org charts, taxonomies, phylogenies, decision trees
+:::
+
+---
+
+## Real-World Hierarchical Structures
+
+Many real-world objects and phenomena are naturally hierarchical:
+
+- **File systems**: Folders contain subfolders and files
+- **Evolutionary trees**: Species descended from common ancestors
+- **Geography and time**: Countries → States → Cities → Neighborhoods
+- **Organizational structures**: Company → Divisions → Teams → Individuals
+- **Language structures**: Sentences → Clauses → Phrases → Words
+- **Taxonomies**: Kingdom → Phylum → Class → Order → Family → Genus → Species
+
+::: notes
+- **The ubiquity of hierarchies**: Once you see it, you see it everywhere!
+- **File systems**: Every computer user interacts with this daily
+  - Root → folders → subfolders → files
+  - Perfect tree structure (though symlinks can break it)
+- **Evolutionary trees (phylogenies)**: All life on Earth forms a tree
+  - Root = common ancestor (LUCA - last universal common ancestor)
+  - Branches = speciation events
+  - Leaves = current species (or extinct species)
+- **Geographic/temporal hierarchies**: Natural nesting
+  - Year → Quarter → Month → Week → Day → Hour
+  - Country → State → County → City → Neighborhood
+- **Organizations**: Reporting structures (though matrix orgs violate tree structure)
+- **Cognitive science insight**: Hierarchies reduce cognitive load
+  - Can't keep 10,000 items in working memory
+  - But can remember 7 ± 2 categories, each with subcategories
+- **This motivates specialized visualization techniques** optimized for trees
+:::
+
+---
+
+## Tree Visualization Approaches
+
+Two fundamental families:
+
+1. **Node-Link Trees**
+   - Hierarchical layouts
+   - Radial layouts
+   - Tree lists
+
+2. **Containment/Space-Filling**
+   - Treemaps
+   - Sunburst/Icicle plots
+
+![](figs/week13/node-link-tree.jpeg){width=45%}
+![](figs/week13/treemap-containment.jpeg){width=45%}
+
+::: notes
+- **Two fundamentally different approaches** for visualizing hierarchies
+- **Node-link trees**: Extension of node-link diagrams, optimized for hierarchies
+  - Explicit parent-child connections (lines)
+  - Structure is very visible
+  - Position shows hierarchy level
+  - Familiar, intuitive
+  - Limitation: Doesn't scale well (exponential space growth)
+- **Containment/Space-filling**: Entirely different paradigm
+  - Nesting shows hierarchy (children inside parents)
+  - No explicit edges
+  - Space-efficient (fills available area)
+  - Can show quantitative data (area = size)
+  - Limitation: Harder to see hierarchical structure
+- **Trade-offs preview**:
+  - Node-link: Structure clear, doesn't scale
+  - Containment: Scales well, structure harder to perceive
+- Coming sections: Deep dive into each approach
+:::
+
+---
+
+# Node-Link Trees
+
+Traditional hierarchical visualizations
+
+---
+
+## Example: Filesystem Structure
+
+![](figs/week13/filesystem-tree.jpeg)
+
+Classic top-down tree layout showing directory hierarchy
+
+::: notes
+- **Most familiar tree visualization**: File system browser
+- **Layout**:
+  - Root at top
+  - Children below parents
+  - Siblings at same level horizontally
+- **Visual encoding**:
+  - Folders = internal nodes (have children)
+  - Files = leaf nodes (no children)
+  - Often: icons distinguish types
+- **Interaction**:
+  - Expand/collapse nodes (triangle/+/- icons)
+  - Shows subset of tree on demand
+- **Why this layout?**:
+  - Matches mental model (hierarchy flows downward)
+  - Easy to see depth (vertical position)
+  - Familiar from org charts, family trees, biological phylogenies
+- **Limitation**: Wide trees need lots of horizontal space
+:::
+
+---
+
+## Example: Sentence Parsing Tree
+
+![](figs/week13/sentence-parsing-tree.jpeg)
+
+Linguistic structure: Grammar hierarchy from sentence to words
+
+::: notes
+- **Linguistic tree**: Sentence broken down by grammatical structure
+- **Hierarchy**:
+  - Root: Sentence (S)
+  - Level 1: Noun Phrase (NP), Verb Phrase (VP)
+  - Level 2: Determiners, Nouns, Verbs, Adjectives
+  - Leaves: Individual words
+- **Why visualize as tree?**:
+  - Shows grammatical relationships
+  - Reveals sentence structure
+  - Used in natural language processing (parsing)
+- **Layout**: Top-down, balanced
+- **Application**: Linguistics, NLP, language teaching
+- Notice: Same layout style as file system, but different domain
+- Trees are universal structure that appears across domains!
+:::
+
+---
+
+## Example: Phylogenetic Trees
+
+![](figs/week13/phylogenetic-tree.jpeg)
+
+Evolutionary relationships: Species descended from common ancestors
+
+::: notes
+- **Phylogenetic trees**: Show evolutionary history
+- **Structure**:
+  - Root: Common ancestor
+  - Branches: Speciation events (one species splits into two)
+  - Branch length: Evolutionary time or genetic distance
+  - Leaves: Current (or extinct) species
+- **Reading the tree**:
+  - Closer nodes = more recent common ancestor = more closely related
+  - Path length = evolutionary distance
+  - Branching pattern = evolutionary history
+- **How are these created?**:
+  - DNA/protein sequence comparison
+  - Morphological features
+  - Computational phylogenetics algorithms
+- **Applications**:
+  - Biology (understanding evolution)
+  - Medicine (tracking disease origins, antibiotic resistance)
+  - Conservation (which species are most distinct?)
+- **Layout note**: Often horizontal (time flows left to right)
+:::
+
+---
+
+## Example: Hierarchical Lists
+
+![](figs/week13/hierarchical-list.jpeg)
+
+Indented text representation of tree structure
+
+::: notes
+- **Hierarchical list**: Text-based tree representation
+- **Encoding**:
+  - Indentation = depth in hierarchy
+  - Expand/collapse controls (▶/▼)
+  - No explicit lines (indentation implies structure)
+- **Advantages**:
+  - Very compact
+  - Familiar (used in file browsers, outlines, table of contents)
+  - Works well in constrained vertical space
+  - Easy to scan
+- **Disadvantages**:
+  - Deep nesting hard to follow (lots of indentation)
+  - Harder to see overall structure
+  - Siblings far apart vertically
+- **When to use**:
+  - Limited screen space
+  - Deep hierarchies (many levels)
+  - When text labels are primary content
+- **Examples**: File explorers, navigation menus, document outlines
+- This is the most space-efficient node-link representation
+:::
+
+---
+
+## Example: Radial Layout
+
+![](figs/week13/radial-tree-layout.jpeg)
+
+Root at center, children arranged radially, concentric circles = depth
+
+::: notes
+- **Radial tree layout**: Alternative to top-down
+- **Layout principle**:
+  - Root at center
+  - Children arranged in circle/arc around parent
+  - Each level = concentric ring (distance from center = depth)
+  - Full 360° used for branching
+- **Advantages**:
+  - More space-efficient than top-down (uses 2D space radially)
+  - Aesthetically pleasing (symmetrical)
+  - No privileged direction (democratic)
+  - Can fit larger trees in same space
+- **Disadvantages**:
+  - Harder to read (unfamiliar)
+  - Text labeling difficult (radial text hard to read)
+  - Depth harder to judge than in top-down layout
+- **When to use**:
+  - Large, balanced trees
+  - When aesthetics matter (presentations, posters)
+  - When you want to emphasize the root
+- **Examples**: Phylogenetic trees, organizational structures, software class hierarchies
+:::
+
+---
+
+## Node-Link Tree Limitations
+
+**Issues with node-link trees**:
+
+1. **Scalability**: Exponential 1D growth
+   - Width grows exponentially with depth (2^depth for binary trees)
+   - Large trees require enormous horizontal/radial space
+   - Deep trees create very long paths
+
+2. **Labeling**: Difficult with many nodes
+   - Text labels overlap
+   - Small font sizes become unreadable
+
+3. **Encoding Information**: Limited visual channels
+   - Position used for structure
+   - Size constrained by layout
+   - Hard to encode quantitative node attributes
+
+::: notes
+- **These limitations motivate alternative approaches** (treemaps, coming soon)
+- **Scalability problem**:
+  - Binary tree depth 10 = 1024 leaf nodes width
+  - Depth 20 = 1 million leaves! Impossible to show
+  - Even with collapse/expand, overview is limited
+- **Labeling problem**:
+  - If nodes are small → labels overlap
+  - If nodes are large → tree doesn't fit
+  - Radial layouts make text even harder (rotated labels)
+- **Encoding problem**:
+  - Position is locked by tree structure
+  - Size changes affect layout (bigger nodes → wider tree)
+  - Color works, but limited channels available
+  - Hard to show quantitative attributes like "size of folder" or "importance of node"
+- **This is why space-filling approaches were invented** (Treemaps - coming up!)
+- For small-medium trees (<100 nodes), node-link is fine
+- For large trees or when encoding quantitative data, need alternatives
+:::
+
+---
+
+# Special Tree Types
+
+Dendrograms, decision trees, and flow charts
+
+---
+
+## Dendrograms
+
+**Definition**: A tree representing hierarchical clustering results
+
+![](figs/week13/dendrogram-example.jpeg)
+
+- Binary tree structure
+- Branch height = dissimilarity/distance at merge
+- Used to visualize clustering results
+
+:::footer
+Examples commonly seen in biology, data mining, and statistics
+:::
+
+::: notes
+- **Dendrogram**: Specific type of tree from hierarchical clustering
+- **What is hierarchical clustering?**
+  - Unsupervised ML algorithm
+  - Groups similar items into clusters
+  - Builds hierarchy: items → small clusters → larger clusters → all data
+- **Reading the dendrogram**:
+  - Leaves (bottom) = individual data points
+  - Y-axis height = distance/dissimilarity at merge
+  - Cutting at height threshold = defines clusters
+  - Example: Cut at height 0.5 → get X clusters
+- **Visual features**:
+  - Binary tree (each merge joins exactly 2 clusters)
+  - Branch height meaningful (unlike other trees where it's just for layout)
+- **Applications**:
+  - Gene expression analysis (cluster genes by expression pattern)
+  - Customer segmentation (cluster customers by behavior)
+  - Document clustering (cluster by topic similarity)
+- Next slides: How hierarchical clustering works (ANIMATION NEEDED!)
+:::
+
+---
+
+## Hierarchical Clustering
+
+**Algorithm**: Agglomerative (bottom-up) clustering
+
+1. Start with each point as its own cluster
+2. Find the two closest clusters
+3. Merge them
+4. Repeat until one cluster remains
+
+The dendrogram records this merge history
+
+::: notes
+- **Agglomerative hierarchical clustering**: Bottom-up approach
+- **Algorithm steps** (will animate in next slides):
+  1. **Initialize**: Each data point is its own cluster (N clusters)
+  2. **Find closest pair**: Compute distance between all pairs, find minimum
+  3. **Merge**: Combine closest pair into new cluster (N-1 clusters)
+  4. **Update distances**: Recompute distances to new cluster
+  5. **Repeat**: Until only 1 cluster remains
+- **Distance metrics**:
+  - Between points: Euclidean, Manhattan, cosine, etc.
+  - Between clusters: Single-linkage (min), complete-linkage (max), average-linkage
+- **Result**: Binary tree (dendrogram) showing merge history
+- **Visualization value**: Shows data structure at multiple granularities
+  - Fine-grained (many small clusters) vs coarse (few large clusters)
+  - Cut dendrogram at different heights → different # of clusters
+- **NEXT SLIDES**: Animated demonstration (currently placeholders - NEED TO CREATE!)
+:::
+
+---
+
+## Hierarchical Clustering Animation
+
+**[ANIMATION SLIDES 89-95 NEED TO BE CREATED]**
+
+Step-by-step visualization showing:
+- Initial points in 2D space
+- Computing pairwise distances
+- Merging closest clusters iteratively
+- Building the dendrogram alongside
+
+::: notes
+**TO DO**: Create 6-7 slides showing:
+
+1. **Slide 89**: Scatter plot with 6-8 points labeled A-H
+2. **Slide 90**: Show distance matrix, highlight minimum distance
+3. **Slide 91**: Merge closest pair (e.g., A and B), show mini-dendrogram
+4. **Slide 92**: Updated scatter (7 clusters), find next closest pair
+5. **Slide 93**: Continue merging, dendrogram grows
+6. **Slide 94**: Continue merging, dendrogram grows more
+7. **Slide 95**: Final dendrogram showing complete hierarchy
+
+**Teaching notes for animation**:
+- Use simple 2D data (6-8 points in scatter plot)
+- Show dendrogram building from bottom-up in parallel with merges
+- Use colors to track clusters
+- Annotate with distances at each merge
+- Make sure dendrogram heights match actual distances (not just aesthetic)
+
+**IMPORTANT**: This is currently missing from the slides! Needs to be created before lecture.
+:::
+
+---
+
+## Dendrogram with Heatmap
+
+![](figs/week13/dendrogram-heatmap.jpeg)
+
+Dendrograms often paired with heatmaps for multivariate data
+
+::: notes
+- **Powerful combination**: Dendrogram + heatmap
+- **Layout**:
+  - Dendrogram on side (often left or top)
+  - Heatmap shows original data matrix
+  - Rows/columns ordered by dendrogram
+- **What this reveals**:
+  - Dendrogram: Hierarchical relationships
+  - Heatmap: Original attribute values
+  - Together: Clusters with similar patterns
+- **Common applications**:
+  - **Gene expression**: Genes (rows) × conditions (columns)
+    - Dendrogram clusters genes by expression pattern
+    - Heatmap shows expression levels (red=high, blue=low)
+  - **Customer analytics**: Customers (rows) × behaviors (columns)
+  - **Survey data**: Respondents (rows) × questions (columns)
+- **Reading strategy**:
+  1. Look at dendrogram to identify major clusters
+  2. Look at heatmap rows within clusters to see common patterns
+  3. Compare patterns across clusters
+- **Design note**: Often show dendrograms on BOTH axes (row and column clustering)
+- This is standard visualization in biology, but useful across many domains
+:::
+
+---
+
+## Dendrograms for Distance-Based Clustering
+
+![](figs/week13/dendrogram-distance-based.jpeg)
+
+Useful for grouping any objects with a defined distance/similarity function
+
+::: notes
+- **Key insight**: Hierarchical clustering works on ANY data where you can define distance/similarity
+- **Not just numerical data!**
+  - Text documents (cosine similarity, edit distance)
+  - Images (perceptual similarity, feature vectors)
+  - Networks (graph edit distance)
+  - Time series (dynamic time warping)
+  - Categorical data (Jaccard distance, Hamming distance)
+  - DNA sequences (alignment score)
+- **The only requirement**: Pairwise distance function
+- **Applications**:
+  - Genomics: Cluster species by genetic similarity → phylogenetic trees
+  - Information retrieval: Cluster documents by content
+  - Recommendation: Cluster users/items by behavior
+  - Computer vision: Cluster images by visual features
+- **Dendrogram advantages**:
+  - Shows hierarchy (unlike k-means which gives flat clusters)
+  - Don't need to specify number of clusters upfront
+  - Provides overview of data structure
+- **Limitation**: Computationally expensive (O(n³) for naive algorithm, O(n²log n) optimized)
+:::
+
+---
+
+# Decision Trees
+
+Trees representing decision processes
+
+---
+
+## Decision Trees: Concept
+
+**Each node represents a decision between two (or more) options**
+
+- Internal nodes: Decision points (tests on attributes)
+- Branches: Outcomes of tests
+- Leaves: Final decisions/classifications
+
+::: notes
+- **Decision trees**: Trees where you traverse from root to leaf by making decisions
+- **Two main contexts**:
+  1. **Human decision making**: Flow charts for processes
+  2. **Machine learning**: Learned classification/regression models
+- **Structure**:
+  - Root: Start here
+  - Internal nodes: "If X, go left; else go right"
+  - Leaves: Final outcome/prediction
+- **Reading a decision tree**:
+  - Start at root
+  - Follow branches based on your data
+  - Arrive at leaf → that's your answer
+- **Why visualize as trees?**:
+  - Makes decision process transparent
+  - Easy to understand (interpretable ML model)
+  - Can trace why a particular decision was made
+- Coming: Examples from journalism and ML
+:::
+
+---
+
+## Example: NYT 512 Paths To The White House
+
+![](figs/week13/nyt-decision-tree.jpeg)
+
+Interactive decision tree showing election scenarios
+
+::: notes
+- **Famous visualization**: New York Times 2012 election
+- **The question**: "What combination of swing state wins leads to victory?"
+- **Tree structure**:
+  - Each node: "Who wins state X?"
+  - Branches: Obama wins vs Romney wins
+  - Leaves: Final electoral college outcome (Obama or Romney wins)
+  - Title "512 paths": 2^9 = 512 (9 swing states, 2 outcomes each)
+- **Visual design**:
+  - Color: Red (Romney) vs Blue (Obama)
+  - Width: Probability of path
+  - Interactive: Hover to see specific scenarios
+- **Impact**: Hugely popular, helped people understand election uncertainty
+- **Design lesson**: Trees are great for showing branching scenarios
+- This is manual/analytical decision tree (not ML-learned)
+:::
+
+---
+
+## Decision Trees in Machine Learning
+
+Decision trees can be learned automatically from labeled data
+
+![](figs/week13/ml-decision-tree.jpeg)
+
+::: notes
+- **ML decision trees**: Algorithm learns decision rules from training data
+- **Training process**:
+  1. Start with all data at root
+  2. Find best attribute to split on (maximize information gain)
+  3. Create branches for each outcome
+  4. Recursively repeat for each branch
+  5. Stop when: Pure nodes (all same class) or max depth or min samples
+- **Example shown**: Classic decision tree (might be iris classification or similar)
+- **Why decision trees are popular in ML**:
+  - **Interpretable**: Can see exactly why model made prediction
+  - **No data preprocessing**: Handles mixed types, missing values
+  - **Non-linear**: Captures complex decision boundaries
+  - **Fast prediction**: Just traverse tree (O(log n))
+- **Limitations**:
+  - Can overfit (too complex trees)
+  - Unstable (small data changes → different tree)
+  - Not always most accurate (vs neural nets, ensembles)
+- **Modern use**: Random Forests (ensemble of trees) and Gradient Boosting (XGBoost, LightGBM)
+- **Visualization value**: Unlike neural nets, you can SEE the model!
+:::
+
+---
+
+## Decision Tree Visualization Value
+
+![](figs/week13/decision-tree-interpretability.jpeg)
+
+Visualizing decision trees enables model interpretability and debugging
+
+::: notes
+- **Why visualize ML decision trees?**
+  1. **Interpretability**: "Why did the model predict X?"
+  2. **Debugging**: Find where model makes mistakes
+  3. **Trust**: Stakeholders can see logic
+  4. **Feature importance**: Which attributes matter most? (top of tree = most important)
+  5. **Bias detection**: Check for unfair decision rules
+- **Real-world example**:
+  - Medical diagnosis: Doctors want to see reasoning
+  - Loan approval: Regulators require explainability
+  - Criminal justice: Decisions must be transparent
+- **Visualization challenges**:
+  - Trees can be HUGE (thousands of nodes)
+  - Need interaction: Collapse/expand, search, path highlighting
+  - Need to show: Split conditions, class distributions, confidence
+- **Tools**: scikit-learn, R (rpart.plot), specialized tools (dtreeviz)
+- **Trend**: Explainable AI (XAI) movement emphasizes visualizing model internals
+- Decision trees are inherently visualizable → one reason they're still widely used!
+:::
+
+---
+
+# Space-Partitioning and Containment
+
+Treemaps and related approaches
+
+---
+
+## Containment and Partitioning Concept
+
+**Alternative to node-link**: Use nested containment to show hierarchy
+
+- Children are **contained inside** parents
+- Space is **partitioned** among siblings
+- No explicit edges needed
+
+::: notes
+- **Fundamental shift**: From connections to containment
+- **The idea**:
+  - Parent = outer boundary
+  - Children = regions inside parent
+  - Siblings = adjacent regions (partition parent's space)
+- **No lines!** Hierarchy shown by nesting, not by edges
+- **Why this works?**
+  - Spatial containment is a strong perceptual metaphor (boxes within boxes)
+  - Very space-efficient (every pixel used)
+  - Can encode quantitative data (area of region)
+- **Coming**: Treemaps (most famous space-filling tree visualization)
+:::
+
+---
+
+## Treemaps
+
+**Space-filling visualization** invented for visualizing disk usage
+
+![](figs/week13/treemap-concept.png)
+
+- Area = quantitative value (file size, sales, count)
+- Color = category or secondary metric
+- Nesting = hierarchy
+
+::: notes
+- **Treemaps**: One of the most important visualization innovations of the 1990s
+- **Problem that motivated them**: "My hard disk is full - which folders are using the space?"
+- **Traditional solutions** (node-link trees) don't show SIZE
+- **Treemap solution**:
+  - Rectangle area = folder/file size
+  - Nested rectangles = folder hierarchy
+  - Can see at a glance which folders are large
+- **Visual encoding**:
+  - **Area**: Primary quantitative attribute (size, value, count)
+  - **Color**: Category (file type) or secondary quantitative (age, growth rate)
+  - **Nesting**: Hierarchical structure
+- **Immediate value**:
+  - "Oh! My Photos folder is 80% of my disk!"
+  - Actionable insight in seconds
+- Coming: How treemaps are constructed, variants, examples
+:::
+
+---
+
+## Treemap Origin Story
+
+![](figs/week13/shneiderman-photo.jpeg)
+
+*"During 1990, in response to the common problem of a filled hard disk, I became obsessed with the idea of producing a compact visualization of directory tree structures."*
+— Ben Shneiderman
+
+:::footer
+Shneiderman, B. (1992). [*Tree visualization with tree-maps: 2-d space-filling approach*](https://doi.org/10.1145/102377.115768). ACM TOG, 11(1), 92-99.
+:::
+
+::: notes
+- **Ben Shneiderman's story** (University of Maryland, 1990)
+- **The problem**: Hard disk full, needed to find what was taking space
+- **Existing solutions**:
+  - File listings: No visual overview
+  - Tree diagrams: Don't show size
+  - `du` command: Text output, hard to parse
+- **His insight**: Use 2D space to show BOTH hierarchy AND size
+- **The innovation**: Recursive space-filling algorithm
+- **Impact**:
+  - Widely adopted (WinDirStat, DaisyDisk, many OS utilities)
+  - Generalized beyond disk usage (news, finance, dashboards)
+  - Sparked research on space-filling visualizations
+- **Academic impact**: 5000+ citations, ACM CHI Academy member
+- **Design lesson**: Great visualizations often come from solving personal frustrations!
+- "Scratching your own itch" → innovations
+:::
+
+---
+
+## Treemap Encoding Channels
+
+**Three primary visual channels**:
+
+- **Area**: Quantitative value (size, revenue, count, importance)
+- **Color**: Category (type) OR quantitative (growth, intensity)
+- **Nesting**: Hierarchical structure (parent-child relationships)
+
+::: notes
+- **Area is the KEY encoding** in treemaps
+  - Directly proportional to quantitative value
+  - Sum of children = parent area (conservation property)
+  - Perceptual note: Area harder to judge than length, but good enough for overview
+- **Color has two uses**:
+  - **Categorical**: File type (blue=docs, green=images, red=videos)
+  - **Quantitative**: Secondary metric (red=high growth, blue=decline)
+  - Can't use both! Choose based on your question
+- **Nesting shows hierarchy**:
+  - Rectangle inside rectangle = parent-child
+  - Border/outline separates levels
+  - Often use color intensity: Darker = deeper levels
+- **What's NOT encoded**:
+  - Position: Arbitrary (depends on algorithm)
+  - Order: Siblings can be arranged various ways
+- **Trade-off**: Structure less clear than node-link, but quantitative data more visible
+:::
+
+---
+
+## Treemap Example: File System
+
+![](figs/week13/treemap-filesystem.jpeg)
+
+Each rectangle = file or folder, area = size, color = file type
+
+::: notes
+- **Classic treemap application**: Visualizing disk usage
+- **How to read this**:
+  - Large rectangles = large files/folders
+  - Small rectangles = small files/folders
+  - Nested rectangles = folder hierarchy
+  - Colors = file types (or other categories)
+- **Insights at a glance**:
+  - "Which folders are consuming the most space?" (largest rectangles)
+  - "Where can I free up space?" (delete large items)
+  - "What types of files dominate?" (color distribution)
+- **Interaction**:
+  - Click to zoom into folder
+  - Hover to see exact size
+  - Right-click to delete/move
+- **Software examples**:
+  - WinDirStat (Windows)
+  - DaisyDisk (Mac)
+  - Baobab (Linux)
+  - Many cloud storage services now use treemaps
+:::
+
+---
+
+## Treemap Example: Broader Applications
+
+![](figs/week13/treemap-large-scale.jpeg)
+
+Treemaps scale to large hierarchies with thousands of nodes
+
+::: notes
+- **Scalability is a KEY advantage** of treemaps over node-link diagrams
+- **How many nodes can treemaps show?**
+  - Node-link: ~100 nodes before clutter
+  - Treemap: 1000s of nodes (limited by screen resolution)
+- **Applications beyond file systems**:
+  - **Business**: Budget allocation, sales by region/product, org headcount
+  - **News**: Breaking news by topic/source (Newsmap)
+  - **Finance**: Stock market performance by sector (Market Maps)
+  - **Sports**: Team statistics, player performance
+  - **Web analytics**: Page views by section, user engagement
+- **Why scalable?**
+  - No edges to clutter
+  - Every pixel used efficiently
+  - Zooming/drilling down enables exploration
+- **Example shown**: Might be Linux kernel source code, showing module sizes
+- **Perception research**: Treemaps are effective for magnitude comparisons and finding outliers
+:::
+
+---
+
+## Treemap with Categorical Color
+
+![](figs/week13/linux-kernel-treemap.jpeg)
+
+**Linux Kernel source code**:
+- Source files: yellow
+- Header files: pink
+- Text files: dark blue
+- Makefiles: light blue
+- Shell scripts: red
+- Images: green
+- Non-registered suffixes: grey
+
+::: notes
+- **Beautiful example**: Linux kernel visualized as treemap
+- **Dual encoding**:
+  - **Area**: File size (lines of code or bytes)
+  - **Color**: File type (7 categories)
+- **Insights visible**:
+  - "What types of files dominate?" (color distribution)
+  - "Where are the large files?" (big rectangles)
+  - "How is code organized?" (nesting shows directory structure)
+- **Interactive use**:
+  - Zoom into kernel subsystems (drivers, core, arch)
+  - Find specific files
+  - Track code size over versions
+- **Design choices**:
+  - Color palette: Distinct colors for each type
+  - Borders: Separate sibling files
+  - Labels: Only shown when rectangle is large enough
+- **Software development use cases**:
+  - Find large files to optimize
+  - Understand codebase structure
+  - Track technical debt (e.g., color = code age or complexity)
+- **General lesson**: Treemaps work when you have hierarchy + size + category
+:::
+
+---
+
+# Treemap Layout Algorithms
+
+Different algorithms optimize different properties
+
+---
+
+## Problem: Slice-and-Dice Layout
+
+**Original treemap algorithm**: Alternate horizontal and vertical splits
+
+![](figs/week13/slice-and-dice-problem.png)
+
+**Problem**: Creates thin, elongated rectangles with extreme aspect ratios
+
+::: notes
+- **Slice-and-Dice**: The original treemap algorithm (Shneiderman 1991)
+- **How it works**:
+  - Level 0 (root): Divide horizontally (vertical slices)
+  - Level 1: Divide vertically (horizontal slices)
+  - Level 2: Divide horizontally again
+  - Alternate at each level
+- **Advantage**: Very simple, stable (same data → same layout)
+- **Major problem**: Aspect ratios!
+  - If siblings have different sizes, get very thin rectangles
+  - Example: 1 large file (99%) + many tiny files (1% total)
+  - Tiny files become thin slivers (unreadable)
+- **Perceptual issue**: Hard to compare areas with different aspect ratios
+  - Is a 100×1 rectangle bigger than a 5×15 rectangle? (Both area=100, but hard to judge!)
+  - Humans are bad at area estimation, especially for elongated shapes
+- This limitation motivated better algorithms → Squarified Treemaps (next!)
+:::
+
+---
+
+## Aspect Ratio and Area Perception
+
+**Key perceptual finding**: Comparing areas is harder when rectangles have very different aspect ratios
+
+- Thin, elongated rectangles are difficult to judge
+- Squares are easiest to compare accurately
+- Target: Keep aspect ratios close to 1:1
+
+::: notes
+- **Perceptual research** (Kong et al., 2010; Bederson et al., 2002):
+  - People are better at judging areas of squares than elongated rectangles
+  - Extreme aspect ratios (>5:1) lead to significant errors
+  - **Why?**:
+    - Thin rectangles look like "lines" (1D) rather than "areas" (2D)
+    - Hard to mentally compute: "Is 100×2 bigger than 30×8?"
+- **Implication for treemaps**:
+  - Aim for aspect ratios close to 1:1 (square-like)
+  - At minimum, avoid aspect ratios >4:1 or <1:4
+- **This insight led to**: Squarified treemap algorithm (Bruls et al., 2000)
+- **Trade-off**: Squarified layouts are better perceptually but less stable (layout changes with data updates)
+:::
+
+---
+
+## Squarified Treemaps
+
+**Algorithm**: Optimize aspect ratios to be closer to 1:1 (more square-like)
+
+![](figs/week13/squarified-treemap.jpeg)
+
+Result: More readable rectangles, easier area comparisons
+
+:::footer
+Bruls, M., Huizing, K., & Van Wijk, J. J. (2000). [*Squarified treemaps*](https://doi.org/10.1007/978-3-7091-6783-0_4). In Data Visualization 2000, Springer.
+:::
+
+::: notes
+- **Squarified treemaps** (Bruls et al., 2000): Optimize for aspect ratios
+- **Algorithm approach**:
+  - Greedy algorithm: Add rectangles one at a time
+  - Try horizontal and vertical layouts
+  - Choose layout that minimizes worst aspect ratio
+  - **NOT globally optimal**, but good enough and fast
+- **Result**: Rectangles closer to squares
+- **Comparison to slice-and-dice**:
+  - Slice-and-dice: Can have extreme aspect ratios (10:1, 100:1)
+  - Squarified: Typically keeps aspect ratios <4:1
+- **Advantages**:
+  - Better perceptual accuracy
+  - Easier to read labels (squares fit text better)
+  - More aesthetically pleasing
+- **Disadvantages**:
+  - **Unstable**: Small data changes → completely different layout
+  - **Harder to track**: Can't compare two treemaps if layout changes
+  - Slower to compute (though still fast enough for interactive use)
+- **When to use**: Single static view or when layout stability doesn't matter
+:::
+
+---
+
+## Squarified Algorithm Illustration
+
+![](figs/week13/squarified-algorithm-1.jpeg)
+![](figs/week13/squarified-algorithm-2.jpeg)
+
+Step-by-step construction maintaining square-like shapes
+
+::: notes
+- **Visualization of the algorithm** (step-by-step)
+- **Process**:
+  1. Start with available rectangle (screen/parent)
+  2. Sort items by size (descending)
+  3. Try adding items to current row:
+     - Calculate aspect ratios if added horizontally
+     - Calculate aspect ratios if added vertically
+  4. Add item in direction that improves (or least worsens) aspect ratios
+  5. When adding more items would worsen aspect ratio, start new row
+  6. Repeat until all items placed
+- **Key insight**: Balance between filling space and maintaining good aspect ratios
+- **Images show**: Progressive building of layout, each rectangle added optimizes local aspect ratio
+- **Mathematical detail**: Algorithm minimizes max(width/height, height/width) for each rectangle
+:::
+
+---
+
+## Squarified vs Slice-and-Dice Comparison
+
+![](figs/week13/squarified-vs-slicedice.jpeg)
+
+Same data, dramatically different readability
+
+::: notes
+- **Direct comparison**: Same data, two algorithms
+- **Slice-and-Dice (left?)**:
+  - Many thin slivers
+  - Hard to compare sizes
+  - Labels don't fit
+- **Squarified (right?)**:
+  - More square-like rectangles
+  - Easier to compare
+  - Labels readable
+- **When to use each**:
+  - **Slice-and-Dice**:
+    - When stability matters (comparing over time)
+    - When data is balanced (sizes similar)
+    - Legacy systems
+  - **Squarified**:
+    - Single snapshot views
+    - When readability is priority
+    - Most modern applications
+- **Other algorithms exist**:
+  - Ordered treemaps (Shneiderman & Wattenberg): Stability + squareness
+  - Voronoi treemaps: Organic shapes
+  - Strip treemaps: Compromise between ordered and squarified
+:::
+
+---
+
+## Treemap Examples in Practice
+
+![](figs/week13/treemap-practice-1.jpeg)
+
+Real-world applications across domains
+
+::: notes
+- **Treemaps in the wild**: Show diverse applications
+- **Common uses**:
+  - **Finance**: Stock market heat maps (market cap + color = performance)
+  - **News**: Newsmap (news articles by topic and source)
+  - **Analytics**: Google Analytics (page views by section)
+  - **Business**: Sales dashboards (revenue by product/region)
+  - **Sports**: Player statistics, team performance
+- **Why popular?**
+  - Compact: Shows lots of data in small space
+  - Intuitive: Area = size is fairly intuitive
+  - Actionable: Easy to spot large items
+- **Design patterns**:
+  - Area always = primary metric (size, revenue, count)
+  - Color for category OR secondary metric
+  - Interaction: Zoom in/out, hover for details, search
+:::
+
+---
+
+## More Treemap Examples
+
+![](figs/week13/treemap-practice-2.jpeg)
+
+::: notes
+- Additional examples showing variety of treemap applications
+- Notice common design patterns across examples
+:::
+
+---
+
+## Even More Examples
+
+![](figs/week13/treemap-practice-3.jpeg)
+
+::: notes
+- More domain-specific applications
+- Each optimized for its specific use case
+:::
+
+---
+
+## Financial Treemap Example
+
+![](figs/week13/treemap-financial.jpeg)
+
+Stock market visualization: Area = market cap, color = % change
+
+::: notes
+- **Stock market treemaps**: Very popular in finance
+- **Typical encoding**:
+  - Area = Market capitalization (company size)
+  - Color = Performance (red = down, green = up, intensity = magnitude)
+  - Grouping = Sector or industry
+- **Insights at a glance**:
+  - "Which sectors are up/down today?" (color blocks)
+  - "Which companies dominate the market?" (large rectangles)
+  - "Where is the volatility?" (intense colors)
+- **Examples**:
+  - Finviz Market Maps
+  - Bloomberg Terminal
+  - Google Finance
+- **Why effective**: Combines size (importance) + change (performance) in single view
+:::
+
+---
+
+## Interactive Treemap Example
+
+![](figs/week13/treemap-interactive.jpeg)
+
+Modern treemaps support zooming, drilling down, and details-on-demand
+
+::: notes
+- **Interaction is KEY** for modern treemaps
+- **Common interactions**:
+  - **Zoom/Drill-down**: Click rectangle to expand it to full view
+  - **Breadcrumbs**: Show path from root (click to go back up)
+  - **Hover/Tooltip**: Show exact values, labels
+  - **Search/Highlight**: Find specific items
+  - **Filter**: Show/hide categories
+  - **Resize**: Dynamically adjust to window size
+- **Libraries**:
+  - D3.js treemap layouts (widely used)
+  - Highcharts, Plotly (commercial)
+  - Tableau, PowerBI (business intelligence)
+- **Design principle**: Overview first, zoom and filter, details on demand (Shneiderman's mantra)
+:::
+
+---
+
+## Treemap Summary
+
+![](figs/week13/treemap-summary.jpeg)
+
+**Advantages**:
+- Scalability: Can show thousands of nodes
+- Node visibility: Every node is visible (no occlusion)
+- No overlapping marks
+- Can encode both size (area) and category/metric (color)
+
+**Disadvantages**:
+- Size judgments less accurate than position
+- Hierarchical structure harder to discern than node-link
+- Layout algorithms affect readability (aspect ratio vs stability trade-off)
+
+::: notes
+- **When to use treemaps**:
+  - ✓ Large hierarchies (>100 nodes)
+  - ✓ Quantitative data at leaf nodes (size matters)
+  - ✓ Need to compare magnitudes
+  - ✓ Limited screen space
+- **When NOT to use treemaps**:
+  - ✗ Small hierarchies (<50 nodes) → node-link is clearer
+  - ✗ Structure is more important than size
+  - ✗ Need to trace paths or relationships
+  - ✗ No meaningful quantitative attribute (area would be arbitrary)
+- **Design guidelines**:
+  1. Use squarified or ordered layouts for readability
+  2. Limit hierarchy depth (3-4 levels visible at once)
+  3. Use color meaningfully (not arbitrary)
+  4. Provide interaction (zoom, search, details)
+  5. Label only when space allows (avoid clutter)
+- **Historical impact**: Treemaps revolutionized hierarchy visualization
+- Now standard in many tools and dashboards
+:::
+
+---
+
+# Sunburst and Icicle Plots
+
+Alternative space-filling approaches
+
+---
+
+## Sunburst and Icicle Plots
+
+**Radial (Sunburst)** and **Linear (Icicle)** space-partitioning approaches
+
+![](figs/week13/sunburst-example.jpeg)
+
+- **Sunburst**: Concentric rings, root at center
+- **Icicle**: Horizontal bands, root at top/bottom
+
+:::footer
+Examples showing alternative layouts for hierarchical data
+:::
+
+::: notes
+- **Sunburst** (radial layout):
+  - Root at center
+  - Each level = concentric ring
+  - Children = arc segments within parent's arc
+  - Full circle (360°) = full tree
+- **Icicle** (linear layout):
+  - Root at top (or bottom)
+  - Each level = horizontal band
+  - Children = segments within parent's width
+  - Like a vertical treemap with fixed-height levels
+- **Comparison to treemaps**:
+  - Treemaps: Maximize space efficiency, structure harder to see
+  - Sunburst/Icicle: Use space less efficiently, but hierarchy is clearer
+- **Why "less efficient"?**:
+  - Fixed height/width per level (not proportional to data)
+  - Outer rings have more space than needed (in sunburst)
+:::
+
+---
+
+## Sunburst Example
+
+![](figs/week13/sunburst-detailed.jpeg)
+
+Radial layout showing hierarchical proportions clearly
+
+::: notes
+- **Sunburst diagrams**: Beautiful and increasingly popular
+- **How to read**:
+  - Center = root
+  - Angle = proportion (like pie chart)
+  - Radius = depth in hierarchy
+  - Color = category or value
+- **What's easy to see**:
+  - Proportions at each level (angle)
+  - Hierarchy (radial depth)
+  - Parent-child relationships (nested arcs)
+- **What's hard**:
+  - Precise values (angle harder to judge than length)
+  - Deep hierarchies (outer rings get crowded)
+  - Comparing non-adjacent segments
+- **When to use**:
+  - Moderate-depth hierarchies (3-5 levels)
+  - When proportions matter
+  - When aesthetics important (presentations)
+- **Examples**: Disk usage (macOS "DaisyDisk"), budget breakdowns, zoomable sunbursts for navigation
+:::
+
+---
+
+## Comparison: Treemap vs Sunburst vs Icicle
+
+**Space efficiency**: Treemap > Icicle > Sunburst
+
+**Hierarchy perception**: Icicle ≈ Sunburst > Treemap
+
+**Familiarity**: Treemap > Icicle > Sunburst
+
+::: notes
+- **Space efficiency**:
+  - **Treemap**: Every pixel encodes data (100% efficient)
+  - **Icicle**: Fixed height per level (some wasted space)
+  - **Sunburst**: Outer rings have lots of empty space (least efficient)
+- **Hierarchy perception**:
+  - **Icicle/Sunburst**: Levels are visually distinct (clear depth)
+  - **Treemap**: Nesting can be hard to follow (needs strong borders)
+- **Familiarity**:
+  - **Treemap**: Most common, seen in many apps
+  - **Icicle**: Less common, but intuitive
+  - **Sunburst**: Least common, requires explanation
+- **Choose based on**:
+  - Data size: Large → treemap
+  - Hierarchy importance: High → icicle/sunburst
+  - Audience: General → treemap, Technical → any
+- **Modern trend**: Interactive sunbursts with zoom are becoming popular (beautiful + functional)
+:::
+
+---
+
+## Sunburst and Icicle Summary
+
+![](figs/week13/sunburst-icicle-1.jpeg)
+![](figs/week13/sunburst-icicle-2.jpeg)
+![](figs/week13/sunburst-icicle-3.jpeg)
+
+**Use space less efficiently** than treemaps, but **hierarchy is easier to perceive**
+
+::: notes
+- **Summary images**: Showing variety of sunburst/icicle applications
+- **Key trade-off**: Clarity vs Efficiency
+  - Treemaps: Efficient but harder to read structure
+  - Sunburst/Icicle: Inefficient but clearer structure
+- **Design decision**: What matters more for your task?
+  - Seeing exact sizes/proportions → Treemap
+  - Understanding hierarchy → Sunburst/Icicle
+- **Practical advice**: Try both! Modern tools make it easy to switch
+- **Combination approach**: Overview as sunburst, details as treemap (or vice versa)
+:::
+
+---
+
+# Summary and Observations
+
+Key takeaways and design principles
+
+---
+
+## Network and Tree Visualization Methods
+
+![](figs/week13/methods-overview.png)
+
+**Networks**:
+- Force-Directed (structure)
+- Fixed Layout (attributes)
+- Matrix (scalability)
+
+**Trees**:
+- Node-Link (structure)
+- Containment/Partitioning (size)
+
+::: notes
+- **Summary table/diagram**: The full taxonomy
+- **For general networks**:
+  - Force-directed: Unknown structure, exploration
+  - Fixed: Known groupings, spatial data
+  - Matrix: Dense networks, analytical tasks
+- **For trees** (special case):
+  - Node-link: Small trees, structure focus
+  - Treemaps: Large trees, size focus
+  - Sunburst/Icicle: Balance of both
+- **Key insight**: No single "best" method
+  - Depends on: Data size, structure, task, audience
+  - Often need multiple views (linked)
+:::
+
+---
+
+## Key Observations
+
+1. **Node-link diagrams are good for structure but often create clutter** (limited scalability)
+
+2. **Node-link trees are very good for structure** (and intuitive) but **do not scale well**
+
+3. **Important to keep in mind that nodes and edges can encode relevant information**
+   - Line width, patterns for edges
+   - Node size, color, shape for nodes
+
+::: notes
+- **Observation 1**: The "hairball problem"
+  - Node-link is intuitive BUT
+  - Doesn't scale beyond ~100 nodes (depending on density)
+  - Need clutter reduction or alternative representations
+- **Observation 2**: Trees scale better than general graphs, but still limited
+  - Exponential width growth
+  - Radial helps, but still limited to ~1000 nodes max
+- **Observation 3**: Visual channels are valuable!
+  - Position is just ONE channel
+  - Use size, color, shape, thickness to show more data
+  - Refer back to perception lectures (visual channel hierarchy)
+  - Don't waste these channels on arbitrary aesthetics
+:::
+
+---
+
+## More Key Observations
+
+4. **Matrices have good visibility properties** (no line crossings) but **need to be reordered** and **do not scale well with number of nodes** (n² cells)
+
+5. **Fixed layouts not good for structure**, some designs need node reordering
+   - But **very expressive when node placement is meaningful** and/or **focus is not on structure**
+
+::: notes
+- **Observation 4**: Matrices solve clutter, create new problems
+  - ✓ No edge crossings, all nodes visible
+  - ✗ Ordering problem (NP-hard)
+  - ✗ Quadratic space (1000 nodes = 1M cells)
+  - ✗ Less intuitive for general audiences
+  - **Best for**: Dense graphs, expert users, analytical tasks
+- **Observation 5**: Fixed layouts trade structure for semantics
+  - Don't reveal network structure automatically
+  - But: Position can encode meaningful attributes
+  - Geographic, temporal, categorical, hierarchical
+  - **When node attributes > network topology**, use fixed layouts
+:::
+
+---
+
+## Final Observations
+
+6. **Treemaps scale much better** and **make values much more visible**
+   - Structure is almost entirely lost
+
+7. **Sunburst and Icicle plots are interesting alternatives**
+   - Scale well and retain some structure
+   - Low familiarity (need explanation)
+
+::: notes
+- **Observation 6**: Treemaps are the scalability champions
+  - Can show 10,000+ nodes (limited by screen resolution)
+  - Area encoding makes quantitative comparisons easy
+  - BUT: Hierarchical structure much harder to see than node-link
+  - **Trade-off**: Size visibility vs Structure visibility
+  - Use when: Size is critical, structure is secondary
+- **Observation 7**: Sunburst/Icicle as middle ground
+  - Better than treemaps for structure (levels visible)
+  - Better than node-link for scale (more compact)
+  - Worse than treemaps for space efficiency
+  - Worse than node-link for familiarity
+  - **Growing in popularity**: Modern interactive versions are compelling
+  - Use when: Both structure and size matter, moderate depth
+:::
+
+---
+
+## Properties and Trade-offs
+
+Key dimensions to consider when choosing a visualization:
+
+- **Clutter**: How visually crowded?
+- **Scalability**: How many nodes/edges can it show?
+- **Structure visibility**: How clear is the network topology?
+- **Reordering/Aggregation**: Does it need preprocessing?
+- **Familiarity**: How intuitive for your audience?
+- **Intuitiveness**: How easy to learn?
+
+::: notes
+- **These are the key evaluation dimensions** for network visualizations
+- **Clutter**:
+  - Node-link (force): High for dense graphs
+  - Node-link (fixed): Very high without bundling
+  - Matrix: Low (no edges)
+  - Treemap: Low (no edges)
+- **Scalability** (rough numbers):
+  - Node-link: ~100 nodes
+  - Matrix: ~1000 nodes (n² cells limit)
+  - Treemap: ~10,000 nodes (pixel limit)
+- **Structure visibility**:
+  - Force-directed: High (reveals clusters)
+  - Fixed: Low (unless meaningful layout)
+  - Matrix: Moderate (needs reordering)
+  - Treemap: Low (nesting hard to follow)
+- **Reordering/Aggregation**:
+  - Matrix: Critical (useless without good ordering)
+  - Fixed layouts: Important (affects patterns)
+  - Force-directed: Automatic (but can cluster first)
+- **Familiarity**:
+  - Node-link: Very high (everyone recognizes)
+  - Treemap: High (common in apps)
+  - Matrix: Low (experts only)
+  - Sunburst: Very low (needs explanation)
+- **No perfect method**: All trade-offs!
+- **Best practice**: Try multiple, use linked views
+:::
+
+---
+
+## Choosing the Right Visualization
+
+![](figs/week13/visualization-choice-guide.jpeg)
+
+**Decision factors**:
+- Data size (nodes, edges, depth)
+- Data type (general graph vs tree)
+- Task (structure, paths, values, clusters)
+- Audience (experts vs general public)
+
+::: notes
+- **Decision guide**:
+- **If you have a tree**:
+  - Small (<100 nodes) → Node-link tree
+  - Large (>1000 nodes) → Treemap
+  - Need both structure and size → Sunburst/Icicle
+  - Need quantitative leaf values → Treemap
+- **If you have a general network**:
+  - Sparse + small (<100 nodes) → Force-directed
+  - Dense OR large → Matrix or aggregation
+  - Geographic nodes → Spatial + edge bundling
+  - Known groups → Fixed layout
+- **Task-based**:
+  - Find clusters → Force-directed
+  - Trace paths → Node-link
+  - Compare node degrees → Matrix
+  - Find large items → Treemap
+- **Audience-based**:
+  - General public → Node-link or treemap (familiar)
+  - Domain experts → Matrix or advanced techniques
+  - Stakeholders/decision makers → Treemaps (actionable)
+- **When in doubt**: Prototype multiple approaches, user test!
+:::
+
+---
+
+## Programming Assignments
+
+**Create interesting variants** within each technique:
+
+1. Force-directed layout graph
+2. Circular/chord diagram graph
+3. Node-link tree
+4. Treemap
+
+**Explore**:
+- Visual encodings (size, color, thickness)
+- Interaction techniques (zoom, filter, details-on-demand)
+- Layout parameters and algorithms
+- Real-world datasets
+
+::: notes
+- **These are suggested programming exercises** for students
+- **Force-directed**:
+  - Implement basic algorithm (or use D3.js)
+  - Experiment with force parameters
+  - Add node/edge encodings
+  - Compare different algorithms (FR, Kamada-Kawai)
+- **Circular/chord diagram**:
+  - Fixed circular layout
+  - Node ordering strategies
+  - Edge bundling
+  - Interactive highlighting
+- **Node-link tree**:
+  - Top-down, radial, or icicle layout
+  - Collapse/expand interactions
+  - Comparing different datasets
+- **Treemap**:
+  - Squarified algorithm
+  - Color encodings
+  - Zoom/drill-down
+  - Comparison views (two treemaps side-by-side)
+- **Datasets to explore**:
+  - Network: Social networks, citations, web graphs, biological networks
+  - Tree: File systems, org charts, taxonomies, hierarchical clustering results
+- **Tools**: D3.js, Gephi, Cytoscape, NetworkX (Python), igraph (R)
+:::
+
+---
+
+## Resources and References
+
+**Required readings** (see course page):
+- Understanding the Force (Shirley Wu) - Force-directed layouts
+- Hierarchical Edge Bundling (Holten, 2006)
+- Squarified Treemaps (Bruls et al., 2000)
+- Tree visualization with tree-maps (Shneiderman, 1992)
+
+**Suggested readings**:
+- Methods and applications: Bostock on design process, Stefaner on networks
+- User studies: Perceptual guidelines, tree visualization experiments
+- Advanced topics: Semantic substrates, word trees, spatially ordered treemaps
+
+::: notes
+- **Essential papers** every student should read:
+  1. **Shirley Wu's "Understanding the Force"**: Best tutorial on force-directed layouts
+  2. **Holten's edge bundling**: Revolutionary technique, beautiful examples
+  3. **Bruls squarified treemaps**: Fixes the aspect ratio problem
+  4. **Shneiderman's original treemap paper**: The foundation
+- **For deeper study**:
+  - User studies comparing techniques (when to use what)
+  - Advanced layout algorithms
+  - Domain-specific applications
+  - Interaction design patterns
+- **Online resources**:
+  - D3.js examples (Observable, bl.ocks.org)
+  - Gephi tutorials (network analysis tool)
+  - Graph visualization research survey papers
+- **Encourage students**: Try implementing from scratch (learn algorithms) AND use libraries (practical applications)
+:::
+
+---
+
+## Thank You!
+
+**Questions?**
+
+![](figs/week13/thank-you.png)
+
+**Next class**: [Week 14 topic]
+
+::: notes
+- **Wrap-up**:
+  - Covered 2 major topics: Networks and Trees
+  - Learned 6+ visualization techniques
+  - Understand trade-offs and when to use each
+- **Key takeaway**: No perfect visualization
+  - Always consider: Data, Task, Audience
+  - Prototype multiple approaches
+  - Use interaction to overcome limitations
+- **Preview next week**: [Whatever Week 14 topic is - check schedule]
+- **Office hours**: Available for project help, especially network/tree visualizations
+- **Assignment reminder**: Programming exercises + readings
+:::

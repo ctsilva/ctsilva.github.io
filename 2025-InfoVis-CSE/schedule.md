@@ -281,28 +281,25 @@ author_profile: true
 
 **Assignment:** Continue Mini-project 2 + Exercise 8 - Uncertainty visualization (due Nov 13)
 
-### **Week 11** (Nov 14) - Network Data and Urban Systems
-**Learning Objectives:** Understand network visualization techniques; apply to urban infrastructure and social systems
+### **Week 11** (Nov 14) - 3D Visualization Fundamentals
+**Learning Objectives:** Understand 3D transformations and coordinate systems; master model-view-projection pipeline
 
-**Lecture:** 
-- Network data structures and properties
-- Node-link diagrams and layout algorithms
-- Matrix representations of networks
-- Hierarchical and multilevel networks
-- Urban networks (transportation, social, infrastructure)
+**Lecture:** [Week 11 - 3D Visualization](slides/week11-3d-visualization.html)
+- Common libraries for 3D visualization
+- Linear algebra review (vectors, matrices)
+- 2D transformations (translation, rotation, scaling)
+- Homogeneous coordinates
+- 3D transformations
+- Model-View-Projection (MVP) pipeline
+- Camera positioning and perspective
 
-**Required Readings:**
-- [Hierarchical Edge Bundles: Visualization of Adjacency Relations in Hierarchical Data](http://www.aviz.fr/wiki/uploads/Teaching2014/bundles_infovis.pdf). Danny Holten. InfoVis 2006.
-- [Squarified Treemaps](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/trees/Bruls_SquarifiedTreemaps.pdf). Bruls, Huizing & van Wijk. 2000.
-
-**Optional Reading:**
-- [ManyNets: An Interface for Multiple Network Analysis and Visualization](http://dmrussell.net/CHI2010/docs/p213.pdf). Freire et al. ACM CHI 2010.
-
-**Lab:** [Building temporal visualizations, Time series analysis with D3](/2025-InfoVis-CSE/labs/week11-lab.html)
-- D3 force simulation setup
-- Creating node-link diagrams
-- Network layout algorithms
-- Interactive network exploration
+**Lab:** [3D Visualization: Transformations](/2025-InfoVis-CSE/labs/week11-lab.html)
+- Common Libraries for 3D Visualizations
+- Re-Visiting Algebra
+- 2D Transformations
+- Homogeneous Coordinates
+- 3D Transformations
+- Model-View-Projection
 
 **Assignment:** **Mini-project 3 begins** - Network visualization (due Dec 4)
 
@@ -335,23 +332,43 @@ author_profile: true
 
 **Assignment:** Continue Mini-project 3 + dimensionality reduction exercises (due Nov 25)
 
-### **Make-up Class** (Nov 26 - Wednesday) - Geographic and Urban Visualization II  
-**Learning Objectives:** Advanced geographic techniques; intensive project development time
+### **Week 13** (Nov 26 - Tuesday) - Visualizing Network Data
+**Learning Objectives:** Master network and tree visualization techniques; understand layout algorithms; design effective hierarchical visualizations
 
-**Extended Workshop (2.5 hours with breaks):** 
-- Advanced D3 geo techniques
-- Multi-scale mapping strategies
-- Spatial analysis and visualization
-- Working with urban datasets
-- Intensive hands-on work on Mini-project 1
-- Individual guidance and troubleshooting
+**Lecture:** [Week 13 - Visualizing Network Data](slides/week13-network-data.html)
+- Network data structures and properties
+- Node-link diagrams and force-directed layouts
+- Fixed layout patterns (circular, linear, grid)
+- Matrix representations and adjacency views
+- Tree visualization techniques:
+  - Dendrograms and hierarchical clustering
+  - Treemaps and space-filling layouts
+  - Sunburst and icicle plots
+  - Decision tree visualization
+- Edge bundling for hierarchical data
+- Interactive network exploration
 
-**Assignment:** Complete any outstanding work on Mini-project 1
+**Required Readings:**
+- [Hierarchical Edge Bundles: Visualization of Adjacency Relations in Hierarchical Data](http://www.aviz.fr/wiki/uploads/Teaching2014/bundles_infovis.pdf). Danny Holten. IEEE InfoVis 2006.
+- [Squarified Treemaps](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/trees/Bruls_SquarifiedTreemaps.pdf). Bruls, Huizing & van Wijk. 2000.
 
-### **Week 13** (Nov 28) - **NO CLASS** (Thanksgiving)
+**Optional Readings:**
+- [ManyNets: An Interface for Multiple Network Analysis and Visualization](http://dmrussell.net/CHI2010/docs/p213.pdf). Freire et al. ACM CHI 2010.
+- [D3 Graph Theory](https://d3gt.com/). Interactive D3 graph algorithm visualizations.
+
+**Lab:** [Building Network Visualizations](labs/week13-lab.html)
+- D3 force simulation implementation
+- Creating node-link diagrams with interactive layouts
+- Matrix view creation and comparison
+- Treemap implementation
+- Network layout algorithm exploration
+
+**Assignment:** Complete Mini-project 3 and prepare final project presentations
+
+### **Thanksgiving Break** (Nov 28) - **NO CLASS**
 **Assignment:** Complete Mini-project 3 and prepare group project presentations
 
-### **Week 14** (Dec 5) - Advanced Topics and Project Presentations I
+### **Week 14** (Dec 5) - Final Project Presentations I
 **Learning Objectives:** Explore emerging trends; present and critique visualization projects
 
 **Lecture (45 min):** 
