@@ -8,9 +8,17 @@ redirect_from:
   - /about.html
 ---
 
+## Applying to NYU for a PhD
+
+If you're interested in pursuing a PhD at NYU, here are the programs I am affiliated with:
+
+* [PhD in computer science](https://cs.nyu.edu/dynamic/phd/admissions)
+
+* [PhD in data science](https://cds.nyu.edu/phd-program-overview)
+
 ## About Me
 
-I am Institute Professor of Computer Science and Data Science at New York University. Born in Brazil, I've been in the United States for over 30 years, bringing a global perspective to my research and teaching.
+I am Institute Professor of Computer Science and Data Science at New York University. 
 
 My research interests are broad and inherently interdisciplinary. Within computer science, I focus on visualization, visual analytics, machine learning, reproducibility and provenance, geometric computing, urban computing, computer graphics, and computer vision. I particularly enjoy working at the intersection of different fields, recently collaborating with paleontologists, urban scientists, and sports scientists. I enjoy building tools that others can use to advance their own research and solve real-world problems.
 
@@ -26,7 +34,7 @@ A significant part of my career has been dedicated to mentoring the next generat
 
 ## Recognition and Service
 
-I am a Fellow of the ACM (2024) and IEEE (2013), and have received the IEEE Visualization Technical Achievement Award. I served as the elected Chair of the IEEE Technical Committee on Visualization and Computer Graphics from 2015–2018.
+I am a Fellow of the ACM (2024) and IEEE (2013), and have received the IEEE Visualization Technical Achievement Award (2014). I served as the elected Chair of the IEEE Technical Committee on Visualization and Computer Graphics from 2015–2018.
 
 From 2012-2017, I was the senior technology consultant for MLB Advanced Media's Statcast player tracking system, which received a 2018 Technology & Engineering Emmy Award from the National Academy of Television Arts & Sciences (NATAS). 
 
