@@ -171,6 +171,15 @@ author_profile: true
   - [Hierarchical Edge Bundling](https://observablehq.com/@d3/hierarchical-edge-bundling)
 - **Supplemental Material:** Force simulation parameters, Layout algorithms comparison, When to use matrices vs node-link diagrams
 
+### Week 14 (Dec 5) - Final Project Presentations
+- **Topics:** Group project presentations (Milestone 5)
+- **Final Deliverables:**
+  - Project website with complete interactive visualizations
+  - Process documentation and design rationale
+  - 10-minute team presentation
+  - Individual reflection submissions
+- **Note:** Dec 12 is Reading Day (no class)
+
 ## Assignments
 
 ### Exercises (35% of grade)
