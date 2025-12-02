@@ -68,9 +68,9 @@ The repository includes complete course websites as subdirectories:
 
 #### 2025-InfoVis-CSE (CS-GY 6313)
 - **Schedule**: Fridays 11AM-1:30PM (Sept 5-Dec 13), Room 215
-- **Status**: Week 3 COMPLETE
+- **Status**: Week 13 COMPLETE ✅ (Final presentations Dec 5 & 12)
 - **Discord**: https://discord.gg/sTEv3PnP
-- **Materials**: week2-data-transformation, week3-fundamental-graphs
+- **Materials**: week1-syllabus, week2-data-transformation, week3-fundamental-graphs, week4-perception, week5-color, week6-group-projects, week7-interaction, week8-geovis-2d-maps, week9-urban-flows-interactivity, week10-urban-3d-simulation, week11-temporal-data, week12-clustering-dimreduction, week13-network-data
 - **Resources**: home.md, syllabus.md, schedule.md, slides/, labs/
 
 

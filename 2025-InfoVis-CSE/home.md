@@ -14,9 +14,11 @@ author_profile: true
 
 ## Announcements
 
-**Week 11 Materials Ready (Nov 13):** Visualizing Time-Oriented Data lecture is now available! Comprehensive coverage of temporal data types, time structures, line chart best practices (Banking to 45°), interaction techniques, heat maps, periodic patterns, horizon charts, and sparklines. Includes speaker notes for all key concepts. See [slides](/2025-InfoVis-CSE/slides/week11-temporal-data.html).
+**Week 13 Materials Ready (Nov 26):** Visualizing Network Data lecture is now available! Comprehensive coverage of network fundamentals, force-directed layouts, matrix representations, and tree visualizations (treemaps, sunburst/icicle plots). See [slides](/2025-InfoVis-CSE/slides/week13-network-data.html).
 
-**Week 8 Materials Ready (Oct 24):** Foundations of Geovisualization (2D Maps) lecture is now available! Covers map projections, choropleth pitfalls, data classification, and practical Leaflet.js implementation. See [slides](/2025-InfoVis-CSE/slides/week8-geovis-2d-maps.html).
+**Week 12 Materials Ready (Nov 21):** Clustering and Dimensionality Reduction lecture is now available! Covers K-means, hierarchical clustering, PCA, t-SNE, and UMAP with critical visualization principles. See [slides](/2025-InfoVis-CSE/slides/week12-clustering-dimreduction.html).
+
+**Week 11 Materials Ready (Nov 13):** Visualizing Time-Oriented Data lecture is now available! Comprehensive coverage of temporal data types, time structures, line chart best practices (Banking to 45°), interaction techniques, heat maps, periodic patterns, horizon charts, and sparklines. See [slides](/2025-InfoVis-CSE/slides/week11-temporal-data.html).
 
 *Course materials will be posted as the semester progresses*
 
@@ -142,6 +144,32 @@ author_profile: true
   - [D3 Time Scales Documentation](https://github.com/d3/d3-scale#time-scales)
   - Weber et al. (2001) - [Visualizing Time-Series on Spirals](https://doi.org/10.1109/INFVIS.2001.963273) - IEEE InfoVis
 - **Supplemental Material:** Aggregation trade-offs, Baseline bias in stacked charts, When to use radial vs linear layouts
+
+### Week 12 (Nov 21) - Clustering and Dimensionality Reduction
+- **Slides:** [Clustering and Dimensionality Reduction](/2025-InfoVis-CSE/slides/week12-clustering-dimreduction.html) | **Lab:** [Dimensionality Reduction with D3](/2025-InfoVis-CSE/labs/week12-lab.html)
+- **Topics:** Clustering visualization (K-means, hierarchical clustering, comparing methods), Dimensionality reduction fundamentals, Linear methods (PCA), Non-linear methods (t-SNE, UMAP), Critical visualization principles for high-dimensional data
+- **Lab:** Implementing PCA and t-SNE visualizations with D3
+- **Assignment:** Exercise 12 - Clustering and dimensionality reduction visualization (due Nov 27)
+- **Required Readings:**
+  - van der Maaten & Hinton (2008) - [Visualizing Data using t-SNE](https://jmlr.org/papers/v9/vandermaaten08a.html) - JMLR
+  - Wattenberg et al. (2016) - [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) - Distill
+- **Recommended Resources:**
+  - [Understanding UMAP](https://pair-code.github.io/understanding-umap/) - Google PAIR
+  - [PCA Explained Visually](https://setosa.io/ev/principal-component-analysis/)
+- **Supplemental Material:** Curse of dimensionality, Cluster validation metrics, Choosing perplexity parameters
+
+### Week 13 (Nov 26) - Visualizing Network Data
+- **Slides:** [Visualizing Network Data](/2025-InfoVis-CSE/slides/week13-network-data.html)
+- **Topics:** Network fundamentals (nodes, edges, degree, paths), Force-directed layouts, Fixed layouts and edge bundling, Matrix representations, Clutter reduction techniques, Tree visualization (node-link diagrams, dendrograms, treemaps, sunburst/icicle plots)
+- **Lab:** Building network visualizations with D3 force simulation
+- **Assignment:** Exercise 13 - Network and tree visualization (due Dec 4)
+- **Required Readings:**
+  - Munzner (2014) - Visualization Analysis & Design, Chapter 9 (Networks)
+  - Bostock - [D3 Force-Directed Graph](https://observablehq.com/@d3/force-directed-graph)
+- **Recommended Resources:**
+  - [Force-Directed Graph Gallery](https://observablehq.com/@d3/gallery#networks)
+  - [Hierarchical Edge Bundling](https://observablehq.com/@d3/hierarchical-edge-bundling)
+- **Supplemental Material:** Force simulation parameters, Layout algorithms comparison, When to use matrices vs node-link diagrams
 
 ## Assignments
 
