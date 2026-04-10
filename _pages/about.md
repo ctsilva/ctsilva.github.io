@@ -8,19 +8,13 @@ redirect_from:
   - /about.html
 ---
 
-## Applying to NYU for a PhD
-
-If you're interested in pursuing a PhD at NYU, here are the programs I am affiliated with:
-
-* [PhD in computer science](https://cs.nyu.edu/dynamic/phd/admissions)
-
-* [PhD in data science](https://cds.nyu.edu/phd-program-overview)
-
 ## About Me
 
 I am Institute Professor of Computer Science and Data Science at New York University. 
 
 My research interests are broad and inherently interdisciplinary. Within computer science, I focus on visualization, visual analytics, machine learning, reproducibility and provenance, geometric computing, urban computing, computer graphics, and computer vision. I particularly enjoy working at the intersection of different fields, recently collaborating with paleontologists, urban scientists, and sports scientists. I enjoy building tools that others can use to advance their own research and solve real-world problems.
+
+If you're interested to pursue a PhD at NYU under my supervision, I accept students through the [PhD in computer science](https://cs.nyu.edu/dynamic/phd/admissions) and the [PhD in data science](https://cds.nyu.edu/phd-program-overview).
 
 ## Academic Background
 
@@ -49,10 +43,7 @@ Capital One, MLB Advanced Media, C2SMART US DOT Tier-1 University Transportation
 
 ### Current Projects
 
-- **OpenSpace: Interactive Visualization of the Known Universe**  
-  *NASA Science Mission Directorate* (2017-2025, $10M+)  
-  [[Project Website]](https://www.openspaceproject.com) [[GitHub]](https://github.com/OpenSpace/OpenSpace) [[NASA Science]](https://science.nasa.gov/sciact-team/openspace-project/)  
-  Open-source interactive data visualization software for space exploration, deployed in 17+ planetariums worldwide. Enables real-time visualization of NASA missions, astronomical data, and simulations for research and public education. Collaboration with American Museum of Natural History, Linköping University, and University of Utah.
+
 
 - **OSCUR: Open-Source Cyberinfrastructure for Urban Computing**  
   *National Science Foundation* (2024-2029, $5M)  
@@ -65,6 +56,11 @@ Capital One, MLB Advanced Media, C2SMART US DOT Tier-1 University Transportation
   Building unified software tools for biomedical research data integration, providing interoperable data services across disciplines with focus on cancer research visualization.
 
 ### Recent Projects
+
+- **OpenSpace: Interactive Visualization of the Known Universe**  
+  *NASA Science Mission Directorate* (2017-2025, $10M+)  
+  [[Project Website]](https://www.openspaceproject.com) [[GitHub]](https://github.com/OpenSpace/OpenSpace) [[NASA Science]](https://science.nasa.gov/sciact-team/openspace-project/)  
+  Open-source interactive data visualization software for space exploration, deployed in 17+ planetariums worldwide. Enables real-time visualization of NASA missions, astronomical data, and simulations for research and public education. Collaboration with American Museum of Natural History, Linköping University, and University of Utah.
 
 - **DARPA Perceptually-enabled Task Guidance (PTG)**  
   *Defense Advanced Research Projects Agency* (2021-2024, $5M)  
