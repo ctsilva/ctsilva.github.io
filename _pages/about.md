@@ -43,17 +43,20 @@ Capital One, MLB Advanced Media, C2SMART US DOT Tier-1 University Transportation
 
 ### Current Projects
 
-
-
-- **OSCUR: Open-Source Cyberinfrastructure for Urban Computing**  
-  *National Science Foundation* (2024-2029, $5M)  
-  [[Project Website]](https://oscur.org/) [[Hugging Face]](https://huggingface.co/oscur) [[Urban Toolkit]](https://urbantk.org/) [[Press]](https://engineering.nyu.edu/news/urban-computing-get-boost-new-open-source-platform-funded-national-science-foundation)  
+- **OSCUR: Open-Source Cyberinfrastructure for Urban Computing**
+  *National Science Foundation* (2024-2029, $5M)
+  [[Project Website]](https://oscur.org/) [[Hugging Face]](https://huggingface.co/oscur) [[Urban Toolkit]](https://urbantk.org/) [[Press]](https://engineering.nyu.edu/news/urban-computing-get-boost-new-open-source-platform-funded-national-science-foundation)
   Developing comprehensive tools for urban data collection and analysis, addressing climate change, walkability, bikeability, and urban accessibility. Collaboration with University of Washington and University of Illinois Chicago.
 
-- **ARPA-H Biomedical Data Fabric (BDF) Toolbox**  
-  *Advanced Research Projects Agency for Health* (2023-Present, $2.5M)  
-  [[ARPA-H Program]](https://arpa-h.gov/explore-funding/programs/arpa-h-bdf-toolbox) [[NCI Partnership]](https://datacommons.cancer.gov/news/nci-crdc-partners-arpa-h-biomedical-data-fabric-toolbox-program) [[CBIIT Overview]](https://datascience.cancer.gov/collaborations/advanced-research-projects-agency-health-arpa-h-biomedical-data-fabric-bdf-toolbox)  
+- **ARPA-H Biomedical Data Fabric (BDF) Toolbox**
+  *Advanced Research Projects Agency for Health* (2023-Present, $2.5M)
+  [[ARPA-H Program]](https://arpa-h.gov/explore-funding/programs/arpa-h-bdf-toolbox) [[NCI Partnership]](https://datacommons.cancer.gov/news/nci-crdc-partners-arpa-h-biomedical-data-fabric-toolbox-program) [[CBIIT Overview]](https://datascience.cancer.gov/collaborations/advanced-research-projects-agency-health-arpa-h-biomedical-data-fabric-bdf-toolbox)
   Building unified software tools for biomedical research data integration, providing interoperable data services across disciplines with focus on cancer research visualization.
+
+- **A Human-Centered Framework for AI-Mathematician Collaboration in Research-Level Mathematics**
+  *Defense Advanced Research Projects Agency* (2026-2029, $2.2M)
+  [[DARPA expMath Program]](https://www.darpa.mil/research/programs/expmath-exponential-mathematics) [[Project Webpage]](TBD) [[GitHub]](TBD)
+  Creating human-centered AI systems for autoformalization of research-level mathematics. Developing bidirectional LaTeX-to-Lean translation, intelligent proof decomposition, and formalization effort prediction to eliminate the De Bruijn overhead. Domain validation in partial differential equations and number theory. Collaboration with Oklahoma State University.
 
 ### Recent Projects
 
