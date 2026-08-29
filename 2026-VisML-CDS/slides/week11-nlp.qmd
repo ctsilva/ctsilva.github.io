@@ -1,0 +1,598 @@
+---
+title: "Visualization for NLP and LLMs"
+subtitle: "DS-GA 3001 - Fall 2026"
+author: "Claudio Silva"
+institute: "NYU Center for Data Science"
+date: "November 9, 2026"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    logo: figs/vida.jpg
+    width: 1920
+    height: 1080
+    preview-links: auto
+    transition: fade
+    transition-speed: fast
+    footer: <https://cds.nyu.edu>
+    fontsize: 24pt
+    css: lab-light-theme.css
+---
+
+# NLP and Large Language Models
+
+## Today's Agenda
+
+1. **Natural Language Processing (NLP) basics**
+   - Tasks and challenges
+   - Analysis and representation
+   - General resources
+   - Sparse and dense text representation
+   - Neural Network recap.
+
+2. <span style="color: grey;">Visualization for NLP
+   - General Text Visualization
+   - Model agnostic explanation
+   - Recurrent Neural Network (RNN) Visualization
+   - Transformers (LLM) Visualization</span>
+
+::: {.notes}
+Natural Language Processing has undergone a revolution with the advent of large language models. Today's lecture bridges traditional NLP visualization techniques with modern LLM analysis methods. We'll start with fundamental text processing concepts, then explore how visualization helps us understand both classical models like RNNs and modern transformer-based architectures. The transition from traditional NLP to LLMs represents not just a scale change but a fundamental shift in how we approach language understanding. Visualization plays a crucial role in making these black-box models more interpretable.
+:::
+
+## NLP basics: Tasks and challenges
+
+![](figs/week11-nlp/slide1.png){fig-align="center"}
+
+::: {.notes}
+The NLP pipeline begins with raw text and transforms it through multiple stages into a form suitable for machine learning. Tokenization splits text into units (words, subwords, or characters). Normalization handles case, punctuation, and special characters. Vectorization converts tokens to numbers - from simple one-hot encoding to sophisticated contextual embeddings. Each stage involves design decisions that significantly impact downstream performance. For example, aggressive normalization might remove important signals (like capitalization indicating proper nouns), while preserving too much variation increases vocabulary size and sparsity.
+:::
+
+## NLP basics: Tasks and challenges
+
+![](figs/week11-nlp/slide2.png){fig-align="center"}
+
+::: {.notes}
+Word embeddings revolutionized NLP by providing dense, continuous representations where similar words have similar vectors. The key insight is the distributional hypothesis: words appearing in similar contexts have similar meanings. Word2Vec uses shallow neural networks to predict context words (CBOW) or target words (Skip-gram). GloVe combines global matrix factorization with local context windows. FastText extends Word2Vec by using character n-grams, helping with out-of-vocabulary words. These embeddings capture surprising regularities - the famous "king - man + woman = queen" demonstrates that vector arithmetic can encode analogical reasoning.
+:::
+
+## NLP basics: Tasks and challenges
+
+| acquisition | structure           | meaning    | representation |
+|-------------|---------------------|------------|----------------|
+| sound wave  | phonetics/phonology | semantics  | bag-of-words   |
+| text corpus | morphology          | pragmatics | n-gram         |
+|             | syntax              | discourse  | word2vec       |
+| ...         | ...                 | ...        | ...            |
+: NLP can be divided into tasks related to acquisition, analysis, representation, etc. {#tbl-tasks}
+
+::: {.notes}
+sound wave (signal captured by micropones, mixing consoles, audio interfaces)
+text corpus ()
+
+phonetics/phonology (knowledge about linguistic sounds)
+morphology (knowledge of the meaningful components of words)         
+syntax (knowledge of the structural relationships between word)              
+
+semantics (knowledge of meaning)
+pragmatics (knowledge of the relationship of meaning to the goals and intentions of the speaker)
+discourse (knowledge about linguistic units larger than a single utterance)
+:::
+
+## NLP basics: Tasks and challenges
+
+::: {.notes}
+NLP tasks span from low-level syntactic analysis to high-level semantic understanding and generation. Token-level tasks like POS tagging and NER identify properties of individual words. Sequence-level tasks like machine translation and summarization transform entire texts. Classification tasks like sentiment analysis and topic modeling categorize documents. Generation tasks create new text. This taxonomy matters for visualization because different tasks benefit from different visual representations. Token-level tasks use attention heatmaps and dependency graphs. Document-level tasks use embedding projections and clustering visualizations. Understanding task requirements helps select appropriate models and interpretability methods.
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+### Word & Morphosyntactic Level
+- Named entity recognition
+- Parts-of-speech tagging
+- Dependency parsing
+- Grammatical error correction
+- Word sense disambiguation
+- Coreference resolution
+:::
+
+::: {.column width="50%"}
+### Document & Semantic Level
+- Text summarization
+- Question answering
+- Machine translation
+- Sentiment analysis
+- Topic modeling
+- Dialogue systems
+:::
+:::
+
+## NLP basics: Analysis and representation
+
+
+::: {.columns}
+
+::: {.column width="40%"}
+1. **Lexical and morphological analysis**
+   - Finite-state morphological parsers
+
+2. <span style="color: grey;">Syntactic recognition and representation
+   - Shallow parser or chunker
+   - Context-free Grammar</span>
+
+3. <span style="color: grey;">Morphosyntactic analysis
+   - Part-of-Speech (POS) tagging</span>
+
+4. <span style="color: grey;">Representing Meaning
+   - First-order logic
+   - Semantic Network
+   - Conceptual Dependency Diagram
+   - Frame-based approach</span>
+:::
+
+::: {.column width="60%"}
+![[Jurafsky, 2025](https://web.stanford.edu/~jurafsky/slp3/)](figs/week11-nlp/morph_parser.png){fig-align="left"}
+:::
+:::
+
+
+## NLP basics: Analysis and representation
+
+::: {.columns}
+::: {.column width="40%"}
+1. <span style="color: grey;">Lexical and morphological analysis
+   - Finite-state morphological parsers</span>
+
+2. **Syntactic recognition and representation**
+   - Shallow parser or chunker
+   - Context-free Grammar
+
+3. <span style="color: grey;">Morphosyntactic analysis
+   - Part-of-Speech (POS) tagging</span>
+
+4. <span style="color: grey;">Representing Meaning
+   - First-order logic
+   - Semantic Network
+   - Conceptual Dependency Diagram
+   - Frame-based approach</span>
+:::
+
+::: {.column width="60%"}
+![[Jurafsky, 2025](https://web.stanford.edu/~jurafsky/slp3/)](figs/week11-nlp/context-free_grammar.png){fig-align="center"}
+:::   
+:::   
+
+## NLP basics: Analysis and representation
+
+::: {.columns}
+::: {.column width="40%"}
+1. <span style="color: grey;">Lexical and morphological analysis
+   - Finite-state morphological parsers</span>
+
+2. <span style="color: grey;">Syntactic recognition and representation
+   - Shallow parser or chunker
+   - Context-free Grammar</span>
+
+3. **Morphosyntactic analysis**
+   - Part-of-Speech (POS) tagging
+
+4. <span style="color: grey;">Representing Meaning
+   - First-order logic
+   - Semantic Network
+   - Conceptual Dependency Diagram
+   - Frame-based approach</span>
+:::
+
+::: {.column width="60%"}
+![[Jurafsky, 2025](https://web.stanford.edu/~jurafsky/slp3/)](figs/week11-nlp/pos_tagging.png){fig-align="left"}
+::: 
+:::    
+
+## NLP basics: Analysis and representation
+
+::: {.columns}
+::: {.column width="40%"}
+1. <span style="color: grey;">Lexical and morphological analysis
+   - Finite-state morphological parsers</span>
+
+2. <span style="color: grey;">Syntactic recognition and representation
+   - Shallow parser or chunker
+   - Context-free Grammar</span>
+
+3. <span style="color: grey;">Morphosyntactic analysis
+   - Part-of-Speech (POS) tagging</span>
+
+4. **Representing Meaning**
+   - First-order logic
+   - Semantic Network
+   - Conceptual Dependency Diagram
+   - Frame-based approach
+:::
+
+::: {.column width="30%"}
+![[Jurafsky, 2025](https://web.stanford.edu/~jurafsky/slp3/)](figs/week11-nlp/first-order-1.png){fig-align="center"}
+:::
+::: {.column width="30%"}
+![](figs/week11-nlp/first-order-2.png){fig-align="center"}
+:::
+:::
+
+## NLP basics: General resources
+
+1. [Lexicon](https://openlexicon.fr/datasets-info/EnglishLexiconProject/README-ELP.html): list of stems and affixes (prefix or suffix), together with basic information about them.
+2. [Thesaurus](https://wordnet.princeton.edu/): list of words and their synonyms from a specific domain
+3. [Treebank](https://repository.upenn.edu/bitstreams/560a804b-b3f7-40c7-8f57-052bdd5ca6cd/download): list of words labeled with syntatic (POS-tagging) trees
+4. [Prop(osition) bank](https://propbank.github.io/): sentences annotated with semantic roles related to verbs
+5. [FrameNet](https://framenet.icsi.berkeley.edu/): sentences annotated with semantic roles related to frames of words.
+6. [Ontology](https://course.ccs.neu.edu/cs5100f11/resources/noy01.pdf): hierachy of concepts related to a domain
+
+## NLP basics: Sparse and dense text representation
+
+::: {.columns}
+::: {.column width="40%"}
+1. **Sparse embeddings** [^rep_note1]
+   1. One-hot encoding
+   2. <span style="color: grey;">Bag-of-Words (BoW)</span>
+   3. <span style="color: grey;">Term Frequency-Inverse Document Frequency (TF-IDF)</span>
+5. <span style="color: grey;">Dense embeddings</span>
+:::
+
+::: {.column width="60%"}
+![[Galli, 2023](https://www.blog.trainindata.com/one-hot-encoding-categorical-variables/)](figs/week11-nlp/one_hot.png){fig-align="center"}
+:::
+<!-- https://www.blog.trainindata.com/one-hot-encoding-categorical-variables/ -->
+:::
+
+--- 
+
+[^rep_note1]: We can represent words, n-grams, sentences, etc. 
+
+## NLP basics: Sparse and dense text representation
+
+::: {.columns}
+::: {.column width="40%"}
+1. **Sparse embeddings** [^rep_note2]
+   1. <span style="color: grey;">One-hot encoding</span>
+   2. Bag-of-Words (BoW)
+   3. <span style="color: grey;">Term Frequency-Inverse Document Frequency (TF-IDF)</span>
+5. <span style="color: grey;">Dense embeddings</span>
+:::
+
+::: {.column width="60%"}
+![[Sharma, 2024](https://medium.com/@shantanu_sharma/natural-language-processing-nlp-playlist-chapter-2-bag-of-words-n-gram-tf-idf-458a9669a746)](figs/week11-nlp/bow.png){fig-align="center"}
+:::
+<!-- https://medium.com/@shantanu_sharma/natural-language-processing-nlp-playlist-chapter-2-bag-of-words-n-gram-tf-idf-458a9669a746 -->
+:::
+
+--- 
+
+[^rep_note2]: We can represent words, n-grams, sentences, etc. 
+
+## NLP basics: Sparse and dense text representation
+
+::: {.columns}
+::: {.column width="40%"}
+1. **Sparse embeddings** [^rep_note3]
+   1. <span style="color: grey;">One-hot encoding</span>
+   2. <span style="color: grey;">Bag-of-Words (BoW)</span>
+   3. Term Frequency-Inverse Document Frequency (TF-IDF)
+5. <span style="color: grey;">Dense embeddings</span>
+:::
+
+::: {.column width="60%"}
+![[Mai, 2019](https://ted-mei.medium.com/demystify-tf-idf-in-indexing-and-ranking-5c3ae88c3fa0)](figs/week11-nlp/tfidf.png){fig-align="center"}
+:::
+<!-- https://ted-mei.medium.com/demystify-tf-idf-in-indexing-and-ranking-5c3ae88c3fa0 -->
+:::
+
+--- 
+
+[^rep_note3]: We can represent words, n-grams, sentences, etc. 
+
+## NLP basics: Sparse and dense text representation
+
+::: {.columns}
+::: {.column width="40%"}
+1. <span style="color: grey;">Sparse embeddings [^rep_note4]</span>
+   1. <span style="color: grey;">One-hot encoding</span>
+   2. <span style="color: grey;">Bag-of-Words (BoW)</span>
+   3. <span style="color: grey;">Term Frequency-Inverse Document Frequency (TF-IDF)</span>
+5. **Dense embeddings**
+:::
+
+::: {.column width="60%"}
+![[Alammar, 2019](https://jalammar.github.io/illustrated-word2vec/)](figs/week11-nlp/word2vec.png){fig-align="center"}
+:::
+<!-- https://jalammar.github.io/illustrated-word2vec/ -->
+:::
+
+--- 
+
+[^rep_note4]: We can represent words, n-grams, sentences, etc. 
+
+## NLP basics: Neural Network recap.
+
+::: {.columns}
+::: {.column width="50%"}
+![MLP - [Jaokar, 2024](https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/)](figs/week11-nlp/mlp.png){fig-align="center"}
+:::
+<!-- https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/ -->
+::: {.column width="50%"}
+:::
+
+:::
+
+## NLP basics: Neural Network recap.
+
+::: {.columns}
+::: {.column width="50%"}
+![MLP - [Jaokar, 2024](https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/)](figs/week11-nlp/mlp.png){fig-align="center"}
+:::
+<!-- https://www.linkedin.com/pulse/explaining-multilayer-perceptrons-terms-general-matrix-ajit-jaokar-c5aje/ -->
+
+::: {.column width="50%"}
+![RNN - [Colah, 2015](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)](figs/week11-nlp/rnn.png){fig-align="center"}
+:::
+<!-- https://colah.github.io/posts/2015-08-Understanding-LSTMs/ -->
+:::
+
+## NLP basics: Neural Network recap.
+
+::: {.columns}
+::: {.column width="50%"}
+![Transformer - [Vaswani, 2017](https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html)](figs/week11-nlp/transformer.png){fig-align="center"}
+:::
+<!-- Vaswani, Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017). -->
+
+::: {.column width="50%"}
+:::
+:::
+
+## NLP basics: Neural Network recap.
+
+::: {.columns}
+::: {.column width="50%"}
+![Transformer - [Vaswani, 2017](https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html)](figs/week11-nlp/transformer.png){fig-align="center"}
+:::
+<!-- Vaswani, Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017). -->
+
+::: {.column width="50%"}
+![](figs/week11-nlp/attention.png){fig-align="center"}
+:::
+<!-- Vaswani, Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017). -->
+:::
+
+## NLP basics: Neural Network recap.
+
+![Transformer - [Park, 2019](https://ieeexplore.ieee.org/abstract/document/8933677)](figs/week11-nlp/attention-v2.png){fig-align="center"}
+
+<!-- Park, 2019. SANVis: Visual Analytics for Understanding Self-Attention Networks -->
+
+
+## Today's Agenda
+
+1. <span style="color: grey;">Natural Language Process (NLP) basics
+   - Tasks and challenges
+   - Analysis and representation
+   - General resources
+   - Sparse and dense text representation
+   - Neural Network recap.</span>
+
+2. **Visualization for NLP**
+   - General Text Visualization
+   - Model agnostic explanation
+   - Recurrent Neural Network (RNN) Visualization
+   - Transformers (LLM) Visualization
+
+## Visualization for NLP: General Text Visualization
+
+1. [Exploring and Visualizing Variation in Language Resources](https://ids-pub.bsz-bw.de/frontdoor/deliver/index/docId/2622/file/Fankhauser_etc_Exploring%20and%20Visualizing_2014.pdf)
+2. [Termite: Visualization Techniques for Assessing Textual Topic Models](https://dl.acm.org/doi/abs/10.1145/2254556.2254572)
+3. [Scattertext: a Browser-Based Tool for Visualizing how Corpora Differ](https://arxiv.org/abs/1703.00565)
+
+## Visualization for NLP: General Text Visualization
+
+1. <span style="color: grey;">Exploring and Visualizing Variation in Language Resources</span>
+2. <span style="color: grey;">Termite: Visualization Techniques for Assessing Textual Topic Models</span>
+3. [Scattertext: a Browser-Based Tool for Visualizing how Corpora Differ](https://arxiv.org/abs/1703.00565)
+
+![](figs/week11-nlp/paper5.png){fig-align="center"}
+
+::: {.notes}
+Visualize linguistic variation between document categories in a language-independent way.
+The main visualization is a scatterplot of terms, using their frequencies as position and a probabilistic score that defines how strong the connection is between a word and a category.
+The authors tested it with a speech dataset from the 2012 Democratic and Republican conventions.
+In this case, Scattertext can highlight linguistic style and key themes of each dataset.
+:::
+
+## Visualization for NLP: Model agnostic explanation
+
+1. [Seq2seq-Vis: A Visual Debugging Tool for Sequence-to-Sequence Models](https://doi.org/10.1109/TVCG.2018.2865044)
+2. [ActiVis: Visual Exploration of Industry-Scale Deep Neural Network Models](https://doi.org/10.1109/TVCG.2017.2744718)
+3. [iSEA: An Interactive Pipeline for Semantic Error Analysis of NLP Models](https://dl.acm.org/doi/abs/10.1145/3490099.3511146)
+
+
+## Visualization for NLP: Model agnostic explanation
+
+1. <span style="color: grey;">Seq2seq-Vis: A Visual Debugging Tool for Sequence-to-Sequence Models</span>
+2. <span style="color: grey;">ActiVis: Visual Exploration of Industry-Scale Deep Neural Network Models</span>
+3. [iSEA: An Interactive Pipeline for Semantic Error Analysis of NLP Models](https://dl.acm.org/doi/abs/10.1145/3490099.3511146)
+
+![](figs/week11-nlp/paper19-1.png)
+
+::: {.notes}
+Automatically discovers semantically-grounded subpopulations with high error rates in the context of a human-in-the-loop interactive system. 
+The user can learn more, validate error sources, and test hypotheses about errors.
+
+1) Model Performance Overview: 
+2) Rule Discovery and 3) Rule Editor
+   A rule is created by pattern mining that finds features combinations (rules) that frequencly occur in 'model error cases'.
+   That mining is applied over semantic and syntatic features, such as dependency labels, POS-tags, semantic roles, and lexical markers.
+4) Overall statistics
+5) Model prediction with SHAP tokens score, raw texts, ground-truth/predicted label   
+7) Concept construction enables a user to group Rules together. 
+:::
+
+## Visualization for NLP: RNN Visualization
+
+1. [Understanding Hidden Memories of Recurrent Neural Networks](https://doi.org/10.1109/VAST.2017.8585721)
+2. [RNNbow: Visualizing Learning Via Backpropagation Gradients in RNNs](https://doi.org/10.1109/MCG.2018.2878902)
+3. [LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in Recurrent Neural Networks](https://doi.org/10.1109/TVCG.2017.2744158)
+
+## Visualization for NLP: RNN Visualization
+
+1. <span style="color: grey;">Understanding Hidden Memories of Recurrent Neural Networks</span>
+2. <span style="color: grey;">RNNbow: Visualizing Learning Via Backpropagation Gradients in RNNs</span>
+3. [LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in Recurrent Neural Networks](https://doi.org/10.1109/TVCG.2017.2744158)
+
+::: {.notes}
+1) Select view
+  - Select a text section and define an activation threshold to highlight hidden states (blue lines)
+  - Extra information presented in the meta-track, such as word POS-tagging and top-k model predictions
+2) Match View
+  - Shows similar hidden state patterns in the dataset
+  - Shows a heatmap with matched sentences (rows), hidden states (cols), and the activation value (color)
+  - Shows a second heatmap encoding POS-tag of sentence words 
+
+Tests with datasets of 1) news from the wall street journal 2) parenthesis language 3) dna sequences, and 4) musical chord progressions
+:::
+
+![](figs/week11-nlp/lstmvis.png){fig-align="center"}
+
+## Visualization for NLP: LLM Visualization
+
+1. [BertViz: A tool for visualizing multihead self-attention in the BERT model](https://debug-ml-iclr2019.github.io/cameraready/DebugML-19_paper_2.pdf)
+2. [Sanvis: Visual analytics for understanding self-attention networks](https://doi.org/10.1109/VISUAL.2019.8933677)
+3. [Attention flows: Analyzing and comparing attention mechanisms in language models](https://doi.org/10.1109/TVCG.2020.3028976)
+4. [Dodrio: Exploring transformer models with interactive visualization](https://arxiv.org/abs/2103.14625)
+5. [TopoBERT: Exploring the topology of fine-tuned word representations](https://journals.sagepub.com/doi/full/10.1177/14738716231168671)
+6. [Attentionviz: A global view of transformer attention](https://doi.org/10.1109/TVCG.2023.3327163)
+7. [On the Biology of a Large Language Model](https://transformer-circuits.pub/2025/attribution-graphs/biology.html)
+8. [POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning of Large Language Models](https://doi.org/10.1109/PacificVis64226.2025.00010)
+
+
+## Visualization for NLP: LLM Visualization
+
+2. [Sanvis: Visual analytics for understanding self-attention networks](https://doi.org/10.1109/VISUAL.2019.8933677)
+
+![](figs/week11-nlp/sanvis.png){fig-align="center"}
+
+::: {.notes}
+1) Attention piling (heatmap): key-words (x-axis), query-words (y-axis), and cell values are the attention score over the layer heads. Besides, instead of show information for all the layer heads, it aggregates them to show only one heatmap (piles).
+2) Small multiple: Heads showed with some sort criterion (Head number, Entropy, Position)
+3) Sanky diagram: how strong is the attention between two tokens
+4) Head leans: extended information about each layer head.
+
+comprehend the alignment between encoder and decoder and the relationship between tokens
+:::
+
+## Visualization for NLP: LLM Visualization
+
+4. [Dodrio: Exploring transformer models with interactive visualization](https://arxiv.org/abs/2103.14625)
+
+![](figs/week11-nlp/dodrio.png){fig-align="center"}
+
+::: {.notes}
+1) Dependency view: shows sintatic dependences between tokens like a dependency tree/graph or a saliency view
+2) Semantic attention graph: a graph that presents informations of a specific layer and head. Nodes are tokens and egdges are attention between them. Different views: radial, grid, and force
+3) Attention head overview: grid of layers (rows) per heads (columns). Color palette maps a semantic score (read) and syntatic score (blue). Besides, the circle size means an importance score.
+
+attention weights
+syntatic dependences
+semantic information
+:::
+
+## Visualization for NLP: LLM Visualization
+
+6. [Attentionviz: A global view of transformer attention](https://doi.org/10.1109/TVCG.2023.3327163)
+
+![](figs/week11-nlp/attention_viz.png){fig-align="center"}
+
+::: {.notes}
+1) Creates an aligned projected space of Query and Key embeddings
+2) In the main view, it shows a grid of projections per layer (rows) nad heads (columns)
+3) In a detailed view of text models, it shows a BertViz-like view that connects query-key tokens with their attention scores.
+4)
+:::
+
+## Visualization for NLP: LLM Visualization
+
+7. [On the Biology of a Large Language Model](https://transformer-circuits.pub/2025/attribution-graphs/biology.html)
+
+::: {.columns}
+::: {.column width="50%"}
+### Does Claude plan its rhymes?
+![](figs/week11-nlp/claude_rhymes.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+### Mental math
+![](figs/week11-nlp/claude_math.png){fig-align="center"}
+:::
+:::
+
+## Visualization for NLP: LLM Visualization
+
+7. [On the Biology of a Large Language Model](https://transformer-circuits.pub/2025/attribution-graphs/biology.html)
+
+::: {.columns}
+::: {.column width="50%"}
+### Are Claude’s explanations always faithful?
+![](figs/week11-nlp/claude_faithful.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+### Multi-step reasoning
+![](figs/week11-nlp/claude_reasoning.png){fig-align="center"}
+:::
+:::
+
+## Visualization for NLP: LLM Visualization
+
+7. [On the Biology of a Large Language Model](https://transformer-circuits.pub/2025/attribution-graphs/biology.html)
+
+### Hallucinations
+![](figs/week11-nlp/claude_hallucinate.png){fig-align="center"}
+
+<!-- https://www.anthropic.com/research/tracing-thoughts-language-model -->
+
+::: {.notes}
+applying attribution graphs to study a particular language model
+:::
+
+## Visualization for NLP: LLM Visualization
+
+8. [POEM: Interactive Prompt Optimization for Enhancing Multimodal Reasoning of Large Language Models](https://doi.org/10.1109/PacificVis64226.2025.00010)
+
+![](figs/week11-nlp/paper21-1.png){fig-align="center"}
+
+::: {.notes}
+1) Prompt panel: craft and edit prompts
+2) Reasoning panel: 
+3) Evaluation panel: global and local evaluation with comparison of prompt editing history
+
+a visual analytics system to facilitate efficient prompt engineering for steering the multimodal reasoning performance of LLM
+:::
+
+
+## Summary: NLP Foundations
+
+::: {.columns}
+::: {.column width="50%"}
+**Key Takeaways:**
+
+1. Even if human language is convoluted, we can still build advanced NLP systems that achieve good results.
+2. These systems are difficult to explain and interpret.
+3. Dense representations have much more information than sparse ones, such as the meaning, position, and relations between tokens.
+4. In a transformer, Q and K spaces are the mechanisms for selection (interpretable via patterns of relevance), while V space is the content being selected (abstract, combined, and thus harder to ground linguistically on its own).
+
+:::
+
+::: {.column width="50%"}
+<div style="background: #e8f5e9; padding: 25px; border-radius: 8px; margin-top: 30px;">
+
+</div>
+:::
+:::
