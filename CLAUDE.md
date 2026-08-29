@@ -9,7 +9,8 @@ Guidance for Claude Code when working with Claudio Silva's academic website (Jek
 bundle install --path vendor/bundle
 
 # Local server (http://127.0.0.1:4000/)
-bundle exec jekyll liveserve
+# --livereload auto-refreshes the browser on .md/_sass edits
+bundle exec jekyll serve --livereload --incremental
 
 # JavaScript build
 npm run build:js
@@ -20,8 +21,8 @@ npm run build:js
 # Setup
 npm install -g @mermaid-js/mermaid-cli
 
-# Generate PNGs from .mmd files
-cd 2025-VisML-CSE/slides
+# Generate PNGs from .mmd files (script also exists in 2025-VisML-CSE/slides)
+cd 2026-VisML-CDS/slides
 python3 render_mermaid.py
 
 # Manual generation
@@ -130,7 +131,7 @@ The repository includes complete course websites as subdirectories:
 
 ```bash
 # Render slides
-cd 2025-InfoVis-CSE/slides/
+cd 2026-InfoVis-CSE/slides/
 quarto render week1-syllabus.qmd
 
 # Preview with live reload
@@ -141,11 +142,16 @@ git add week1-syllabus.html week1-syllabus_files/
 git commit -m "Add Week 1 slides"
 ```
 
+The 2026 sites were copied without rendered output, so each deck needs a
+`quarto render` before its class. `*.html` / `*_files/` are globally ignored with
+a per-year negation in `.gitignore` — add new course years there or renders stay
+uncommitted.
+
 **Template header**:
 ```yaml
 ---
 title: "Title"
-subtitle: "CS-GY 6313 - Fall 2025"
+subtitle: "CS-GY 6313 - Fall 2026"
 author: "Name"
 format:
   revealjs:
