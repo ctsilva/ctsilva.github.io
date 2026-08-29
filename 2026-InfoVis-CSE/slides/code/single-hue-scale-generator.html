@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Single Hue Sequential Scale Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 20px;
+            background: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+            font-size: 18px;
+        }
+        .scale-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Single-Hue Sequential Scale (Blue)</h2>
+        <div id="scale-gradient"></div>
+
+        <h2>Luminance Progression</h2>
+        <div id="luminance-plot"></div>
+
+        <h2>Combined View</h2>
+        <div id="combined-view"></div>
+    </div>
+
+    <script>
+        // Figure 1: Create gradient scale
+        const width = 600;
+        const height = 60;
+        const steps = 100;
+
+        // Create SVG for gradient
+        const svg1 = d3.select("#scale-gradient")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // Define gradient
+        const gradient = svg1.append("defs")
+            .append("linearGradient")
+            .attr("id", "blue-gradient")
+            .attr("x1", "0%")
+            .attr("x2", "100%");
+
+        // Use D3's built-in Blues scale
+        const blueScale = d3.scaleSequential(d3.interpolateBlues)
+            .domain([0, steps - 1]);
+
+        // Add gradient stops
+        d3.range(steps).forEach(i => {
+            gradient.append("stop")
+                .attr("offset", `${(i / (steps - 1)) * 100}%`)
+                .attr("stop-color", blueScale(i));
+        });
+
+        // Draw rectangle with gradient
+        svg1.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "url(#blue-gradient)");
+
+        // Add border
+        svg1.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "none")
+            .attr("stroke", "#ccc")
+            .attr("stroke-width", 1);
+
+        // Figure 2: Luminance progression plot
+        const margin = {top: 20, right: 30, bottom: 40, left: 50};
+        const plotWidth = width - margin.left - margin.right;
+        const plotHeight = 200 - margin.top - margin.bottom;
+
+        const svg2 = d3.select("#luminance-plot")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 200);
+
+        const g = svg2.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Calculate luminance values
+        const luminanceData = d3.range(steps).map(i => {
+            const color = d3.color(blueScale(i));
+            // Convert to LAB to get luminance
+            const lab = d3.lab(color);
+            return {
+                x: i / (steps - 1),
+                y: lab.l / 100  // Normalize to 0-1
+            };
+        });
+
+        // Create scales
+        const xScale = d3.scaleLinear()
+            .domain([0, 1])
+            .range([0, plotWidth]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, 1])
+            .range([plotHeight, 0]);
+
+        // Create line generator
+        const line = d3.line()
+            .x(d => xScale(d.x))
+            .y(d => yScale(d.y))
+            .curve(d3.curveMonotoneX);
+
+        // Add axes
+        g.append("g")
+            .attr("transform", `translate(0,${plotHeight})`)
+            .call(d3.axisBottom(xScale).ticks(5).tickFormat(d => d === 0 ? "Low" : d === 1 ? "High" : ""));
+
+        g.append("g")
+            .call(d3.axisLeft(yScale).ticks(5).tickFormat(d => `${Math.round(d * 100)}%`));
+
+        // Add axis labels
+        g.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (plotHeight / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("Luminance (L*)");
+
+        g.append("text")
+            .attr("x", plotWidth / 2)
+            .attr("y", plotHeight + 35)
+            .style("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("Data Value");
+
+        // Draw the line
+        g.append("path")
+            .datum(luminanceData)
+            .attr("fill", "none")
+            .attr("stroke", "#2166ac")
+            .attr("stroke-width", 2)
+            .attr("d", line);
+
+        // Add dots at sample points (every 10th point)
+        g.selectAll(".dot")
+            .data(luminanceData.filter((d, i) => i % 10 === 0))
+            .enter().append("circle")
+            .attr("cx", d => xScale(d.x))
+            .attr("cy", d => yScale(d.y))
+            .attr("r", 3)
+            .attr("fill", "#2166ac");
+
+        // Figure 3: Combined view
+        const svg3 = d3.select("#combined-view")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 320);
+
+        // Add gradient at top
+        const gradient3 = svg3.append("defs")
+            .append("linearGradient")
+            .attr("id", "blue-gradient-3")
+            .attr("x1", "0%")
+            .attr("x2", "100%");
+
+        d3.range(steps).forEach(i => {
+            gradient3.append("stop")
+                .attr("offset", `${(i / (steps - 1)) * 100}%`)
+                .attr("stop-color", blueScale(i));
+        });
+
+        svg3.append("rect")
+            .attr("x", margin.left)
+            .attr("y", 10)
+            .attr("width", plotWidth)
+            .attr("height", 40)
+            .attr("fill", "url(#blue-gradient-3)");
+
+        svg3.append("rect")
+            .attr("x", margin.left)
+            .attr("y", 10)
+            .attr("width", plotWidth)
+            .attr("height", 40)
+            .attr("fill", "none")
+            .attr("stroke", "#ccc")
+            .attr("stroke-width", 1);
+
+        // Add luminance plot below
+        const g3 = svg3.append("g")
+            .attr("transform", `translate(${margin.left},${80})`);
+
+        // Redraw axes for combined view
+        g3.append("g")
+            .attr("transform", `translate(0,${plotHeight})`)
+            .call(d3.axisBottom(xScale).ticks(5).tickFormat(d => d === 0 ? "Low" : d === 1 ? "High" : ""));
+
+        g3.append("g")
+            .call(d3.axisLeft(yScale).ticks(5).tickFormat(d => `${Math.round(d * 100)}%`));
+
+        // Add grid lines
+        g3.append("g")
+            .attr("class", "grid")
+            .attr("transform", `translate(0,${plotHeight})`)
+            .call(d3.axisBottom(xScale).ticks(10).tickSize(-plotHeight).tickFormat(""))
+            .style("stroke-dasharray", "2,2")
+            .style("opacity", 0.3);
+
+        g3.append("g")
+            .attr("class", "grid")
+            .call(d3.axisLeft(yScale).ticks(5).tickSize(-plotWidth).tickFormat(""))
+            .style("stroke-dasharray", "2,2")
+            .style("opacity", 0.3);
+
+        // Labels
+        g3.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (plotHeight / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("Luminance (L*)");
+
+        g3.append("text")
+            .attr("x", plotWidth / 2)
+            .attr("y", plotHeight + 35)
+            .style("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("Data Value");
+
+        // Draw the luminance line
+        g3.append("path")
+            .datum(luminanceData)
+            .attr("fill", "none")
+            .attr("stroke", "#2166ac")
+            .attr("stroke-width", 2)
+            .attr("d", line);
+
+        // Add annotation
+        g3.append("text")
+            .attr("x", plotWidth / 2)
+            .attr("y", -20)
+            .style("text-anchor", "middle")
+            .style("font-size", "14px")
+            .style("font-weight", "bold")
+            .text("Monotonic Increase in Luminance");
+    </script>
+</body>
+</html>

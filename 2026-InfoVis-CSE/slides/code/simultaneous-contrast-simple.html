@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simultaneous Contrast - Classic Demo</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 20px;
+            background: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .reveal-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d73027;
+            margin: 20px 0;
+        }
+        .instruction {
+            font-size: 16px;
+            color: #666;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg id="main-demo" width="750" height="350"></svg>
+
+        <div class="reveal-text">
+            The two center gray squares are EXACTLY the same color<br>
+            RGB(128, 128, 128) • #808080
+        </div>
+
+        <div class="instruction">
+            Context dramatically alters perception: The same gray appears lighter against dark and darker against light
+        </div>
+    </div>
+
+    <script>
+        const svg = d3.select("#main-demo");
+        const grayValue = 128;
+        const grayColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
+
+        // Create gradient backgrounds for smooth transition
+        const defs = svg.append("defs");
+
+        // Dark to light gradient
+        const gradient = defs.append("linearGradient")
+            .attr("id", "backgroundGradient")
+            .attr("x1", "0%")
+            .attr("x2", "100%");
+
+        gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#000000");
+
+        gradient.append("stop")
+            .attr("offset", "35%")
+            .attr("stop-color", "#1a1a1a");
+
+        gradient.append("stop")
+            .attr("offset", "65%")
+            .attr("stop-color", "#e0e0e0");
+
+        gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#ffffff");
+
+        // Main background with gradient
+        svg.append("rect")
+            .attr("x", 0)
+            .attr("y", 50)
+            .attr("width", 750)
+            .attr("height", 250)
+            .attr("fill", "url(#backgroundGradient)");
+
+        // Left gray square on dark background
+        svg.append("rect")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("width", 300)
+            .attr("height", 250)
+            .attr("fill", "#0a0a0a");
+
+        svg.append("rect")
+            .attr("x", 150)
+            .attr("y", 125)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", grayColor)
+            .attr("stroke", "none");
+
+        // Right gray square on light background
+        svg.append("rect")
+            .attr("x", 400)
+            .attr("y", 50)
+            .attr("width", 300)
+            .attr("height", 250)
+            .attr("fill", "#f5f5f5");
+
+        svg.append("rect")
+            .attr("x", 500)
+            .attr("y", 125)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", grayColor)
+            .attr("stroke", "none");
+
+        // Add subtle drop shadow for depth
+        const filter = defs.append("filter")
+            .attr("id", "shadow");
+
+        filter.append("feDropShadow")
+            .attr("dx", 0)
+            .attr("dy", 2)
+            .attr("stdDeviation", 3)
+            .attr("flood-opacity", 0.2);
+
+        // Apply shadow to center squares
+        svg.selectAll("rect")
+            .filter((d, i) => i === 2 || i === 4)
+            .attr("filter", "url(#shadow)");
+
+        // Labels
+        svg.append("text")
+            .attr("x", 200)
+            .attr("y", 35)
+            .style("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "500")
+            .style("fill", "#333")
+            .text("Dark Background");
+
+        svg.append("text")
+            .attr("x", 550)
+            .attr("y", 35)
+            .style("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "500")
+            .style("fill", "#333")
+            .text("Light Background");
+
+        // Add measurement indicators
+        const measurementY = 320;
+
+        // Left measurement line
+        svg.append("line")
+            .attr("x1", 150)
+            .attr("y1", 225)
+            .attr("x2", 150)
+            .attr("y2", measurementY)
+            .attr("stroke", "#999")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "2,2");
+
+        svg.append("line")
+            .attr("x1", 250)
+            .attr("y1", 225)
+            .attr("x2", 250)
+            .attr("y2", measurementY)
+            .attr("stroke", "#999")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "2,2");
+
+        // Right measurement line
+        svg.append("line")
+            .attr("x1", 500)
+            .attr("y1", 225)
+            .attr("x2", 500)
+            .attr("y2", measurementY)
+            .attr("stroke", "#999")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "2,2");
+
+        svg.append("line")
+            .attr("x1", 600)
+            .attr("y1", 225)
+            .attr("x2", 600)
+            .attr("y2", measurementY)
+            .attr("stroke", "#999")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "2,2");
+
+        // Connecting line showing same color
+        svg.append("line")
+            .attr("x1", 250)
+            .attr("y1", measurementY)
+            .attr("x2", 500)
+            .attr("y2", measurementY)
+            .attr("stroke", grayColor)
+            .attr("stroke-width", 3);
+
+        svg.append("text")
+            .attr("x", 375)
+            .attr("y", measurementY - 5)
+            .style("text-anchor", "middle")
+            .style("font-size", "12px")
+            .style("fill", "#666")
+            .text("Identical Color");
+    </script>
+</body>
+</html>

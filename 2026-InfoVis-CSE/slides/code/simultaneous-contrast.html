@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simultaneous Contrast Demonstration</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 20px;
+            background: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+        .demo-container {
+            margin: 30px 0;
+        }
+        .caption {
+            font-size: 16px;
+            color: #555;
+            margin-top: 15px;
+        }
+        .reveal-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d73027;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Simultaneous Contrast: Context Changes Perception</h2>
+
+        <!-- Classic Gray on Different Backgrounds -->
+        <div class="demo-container">
+            <svg id="contrast-demo" width="700" height="250"></svg>
+            <div class="caption">The same gray appears lighter on dark background and darker on light background</div>
+        </div>
+
+        <!-- Color Context Version -->
+        <div class="demo-container">
+            <svg id="color-contrast" width="700" height="250"></svg>
+            <div class="caption">The same orange appears more yellow on red and more red on yellow</div>
+        </div>
+
+        <div class="reveal-text">
+            Both center squares in each demo are EXACTLY the same color<br>
+            Gray: RGB(128, 128, 128) | Orange: RGB(255, 165, 0)
+        </div>
+
+        <!-- Albers-style Nested Squares -->
+        <div class="demo-container">
+            <h3 style="font-size: 18px;">Classic Albers Demonstration</h3>
+            <svg id="albers-demo" width="700" height="300"></svg>
+            <div class="caption">One color appears as two different colors due to surrounding context</div>
+        </div>
+    </div>
+
+    <script>
+        // Demo 1: Gray on Black/White
+        const svg1 = d3.select("#contrast-demo");
+        const grayValue = 128;
+        const grayColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
+
+        // Left side - dark background
+        svg1.append("rect")
+            .attr("x", 50)
+            .attr("y", 25)
+            .attr("width", 250)
+            .attr("height", 200)
+            .attr("fill", "#1a1a1a");
+
+        svg1.append("rect")
+            .attr("x", 125)
+            .attr("y", 75)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", grayColor);
+
+        // Right side - light background
+        svg1.append("rect")
+            .attr("x", 400)
+            .attr("y", 25)
+            .attr("width", 250)
+            .attr("height", 200)
+            .attr("fill", "#f0f0f0");
+
+        svg1.append("rect")
+            .attr("x", 475)
+            .attr("y", 75)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", grayColor);
+
+        // Labels
+        svg1.append("text")
+            .attr("x", 175)
+            .attr("y", 245)
+            .style("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Dark Background");
+
+        svg1.append("text")
+            .attr("x", 525)
+            .attr("y", 245)
+            .style("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Light Background");
+
+        // Demo 2: Orange on Red/Yellow
+        const svg2 = d3.select("#color-contrast");
+        const orangeColor = "rgb(255, 165, 0)";
+
+        // Left side - red background
+        svg2.append("rect")
+            .attr("x", 50)
+            .attr("y", 25)
+            .attr("width", 250)
+            .attr("height", 200)
+            .attr("fill", "#dc143c");
+
+        svg2.append("rect")
+            .attr("x", 125)
+            .attr("y", 75)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", orangeColor);
+
+        // Right side - yellow background
+        svg2.append("rect")
+            .attr("x", 400)
+            .attr("y", 25)
+            .attr("width", 250)
+            .attr("height", 200)
+            .attr("fill", "#ffd700");
+
+        svg2.append("rect")
+            .attr("x", 475)
+            .attr("y", 75)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", orangeColor);
+
+        // Labels
+        svg2.append("text")
+            .attr("x", 175)
+            .attr("y", 245)
+            .style("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Red Background");
+
+        svg2.append("text")
+            .attr("x", 525)
+            .attr("y", 245)
+            .style("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Yellow Background");
+
+        // Demo 3: Albers-style nested squares
+        const svg3 = d3.select("#albers-demo");
+        const testColor = "rgb(150, 100, 200)"; // Purple
+
+        // Create two different contexts
+        // Context 1: Green surround
+        const g1 = svg3.append("g")
+            .attr("transform", "translate(100, 50)");
+
+        g1.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 200)
+            .attr("height", 200)
+            .attr("fill", "#2ca02c");
+
+        g1.append("rect")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", testColor);
+
+        // Context 2: Orange surround
+        const g2 = svg3.append("g")
+            .attr("transform", "translate(400, 50)");
+
+        g2.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 200)
+            .attr("height", 200)
+            .attr("fill", "#ff7f0e");
+
+        g2.append("rect")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", testColor);
+
+        // Add connecting line to show they're the same
+        svg3.append("line")
+            .attr("x1", 250)
+            .attr("y1", 150)
+            .attr("x2", 450)
+            .attr("y2", 150)
+            .attr("stroke", testColor)
+            .attr("stroke-width", 3)
+            .attr("stroke-dasharray", "5,5");
+
+        svg3.append("text")
+            .attr("x", 350)
+            .attr("y", 145)
+            .style("text-anchor", "middle")
+            .style("font-size", "12px")
+            .style("fill", "#666")
+            .text("Same color");
+
+        // Labels
+        svg3.append("text")
+            .attr("x", 200)
+            .attr("y", 280)
+            .style("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Green Context");
+
+        svg3.append("text")
+            .attr("x", 500)
+            .attr("y", 280)
+            .style("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("Orange Context");
+    </script>
+</body>
+</html>
