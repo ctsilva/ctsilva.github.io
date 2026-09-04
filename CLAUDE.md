@@ -53,9 +53,12 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Fridays 11AM-1:30PM (Sept 4 - Dec 11), Jacobs Hall 6 MetroTech Room 315
 - **No class**: Nov 27 (Thanksgiving Recess). Fall Break (Oct 12) is a Monday and does not affect this course.
 - Sources copied from 2025; rendered `.html` was **not** copied — run `quarto render` per week before class.
-- **Blocked on TA assignment**: the lab decks still point at the 2025 TA's personal resources —
-  Observable notebooks under `observablehq.com/@rk2546/2025-infovis-cse_week-N-lab` and NYU Zoom rooms
-  (`nyu.zoom.us/j/92815268504`, `/2817596431`, `/98539408719`). These need to be re-pointed once a TA is named.
+- **TA (labs)**: Ryan Kim (returning from 2025; site `rkim.dev`, Observable handle `@rk2546`). Listed on
+  home, syllabus, and week1-syllabus slides. Grader still TBA.
+- **Still open**: the lab decks point at Ryan's 2025 resources — Observable notebooks under
+  `observablehq.com/@rk2546/2025-infovis-cse_week-N-lab` and NYU Zoom rooms (`nyu.zoom.us/j/92815268504`,
+  `/2817596431`, `/98539408719`). Confirm with Ryan whether the notebooks get 2026 copies and whether the
+  Zoom rooms are unchanged, then update the lab decks. TA office hours are not yet set.
 
 #### 2026-VisML-CDS (DS-GA 3001)
 - **Meeting pattern (confirmed)**: `.001` Lecture **Mondays 4:55-6:55 PM** (120 min); `.002` Lab

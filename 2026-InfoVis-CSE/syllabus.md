@@ -12,7 +12,7 @@ author_profile: true
 
 **Instructor:** Claudio Silva (csilva@nyu.edu)
 
-**Teaching Assistant (labs):** TBA
+**Teaching Assistant (labs):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
 
 **Grader:** TBA
 
