@@ -136,7 +136,7 @@ Create visualizations for understanding deep neural networks, including network 
 ## Getting Help
 
 - **Discord:** Primary communication channel for assignment questions
-- **Office Hours:** Posted on Discord, available for one-on-one help
+- **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153 - available for one-on-one help
 - **Peer Discussion:** Encouraged, but cite any collaboration in submissions
 - **Online Resources:** Permitted with proper attribution
 

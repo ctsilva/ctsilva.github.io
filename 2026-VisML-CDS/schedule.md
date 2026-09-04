@@ -296,7 +296,7 @@ author_profile: true
 1. **No Class:** September 7 (Labor Day) and October 12 (Fall Break)
 2. **Make-up Lecture:** Wednesday, October 14 - the University runs a Monday schedule that day
 3. **Last Lab:** Tuesday, December 8 - Week 14 (Dec 14) has no lab session
-4. **Office Hours:** TBA
+4. **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153
 5. **Slides:** Available after each class on course website
 6. **Recordings:** Posted for registered students who miss class
 

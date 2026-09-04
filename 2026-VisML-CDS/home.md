@@ -211,7 +211,7 @@ author_profile: true
 
 - **Discord:** Invite link to be posted before the first class
 - **Brightspace:** [Course materials and submissions]
-- **Office Hours:** TBA
+- **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153
 
 ## Course Description
 

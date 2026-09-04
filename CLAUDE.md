@@ -53,12 +53,15 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Fridays 11AM-1:30PM (Sept 4 - Dec 11), Jacobs Hall 6 MetroTech Room 315
 - **No class**: Nov 27 (Thanksgiving Recess). Fall Break (Oct 12) is a Monday and does not affect this course.
 - Sources copied from 2025; rendered `.html` was **not** copied — run `quarto render` per week before class.
-- **TA (labs)**: Ryan Kim (returning from 2025; site `rkim.dev`, Observable handle `@rk2546`). Listed on
-  home, syllabus, and week1-syllabus slides. Grader still TBA.
-- **Still open**: the lab decks point at Ryan's 2025 resources — Observable notebooks under
+- **Staff**: TA (labs) and Grader are both **Ryan Kim** (returning from 2025; site https://www.rkim.dev,
+  Observable handle `@rk2546`). Listed on home, syllabus, and week1-syllabus slides.
+- **Instructor office hours**: Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153 (right after class).
+- **Still stale in the lab decks**: they point at Ryan's 2025 resources — Observable notebooks under
   `observablehq.com/@rk2546/2025-infovis-cse_week-N-lab` and NYU Zoom rooms (`nyu.zoom.us/j/92815268504`,
-  `/2817596431`, `/98539408719`). Confirm with Ryan whether the notebooks get 2026 copies and whether the
-  Zoom rooms are unchanged, then update the lab decks. TA office hours are not yet set.
+  `/2817596431`, `/98539408719`), plus TA office hours listed as "Wednesdays 2-3PM, 8th floor common area
+  @ 370 Jay". Confirm with Ryan whether the notebooks get 2026 copies, whether the Zoom rooms and office
+  hours are unchanged, and whether the separate "Grader TA" Zoom is still needed now that one person holds
+  both roles. Then update the lab decks.
 
 #### 2026-VisML-CDS (DS-GA 3001)
 - **Meeting pattern (confirmed)**: `.001` Lecture **Mondays 4:55-6:55 PM** (120 min); `.002` Lab
@@ -69,6 +72,8 @@ The repository includes complete course websites as subdirectories:
 - **No class**: Sept 7 (Labor Day), Oct 12 (Fall Break). Make-up lecture Wed Oct 14 (University runs a Monday
   schedule). The Tuesday lab still meets Oct 13 — the one week where the lab precedes its lecture.
 - **No final exam** during exam week. Reading Day is Tue Dec 15 (no classes).
+- **Instructor office hours**: Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153 (Brooklyn, not Washington Square).
+- **TA still unassigned** — pages and decks say TBA.
 - **Registrar deadlines (Fall 2026)**: add/drop full-semester Sept 15; withdraw & pass/fail Nov 25;
   Thanksgiving recess Thu-Fri Nov 26-27 (does not affect Mon/Tue sessions).
 - Sources copied from 2025-VisML-CSE; rendered `.html` was **not** copied — run `quarto render` per week before class.

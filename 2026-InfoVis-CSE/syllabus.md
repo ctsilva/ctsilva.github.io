@@ -14,7 +14,7 @@ author_profile: true
 
 **Teaching Assistant (labs):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
 
-**Grader:** TBA
+**Grader:** Ryan Kim ([rkim.dev](https://www.rkim.dev))
 
 ## Class Information
 

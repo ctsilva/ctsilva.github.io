@@ -115,7 +115,7 @@ author_profile: true
 
 ### Course-specific
 - **Discord Server:** Invite link to be posted before the first class
-- **Office Hours:** TBA
+- **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153
 - **Brightspace:** For assignment submission
 
 ### Online Communities

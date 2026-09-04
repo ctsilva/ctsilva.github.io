@@ -6,7 +6,7 @@ author_profile: true
 
 **Instructor:** Claudio Silva (csilva@nyu.edu)
 **TA (Labs):** Ryan Kim ([rkim.dev](https://www.rkim.dev))
-**Grader:** TBA
+**Grader:** Ryan Kim ([rkim.dev](https://www.rkim.dev))
 **Meeting Times:** Fridays 11:00 AM - 1:30 PM
 **Classroom:** Jacobs Hall, 6 MetroTech Center, Room 315, Brooklyn Campus
 **Semester:** September 4 - December 11, 2026
@@ -205,4 +205,4 @@ author_profile: true
 - **Discord:** Invite link to be posted before the first class
 - **Brightspace:** [Course materials and submissions]
 - **Observable:** [Create account at observablehq.com](https://observablehq.com)
-- **Office Hours:** TBA
+- **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153

@@ -220,7 +220,7 @@ Also, please pay attention to notable dates such as Add/Drop, Withdrawal, etc.
 
 **Email:** For private matters only
 
-**Office Hours:** Will be posted on Discord
+**Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153
 
 ---
 

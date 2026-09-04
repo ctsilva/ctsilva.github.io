@@ -96,6 +96,6 @@ author_profile: true
 ## Getting Help
 
 - **Course Discord:** Invite link to be posted before the first class
-- **Office Hours:** TBA
+- **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153
 - **Stack Overflow:** Use tags `d3.js`, `vega-lite`, `observable`
 - **Observable Forum:** [talk.observablehq.com](https://talk.observablehq.com/)
