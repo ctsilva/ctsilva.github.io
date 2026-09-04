@@ -24,6 +24,8 @@ author_profile: true
 
 **Classroom:** Jacobs Hall, 6 MetroTech Center, Room 315, Brooklyn Campus
 
+**Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153 (right after class)
+
 **Important Dates:**
 - First class: September 4
 - Add/drop deadline for full-semester classes: September 15 (after this date, dropping results in a W)
