@@ -6,7 +6,7 @@ The slides I showed this week can be found [here](https://docs.google.com/presen
 
 Any questions about what we cover during the lab can be directed to the teaching assistant's email (TBD). 
 
-Office hours are TBD and will be announced via course communication channels.
+Instructor office hours are Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153. TA office hours are TBD and will be announced via course communication channels.
 
 Please join the course communication channels for announcements and discussions. 
 

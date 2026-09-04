@@ -23,5 +23,6 @@ The slides for this week's lab can be found [here](week3-slides.html).
 
 ## Miscellaneous Notes
 * Assignment information will be posted to course communication channels.
+* Instructor office hours: Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153.
 * TA office hours are TBD and will be announced via Discord.
 * Next week: Model Assessment and Performance Metrics visualization
