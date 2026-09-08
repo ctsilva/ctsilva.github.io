@@ -20,12 +20,12 @@ The course includes six exercises designed to build your skills in visualization
 
 | Assignment | Released | Due Date | Weight | Topic |
 |------------|----------|----------|--------|-------|
-| [Exercise 1](/2026-VisML-CDS/assignments/exercise1) | Week 1 (Sept 14) | **Sept 21** | 5% | Visualization Critique |
-| [Exercise 2](/2026-VisML-CDS/assignments/exercise2) | Week 2 (Sept 21) | **Sept 28** | 5% | Color Palette Design |
-| [Exercise 3](/2026-VisML-CDS/assignments/exercise3) | Week 3 (Sept 28) | **Oct 5** | 8.33% | Model Assessment Visualization |
-| [Exercise 4](/2026-VisML-CDS/assignments/exercise4) | Week 4 (Oct 5) | **Oct 19** | 8.33% | Interactive Explainer |
-| [Exercise 5](/2026-VisML-CDS/assignments/exercise5) | Week 7 (Oct 26) | **Nov 2** | 8.33% | Dimensionality Reduction Dashboard |
-| [Exercise 6](/2026-VisML-CDS/assignments/exercise6) | Week 8 (Nov 2) | **Nov 9** | 8.33% | Deep Learning Visualization |
+| [Exercise 1](/2026-VisML-CDS/assignments/exercise1) | Week 1 (Sept 8) | **Sept 15** | 5% | Visualization Critique |
+| [Exercise 2](/2026-VisML-CDS/assignments/exercise2) | Week 2 (Sept 15) | **Sept 22** | 5% | Color Palette Design |
+| [Exercise 3](/2026-VisML-CDS/assignments/exercise3) | Week 3 (Sept 22) | **Sept 29** | 8.33% | Model Assessment Visualization |
+| [Exercise 4](/2026-VisML-CDS/assignments/exercise4) | Week 4 (Sept 29) | **Oct 13** | 8.33% | Interactive Explainer |
+| [Exercise 5](/2026-VisML-CDS/assignments/exercise5) | Week 7 (Oct 20) | **Oct 27** | 8.33% | Dimensionality Reduction Dashboard |
+| [Exercise 6](/2026-VisML-CDS/assignments/exercise6) | Week 8 (Oct 27) | **Nov 3** | 8.33% | Deep Learning Visualization |
 
 **Total Exercise Weight:** 43.32% of final grade
 

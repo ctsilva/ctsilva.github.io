@@ -12,31 +12,29 @@ author_profile: true
 
 **Instructor:** Claudio Silva (csilva@nyu.edu); [webpage](https://ctsilva.github.io)
 
-**Teaching Assistant:** TBA
+**Session Leader (labs):** Bhavya Matam (bm3792@nyu.edu)
 
-**Grader:** TBA
+**Grader:** Bhavya Matam (bm3792@nyu.edu)
 
 **Instruction Mode:** In-Person
 
-**Dates:** Fall 2026 (September 14 - December 14, 2026)
+**Dates:** Fall 2026 (September 8 - December 8, 2026)
 
 **Meeting Times:**
 
 DS-GA 3001.001 (Lecture)  
-Mondays 4:55 PM - 6:55 PM  
+Tuesdays 4:55 PM - 6:55 PM  
 Classroom: 60 Fifth Avenue, Room 150, Washington Square Campus
 
 DS-GA 3001.002 (Lab)  
 Tuesdays 7:10 PM - 8:00 PM  
 Classroom: 60 Fifth Avenue, Room 150, Washington Square Campus
 
-The lab meets the day after each lecture and reinforces that week's material with hands-on work. The first lecture is Monday, September 14; the first lab is Tuesday, September 15.
+Both sections meet on the same evening in the same room: the lecture runs 4:55-6:55 PM, and after a short break the lab runs 7:10-8:00 PM and reinforces that week's material with hands-on work. The first class is Tuesday, September 8.
 
 **Important Dates:**
-- No class September 7 (Labor Day)
-- No lecture October 12 (Fall Break)
-- Make-up lecture Wednesday, October 14, 4:55 PM - 6:55 PM (University runs a Monday schedule that day). The lab still meets Tuesday, October 13 — the only week in which the lab precedes the lecture.
-- Last lecture December 14; the final lab session meets Tuesday, December 8
+- All 14 Tuesday sessions meet as scheduled. Labor Day (Sept 7) and Fall Break (Oct 12) both fall on Mondays, and Thanksgiving Recess (Nov 26-27) on Thursday-Friday, so this course loses no meetings.
+- First class September 8; last class December 8
 
 **Class Discord:** Invite link to be posted before the first class
 
@@ -94,7 +92,7 @@ By the end of this course, students will be able to:
 
 ## Course Structure 
 
-The course meets twice a week: a 2-hour lecture on Monday and a 50-minute lab on Tuesday. The lab is a hands-on programming session that complements the theoretical material from the preceding lecture.
+The course meets once a week, in two back-to-back sessions on Tuesday evening: a 2-hour lecture (4:55-6:55 PM) followed by a 50-minute lab (7:10-8:00 PM) in the same room. The lab is a hands-on programming session that complements the theoretical material from the lecture that precedes it.
 
 The course starts with a short primer on visualization. We will introduce machine learning concepts as they are needed in the class. We will cover visualizations for model assessment, white-box and black-box machine learning explainers. After that, we will continue with dimensionality reduction (clustering) techniques (e.g., PCA, t-SNE, UMAP).
 
@@ -131,10 +129,10 @@ Weekly programming assignments will be given for the first half of the semester,
 
 ### Project Timeline
 
-- **Week 2 (Sept 21):** Team formation
-- **Week 4 (Oct 5):** Project proposal due (4 pages)
-- **Week 7 (Oct 26):** Mid-term project update due (1 page)
-- **Weeks 13-14 (Dec 7 & 14):** Final project presentations
+- **Week 2 (Sept 15):** Team formation
+- **Week 4 (Sept 29):** Project proposal due (4 pages)
+- **Week 7 (Oct 20):** Mid-term project update due (1 page)
+- **Weeks 13-14 (Dec 1 & 8):** Final project presentations
 - **December 14:** Final project report due (8 pages)
 
 ## Late Submissions
@@ -148,22 +146,22 @@ It means that after 5 days of being late, your assignment will have a maximum gr
 
 The course schedule is tentative and might need to be adjusted along the way. See the [detailed schedule](/2026-VisML-CDS/schedule) for readings and lab topics.
 
-| Week | Lecture (Mon) | Lab (Tue) | Topic |
-|------|---------------|-----------|-------|
-| 1 | Sept 14 | Sept 15 | Introduction to Visualization for Machine Learning |
-| 2 | Sept 21 | Sept 22 | Perception and Color Theory |
-| 3 | Sept 28 | Sept 29 | Model Assessment and Performance Metrics |
-| 4 | Oct 5 | Oct 6 | White-box Model Visualization |
-| 5 | Oct 14 (Wed make-up) | Oct 13 | Black-box Model Interpretation & Project Discussion |
-| 6 | Oct 19 | Oct 20 | Clustering Visualization |
-| 7 | Oct 26 | Oct 27 | Dimensionality Reduction |
-| 8 | Nov 2 | Nov 3 | Deep Learning Visualization |
-| 9 | Nov 9 | Nov 10 | NLP and Large Language Model Visualization |
-| 10 | Nov 16 | Nov 17 | Topological Data Analysis |
-| 11 | Nov 23 | Nov 24 | Time Series and Streaming Data |
-| 12 | Nov 30 | Dec 1 | Interpretable ML and Fairness |
-| 13 | Dec 7 | Dec 8 | Project Presentations I |
-| 14 | Dec 14 | — | Project Presentations II and Wrap-up |
+| Week | Date (Tue) | Topic |
+|------|------------|-------|
+| 1 | Sept 8 | Introduction to Visualization for Machine Learning |
+| 2 | Sept 15 | Perception and Color Theory |
+| 3 | Sept 22 | Model Assessment and Performance Metrics |
+| 4 | Sept 29 | White-box Model Visualization |
+| 5 | Oct 6 | Black-box Model Interpretation & Project Discussion |
+| 6 | Oct 13 | Clustering Visualization |
+| 7 | Oct 20 | Dimensionality Reduction |
+| 8 | Oct 27 | Deep Learning Visualization |
+| 9 | Nov 3 | NLP and Large Language Model Visualization |
+| 10 | Nov 10 | Topological Data Analysis |
+| 11 | Nov 17 | Time Series and Streaming Data |
+| 12 | Nov 24 | Interpretable ML and Fairness |
+| 13 | Dec 1 | Project Presentations I |
+| 14 | Dec 8 | Project Presentations II and Wrap-up |
 
 ## Software Requirements
 
@@ -197,17 +195,11 @@ Also, please pay attention to notable dates such as Add/Drop, Withdrawal, etc.
 
 ## Important Dates
 
-- **Sept 7:** Labor Day - No Class
-- **Sept 14:** First Lecture
-- **Sept 15:** First Lab
+- **Sept 8:** First Class (lecture and lab)
 - **Sept 15:** Add/drop deadline for full-semester classes (after this date, dropping results in a W)
-- **Oct 12:** Fall Break - No Monday Lecture
-- **Oct 13:** Lab meets as usual (Tuesday)
-- **Oct 14:** Make-up Lecture (Wednesday - University runs a Monday schedule)
 - **Nov 25:** Deadline to withdraw from classes and to request the pass/fail option
-- **Nov 26-27:** Thanksgiving Recess - No Classes (Monday and Tuesday sessions unaffected)
-- **Dec 8:** Last Lab
-- **Dec 14:** Last Lecture
+- **Nov 26-27:** Thanksgiving Recess - No Classes (Thursday-Friday; our Tuesday sessions are unaffected)
+- **Dec 8:** Last Class (lecture and lab)
 - **Dec 14:** Final Project Reports Due
 - **Dec 15:** Reading Day - no classes or required meetings
 - **Exam week:** No final exam is held for this course

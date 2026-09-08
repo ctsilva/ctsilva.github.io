@@ -8,8 +8,8 @@ author_profile: true
 
 **DS-GA 3001: Visualization for Machine Learning - Fall 2026**
 
-**Released:** October 5, 2026  
-**Due:** October 19, 2026 (11:59 PM EST)  
+**Released:** September 29, 2026  
+**Due:** October 13, 2026 (11:59 PM EST)  
 **Weight:** 8.33% of final grade
 
 ---

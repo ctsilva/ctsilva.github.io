@@ -5,26 +5,23 @@ author_profile: true
 ---
 
 **Instructor:** Claudio Silva (csilva@nyu.edu)  
-**Teaching Assistant:** TBA  
-**Lecture (DS-GA 3001.001):** Mondays 4:55 PM - 6:55 PM  
-**Lab (DS-GA 3001.002):** Tuesdays 7:10 PM - 8:00 PM  
+**Session Leader (Labs) & Grader:** Bhavya Matam (bm3792@nyu.edu)  
+**Lecture (DS-GA 3001.001):** Tuesdays 4:55 PM - 6:55 PM  
+**Lab (DS-GA 3001.002):** Tuesdays 7:10 PM - 8:00 PM (same room, right after the lecture)  
 **Classroom:** 60 Fifth Avenue, Room 150, Washington Square Campus (both sessions)  
-**Semester:** September 14 - December 14, 2026  
-**Make-up Class:** Wednesday, October 14 (University runs a Monday schedule that day, replacing Fall Break)
+**Semester:** September 8 - December 8, 2026
 
 [Course Syllabus](/2026-VisML-CDS/syllabus) | [Detailed Schedule](/2026-VisML-CDS/schedule) | [Resources](/2026-VisML-CDS/resources)
 
 ## Announcements
 
-**Welcome to Fall 2026!** Our first lecture is Monday, September 14, and the first lab session is Tuesday, September 15 — note that there is no class on September 7 (Labor Day). Materials will be posted here as the semester progresses.
+**Welcome to Fall 2026!** We meet Tuesdays: lecture 4:55-6:55 PM, then lab 7:10-8:00 PM in the same room. Our first class is Tuesday, September 8. All 14 Tuesday sessions meet as scheduled — Labor Day and Fall Break both fall on Mondays, so this course loses no meetings. Materials will be posted here as the semester progresses.
 
 ⚠️ **Work in progress:** This site is **tentative** and is being actively updated ahead of and during the semester. Schedule, lab sessions, assignments, and posted materials may all change. Students will be notified via Discord and course announcements.
 
 ## Schedule
 
-### No Class (Sept 7) - Labor Day
-
-### Week 1 — Lecture Sept 14 | Lab Sept 15
+### Week 1 — Tuesday, Sept 8
 - **Topics:** Course Introduction, Syllabus, Introduction to Visualization, Hands-on Vega-Lite
 - **Materials:**
   - [Course Introduction & Syllabus](/2026-VisML-CDS/slides/week2-intro.html)
@@ -32,7 +29,7 @@ author_profile: true
   - [Vega-Lite Lab](/2026-VisML-CDS/labs/week2-lab.html)
 - **Assignment:** TBD
 
-### Week 2 — Lecture Sept 21 | Lab Sept 22
+### Week 2 — Tuesday, Sept 15
 - **Topics:** Perception for Design, Color Theory for Visualization
 - **Materials:**
   - [Perception for Design](/2026-VisML-CDS/slides/week3-perception.html)
@@ -40,7 +37,7 @@ author_profile: true
   - [Lab: Perception and Color in Practice](/2026-VisML-CDS/labs/week3-slides.html)
 - **Action Item:** Form project teams this week
 
-### Week 3 — Lecture Sept 28 | Lab Sept 29
+### Week 3 — Tuesday, Sept 22
 - **Topics:** Model Assessment and Evaluation
 - **Materials:**
   - [Model Assessment and Evaluation](/2026-VisML-CDS/slides/week4-model-assessment.html)
@@ -53,7 +50,7 @@ author_profile: true
   - Visual Analytics Systems for Model Performance
   - Calibration Theory and Practice
 
-### Week 4 — Lecture Oct 5 | Lab Oct 6
+### Week 4 — Tuesday, Sept 29
 - **Topics:** Visualization for White-box Machine Learning Models
 - **Materials:**
   - [White-box Model Interpretation](/2026-VisML-CDS/slides/week5-white-box.html)
@@ -69,11 +66,7 @@ author_profile: true
   - Decision Rules and Global Surrogate Models
 - **Milestone:** Project Proposal (4-page writeup) due
 
-### No Class (Oct 12) - Fall Break
-
-### Week 5 — Lecture Oct 14 (Wednesday make-up) | Lab Oct 13
-*Because Fall Break falls on Monday Oct 12, this is the one week where the lab meets before the lecture. Lab plan for that week TBA.*
-
+### Week 5 — Tuesday, Oct 6
 - **Topics:** Black-box Model Interpretation, Project Discussion
 - **Materials:**
   - [Black-box Model Interpretation](/2026-VisML-CDS/slides/week6-black-box.html)
@@ -88,7 +81,7 @@ author_profile: true
   - SHAP (SHapley Additive exPlanations)
   - Project Ideas and Guidelines
 
-### Week 6 — Lecture Oct 19 | Lab Oct 20
+### Week 6 — Tuesday, Oct 13
 - **Topics:** Clustering and Dimensionality Reduction, Default Project Details
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2026-VisML-CDS/slides/week8-clustering.html)
@@ -109,7 +102,7 @@ author_profile: true
   - Local Linear Embedding (LLE)
   - Default Project Overview and Ideas
 
-### Week 7 — Lecture Oct 26 | Lab Oct 27
+### Week 7 — Tuesday, Oct 20
 - **Topics:** Dimensionality Reduction (continued)
 - **Materials:**
   - [Dimensionality Reduction (continued)](/2026-VisML-CDS/slides/week9-dimensionality.html)
@@ -126,7 +119,7 @@ author_profile: true
   - Interactive Dimensionality Reduction Techniques
 - **Milestone:** Project Update (1-page writeup) due
 
-### Week 8 — Lecture Nov 2 | Lab Nov 3
+### Week 8 — Tuesday, Oct 27
 - **Topics:** Deep Learning Visualization Fundamentals
 - **Materials:**
   - [Deep Learning Visualization](/2026-VisML-CDS/slides/week7-deep-learning.html)
@@ -142,7 +135,7 @@ author_profile: true
   - Deep Neural Networks and Composition
   - Interactive Visualization Tools
 
-### Week 9 — Lecture Nov 9 | Lab Nov 10
+### Week 9 — Tuesday, Nov 3
 - **Topics:** Visualization for NLP and Large Language Models
 - **Materials:**
   - [NLP and LLM Visualization](/2026-VisML-CDS/slides/week11-nlp.html)
@@ -162,7 +155,7 @@ author_profile: true
   - Examples of RNN Visualization
   - Examples of LLM Visualization
 
-### Week 10 — Lecture Nov 16 | Lab Nov 17
+### Week 10 — Tuesday, Nov 10
 - **Topics:** Topological Data Analysis
 - **Materials:**
   - [Topological Data Analysis](/2026-VisML-CDS/slides/week10-tda.html)
@@ -179,18 +172,18 @@ author_profile: true
   - Applications in Biology, Chemistry, and Machine Learning
   - TDA Software: GUDHI, scikit-tda, Ripser, KeplerMapper
 
-### Week 11 — Lecture Nov 23 | Lab Nov 24
+### Week 11 — Tuesday, Nov 17
 - **Topics:** TBA
 - **Materials:** *To be posted*
 
-### Week 12 — Lecture Nov 30 | Lab Dec 1
+### Week 12 — Tuesday, Nov 24
 - **Topics:** TBA
 - **Materials:** *To be posted*
 
-### Week 13 — Lecture Dec 7 | Lab Dec 8
+### Week 13 — Tuesday, Dec 1
 - **Topics:** Final Project Presentations I
 
-### Week 14 — Lecture Dec 14 (no lab)
+### Week 14 — Tuesday, Dec 8
 - **Topics:** Final Project Presentations II and Course Wrap-up
 
 ## Assignments
@@ -200,10 +193,10 @@ author_profile: true
 - Programming exercises will be given throughout the first half of the semester
 
 ### Research Project (45% of grade)
-- **Team formation** - *Week 2 (Sept 21)*
-- **Project Proposal** (4-page writeup) - *Week 4 (Oct 5)* - 10%
-- **Project Updates** (1-page writeup) - *Week 7 (Oct 26)* - 10%
-- **Final Project** (8-page writeup + presentation) - *Weeks 13-14 (Dec 7 & 14)* - 25%
+- **Team formation** - *Week 2 (Sept 15)*
+- **Project Proposal** (4-page writeup) - *Week 4 (Sept 29)* - 10%
+- **Project Updates** (1-page writeup) - *Week 7 (Oct 20)* - 10%
+- **Final Project** (8-page writeup + presentation) - *Weeks 13-14 (Dec 1 & 8)*; report due Dec 14 - 25%
 
 ### Class Participation (5% of grade)
 

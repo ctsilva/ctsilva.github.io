@@ -8,16 +8,11 @@ author_profile: true
 
 ⚠️ **Work in progress:** This schedule is **tentative** and is being actively updated ahead of and during the semester. Topics, readings, lab sessions, and due dates may change. Check course announcements and Discord for updates.
 
-*Lecture (DS-GA 3001.001) meets Mondays 4:55 PM - 6:55 PM. Lab (DS-GA 3001.002) meets Tuesdays 7:10 PM - 8:00 PM, the day after each lecture. Both sessions are at 60 Fifth Avenue, Room 150, unless otherwise noted.*
+*Both sessions meet Tuesdays at 60 Fifth Avenue, Room 150: Lecture (DS-GA 3001.001) 4:55 PM - 6:55 PM, then Lab (DS-GA 3001.002) 7:10 PM - 8:00 PM after a short break.*
 
 ---
 
-### September 7
-## Labor Day - No Class
-
----
-
-### Week 1: Lecture Sept 14 | Lab Sept 15
+### Week 1: Tuesday, Sept 8
 ## Introduction to Visualization for Machine Learning
 
 **Lecture Topics:**
@@ -40,7 +35,7 @@ author_profile: true
 
 ---
 
-### Week 2: Lecture Sept 21 | Lab Sept 22
+### Week 2: Tuesday, Sept 15
 ## Perception and Color Theory for Visualization
 
 **Lecture Topics:**
@@ -58,7 +53,7 @@ author_profile: true
 
 ---
 
-### Week 3: Lecture Sept 28 | Lab Sept 29
+### Week 3: Tuesday, Sept 22
 ## Model Assessment and Performance Metrics
 
 **Lecture Topics:**
@@ -75,7 +70,7 @@ author_profile: true
 
 ---
 
-### Week 4: Lecture Oct 5 | Lab Oct 6
+### Week 4: Tuesday, Sept 29
 ## White-box Model Visualization
 
 **Lecture Topics:**
@@ -95,15 +90,8 @@ author_profile: true
 
 ---
 
-### October 12
-## Fall Break - No Class
-
----
-
-### Week 5: Lecture Oct 14 (Wednesday Make-up) | Lab Oct 13
+### Week 5: Tuesday, Oct 6
 ## Black-box Model Interpretation & Project Discussion
-
-*The University runs a Monday schedule on this date, replacing Fall Break. The Tuesday lab meets as usual on Oct 13 — the only week in which the lab precedes its lecture.*
 
 **Lecture Topics:**
 - Partial Dependence Plots (PDP)
@@ -120,7 +108,7 @@ author_profile: true
 
 ---
 
-### Week 6: Lecture Oct 19 | Lab Oct 20
+### Week 6: Tuesday, Oct 13
 ## Clustering Visualization
 
 **Lecture Topics:**
@@ -141,7 +129,7 @@ author_profile: true
 
 ---
 
-### Week 7: Lecture Oct 26 | Lab Oct 27
+### Week 7: Tuesday, Oct 20
 ## Dimensionality Reduction
 
 **Lecture Topics:**
@@ -165,7 +153,7 @@ author_profile: true
 
 ---
 
-### Week 8: Lecture Nov 2 | Lab Nov 3
+### Week 8: Tuesday, Oct 27
 ## Deep Learning Visualization
 
 **Lecture Topics:**
@@ -188,7 +176,7 @@ author_profile: true
 
 ---
 
-### Week 9: Lecture Nov 9 | Lab Nov 10
+### Week 9: Tuesday, Nov 3
 ## NLP and Large Language Model Visualization
 
 **Lecture Topics:**
@@ -208,7 +196,7 @@ author_profile: true
 
 ---
 
-### Week 10: Lecture Nov 16 | Lab Nov 17
+### Week 10: Tuesday, Nov 10
 ## Topological Data Analysis
 
 **Lecture Topics:**
@@ -228,7 +216,7 @@ author_profile: true
 
 ---
 
-### Week 11: Lecture Nov 23 | Lab Nov 24
+### Week 11: Tuesday, Nov 17
 ## Time Series and Streaming Data
 
 **Lecture Topics:**
@@ -246,14 +234,7 @@ author_profile: true
 
 ---
 
-### November 26-27
-## Thanksgiving Recess - No Class
-
-*Note: Thanksgiving recess falls on Thursday and Friday and does not affect our Monday lecture or Tuesday lab.*
-
----
-
-### Week 12: Lecture Nov 30 | Lab Dec 1
+### Week 12: Tuesday, Nov 24
 ## Interpretable ML and Fairness
 
 **Lecture Topics:**
@@ -271,7 +252,7 @@ author_profile: true
 
 ---
 
-### Week 13: Lecture Dec 7 | Lab Dec 8
+### Week 13: Tuesday, Dec 1
 ## Project Presentations I
 
 - Group project presentations (Part 1)
@@ -280,12 +261,15 @@ author_profile: true
 
 ---
 
-### Week 14: Lecture Dec 14 (no lab)
+### Week 14: Tuesday, Dec 8
 ## Project Presentations II
 
 - Group project presentations (Part 2)
 - Course wrap-up
 - Future directions in VisML
+
+**Lab Session:**
+- Presentation overflow and course wrap-up
 
 **Project:** Final reports due December 14
 
@@ -293,20 +277,19 @@ author_profile: true
 
 ## Important Notes
 
-1. **No Class:** September 7 (Labor Day) and October 12 (Fall Break)
-2. **Make-up Lecture:** Wednesday, October 14 - the University runs a Monday schedule that day
-3. **Last Lab:** Tuesday, December 8 - Week 14 (Dec 14) has no lab session
-4. **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153
-5. **Slides:** Available after each class on course website
-6. **Recordings:** Posted for registered students who miss class
+1. **No Cancellations:** Labor Day (Sept 7) and Fall Break (Oct 12) both fall on Mondays, and Thanksgiving Recess (Nov 26-27) on Thursday-Friday, so all 14 Tuesday sessions meet as scheduled
+2. **First Class:** Tuesday, September 8 - **Last Class:** Tuesday, December 8
+3. **Office Hours:** Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153
+4. **Slides:** Available after each class on course website
+5. **Recordings:** Posted for registered students who miss class
 
 ## Assignment Summary
 
 | Type | Due Date | Weight |
 |------|----------|--------|
 | Weekly Assignments | Throughout first half | 50% |
-| Project Proposal (4 pages) | Oct 5 | 10% |
-| Project Update (1 page) | Oct 26 | 10% |
-| Final Project Presentation | Dec 7 / Dec 14 | 10% |
+| Project Proposal (4 pages) | Sept 29 | 10% |
+| Project Update (1 page) | Oct 20 | 10% |
+| Final Project Presentation | Dec 1 / Dec 8 | 10% |
 | Final Project Report (8 pages) | Dec 14 | 15% |
 | Participation | Ongoing | 5% |

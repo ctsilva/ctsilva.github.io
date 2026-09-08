@@ -64,16 +64,22 @@ The repository includes complete course websites as subdirectories:
   both roles. Then update the lab decks.
 
 #### 2026-VisML-CDS (DS-GA 3001)
-- **Meeting pattern (confirmed)**: `.001` Lecture **Mondays 4:55-6:55 PM** (120 min); `.002` Lab
-  **Tuesdays 7:10-8:00 PM** (50 min). Both in 60 Fifth Ave Room 150, cap 75 each. The lab is its own
-  registrar-scheduled section that meets the day *after* each lecture — it is **not** time carved out of
-  the lecture block, so lab content does not consume lecture time.
-- **Term**: Sept 14 - Dec 14. First lab Sept 15, last lab Dec 8 (Week 14 on Dec 14 has no lab).
-- **No class**: Sept 7 (Labor Day), Oct 12 (Fall Break). Make-up lecture Wed Oct 14 (University runs a Monday
-  schedule). The Tuesday lab still meets Oct 13 — the one week where the lab precedes its lecture.
-- **No final exam** during exam week. Reading Day is Tue Dec 15 (no classes).
+- **Meeting pattern (corrected 2026-09-08 from the registrar listing)**: **everything is on Tuesday.**
+  `.001` Lecture **Tuesdays 4:55-6:55 PM** (120 min), then `.002` Lab **Tuesdays 7:10-8:00 PM** (50 min)
+  after a 15-min break, both in 60 Fifth Ave Room 150, cap 75 each. The lab is still its own
+  registrar-scheduled section, so lab content does **not** consume lecture time — but it now lands at the
+  end of a 3-hour evening rather than a day later, so a lab deck that overruns has no overnight reset.
+  (An earlier version of this file recorded a Monday lecture as "confirmed"; that was wrong.)
+- **Term**: 14 Tuesdays, **Sept 8 - Dec 8**, with **no cancellations** — Labor Day (Sept 7) and Fall Break
+  (Oct 12) are Mondays, Thanksgiving (Nov 26-27) is Thu-Fri. No Wednesday make-up is needed.
+- **No final exam** during exam week. Reading Day is Tue Dec 15 (no classes). Final report still due Dec 14
+  (term end), a week after the last class.
 - **Instructor office hours**: Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153 (Brooklyn, not Washington Square).
-- **TA still unassigned** — pages and decks say TBA.
+- **Session leader (labs) & grader**: **Bhavya Matam** (bm3792@nyu.edu).
+- **Known inconsistency, not yet resolved**: the project proposal is due Week 4, but the project-discussion
+  deck (`slides/week6-project-discussion.qmd`, shown Week 5) presents proposal guidelines *after* it is due.
+  That deck also still carries 2025 content — "Parikshit Solunke (Lead TA)", proposal due "October 13
+  (during Fall Break)", report due "December 11". Decide the proposal date, then fix the deck.
 - **Registrar deadlines (Fall 2026)**: add/drop full-semester Sept 15; withdraw & pass/fail Nov 25;
   Thanksgiving recess Thu-Fri Nov 26-27 (does not affect Mon/Tue sessions).
 - Sources copied from 2025-VisML-CSE; rendered `.html` was **not** copied — run `quarto render` per week before class.
@@ -82,24 +88,24 @@ The repository includes complete course websites as subdirectories:
 
   | Week | Date | Lecture deck(s) | Slides | Lab deck | Slides |
   |------|------|-----------------|--------|----------|--------|
-  | 1 | Sept 14 | week2-intro + week2-infovis | 79 over | week2-lab | 17 ok |
-  | 2 | Sept 21 | week3-perception + week3-color | 60 at limit | week3-slides | 11 ok |
-  | 3 | Sept 28 | week4-model-assessment | 51 ok | *none — see below* | — |
-  | 4 | Oct 5 | week5-white-box | 64 slightly over | week5-lab | 7 ok |
-  | 5 | Oct 14 | week6-black-box + week6-project-discussion | 82 over | week6-lab | 34 over |
-  | 6 | Oct 19 | week8-clustering + default-project | 57 ok | week7-lab | 39 over |
-  | 7 | Oct 26 | week9-dimensionality | 21 ok | week8-lab | 3 ok |
-  | 8 | Nov 2 | week7-deep-learning | 24 ok | week9-lab | 31 over |
-  | 9 | Nov 9 | week11-nlp | 35 ok | week11-lab | 51 way over |
-  | 10 | Nov 16 | week10-tda | 99 way over | week12-lab | 35 over |
-  | 11 | Nov 23 | Time Series — no deck yet | — | — | — |
-  | 12 | Nov 30 | Interpretable ML & Fairness — no deck yet | — | — | — |
+  | 1 | Sept 8 | week2-intro + week2-infovis | 79 over | week2-lab | 17 ok |
+  | 2 | Sept 15 | week3-perception + week3-color | 60 at limit | week3-slides | 11 ok |
+  | 3 | Sept 22 | week4-model-assessment | 51 ok | *none — see below* | — |
+  | 4 | Sept 29 | week5-white-box | 64 slightly over | week5-lab | 7 ok |
+  | 5 | Oct 6 | week6-black-box + week6-project-discussion | 82 over | week6-lab | 34 over |
+  | 6 | Oct 13 | week8-clustering + default-project | 57 ok | week7-lab | 39 over |
+  | 7 | Oct 20 | week9-dimensionality | 21 ok | week8-lab | 3 ok |
+  | 8 | Oct 27 | week7-deep-learning | 24 ok | week9-lab | 31 over |
+  | 9 | Nov 3 | week11-nlp | 35 ok | week11-lab | 51 way over |
+  | 10 | Nov 10 | week10-tda | 99 way over | week12-lab | 35 over |
+  | 11 | Nov 17 | Time Series — no deck yet | — | — | — |
+  | 12 | Nov 24 | Interpretable ML & Fairness — no deck yet | — | — | — |
 
   Lecture problem is concentrated: **Week 10 TDA (99 slides)**, then Weeks 5 and 1. Labs run long more often
   (six of nine) because 50 min is tight — but lab overflow is far less disruptive than lecture overflow.
 
 - **Unresolved lab materials.** Nine lab decks exist as `.qmd` and are scheduled. Still open:
-  - **Model Assessment lab** (2026 Week 3, Sept 28). In 2025 this deck lived only in external Google Slides
+  - **Model Assessment lab** (2026 Week 3, Sept 22). In 2025 this deck lived only in external Google Slides
     (linked from `labs/week4-recap.md`), never in the repo — so it silently dropped out of the schedule.
     Currently listed on home/schedule as *"materials in preparation"*.
   - **`labs/week10-lab/`** holds only a recap; the 2025 session was a guest presentation (Parikshit,
