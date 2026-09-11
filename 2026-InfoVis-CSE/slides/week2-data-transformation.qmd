@@ -1,7 +1,7 @@
 ---
 title: "Week 2: Analytical Questions and Data Transformation"
 subtitle: "CS-GY 6313 Information Visualization"
-author: "Parikshit Solunke"
+author: "Claudio Silva"
 institute: "New York University"
 date: "September 11, 2026"
 format:
@@ -37,6 +37,9 @@ This lecture incorporates materials from:
 - **Prof. Enrico Bertini** (NYU)
   - Data abstraction and analytical questions materials
   - *Used with permission*
+
+- **Parikshit Solunke** (NYU)
+  - Slide development and revisions for the Fall 2025 offering
   
 ## Today's Agenda
 
@@ -63,16 +66,15 @@ This lecture incorporates materials from:
 :::
 
 ::: {.column width="50%"}
-### Part 3 
+### Part 3
+- Real-world data challenges and cleaning
+- Transformation operations
 - SQL operations and relational algebra
 - Roll-up and drill-down operations
 - Tidy data principles
-- Real-world data challenges
-- Transformation pipelines and tools
+- Tools and best practices
 :::
 ::::
-
----
 
 # Recapitulation: Data Fundamentals
 
@@ -130,7 +132,7 @@ Complete this together - what happens at each stage?
 ::: {.notes}
 You can think of Visualization as a process of creating an abstract representation of real world events. Producing a visualization is basically applying transformations and encodings to change the representation of data in a way that's useful.
 
-You have some real world phenomena, you meaasure the phenomena, then you decide what data model is best suited, and then finally you decide how to best visually represent data. 
+You have some real world phenomena, you measure the phenomena, then you decide what data model is best suited, and then finally you decide how to best visually represent data. 
 :::
 
 ## Datasets = Items + Attributes
@@ -152,7 +154,7 @@ You have some real world phenomena, you meaasure the phenomena, then you decide 
 - Examples: 
 
 ::: {.notes}
-For example - consider a census dataset, could you think of what an items would be and what attributes it could have
+For example - consider a census dataset, could you think of what the items would be and what attributes it could have
 :::
 
 ---
@@ -205,25 +207,26 @@ Complete the table with examples:
 
 
 :::{.notes}
-Steven's proposed a classifcation which instead of dividing quantitative values into discrete and continuos, it looks at them like intervals and ratios 
+Stevens proposed a classification which, instead of dividing quantitative values into discrete and continuous, looks at them as intervals and ratios.
 
- Colors, names, IDs |
-| **Ordinal** | Ordered categories | =, ≠, <, > | Rankings, grades |
-| **Interval** | Numeric, no true zero | =, ≠, <, >, - | Temperature (°C or °F only, Kelvin has a true 0 ), dates |
-| **Ratio** | Numeric, true zero | =, ≠, <, >, -, % | Height, weight, age, income |
+ANSWER KEY for the Examples column:
+
+- **Nominal**: Colors, names, IDs
+- **Ordinal**: Rankings, grades
+- **Interval**: Temperature (°C or °F only — Kelvin has a true zero), dates
+- **Ratio**: Height, weight, age, income
 :::
 ---
 
 ### Why is it useful to identify attribute types?
 
 ::: {.fragment}
-<br>
-</br>
+<br/>
 Types provide guidance in selecting appropriate graphical encoding strategies...
 :::
 
 :::{.notes}
-In visualization its important to think of attribute types because doing this simplifies the process of deciding how to graphically represent your data.
+In visualization it's important to think of attribute types because doing this simplifies the process of deciding how to graphically represent your data.
 :::
 ---
 
@@ -251,7 +254,7 @@ Nominal or categorical attributes can usually be arranged arbitrarily.
 ![](figs/spatial-metaphors.png){width="90%"}
 
 :::{.notes}
-If you have spatial data, you can use various spatial metaphors to represent it, here it's NYC neighboorhoods, so you visualize the data as a choropleth map.
+If you have spatial data, you can use various spatial metaphors to represent it, here it's NYC neighborhoods, so you visualize the data as a choropleth map.
 :::
 
 ---
@@ -260,7 +263,7 @@ If you have spatial data, you can use various spatial metaphors to represent it,
 ![](figs/divergent-color-scale.png){width="100%"}
 
 :::{.notes}
-If you have divergent quantitative data, i.e. some sort of itnerval, you can use a divergent color scale, with separate hues for negative values and separate ones for positive values.
+If you have divergent quantitative data, i.e. some sort of interval, you can use a divergent color scale, with separate hues for negative values and separate ones for positive values.
 :::
 
 ---
@@ -311,7 +314,7 @@ If you have divergent quantitative data, i.e. some sort of itnerval, you can use
 - Examples: Sales revenue, temperature readings, counts
 - Used for: Sum, count, average, std. dev, min/max
 
-*Not a strict distinction. The same variable may be treated either way depending on the task. For example - Weather if described as - Hot/Cold(N) vs Temparature Values(Q)*
+*Not a strict distinction. The same variable may be treated either way depending on the task. For example — whether described as Hot/Cold (N) vs. Temperature Values (Q)*
 
 :::{.notes}
 You can also classify attributes into either dimensions and measures, - dimensions are usually categorical values - which can be used for grouping, splitting, filtering purposes, meanwhile measures refer to any quantitative values that you can run aggregations and other operations on. Note that this is not a strict distinction, the same variable can be described both as a measure and dimension - for instance- temperature.
@@ -358,8 +361,6 @@ From Jeff Heer's materials on distinguishing between formal data models and conc
 
 **Key Point**: Same data, different analytical possibilities depending on measurement scale
 
----
-
 # Part 2: Analytical Questions
 
 ## Visualization as a Tool to Answer Questions with Data
@@ -385,27 +386,45 @@ However, the type of questions you can ask vary a lot, and can be broadly catego
 
 ![](figs/flight-data-intro.png){width="100%"}
 
+::: {.notes}
+Pure transition slide - read it and move straight on to the table.
+:::
+
 ---
 
 ## Example: NYC Flight Delays Data
 
-![](figs/flight-data-table.png){width="100%"}
+**The raw data:** one row per carrier per departure hour.
+
+| carrier | hour | avg_total_delay (min) |
+|---------|------|-----------------------|
+| 9E      | 5    | …                     |
+| 9E      | 6    | …                     |
+| …       | …    | …                     |
+| WN      | 23   | …                     |
+
+Nine carriers (9E, AA, B6, DL, EV, MQ, UA, US, WN) × hours 5–23 ≈ **170 rows**.
 
 :::{.notes}
-This is a table showing the average flight delay for different airlines, for a given hour in the day.
-:::
+The raw data is a plain table - about 170 rows of carrier, hour, average delay. Ask them to picture scanning that table while holding the three questions on the next slide in their head.
 
+Housekeeping, for you: the table screenshot that originally lived here did not survive the migration from the 2025 deck; the image that was in this slot was a mis-filed borough bar chart. This schema stands in for it - no invented numbers.
+:::
 ---
 
 ## Domain Questions: Flight Data
 
-![](figs/flight-data-domain-questions.png){width="100%"}
-
-:::{.notes}
-You can ask a variety of questions from this, for instance - 
-However, simply by looking at the table, it is really hard to answer these questions.
+::: {.incremental}
+- **When** are delays more common during the day?
+- **Which airlines** experience high amounts of delays?
+- Do all airlines experience the **same temporal patterns** in terms of delays?
 :::
 
+:::{.notes}
+Reveal the three one at a time and, for each, ask someone to answer it from the 170-row table. They cannot - not reliably, not quickly. That failure is the point: these are perfectly reasonable questions and the table is the wrong instrument.
+
+Then advance - the next slide answers all three at a glance.
+:::
 ---
 
 ## Visualization Answers All Questions
@@ -423,11 +442,11 @@ But as soon as you visualize this data, you can find the answers to the question
 ![](figs/vision-zero-example1.png){width="100%"}
 
 :::{.notes}
-Here, we have a domain question about vision zero which is - 
+Here we have a domain question about Vision Zero: "Did Vision Zero improve the situation since when it was implemented?"
 
-(read)
+The data question underneath it: "How did the number of weekly injuries change during the last ten years?"
 
-But what you notice is that the question is vague - What do you mean by improve? What do you mean by situation - however when you specify what you mean - you can answer the question from the data. The question "(read)" is an example of a data q. It is specific, and answerable.
+But what you notice is that the question is vague - What do you mean by improve? What do you mean by situation - however, when you specify what you mean, you can answer the question from the data. "How did the number of weekly injuries change during the last ten years?" is a data question - specific, and answerable.
 :::
 
 ---
@@ -438,7 +457,9 @@ But what you notice is that the question is vague - What do you mean by improve?
 
 
 :::{.notes}
-You can start out with the same domain question and ask different data questions based on your interpretation, and the basis of a good visualization is to be able to do this translation from domain to data question well.
+Same domain question, different data question: "How did the monthly number of injuries change during the last 5 years across the NYC boroughs?" Monthly instead of weekly, five years instead of ten, and now split by borough.
+
+You can start from the same domain question and land on very different data questions depending on your interpretation. The basis of a good visualization is doing this translation well - and the next slide lists the knobs you turned.
 :::
 
 ---
@@ -455,7 +476,7 @@ You can start out with the same domain question and ask different data questions
 :::
 
 :::{.notes}
-It's very important to be specific with data questions and to choose this wisely. The data questions you formulate can have varying temporal granularit, scope, spatial scope and measure different things.  
+It's very important to be specific with data questions and to choose this wisely. The data questions you formulate can have varying temporal granularity, scope, spatial scope and measure different things.  
 :::
 
 ---
@@ -465,11 +486,9 @@ It's very important to be specific with data questions and to choose this wisely
 ![](figs/domain-vs-data-comparison.png){width="100%"}
 
 :::{.notes}
-To summarize,
+The summary table. Domain questions use domain language and are ambiguous, imprecise, and not actionable. Data questions use data language and are unambiguous, specific, and actionable.
 
-Domain Qs =>
-
-Data Qs =>
+The word to lean on is actionable: a data question tells you what to compute. A domain question does not - and that gap is the design work.
 :::
 
 ---
@@ -528,10 +547,32 @@ Elementary Qs relate to individual values, Intermediate to groups of values and 
 - **Brehmer & Munzner (2013)**: Why - What - How
 - **Schulz et al. (2013)**: Goals - Means - Characteristics
 
-::: {.notes}
-There are many task frameworks out there, which you can use to think of the same set of tasks in a different paradigm. Munzner proposed - The why what and how framework - essentially ...
+### Munzner's What-Why-How
 
-You can also think of tasks by thinking about the goals, means and characteristics and so on.
+| | The question | The abstraction |
+|---|---|---|
+| **What** | What data is shown? | datasets and attributes |
+| **Why** | Why is the user looking at it? | actions and targets |
+| **How** | How is the view built? | visual encoding and interaction idioms |
+
+*All three answers are stated in domain-independent vocabulary.*
+
+::: {.notes}
+There are many task frameworks; they mostly describe the same set of tasks in different vocabulary.
+
+Munzner's is the one to remember, because the whole course is organised around it:
+
+WHAT is the data - datasets and attributes. That is literally Part 1 of today: tables, networks, fields; nominal, ordinal, quantitative.
+
+WHY is the user looking - the task, given as an action plus a target. Actions like discover, present, compare, summarise; targets like trends, outliers, distributions, correlations.
+
+HOW is the view built - the idiom: visual encoding plus interaction. That is Week 3 onward.
+
+The key move is the third column: all three answers are abstractions. You deliberately restate the problem in vocabulary that has nothing to do with the domain - not "which Brooklyn intersections injured the most cyclists" but "find outliers in a quantitative attribute, faceted by a categorical one." That restatement is what lets you reuse a design you have seen solve a completely unrelated problem.
+
+Point back at Vision Zero: the domain question was the why in domain terms, and turning it into a data question was the start of the abstraction.
+
+Footnote if anyone checks the citations: the 2013 paper orders it Why-What-How, the 2014 book orders it What-Why-How. Same framework.
 :::
 ---
 
@@ -583,9 +624,9 @@ Where pattern tasks have a little more semantics attached to them , while value 
 :::
 
 ::: {.notes}
-All this might seem. a little theoretical, but thinking about tasks this way, helps a lot and streamlines the process of creating visualizations. 
+All this might seem a little theoretical, but thinking about tasks this way streamlines the process of creating visualizations.
 
-Namely- 
+Namely: name the task first, and the encoding usually follows. "Find extremum" wants a sorted bar chart; "correlate" wants a scatterplot; "characterize distribution" wants a histogram - which is exactly what the live binning slide later will complicate.
 :::
 
 # Part 3: Data Wrangling and Transformation
@@ -599,7 +640,7 @@ Namely-
 
 
 ::: {.notes}
-If you have worked with data analytics in any capacity, you might also have a similar expereince - where you find that you're doing very little actual analysis and most work is actually data cleaning, transforming and so forth. 
+If you have worked with data analytics in any capacity, you might also have a similar experience - where you find that you're doing very little actual analysis and most work is actually data cleaning, transforming and so forth. 
 :::
 
 ## Visualization Reveals Data Problems
@@ -620,7 +661,7 @@ Visualizing data is not only helpful for final analysis but it also helps reveal
 
 
 ::: {.notes}
-The Data wrangling pipleine consists of all stages of working with data, right from collection to delivery. Data transformation and cleaning can be thought of as big parts of this process.
+The Data wrangling pipeline consists of all stages of working with data, right from collection to delivery. Data transformation and cleaning can be thought of as big parts of this process.
 :::
 
 ## Common Data Quality Issues
@@ -700,7 +741,7 @@ Interactive
 * ### Binning
   - **Purpose**: Convert continuous to discrete
   - **Methods**: Equal width, equal frequency, custom
-  _ **Example**: Dividing age into groups (<18, 18-65, >65)
+  - **Example**: Dividing age into groups (<18, 18-65, >65)
 
 * ### Normalization
   - **Purpose**: Enable fair comparison
@@ -709,6 +750,51 @@ Interactive
 
 ::: {.notes}
 Interactive
+:::
+
+## Binning: Same Data, Different Story
+
+```{ojs}
+//| echo: false
+ages = {
+  const rng = d3.randomLcg(42);
+  const younger = d3.randomNormal.source(rng)(24, 3);
+  const older   = d3.randomNormal.source(rng)(41, 5);
+  return [...Array.from({length: 90}, younger), ...Array.from({length: 55}, older)]
+    .map(Math.round).filter(a => a >= 15 && a <= 60);
+}
+```
+
+```{ojs}
+//| echo: true
+viewof binWidth = Inputs.range([1, 20], {value: 5, step: 1, label: "Bin width (years)"})
+```
+
+```{ojs}
+//| echo: true
+Plot.plot({
+  x: {label: "Age"}, y: {label: "Count"},
+  marks: [
+    Plot.rectY(ages, Plot.binX({y: "count"},
+      {x: d => d, thresholds: d3.range(15, 61, binWidth)})),
+    Plot.ruleY([0])
+  ],
+  width: 1150, height: 400
+})
+```
+
+::: {.notes}
+CHECK BEFORE CLASS: Press O for the overview grid to jump straight to them. You want to see a slider and a histogram on the first, a checkbox and a bar chart on the second. If either shows a red error box instead, the OJS did not run.
+
+SKIPPABLE - if you are running long, jump straight to Transformation Pipeline Example.
+
+Drag the slider before you say anything. At width 1-2 it looks like noise. At 4-6 two clear peaks appear. At 15 and above it collapses into one hump and the second group disappears entirely.
+
+Then ask: which of these is the honest chart? There is no answer in the data. Bin width is a choice you made, and it decided the conclusion - and nothing on the chart tells the reader a choice was made at all.
+
+Good follow-up if the room is quiet: "if I had only ever shown you the width-20 version, what would you conclude about this population?" They will say one group. Drag back to 5.
+
+Ties directly to the bullet you just read - "Methods: equal width, equal frequency, custom" - those are not interchangeable defaults.
 :::
 
 ## Transformation Pipeline Example
@@ -888,6 +974,14 @@ This diagram illustrates how roll-up operations work with a three-dimensional da
 
 ![](figs/rollup-drilldown-cube2.png){width="100%"}
 
+::: {.notes}
+Both operations side by side. The red arrow to the right is roll-up; the purple arrow back to the left is drill-down. They are inverses.
+
+Walk down the right-hand chain: start with the full Year x Age x Marital Status cube. Sum along Marital Status and you get a two-dimensional projection, Year by Age, all marital statuses combined. Sum along Age as well and you are down to a one-dimensional bar, just Year. Sum along Year and you have a single number, the grand total.
+
+The point worth making: roll-up is lossy. Once you have summed along Marital Status you cannot recover the breakdown from the projection alone - drill-down only works if you still hold the underlying detail. That is exactly why "preserve raw data" shows up in the Best Practices slide later.
+:::
+
 ---
 
 ## Creating Derived Attributes
@@ -917,17 +1011,37 @@ df['age_group'] = pd.cut(df['age'],
 
 ![](figs/td-table-typical.jpg){width="100%"}
 
+::: {.notes}
+Table 1 from Wickham's Tidy Data paper - the format you would put in a report. Three people down the side, two treatments across the top, results in the cells. John Smith has no value for treatment A.
+
+Ask the class: what are the variables here? There are three - person, treatment, and result - but only person is actually in a column. Treatment is hiding in the column headers and result is spread across two columns. That is the whole problem in one small table.
+:::
+
 ---
 
 ## Alternative Data Structures
 
 ![](figs/td-table-alternative.jpg){width="100%"}
 
+::: {.notes}
+Table 2 is the same data transposed - people across the top, treatments down the side. Nothing about the underlying data changed, only the layout.
+
+The point: there is no principled reason to prefer Table 1 over Table 2. Both are presentation layouts. If your analysis code has to know which one it was handed, you are writing layout-specific code instead of data-specific code.
+:::
+
 ---
 
 ## The Tidy Data Solution
 
 ![](figs/td-table-tidy.jpg){width="100%"}
+
+::: {.notes}
+Table 3 - the same six observations in tidy form: name, trt, result. Every variable is a column, every observation is a row.
+
+It looks more verbose, six rows instead of a compact 3x2 grid, and that is the usual objection. But this is the shape every plotting and modeling library wants. From here you can say x = trt, y = result, color = name directly. From Table 1 you cannot, without reshaping first.
+
+Note the missing value is still there - John Smith, treatment a - but now it is an explicit row rather than a gap in a grid.
+:::
 
 ---
 
@@ -941,11 +1055,27 @@ In tidy data:
 - **Each type of observational unit forms a table**
 :::
 
+::: {.notes}
+Three rules, Wickham 2014. Worth stating slowly - they will use these for the rest of the course.
+
+The third is the one people forget. If you have data about both songs and their weekly rankings, those are two different observational units and arguably belong in two tables.
+
+Tie it back: Table 3 satisfies all three. Tables 1 and 2 violate the first two.
+:::
+
 ---
 
 ## Tidy Data Example #1
 
 ![](figs/td-table-example.jpg){width="100%"}
+
+::: {.notes}
+Table 4 - real data now. Pew Forum survey, religion crossed with income bracket, first ten rows, three more income columns omitted.
+
+Ask again: what are the variables? Three - religion, income, frequency. But look at the header row. Those income brackets are values, not variable names. Every one of those columns is the same variable chopped into pieces.
+
+The general tell: when your column headers are data rather than names, the table is not tidy.
+:::
 
 ---
 
@@ -953,17 +1083,41 @@ In tidy data:
 
 ![](figs/td-table-towards-tidy.jpg){width="100%"}
 
+::: {.notes}
+Table 6 - the same Pew data melted into three columns: religion, income, freq. The brackets that were headers are now values, and every count sits in one column.
+
+Point at the first row - Agnostic, under $10k, 27 - and trace it back to the top-left cell of the previous table so they see it is literally the same number.
+
+This is melt in pandas, pivot_longer in the tidyverse, and the fold transform in Vega-Lite, which is what they will meet in the lab.
+:::
+
 ---
 
 ## Tidy Data Example #2: Before
 
 ![](figs/td-table-before-tidy.jpg){width="100%"}
 
+::: {.notes}
+Table 7 - Billboard top hits for 2000. Same pathology, much worse: wk1, wk2, wk3, all the way out to wk75. Seventy-five columns that are all the same variable.
+
+Ask what the variables really are: year, artist, track, time, date entered, week, rank. Seven variables in a table with eighty-odd columns.
+
+Good place to point out the second observational unit too - artist, track and time repeat for every single week. That is the third tidy rule knocking.
+:::
+
 ---
 
 ## Tidy Data Example #2: After
 
 ![](figs/td-table-after-tidy.jpg){width="100%"}
+
+::: {.notes}
+Table 8 - tidied. week and rank are columns now, and each song contributes one row per week it charted.
+
+Two things to point out. First, the table got much longer and that is fine; length is cheap. Baby Don't Cry now has seven rows, one per week on the chart. Second, look at the date column - it did not exist in the original. It is computed from date.entered plus week, which is a derived attribute, exactly what we covered a few slides ago.
+
+Also note the ragged lengths: 2 Pac has seven weeks, 2Ge+her only three. In the wide format that raggedness was 75 columns of trailing blanks. Here it is just fewer rows.
+:::
 
 ---
 
@@ -1008,8 +1162,6 @@ In tidy data:
 7. **Think about updates**: Design for new data
 :::
 
----
-
 # Examples & Practice
 
 ## Data to Visualization Examples
@@ -1017,10 +1169,75 @@ In tidy data:
 ### Categories → Bar Chart
 ![](figs/categories-to-barchart.png){width="90%"}
 
+::: {.notes}
+First of two quick examples tying data type to encoding - a preview of Week 3.
+
+NYC collision data with the BOROUGH column highlighted. Categorical attribute, so counting records per category gives you a bar chart: Manhattan around 158K down to Staten Island around 12K.
+
+Worth pausing on the blank BOROUGH cells in the table - several rows have latitude and longitude but no borough. Nice callback to the data quality section: those rows are either dropped, imputed from the coordinates, or shown as a null category. The bar chart as drawn has quietly dropped them, and nothing on the chart tells you that.
+:::
+
+---
+
+## What the Bar Chart Isn't Showing
+
+```{ojs}
+//| echo: false
+collisions = [
+  {borough: "Manhattan", n: 158000}, {borough: "Brooklyn", n: 99000},
+  {borough: "Queens", n: 91000},     {borough: "Bronx", n: 35000},
+  {borough: "Staten Island", n: 12000}, {borough: "(unknown)", n: 86000}
+]
+```
+
+```{ojs}
+//| echo: true
+viewof includeUnknown = Inputs.toggle({
+  label: "Include rows with missing BOROUGH", value: false})
+```
+
+```{ojs}
+//| echo: true
+Plot.plot({
+  marks: [
+    Plot.barY(
+      includeUnknown ? collisions : collisions.filter(d => d.borough != "(unknown)"),
+      {x: "borough", y: "n", sort: {x: "-y"}}),
+    Plot.ruleY([0])
+  ],
+  x: {label: null}, y: {label: "Number of records"},
+  width: 1150, height: 380, marginBottom: 70
+})
+```
+
+::: {.notes}
+CHECK BEFORE CLASS: Press O for the overview grid to jump straight to them. You want to see a slider and a histogram on the first, a checkbox and a bar chart on the second. If either shows a red error box instead, the OJS did not run.
+
+SKIPPABLE - if you are running long, jump straight to Spatial Information / Map.
+
+The toggle starts off, so this reproduces the static chart on the previous slide exactly. Flip it on: an "(unknown)" bar appears and lands second, ahead of Brooklyn.
+
+Ask which chart they would put in a report. Neither is obviously right. Dropping the unknowns assumes they distribute like the known rows. Keeping them puts a category on the axis that is not a place.
+
+This is the same dataset as the previous slide - the rows with blank BOROUGH but perfectly good latitude and longitude. Those boroughs are recoverable with a spatial join, which is a transformation, which is the entire point of today.
+
+CAVEAT for you, not the class: the five borough counts are read off the chart on the previous slide and the 86K unknown bucket is illustrative - do not quote it as a measured figure.
+
+What you CAN tell the class, because it is real: in a fuller extract of this same dataset the missing-borough bucket is the single LARGEST category - about 270K, ahead of Brooklyn at about 228K. That chart is in this folder as figs/flight-data-table.png (mis-filed under a flight name). If you would rather the toggle use those real numbers, say so; the trade-off is that the toggle-off chart would then no longer match the previous slide, whose extract has Manhattan on top.
+:::
+
 ---
 
 ### Spatial Information → Map
 ![](figs/spatial-to-map.png){width="90%"}
+
+::: {.notes}
+Same table, now with LATITUDE and LONGITUDE highlighted, aggregated into a choropleth of NYC.
+
+Read the asterisk at the bottom out loud - having spatial attributes does not mean a map is the right answer. A map is good for "where", but if the question is "which borough is worst", the bar chart on the previous slide answers it faster and more precisely. Geography is seductive; make them justify it.
+
+Same missing-coordinate caveat applies - the rows with no lat/long simply are not on this map.
+:::
 
 ## Example: U.S. Census Data
 
@@ -1088,8 +1305,6 @@ year,age,marital_status,sex,people
 - **Parquet**: Compressed columnar storage
 - **HDF5**: Hierarchical data format
 
----
-
 # Summary
 
 ## Key Takeaways
@@ -1116,19 +1331,14 @@ year,age,marital_status,sex,people
 
 ## Next Week
 
-### Week 3: Marks, Channels, and Perception
-- Visual encoding principles
-- Perceptual effectiveness
-- Design guidelines
+### Week 3 (Sept 18): Fundamental Graphs and Visual Encoding
+- Chart types and their purposes
+- Marks and channels theory
+- Grammar of graphics principles
 
-### Reading
-- Munzner Ch. 4-5
-- Cleveland & McGill (1984)
-
-### Lab (Sept 13)
-- Hands-on data transformation with pandas
-- Creating tidy datasets
-- Building transformation pipelines
+### Required Reading
+- Tufte, *The Visual Display of Quantitative Information*, Ch. 1-2 (Graphical Excellence; Graphical Integrity)
+- [Multi-View Composition](https://observablehq.com/@uwdata/multi-view-composition-json) (Observable)
 
 ## Questions?
 
