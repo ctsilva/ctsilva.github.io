@@ -6,12 +6,12 @@
 <script src="week4-lab_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week4-lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week4-lab_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week4-lab_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<link href="week4-lab_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.34">
 
   <meta name="author" content="Ryan Kim">
-  <meta name="dcterms.date" content="2025-09-26">
-  <title>Week 4 Lab: First D3 programming session, DOM manipulation, Data binding</title>
+  <meta name="dcterms.date" content="2026-09-25">
+  <title>Week 4 Lab: JavaScript Essentials Prior to D3.js</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -30,7 +30,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="week4-lab_files/libs/revealjs/dist/theme/quarto-f826457789a1a24e3ceb715ff8c1f67b.css">
+  <link rel="stylesheet" href="week4-lab_files/libs/revealjs/dist/theme/quarto-33e1d785821343a3bca9e1e25e4b170a.css">
   <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week4-lab_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week4-lab_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -129,7 +129,7 @@
     <div class="slides">
 
 <section class="quarto-title-block center">
-  <h1 class="title">Week 4 Lab: First D3 programming session, DOM manipulation, Data binding</h1>
+  <h1 class="title">Week 4 Lab: JavaScript Essentials Prior to D3.js</h1>
   <p class="subtitle">CS-GY 6313 - Information Visualization</p>
 
 <div class="quarto-title-authors">
@@ -143,7 +143,7 @@ Ryan Kim
     </div>
 </div>
 
-  <p class="date">2025-09-26</p>
+  <p class="date">2026-09-25</p>
 </section>
 <section class="slide level2">
 <h2>Week 4 Lab Overview</h2>
@@ -159,12 +159,30 @@ Ryan Kim
 <tr class="odd">
 <td style="text-align: left;"><a href="https://observablehq.com">observablehq.com</a></td>
 <td style="text-align: left;"><a href="https://d3js.org/">D3</a></td>
-<td style="text-align: left;"><a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-4-lab">Week 4 Lab Notebook</a></td>
+<td style="text-align: left;">(none!)</td>
 </tr>
 </tbody>
 </table>
 <h3>Today’s Lab Activities</h3>
-<p>Today will be mainly a coding exercise where you will generate your first bar chart using D3.</p>
+<ul>
+<li>Introduction to D3.js… kinda</li>
+<li>Introduction to JavaScript Essentials</li>
+<li>Data Manipulation (mapping, filtering)</li>
+<li>DOM Element Selection and Manipulation</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Why JavaScript First?</h2>
+<blockquote>
+<p><strong>D3.js is mostly JavaScript</strong>. Before we draw anything, it’s important to realize that before we even start with D3.js, we have to have a solid grasp on JavaScript fundamentals.</p>
+</blockquote>
+<p>JavaScript is:</p>
+<ul>
+<li>(Relatively) lightweight as a standalone language (though the JavaScript ecosystem is getting heavier with each new library released).</li>
+<li>a “Just-In-Time” compiler (<a href="https://developer.mozilla.org/en-US/docs/Glossary/Just_In_Time_Compilation" target="_blank">Read more here</a>).</li>
+<li>Can be used both in and outside of the web browser (e.g.&nbsp;<a href="https://nodejs.org/en" target="_blank">Node.js</a>, <a href="https://react.dev/" target="_blank">React</a>)</li>
+<li></li>
+</ul>
 <p>Follow the instructions outlined in today’s <a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-4-lab">Observable Notebook</a>.</p>
 </section>
 <section class="slide level2">
@@ -378,7 +396,7 @@ Ryan Kim
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -452,14 +470,13 @@ Ryan Kim
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-          const outerScaffold = trigger.parentElement.cloneNode(true);
-          const codeEl = outerScaffold.querySelector('code');
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
             }
-          }
-          return codeEl.innerText;
+            return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
