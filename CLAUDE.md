@@ -179,6 +179,13 @@ format:
 
 
 
+**Slide layouts**: six canonical layouts (full-bleed, statement + figure, 40/60 text|figure,
+centred `.nostretch`, comparison, text-only) with the sizing rules that actually hold under this
+theme are in `slide-templates/LAYOUTS.md`; `slide-templates/layout-templates.qmd` renders one
+slide per layout. Pick the layout from the figure's aspect ratio, not the amount of text. Two
+traps: `width=` alone does not disable auto-stretch (add `.nostretch`), and images inside
+`.columns` need `height="760"` (square/tall) or `width="100%"` (landscape).
+
 ## Reference Management
 
 **PDF Naming**: `LastName_Year_Short_Title.pdf`
