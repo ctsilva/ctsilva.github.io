@@ -23,14 +23,13 @@ format:
 
 |User Interface|Graphics Library|Notebook|
 |:--|:--|:--|
-|[observablehq.com](https://observablehq.com)|[D3](https://d3js.org/)|(none!)|
+|<a href="https://observablehq.com" target="_blank">observablehq.com</a>|(None!)|<a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-4-lab" target="_blank">Lab 3 Notebook</a>|
 
 ### Today's Lab Activities
 
 - Introduction to D3.js... kinda
 - Introduction to JavaScript Essentials
 - Data Manipulation (mapping, filtering)
-- DOM Element Selection and Manipulation
 
 
 ## Why JavaScript First?
@@ -45,8 +44,6 @@ JavaScript is:
 - _loosely-typed_ (or _weakly-typed_, _dynamically-typed_, etc.)
 
 
-_Source_: <a href="https://www.geeksforgeeks.org/typescript/difference-between-typescript-and-javascript/" target="_blank">GeeksForGeeks</a>
-
 ## `let` v.s. `var` v.s. `const`
 
 ### JavaScript Allows Type-inference
@@ -54,16 +51,16 @@ _Source_: <a href="https://www.geeksforgeeks.org/typescript/difference-between-t
 JavaScript uses **type inference** to determine what data type a variable is. Therefore, you don't have to directly state if a variable is a `string`, `int`, etc.
 
 :::{.columns}
-::::{.column width="50%}
+::::{.column width="50%"}
 
-```
+```{js}
 const example : string = "Hello world";
 ```
 
 ::::
 ::::{.column width="50%"}
 
-```
+```{js}
 const example = "Hello world";
 ```
 
@@ -134,7 +131,7 @@ age = "Twenty-Five";
 - TypeScript: **Error!**
 
 ::::
-::::{.column with="60%}
+::::{.column width="60%"}
 TypeScript's stricter type inference can be leveraged to catch erroneous (re)assignments that pure JavaScript would be happy to compile.
 ::::
 :::
@@ -172,7 +169,7 @@ TypeScript allows you (but doesn't require you) to explicitly declare a variable
 ---
 
 :::{.columns}
-::::{.column width="40%}
+::::{.column width="40%"}
 
 ```
 // Example: Interface
@@ -196,7 +193,7 @@ let tier2 : PriceTier = "Expensive";  // <- ERROR
 ```
 
 ::::
-::::{.column width="60%}
+::::{.column width="60%"}
 TypeScript introduces `interface` and _aliases_ that are reusable. If you are aware of the specific qualities of your variables, then you can use this to ensure that your functions compile properly.
 ::::
 :::
@@ -210,6 +207,25 @@ TypeScript introduces `interface` and _aliases_ that are reusable. If you are aw
 
 _Even if you explicitly declare your variables' types, those checks will disappear after your TypeScript is compiled. These explicit typings are only for YOUR benefit, to make more robust code. When your code is actually deployed, your type checks will no longer work._
 :::
+
+---
+
+## Note: Observable Notebooks and Variable Scope
+
+Scope works slightly differently in Observable's online notebooks. Here are some simple rules:
+
+- You can control whether a cell should be in TypeScript, JavaScript, Observable JavaScript, or even Markdown and/or HTML
+- Scope rules regarding reassignment and redeclaration are at the code block-level.
+- Variables in one code block can still be accessed by other code blocks, regardless of whether `let`, `const`, or `var` are used.
+
+### Erroneous Code
+
+![](./week4-lab_files/figs/obs_scope-error.png)
+
+### Valid Code
+
+![](./week4-lab_files/figs/obs_scope-valid.png)
+
 
 
 ## JavaScript Objects and Data Storage
@@ -264,30 +280,69 @@ Then what will these return?
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Score</th>
-      <th>Grade</th>
+      <th>Code</th>
+      <th>Output/Returns</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td class="fragment" data-fragment-index="1">Alice</td>
-      <td class="fragment" data-fragment-index="2">95</td>
-      <td class="fragment" data-fragment-index="3"d>A</td>
+      <td class="fragment" data-fragment-index="1"><code>students[0]</code></td>
+      <td class="fragment" data-fragment-index="2"><code>{name: "Alice", major: "CS", score: 82}</code></td>
     </tr>
     <tr>
-      <td>Bob</td>
-      <td>87</td>
-      <td>B+</td>
+      <td class="fragment" data-fragment-index="3"><code>students[0].name</code></td>
+      <td class="fragment" data-fragment-index="4"><code>"Alice"</code></td>
     </tr>
     <tr>
-      <td>Charlie</td>
-      <td>78</td>
-      <td>C+</td>
+      <td class="fragment" data-fragment-index="5"><code>students[2].score</code></td>
+      <td class="fragment" data-fragment-index="6"><code>76</code></td>
     </tr>
   </tbody>
 </table>
 
+---
+
+If we are given this dataset:
+
+```{js}
+const students = [
+  {name: "Alice", major: "CS", score: 82},
+  {name: "Bob", major: "Biology", score: 91},
+  {name: "Carol", major: "CS", score: 76},
+  {name: "David", major: "Physics", score: 88}
+];
+```
+
+Then what will these return?
+
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Output/Returns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="fragment" data-fragment-index="1"><code>students.map(d =&gt; d.name)</code></td>
+      <td class="fragment" data-fragment-index="2"><code>["Alice","Bob","Carol","David"]</code></td>
+    </tr>
+    <tr>
+      <td class="fragment" data-fragment-index="3"><code>students.map(d =&gt; d.score)</code></td>
+      <td class="fragment" data-fragment-index="4"><code>[82,91,76,88]</code></td>
+    </tr>
+    <tr>
+      <td class="fragment" data-fragment-index="5"><code>students.filter(d =&gt; d.score &gt;= 85)</code></td>
+      <td class="fragment" data-fragment-index="6">
+        <pre><code>[
+  {name: "Bob", major: "Biology", score: 91},
+  {name: "David", major: "Physics", score: 88}
+]</code></pre>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## JavaScript Functions
 
@@ -312,31 +367,139 @@ function multiply(num1, num2) {
 
 ### Arrow Functions
 
-````{js}
+```{js}
 const multiply = (num1, num2) => {
   const result = num1 * num2
   return result
 }
+```
+
+::::
 :::
 
+<br />
 In most cases, they are the same. Many consider arrow functions to be a shorthand version of writing functions. if your arrow function reduces down to a single `return`, then you can even go shorter:
 
 ```{js}
 const multiply = (num1, num2) => num1 * num2
 ```
 
+## `map()` v.s. `filter()` v.s. `reduce()`
+
+JavaScript provides some in-built functions.
+
+- `map()`: Keep the same length, but re-"map" values into something else.
+- `filter()`: Keep values the same, but "filter" out items that don't match a provided criteria
+- `reduce()`: Combination of `map()` and `filter()`, literally "reduces" an array into something else.
+
+We won't use `reduce()` a lot, but you may need `map()` and `filter()` in order to manipulate data in JavaScript.
+
+<br />
+
+:::{.columns}
+
+::::{.column}
+
+### `map()`:
+
+```{js}
+const mapped = data.map( item => {
+  item.price += 10;
+  return item;
+})
+```
+
+::::
+
+::::{.column}
+
+### `filter()`
+
+```{js}
+const filtered = data.filter( item => {
+  return item.price >= 20;
+})
+```
+
+::::
+
+::::{.column}
+
+### `reduce()`
+
+```{js}
+const initial_price = 0
+const reduced = data.reduce(
+  (accumulator, item) => accumulator + item.price,
+  initial_price
+);
+```
+
+::::
+
+:::
 
 
+## In-Lab Exercise: Practicing with Data Handling
 
+The <a href="https://vega.github.io/vega-lite/data/gapminder.json" target="_blank">Gapminder dataset</a> is the focus of this exercise. With it, and using JavaScript's in-built `map()`, `filter()`, and/or `reduce()`, produce the following:
+
+- An array with only life expectancy values
+- All records including and after 1990
+- All records from France only
+- (Bonus) An array of all unique countries present within the Gapminder data
+- (Bonus) The average population size of each country
+
+---
+
+### An array with only life expectancy values
+
+```js
+data.map(d => d.life_expect)
+```
+
+<br />
+
+### All records including and after 1990
+
+```js
+data.filter(d => d.year >= 1990)
+```
+
+<br />
+
+### All records from France only
+
+```js
+data.filter(d => d.country == "France")
+```
+
+---
+
+### (Bonus) An array of all unique countries present within the Gapminder data
+
+```js
+const countries = [...new Set(data.map(d => d.country))];
+```
+
+<br />
+
+### (Bonus) The average population size of each country
+
+```js
+const average_population = countries.map(country => {
+  const rows = data.filter(d => d.country == country);
+  const average = rows.reduce((sum, d) => sum + d.pop, 0) / rows.length;
+  return {
+    country: country,
+    population: average
+  };
+});
+```
 
 ## End of Lab
 
-- Exercise #4 will be posted no later than **September 28, 2025**.
-- Exercise #4 is due on **October 2nd, 2025 @ 11:59pm**!
+- Exercise #4 will be posted **tonight** and is due on **October 1st, 2026 @ 11:59pm**!
 - Where do I ask questions?
-  - TA Office Hours: 
-    - Physical Location: Wednesdays @ 2PM-3PM, 8th floor common area @ 370 Jay Street, Brooklyn
-    - Online Zoom: [https://nyu.zoom.us/j/92815268504](https://nyu.zoom.us/j/92815268504)
-  - Grader TA Office Hours:
-    - Online Zoom: [https://nyu.zoom.us/j/2817596431](https://nyu.zoom.us/j/2817596431) 
+  - Office Hours! 
   - Our course Discord!
