@@ -233,10 +233,88 @@ These five chart types are your visualization toolkit's power tools. Master thes
 **Best For:**
 - Rankings and comparisons
 - Part-to-whole relationships
+
+**Key principle:** Our visual system excels at comparing lengths along a common baseline.
 :::
 
 ::: {.column width="60%"}
-![Distribution across categories](figs/barchart.jpg){height="760" fig-align="center"}
+```{=html}
+<div id="barchart-demo" style="margin: 0 auto;"></div>
+<script>
+{
+  const data = [
+    {category: "4-Seam Fastball", count: 187},
+    {category: "Changeup", count: 100},
+    {category: "Sinker", count: 85},
+    {category: "Slider", count: 92},
+    {category: "Curveball", count: 31}
+  ];
+
+  const width = 500, height = 650;
+  const margin = {top: 20, right: 30, bottom: 80, left: 40};
+
+  const svg = d3.select("#barchart-demo").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  const x = d3.scaleBand()
+    .domain(data.map(d => d.category))
+    .range([margin.left, width - margin.right])
+    .padding(0.2);
+
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.count)])
+    .nice()
+    .range([height - margin.bottom, margin.top]);
+
+  // Bars
+  svg.append("g")
+    .selectAll("rect")
+    .data(data)
+    .join("rect")
+    .attr("x", d => x(d.category))
+    .attr("y", d => y(d.count))
+    .attr("width", x.bandwidth())
+    .attr("height", d => y(0) - y(d.count))
+    .attr("fill", "#4c78a8");
+
+  // X axis
+  svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em");
+
+  // Y axis
+  svg.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y));
+
+  // Y axis label
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 10)
+    .attr("x", -(height / 2))
+    .attr("text-anchor", "middle")
+    .attr("font-size", 12)
+    .text("Count");
+
+  // Value labels
+  svg.append("g")
+    .selectAll("text")
+    .data(data)
+    .join("text")
+    .attr("x", d => x(d.category) + x.bandwidth() / 2)
+    .attr("y", d => y(d.count) - 5)
+    .attr("text-anchor", "middle")
+    .attr("font-size", 11)
+    .text(d => d.count);
+}
+</script>
+```
 :::
 :::::
 
@@ -259,15 +337,106 @@ Bar charts are the workhorses of categorical data visualization. The key insight
 **Best For:**
 - Trends and patterns
 - Multiple series comparison
+
+**Key principle:** Connecting lines imply continuity - use only for ordered data.
 :::
 
 ::: {.column width="60%"}
-![Change over continuous dimension](figs/linechart.jpg){width="100%"}
+```{=html}
+<div id="linechart-demo" style="margin: 0 auto;"></div>
+<script>
+{
+  // Average speed by inning
+  const data = [
+    {inning: 1, speed: 95.5},
+    {inning: 2, speed: 95.1},
+    {inning: 3, speed: 94.8},
+    {inning: 4, speed: 94.9},
+    {inning: 5, speed: 94.3},
+    {inning: 6, speed: 94.1},
+    {inning: 7, speed: 93.8}
+  ];
+
+  const width = 550, height = 650;
+  const margin = {top: 20, right: 30, bottom: 60, left: 60};
+
+  const svg = d3.select("#linechart-demo").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  const x = d3.scaleLinear()
+    .domain(d3.extent(data, d => d.inning))
+    .range([margin.left, width - margin.right]);
+
+  const y = d3.scaleLinear()
+    .domain([93, 96])
+    .range([height - margin.bottom, margin.top]);
+
+  // Line
+  const line = d3.line()
+    .x(d => x(d.inning))
+    .y(d => y(d.speed));
+
+  svg.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "#2a78d6")
+    .attr("stroke-width", 3)
+    .attr("d", line);
+
+  // Points
+  svg.append("g")
+    .selectAll("circle")
+    .data(data)
+    .join("circle")
+    .attr("cx", d => x(d.inning))
+    .attr("cy", d => y(d.speed))
+    .attr("r", 5)
+    .attr("fill", "#2a78d6");
+
+  // X axis
+  svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x).ticks(7));
+
+  // Y axis
+  svg.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y));
+
+  // X axis label
+  svg.append("text")
+    .attr("x", (margin.left + width - margin.right) / 2)
+    .attr("y", height - 20)
+    .attr("text-anchor", "middle")
+    .attr("font-size", 12)
+    .text("Inning");
+
+  // Y axis label
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 15)
+    .attr("x", -(height / 2))
+    .attr("text-anchor", "middle")
+    .attr("font-size", 12)
+    .text("Average Speed (mph)");
+
+  // Title
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .attr("font-weight", 600)
+    .attr("font-size", 13)
+    .text("Fastball velocity decline over game");
+}
+</script>
+```
 :::
 :::::
 
 ::: notes
-Line charts excel at showing continuity and change. The connecting lines imply a continuous relationship - use them only when this makes sense (typically with time or other ordered dimensions).
+Line charts excel at showing continuity and change. The connecting lines imply a continuous relationship - use them only when this makes sense (typically with time or other ordered dimensions). Notice how the trend of declining velocity is immediately apparent.
 :::
 
 ------------------------------------------------------------------------
@@ -286,15 +455,125 @@ Line charts excel at showing continuity and change. The connecting lines imply a
 - Correlation analysis
 - Outlier detection
 - Pattern recognition
+
+**Key principle:** Reveals relationships that summary statistics might miss.
 :::
 
 ::: {.column width="60%"}
-![Correlation between two quantitative variables](figs/scatterplot.jpg){height="760" fig-align="center"}
+```{=html}
+<div id="scatterplot-demo" style="margin: 0 auto;"></div>
+<script>
+{
+  // Speed vs Spin Rate data
+  const data = [
+    {speed: 95.2, spin: 2250, type: "4-Seam"},
+    {speed: 94.8, spin: 2310, type: "4-Seam"},
+    {speed: 96.1, spin: 2180, type: "4-Seam"},
+    {speed: 93.8, spin: 2420, type: "Sinker"},
+    {speed: 94.2, spin: 2380, type: "Sinker"},
+    {speed: 85.1, spin: 1620, type: "Changeup"},
+    {speed: 84.9, spin: 1580, type: "Changeup"},
+    {speed: 86.5, spin: 2650, type: "Slider"},
+    {speed: 87.1, spin: 2720, type: "Slider"},
+    {speed: 78.3, spin: 2580, type: "Curveball"},
+    {speed: 77.9, spin: 2620, type: "Curveball"}
+  ];
+
+  const width = 550, height = 650;
+  const margin = {top: 40, right: 30, bottom: 60, left: 60};
+
+  const svg = d3.select("#scatterplot-demo").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  const x = d3.scaleLinear()
+    .domain([75, 100])
+    .range([margin.left, width - margin.right]);
+
+  const y = d3.scaleLinear()
+    .domain([1500, 2800])
+    .range([height - margin.bottom, margin.top]);
+
+  const color = d3.scaleOrdinal()
+    .domain(["4-Seam", "Sinker", "Changeup", "Slider", "Curveball"])
+    .range(["#2a78d6", "#1baf7a", "#eb6834", "#eda100", "#e87ba4"]);
+
+  // Points
+  svg.append("g")
+    .selectAll("circle")
+    .data(data)
+    .join("circle")
+    .attr("cx", d => x(d.speed))
+    .attr("cy", d => y(d.spin))
+    .attr("r", 6)
+    .attr("fill", d => color(d.type))
+    .attr("opacity", 0.7);
+
+  // X axis
+  svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x));
+
+  // Y axis
+  svg.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y));
+
+  // X axis label
+  svg.append("text")
+    .attr("x", (margin.left + width - margin.right) / 2)
+    .attr("y", height - 20)
+    .attr("text-anchor", "middle")
+    .attr("font-size", 12)
+    .text("Release Speed (mph)");
+
+  // Y axis label
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 15)
+    .attr("x", -(height / 2))
+    .attr("text-anchor", "middle")
+    .attr("font-size", 12)
+    .text("Spin Rate (rpm)");
+
+  // Title
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 20)
+    .attr("text-anchor", "middle")
+    .attr("font-weight", 600)
+    .attr("font-size", 13)
+    .text("Speed vs Spin Rate by Pitch Type");
+
+  // Legend
+  const legend = svg.append("g")
+    .attr("transform", `translate(${width - 120}, ${margin.top})`);
+
+  const types = ["4-Seam", "Changeup", "Slider"];
+  legend.selectAll("circle")
+    .data(types)
+    .join("circle")
+    .attr("cx", 0)
+    .attr("cy", (d, i) => i * 20)
+    .attr("r", 5)
+    .attr("fill", d => color(d));
+
+  legend.selectAll("text")
+    .data(types)
+    .join("text")
+    .attr("x", 10)
+    .attr("y", (d, i) => i * 20)
+    .attr("dy", "0.35em")
+    .attr("font-size", 10)
+    .text(d => d);
+}
+</script>
+```
 :::
 :::::
 
 ::: notes
-Scatter plots reveal relationships that summary statistics might miss. They're essential for exploratory data analysis and can reveal clusters, outliers, and non-linear relationships.
+Scatter plots reveal relationships that summary statistics might miss. They're essential for exploratory data analysis and can reveal clusters, outliers, and non-linear relationships. Notice how different pitch types cluster in different regions of the speed-spin space.
 :::
 
 ------------------------------------------------------------------------
@@ -393,10 +672,130 @@ Work through these examples with students to reinforce the decision-making proce
 
 **Marks are the geometric primitives we use in a visualization. They are used to represent the items of a dataset.**
 
-![Marks and channels determine effectiveness](figs/marks.jpg){fig-align="center"}
+```{=html}
+<div id="marks-demo" style="margin: 20px auto; max-width: 1400px;"></div>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+{
+  // Simple data: five values
+  const data = [
+    {label: "A", value: 187},
+    {label: "B", value: 100},
+    {label: "C", value: 85},
+    {label: "D", value: 92},
+    {label: "E", value: 31}
+  ];
+  const max = d3.max(data, d => d.value);
+
+  // Create container
+  const container = d3.select("#marks-demo")
+    .style("display", "flex")
+    .style("flex-wrap", "wrap")
+    .style("gap", "10px")
+    .style("justify-content", "center");
+
+  const W = 210, H = 170;
+
+  function panel(title) {
+    const svg = container.append("svg")
+      .attr("width", W).attr("height", H)
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 11);
+    svg.append("text")
+      .attr("x", W/2)
+      .attr("y", 14)
+      .attr("text-anchor", "middle")
+      .attr("font-weight", 600)
+      .attr("font-size", 12)
+      .text(title);
+    return svg;
+  }
+
+  const rows = d3.scaleBand(data.map(d => d.label), [26, H - 4]).padding(0.25);
+  const cols = d3.scaleBand(data.map(d => d.label), [14, W - 4]).padding(0.15);
+  const len = d3.scaleLinear([0, max], [18, W - 10]);
+  const midRow = d => rows(d.label) + rows.bandwidth() / 2;
+  const midCol = d => cols(d.label) + cols.bandwidth() / 2;
+
+  // 1. Position
+  const pos = panel("1. Position");
+  pos.append("g").selectAll("text").data(data).join("text")
+    .attr("x", 4).attr("y", midRow).attr("dy", "0.35em").text(d => d.label);
+  pos.append("g").selectAll("line").data(data).join("line")
+    .attr("stroke", "#e3e1da")
+    .attr("x1", len(0)).attr("x2", len(max))
+    .attr("y1", midRow).attr("y2", midRow);
+  pos.append("g").selectAll("circle").data(data).join("circle")
+    .attr("cx", d => len(d.value)).attr("cy", midRow).attr("r", 5);
+
+  // 2. Length
+  const bar = panel("2. Length");
+  bar.append("g").selectAll("text").data(data).join("text")
+    .attr("x", 4).attr("y", midRow).attr("dy", "0.35em").text(d => d.label);
+  bar.append("g").selectAll("rect").data(data).join("rect")
+    .attr("x", len(0))
+    .attr("y", d => rows(d.label))
+    .attr("width", d => len(d.value) - len(0))
+    .attr("height", rows.bandwidth());
+
+  // 3. Angle (Pie chart)
+  const pie = panel("3. Angle");
+  const arcs = d3.pie().sort(null).value(d => d.value)(data);
+  const arc = d3.arc().innerRadius(0).outerRadius(62);
+  const g = pie.append("g").attr("transform", `translate(${W/2},${H/2 + 12})`);
+  g.selectAll("path").data(arcs).join("path")
+    .attr("d", arc)
+    .attr("fill", "#4c4b46")
+    .attr("stroke", "#fff");
+  g.selectAll("text").data(arcs).join("text")
+    .attr("transform", a => `translate(${arc.centroid(a)})`)
+    .attr("text-anchor", "middle")
+    .attr("dy", "0.35em")
+    .attr("fill", "#fff")
+    .text(a => a.data.label);
+
+  // 4. Area
+  const area = panel("4. Area");
+  const radius = d3.scaleSqrt([0, max], [0, cols.bandwidth() / 2]);
+  area.append("g").selectAll("text").data(data).join("text")
+    .attr("x", midCol).attr("y", H - 6)
+    .attr("text-anchor", "middle").text(d => d.label);
+  area.append("g").selectAll("circle").data(data).join("circle")
+    .attr("cx", midCol)
+    .attr("cy", H / 2 + 6)
+    .attr("r", d => radius(d.value));
+
+  // 5. Lightness
+  const light = panel("5. Lightness");
+  const grey = d3.scaleSequential([0, max], d3.interpolateGreys);
+  light.append("g").selectAll("text").data(data).join("text")
+    .attr("x", midCol).attr("y", H - 6)
+    .attr("text-anchor", "middle").text(d => d.label);
+  light.append("g").selectAll("rect").data(data).join("rect")
+    .attr("x", d => cols(d.label))
+    .attr("y", 40)
+    .attr("width", cols.bandwidth())
+    .attr("height", 90)
+    .attr("fill", d => grey(d.value));
+
+  // 6. Hue
+  const hue = panel("6. Hue");
+  const rainbow = d3.scaleSequential([0, max], d3.interpolateRainbow);
+  hue.append("g").selectAll("text").data(data).join("text")
+    .attr("x", midCol).attr("y", H - 6)
+    .attr("text-anchor", "middle").text(d => d.label);
+  hue.append("g").selectAll("rect").data(data).join("rect")
+    .attr("x", d => cols(d.label))
+    .attr("y", 40)
+    .attr("width", cols.bandwidth())
+    .attr("height", 90)
+    .attr("fill", d => rainbow(d.value));
+}
+</script>
+```
 
 ::: notes
-These are the foundational principles from Jacques Bertin and Jock Mackinlay. They provide objective criteria for evaluating visualization designs and guide our decision-making process.
+These are the foundational principles from Jacques Bertin and Jock Mackinlay. They provide objective criteria for evaluating visualization designs and guide our decision-making process. This interactive demo shows the same five numbers encoded six different ways - notice how position and length are easiest to compare accurately, while hue provides no sense of order or magnitude.
 :::
 
 ------------------------------------------------------------------------
@@ -623,22 +1022,108 @@ Stock prices are a classic example: linear scales show absolute price changes, w
 
 ## The Zero Baseline Rule
 
-::::: columns
-::: {.column width="50%"}
-![Truncated Axis Example](figs/truncated-axis.jpg){height="760" fig-align="center"}
+**Bar charts encode data as length. Truncating the axis changes the ratios readers perceive.**
 
-**Truncated Axis:** Exaggerates small differences
-:::
+```{=html}
+<div id="zero-baseline-demo" style="margin: 20px auto;"></div>
+<script>
+{
+  // Sample data: median speeds of different pitch types
+  const data = [
+    {type: "4-Seam Fastball", speed: 95.2},
+    {type: "Changeup", speed: 85.1},
+    {type: "Sinker", speed: 93.8},
+    {type: "Slider", speed: 86.5},
+    {type: "Curveball", speed: 78.3}
+  ];
+  const colors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"];
 
-::: {.column width="50%"}
-![Zero Baseline Example](figs/zero-baseline.jpg){height="760" fig-align="center"}
+  const container = d3.select("#zero-baseline-demo")
+    .style("display", "flex")
+    .style("gap", "40px")
+    .style("justify-content", "center")
+    .style("flex-wrap", "wrap");
 
-**Zero Baseline:** Accurate magnitude representation
-:::
-:::::
+  function createChart(title, domain) {
+    const width = 450, height = 320;
+    const margin = {top: 30, right: 20, bottom: 50, left: 180};
+
+    const svg = container.append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", 18)
+      .attr("text-anchor", "middle")
+      .attr("font-weight", 600)
+      .attr("font-size", 14)
+      .text(title);
+
+    const x = d3.scaleLinear()
+      .domain(domain)
+      .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleBand()
+      .domain(data.map(d => d.type))
+      .range([margin.top, height - margin.bottom])
+      .padding(0.25);
+
+    // X axis
+    svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).ticks(5))
+      .call(g => g.select(".domain").remove());
+
+    // Y axis
+    svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y))
+      .call(g => g.select(".domain").remove());
+
+    // X axis label
+    svg.append("text")
+      .attr("x", (margin.left + width - margin.right) / 2)
+      .attr("y", height - 10)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 11)
+      .attr("fill", "#666")
+      .text("Median Speed (mph)");
+
+    // Bars
+    const left = x.range()[0];
+    svg.append("g")
+      .selectAll("rect")
+      .data(data)
+      .join("rect")
+      .attr("x", left)
+      .attr("y", d => y(d.type))
+      .attr("height", y.bandwidth())
+      .attr("width", d => x(d.speed) - left)
+      .attr("fill", (d, i) => colors[i]);
+
+    // Value labels
+    svg.append("g")
+      .selectAll("text")
+      .data(data)
+      .join("text")
+      .attr("x", d => x(d.speed) + 5)
+      .attr("y", d => y(d.type) + y.bandwidth() / 2)
+      .attr("dy", "0.35em")
+      .attr("font-size", 11)
+      .text(d => d.speed.toFixed(1));
+  }
+
+  createChart("Truncated Axis (78-100 mph) - MISLEADING", [78, 100]);
+  createChart("Zero Baseline (0-100 mph) - Honest", [0, 100]);
+}
+</script>
+```
+
+**Key insight:** On the left, the fastball bar appears ~7× longer than the curveball. In reality, it's only 20% faster.
 
 ::: notes
-Bar charts encode data as length from a baseline. Without zero, these lengths misrepresent the data. This is one of the most common ways visualizations mislead, often unintentionally.
+Bar charts encode data as length from a baseline. Without zero, these lengths misrepresent the data. This is one of the most common ways visualizations mislead, often unintentionally. Notice how dramatically the perception changes between these two charts showing the exact same data.
 :::
 
 ------------------------------------------------------------------------
