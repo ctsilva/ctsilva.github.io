@@ -130,6 +130,7 @@
     }
   </style>
   <script src="libs/d3.v7.min.js"></script>
+  <script src="data/skubal-statcast.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -223,7 +224,7 @@ Claudio Silva
 </div><div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/week3/datatable.png" height="760"></p>
+<p><img data-src="figs/week3/datatable.png" style="width:100.0%"></p>
 <figcaption>The fundamental question: How do I visualize this data?</figcaption>
 </figure>
 </div>
@@ -308,7 +309,7 @@ Claudio Silva
 </div><div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/plots-vs-datatypes.jpg" height="760"></p>
+<p><img data-src="figs/plots-vs-datatypes.jpg" style="width:100.0%"></p>
 <figcaption>Example: Same data, different visual encodings</figcaption>
 </figure>
 </div>
@@ -392,13 +393,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <div id="barchart-demo"></div>
 <script>
 {
-  const data = [
-    {category: "4-Seam Fastball", count: 187},
-    {category: "Changeup", count: 100},
-    {category: "Sinker", count: 85},
-    {category: "Slider", count: 92},
-    {category: "Curveball", count: 31}
-  ];
+  const data = SKUBAL.bar;   // data/skubal-statcast.js
 
   const width = 960, height = 600;
   const margin = {top: 24, right: 24, bottom: 56, left: 84};
@@ -492,16 +487,8 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <div id="linechart-demo"></div>
 <script>
 {
-  // Average speed by inning
-  const data = [
-    {inning: 1, speed: 95.5},
-    {inning: 2, speed: 95.1},
-    {inning: 3, speed: 94.8},
-    {inning: 4, speed: 94.9},
-    {inning: 5, speed: 94.3},
-    {inning: 6, speed: 94.1},
-    {inning: 7, speed: 93.8}
-  ];
+  // Average 4-Seam velocity by inning (data/skubal-statcast.js)
+  const data = SKUBAL.line4seam;
 
   const width = 960, height = 600;
   const margin = {top: 48, right: 30, bottom: 70, left: 96};
@@ -514,7 +501,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .range([margin.left, width - margin.right]);
 
   const y = d3.scaleLinear()
-    .domain([93, 96])
+    .domain([94, 100])
     .range([height - margin.bottom, margin.top]);
 
   // Recessive horizontal grid (behind the marks)
@@ -574,7 +561,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("x", -(height / 2))
     .attr("text-anchor", "middle")
     .attr("font-size", 20)
-    .text("Average Speed (mph)");
+    .text("Average 4-Seam velocity (mph)");
 
   // Title
   svg.append("text")
@@ -583,7 +570,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("text-anchor", "middle")
     .attr("font-weight", 600)
     .attr("font-size", 22)
-    .text("Fastball velocity decline over game");
+    .text("4-Seam velocity holds through the start");
 }
 </script>
 </div></div>
@@ -622,20 +609,8 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <div id="scatterplot-demo"></div>
 <script>
 {
-  // Speed vs Spin Rate data
-  const data = [
-    {speed: 95.2, spin: 2250, type: "4-Seam"},
-    {speed: 94.8, spin: 2310, type: "4-Seam"},
-    {speed: 96.1, spin: 2180, type: "4-Seam"},
-    {speed: 93.8, spin: 2420, type: "Sinker"},
-    {speed: 94.2, spin: 2380, type: "Sinker"},
-    {speed: 85.1, spin: 1620, type: "Changeup"},
-    {speed: 84.9, spin: 1580, type: "Changeup"},
-    {speed: 86.5, spin: 2650, type: "Slider"},
-    {speed: 87.1, spin: 2720, type: "Slider"},
-    {speed: 78.3, spin: 2580, type: "Curveball"},
-    {speed: 77.9, spin: 2620, type: "Curveball"}
-  ];
+  // Every pitch: speed vs spin rate (data/skubal-statcast.js)
+  const data = SKUBAL.scatter;
 
   const width = 960, height = 620;
   const margin = {top: 48, right: 210, bottom: 70, left: 96};
@@ -644,11 +619,11 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("viewBox", [0, 0, width, height]);
 
   const x = d3.scaleLinear()
-    .domain([75, 100])
+    .domain(d3.extent(data, d => d.speed)).nice()
     .range([margin.left, width - margin.right]);
 
   const y = d3.scaleLinear()
-    .domain([1500, 2800])
+    .domain(d3.extent(data, d => d.spin)).nice()
     .range([height - margin.bottom, margin.top]);
 
   const color = d3.scaleOrdinal()
@@ -667,11 +642,11 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .join("circle")
     .attr("cx", d => x(d.speed))
     .attr("cy", d => y(d.spin))
-    .attr("r", 9)
+    .attr("r", 6)
     .attr("fill", d => color(d.type))
     .attr("stroke", "#fafafa")
-    .attr("stroke-width", 2)
-    .attr("opacity", 0.9);
+    .attr("stroke-width", 1)
+    .attr("opacity", 0.65);
 
   // X axis
   svg.append("g")
@@ -710,7 +685,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("text-anchor", "middle")
     .attr("font-weight", 600)
     .attr("font-size", 22)
-    .text("Speed vs Spin Rate by Pitch Type");
+    .text("Speed vs spin rate by pitch type (Skubal, 495 pitches)");
 
   // Legend
   const legend = svg.append("g")
@@ -771,140 +746,72 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <div id="matrix-demo"></div>
 <script>
 {
-  // Pitch type distribution by count (balls-strikes)
-  const counts = ["0-0", "1-0", "2-0", "3-0", "0-1", "1-1", "2-1", "3-1", "0-2", "1-2", "2-2", "3-2"];
-  const pitchTypes = ["4-Seam", "Changeup", "Sinker", "Slider", "Curve"];
+  // Real data: Tarik Skubal, Statcast (Baseball Savant), 5 games Aug 10 - Sep 3 2026, 495 pitches.
+  // value = % of pitches at that count that were this pitch type; n = pitches thrown at that count.
+  const data = SKUBAL.heatmap.cells;   // data/skubal-statcast.js
+  const cols = SKUBAL.heatmap.cols;
+  const types = ["4-Seam", "Sinker", "Changeup", "Slider", "Curveball"];
+  const LOW_N = 20;
+  const counts = cols.map(c => ({label: c, strikes: data.find(d => d.count === c).strikes, n: data.find(d => d.count === c).n}));
+  const strikesGroups = [0, 1, 2];
+  const width = 960, height = 600;
+  const margin = {top: 152, right: 36, bottom: 104, left: 150};
+  const cellW = (width - margin.left - margin.right) / counts.length;   // ~64
+  const cellH = (height - margin.top - margin.bottom) / types.length;   // ~76
+  const svg = d3.select("#matrix-demo").append("svg").attr("viewBox", [0, 0, width, height]);
 
-  // Simulated data: percentage of each pitch type at each count
-  const data = [];
-  counts.forEach(count => {
-    pitchTypes.forEach((type, i) => {
-      // Vary by count - more fastballs in hitter's counts
-      const base = [45, 15, 20, 12, 8][i];
-      const variation = count.startsWith("3") ? [10, -2, -3, -3, -2][i] : 0;
-      data.push({
-        count: count,
-        type: type,
-        value: base + variation + Math.random() * 5
-      });
-    });
+  const x = d3.scaleBand().domain(counts.map(c => c.label)).range([margin.left, width - margin.right]);
+  const y = d3.scaleBand().domain(types).range([margin.top, height - margin.bottom]);
+  const color = d3.scaleSequential().domain([0, 70]).interpolator(d3.interpolateBlues);
+
+  svg.append("text").attr("x", width / 2).attr("y", 30).attr("text-anchor", "middle")
+    .attr("font-weight", 600).attr("font-size", 22).text("Tarik Skubal, pitch selection by count (% of pitches at that count)");
+
+  // strike-group headers above the column labels
+  const groups = svg.append("g").attr("font-size", 16).attr("fill", "#555");
+  strikesGroups.forEach(s => {
+    const cols = counts.filter(c => c.strikes === s).map(c => c.label);
+    const x0 = x(cols[0]), x1 = x(cols[cols.length - 1]) + x.bandwidth();
+    groups.append("text").attr("x", (x0 + x1) / 2).attr("y", 96).attr("text-anchor", "middle")
+      .text(s === 1 ? "1 strike" : `${s} strikes`);
+    groups.append("line").attr("x1", x0 + 6).attr("x2", x1 - 6).attr("y1", 106).attr("y2", 106).attr("stroke", "#bbb");
   });
 
-  const width = 960, height = 640;
-  const margin = {top: 96, right: 30, bottom: 110, left: 130};
-  const cellWidth = 130, cellHeight = 36;
+  // cells with a 2px surface gap
+  svg.append("g").selectAll("rect").data(data).join("rect")
+    .attr("x", d => x(d.count)).attr("y", d => y(d.type))
+    .attr("width", x.bandwidth()).attr("height", y.bandwidth())
+    .attr("fill", d => d.n < LOW_N ? "#eeeeee" : color(d.value)).attr("stroke", "#fafafa").attr("stroke-width", 2);
 
-  const svg = d3.select("#matrix-demo").append("svg")
-    .attr("viewBox", [0, 0, width, height]);
+  // value labels: dark ink on light cells, white on dark
+  svg.append("g").attr("font-size", 16).selectAll("text").data(data).join("text")
+    .attr("x", d => x(d.count) + x.bandwidth() / 2).attr("y", d => y(d.type) + y.bandwidth() / 2)
+    .attr("text-anchor", "middle").attr("dy", "0.35em")
+    .attr("fill", d => d.n < LOW_N ? "#999" : (d.value > 38 ? "#fff" : "#333")).text(d => d.n < LOW_N ? "·" : Math.round(d.value));
 
-  // Title
-  svg.append("text")
-    .attr("x", width / 2)
-    .attr("y", 28)
-    .attr("text-anchor", "middle")
-    .attr("font-weight", 600)
-    .attr("font-size", 22)
-    .text("Pitch Selection by Count");
+  // column labels (counts) and row labels (pitch types)
+  svg.append("g").attr("font-size", 17).attr("fill", "#333").selectAll("text").data(counts).join("text")
+    .attr("x", c => x(c.label) + x.bandwidth() / 2).attr("y", 136).attr("text-anchor", "middle").text(c => c.label);
+  svg.append("g").attr("font-size", 18).attr("fill", "#333").selectAll("text").data(types).join("text")
+    .attr("x", margin.left - 12).attr("y", t => y(t) + y.bandwidth() / 2).attr("text-anchor", "end").attr("dy", "0.35em").text(t => t);
+  svg.append("text").attr("x", (margin.left + width - margin.right) / 2).attr("y", 66)
+    .attr("text-anchor", "middle").attr("font-size", 18).attr("fill", "#555").text("Count (balls-strikes) →");
 
-  const x = d3.scaleBand()
-    .domain(pitchTypes)
-    .range([margin.left, margin.left + pitchTypes.length * cellWidth]);
+  // sample size per column, under the grid
+  svg.append("g").attr("font-size", 15).attr("fill", "#777").selectAll("text").data(counts).join("text")
+    .attr("x", c => x(c.label) + x.bandwidth() / 2).attr("y", height - margin.bottom + 22).attr("text-anchor", "middle").text(c => "n=" + c.n);
 
-  const y = d3.scaleBand()
-    .domain(counts)
-    .range([margin.top, margin.top + counts.length * cellHeight]);
-
-  const color = d3.scaleSequential()
-    .domain([0, 50])
-    .interpolator(d3.interpolateBlues);
-
-  // Cells
-  svg.append("g")
-    .selectAll("rect")
-    .data(data)
-    .join("rect")
-    .attr("x", d => x(d.type))
-    .attr("y", d => y(d.count))
-    .attr("width", cellWidth)
-    .attr("height", cellHeight)
-    .attr("fill", d => color(d.value))
-    .attr("stroke", "#fafafa")
-    .attr("stroke-width", 2);
-
-  // X axis (pitch types)
-  svg.append("g")
-    .attr("transform", `translate(0,${margin.top - 12})`)
-    .selectAll("text")
-    .data(pitchTypes)
-    .join("text")
-    .attr("x", d => x(d) + cellWidth / 2)
-    .attr("y", 0)
-    .attr("text-anchor", "middle")
-    .attr("font-size", 18)
-    .text(d => d);
-
-  // Y axis (counts)
-  svg.append("g")
-    .attr("transform", `translate(${margin.left - 5},0)`)
-    .selectAll("text")
-    .data(counts)
-    .join("text")
-    .attr("x", 0)
-    .attr("y", d => y(d) + cellHeight / 2)
-    .attr("text-anchor", "end")
-    .attr("dy", "0.35em")
-    .attr("font-size", 17)
-    .text(d => d);
-
-  // Axis labels
-  svg.append("text")
-    .attr("x", margin.left + (pitchTypes.length * cellWidth) / 2)
-    .attr("y", margin.top - 44)
-    .attr("text-anchor", "middle")
-    .attr("font-size", 20)
-    .attr("font-weight", 600)
-    .text("Pitch Type");
-
-  svg.append("text")
-    .attr("transform", `translate(${margin.left - 96}, ${margin.top + (counts.length * cellHeight) / 2}) rotate(-90)`)
-    .attr("text-anchor", "middle")
-    .attr("font-size", 20)
-    .attr("font-weight", 600)
-    .text("Count (Balls-Strikes)");
-
-  // Legend
-  const legendWidth = 320, legendHeight = 18;
-  const legendX = margin.left, legendY = height - 72;
-
-  const legendScale = d3.scaleLinear()
-    .domain([0, 50])
-    .range([0, legendWidth]);
-
-  const legendAxis = d3.axisBottom(legendScale)
-    .ticks(5)
-    .tickFormat(d => d + "%");
-
-  // Color gradient
-  svg.append("defs").append("linearGradient")
-    .attr("id", "legend-gradient")
-    .selectAll("stop")
-    .data(d3.range(0, 1.01, 0.01))
-    .join("stop")
-    .attr("offset", d => d)
-    .attr("stop-color", d => color(d * 50));
-
-  svg.append("rect")
-    .attr("x", legendX)
-    .attr("y", legendY)
-    .attr("width", legendWidth)
-    .attr("height", legendHeight)
-    .style("fill", "url(#legend-gradient)");
-
-  svg.append("g")
-    .attr("transform", `translate(${legendX},${legendY + legendHeight})`)
-    .call(legendAxis)
-    .attr("font-size", 16)
+  // legend
+  const lw = 320, lh = 16, lx = margin.left, ly = height - 56;
+  const lscale = d3.scaleLinear().domain([0, 70]).range([0, lw]);
+  svg.append("defs").append("linearGradient").attr("id", "matrix-legend-gradient")
+    .selectAll("stop").data(d3.range(0, 1.01, 0.05)).join("stop")
+    .attr("offset", d => d).attr("stop-color", d => color(d * 70));
+  svg.append("rect").attr("x", lx).attr("y", ly).attr("width", lw).attr("height", lh).style("fill", "url(#matrix-legend-gradient)");
+  svg.append("g").attr("transform", `translate(${lx},${ly + lh})`)
+    .call(d3.axisBottom(lscale).ticks(5).tickFormat(d => d + "%")).attr("font-size", 16)
     .call(g => g.select(".domain").remove());
+  svg.append("text").attr("x", lx + lw + 16).attr("y", ly + lh - 2).attr("font-size", 16).attr("fill", "#555").text(`grey · = fewer than ${LOW_N} pitches at that count`);
 }
 </script>
 </div></div>
@@ -1017,29 +924,29 @@ These five chart types are your visualization toolkit's power tools. Master thes
 
   // Create container
   const container = d3.select("#marks-demo")
-    .style("display", "flex")
-    .style("flex-wrap", "wrap")
-    .style("gap", "14px")
+    .style("display", "grid")
+    .style("grid-template-columns", "repeat(3, max-content)")
+    .style("gap", "18px 26px")
     .style("justify-content", "center");
 
-  const W = 284, H = 232;
+  const W = 580, H = 380;
 
   function panel(title) {
     const svg = container.append("svg")
       .attr("width", W).attr("height", H)
       .attr("font-family", "sans-serif")
-      .attr("font-size", 15);
+      .attr("font-size", 22);
     svg.append("text")
       .attr("x", W/2)
-      .attr("y", 14)
+      .attr("y", 26)
       .attr("text-anchor", "middle")
       .attr("font-weight", 600)
-      .attr("font-size", 17)
+      .attr("font-size", 24)
       .text(title);
     return svg;
   }
 
-  const rows = d3.scaleBand(data.map(d => d.label), [26, H - 4]).padding(0.25);
+  const rows = d3.scaleBand(data.map(d => d.label), [48, H - 8]).padding(0.25);
   const cols = d3.scaleBand(data.map(d => d.label), [14, W - 4]).padding(0.15);
   const len = d3.scaleLinear([0, max], [18, W - 10]);
   const midRow = d => rows(d.label) + rows.bandwidth() / 2;
@@ -1054,7 +961,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("x1", len(0)).attr("x2", len(max))
     .attr("y1", midRow).attr("y2", midRow);
   pos.append("g").selectAll("circle").data(data).join("circle")
-    .attr("cx", d => len(d.value)).attr("cy", midRow).attr("r", 7);
+    .attr("cx", d => len(d.value)).attr("cy", midRow).attr("r", 11);
 
   // 2. Length
   const bar = panel("2. Length");
@@ -1069,8 +976,8 @@ These five chart types are your visualization toolkit's power tools. Master thes
   // 3. Angle (Pie chart)
   const pie = panel("3. Angle");
   const arcs = d3.pie().sort(null).value(d => d.value)(data);
-  const arc = d3.arc().innerRadius(0).outerRadius(88);
-  const g = pie.append("g").attr("transform", `translate(${W/2},${H/2 + 16})`);
+  const arc = d3.arc().innerRadius(0).outerRadius(136);
+  const g = pie.append("g").attr("transform", `translate(${W/2},${H/2 + 22})`);
   g.selectAll("path").data(arcs).join("path")
     .attr("d", arc)
     .attr("fill", "#4c4b46")
@@ -1101,9 +1008,9 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("text-anchor", "middle").text(d => d.label);
   light.append("g").selectAll("rect").data(data).join("rect")
     .attr("x", d => cols(d.label))
-    .attr("y", 54)
+    .attr("y", 78)
     .attr("width", cols.bandwidth())
-    .attr("height", 124)
+    .attr("height", 242)
     .attr("fill", d => grey(d.value));
 
   // 6. Hue
@@ -1114,14 +1021,17 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("text-anchor", "middle").text(d => d.label);
   hue.append("g").selectAll("rect").data(data).join("rect")
     .attr("x", d => cols(d.label))
-    .attr("y", 54)
+    .attr("y", 78)
     .attr("width", cols.bandwidth())
-    .attr("height", 124)
+    .attr("height", 242)
     .attr("fill", d => rainbow(d.value));
 }
 </script>
 <aside class="notes">
-<p>These are the foundational principles from Jacques Bertin and Jock Mackinlay. They provide objective criteria for evaluating visualization designs and guide our decision-making process. This interactive demo shows the same five numbers encoded six different ways - notice how position and length are easiest to compare accurately, while hue provides no sense of order or magnitude.</p>
+<p>Two foundational results sit behind this demo, and it is worth naming them.</p>
+<p>Bertin (Semiologie graphique, 1967): a mark on the page can vary in a small set of visual variables - position in the plane, size, value (lightness), texture, color (hue), orientation, shape - and each variable supports only certain kinds of reading. Bertin called these levels of organization: a variable is selective if you can pick out all marks of one kind at a glance, associative if the marks group, ordered if the eye perceives a ranking, and quantitative if it perceives ratios. Position is all four. Size and value are ordered but not truly quantitative. Hue, shape and orientation are selective and associative only - they carry identity, not amount. That is the whole lesson of panel 6.</p>
+<p>Mackinlay (1986, APT): two criteria for choosing an encoding. Expressiveness - the encoding must show all the facts in the data and only those facts; a line chart over nominal categories fails it by implying an order that is not there (slide 18, Expressiveness Violations). Effectiveness - among expressive encodings, prefer the channel people decode most accurately for that data type. His ranking for quantitative data, built on Cleveland and McGill: position, then length, then angle and slope, then area, then volume, then lightness and saturation, then hue last.</p>
+<p>Read the six panels down that ranking: 1 position, 2 length, 3 angle, 4 area, 5 lightness, 6 hue. Same five numbers each time. Ask the room to order A to E from panel 1, then from panel 4, then from panel 6. Panel 1 is instant, panel 4 is a guess, panel 6 is impossible - hue provides no sense of order or magnitude. Munzner’s channel ranking on slide 20 is the modern version of exactly this list.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1146,7 +1056,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
 </div><div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/week3/marks_and_channels.png" height="760"></p>
+<p><img data-src="figs/week3/marks_and_channels.png" style="width:100.0%"></p>
 <figcaption>Channels encode data attributes</figcaption>
 </figure>
 </div>
@@ -1198,11 +1108,11 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/line-charts-inappropriate.png"></p>
-<figcaption>Line chart with categorical data implies false ordering</figcaption>
+<p><img data-src="figs/line-charts-inappropriate.png" style="width:100.0%"></p>
+<figcaption>Line interpolates through missing periods, drawing collapses to zero that never happened</figcaption>
 </figure>
 </div>
-<p><strong>Problem:</strong> Ordered visual channel (line) with unordered data</p>
+<p><strong>Problem:</strong> The line asserts continuity — and values — where the data is absent</p>
 </div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1213,7 +1123,10 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <p><strong>Problem:</strong> Arbitrary ordering implies non-existent relationship</p>
 </div></div>
 <aside class="notes">
-<p>These examples show how visual choices can mislead. The line chart suggests temporal trends where none exist, while the bar chart ordering implies a ranking of categories that may be meaningless.</p>
+<p>Left: five small multiples - injuries by contributing factor, over time. Faceting by the nominal variable is fine, and the x-axis inside each panel is time, so a line is the right mark for it. The problem is what the line does at the gaps. Driver Inattention crashes from about 950 to zero and rebounds to 1300 within two ticks; Failure to Yield does the same; Fatigued/Drowsy drops to zero and stays there. Injuries do not vanish for a month and come back. Those are periods with no records - a relabelled category, or data not yet reported - and the line interpolates straight through them, asserting a collapse that never happened.</p>
+<p>That is the expressiveness violation in Mackinlay’s sense: the encoding states a fact - a real drop to zero - that is not in the data. Bertin’s reading of a line is exactly why it happens: a line is ordered and continuous, so every segment claims the values in between exist. Fix: break the line at missing periods, or mark them explicitly. Never let a plotting library fill absence with zero.</p>
+<p>Second, smaller violation: there are no x-axis labels at all, so a reader cannot even tell this is time - which is how the previous caption on this slide came to misread it as categorical.</p>
+<p>Right: the bar chart’s category order is arbitrary, but position along an axis reads as ordered, so the eye infers a ranking that is not in the data. Sort by value if a ranking is the point; otherwise make the order deliberate - alphabetical or grouped - and say so.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1231,21 +1144,27 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <p><strong>Which value is larger?</strong></p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/cleveland-mcgill-a-vs-b-examples.jpg"></p>
-<figcaption>Compare these different encodings</figcaption>
+<p><img data-src="figs/cleveland-mcgill-a-vs-b-examples.jpg" class="nostretch" style="width:90.0%"></p>
+<figcaption>Cleveland &amp; McGill stimuli: types 1-3 encode A and B by position on a common baseline, types 4-5 by length</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/cleveland-mcgill-a-vs-b-results.jpg"></p>
-<figcaption>Results show position is more effective</figcaption>
+<p><img data-src="figs/cleveland-mcgill-a-vs-b-results.jpg" class="nostretch" style="width:46.0%"></p>
+<figcaption>Log absolute error with 95% confidence intervals: position (types 1-3) beats length (types 4-5)</figcaption>
 </figure>
 </div>
 <div class="fragment">
-<p><strong>Result:</strong> Length comparison is faster and more accurate than color comparison</p>
+<p><strong>Result:</strong> Position on a common baseline is judged more accurately than length</p>
 </div>
 <aside class="notes">
-<p>This demonstrates why we need systematic understanding of visual channel effectiveness. Our perceptual system has different capabilities for different visual properties.</p>
+<p>Run it as an experiment, not a slide. Keep the results image hidden (it is the second figure - cover it or scroll so only the top row shows) and use Cleveland and McGill’s own two-step task.</p>
+<p>First, say what the dots are. They are not data: Cleveland and McGill placed them to mark the two values the subject judges, and their placement is what makes the five types different. Type 1: two adjacent bars in the same group. Type 2: the bottom segments of two neighbouring stacked bars - both on the baseline, so still position. Type 3: one bar in group A and one in group B, far apart - position, with distance. Type 4: the top segments of bars A and B - different heights, no shared baseline, so a length judgment. Type 5: both dots are in bar A - its top segment and a large middle segment, one above the other - a length comparison within a single stacked bar, and the hardest case. The A and B letters label the groups, not the pair; in Type 5 the pair is not A versus B at all. Point at the dots when you ask.</p>
+<p>Step one, per type, quickly: “Of the two dotted values - which is larger?” Hands. Everyone gets Type 1 instantly; hesitation starts around Type 4, where A and B are segments floating at different heights.</p>
+<p>Step two, the one that teaches: “Estimate the smaller as a percentage of the larger.” Take three or four guesses aloud for Type 1 and write them down; do the same for Type 5. The spread of the Type 5 guesses will be several times the spread for Type 1. That spread IS the effectiveness difference, measured live in this room. (If the room is shy, ask everyone to write a number and read out the min and max.)</p>
+<p>Then reveal the results plot and read it: the horizontal axis is log base 2 of absolute error, so one unit is a doubling; the dots are means, the bars 95% confidence intervals; types 1-3 (position) sit left, 4-5 (length) sit right, and the Type 3 interval does not reach the Type 4 interval. Their fifty-odd subjects did what your room just did, ten graphs of each type, true ratios spread roughly 18% to 83% so nobody could default to “about half”.</p>
+<p>Two things to say precisely. It is position versus LENGTH here - there is no colour in this experiment; colour ranks far lower and comes in on the next slide. And the finding is about accuracy of a ratio judgment, not speed: people are not much slower at Type 5, they are simply wrong more often, which is worse.</p>
+<p>Bridge: Mackinlay’s effectiveness ranking on the previous slides was built on this experiment; Munzner’s channel ranking on the next slide is its modern form.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1321,25 +1240,36 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <h2>Exercise</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
+<p><strong>What are the marks?</strong></p>
 <ul>
-<li>What are the marks?
+<li class="fragment">Bars</li>
+</ul>
+<p><strong>What are the channels?</strong></p>
 <ul>
-<li>Bars</li>
-</ul></li>
-<li>What are the channels?
-<ul>
-<li>Size</li>
-<li>Horizontal position</li>
-</ul></li>
+<li class="fragment">Size</li>
+<li class="fragment">Horizontal position</li>
 </ul>
 </div><div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/week3/bar_chart.png" height="760"></p>
+<p><img data-src="figs/week3/bar_chart.png" style="width:100.0%"></p>
 <figcaption>Bar Chart</figcaption>
 </figure>
 </div>
 </div></div>
+<aside class="notes">
+<p>Run it before revealing anything: give them twenty seconds with the chart, then ask for marks first. Click - bars. Then channels: click - size (the bar length carries the quantity), click - horizontal position (which category). That decomposition, marks plus channels, is the vocabulary for everything on the next slides, and it is exactly how you read the channel ranking on slide 20: length is a magnitude channel, position here is doing the identity job.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Chart Selection Framework</h2>
@@ -1374,7 +1304,13 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <p><strong>Rule of thumb:</strong> Start simple, add complexity only when needed</p>
 </div></div>
 <aside class="notes">
-<p>This framework helps students make systematic chart choices rather than arbitrary decisions. The decision tree provides a quick reference for common scenarios.</p>
+<p>The three questions are in this order because each one narrows the space, and each maps onto a principle from earlier in the lecture.</p>
+<p>Question 1, data types, is the expressiveness gate. Nominal data rules out anything that implies order or continuity - no line over categories, no colour ramp for identity; temporal data invites position along an ordered axis. Get this wrong and the chart says something false before you have chosen anything else.</p>
+<p>Question 2, the relationship, is the task - Munzner’s why. It is the question that actually picks the chart, and the decision tree on the right is just its answers, read as “which channel carries the quantity”: compare categories - length on a common baseline, so a bar chart; trend over time - position along time plus connection, a line; relationship between two quantities - two position channels, a scatterplot; cross-tabulate two categoricals - both positions are spent on the categories, so the quantity falls to colour, a heatmap, and colour is a weak magnitude channel, which is why the cells on slide 11 carry numbers; geographic - both positions are spent on latitude and longitude, so the quantity falls to size or colour, a symbol map, the weakest case on the ranking.</p>
+<p>Two relationships the tree does not list, and students will ask: distribution - histogram or box plot (the box plots on the Skubal slide later); composition, part-to-whole - a stacked bar, or a pie only for two or three slices.</p>
+<p>Question 3, how many variables, decides whether one chart is enough. Past two or three, prefer small multiples - the same simple chart repeated - over cramming a third or fourth channel into one plot. That is what “start simple” means operationally: the cheapest expressive chart that supports the task, and add a channel only when a question demands it.</p>
+<p>Worked example, thirty seconds, with the dataset they have watched all hour. Pitch mix: categorical plus a count, comparison, one variable - bar chart, slide 8. Velocity by inning: temporal, trend - line, slide 9. Speed against spin: two quantities, relationship - scatterplot, slide 10. Pitch type by count: two categoricals plus a share, cross-tab - heatmap, slide 11. Four questions, four fundamental graphs, one dataset - the framework is what generated slides 8 to 11.</p>
+<p>Caveat to say out loud: a decision tree is a starting point, not an oracle. Slide 6 showed the same data supporting several charts; which one is right depends on the question you are answering, which is why question 2 is the one that matters most.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1417,7 +1353,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <div id="scales-demo"></div>
 <script>
 {
-  // Exponential growth data (e.g., pitch counts over career years)
+  // Illustrative series that doubles every step - NOT real data. Both panels plot the same six values.
   const data = [
     {year: 1, count: 100},
     {year: 2, count: 150},
@@ -1499,7 +1435,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
       .attr("y", height - margin.bottom + 48)
       .attr("text-anchor", "middle")
       .attr("font-size", 19)
-      .text("Year");
+      .text("Step (the value doubles each step)");
 
     // Y label
     svg.append("text")
@@ -1529,13 +1465,13 @@ These five chart types are your visualization toolkit's power tools. Master thes
   const linearY = d3.scaleLinear()
     .domain([0, d3.max(data, d => d.count)])
     .nice();
-  createChart("Linear Scale", linearY, "Pitch Count");
+  createChart("Linear Scale", linearY, "Value");
 
   // Log scale
   const logY = d3.scaleLog()
     .domain([d3.min(data, d => d.count), d3.max(data, d => d.count)])
     .nice();
-  createChart("Logarithmic Scale", logY, "Pitch Count (log)");
+  createChart("Logarithmic Scale", logY, "Value (log scale)");
 }
 </script>
 <div class="columns">
@@ -1545,7 +1481,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <li>Absolute differences</li>
 <li>Additive changes</li>
 <li>Most common choice</li>
-<li>Later years dominate visually</li>
+<li>Large values dominate visually</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><strong>Logarithmic Scale:</strong></p>
@@ -1557,7 +1493,10 @@ These five chart types are your visualization toolkit's power tools. Master thes
 </ul>
 </div></div>
 <aside class="notes">
-<p>Stock prices are a classic example: linear scales show absolute price changes, while log scales show percentage changes. Choose based on whether absolute or relative change matters more for your analysis. Notice how the same data tells different stories depending on the scale.</p>
+<p>Say what the chart is first: six illustrative values that double each step - 100, 150, then 300, 600, 1200, 2400 - the same six numbers on both panels. It is not real data; it is the cleanest possible multiplicative series, chosen so the two panels disagree as much as possible.</p>
+<p>Left, linear: the first three steps look almost flat and the last two swallow the chart. Ask what the growth rate was between steps 1 and 3 versus 5 and 6 - it is the same doubling, and the linear panel hides that completely. Right, log: equal ratios become equal vertical distances, so a constant growth rate is a straight line, and the early steps are as legible as the late ones. That is the whole trade: linear answers “how much more”, log answers “how many times more”.</p>
+<p>Real cases where log is the honest choice: stock prices over decades (a 10% move should look the same in 1990 and 2020), epidemic case counts in the growth phase, transistor counts, anything spanning orders of magnitude. Two costs to state: a log axis cannot show zero or negative values, and most audiences misread it - a doubling looks like a small step - so it needs a label that says “log” and a tick or two the reader can anchor on.</p>
+<p>Bridge: the next two slides are the other scale decision - the zero baseline - and slide 28 asks them to choose a scale for country populations, a thousand to 1.4 billion. That is this chart with real data.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1576,15 +1515,10 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <div id="zero-baseline-demo"></div>
 <script>
 {
-  // Sample data: median speeds of different pitch types
-  const data = [
-    {type: "4-Seam Fastball", speed: 95.2},
-    {type: "Changeup", speed: 85.1},
-    {type: "Sinker", speed: 93.8},
-    {type: "Slider", speed: 86.5},
-    {type: "Curveball", speed: 78.3}
-  ];
-  const colors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"];
+  // Median release speed per pitch type - real Statcast data (data/skubal-statcast.js)
+  const data = SKUBAL.medianSpeed;
+  // same type -> colour mapping as the scatterplot on slide 10 (colour follows the entity, not the row)
+  const colorOf = {"4-Seam Fastball": "#2a78d6", "Sinker": "#1baf7a", "Changeup": "#eb6834", "Slider": "#eda100", "Curveball": "#e87ba4"};
 
   const container = d3.select("#zero-baseline-demo")
     .style("display", "flex")
@@ -1650,7 +1584,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
       .attr("y", d => y(d.type))
       .attr("height", y.bandwidth())
       .attr("width", d => x(d.speed) - left)
-      .attr("fill", (d, i) => colors[i]);
+      .attr("fill", d => colorOf[d.type]);
 
     // Value labels
     svg.append("g")
@@ -1838,13 +1772,23 @@ These five chart types are your visualization toolkit's power tools. Master thes
 <p><strong>Scenario:</strong> Visualizing country populations</p>
 <p><strong>Data range:</strong> 1,000 (Vatican) to 1.4 billion (China)</p>
 </div><div class="column" style="width:40%;">
-<p><strong>Questions:</strong> 1. What scale would you choose? 2. How would you handle the extreme range? 3. What alternatives might you consider?</p>
+<p><strong>Questions:</strong></p>
+<ol type="1">
+<li>What scale would you choose?</li>
+<li>How would you handle the extreme range?</li>
+<li>What alternatives might you consider?</li>
+</ol>
 <div class="fragment">
 <p><strong>Consider:</strong> Log scale vs.&nbsp;filtering vs.&nbsp;grouping</p>
 </div>
 </div></div>
 <aside class="notes">
-<p>This exercise highlights the challenge of extreme data ranges. Students should consider log scales, filtering small countries, or using different visualization types like maps where geographic size provides context.</p>
+<p>Give them three minutes in pairs, then take hands: linear or log? Most will say log, and the interesting conversation is what goes wrong when they do it naively.</p>
+<p>The data: about 195 countries spanning six orders of magnitude - the Vatican under a thousand, a dozen microstates in the tens of thousands, a median country around five million, and India and China at 1.4 billion each holding roughly a third of the world between them. (Aside worth a sentence: India passed China in 2023, so a slide that says “China, 1.4 billion” is already a lesson in checking the date on your data.)</p>
+<p>Question 1, scale. A linear bar chart is the zero-baseline slide in reverse: two bars fill the frame and 150 countries become indistinguishable slivers at zero - honest, and useless. A log scale makes every country visible and turns equal ratios into equal distances. Then the trap: bars on a log axis. Length is the channel, and on a log axis length no longer encodes the quantity - a bar from 1 to 1,000 and a bar from 1,000 to 1,000,000 are the same length - and zero does not exist. So log plus length is wrong; log plus position is right: a dot plot, one dot per country on a log axis. Steer them there. It is slides 25 and 26 combined.</p>
+<p>Question 2, the extreme range - the three words on the reveal, plus two more. Log, as above. Filtering: show the top 20 and say, in the title, what fraction of the world they hold. Grouping: bin countries by magnitude - under a million, one to ten, ten to a hundred, over a hundred million - and count; that is a histogram of country sizes, and the bins are log bins whether or not you call them that. Also: small multiples by region so each panel has a sane range; and rank as the position channel, labelling only the extremes.</p>
+<p>Question 3 is really question 2 of the framework: what is the question? How concentrated is population - a cumulative-share curve. Compare two specific countries - just those two, linear. The shape of the distribution - the log histogram. Where people are - a map, and here is the warning for Week 8: a choropleth of population is dominated by area, not people; totals want a cartogram, and most population questions want per-capita anyway.</p>
+<p>Whichever they choose, the requirement is the same: say it. “Log scale” in the axis label, “top 20 of 195” in the title. Then advance: Putting It All Together, the two Skubal payoff slides, and only then the pitfalls.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1873,13 +1817,61 @@ These five chart types are your visualization toolkit's power tools. Master thes
 </div><div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/design-process.jpg" height="760"></p>
+<p><img data-src="figs/design-process.jpg" style="width:100.0%"></p>
 <figcaption>Design Process Workflow</figcaption>
 </figure>
 </div>
 </div></div>
 <aside class="notes">
 <p>This systematic approach helps avoid common pitfalls. Each step builds on the previous ones, and iteration often reveals better approaches. Don’t expect to get it right on the first try.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>One Dataset, Four Fundamental Graphs</h2>
+<p><strong>The same 495 pitches as a bar chart (mix), box plots (velocity), and two scatterplots (movement, location).</strong></p>
+
+<img data-src="figs/week3/skubal_pitch_profile.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Source: Baseball Savant Statcast, Tarik Skubal, Aug 10 - Sep 3 2026, 495 pitches. Figure: baseball-vis pitch profile.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - added Sept 17. If running long, go straight to Common Pitfalls.</p>
+<p>This is the payoff slide for the whole lecture: one dataset, and each of the four panels is one of the fundamental graphs answering a different question. Top left, the bar chart - a categorical comparison, pitch mix. Top right, box plots - distributions of a quantity per category, release velocity. Bottom left, a scatterplot of two quantities - horizontal versus vertical movement - where the pitch types separate into clusters without any labels. Bottom right, the same marks as location over the plate.</p>
+<p>Ask the room: which panel would you remove if you could only keep three? Then: which question does each panel answer that the others cannot? That is chart selection.</p>
+<p>Note the craft: one palette across all four, direct labels on the bars, the strike-zone outline drawn once, a caption that states what a box is. All of it is Week 3 material.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Small Multiples: One Panel per Category</h2>
+<p><strong>Same axes, same scale, one panel per pitch type - the comparison happens across panels, by eye.</strong></p>
+
+<img data-src="figs/week3/skubal_release_to_plate.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Source: Baseball Savant Statcast, Tarik Skubal, Aug 10 - Sep 3 2026, 495 pitches. Figure: baseball-vis, release point to plate crossing, catcher’s view.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - added Sept 17. If running long, go straight to Common Pitfalls.</p>
+<p>Small multiples: the same plot repeated once per category, with identical axes, so the eye compares panels directly instead of decoding a legend. Five pitch types, five panels; circles are release points, crosses are where the ball crossed the plate, the bold arrow joins the type averages.</p>
+<p>Two things to point at. The release points barely move between panels - he releases everything from the same slot, which is the whole point of a good changeup - while the plate crossings shift by type: fastballs up, changeups and curveballs down. And read the caption: the straight connectors are not flight paths. Honest captions are Week 3 material too.</p>
+<p>Preview of later weeks: this is faceting, and in Week 7 it becomes interactive.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1916,22 +1908,139 @@ These five chart types are your visualization toolkit's power tools. Master thes
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Specific Pitfalls to Avoid</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/week3/overplotting.png" class="" style="width:50.0%"></p>
-<figcaption>Overplotting might happen whenever too many data items are represented in the visualization</figcaption>
-</figure>
+<h2>Specific Pitfalls to Avoid: Overplotting</h2>
+<div id="overplot-demo"></div>
+<script>
+{
+  // Same 2-D Gaussian cloud, same mark size, growing n. Seeded so it is identical every render.
+  const container = d3.select("#overplot-demo")
+    .style("display", "grid")
+    .style("grid-template-columns", "repeat(3, max-content)")
+    .style("gap", "18px 26px")
+    .style("justify-content", "center");
+
+  const W = 580, H = 380, R = 7, SIGMA = 42;
+  const panels = [
+    {n: 10,   caption: "Easy to see."},
+    {n: 100,  caption: "Can still see."},
+    {n: 300,  caption: "Can't see middle."},
+    {n: 800,  caption: "Looking blobby."},
+    {n: 1600, caption: "Okay, it's a blob."},
+    {n: 3200, caption: "I don't even."}
+  ];
+  const normal = d3.randomNormal.source(d3.randomLcg(0.42))(0, 1);
+
+  for (const {n, caption} of panels) {
+    const pts = Array.from({length: n}, () => [normal(), normal()]);
+    const svg = container.append("svg")
+      .attr("width", W).attr("height", H)
+      .attr("font-family", "sans-serif");
+    svg.append("text")
+      .attr("x", W - 14).attr("y", 30)
+      .attr("text-anchor", "end")
+      .attr("font-size", 20).attr("fill", "#777")
+      .text(`n = ${n.toLocaleString()}`);
+    svg.append("g").selectAll("circle").data(pts).join("circle")
+      .attr("cx", d => W / 2 + d[0] * SIGMA)
+      .attr("cy", d => 170 + d[1] * SIGMA)
+      .attr("r", R)
+      .attr("fill", "#111");
+    svg.append("text")
+      .attr("x", W / 2).attr("y", H - 22)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 26).attr("font-style", "italic")
+      .text(caption);
+  }
+}
+</script>
+<div class="footer">
+<p>After Nathan Yau’s FlowingData illustration; redrawn in D3 with a seeded Gaussian sample.</p>
 </div>
+<aside class="notes">
+<p>Added Sept 17 as a D3 redraw of the original FlowingData PNG.</p>
+<p>Six panels, one dataset family: a 2-D Gaussian cloud drawn with the same 7-pixel dots. Only n changes: 10, 100, 300, 800, 1,600, 3,200. Read the captions aloud left to right - they are the joke, and they are also exactly what happens to the reader.</p>
+<p>Ask: at which panel do you stop being able to see where the centre is? Usually the third. Then ask what the last three panels tell you that the third didn’t. Nothing - the visualization has stopped carrying information while the data kept growing.</p>
+<p>Point out that the mark was never wrong; the mark <em>size</em> was chosen for panel one and never revisited. The fixes are all about giving up the individual point: smaller radius, transparency so density becomes darkness, binning (hexbin, 2-D histogram) or contours, or sampling. Next week’s perception lecture explains why alpha works - we are good at reading darkness as density.</p>
+<p>Note the dots are seeded, so the picture is the same every time you open the deck.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Specific Pitfalls to Avoid</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/week3/labels.png" class="" style="width:50.0%"></p>
-<figcaption>Always explain your visualization!</figcaption>
-</figure>
+<h2>Specific Pitfalls to Avoid: Missing Labels</h2>
+<div id="labels-demo"></div>
+<script>
+{
+  // Six identical unlabeled charts. The captions supply the meaning the chart does not.
+  const container = d3.select("#labels-demo")
+    .style("display", "grid")
+    .style("grid-template-columns", "repeat(3, max-content)")
+    .style("gap", "18px 26px")
+    .style("justify-content", "center");
+
+  const W = 580, H = 380;
+  const captions = [
+    ["Unknown x vs.", "unknown y?"],
+    ["Sales over time?", ""],
+    ["Position while", "going down a slide?"],
+    ["Cost of living vs.", "mean home size?"],
+    ["A broken triangle?", ""],
+    ["Times I use this joke", "vs. amt. of amusement?"]
+  ];
+  const ox = 70, oy = 270, top = 36, right = 545;
+
+  for (const [l1, l2] of captions) {
+    const svg = container.append("svg")
+      .attr("width", W).attr("height", H)
+      .attr("font-family", "sans-serif");
+    const g = svg.append("g").attr("stroke", "#222").attr("stroke-width", 3).attr("fill", "none");
+    g.append("line").attr("x1", ox).attr("y1", oy).attr("x2", ox).attr("y2", top);
+    g.append("line").attr("x1", ox).attr("y1", oy).attr("x2", right).attr("y2", oy);
+    svg.append("path").attr("fill", "#222")
+      .attr("d", `M${ox - 9},${top + 14} L${ox},${top - 4} L${ox + 9},${top + 14} Z`);
+    svg.append("path").attr("fill", "#222")
+      .attr("d", `M${right - 14},${oy - 9} L${right + 4},${oy} L${right - 14},${oy + 9} Z`);
+    svg.append("line")
+      .attr("x1", ox + 34).attr("y1", top + 32)
+      .attr("x2", right - 40).attr("y2", oy - 34)
+      .attr("stroke", "#111").attr("stroke-width", 9).attr("stroke-linecap", "round");
+    const t = svg.append("text")
+      .attr("x", W / 2).attr("y", l2 ? H - 52 : H - 36)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 26).attr("font-style", "italic");
+    t.append("tspan").attr("x", W / 2).text(l1);
+    if (l2) t.append("tspan").attr("x", W / 2).attr("dy", "1.25em").text(l2);
+  }
+}
+</script>
+<div class="footer">
+<p>After Nathan Yau’s FlowingData illustration; redrawn in D3.</p>
 </div>
+<aside class="notes">
+<p>Added Sept 17 as a D3 redraw of the original FlowingData PNG.</p>
+<p>Six charts, and they are literally the same SVG: two arrowed axes, one thick line going down and to the right. No title, no axis labels, no ticks, no units. Everything the reader “knows” about each one comes from the caption underneath - and the captions are all equally plausible, including the triangle.</p>
+<p>Ask the class what the line means before you read any caption. Somebody will say “something is decreasing”. Ask: decreasing against what? Over what range? Is down bad? They cannot answer, and that is the point: a chart without labels transfers no information, it only transfers a mood.</p>
+<p>The minimum for any chart you hand in: a title that states the claim or the question, both axes labelled with units, tick values, and a source. If a colleague can’t say in one sentence what the chart shows without you standing next to it, the chart isn’t finished.</p>
+<p>Connect back to the exercise slide: “Position” was the first channel we decomposed, and position is meaningless until the axes say what it is position <em>of</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Chart decoding</h2>
@@ -2027,9 +2136,26 @@ These five chart types are your visualization toolkit's power tools. Master thes
 </section>
 <section class="slide level2">
 <h2>Next Steps</h2>
-<p><strong>For next class:</strong> - Read Tufte Chapter 1-2 (Graphical Excellence &amp; Integrity) - Practice chart selection with your own datasets - Complete Exercise 3: Chart design and encoding alternatives</p>
-<p><strong>Lab activities:</strong> - Build all five chart types with real data - Compare encoding choices for the same dataset - Apply the chart selection framework to new scenarios</p>
-<p><strong>Looking ahead:</strong> - Interactive visualization techniques - Advanced visual encodings and multi-dimensional data - Design critique and evaluation methods</p>
+<p><strong>For next class (Sept 25 - Visual Perception and D3 Foundations):</strong></p>
+<ul>
+<li>Read Franconeri et al., <em>The Science of Visual Data Communication: What Works</em> (2021)</li>
+<li>Read Elliott, <em>39 Studies About Human Perception in 30 Minutes</em></li>
+<li>Read Cleveland &amp; McGill (1984), <em>Graphical Perception</em> - the paper behind today’s experiment</li>
+<li>Practice chart selection with your own datasets</li>
+<li>Complete Exercise 3: Chart design and encoding alternatives (due Sept 24)</li>
+</ul>
+<p><strong>Lab activities:</strong></p>
+<ul>
+<li>Build all five chart types with real data</li>
+<li>Compare encoding choices for the same dataset</li>
+<li>Apply the chart selection framework to new scenarios</li>
+</ul>
+<p><strong>Looking ahead:</strong></p>
+<ul>
+<li>Weeks 4-5: perception and colour - why the channel ranking looks the way it does</li>
+<li>Week 6: group projects</li>
+<li>Week 7: interaction</li>
+</ul>
 <aside class="notes">
 <p>Give students concrete actions to reinforce today’s learning. The lab exercise helps them practice the concepts immediately while the reading prepares them for more advanced topics.</p>
 <style type="text/css">
@@ -2069,18 +2195,13 @@ These five chart types are your visualization toolkit's power tools. Master thes
 </section>
 <section class="slide level2">
 <h2>Questions &amp; Discussion</h2>
-<div class="columns">
-<div class="column" style="width:70%;">
-<p><strong>Think about:</strong> - What visualization challenges do you face in your work/research? - How might these principles apply to your domain? - What questions do you have about applying these techniques?</p>
-<p><strong>Next class:</strong> Interactive visualization techniques and advanced encodings</p>
-</div><div class="column" style="width:30%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figs/vida.jpg" style="width:100.0%"></p>
-<figcaption>Thank you</figcaption>
-</figure>
-</div>
-</div></div>
+<p><strong>Think about:</strong></p>
+<ul>
+<li>What visualization challenges do you face in your work/research?</li>
+<li>How might these principles apply to your domain?</li>
+<li>What questions do you have about applying these techniques?</li>
+</ul>
+<p><strong>Next class (Sept 25):</strong> Visual perception and D3 foundations</p>
 <aside class="notes">
 <p>End with open discussion to connect the general principles to students’ specific interests and challenges. This helps them see the practical relevance of what they’ve learned.</p>
 <style type="text/css">
