@@ -8,6 +8,7 @@ format:
   revealjs:
     theme: [default, custom.scss]
     include-in-header: d3-header.html
+    css: d3-charts.css
     slide-number: c/t
     show-slide-number: all
     hash-type: number
@@ -242,7 +243,7 @@ These five chart types are your visualization toolkit's power tools. Master thes
 
 ::: {.column width="60%"}
 ```{=html}
-<div id="barchart-demo" style="margin: 0 auto; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="barchart-demo"></div>
 <script>
 {
   const data = [
@@ -253,22 +254,26 @@ These five chart types are your visualization toolkit's power tools. Master thes
     {category: "Curveball", count: 31}
   ];
 
-  const width = 500, height = 650;
-  const margin = {top: 20, right: 30, bottom: 80, left: 40};
+  const width = 960, height = 600;
+  const margin = {top: 24, right: 24, bottom: 56, left: 84};
 
   const svg = d3.select("#barchart-demo").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    .attr("viewBox", [0, 0, width, height]);
 
   const x = d3.scaleBand()
     .domain(data.map(d => d.category))
     .range([margin.left, width - margin.right])
-    .padding(0.2);
+    .padding(0.3);
 
   const y = d3.scaleLinear()
     .domain([0, d3.max(data, d => d.count)])
     .nice()
     .range([height - margin.bottom, margin.top]);
+
+  // Recessive horizontal grid (behind the marks)
+  svg.append("g").attr("class", "grid")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y).ticks(5).tickSize(-(width - margin.left - margin.right)).tickFormat(""));
 
   // Bars
   svg.append("g")
@@ -279,42 +284,31 @@ These five chart types are your visualization toolkit's power tools. Master thes
     .attr("y", d => y(d.count))
     .attr("width", x.bandwidth())
     .attr("height", d => y(0) - y(d.count))
-    .attr("fill", "#4c78a8");
+    .attr("rx", 4)
+    .attr("fill", "#2a78d6");
 
   // X axis
   svg.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .attr("transform", "rotate(-45)")
-    .style("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr("dy", ".15em");
+    .call(d3.axisBottom(x).tickSizeOuter(0))
+    .attr("font-size", 18);
 
   // Y axis
   svg.append("g")
     .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y).ticks(5))
+    .attr("font-size", 18)
+    .call(g => g.select(".domain").remove());
 
   // Y axis label
   svg.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 10)
+    .attr("y", 28)
     .attr("x", -(height / 2))
     .attr("text-anchor", "middle")
-    .attr("font-size", 12)
+    .attr("font-size", 20)
     .text("Count");
 
-  // Value labels
-  svg.append("g")
-    .selectAll("text")
-    .data(data)
-    .join("text")
-    .attr("x", d => x(d.category) + x.bandwidth() / 2)
-    .attr("y", d => y(d.count) - 5)
-    .attr("text-anchor", "middle")
-    .attr("font-size", 11)
-    .text(d => d.count);
 }
 </script>
 ```
@@ -348,7 +342,7 @@ Bar charts are the workhorses of categorical data visualization. The key insight
 
 ::: {.column width="60%"}
 ```{=html}
-<div id="linechart-demo" style="margin: 0 auto; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="linechart-demo"></div>
 <script>
 {
   // Average speed by inning
@@ -362,12 +356,11 @@ Bar charts are the workhorses of categorical data visualization. The key insight
     {inning: 7, speed: 93.8}
   ];
 
-  const width = 550, height = 650;
-  const margin = {top: 20, right: 30, bottom: 60, left: 60};
+  const width = 960, height = 600;
+  const margin = {top: 48, right: 30, bottom: 70, left: 96};
 
   const svg = d3.select("#linechart-demo").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    .attr("viewBox", [0, 0, width, height]);
 
   const x = d3.scaleLinear()
     .domain(d3.extent(data, d => d.inning))
@@ -376,6 +369,11 @@ Bar charts are the workhorses of categorical data visualization. The key insight
   const y = d3.scaleLinear()
     .domain([93, 96])
     .range([height - margin.bottom, margin.top]);
+
+  // Recessive horizontal grid (behind the marks)
+  svg.append("g").attr("class", "grid")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y).ticks(6).tickSize(-(width - margin.left - margin.right)).tickFormat(""));
 
   // Line
   const line = d3.line()
@@ -386,7 +384,7 @@ Bar charts are the workhorses of categorical data visualization. The key insight
     .datum(data)
     .attr("fill", "none")
     .attr("stroke", "#2a78d6")
-    .attr("stroke-width", 3)
+    .attr("stroke-width", 2)
     .attr("d", line);
 
   // Points
@@ -396,43 +394,48 @@ Bar charts are the workhorses of categorical data visualization. The key insight
     .join("circle")
     .attr("cx", d => x(d.inning))
     .attr("cy", d => y(d.speed))
-    .attr("r", 5)
-    .attr("fill", "#2a78d6");
+    .attr("r", 7)
+    .attr("fill", "#2a78d6")
+    .attr("stroke", "#fafafa")
+    .attr("stroke-width", 2);
 
   // X axis
   svg.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x).ticks(7));
+    .call(d3.axisBottom(x).ticks(7).tickSizeOuter(0))
+    .attr("font-size", 18);
 
   // Y axis
   svg.append("g")
     .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y).ticks(6))
+    .attr("font-size", 18)
+    .call(g => g.select(".domain").remove());
 
   // X axis label
   svg.append("text")
     .attr("x", (margin.left + width - margin.right) / 2)
-    .attr("y", height - 20)
+    .attr("y", height - 16)
     .attr("text-anchor", "middle")
-    .attr("font-size", 12)
+    .attr("font-size", 20)
     .text("Inning");
 
   // Y axis label
   svg.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 15)
+    .attr("y", 30)
     .attr("x", -(height / 2))
     .attr("text-anchor", "middle")
-    .attr("font-size", 12)
+    .attr("font-size", 20)
     .text("Average Speed (mph)");
 
   // Title
   svg.append("text")
     .attr("x", width / 2)
-    .attr("y", 15)
+    .attr("y", 24)
     .attr("text-anchor", "middle")
     .attr("font-weight", 600)
-    .attr("font-size", 13)
+    .attr("font-size", 22)
     .text("Fastball velocity decline over game");
 }
 </script>
@@ -468,7 +471,7 @@ Line charts excel at showing continuity and change. The connecting lines imply a
 
 ::: {.column width="60%"}
 ```{=html}
-<div id="scatterplot-demo" style="margin: 0 auto; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="scatterplot-demo"></div>
 <script>
 {
   // Speed vs Spin Rate data
@@ -486,12 +489,11 @@ Line charts excel at showing continuity and change. The connecting lines imply a
     {speed: 77.9, spin: 2620, type: "Curveball"}
   ];
 
-  const width = 550, height = 650;
-  const margin = {top: 40, right: 30, bottom: 60, left: 60};
+  const width = 960, height = 620;
+  const margin = {top: 48, right: 210, bottom: 70, left: 96};
 
   const svg = d3.select("#scatterplot-demo").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    .attr("viewBox", [0, 0, width, height]);
 
   const x = d3.scaleLinear()
     .domain([75, 100])
@@ -505,6 +507,11 @@ Line charts excel at showing continuity and change. The connecting lines imply a
     .domain(["4-Seam", "Sinker", "Changeup", "Slider", "Curveball"])
     .range(["#2a78d6", "#1baf7a", "#eb6834", "#eda100", "#e87ba4"]);
 
+  // Recessive horizontal grid (behind the marks)
+  svg.append("g").attr("class", "grid")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y).ticks(6).tickSize(-(width - margin.left - margin.right)).tickFormat(""));
+
   // Points
   svg.append("g")
     .selectAll("circle")
@@ -512,66 +519,71 @@ Line charts excel at showing continuity and change. The connecting lines imply a
     .join("circle")
     .attr("cx", d => x(d.speed))
     .attr("cy", d => y(d.spin))
-    .attr("r", 6)
+    .attr("r", 9)
     .attr("fill", d => color(d.type))
-    .attr("opacity", 0.7);
+    .attr("stroke", "#fafafa")
+    .attr("stroke-width", 2)
+    .attr("opacity", 0.9);
 
   // X axis
   svg.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).ticks(6).tickSizeOuter(0))
+    .attr("font-size", 18);
 
   // Y axis
   svg.append("g")
     .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y).ticks(6))
+    .attr("font-size", 18)
+    .call(g => g.select(".domain").remove());
 
   // X axis label
   svg.append("text")
     .attr("x", (margin.left + width - margin.right) / 2)
-    .attr("y", height - 20)
+    .attr("y", height - 16)
     .attr("text-anchor", "middle")
-    .attr("font-size", 12)
+    .attr("font-size", 20)
     .text("Release Speed (mph)");
 
   // Y axis label
   svg.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 15)
+    .attr("y", 30)
     .attr("x", -(height / 2))
     .attr("text-anchor", "middle")
-    .attr("font-size", 12)
+    .attr("font-size", 20)
     .text("Spin Rate (rpm)");
 
   // Title
   svg.append("text")
     .attr("x", width / 2)
-    .attr("y", 20)
+    .attr("y", 24)
     .attr("text-anchor", "middle")
     .attr("font-weight", 600)
-    .attr("font-size", 13)
+    .attr("font-size", 22)
     .text("Speed vs Spin Rate by Pitch Type");
 
   // Legend
   const legend = svg.append("g")
-    .attr("transform", `translate(${width - 120}, ${margin.top})`);
+    .attr("transform", `translate(${width - margin.right + 28}, ${margin.top + 8})`);
 
-  const types = ["4-Seam", "Changeup", "Slider"];
+  const types = color.domain();  // all five pitch types (legend previously listed only three)
   legend.selectAll("circle")
     .data(types)
     .join("circle")
     .attr("cx", 0)
-    .attr("cy", (d, i) => i * 20)
-    .attr("r", 5)
+    .attr("cy", (d, i) => i * 32)
+    .attr("r", 8)
     .attr("fill", d => color(d));
 
   legend.selectAll("text")
     .data(types)
     .join("text")
-    .attr("x", 10)
-    .attr("y", (d, i) => i * 20)
+    .attr("x", 18)
+    .attr("y", (d, i) => i * 32)
     .attr("dy", "0.35em")
-    .attr("font-size", 10)
+    .attr("font-size", 18)
     .text(d => d);
 }
 </script>
@@ -607,7 +619,7 @@ Scatter plots reveal relationships that summary statistics might miss. They're e
 
 ::: {.column width="60%"}
 ```{=html}
-<div id="matrix-demo" style="margin: 0 auto; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="matrix-demo"></div>
 <script>
 {
   // Pitch type distribution by count (balls-strikes)
@@ -629,21 +641,20 @@ Scatter plots reveal relationships that summary statistics might miss. They're e
     });
   });
 
-  const width = 550, height = 600;
-  const margin = {top: 60, right: 30, bottom: 80, left: 80};
-  const cellWidth = 35, cellHeight = 35;
+  const width = 960, height = 640;
+  const margin = {top: 96, right: 30, bottom: 110, left: 130};
+  const cellWidth = 130, cellHeight = 36;
 
   const svg = d3.select("#matrix-demo").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    .attr("viewBox", [0, 0, width, height]);
 
   // Title
   svg.append("text")
     .attr("x", width / 2)
-    .attr("y", 20)
+    .attr("y", 28)
     .attr("text-anchor", "middle")
     .attr("font-weight", 600)
-    .attr("font-size", 13)
+    .attr("font-size", 22)
     .text("Pitch Selection by Count");
 
   const x = d3.scaleBand()
@@ -668,19 +679,19 @@ Scatter plots reveal relationships that summary statistics might miss. They're e
     .attr("width", cellWidth)
     .attr("height", cellHeight)
     .attr("fill", d => color(d.value))
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 1);
+    .attr("stroke", "#fafafa")
+    .attr("stroke-width", 2);
 
   // X axis (pitch types)
   svg.append("g")
-    .attr("transform", `translate(0,${margin.top - 5})`)
+    .attr("transform", `translate(0,${margin.top - 12})`)
     .selectAll("text")
     .data(pitchTypes)
     .join("text")
     .attr("x", d => x(d) + cellWidth / 2)
     .attr("y", 0)
     .attr("text-anchor", "middle")
-    .attr("font-size", 10)
+    .attr("font-size", 18)
     .text(d => d);
 
   // Y axis (counts)
@@ -693,28 +704,28 @@ Scatter plots reveal relationships that summary statistics might miss. They're e
     .attr("y", d => y(d) + cellHeight / 2)
     .attr("text-anchor", "end")
     .attr("dy", "0.35em")
-    .attr("font-size", 10)
+    .attr("font-size", 17)
     .text(d => d);
 
   // Axis labels
   svg.append("text")
     .attr("x", margin.left + (pitchTypes.length * cellWidth) / 2)
-    .attr("y", margin.top - 25)
+    .attr("y", margin.top - 44)
     .attr("text-anchor", "middle")
-    .attr("font-size", 11)
+    .attr("font-size", 20)
     .attr("font-weight", 600)
     .text("Pitch Type");
 
   svg.append("text")
-    .attr("transform", `translate(${margin.left - 40}, ${margin.top + (counts.length * cellHeight) / 2}) rotate(-90)`)
+    .attr("transform", `translate(${margin.left - 96}, ${margin.top + (counts.length * cellHeight) / 2}) rotate(-90)`)
     .attr("text-anchor", "middle")
-    .attr("font-size", 11)
+    .attr("font-size", 20)
     .attr("font-weight", 600)
     .text("Count (Balls-Strikes)");
 
   // Legend
-  const legendWidth = 200, legendHeight = 15;
-  const legendX = margin.left + 20, legendY = height - 50;
+  const legendWidth = 320, legendHeight = 18;
+  const legendX = margin.left, legendY = height - 72;
 
   const legendScale = d3.scaleLinear()
     .domain([0, 50])
@@ -743,7 +754,8 @@ Scatter plots reveal relationships that summary statistics might miss. They're e
   svg.append("g")
     .attr("transform", `translate(${legendX},${legendY + legendHeight})`)
     .call(legendAxis)
-    .select(".domain").remove();
+    .attr("font-size", 16)
+    .call(g => g.select(".domain").remove());
 }
 </script>
 ```
@@ -826,7 +838,7 @@ Work through these examples with students to reinforce the decision-making proce
 **Marks are the geometric primitives we use in a visualization. They are used to represent the items of a dataset.**
 
 ```{=html}
-<div id="marks-demo" style="margin: 20px auto; max-width: 1400px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="marks-demo"></div>
 <script>
 {
   // Simple data: five values
@@ -843,22 +855,22 @@ Work through these examples with students to reinforce the decision-making proce
   const container = d3.select("#marks-demo")
     .style("display", "flex")
     .style("flex-wrap", "wrap")
-    .style("gap", "10px")
+    .style("gap", "14px")
     .style("justify-content", "center");
 
-  const W = 210, H = 170;
+  const W = 284, H = 232;
 
   function panel(title) {
     const svg = container.append("svg")
       .attr("width", W).attr("height", H)
       .attr("font-family", "sans-serif")
-      .attr("font-size", 11);
+      .attr("font-size", 15);
     svg.append("text")
       .attr("x", W/2)
       .attr("y", 14)
       .attr("text-anchor", "middle")
       .attr("font-weight", 600)
-      .attr("font-size", 12)
+      .attr("font-size", 17)
       .text(title);
     return svg;
   }
@@ -878,7 +890,7 @@ Work through these examples with students to reinforce the decision-making proce
     .attr("x1", len(0)).attr("x2", len(max))
     .attr("y1", midRow).attr("y2", midRow);
   pos.append("g").selectAll("circle").data(data).join("circle")
-    .attr("cx", d => len(d.value)).attr("cy", midRow).attr("r", 5);
+    .attr("cx", d => len(d.value)).attr("cy", midRow).attr("r", 7);
 
   // 2. Length
   const bar = panel("2. Length");
@@ -893,8 +905,8 @@ Work through these examples with students to reinforce the decision-making proce
   // 3. Angle (Pie chart)
   const pie = panel("3. Angle");
   const arcs = d3.pie().sort(null).value(d => d.value)(data);
-  const arc = d3.arc().innerRadius(0).outerRadius(62);
-  const g = pie.append("g").attr("transform", `translate(${W/2},${H/2 + 12})`);
+  const arc = d3.arc().innerRadius(0).outerRadius(88);
+  const g = pie.append("g").attr("transform", `translate(${W/2},${H/2 + 16})`);
   g.selectAll("path").data(arcs).join("path")
     .attr("d", arc)
     .attr("fill", "#4c4b46")
@@ -925,9 +937,9 @@ Work through these examples with students to reinforce the decision-making proce
     .attr("text-anchor", "middle").text(d => d.label);
   light.append("g").selectAll("rect").data(data).join("rect")
     .attr("x", d => cols(d.label))
-    .attr("y", 40)
+    .attr("y", 54)
     .attr("width", cols.bandwidth())
-    .attr("height", 90)
+    .attr("height", 124)
     .attr("fill", d => grey(d.value));
 
   // 6. Hue
@@ -938,9 +950,9 @@ Work through these examples with students to reinforce the decision-making proce
     .attr("text-anchor", "middle").text(d => d.label);
   hue.append("g").selectAll("rect").data(data).join("rect")
     .attr("x", d => cols(d.label))
-    .attr("y", 40)
+    .attr("y", 54)
     .attr("width", cols.bandwidth())
-    .attr("height", 90)
+    .attr("height", 124)
     .attr("fill", d => rainbow(d.value));
 }
 </script>
@@ -1151,7 +1163,7 @@ Scales are fundamental but often invisible. The choice of scale dramatically aff
 **Choose scales based on whether absolute or relative change matters more.**
 
 ```{=html}
-<div id="scales-demo" style="margin: 20px auto; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="scales-demo"></div>
 <script>
 {
   // Exponential growth data (e.g., pitch counts over career years)
@@ -1171,8 +1183,8 @@ Scales are fundamental but often invisible. The choice of scale dramatically aff
     .style("flex-wrap", "wrap");
 
   function createChart(title, yScale, yLabel) {
-    const width = 420, height = 320;
-    const margin = {top: 40, right: 30, bottom: 60, left: 60};
+    const width = 800, height = 520;
+    const margin = {top: 48, right: 30, bottom: 96, left: 104};
 
     const svg = container.append("svg")
       .attr("width", width)
@@ -1180,10 +1192,10 @@ Scales are fundamental but often invisible. The choice of scale dramatically aff
 
     svg.append("text")
       .attr("x", width / 2)
-      .attr("y", 20)
+      .attr("y", 26)
       .attr("text-anchor", "middle")
       .attr("font-weight", 600)
-      .attr("font-size", 14)
+      .attr("font-size", 22)
       .text(title);
 
     const x = d3.scaleLinear()
@@ -1202,7 +1214,7 @@ Scales are fundamental but often invisible. The choice of scale dramatically aff
       .datum(data)
       .attr("fill", "none")
       .attr("stroke", "#2a78d6")
-      .attr("stroke-width", 2.5)
+      .attr("stroke-width", 2)
       .attr("d", line);
 
     // Points
@@ -1212,42 +1224,47 @@ Scales are fundamental but often invisible. The choice of scale dramatically aff
       .join("circle")
       .attr("cx", d => x(d.year))
       .attr("cy", d => y(d.count))
-      .attr("r", 4)
-      .attr("fill", "#2a78d6");
+      .attr("r", 7)
+      .attr("fill", "#2a78d6")
+      .attr("stroke", "#fafafa")
+      .attr("stroke-width", 2);
 
     // X axis
     svg.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(6));
+      .call(d3.axisBottom(x).ticks(6).tickSizeOuter(0))
+      .attr("font-size", 17);
 
     // Y axis
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y));
+      .call(d3.axisLeft(y).ticks(6))
+      .attr("font-size", 17)
+      .call(g => g.select(".domain").remove());
 
     // X label
     svg.append("text")
       .attr("x", (margin.left + width - margin.right) / 2)
-      .attr("y", height - 15)
+      .attr("y", height - margin.bottom + 48)
       .attr("text-anchor", "middle")
-      .attr("font-size", 11)
+      .attr("font-size", 19)
       .text("Year");
 
     // Y label
     svg.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 15)
+      .attr("y", 30)
       .attr("x", -(height / 2))
       .attr("text-anchor", "middle")
-      .attr("font-size", 11)
+      .attr("font-size", 19)
       .text(yLabel);
 
     // Add description
     const desc = svg.append("text")
       .attr("x", width / 2)
-      .attr("y", height - margin.bottom + 50)
+      .attr("y", height - 14)
       .attr("text-anchor", "middle")
-      .attr("font-size", 10)
+      .attr("font-size", 17)
       .attr("fill", "#666");
 
     if (title.includes("Linear")) {
@@ -1303,7 +1320,7 @@ Stock prices are a classic example: linear scales show absolute price changes, w
 **Bar charts encode data as length. Truncating the axis changes the ratios readers perceive.**
 
 ```{=html}
-<div id="zero-baseline-demo" style="margin: 20px auto; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="zero-baseline-demo"></div>
 <script>
 {
   // Sample data: median speeds of different pitch types
@@ -1323,8 +1340,8 @@ Stock prices are a classic example: linear scales show absolute price changes, w
     .style("flex-wrap", "wrap");
 
   function createChart(title, domain) {
-    const width = 450, height = 320;
-    const margin = {top: 30, right: 20, bottom: 50, left: 180};
+    const width = 860, height = 500;
+    const margin = {top: 44, right: 90, bottom: 64, left: 250};
 
     const svg = container.append("svg")
       .attr("width", width)
@@ -1332,10 +1349,10 @@ Stock prices are a classic example: linear scales show absolute price changes, w
 
     svg.append("text")
       .attr("x", width / 2)
-      .attr("y", 18)
+      .attr("y", 26)
       .attr("text-anchor", "middle")
       .attr("font-weight", 600)
-      .attr("font-size", 14)
+      .attr("font-size", 20)
       .text(title);
 
     const x = d3.scaleLinear()
@@ -1350,21 +1367,23 @@ Stock prices are a classic example: linear scales show absolute price changes, w
     // X axis
     svg.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(5))
+      .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0))
+      .attr("font-size", 17)
       .call(g => g.select(".domain").remove());
 
     // Y axis
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(y))
+      .attr("font-size", 18)
       .call(g => g.select(".domain").remove());
 
     // X axis label
     svg.append("text")
       .attr("x", (margin.left + width - margin.right) / 2)
-      .attr("y", height - 10)
+      .attr("y", height - 14)
       .attr("text-anchor", "middle")
-      .attr("font-size", 11)
+      .attr("font-size", 19)
       .attr("fill", "#666")
       .text("Median Speed (mph)");
 
@@ -1388,7 +1407,8 @@ Stock prices are a classic example: linear scales show absolute price changes, w
       .attr("x", d => x(d.speed) + 5)
       .attr("y", d => y(d.type) + y.bandwidth() / 2)
       .attr("dy", "0.35em")
-      .attr("font-size", 11)
+      .attr("font-size", 17)
+      .attr("fill", "#555")
       .text(d => d.speed.toFixed(1));
   }
 
@@ -1411,7 +1431,7 @@ Bar charts encode data as length from a baseline. Without zero, these lengths mi
 **Context determines when breaking rules is acceptable. Understand the "why" before breaking them.**
 
 ```{=html}
-<div id="break-rules-demo" style="margin: 20px auto; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; background-color: #fafafa;"></div>
+<div id="break-rules-demo"></div>
 <script>
 {
   // Small variations in large values - line chart case
@@ -1432,8 +1452,8 @@ Bar charts encode data as length from a baseline. Without zero, these lengths mi
     .style("flex-wrap", "wrap");
 
   function createChart(title, domain, description) {
-    const width = 420, height = 320;
-    const margin = {top: 40, right: 30, bottom: 60, left: 60};
+    const width = 800, height = 520;
+    const margin = {top: 48, right: 30, bottom: 96, left: 104};
 
     const svg = container.append("svg")
       .attr("width", width)
@@ -1441,10 +1461,10 @@ Bar charts encode data as length from a baseline. Without zero, these lengths mi
 
     svg.append("text")
       .attr("x", width / 2)
-      .attr("y", 20)
+      .attr("y", 26)
       .attr("text-anchor", "middle")
       .attr("font-weight", 600)
-      .attr("font-size", 13)
+      .attr("font-size", 20)
       .text(title);
 
     const x = d3.scaleLinear()
@@ -1464,7 +1484,7 @@ Bar charts encode data as length from a baseline. Without zero, these lengths mi
       .datum(data)
       .attr("fill", "none")
       .attr("stroke", "#e87ba4")
-      .attr("stroke-width", 2.5)
+      .attr("stroke-width", 2)
       .attr("d", line);
 
     // Points
@@ -1474,42 +1494,47 @@ Bar charts encode data as length from a baseline. Without zero, these lengths mi
       .join("circle")
       .attr("cx", d => x(d.day))
       .attr("cy", d => y(d.temp))
-      .attr("r", 4)
-      .attr("fill", "#e87ba4");
+      .attr("r", 7)
+      .attr("fill", "#e87ba4")
+      .attr("stroke", "#fafafa")
+      .attr("stroke-width", 2);
 
     // X axis
     svg.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(7));
+      .call(d3.axisBottom(x).ticks(7).tickSizeOuter(0))
+      .attr("font-size", 17);
 
     // Y axis
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y));
+      .call(d3.axisLeft(y).ticks(6))
+      .attr("font-size", 17)
+      .call(g => g.select(".domain").remove());
 
     // X label
     svg.append("text")
       .attr("x", (margin.left + width - margin.right) / 2)
-      .attr("y", height - 15)
+      .attr("y", height - margin.bottom + 48)
       .attr("text-anchor", "middle")
-      .attr("font-size", 11)
+      .attr("font-size", 19)
       .text("Day");
 
     // Y label
     svg.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 15)
+      .attr("y", 30)
       .attr("x", -(height / 2))
       .attr("text-anchor", "middle")
-      .attr("font-size", 11)
+      .attr("font-size", 19)
       .text("Body Temperature (°F)");
 
     // Description
     svg.append("text")
       .attr("x", width / 2)
-      .attr("y", height - margin.bottom + 50)
+      .attr("y", height - 14)
       .attr("text-anchor", "middle")
-      .attr("font-size", 10)
+      .attr("font-size", 17)
       .attr("fill", "#666")
       .text(description);
   }
