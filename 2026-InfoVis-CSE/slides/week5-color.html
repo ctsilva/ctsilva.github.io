@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week5-color_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week5-color_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week5-color_files/libs/quarto-html/popper.min.js"></script>
+<script src="week5-color_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week5-color_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week5-color_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week5-color_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2026-10-02">
+  <title>Color Theory and D3 Scales</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week5-color_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week5-color_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="week5-color_files/libs/revealjs/dist/theme/quarto-c5397fee1984892a52a93d7620bcf600.css">
+  <link href="week5-color_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week5-color_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week5-color_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week5-color_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Color Theory and D3 Scales</h1>
+  <p class="subtitle">CS-GY 6313 - Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Tandon School of Engineering
+          </p>
+    </div>
+</div>
+
+  <p class="date">2026-10-02</p>
+</section>
+<section class="slide level2">
+<h2>Color Theory and D3 Scales</h2>
+<h3>Today’s Journey</h3>
+<p><strong>Biology/Physics</strong> → <strong>Perception Theory</strong> → <strong>Design Principles</strong> → <strong>D3 Implementation</strong> → <strong>Best Practices</strong></p>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Part 1: Color Theory</h3>
+<ul>
+<li>Physics and physiology of color</li>
+<li>How humans perceive color</li>
+<li>Color spaces and models</li>
+<li>Perceptual principles</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Part 2: D3 Implementation</h3>
+<ul>
+<li>Color scales in D3</li>
+<li>Sequential, diverging, categorical</li>
+<li>Interpolation methods</li>
+<li>Accessibility and best practices</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>This lecture bridges the gap between the science of color perception and practical implementation in D3. We follow a logical progression: First understanding the biology and physics (WHY colors work the way they do), then perception theory (HOW humans process color), then design principles (WHAT makes effective color choices), then D3 implementation (HOW to code it), and finally best practices (WHEN to use each approach). This foundation is crucial - without understanding how humans perceive color, you’ll make poor design decisions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color in Nature</h2>
+
+<img data-src="figs/color/animal-colors.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Vasas, V., Lowell, M. C., Villa, J., Jamison, Q. D., Siegle, A. G., Katta, P. K. R., Bhagavathula, P., Kevan, P. G., Fulton, D., Loukola, O. J., Penacchio, O., Tedore, C., &amp; Hanley, D. (2024). <a href="https://doi.org/10.1371/journal.pbio.3002444">Recording animal-view videos of the natural world using a novel camera system and software package</a>. <em>PLOS Biology</em>, 22(1), e3002444. Image from <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002444">PLOS Biology</a></p>
+</div>
+<aside class="notes">
+<p>Vasas et al., PLOS Biology 2024: the same flowers and butterflies imaged in a false-colour rendering of insect vision. Panel A is the scene as a bee would have it, with the small inset showing what we see; B and C are two butterflies, human view in the corner. Open with the claim this proves: colour is not a property of the object. It is what a particular visual system does with a spectrum. Change the system and the pink flowers disappear. Everything in the first half of today is about the particular system we happen to have.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The Visible Spectrum</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Humans perceive wavelengths from roughly <strong>390 to 700 nm</strong></li>
+<li>Shorter (UV) is scattered by the atmosphere; longer (IR) is absorbed by water</li>
+<li>Peak sensitivity near 555 nm, the peak of sunlight at the surface</li>
+<li>Every colour you have ever seen is a position on this strip, or a mixture of positions</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/color/visiblespectrum.jpg" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
+<aside class="notes">
+<p>Roughly 390 to 700 nanometres, a narrow band. The limits are environmental: shorter wavelengths (UV) are scattered by the atmosphere, longer ones (IR) are absorbed by water and heat molecules rather than exciting electrons. Peak sensitivity sits near 555 nm in the green-yellow, which is the peak of the solar spectrum at the surface. Evolution tuned the receiver to the available light. Every colour anyone has ever seen lives on this strip or is a mixture of positions on it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Properties of Light</h2>
+<ul>
+<li><p><strong>Visible range</strong>: 390-700nm</p></li>
+<li><p><strong>Luminance has a huge dynamic range</strong> (cd/m²):</p>
+<ul>
+<li>0.00003 — Moonless overcast night sky</li>
+<li>30 — Sky on overcast day</li>
+<li>3,000 — Sky on clear day</li>
+<li>16,000 — Snowy ground in full sunlight</li>
+</ul></li>
+<li><p><strong>Colors result from spectral curves</strong>:</p>
+<ul>
+<li>Dominant wavelength → <strong>Hue</strong></li>
+<li>Brightness → <strong>Lightness</strong></li>
+<li>Purity → <strong>Saturation</strong></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Key insight: Our eyes handle an enormous dynamic range (100,000:1) through adaptation. This is why absolute luminance values aren’t as important as relative contrasts in visualization. The three properties (hue, lightness, saturation) form the basis of the HLS color model, which is more intuitive than RGB for design work. Note that computer screens can only display about 1000:1 contrast ratio, far less than what we can perceive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Physiology of the Eye</h2>
+<p><strong>Light is focused through cornea, pupil and lens onto the retina, where photons become signals</strong></p>
+
+<img data-src="figs/color/physiology-eye.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
+<aside class="notes">
+<p>Standard cross-section from Gregory’s Eye and Brain. The only parts we need today: light enters through the cornea and pupil, the lens focuses it on the retina at the back, and the retina is where photons become signals. Everything interesting about colour happens from the retina onward, so the next slide zooms in there.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The Retina Structure</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Wired upside down: light passes the nerve fibres, ganglion and bipolar cells before reaching the photoreceptors</li>
+<li>Signals run back the other way: photoreceptor, bipolar, ganglion, optic nerve</li>
+<li>~100 million receptors converge on ~1 million ganglion axons: contrast and opponent differences are computed here, before anything leaves the eye</li>
+<li>In the fovea the overlying layers are pushed aside so light hits the cones directly</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/color/retina.jpg" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
+<aside class="notes">
+<p>Cross-section of the retina, and it is wired upside down from what you would design. Light arrives at the top of the drawing, passes through the nerve fibres, past the ganglion cells and the bipolar cells, and only then reaches the photoreceptors, the rods and the one labelled cone, at the bottom, backed by the pigment epithelium. The signal then runs the other way, up the small arrows: photoreceptor to bipolar to ganglion cell, whose axons are the nerve fibres at the top that bundle into the optic nerve. Where that bundle leaves the eye there are no receptors: the blind spot on the density plot three slides on.</p>
+<p>Two things to take from the wiring. Compression: on the order of a hundred million receptors converge onto about a million ganglion axons, so what leaves the eye is not a pixel array but a processed signal. Contrasts, edges, and the opponent differences on the Opponent Process slide are computed right here. And this is peripheral retina: rods dominate and there is a single cone in frame. In the fovea it inverts, cones only, and the overlying layers are pushed aside so light hits them directly. Detail and colour live where you look and nowhere else.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Photoreceptors: Rods and Cones</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Rods</h3>
+<ul>
+<li>Active at low light levels (scotopic vision)</li>
+<li>Only one wavelength-sensitivity function</li>
+<li>~120 million in human eye</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Cones</h3>
+<ul>
+<li>Active at normal light levels (photopic vision)</li>
+<li>Three types with different peak sensitivities</li>
+<li>~6 million in human eye</li>
+<li>Concentrated in fovea</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Two receptor types, and the split matters more than the counts. Rods: on the order of a hundred million, one photopigment peaking near 500 nm, sensitive enough to work by starlight, but they saturate in daylight, so in any lit room they contribute almost nothing. With one pigment they cannot signal colour at all: a rod cannot distinguish a dim green from a bright red, only how many photons arrived. Cones: a few million, three types with three sensitivity curves on the next slide, active at normal light levels. All of colour is a comparison between their three outputs.</p>
+<p>One fact for your pocket: the ratio of L to M cones varies several-fold between people with normal colour vision, yet their colour judgements agree. The later stages normalise. First hint that colour is computed, not sensed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Cone Sensitivity Curves</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Three cone types: <strong>S</strong> (short, peak ~445 nm), <strong>M</strong> (medium, ~545 nm), <strong>L</strong> (long, ~565 nm)</li>
+<li>The curves overlap, so no wavelength excites one cone type alone</li>
+<li>M and L are only ~20 nm apart, which is why red-green deficiency is the common one</li>
+<li>S cones are sparse and far from the others: blue carries the least detail</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/color/cones-spectral-sensitity.jpg" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Stone, M. (2005). <a href="../refs/Stone_2005_Representing_Colors_Three_Numbers.pdf">Representing Color as Three Numbers</a>. <em>IEEE Computer Graphics and Applications</em>, 25(4), 78-85.</p>
+</div>
+<aside class="notes">
+<p>Critical slide! This is the foundation of trichromatic color theory. Note the overlapping sensitivity curves - this is why we can’t see “pure” wavelengths. The brain interprets the relative activation of all three cone types. Point out that the L and M curves are very close, which is why red-green colorblindness is most common.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Density of Cones Across Retina</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Cones (dashed) are packed into the fovea, the central ~2°, at up to ~150,000 per mm²</li>
+<li>Rods (solid) peak about 20° out and are absent from the fovea</li>
+<li>The gap at the optic disk is the blind spot</li>
+<li>You have colour vision only where you are looking: peripheral colour coding does not work</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/color/cones-density.jpg" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
+<aside class="notes">
+<p>Emphasize the importance of the fovea (the central 2° of vision). This is where acuity and color discrimination are highest - cone density reaches 150,000 per mm². This biological fact explains why legends and critical information should be placed centrally or made salient enough to attract foveal attention. Teaching Point: When the visualization requires reading fine detail or discerning subtle color differences, the viewer must consciously shift their gaze. This is why we can’t rely on peripheral vision for detailed color work - the cone density drops dramatically outside the fovea. Practical implication: Don’t put critical color-coded information in the periphery of a visualization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Rods vs.&nbsp;Cones Sensitivity</h2>
+<p><strong>Rods (scotopic) peak near 507 nm and see no colour; cones (photopic) peak near 555 nm and carry it</strong></p>
+
+<img data-src="figs/color/cones-and-rods-sensitivity.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Gregory, R.L. (1997). <em>Eye and Brain: The Psychology of Seeing</em> (5th ed.). Princeton University Press.</p>
+</div>
+<aside class="notes">
+<p>Spectral sensitivity of the two systems, each normalised to its own peak, so the curves show shape, not absolute sensitivity; in absolute terms rods are far more sensitive. Scotopic is rod vision, peaking near 507 nm in the blue-green. Photopic is cone vision, light-adapted, peaking near 555 nm in the yellow-green. The horizontal offset is the Purkinje shift: as light falls and vision hands over from cones to rods, sensitivity slides toward the blue end. Reds go dark first; blue-greens hold on longest. A red flower at dusk looks black while the leaves still look grey-green.</p>
+<p>Three design consequences. A red alert is the worst possible choice for a dimmed or night-time environment; it is the first hue to vanish. Dark-mode dashboards behave differently in a bright office and at night because the viewer’s adaptation state changed, not the pixels. And a projector room is closer to the dim mesopic range than your laptop is: small hue differences and desaturated palettes that look fine at your desk disappear on the wall. Test on the projector.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How We Perceive Color</h2>
+<p><strong>A spectrum is reduced to three cone responses; spectra with the same three numbers look identical (metamers)</strong></p>
+
+<img data-src="figs/color/color-stimulus.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Stone, M. (2005). <a href="../refs/Stone_2005_Representing_Colors_Three_Numbers.pdf">Representing Color as Three Numbers</a>. <em>IEEE Computer Graphics and Applications</em>, 25(4), 78-85.</p>
+</div>
+<aside class="notes">
+<p>Maureen Stone’s figure, and the most important slide in the first half. A spectrum, an entire curve, is multiplied by the three cone curves and integrated. Out come three numbers: S, M, L. Everything about the curve that is not captured by those three integrals is gone. Consequence: infinitely many different spectra produce the same three numbers, so they look identical. Those are metamers, and they are the reason a screen with three primaries can show you a colour at all. It is also why ‘colour’ is three-dimensional, which is where every colour space in the second half comes from.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Opponent Process Theory</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Three Opponent Channels</h3>
+<p><strong>Color Opposition:</strong></p>
+<ul>
+<li>🔴 Red ↔︎️ Green 🟢 (cannot see “reddish-green”)</li>
+<li>🔵 Blue ↔︎️ Yellow 🟡 (cannot see “yellowish-blue”)</li>
+<li>⚫ Black ↔︎️ White ⚪ (luminance channel)</li>
+</ul>
+<p><strong>Key Insights:</strong></p>
+<ul>
+<li>Explains why we see afterimages in complementary colors</li>
+<li>Processed in retinal ganglion cells and LGN</li>
+<li>Some cells excited by red, inhibited by green (and vice versa)</li>
+<li>Explains unique hues: red, green, blue, yellow</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/color/opponent-process-theory.png" style="width:100.0%"></p>
+</div></div>
+<div class="footer">
+<p>Hering, E. (1964). <em>Outlines of a Theory of the Light Sense</em>. Harvard University Press. (Original work published 1920); Hurvich, L. M., &amp; Jameson, D. (1957). An opponent-process theory of color vision. <em>Psychological Review</em>, 64(6), 384-404.</p>
+</div>
+<aside class="notes">
+<p>This is THE theory that bridges trichromatic theory (3 cone types) with how we actually experience color. The opponent channels are why we have four unique hues (red, green, blue, yellow) even though we have three cone types. Modern color spaces like LAB are built on this principle - L for luminance, A for red-green, B for blue-yellow.</p>
+<p><strong>The Neural Processing:</strong> In V1 (primary visual cortex), the raw signals from the cones in the retina are transformed. Some neurons compute differences between red- and green-sensitive cone signals. Some neurons compute the sum of red- and green-sensitive cones. Still others compute yellow-blue differences. The result is three kinds of color signals that are called color-opponent channels. This transformation happens early in visual processing - starting in retinal ganglion cells and continuing through the lateral geniculate nucleus (LGN) to V1.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Opponent Process Applications</h2>
+<h3>Practical Impact:</h3>
+<ul>
+<li><strong>Color space design</strong>: LAB uses opponent channels (A = red-green, B = blue-yellow)</li>
+<li><strong>Categorical perception</strong>: Explains why we naturally group colors into categories</li>
+<li><strong>Accessible color choices</strong>: Understanding oppositions guides colorblind-safe palettes</li>
+</ul>
+<h3>Demonstrations you can run in class:</h3>
+<ol type="1">
+<li><strong>Afterimage</strong> - stare at a red square for 30 s, look at white, see green</li>
+<li><strong>Impossible colours</strong> - try to picture a reddish green or a yellowish blue</li>
+</ol>
+<div class="footer">
+<p>Hering, E. (1964). <em>Outlines of a Theory of the Light Sense</em>. Harvard University Press. (Original work published 1920); Hurvich, L. M., &amp; Jameson, D. (1957). An opponent-process theory of color vision. <em>Psychological Review</em>, 64(6), 384-404.</p>
+</div>
+<aside class="notes">
+<p>Demo: Have students stare at a red square for 30 seconds, then look at white - they’ll see green! This isn’t a “trick” - it’s fundamental to how our visual system works. Fun fact: some people claim they can see “impossible colors” like reddish-green using special viewing conditions, but this is controversial.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Matching Experiments</h2>
+<p><strong>Any colour can be matched by adjusting three primaries: the empirical basis of trichromacy</strong></p>
+
+<img data-src="figs/color/color-matching-experiments.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Stone, M. (2005). <a href="../refs/Stone_2005_Representing_Colors_Three_Numbers.pdf">Representing Color as Three Numbers</a>. <em>IEEE Computer Graphics and Applications</em>, 25(4), 78-85.</p>
+</div>
+<aside class="notes">
+<p>Explain that this is the empirical basis for all modern color spaces. The key finding from these experiments (starting with Thomas Young in 1801 and refined by Maxwell and others) is that the human visual system is 3-dimensional (trichromatic). This confirms that any physical color can be replicated by mixing three primary lights, leading directly to the RGB model used in computers. Important: Some colors require “negative” amounts of a primary (subtracting light), which is why no three real primaries can produce all visible colors - this led to the development of the CIE XYZ color space with imaginary primaries.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Models for Visualization</h2>
+<h3>Trichromacy</h3>
+<p>Humans perceive colors through three channels</p>
+<h3>Most useful color description for visualization:</h3>
+<ul>
+<li><strong>Hue</strong>: What color (red, blue, green…)</li>
+<li><strong>Saturation</strong>: Purity of color</li>
+<li><strong>Luminance/Lightness</strong>: Brightness</li>
+</ul>
+<aside class="notes">
+<p>This is where we transition from biology to design principles. These three dimensions map to how we actually think about color. Luminance is the strongest channel for ordered data (we easily see light-to-dark progression). Hue is best for categorical distinctions (red vs blue vs green). Saturation is the weakest channel - hard to judge precise values. This hierarchy guides our encoding choices.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Just Noticeable Difference (JND)</h2>
+<h3>The smallest detectable difference in a stimulus</h3>
+<p><strong>For Color:</strong></p>
+<ul>
+<li><strong>Luminance</strong>: <strong><code>~1-2%</code></strong> change detectable</li>
+<li><strong>Hue</strong>: Varies by wavelength (most sensitive in blue-green)</li>
+<li><strong>Saturation</strong>: <strong><code>~5-10%</code></strong> change needed</li>
+</ul>
+<p><strong>Implications for Visualization:</strong></p>
+<ul>
+<li>Need sufficient steps between colors in a scale</li>
+<li>Can’t encode too many distinct values</li>
+<li>Background affects perception (simultaneous contrast)</li>
+</ul>
+<div class="footer">
+<p>Ware, C. (2012). <em>Information Visualization: Perception for Design</em> (3rd ed.). Morgan Kaufmann. Chapter 4.</p>
+</div>
+<aside class="notes">
+<p>JND is fundamental to color scale design. It determines how many distinct values you can encode. For continuous scales, you want steps larger than JND to be clearly distinguishable. This is why we can only reliably encode about 5-7 distinct colors, or about 7-10 distinct luminance levels. The background color affects JND - a color that’s distinguishable on white might not be on gray. Ware’s book provides the definitive treatment of JND in visualization contexts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How Do We Use Color in Visualization?</h2>
+<p>Two primary purposes:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>1. Quantify</h3>
+<p>Show numerical values</p>
+</div><div class="column" style="width:50%;">
+<h3>2. Label</h3>
+<p>Distinguish categories</p>
+</div></div>
+<aside class="notes">
+<p>Two jobs, and each wants the opposite kind of scale. Quantify: the attribute is ordered, so vary a magnitude channel, luminance and secondarily saturation, and hold hue fixed. Label: the attribute is categorical, so vary the identity channel, hue, and hold luminance roughly constant so no category shouts. That is the magnitude-versus-identity split from the perception lecture applied to colour, and it is the single most useful sentence in this half of the lecture.</p>
+<p>Almost every colour mistake you will grade this semester is a cross-use. A rainbow on a quantity, hue carrying magnitude, has no perceptual order, so the viewer cannot tell more from less without the legend. A light-to-dark ramp on categories invents an order that is not in the data and makes the darkest category look most important. Before advancing, ask the room to call out which job each of the next two slides is doing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color to Quantify</h2>
+<p><strong>Quantify: luminance carries the number, light means low and dark means high</strong></p>
+
+<img data-src="figs/color/color-quantify.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>NASA net primary productivity, kilograms of carbon fixed per square metre per year. Read the legend: two sequential ramps, white through green for land and white through blue for ocean, both monotone in luminance so higher is darker everywhere. That is the whole recipe for quantify: one hue family per quantity, luminance carries the number, light means low and dark means high.</p>
+<p>Two subtleties. There are two hues here, green and blue, and that is not a violation: hue is doing the label job, land versus ocean, while luminance does the quantify job within each. And the grey, deserts, ice sheets, Antarctica, is missing or not-applicable data, placed outside the ramp in a neutral that cannot be mistaken for a low value. Never encode ‘no data’ as the bottom of the scale. One to argue about: the legend runs from -0.5 to 2.5, so strictly this is a diverging quantity around zero drawn with a sequential ramp. Defensible, because the negatives are small and rare. Hold that for the Diverging slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color to Label</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Label: distinct hues at similar lightness, no implied order</li>
+<li>Land cover around Portland: water, ice, urban, forest, scrub, grass, crops, wetlands</li>
+<li>Semantically resonant choices (blue water, green forest) make the legend almost unnecessary</li>
+<li>Keep saturation consistent, or one category will dominate</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/color/color-label.jpg" class="quarto-figure quarto-figure-center" height="600"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Land cover around Portland: water, ice, urban, bare, forest, scrub, grass, crops, wetlands. Distinct hues at similar lightness, and there is no ordering among them because there is no ordering among the categories. The palette is not arbitrary either: the semantically resonant choices, blue for water and green for forest, make the legend almost unnecessary. Common mistake to name now: mixing bright and pastel colours in one categorical palette. The bright ones will dominate attention, so keep saturation consistent unless you mean to highlight. The image is a small file and is shown below full column height on purpose.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Quantitative Color Scales</h2>
+<h3>Desired Properties:</h3>
+<ul>
+<li><strong>Uniformity</strong>: Value difference = Perceived difference</li>
+<li><strong>Discriminability</strong>: As many distinct values as possible</li>
+</ul>
+<h3>Challenge:</h3>
+<p>Human perception is non-linear!</p>
+<aside class="notes">
+<p>This is a key insight students often miss. Equal steps in RGB values don’t produce equal perceptual steps. This is why we need perceptually uniform color spaces like LAB or HCL. Use the example of yellow appearing brighter than blue even at the same RGB intensity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Single Hue Sequential Scales</h2>
+<p>**The luminance (L*) channel falls monotonically from light to dark; that ordering, not the blueness, encodes the value**</p>
+
+<img data-src="figs/color/single-hue-sequential-luminance.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>This visualization perfectly demonstrates why single-hue sequential scales work. The top shows the actual color scale, while the bottom graph reveals the underlying mechanism: a steady, monotonic decrease in luminance from ~100% to ~20%. This is what our visual system interprets as “less to more” or “low to high”. The other channels (hue and saturation) remain relatively constant. Students should understand that it’s the luminance change, not the “blueness,” that encodes the data values.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Categorical Color Scales</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>U.S. county unemployment, a <strong>quantity</strong>, drawn with a categorical palette: nothing reads as high or low</li>
+<li>Categorical palettes want <strong>uniform saliency</strong>: nothing stands out unintentionally</li>
+<li>And <strong>maximum discriminability</strong>: each category clearly distinct</li>
+<li>The right tool for labels, the wrong tool for a quantity</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/color/categorical-color-scale.jpg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Read the legend before saying anything: this is U.S. county unemployment, a quantitative variable, drawn with a categorical palette. Nothing reads as high or low; the map is noise. The two properties on the slide, uniform saliency and discriminability, are exactly right for labels and exactly wrong for a quantity. Use this as the negative example: this is what the quantify job looks like when handed the label tool. Then state the positive rule: for real categories, distinct hues, similar lightness and saturation, and stop at the limit on the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Categorical Scale Limits</h2>
+<h3>How many distinct colors can we use effectively?</h3>
+<p>Research suggests: <strong>5-10 distinct categories maximum</strong></p>
+<p>Beyond this limit:</p>
+<ul>
+<li>Colors become confusable</li>
+<li>Need additional encoding (shape, pattern)</li>
+<li>Consider grouping categories</li>
+</ul>
+<div class="footer">
+<p>Healey, C.G. (1996). <a href="https://ieeexplore.ieee.org/document/567774">Choosing effective colours for data visualization</a>. IEEE Visualization ’96, pp.&nbsp;263-270.</p>
+</div>
+<aside class="notes">
+<p>Reference the Magic Number 7 ± 2 rule (Miller’s Law, 1956) for cognitive load. Beyond 5-7 categories, users stop instantly recognizing differences (pre-attentive processing) and must rely on a legend, which slows down analysis dramatically. Healey’s research confirmed this specifically for color. Alternatives when you have too many categories: (1) Group data into super-categories with related sub-hues, (2) Use interactivity - show only relevant categories on demand (filtering/highlighting), (3) Apply texture or shape as redundant encoding, (4) Use “focus + context” - highlight important categories and gray out others, (5) Consider if all categories really need to be shown simultaneously. Remember: Every time users look at the legend, they break their analysis flow.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Diverging Color Scales</h2>
+<p>For data with meaningful midpoint (zero, average, neutral)</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/color/election-results-continous-colormap.jpg" style="width:100.0%"></p>
+<p>Sequential scale obscures the critical 50% threshold</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/color/election-results-divergent-colormap.jpg" style="width:100.0%"></p>
+<p>Diverging scale clearly shows above/below threshold</p>
+</div></div>
+<div class="footer">
+<p>Data from <a href="https://github.com/tonmcg/County_Level_Election_Results_12-16">County Level Election Results</a></p>
+</div>
+<aside class="notes">
+<p>Perfect example of why choosing the right scale matters! The left map makes it hard to see which counties voted majority Republican vs Democrat. The diverging scale immediately reveals the pattern. Other good use cases: temperature anomalies (above/below average), profit/loss, survey responses (agree/disagree). Key insight: the midpoint should be meaningful, not arbitrary.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Context Effects</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>Simultaneous Contrast</h3>
+<p>The same color appears different depending on surrounding colors</p>
+<p><strong>Key Effects:</strong></p>
+<ul>
+<li>Colors appear lighter on dark backgrounds</li>
+<li>Colors appear more saturated next to gray</li>
+<li>Complementary colors enhance each other</li>
+</ul>
+<p><strong>Design Implications:</strong></p>
+<ul>
+<li>Test colors in context, not isolation</li>
+<li>Be consistent with backgrounds</li>
+<li>Use borders/whitespace to separate regions</li>
+<li>Consider the whole visualization, not just the palette</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/color/simultaneous-contrast-demo.png" style="width:100.0%"></p>
+</div></div>
+<div class="footer">
+<p>Albers, J. (1963). <em>Interaction of Color</em>. Yale University Press; Adelson, E.H. (1993). Perceptual organization and the judgment of brightness. <em>Science</em>, 262(5142), 2042-2044.</p>
+</div>
+<aside class="notes">
+<p>This is why color palettes that look good in a swatch panel might fail in your visualization. The classic example: a gray square looks yellowish on a blue background and bluish on a yellow background. For maps, this means adjacent regions can affect color perception. Solution: add thin white borders between regions, or test your palette with actual data patterns. Albers’ classic work and Adelson’s checker shadow illusion are foundational demonstrations of these effects.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Semantic Color Associations</h2>
+<h3>Cultural and Contextual Meanings</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Universal Associations:</strong></p>
+<ul>
+<li><strong>Red</strong>: Heat, danger, stop 🔥 🛑</li>
+<li><strong>Blue</strong>: Cold, water, calm 💧 ❄️</li>
+<li><strong>Green</strong>: Nature, growth, go 🌱 ✅</li>
+<li><strong>Yellow</strong>: Caution, energy ⚠️ ⚡</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Domain-Specific:</strong></p>
+<ul>
+<li><strong>Finance</strong>: Red = loss (↓), Green = profit (↑)</li>
+<li><strong>Politics</strong>: Red/Blue = parties (varies by country!)</li>
+<li><strong>Temperature</strong>: Blue = cold ❄️, Red = hot 🌡️</li>
+<li><strong>Health</strong>: Red = critical 🚨, Yellow = warning ⚠️, Green = normal ✅</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Lin, S., Fortuna, J., Kulkarni, C., Stone, M., &amp; Heer, J. (2013). <a href="../refs/Lin_Fortuna_Kulkarni_Stone_Heer_2013_Selecting_Semantically_Resonant_Colors.pdf">Selecting Semantically-Resonant Colors for Data Visualization</a>. Computer Graphics Forum, 32(3), 401-410.</p>
+</div>
+<aside class="notes">
+<p>Leverage semantic associations when they help, but be aware they’re not universal. In China, red means prosperity. In finance, Western markets use red for losses, but East Asian markets use red for gains! Always consider your audience. Sometimes you should intentionally break conventions - use blue for hot if you’re showing cooling needs, not temperature. Lin et al.’s research provides empirical data on color-concept associations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Blindness Considerations</h2>
+<p><strong>About 8% of men and 0.5% of women have a colour vision deficiency, mostly red-green</strong></p>
+
+<img data-src="figs/color/color-blindness.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Oliveira, M. “Towards More Accessible Visualizations for Color-Vision-Deficient Individuals” Computing in Science &amp; Engineering, 2013</p>
+</div>
+<aside class="notes">
+<p>Emphasize that this means in a typical classroom, 2-3 students likely have some form of color vision deficiency. Red-green is most common (deuteranopia and protanopia). Always design with this in mind - use redundant encoding (shape, pattern) and test with simulators. The Viridis colormap was specifically designed to be perceptually uniform AND colorblind-safe.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Vision Simulators</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>Tools for Testing Accessibility</h3>
+<p><strong>Browser Extensions:</strong></p>
+<ul>
+<li><a href="https://chrome.google.com/webstore/detail/colorblinding">Colorblinding</a> (Chrome)</li>
+<li><a href="https://addons.mozilla.org/en-US/firefox/addon/let-s-get-color-blind/">Let’s Get Color Blind</a> (Firefox)</li>
+<li>Real-time webpage simulation</li>
+</ul>
+<p><strong>Design Software Plugins:</strong></p>
+<ul>
+<li>Adobe Photoshop: View → Proof Setup → Color Blindness</li>
+<li>Sketch: Stark plugin for accessibility testing</li>
+<li>Figma: Able plugin for color vision simulation</li>
+</ul>
+<p><strong>Online Simulators:</strong></p>
+<ul>
+<li><a href="https://www.color-blindness.com/coblis-color-blindness-simulator/">Coblis</a></li>
+<li><a href="https://michelf.ca/projects/sim-daltonism/">Sim Daltonism</a> (macOS app)</li>
+<li>Upload images for instant simulation</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/color/colorblind-simulation-comparison.png" style="width:100.0%"></p>
+<figcaption>Original, then deuteranope, protanope and tritanope simulations</figcaption>
+</figure>
+</div>
+</div></div>
+<p><strong>Best Practice:</strong> Always test your visualizations with simulators during development, not after</p>
+<aside class="notes">
+<p>Demo one of these tools live if possible! Show how a seemingly clear red/green encoding becomes indistinguishable. Point out that deuteranopia (missing green cones) affects ~6% of males, protanopia (missing red cones) ~2%, and tritanopia (missing blue cones) is rare (~0.01%). The tools are free and take seconds to use - there’s no excuse for not testing. Emphasize: “If you’re not testing for colorblindness, you’re excluding 8% of your male audience.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Spaces</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>RGB (Red, Green, Blue)</h3>
+<ul>
+<li>Device-oriented</li>
+<li>Not perceptually uniform</li>
+<li>Common in programming</li>
+</ul>
+<h3>HSL/HSV (Hue, Saturation, Lightness/Value)</h3>
+<ul>
+<li>More intuitive for humans</li>
+<li>Better for color selection</li>
+<li>Still not perceptually uniform</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>LAB/LCH</h3>
+<ul>
+<li>Perceptually uniform</li>
+<li>Better for interpolation</li>
+<li>Used in professional design</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Critical concept: RGB is how devices work, but not how humans perceive. Equal steps in RGB space don’t produce equal perceptual steps - this is why RGB interpolation looks muddy. HSL is better for picking colors manually but still has issues (yellow appears brighter than blue at same L value). LAB/LCH are based on human perception studies and produce smooth gradients. Always use LAB or HCL for color interpolation in visualizations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Perceptual Color Spaces</h2>
+<h3>Why Perceptual Uniformity Matters</h3>
+<p>In RGB space, equal numerical steps ≠ equal perceptual steps</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="" aria-label="1"></a><span class="co">// RGB interpolation can produce muddy colors</span></span>
+<span id="cb1-2"><a href="" aria-label="2"></a>d3<span class="op">.</span><span class="fu">interpolateRgb</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)</span>
+<span id="cb1-3"><a href="" aria-label="3"></a></span>
+<span id="cb1-4"><a href="" aria-label="4"></a><span class="co">// LAB interpolation maintains perceptual uniformity</span></span>
+<span id="cb1-5"><a href="" aria-label="5"></a>d3<span class="op">.</span><span class="fu">interpolateLab</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)</span>
+<span id="cb1-6"><a href="" aria-label="6"></a></span>
+<span id="cb1-7"><a href="" aria-label="7"></a><span class="co">// HCL even better for many visualizations</span></span>
+<span id="cb1-8"><a href="" aria-label="8"></a>d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Demo this live if possible! RGB interpolation between red and blue passes through muddy purple. LAB maintains brightness consistency. HCL (Hue-Chroma-Luminance) follows the color wheel, producing vibrant intermediates. For diverging scales, HCL is often best. For sequential scales, LAB works well. The key is that perceptual uniformity means your data differences map linearly to perceived color differences.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Design Implications of Color Processing</h2>
+<h3>From Biology to Design</h3>
+<p>Our visual system’s structure creates constraints and opportunities:</p>
+<p><strong>Three Opponent Channels Process Color:</strong></p>
+<ul>
+<li><strong>Luminance (Black-White)</strong>: Best for detail and patterns</li>
+<li><strong>Red-Green</strong>: Categorical distinctions</li>
+<li><strong>Yellow-Blue</strong>: Categorical distinctions (weaker than red-green)</li>
+</ul>
+<p><strong>Key Biological Facts:</strong></p>
+<ul>
+<li>Far fewer blue-sensitive cones (~2% of total)</li>
+<li>Blue cones less sensitive than red/green</li>
+<li>Chromatic channels cannot convey fine detail</li>
+</ul>
+<aside class="notes">
+<p>This bridges the gap between understanding the biology and applying it to design. The three opponent channels have very different capabilities - luminance is king for detail, while chromatic channels are better for categorical coding. The scarcity of blue cones explains why blue is problematic for fine detail.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Luminance Contrast is Critical for Detail</h2>
+<h3>Text and Fine Details Require Strong Luminance Contrast</h3>
+<p><strong>ISO Standard Recommendation:</strong></p>
+<ul>
+<li><strong>Minimum 3:1 luminance ratio</strong> between text and background</li>
+<li>Chromatic channels (red-green, yellow-blue) <strong>cannot</strong> convey fine detail</li>
+</ul>
+<p><strong>Common Mistakes:</strong></p>
+<ul>
+<li>❌ Blue text on dark backgrounds (illegible - lacks luminance contrast)</li>
+<li>❌ Red text on green background (relies only on chromatic contrast)</li>
+<li>✅ Black text on white (maximum luminance contrast)</li>
+<li>✅ High-contrast text with color used sparingly for emphasis</li>
+</ul>
+<aside class="notes">
+<p>This is one of the most practical design guidelines. Many students think “red on green should work because they’re opposite” - but if the luminance values are similar, it fails for small text. Demo if possible: show red text on green background with matched luminance - it’s nearly unreadable. Blue on dark is particularly bad because blue cones are scarce and less sensitive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Coding Limitations</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>How Many Colors Can Users Distinguish?</h3>
+<p><strong>Research Finding: Only 6-12 colors work reliably as codes</strong></p>
+<p><strong>Best Practice - Use Unique Hues First:</strong></p>
+<ol type="1">
+<li>🔴 <strong>Red</strong></li>
+<li>🟢 <strong>Green</strong></li>
+<li>🟡 <strong>Yellow</strong></li>
+<li>🔵 <strong>Blue</strong></li>
+<li>⚫ <strong>Black</strong></li>
+<li>⚪ <strong>White</strong></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<p><strong>Why These Work Best:</strong></p>
+<ul>
+<li>Most easily learned and identified</li>
+<li>Correspond to opponent channel structure</li>
+<li>Universal across cultures (mostly)</li>
+</ul>
+<p><strong>Beyond 6 categories?</strong> Add redundant encoding (shape, pattern, labels)</p>
+</div></div>
+<aside class="notes">
+<p>The 6-12 limit is empirically validated. The unique hues are special because they align with our opponent process channels - they’re the “purest” examples of each channel. After these 6, you can add orange, purple, brown, pink, etc., but discriminability drops. This is why Tableau and other tools default to 6-10 color palettes. Real-world tip: If you have 20 categories, color alone won’t work - consider grouping or interactive filtering.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Size-Dependent Color Choices</h2>
+<h3>Small Symbols vs.&nbsp;Large Areas</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Small Symbols/Text</h3>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Strong, <strong>saturated colors</strong></li>
+<li>High <strong>luminance contrast</strong> with background</li>
+<li>Avoid subtle color differences</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>Points on scatter plots</li>
+<li>Line graphs</li>
+<li>Small icons</li>
+<li>Text labels</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Large Areas</h3>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li><strong>Subdued, low-saturation</strong> colors</li>
+<li>Avoid overwhelming the design</li>
+<li>Prevent contrast effects on smaller elements</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>Background fills</li>
+<li>Map regions</li>
+<li>Area charts</li>
+<li>Dashboard panels</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>This is counterintuitive for many students. Bright saturated colors work great for small elements but become overwhelming for large areas. Large saturated areas also create strong simultaneous contrast effects that distort perception of smaller elements. Think of heatmaps - the cells should be relatively muted, while outliers or highlights can be saturated. Geographic maps are a classic example: countries should be pastel/muted, while city markers can be bright and saturated.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Simultaneous Contrast &amp; Design Practice</h2>
+<h3>Context Affects Color Perception</h3>
+<p><strong>Simultaneous Contrast Effects:</strong></p>
+<ul>
+<li>Backgrounds affect small color patches more than vice versa</li>
+<li>Same color appears different on different backgrounds</li>
+<li>Critical for visualization design</li>
+</ul>
+<p><strong>Highlighting Best Practices:</strong></p>
+<ul>
+<li>✅ <strong>Maintain or increase luminance contrast</strong> for emphasis</li>
+<li>❌ Common mistake: Reducing contrast (e.g., light text on light highlight)</li>
+<li>✅ Dark text on light highlight, or light text on dark highlight</li>
+</ul>
+<p><strong>Shape and Color Together:</strong></p>
+<ul>
+<li>Light-colored patterns interfere <strong>less</strong> with shape perception</li>
+<li>Dark saturated patterns dominate and obscure 3D shape</li>
+</ul>
+<div class="footer">
+<p>Ware, C. (2022). <em>Visual Thinking for Information Design</em> (2nd ed.). Morgan Kaufmann.</p>
+</div>
+<aside class="notes">
+<p>PowerPoint’s default highlighting (yellow background) often reduces contrast by making black text appear lighter - this is exactly wrong! Good highlighting increases luminance difference. For 3D visualizations colored by data values, use light colors so shading cues for shape remain visible. The simultaneous contrast demo (gray squares on different backgrounds) should be shown if available - it’s a powerful demonstration that context is everything in color perception.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>D3 Color Scales</h2>
+<h3>Sequential Scales</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="" aria-label="1"></a><span class="co">// Single hue</span></span>
+<span id="cb2-2"><a href="" aria-label="2"></a><span class="kw">const</span> blueScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSequential</span>()</span>
+<span id="cb2-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
+<span id="cb2-4"><a href="" aria-label="4"></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateBlues</span>)<span class="op">;</span></span>
+<span id="cb2-5"><a href="" aria-label="5"></a></span>
+<span id="cb2-6"><a href="" aria-label="6"></a><span class="co">// Multi-hue</span></span>
+<span id="cb2-7"><a href="" aria-label="7"></a><span class="kw">const</span> viridisScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSequential</span>()</span>
+<span id="cb2-8"><a href="" aria-label="8"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
+<span id="cb2-9"><a href="" aria-label="9"></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateViridis</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3>Built-in Color Schemes:</h3>
+<ul>
+<li>Blues, Greens, Reds, Purples, Oranges, Greys</li>
+<li>Viridis, Inferno, Magma, Plasma (perceptually uniform)</li>
+</ul>
+<aside class="notes">
+<p>The D3 half starts here. scaleSequential takes a domain and an interpolator, a function from [0,1] to a colour, and d3-scale-chromatic ships dozens of them. Two families: the single-hue Brewer ramps (Blues, Greens and so on) and the multi-hue perceptually uniform ones from matplotlib (Viridis, Inferno, Magma, Plasma). Both increase luminance monotonically, which is the property from the Single Hue slide. Point out that interpolateBlues is exactly the ramp whose L* curve we plotted earlier. Live demo if the network is up: the Observable colour schemes notebook shows every one of these side by side.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>D3 Diverging Scales</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="" aria-label="1"></a><span class="co">// Diverging scale with custom midpoint</span></span>
+<span id="cb3-2"><a href="" aria-label="2"></a><span class="kw">const</span> divergingScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleDiverging</span>()</span>
+<span id="cb3-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="op">-</span><span class="dv">50</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])  <span class="co">// min, midpoint, max</span></span>
+<span id="cb3-4"><a href="" aria-label="4"></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateRdBu</span>)<span class="op">;</span></span>
+<span id="cb3-5"><a href="" aria-label="5"></a></span>
+<span id="cb3-6"><a href="" aria-label="6"></a><span class="co">// Common diverging schemes:</span></span>
+<span id="cb3-7"><a href="" aria-label="7"></a><span class="co">// RdBu (red-blue), RdYlGn (red-yellow-green),</span></span>
+<span id="cb3-8"><a href="" aria-label="8"></a><span class="co">// BrBG (brown-green), PuOr (purple-orange)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Perfect for:</p>
+<ul>
+<li>Temperature anomalies</li>
+<li>Election results</li>
+<li>Profit/loss</li>
+<li>Any data with meaningful zero</li>
+</ul>
+<aside class="notes">
+<p>Guide students to choose an interpolator like d3.interpolateRdBu because it is perceptually uniform around the critical midpoint, preventing the muddy gray region that RGB interpolation creates. The domain([min, midpoint, max]) structure is critical - the midpoint should be meaningful (0 for anomalies, average for deviations, 50% for proportions). Common mistake: Using diverging scales when data doesn’t have a meaningful midpoint. If your data is all positive (e.g., 0-100%), use sequential instead. The midpoint in the interpolator gets white/neutral color, so it must represent a true neutral value in your data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>D3 Categorical Scales</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="" aria-label="1"></a><span class="co">// Ordinal scale with color scheme</span></span>
+<span id="cb4-2"><a href="" aria-label="2"></a><span class="kw">const</span> categoryScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleOrdinal</span>()</span>
+<span id="cb4-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="st">"A"</span><span class="op">,</span> <span class="st">"B"</span><span class="op">,</span> <span class="st">"C"</span><span class="op">,</span> <span class="st">"D"</span>])</span>
+<span id="cb4-4"><a href="" aria-label="4"></a>  <span class="op">.</span><span class="fu">range</span>(d3<span class="op">.</span><span class="at">schemeCategory10</span>)<span class="op">;</span></span>
+<span id="cb4-5"><a href="" aria-label="5"></a></span>
+<span id="cb4-6"><a href="" aria-label="6"></a><span class="co">// Available categorical schemes:</span></span>
+<span id="cb4-7"><a href="" aria-label="7"></a><span class="co">// schemeCategory10 - 10 distinct colors</span></span>
+<span id="cb4-8"><a href="" aria-label="8"></a><span class="co">// schemeSet1 - 9 saturated colors (NOT colorblind-safe)</span></span>
+<span id="cb4-9"><a href="" aria-label="9"></a><span class="co">// schemeSet2 - 8 muted colors (print friendly)</span></span>
+<span id="cb4-10"><a href="" aria-label="10"></a><span class="co">// schemeDark2 - 8 colors, the safest Brewer set for CVD</span></span>
+<span id="cb4-11"><a href="" aria-label="11"></a><span class="co">// schemeTableau10 - 10 colors, Tableau default</span></span>
+<span id="cb4-12"><a href="" aria-label="12"></a><span class="co">// schemeSet3 - 12 colors (pastel)</span></span>
+<span id="cb4-13"><a href="" aria-label="13"></a><span class="co">// schemePaired - 12 colors (paired)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Important: schemeSet1 is colorblind-safe but has very saturated colors that can be overwhelming. schemeSet2 is better for professional presentations. schemePaired is great when you have natural pairs in your data (e.g., before/after, male/female). Always test your chosen scheme with actual data - what looks good in isolation may not work with your specific visualization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Scale Best Practices</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Sequential Data</h3>
+<p>✅ Use single or multi-hue sequential</p>
+<p>❌ Don’t use rainbow scales</p>
+<h3>Categorical Data</h3>
+<p>✅ Use distinct hues with similar saturation/lightness</p>
+<p>❌ Don’t use more than ~8 categories</p>
+</div><div class="column" style="width:50%;">
+<h3>Diverging Data</h3>
+<p>✅ Use when there’s a meaningful midpoint</p>
+<p>❌ Don’t use for purely positive data</p>
+<h3>Accessibility</h3>
+<p>✅ Test with colorblind simulators</p>
+<p>✅ Provide redundant encoding when possible</p>
+</div></div>
+<aside class="notes">
+<p>Use this slide to review common student errors. Sequential Data: Rainbow maps are the #1 mistake—they create false edges where the color suddenly shifts (e.g., yellow band appears as a boundary). Show example: weather maps where rainbow creates artificial storm boundaries. Categorical Data: Reiterate that Saturation should be kept consistent across categories to avoid unintended emphasis. If one category is bright red and another is pale blue, the red will dominate. Diverging: Students often use these for data without true midpoints. Accessibility: Not optional - in any professional setting, colorblind-safe design is required, not suggested.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>D3 Data Transformation Scales (Beyond Color)</h2>
+<h3>Time Scales</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="" aria-label="1"></a><span class="kw">const</span> timeScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleTime</span>()</span>
+<span id="cb5-2"><a href="" aria-label="2"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="kw">new</span> <span class="bu">Date</span>(<span class="dv">2020</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">,</span> <span class="kw">new</span> <span class="bu">Date</span>(<span class="dv">2025</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>)])</span>
+<span id="cb5-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3>Log Scales</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href="" aria-label="1"></a><span class="kw">const</span> logScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLog</span>()</span>
+<span id="cb6-2"><a href="" aria-label="2"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">1000</span>])</span>
+<span id="cb6-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3>Power Scales</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><a href="" aria-label="1"></a><span class="kw">const</span> sqrtScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSqrt</span>()  <span class="co">// same as scalePow().exponent(0.5)</span></span>
+<span id="cb7-2"><a href="" aria-label="2"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
+<span id="cb7-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Important distinction: These scales transform your data space, not color space. They map data values to positions, sizes, or other visual properties. Time scales understand JavaScript dates and create nice tick marks at meaningful intervals (days, months, years). Log scales are essential for data with large ranges - use when data spans multiple orders of magnitude (e.g., population, income). Square root scales are crucial for encoding data as area - since area grows with radius squared, sqrt scale makes the area proportional to data value, not the radius.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Quantized Scales</h2>
+<p>Transform continuous domains into discrete ranges</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb8-1"><a href="" aria-label="1"></a><span class="co">// Quantize scale - equal intervals</span></span>
+<span id="cb8-2"><a href="" aria-label="2"></a><span class="kw">const</span> quantizeScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleQuantize</span>()</span>
+<span id="cb8-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
+<span id="cb8-4"><a href="" aria-label="4"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"low"</span><span class="op">,</span> <span class="st">"medium"</span><span class="op">,</span> <span class="st">"high"</span>])<span class="op">;</span></span>
+<span id="cb8-5"><a href="" aria-label="5"></a></span>
+<span id="cb8-6"><a href="" aria-label="6"></a><span class="co">// Quantile scale - equal quantities</span></span>
+<span id="cb8-7"><a href="" aria-label="7"></a><span class="kw">const</span> quantileScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleQuantile</span>()</span>
+<span id="cb8-8"><a href="" aria-label="8"></a>  <span class="op">.</span><span class="fu">domain</span>(data)</span>
+<span id="cb8-9"><a href="" aria-label="9"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"Q1"</span><span class="op">,</span> <span class="st">"Q2"</span><span class="op">,</span> <span class="st">"Q3"</span><span class="op">,</span> <span class="st">"Q4"</span>])<span class="op">;</span></span>
+<span id="cb8-10"><a href="" aria-label="10"></a></span>
+<span id="cb8-11"><a href="" aria-label="11"></a><span class="co">// Threshold scale - custom breakpoints</span></span>
+<span id="cb8-12"><a href="" aria-label="12"></a><span class="kw">const</span> thresholdScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleThreshold</span>()</span>
+<span id="cb8-13"><a href="" aria-label="13"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">30</span><span class="op">,</span> <span class="dv">70</span>])</span>
+<span id="cb8-14"><a href="" aria-label="14"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"cold"</span><span class="op">,</span> <span class="st">"comfortable"</span><span class="op">,</span> <span class="st">"hot"</span>])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Critical for choropleth maps and binned visualizations. Quantize creates equal-width bins (like a histogram). Quantile creates bins with equal numbers of data points - useful for skewed distributions. Threshold gives you complete control over breakpoints - use for meaningful boundaries like freezing point, poverty line, etc. Always show the binning method in your legend!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Interpolation</h2>
+<p>D3 provides multiple interpolation methods:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb9-1"><a href="" aria-label="1"></a><span class="co">// RGB interpolation (can be muddy)</span></span>
+<span id="cb9-2"><a href="" aria-label="2"></a>d3<span class="op">.</span><span class="fu">interpolateRgb</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb9-3"><a href="" aria-label="3"></a></span>
+<span id="cb9-4"><a href="" aria-label="4"></a><span class="co">// HSL interpolation (follows hue wheel)</span></span>
+<span id="cb9-5"><a href="" aria-label="5"></a>d3<span class="op">.</span><span class="fu">interpolateHsl</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb9-6"><a href="" aria-label="6"></a></span>
+<span id="cb9-7"><a href="" aria-label="7"></a><span class="co">// LAB interpolation (perceptually uniform)</span></span>
+<span id="cb9-8"><a href="" aria-label="8"></a>d3<span class="op">.</span><span class="fu">interpolateLab</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb9-9"><a href="" aria-label="9"></a></span>
+<span id="cb9-10"><a href="" aria-label="10"></a><span class="co">// HCL interpolation (best for many cases)</span></span>
+<span id="cb9-11"><a href="" aria-label="11"></a>d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span>
+<span id="cb9-12"><a href="" aria-label="12"></a></span>
+<span id="cb9-13"><a href="" aria-label="13"></a><span class="co">// Cubehelix (multi-hue with monotonic luminance)</span></span>
+<span id="cb9-14"><a href="" aria-label="14"></a>d3<span class="op">.</span><span class="fu">interpolateCubehelix</span>(<span class="st">"red"</span><span class="op">,</span> <span class="st">"blue"</span>)(<span class="fl">0.5</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Same two endpoints, red to blue, five interpolation spaces, and the midpoints differ. RGB averages the channels and lands on a dull purple with lower perceived lightness than either end. HSL walks the hue wheel, so you pass through magenta or through yellow and green depending on direction. Lab and HCL keep perceived lightness on a straight line, which is what a sequential scale needs. Cubehelix is Dave Green’s scheme for astronomy: it rotates through hues while luminance climbs monotonically, so it prints in greyscale. Rule for the lab: interpolate in Lab or HCL, never RGB, and never HSL for quantities.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Creating Custom Color Scales</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb10-1"><a href="" aria-label="1"></a><span class="co">// Custom sequential scale</span></span>
+<span id="cb10-2"><a href="" aria-label="2"></a><span class="kw">const</span> customSequential <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSequential</span>()</span>
+<span id="cb10-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])</span>
+<span id="cb10-4"><a href="" aria-label="4"></a>  <span class="op">.</span><span class="fu">interpolator</span>(t <span class="kw">=&gt;</span> d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"#e8f4f8"</span><span class="op">,</span> <span class="st">"#004c6d"</span>)(t))<span class="op">;</span></span>
+<span id="cb10-5"><a href="" aria-label="5"></a></span>
+<span id="cb10-6"><a href="" aria-label="6"></a><span class="co">// Custom diverging scale</span></span>
+<span id="cb10-7"><a href="" aria-label="7"></a><span class="kw">const</span> customDiverging <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleDiverging</span>()</span>
+<span id="cb10-8"><a href="" aria-label="8"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>])</span>
+<span id="cb10-9"><a href="" aria-label="9"></a>  <span class="op">.</span><span class="fu">interpolator</span>(t <span class="kw">=&gt;</span> t <span class="op">&lt;</span> <span class="fl">0.5</span></span>
+<span id="cb10-10"><a href="" aria-label="10"></a>    <span class="op">?</span> d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"#67001f"</span><span class="op">,</span> <span class="st">"#f7f7f7"</span>)(t <span class="op">*</span> <span class="dv">2</span>)</span>
+<span id="cb10-11"><a href="" aria-label="11"></a>    <span class="op">:</span> d3<span class="op">.</span><span class="fu">interpolateHcl</span>(<span class="st">"#f7f7f7"</span><span class="op">,</span> <span class="st">"#053061"</span>)((t <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">*</span> <span class="dv">2</span>))<span class="op">;</span></span>
+<span id="cb10-12"><a href="" aria-label="12"></a></span>
+<span id="cb10-13"><a href="" aria-label="13"></a><span class="co">// Piecewise scale</span></span>
+<span id="cb10-14"><a href="" aria-label="14"></a><span class="kw">const</span> piecewise <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()</span>
+<span id="cb10-15"><a href="" aria-label="15"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">50</span><span class="op">,</span> <span class="dv">100</span>])</span>
+<span id="cb10-16"><a href="" aria-label="16"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"#2166ac"</span><span class="op">,</span> <span class="st">"#f7f7f7"</span><span class="op">,</span> <span class="st">"#b2182b"</span>])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Three ways to build a scale that does not come in the box. Custom sequential: pick two endpoints and an HCL interpolator. Custom diverging: two half-ramps glued at a neutral, which is exactly how the built-in RdBu is constructed. Piecewise linear: a plain scaleLinear with three domain stops and three range colours, and D3 interpolates between neighbouring stops; note the default interpolation there is RGB unless you set .interpolate(d3.interpolateHcl). The Unicode minus signs that used to be in this code have been replaced with ASCII hyphens; the snippet is now copy-pasteable.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Practical Color Guidelines</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>For Print</h3>
+<ul>
+<li>Consider grayscale reproduction</li>
+<li>Use ColorBrewer schemes</li>
+<li>Test on actual printer</li>
+</ul>
+<h3>For Screen</h3>
+<ul>
+<li>Consider monitor variations</li>
+<li>Use sufficient contrast</li>
+<li>Test on different devices</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>For Accessibility</h3>
+<ul>
+<li>Use colorblind-safe palettes</li>
+<li>Provide alternative encodings</li>
+<li>Test with simulators</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Three deployment targets, three checks. Print: will it survive greyscale? Photocopiers still exist, and so do black-and-white PDF printers. ColorBrewer marks schemes that are print-friendly. Screen: monitors vary in gamut and calibration, projectors wash out saturation, so contrast that is generous on your laptop is barely adequate on the wall. Accessibility: colourblind-safe palettes, a second encoding, and a simulator run. The common thread is: the palette you see is not the palette they see.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Tools and Resources</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>Online Tools:</h3>
+<ul>
+<li><a href="https://colorbrewer2.org">ColorBrewer</a> - Color schemes for maps</li>
+<li><a href="https://accessible-colors.com">Accessible Colors</a> - WCAG compliance</li>
+<li><a href="https://www.color-blindness.com/coblis-color-blindness-simulator/">Coblis</a> - Colorblind simulator</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>D3 Resources:</h3>
+<ul>
+<li><a href="https://github.com/d3/d3-scale-chromatic">D3 Scale Chromatic</a> - All color schemes</li>
+<li><a href="https://observablehq.com/@d3/color-schemes">Observable Color Notebooks</a> - Interactive examples</li>
+</ul>
+<h3>Research:</h3>
+<ul>
+<li><a href="http://colorbrewer2.org/learnmore/schemes_full.html">ColorBrewer Paper</a> - Harrower &amp; Brewer</li>
+<li><a href="https://www.youtube.com/watch?v=xAoljeRJ3lU">Viridis Explanation</a> - Why we need better colormaps</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>The three you actually need bookmarked: ColorBrewer for choosing a scheme, Coblis or Sim Daltonism for checking it, and the D3 colour schemes notebook for the code. The Harrower and Brewer paper behind ColorBrewer is short and worth a read. The viridis talk is the SciPy 2015 presentation where Smith and van der Walt explain why matplotlib abandoned jet; twenty minutes, and it covers perceptual uniformity, colour blindness and greyscale printing in one go.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Common Color Mistakes</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>1. Don’t Use Rainbow Scales</h3>
+<p><strong>Why:</strong> Perceptually non-uniform, creates false boundaries <strong>Instead:</strong> Use Viridis or single-hue sequential</p>
+<h3>2. Don’t Exceed 7-8 Categories</h3>
+<p><strong>Why:</strong> Colors become indistinguishable <strong>Instead:</strong> Group data or use interactive filtering</p>
+</div><div class="column" style="width:50%;">
+<h3>3. Don’t Ignore Cultural Context</h3>
+<p><strong>Why:</strong> Red = profit in Asia, loss in West <strong>Instead:</strong> Know your audience, test assumptions</p>
+<h3>4. Don’t Use Poor Contrast</h3>
+<p><strong>Why:</strong> Fails WCAG accessibility standards <strong>Instead:</strong> Test contrast ratios (4.5:1 minimum)</p>
+</div></div>
+<aside class="notes">
+<p>Show real examples: (1) Rainbow map - point out the artificial yellow band that appears as a boundary but isn’t in the data. (2) Too many categories - show a 20-category pie chart where you can’t distinguish colors. (3) Context - red in Western culture means “stop/bad” but in Chinese culture can mean “prosperity/good”. (4) Poor contrast - show light yellow on white background, fails WCAG standards.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Lab Preview: Color and Scales in D3</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>Today’s Lab Activities:</h3>
+<ol type="1">
+<li>Implement different scale types (linear, log, time)</li>
+<li>Create color scales for different data types</li>
+<li>Build a choropleth map with sequential colors</li>
+<li>Design accessible categorical palettes</li>
+<li>Test colorblind safety</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<h3>Key Concepts to Practice:</h3>
+<ul>
+<li>Scale domains and ranges</li>
+<li>Color interpolation methods</li>
+<li>Legends for color scales</li>
+<li>Interactive scale adjustments</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>The lab will be hands-on with Observable notebooks. Students will see the immediate impact of different color choices. The choropleth exercise is particularly important - it combines everything: data binning, color scales, and geographic visualization. Make sure students test their palettes with the colorblind simulator. Common mistakes to watch for: using too many colors, poor contrast, and forgetting to add legends.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Putting It All Together</h2>
+<h3>Example: Temperature Visualization</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb11-1"><a href="" aria-label="1"></a><span class="co">// Temperature data with anomalies</span></span>
+<span id="cb11-2"><a href="" aria-label="2"></a><span class="kw">const</span> tempScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleDiverging</span>()</span>
+<span id="cb11-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>])  <span class="co">// Anomaly in degrees</span></span>
+<span id="cb11-4"><a href="" aria-label="4"></a>  <span class="op">.</span><span class="fu">interpolator</span>(d3<span class="op">.</span><span class="at">interpolateRdBu</span>)</span>
+<span id="cb11-5"><a href="" aria-label="5"></a>  <span class="op">.</span><span class="fu">clamp</span>(<span class="kw">true</span>)<span class="op">;</span>  <span class="co">// Prevent extrapolation</span></span>
+<span id="cb11-6"><a href="" aria-label="6"></a></span>
+<span id="cb11-7"><a href="" aria-label="7"></a><span class="co">// Apply to data</span></span>
+<span id="cb11-8"><a href="" aria-label="8"></a>svg<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"rect"</span>)</span>
+<span id="cb11-9"><a href="" aria-label="9"></a>  <span class="op">.</span><span class="fu">data</span>(temperatureData)</span>
+<span id="cb11-10"><a href="" aria-label="10"></a>  <span class="op">.</span><span class="fu">enter</span>()<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb11-11"><a href="" aria-label="11"></a>  <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="fu">tempScale</span>(d<span class="op">.</span><span class="at">anomaly</span>))</span>
+<span id="cb11-12"><a href="" aria-label="12"></a>  <span class="op">.</span><span class="fu">attr</span>(<span class="st">"opacity"</span><span class="op">,</span> <span class="fl">0.8</span>)<span class="op">;</span>  <span class="co">// Slight transparency</span></span>
+<span id="cb11-13"><a href="" aria-label="13"></a></span>
+<span id="cb11-14"><a href="" aria-label="14"></a><span class="co">// Add legend (d3-svg-legend plugin, not core d3)</span></span>
+<span id="cb11-15"><a href="" aria-label="15"></a><span class="kw">const</span> legend <span class="op">=</span> d3<span class="op">.</span><span class="fu">legendColor</span>()</span>
+<span id="cb11-16"><a href="" aria-label="16"></a>  <span class="op">.</span><span class="fu">scale</span>(tempScale)</span>
+<span id="cb11-17"><a href="" aria-label="17"></a>  <span class="op">.</span><span class="fu">title</span>(<span class="st">"Temperature Anomaly (°C)"</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>One complete example that uses everything. A diverging scale for temperature anomalies: the domain is [-10, 0, 10] because zero is the meaningful midpoint, RdBu puts the neutral at zero, and clamp(true) stops values outside the domain from extrapolating to colours that are not in the legend. The join binds one rect per observation and the fill is the scale applied to the anomaly. Note the legend line uses d3-svg-legend, a separate plugin by Susie Lu; core D3 has no legend helper, and the lab shows how to draw one by hand. Ask the room what would go wrong if the domain were [-10, 5, 10].</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Color Gamut and Display Limitations</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>Not All Colors Are Equal</h3>
+<p><strong>Display Constraints:</strong></p>
+<ul>
+<li><strong>sRGB</strong>: Standard web/monitor gamut (most limited)</li>
+<li><strong>Adobe RGB</strong>: Wider gamut for professional displays</li>
+<li><strong>P3</strong>: Modern displays (iPhone, Mac)</li>
+<li><strong>Print CMYK</strong>: Different gamut than screens</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Practical Implications:</strong></p>
+<ul>
+<li>Highly saturated colors may not reproduce</li>
+<li>Test on target devices</li>
+<li>Provide fallbacks for older displays</li>
+<li>Consider print requirements early</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Use the analogy: “Color gamut is the vocabulary of the display.” P3 has a richer vocabulary than sRGB - about 25% more colors. A color defined in P3 might be “out of gamut” for an sRGB display and will be clamped to the nearest available color, potentially changing your carefully designed palette. This is essential for professional design where a visualization might be seen on a high-end monitor (designer’s machine) but needs to be accessible on standard web displays (user’s machine). Action: Always work in or constrain colors to the sRGB space for maximum web compatibility. Test on different devices. For print, convert to CMYK early and adjust - never trust screen colors for print work. Modern CSS supports color-gamut media queries to provide fallbacks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Summary: Key Concepts</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>Vision &amp; Perception</h3>
+<ul>
+<li><strong>Trichromatic vision</strong>: 3 cone types → 3D color space</li>
+<li><strong>Non-uniform perception</strong>: JND varies by channel</li>
+<li><strong>Foveal concentration</strong>: Color discrimination best in center</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Color Uses in Visualization</h3>
+<ul>
+<li><strong>Sequential</strong>: Ordered data (light → dark)</li>
+<li><strong>Diverging</strong>: Data with meaningful midpoint</li>
+<li><strong>Categorical</strong>: Distinct groups (max 5-8)</li>
+</ul>
+<h3>Accessibility is Essential</h3>
+<ul>
+<li><strong>~8% of men, 0.5% of women</strong> have a colour vision deficiency (mostly red-green)</li>
+<li><strong>Always provide redundant encoding</strong></li>
+<li><strong>Test with simulators</strong> before deployment</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>These are the foundational concepts that explain WHY we make certain color choices. The biology constrains what’s possible; the use case determines what’s appropriate; accessibility ensures what’s ethical and professional.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Summary: Implementation &amp; Practices</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<h3>D3 Color Implementation</h3>
+<ul>
+<li><strong>Perceptual spaces</strong>: Use LAB/HCL for interpolation</li>
+<li><strong>Built-in schemes</strong>: Viridis, ColorBrewer, etc.</li>
+<li><strong>Scale types</strong>: Sequential, diverging, ordinal</li>
+</ul>
+<h3>Critical Best Practices</h3>
+<ul>
+<li><strong>Avoid rainbow scales</strong> for continuous data</li>
+<li><strong>Maintain uniform saliency</strong> in categories</li>
+<li><strong>Consider display gamut</strong> (sRGB for web)</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Testing Checklist</h3>
+<p>✓ Colorblind safe? ✓ Prints in grayscale? ✓ Works on different displays? ✓ Context effects considered?</p>
+</div></div>
+<aside class="notes">
+<p>These are the practical guidelines for implementation. Remember: Less is often more with color. When in doubt, test with real users and real data. Color should enhance understanding, not dominate the visualization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Next Week (Oct 9): Group Projects and Design Ethics</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Topics:</h3>
+<ul>
+<li>Group project overview, timeline and the five milestones</li>
+<li>Team formation and choosing a topic (NYC urban data)</li>
+<li>Example projects and evaluation criteria</li>
+<li>Deceptive visualization and design ethics</li>
+</ul>
+<h3>Due:</h3>
+<ul>
+<li><strong>Exercise 5</strong> - Color design with D3 scales (<strong>Oct 8</strong>)</li>
+<li>Form teams by <strong>Oct 16</strong></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Required reading:</h3>
+<ul>
+<li>Tufte, <em>The Visual Display of Quantitative Information</em>, Chapter 2: Graphical Integrity</li>
+<li><a href="https://arxiv.org/pdf/2104.14332.pdf">Misinformed by Visualization</a> - Lo, Gupta &amp; Shigyo, EuroVis 2022</li>
+</ul>
+<h3>Optional:</h3>
+<ul>
+<li><a href="https://arxiv.org/pdf/1907.02035.pdf">Truncating the Y-Axis: Threat or Menace?</a> - Correll, Bertini &amp; Franconeri, 2020</li>
+<li><a href="https://arxiv.org/pdf/2101.07993.pdf">Viral Visualizations</a> - Lee et al., CHI 2021</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Next week is the group projects session: the project timeline, the five milestones, how to form a team and choose an NYC dataset, and a discussion of deceptive visualization and design ethics. The reading is Tufte’s Graphical Integrity chapter plus Lo, Gupta and Shigyo’s EuroVis paper; Correll’s truncated-axis paper and Lee et al.’s viral visualizations paper are optional. Two dates: Exercise 5 is due Oct 8, and teams must be formed by Oct 16. Fall Break is Monday Oct 12 and does not affect Friday sessions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Required Readings</h2>
+<h3>Core Papers &amp; Resources</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong><a href="https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/">Which Color Scale to Use</a></strong> <em>Lisa Charlotte Rost, Datawrapper Blog</em></p>
+<ul>
+<li>Practical guide to choosing color scales</li>
+<li>Covers sequential, diverging, and categorical palettes</li>
+<li>Real-world examples from data journalism</li>
+<li>Interactive examples you can modify</li>
+</ul>
+<p><strong><a href="../refs/Szafir_2018_Modeling_Color_Difference_Visualization.pdf">Modeling Color Difference</a></strong> <em>Szafir, D.A. (2018). IEEE TVCG</em></p>
+<ul>
+<li>Empirical study of color perception in visualization</li>
+<li>Shows RGB interpolation problems</li>
+<li>Proposes perceptually-uniform color models</li>
+<li>Critical for understanding why we use LAB/HCL</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong><a href="https://observablehq.com/@d3/color-schemes">D3 Scale Chromatic</a></strong> <em>Observable Interactive Notebook</em></p>
+<ul>
+<li>Live code examples of all D3 color schemes</li>
+<li>Interactive comparisons between scales</li>
+<li>Copy-paste ready code snippets</li>
+<li>Includes accessibility information</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>These three readings form the foundation: Rost gives practical advice, Szafir provides the science behind perceptual uniformity, and the Observable notebook gives hands-on practice. Students should spend most time on the Observable notebook - actually trying the code.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Optional Readings</h2>
+<h3>Advanced Color Theory</h3>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<p><strong><a href="https://idl.cs.washington.edu/papers/quantitative-color/">Somewhere Over the Rainbow</a></strong> <em>Liu, Y. &amp; Heer, J. (2018). CHI 2018</em></p>
+<ul>
+<li>Large-scale empirical study (n=9,871 participants)</li>
+<li>Quantifies effectiveness of different color scales</li>
+<li>Proves why rainbow colormaps are problematic</li>
+<li>Recommendations: single-hue and multi-hue scales outperform rainbow</li>
+</ul>
+<p><strong><a href="https://www.personal.psu.edu/cab38/ColorSch/Schemes.html">Color Use Guidelines for Mapping</a></strong> <em>Brewer, C.A. (1994). Cartography and GIS</em></p>
+<ul>
+<li>Foundation of ColorBrewer tool</li>
+<li>Systematic approach to color selection</li>
+<li>Addresses print, screen, and colorblind considerations</li>
+<li>Still the definitive reference 30 years later</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong><a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">The Viridis Color Palettes</a></strong> <em>Garnier et al.&nbsp;(2021)</em></p>
+<ul>
+<li>Story behind the most popular scientific colormap</li>
+<li>Perceptually uniform, colorblind-safe, print-friendly</li>
+<li>Mathematical derivation and testing methodology</li>
+</ul>
+<p><strong><a href="../refs/Heer_Stone_2012_Color_Naming_Models.pdf">Color Naming Models for Color Selection</a></strong> <em>Heer, J. &amp; Stone, M. (2012). IEEE CG&amp;A</em></p>
+<ul>
+<li>Data-driven approach to color selection using natural language</li>
+<li>Based on XKCD color survey with 3.5 million judgments</li>
+<li>Probabilistic model for color naming and selection</li>
+<li>Foundation for many modern color tools</li>
+</ul>
+<p><strong>Visual Thinking for Information Design</strong> (2nd Edition) <em>Colin Ware (Morgan Kaufmann, 2022)</em></p>
+<ul>
+<li>Comprehensive coverage of color perception</li>
+<li>Practical design guidelines</li>
+<li>Chapters on color theory and visual encoding</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Optional, in order of usefulness for this course. Liu and Heer is the large-scale study behind the ‘no rainbow’ rule, with nearly ten thousand participants. Brewer 1994 is the cartographic origin of the sequential, diverging, qualitative taxonomy we used all lecture. The viridis vignette tells the design story. Heer and Stone’s colour-naming model is the basis for tools that pick nameable palettes. Ware’s book is the reference for everything in the first half.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week5-color_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week5-color_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week5-color_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week5-color_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week5-color_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week5-color_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week5-color_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week5-color_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week5-color_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week5-color_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
