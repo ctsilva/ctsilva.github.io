@@ -31,17 +31,17 @@ format:
 
 :::
 ::: {.column width="50%"}
-### D3.js Introduction
-- Core concepts
-- DOM manipulation
-- Data binding
-- Basic charts
+### D3 Foundations (in the lab, with Ryan)
+- Selections and data binding
+- Scales and axes
+- Your first bar chart
 :::
 ::::
 
 ::: notes
-Two halves today, and they are deliberately in this order: first how the visual system reads a display, then a first pass at D3, the tool we will use to build displays that respect what we learned in the first half. Everything in the perception half is a fact about the viewer, not about the data. Sources: Colin Ware's book for the brain material, Enrico Bertini's and Tamara Munzner's lecture material for the channel experiments, Matt Berger's for Gestalt.
+The lecture is the perception half: how the visual system reads a display. The D3 half happens in the lab after the break, where Ryan takes you through selections, data binding, scales and a first bar chart. The two connect: every encoding choice in D3 is a choice of which channel carries which attribute, and this lecture is about which channels work. Everything in the perception half is a fact about the viewer, not about the data. Sources: Colin Ware's book for the brain material, Enrico Bertini's and Tamara Munzner's lecture material for the channel experiments, Matt Berger's for Gestalt.
 :::
+
 ## Quick Recap
 
 ![](figs/week3/decoding.png){fig-align="center"}
@@ -49,6 +49,7 @@ Two halves today, and they are deliberately in this order: first how the visual 
 ::: notes
 The NYT Usain Bolt chart from last week's decoding slide. Decode it once more, fast: marks are dots, one per medalist; x is metres behind 2012 Bolt, y is the Olympic year, colour is the medal. Ask: which channel carries the number you actually care about? Position. Which channel could you not read precisely? Colour. Today is about why that ranking exists.
 :::
+
 ## Design Principles
 
 - **Expressiveness**: A set of facts is expressible in a visual language if the sentences in the language express all the facts in the set of data, and only the facts in the data
@@ -62,6 +63,7 @@ Mackinlay 86
 ::: notes
 Mackinlay 1986, the two criteria every encoding decision is judged by. Expressiveness is about the data: the picture must say everything the data says and nothing it does not. Effectiveness is about the viewer: given two expressive pictures, the better one is the one perceived faster or more accurately. Expressiveness is a logical property; effectiveness is a psychological one, and that is why we need perception.
 :::
+
 ## Design Principles Translated 
 
 - **Expressiveness**: Tell the truth and nothing but the truth (don't lie, and don't lie by omission)
@@ -70,6 +72,7 @@ Mackinlay 1986, the two criteria every encoding decision is judged by. Expressiv
 ::: notes
 Same two ideas in plain words. Tell the truth, the whole truth, nothing but the truth, and among truthful encodings pick the one people decode best. 'Better' means measurably faster or more accurate, which means we can run experiments, and people did.
 :::
+
 ## Effectiveness measures
 
 - **Accuracy**: Estimating magnitudes
@@ -81,6 +84,7 @@ Same two ideas in plain words. Tell the truth, the whole truth, nothing but the 
 ::: notes
 Five measurable properties of a visual channel. Accuracy: can I estimate a magnitude? Discriminability: how many levels can I tell apart? Saliency: does it grab attention? Separability: can I read it independently of another channel? Grouping: does it make things look like they belong together? The rest of the lecture goes through these more or less in order, after a detour through the hardware.
 :::
+
 ## Perception for Design
 
 ![](figs/perception/colinwarebook.jpg){.nostretch width="35%" fig-align="center"}
@@ -88,6 +92,7 @@ Five measurable properties of a visual channel. Accuracy: can I estimate a magni
 ::: notes
 Colin Ware, Information Visualization: Perception for Design. The source for the next ten slides. Its thesis in one line: a visualization is an interface to the visual system, so design it for the visual system you actually have.
 :::
+
 ## The Brain and Vision
 
 **"Visual thinking consists of a series of acts of attention, driving eye movements, and tuning our pattern finding circuits" - Colin Ware**
@@ -101,6 +106,7 @@ Image from Wikipedia: [Human brain](https://en.wikipedia.org/wiki/Human_brain)
 ::: notes
 Read the Ware quote slowly. Three verbs: attention, eye movements, pattern finding. The next twenty minutes is those three verbs in that order. Design is not about what is on the screen; it is about what the loop between eye and brain does with it.
 :::
+
 ## The Visual Brain
 
 ![](figs/perception/visualbrain.jpg){fig-align="center"}
@@ -112,6 +118,7 @@ Image from Wikipedia: [Human brain](https://en.wikipedia.org/wiki/Human_brain)
 ::: notes
 Same idea with the visual areas lit up at the back of the brain. Roughly a third of cortex is doing vision. That is the resource we are designing for, and it is why a good chart feels effortless: it hands the work to hardware that was going to run anyway.
 :::
+
 ## The Act of Perception
 
 **Perception runs bottom-up and top-down at the same time**
@@ -125,6 +132,7 @@ Material from Colin Ware's book
 ::: notes
 Ware's overview diagram. Read it left to right: eye, then features processed in parallel across the whole field, millions at once; then patterns built out of features under attentional demand; then one to three objects held in visual working memory. Two arrows underneath: bottom-up drives pattern building, top-down attention reinforces what is relevant. Every slide that follows is a zoom into one box of this picture.
 :::
+
 ## Bottom-up Processing
 
 :::: {.columns}
@@ -147,6 +155,7 @@ Image from "Eye and Brain: The Psychology of Seeing", Gregory
 ::: notes
 Bottom-up in three stages: optic nerve to V1; texture and colour aggregated into patterns; objects assembled in visual working memory. The face-vase (Rubin, via Gregory's Eye and Brain) is here because it shows stage three is not passive: the same input yields two objects and you cannot hold both at once. That is the one-to-three-object limit from the previous slide, felt.
 :::
+
 ## Top-Down Processing
 
 :::: {.columns}
@@ -168,6 +177,7 @@ Material from Colin Ware's book
 ::: notes
 Top-down. This is an eye-tracking trace: circles are fixations, bigger means longer dwell, lines are saccades. Point out how little of the scene gets visited. We do not see the picture, we sample it, and attention decides the sampling. Ware's rule: we get the information we need, when we need it.
 :::
+
 ## Implications for Design
 
 :::: {.columns}
@@ -188,6 +198,7 @@ Material from Colin Ware's book
 ::: notes
 Nested loops: an outer problem-solving loop, a middle loop of visual pattern search via eye movements, an inner loop of pattern testing. The design consequence is 'just-in-time visual queries': the viewer asks the display a question with each saccade and expects an answer in one fixation. A visualization is good to the extent that the answer to the likely next question is already sitting where the eye lands.
 :::
+
 ## Low-Level Feature Analysis
 
 **The visual cortex has specialized cells for edges, orientations and motion (Hubel & Wiesel, Nobel 1981)**
@@ -201,6 +212,7 @@ Material from Colin Ware's book
 ::: notes
 Hubel and Wiesel, Nobel 1981. A fold of V1 with neurons that each respond to one simple feature: an orientation, a colour difference, a direction of motion. This is why orientation, colour and motion pop out later in the lecture: there is dedicated hardware for them, and nothing dedicated for, say, a junction between two lines.
 :::
+
 ## What and Where Pathways
 
 :::: {.columns}
@@ -224,6 +236,7 @@ They also run at different speeds. The where stream is fed by magnocellular cell
 
 Two design consequences that come back today and next week: a flashing or moving element grabs attention before anyone knows what it is, and an alert that differs from its surroundings only in hue at equal luminance is invisible to the fast system.
 :::
+
 ## Accuracy
 
 **Psychophysics: vary a stimulus, ask how strong it feels (Fechner, 1860)**
@@ -245,6 +258,7 @@ Why a visualization class cares. Every visual channel is a sense being asked a m
 
 Something to try live: ask the room whether a 100-watt bulb looks twice as bright as a 50-watt one. It does not; brightness has an exponent near 0.5, so it looks about 1.4 times as bright. Then ask what that does to a heatmap that encodes a doubling as a doubling of luminance.
 :::
+
 ## Power Law
 
 ![](figs/perception/psychophysical-law.jpg){.nostretch width="40%" fig-align="center"}
@@ -252,6 +266,7 @@ Something to try live: ask the room whether a 100-watt bulb looks twice as brigh
 ::: notes
 Stevens' power law: perceived sensation equals physical intensity raised to some exponent, one curve per channel. Length has exponent about 1.0, what you see is what is there. Area about 0.7 and depth about 0.67, systematically underestimated. Brightness 0.5, badly compressed. Saturation 1.7, exaggerated. Electric shock at 3.5 is on the chart for comedy but makes the point: exponents far from one mean the channel lies. Length is the only honest one here, which is the Cleveland and McGill result before Cleveland and McGill.
 :::
+
 ## Graphical Perception
 
 :::: {.columns}
@@ -270,6 +285,7 @@ Slides based on material from Prof. Enrico Bertini
 ::: notes
 Cleveland and McGill, 1984, JASA, plus Cleveland's book. The paper that turned 'which chart is better' from taste into measurement. Method: show people two marked values, ask for the ratio, measure the error. The next two slides are the experiment; the two after that are the follow-up and the modern replication.
 :::
+
 ## Cleveland & McGill Experiment
 
 **Task: judge what percentage the smaller marked value is of the larger**
@@ -287,6 +303,7 @@ What the subjects were actually asked, for every graph: first, which of the two 
 
 Run it live: put Type 1 and Type 5 to the room using the experiment's own wording, 'what percentage is the smaller of the larger?'. Nobody hesitates on 1.
 :::
+
 ## Cleveland & McGill Results
 
 **Position > Length and Angle > Area**
@@ -304,6 +321,7 @@ Error rises monotonically from Type 1 to Type 5, as predicted before the data ca
 
 Second-order effects worth a sentence each: within position, adjacent bars (Type 1) beat bars in different groups (Type 3), so distance hurts even on a common scale; within length, the vertically offset Type 5 is worst of all.
 :::
+
 ## Other Cleveland & McGill Experiment: Angle vs. Position
 
 ![](figs/perception/area_experiment.png){fig-align="center"}
@@ -315,6 +333,7 @@ Cleveland & McGill 84
 ::: notes
 The companion experiment in the same paper: the same five values as a pie chart and as a bar chart, same ratio task. Ask the room to estimate C as a percentage of D on the pie, then on the bars. Angle judgments came out markedly worse than position judgments. This is the empirical basis for 'do not use pie charts when the comparison matters', and it is a bar chart with an axis versus a pie with none, so also note that the bar chart gives you a scale for free.
 :::
+
 ## Replication: Heer & Bostock (2010)
 
 ![](figs/perception/cleveland_results.png){fig-align="center"}
@@ -326,6 +345,7 @@ Top: Cleveland & McGill 84. Bottom: Heer & Bostock, *Crowdsourcing Graphical Per
 ::: notes
 Heer and Bostock, CHI 2010, replicated the whole study on Mechanical Turk with hundreds of participants instead of a few dozen. Top panel: Cleveland and McGill's original five types. Bottom: the crowdsourced results for the same five plus four more: T6 pie (angle), T7 bubbles (circular area), T8 rectangles of matched aspect (area), T9 treemap-style rectangles (area). Same ordering for T1 to T5, and the new area encodings land below length, exactly where the theory said they would. Two lessons: the 1984 result holds up, and crowdsourcing is a legitimate way to run graphical perception studies. This is why the ranking on the next slide can be stated with confidence.
 :::
+
 ## Channel Effectiveness Ranking
 
 ![](figs/perception/effectiveness.jpg){fig-align="center"}
@@ -333,6 +353,7 @@ Heer and Bostock, CHI 2010, replicated the whole study on Mechanical Turk with h
 ::: notes
 Munzner's channel ranking, Figure 5.6 in her book. Left column, ordered attributes, most to least effective: position on a common scale, position on an unaligned scale, length, tilt, area, depth, colour luminance and saturation, curvature and volume. Right column, categorical attributes: spatial region, hue, motion, shape. Two things to point out. The columns are different: hue is near the top for identity and near the bottom for magnitude. And the 'Same' brackets pair channels that are equally weak. This figure is the answer key for the encoding decisions they will make for the rest of the semester.
 :::
+
 ## Accuracy Guidelines
 
 * **Prioritize high-rank channels** (with reason)
@@ -352,6 +373,7 @@ Slides based on material from Prof. Enrico Bertini
 ::: notes
 The takeaway, in order: position beats length and angle, which beat area, which beats volume and colour. Use the high-rank channels for the quantity you most need read correctly. Do not expect precision from the low-rank ones: if the number matters, do not put it in a colour. The 'with reason' on the first bullet matters: sometimes the most important comparison is categorical, and then hue is the right choice.
 :::
+
 ## Relative vs. Absolute Judgments
 
 **Humans are better at relative comparisons than absolute judgments**
@@ -361,6 +383,7 @@ The takeaway, in order: position beats length and angle, which beat area, which 
 ::: notes
 Three renderings of the same A and B. Left: bars floating with no common baseline, so you compare lengths, badly. Middle: each bar inside its own frame, so you read a fill fraction relative to the frame, which is a different question. Right: common baseline, position, and the answer is instant. This is Cleveland and McGill Types 1 versus 4 as a design choice: same data, three different questions answered, only one of them the one you asked.
 :::
+
 ## Discriminability
 
 :::: {.columns}
@@ -382,6 +405,7 @@ Three renderings of the same A and B. Left: bars floating with no common baselin
 ::: notes
 Second property: discriminability, how many distinct levels a channel can carry. Two scatterplots of the same food data, energy versus water content, coloured by food group. Top: tiny dots. Bottom: large dots. Same eight hues, but on the tiny dots you can barely tell two of them apart, so the effective cardinality of the colour channel collapsed with mark size. Size is a property of the mark, but it changes what every other channel on that mark can carry.
 :::
+
 ## Discriminability
 
 :::: {.columns}
@@ -401,6 +425,7 @@ Second property: discriminability, how many distinct levels a channel can carry.
 ::: notes
 Cardinality of the encoding itself. Left: nine coloured rectangles, all distinguishable. Right: about two dozen, and several pairs are effectively the same colour: two greens, two greys, two blues, two reds. Ask them to find the two greens and say which is which. Hue does not scale; there are only so many nameable colours.
 :::
+
 ## Discriminability
 
 How many distinct values can be distinguished within a channel?
@@ -425,6 +450,7 @@ Material from [STAT4580](https://homepage.divms.uiowa.edu/~luke/classes/STAT4580
 ::: notes
 Numbers to remember: line width, about three levels. Hue, five or six. Shape, five or six. If your attribute has twelve categories and your channel carries six, the channel is not going to expand; you have to aggregate the categories. Say this now because every student will try twelve hues at some point this semester. STAT4580 at Iowa has a good write-up, linked in the footer.
 :::
+
 ## Discriminability Guidelines
 
 **Do not overestimate the number of values viewers can discriminate**
@@ -434,6 +460,7 @@ Numbers to remember: line width, about three levels. Hue, five or six. Shape, fi
 ::: notes
 The failure case: the USDA food dataset, energy versus water, with all 25 food groups in the legend. Ask: which colour is Pork Products? Which is Snacks? Nobody can do it, and the legend has to be scanned serially. Twenty-five hues is not an encoding, it is a lookup table. The next three slides are the three ways out.
 :::
+
 ## Strategies to overcome this problem
 
 - How do we solve the problem of encoding a categorial attribute with high cardinality?
@@ -444,6 +471,7 @@ The failure case: the USDA food dataset, energy versus water, with all 25 food g
 ::: notes
 Three strategies for a categorical attribute with too many levels. Group: merge categories into fewer, semantically meaningful ones. Filter: show only the categories the question is about. Facet: move the category from colour to position, one panel per level. Each of the next three slides is the same food scatter under one of the three.
 :::
+
 ## Grouping
 
 **Grouping: merge categories semantically to reduce the number of classes to distinguish**
@@ -453,6 +481,7 @@ Three strategies for a categorical attribute with too many levels. Group: merge 
 ::: notes
 The 25 food groups collapsed into eight: beverages, cereal and pasta, dairy and eggs, fats oils nuts, fruits and juices, meats, processed food, vegetables legumes and herbs. Eight hues is at the limit but readable. Point out that the grouping is a modelling decision, not a visual one; the designer decided that baked products and snacks are both 'processed food'. That decision should be visible to the reader.
 :::
+
 ## Filtering
 
 **Filtering: keep only the classes the question is about**
@@ -462,6 +491,7 @@ The 25 food groups collapsed into eight: beverages, cereal and pasta, dairy and 
 ::: notes
 Filtering: only five groups kept, the rest dropped. Now the colours are trivially distinguishable and the structure inside each group is visible, for example the two beef clusters. The cost is on the slide: everything else is gone, and the reader has to trust that the missing groups did not matter for the question.
 :::
+
 ## Faceting
 
 **Faceting: move the category from colour to position, one panel per class**
@@ -471,6 +501,7 @@ Filtering: only five groups kept, the rest dropped. Now the colours are triviall
 ::: notes
 Faceting: the eight groups as eight small multiples with shared axes. Colour is no longer needed at all, the category is encoded in position, the highest-rank channel. You lose direct overlay comparison but gain the ability to see each group's shape, for example that fats have a completely different profile from beverages. This is the strategy that scales best.
 :::
+
 ## Pre-attentive Processing: Popout
 
 :::: {.columns}
@@ -491,6 +522,7 @@ Material from Colin Ware's book
 ::: notes
 Third property: saliency, or pop-out. Anne Treisman's feature-integration work. Left: one red dot among blue, a hue difference. Right: one vertical bar among horizontals, an orientation difference. The finding is on the slide: for these targets, search time does not grow with the number of distractors. That flat line is the operational definition of pre-attentive. Ask them how long the red dot took. It did not take any time. That is the point.
 :::
+
 ## Pre-attentive Processing: Popout
 
 ![](figs/perception/preattentive_features.png){.nostretch width="40%" fig-align="center"}
@@ -503,6 +535,7 @@ Material from Enrico Bertini
 ::: notes
 A catalogue of features that pop out, sixteen panels: line orientation, length, weight, curvature, added marks, enclosure, hue, intensity, shape, size, sharpness (blur), numerosity. Each panel has one odd element and it is found instantly. Enrico Bertini runs a short video experiment here where a target flashes for a fraction of a second; if you have the clip, play it now, otherwise pick two or three panels and have the room point. The design message: these are the channels you can use to make one thing findable among many.
 :::
+
 ## Pre-attentive vs. Attentive
 
 ![](figs/perception/preattentive-vs-not.jpg){fig-align="center"}
@@ -514,6 +547,7 @@ Material from Colin Ware's book
 ::: notes
 Ware's two-by-two. Top left: an inverted T among Ts is hard, a bold T is easy, same feature set versus a new one. Top right: a backward L is hard, a green triangle is easy. Bottom left: a dot whose colour is close to its neighbours cannot be tuned for; a red one can. Bottom right: a line among lines of similar orientation does not stand out. The pattern in all four: pop-out needs a feature the distractors do not share, not merely a different arrangement of the same features.
 :::
+
 ## Attentive
 
 ![](figs/perception/attentive_features.png){fig-align="center"}
@@ -525,6 +559,7 @@ Material from Enrico Bertini
 ::: notes
 Two things that do not pop out. Left: juncture, the one L among corners of other shapes. Right: parallelism, the one pair of parallel lines among near-parallel pairs. Both are relations between features rather than features. No V1 neuron fires for 'these two lines are parallel', so it takes a serial search. Ask the room to find the parallel pair and watch their eyes move.
 :::
+
 ## Serial search
 
 ![](figs/perception/serial_search.png){fig-align="center"}
@@ -537,6 +572,7 @@ Material from Enrico Bertini
 ::: notes
 What serial search looks like: an eye-tracking scan path over a search display, from a Scientific Reports paper on visual search. Left: the whole trace, a random-walk-like path covering the display until the target (red circle) is found. Right: the zoomed corner. Every fixation costs a few hundred milliseconds. If your visualization requires this to find the interesting value, the viewer is doing the computation you should have done.
 :::
+
 ## Multiple Channels Usually Not Pre-attentive
 
 :::: {.columns}
@@ -557,6 +593,7 @@ Slides based on material from Prof. Enrico Bertini
 ::: notes
 Conjunction search. Red squares and blue circles, and one red circle. Each feature alone pops out; the combination does not, you have to scan. The design rule that falls straight out of this: encode the thing you want found in a single channel, not in the intersection of two.
 :::
+
 ## Application to visualization design
 
 ![](figs/perception/application_saliency.png){.nostretch width="50%" fig-align="center"}
@@ -564,6 +601,7 @@ Conjunction search. Red squares and blue circles, and one red circle. Each featu
 ::: notes
 Saliency applied. Four conferences, five paper types, default categorical palette. Everything is equally loud, so nothing stands out. Ask: what is the story? Nobody knows, because the chart does not choose one.
 :::
+
 ## Application to visualization design
 
 ![](figs/perception/application_saliency_modified.png){.nostretch width="50%" fig-align="center"}
@@ -571,6 +609,7 @@ Saliency applied. Four conferences, five paper types, default categorical palett
 ::: notes
 Same chart, three of the five paper types greyed out. Now the picture asks one question: how are algorithm papers and application papers trending relative to each other at each venue? The answer is readable in one fixation, VAST's crossover in 2015 especially. Nothing was removed, only de-emphasized. This is pop-out used as an authorial choice, and it is the single cheapest improvement most student charts can make.
 :::
+
 ## Pre-attentive Processing
 
 :::: {.columns}
@@ -592,6 +631,7 @@ Slides based on material from Prof. Enrico Bertini
 ::: notes
 Bertini's framing of the same phenomenon from the timing side. Under 200 to 250 milliseconds, faster than an eye movement can start, so it must be the parallel low-level system: the V1 hardware from earlier. Same red-dot display as before, on purpose. If it is still instant the second time, that tells you pop-out does not habituate. It is not attention, it is architecture.
 :::
+
 ## Grouping: The Gestalt Principles
 
 [Interactive demo](https://www.interaction-design.org/literature/topics/gestalt-principles)
@@ -609,6 +649,7 @@ Material from Matt Berger
 ::: notes
 Fifth property: grouping. Transition from hardware to habits. The viewer brings prior experience, and the Gestalt laws are the parts of that experience we can rely on because everyone has them. Five coming up: closure, similarity, proximity, enclosure, connection. The link goes to the Interaction Design Foundation's Gestalt page, which has an embedded video plus a written explainer; it needs the network.
 :::
+
 ## Gestalt: Closure
 
 :::: {.columns}
@@ -630,6 +671,7 @@ Material from Matt Berger
 ::: notes
 The Kanizsa triangle. There is no white triangle on this slide, three pac-men and three angles, and the brain draws the rest. Two consequences, both on the slide: you can mislead by accident because viewers will close shapes you did not intend; and you can be sparse on purpose, a dot plot works because closure connects the dots for you.
 :::
+
 ## Gestalt: Similarity
 
 :::: {.columns}
@@ -650,6 +692,7 @@ Material from Matt Berger and Enrico Bertini
 ::: notes
 Left: same colour, same shape, same size means same group. It is that simple and that unavoidable; similarity is not something you switch on, it is something you fail to switch off. Right: here it is doing damage. A bar chart of paper types where Null and application/design study share the same orange while algorithm/technique is blue. Whether or not anyone intended it, the eye groups Null with application. Ask: what does this chart claim? Then: did the author mean to claim it? Colour assignment is a claim.
 :::
+
 ## Gestalt: Proximity
 
 :::: {.columns}
@@ -670,6 +713,7 @@ Material from Matt Berger and Enrico Bertini
 ::: notes
 Left: things close together are a group, the pure case. Right: a real scatterplot, energy versus water content of foods, with a loop drawn around the dense cluster near zero water. The loop was drawn afterward; the cluster was visible before it. That is proximity working for you: clustering is a perceptual freebie. Note the loop itself is enclosure, next slide.
 :::
+
 ## Gestalt: Enclosure
 
 :::: {.columns}
@@ -692,6 +736,7 @@ Material from Matt Berger and Enrico Bertini
 ::: notes
 Left: two boxes. Inside each box the dots are a grid of grey and red, and the red columns line up across the boxes, but the boxes win. Enclosure overrides both proximity and similarity. It is the strongest grouping cue on this list, which is exactly why you should spend it carefully. Right: Bubble Sets on a map of Manhattan, coloured blobs wrapping sets of points that share membership even when they are spatially interleaved. The video link shows them recomputed live. The image is a small file and looks soft at this size; the video is sharper if the network is up.
 :::
+
 ## Gestalt: Connection
 
 :::: {.columns}
@@ -712,6 +757,7 @@ Material from Enrico Bertini
 ::: notes
 Left: a line between two objects makes them a group, the bare principle. Right: two squares of very different size, connected. The line beats the size difference; you read a pair, not a big one and a small one. Connection overrides similarity of size.
 :::
+
 ## Connection Examples
 
 :::: {.columns}
@@ -730,6 +776,7 @@ Material from Enrico Bertini
 ::: notes
 Left: a circle connected to a square. Connection beats shape similarity too. In the ranking of grouping cues, connection sits above similarity and proximity and below only enclosure. Right: this is why a line chart works at all. Seven dots with lines between them are read as one thing with a shape, a trend, rather than seven values. Remove the lines and you have a dot plot, read as individual values. Same data, different Gestalt, different question answered.
 :::
+
 ## Just Noticeable Difference (JND)
 
 :::: {.columns}
@@ -751,6 +798,7 @@ Wikipedia: [Just-noticeable difference](https://en.wikipedia.org/wiki/Just-notic
 ::: notes
 JND: the smallest change detectable half the time. Strictly this is Weber's law territory, the JND is a constant fraction of the stimulus, and Stevens' power law is the cumulative version of it, which is why the same figure from the Power Law slide is here. The point for design: a difference below the JND of a channel is not encoded, no matter what the data says. A 2% difference in bar length is visible; a 2% difference in colour saturation is not.
 :::
+
 ## Channel Separability
 
 :::: {.columns}
@@ -772,147 +820,7 @@ Slides based on material from Prof. Enrico Bertini
 ::: notes
 Fourth property: separability. Yellow and black, circles and triangles. You can attend to colour and ignore shape, or attend to shape and ignore colour; these two channels are separable. Not all pairs are: width and height of a rectangle fuse into 'size and shape' and cannot be read independently; red and green components of a colour fuse into one hue. Separable channels can encode two variables; integral ones cannot. This closes the perception half.
 :::
-## Introduction to D3.js
 
-:::: {.columns .smaller}
-::: {.column width="50%"}
-### What is D3?
-
-* **D**ata-**D**riven **D**ocuments
-* JavaScript library for manipulating documents based on data
-* Created by Mike Bostock (Observable, NYTimes)
-* Low-level but powerful approach to visualization
-:::
-::: {.column width="50%"}
-### Key Concepts:
-- Bind data to DOM elements
-- Use data to drive visual properties
-- Declarative approach to visualization
-:::
-::::
-
-::: notes
-Switch gears. D3, Data-Driven Documents, Mike Bostock, 2011, out of the Stanford Vis Group's Protovis. The one idea to take away: D3 does not draw charts. It binds data to elements of the document and lets you set any property of those elements from the data. That is lower level than every charting library they have used, which is the cost, and it means anything they can draw in SVG they can drive from data, which is the payoff.
-:::
-## D3 Core Concepts
-
-### Selections
-```javascript
-d3.select("body")      // Select single element
-d3.selectAll("circle") // Select all circles
-```
-
-### Data Binding
-```javascript
-circles.data(dataset)  // Bind data to elements
-```
-
-### Enter, Update, Exit Pattern
-```javascript
-// Enter: Create new elements for new data
-// Update: Update existing elements
-// Exit: Remove elements with no data
-```
-
-::: notes
-Three mechanisms. Selections: a jQuery-like way of grabbing DOM elements. Data binding: attach an array to a selection, one datum per element. The enter/update/exit pattern: what to do for data with no element yet, for existing pairs, and for elements with no data left. In modern D3 (v6 and later) selection.join() handles all three in one call; the lab will use join, but they should know the three cases exist because every D3 example on the web older than 2020 spells them out.
-:::
-## D3 Scales
-
-Transform data values to visual values
-
-```javascript
-// Linear scale for continuous data
-const xScale = d3.scaleLinear()
-  .domain([0, 100])    // Data space
-  .range([0, width]);  // Visual space
-
-// Ordinal scale for categories
-const colorScale = d3.scaleOrdinal()
-  .domain(["A", "B", "C"])
-  .range(["red", "green", "blue"]);
-```
-
-::: notes
-Scales are the bridge between the two halves of today. A scale is a function from data space to visual space: domain in, range out. Linear for continuous quantities, band for categories on an axis, ordinal for categories to colours, and next week, colour scales specifically. Every encoding decision from the perception half becomes a choice of which scale maps which attribute to which channel.
-:::
-## Simple D3 Bar Chart: Setup
-
-```javascript
-// Set dimensions
-const width = 500, height = 300;
-const margin = {top: 20, right: 20, bottom: 30, left: 40};
-
-// Create SVG
-const svg = d3.select("body").append("svg")
-  .attr("width", width)
-  .attr("height", height);
-
-// Create scales
-const x = d3.scaleBand()
-  .range([margin.left, width - margin.right])
-  .padding(0.1);
-
-const y = d3.scaleLinear()
-  .range([height - margin.bottom, margin.top]);
-```
-
-::: notes
-First half of a complete bar chart. Dimensions and margins, the SVG element appended to the page, and two scales with ranges set now and domains set once the data arrives. Point out that x is a band scale (categories) and y is linear (quantity), and that y's range is inverted because SVG y grows downward. Note margin.left of 40 is for the axis, which this snippet does not draw; the lab adds axes.
-:::
-## Simple D3 Bar Chart: Data and Bars
-
-```javascript
-// Load and visualize data
-d3.csv("data.csv").then(data => {
-  // Set domains
-  x.domain(data.map(d => d.category));
-  y.domain([0, d3.max(data, d => +d.value)]);
-
-  // Create bars
-  svg.selectAll(".bar")
-    .data(data)
-    .enter().append("rect")
-    .attr("class", "bar")
-    .attr("x", d => x(d.category))
-    .attr("width", x.bandwidth())
-    .attr("y", d => y(d.value))
-    .attr("height", d => height - margin.bottom - y(d.value));
-});
-```
-
-::: notes
-Second half. d3.csv returns a promise; inside it, set the domains from the data, then the data join: selectAll rects that do not exist yet, bind data, enter, append one rect per row. Each attr is a function of the datum. The height expression is the classic first D3 confusion: height equals baseline minus y(value), because y(value) is the top of the bar in screen coordinates. This exact chart is what they build in the lab today; walk through it slowly.
-:::
-## D3 vs. Vega-Lite
-
-:::: {.columns}
-::: {.column width="50%"}
-### D3.js
-- **Imperative**: How to create
-- Low-level control
-- Full flexibility
-- Steep learning curve
-- ~100 lines for bar chart
-:::
-::: {.column width="50%"}
-### Vega-Lite
-- **Declarative**: What to create
-- High-level abstraction
-- Quick prototyping
-- Limited customization
-- ~10 lines for bar chart
-:::
-::::
-
-**When to use which?**
-
-- **Vega-Lite**: Exploration, standard charts
-- **D3**: Custom visualizations, interactions
-
-::: notes
-Why both. Vega-Lite (and Altair, which they know) is declarative: say what the encoding is and the grammar renders it. Ten lines for a bar chart, and the grammar enforces most of what we said today. D3 is imperative: say how to build it, a hundred lines, complete freedom, including the freedom to violate every perception rule. Use Vega-Lite to explore and for anything standard; use D3 when the chart does not exist yet or when interaction is the point. The course teaches D3 because the group projects will need things no grammar provides.
-:::
 ## Perception Principles in Practice
 
 :::: {.columns .smaller}
@@ -936,6 +844,7 @@ Why both. Vega-Lite (and Altair, which they know) is declarative: say what the e
 ::: notes
 The perception half as a checklist they can apply to their own work. Each guideline maps to a slide: position (Cleveland and McGill), colour limits (discriminability), pre-attentive features (pop-out), Gestalt (grouping), colourblindness (about 8% of men, 0.5% of women, next week's topic). The common mistakes list is what the graders will actually see in Exercise 4.
 :::
+
 ## Lab Preview: Your First D3 Visualization
 
 :::: {.columns .smaller}
@@ -956,8 +865,9 @@ The perception half as a checklist they can apply to their own work. Each guidel
 ::::
 
 ::: notes
-Ryan runs the lab after the break. Today's activities in order: environment, selections and data binding, the bar chart from the code slides, scales and axes, then hover. The three resource links are the ones to keep open while coding; the Observable gallery in particular is where most 'how do I' questions are already answered.
+Ryan runs the lab after the break. Today's activities in order: environment, selections and data binding, a first bar chart, scales and axes, then hover. The three resource links are the ones to keep open while coding; the Observable gallery in particular is where most 'how do I' questions are already answered.
 :::
+
 ## Summary
 
 :::: {.columns .smaller}
@@ -969,10 +879,9 @@ Ryan runs the lab after the break. Today's activities in order: environment, sel
 - Humans excel at relative, not absolute judgments
 :::
 ::: {.column width="50%"}
-### D3 Foundations:
-- Data-driven approach to visualization
-- Selections, data binding, and scales
-- More control but steeper learning curve than Vega-Lite
+### This afternoon (lab):
+- D3 selections, data binding, scales and axes
+- Build the bar chart; the encoding choices are today's ranking applied
 
 ### Next Week (Oct 2):
 **Color and D3 Scales** - color theory, perceptual color spaces, colorblindness, palette design, D3 scales
@@ -982,8 +891,9 @@ Ryan runs the lab after the break. Today's activities in order: environment, sel
 ::::
 
 ::: notes
-Summary in two columns of memory. Perception: pre-attentive features enable rapid search, Gestalt principles govern grouping, channel effectiveness depends on the task, and we are good at relative and bad at absolute judgments. D3: data binding, selections, scales, more control at the cost of a steeper curve. Next week, Oct 2, colour and D3 scales. Exercise 4 is due Oct 1, the day before.
+Summary in two columns of memory. Perception: pre-attentive features enable rapid search, Gestalt principles govern grouping, channel effectiveness depends on the task, and we are good at relative and bad at absolute judgments. The lab picks up D3 from here. Next week, Oct 2, colour and D3 scales. Exercise 4 is due Oct 1, the day before.
 :::
+
 ## For Next Week (Oct 2 - Color and D3 Scales)
 
 :::: {.columns .smaller}
@@ -1007,4 +917,3 @@ Summary in two columns of memory. Perception: pre-attentive features enable rapi
 ::: notes
 Readings for Week 5 per the schedule: Rost's Datawrapper piece on choosing colour scales and Szafir's TVCG paper on modelling colour difference are required; Liu and Heer's colormap study and Brewer's 1994 guidelines are optional, and the D3 scales notebook is a good warm-up for the second half of next week's lecture. Exercise 4 is due Oct 1.
 :::
-

@@ -35,72 +35,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="week4-perception_files/libs/revealjs/dist/theme/quarto-d9b6759f156b7039a64d7adce076cb61.css">
   <link href="week4-perception_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -228,16 +162,15 @@ Claudio Silva
 <li>Channel effectiveness</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3>D3.js Introduction</h3>
+<h3>D3 Foundations (in the lab, with Ryan)</h3>
 <ul>
-<li>Core concepts</li>
-<li>DOM manipulation</li>
-<li>Data binding</li>
-<li>Basic charts</li>
+<li>Selections and data binding</li>
+<li>Scales and axes</li>
+<li>Your first bar chart</li>
 </ul>
 </div></div>
 <aside class="notes">
-<p>Two halves today, and they are deliberately in this order: first how the visual system reads a display, then a first pass at D3, the tool we will use to build displays that respect what we learned in the first half. Everything in the perception half is a fact about the viewer, not about the data. Sources: Colin Ware’s book for the brain material, Enrico Bertini’s and Tamara Munzner’s lecture material for the channel experiments, Matt Berger’s for Gestalt.</p>
+<p>The lecture is the perception half: how the visual system reads a display. The D3 half happens in the lab after the break, where Ryan takes you through selections, data binding, scales and a first bar chart. The two connect: every encoding choice in D3 is a choice of which channel carries which attribute, and this lecture is about which channels work. Everything in the perception half is a fact about the viewer, not about the data. Sources: Colin Ware’s book for the brain material, Enrico Bertini’s and Tamara Munzner’s lecture material for the channel experiments, Matt Berger’s for Gestalt.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1527,195 +1460,6 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Introduction to D3.js</h2>
-<div class="columns smaller">
-<div class="column" style="width:50%;">
-<h3>What is D3?</h3>
-<ul>
-<li><strong>D</strong>ata-<strong>D</strong>riven <strong>D</strong>ocuments</li>
-<li>JavaScript library for manipulating documents based on data</li>
-<li>Created by Mike Bostock (Observable, NYTimes)</li>
-<li>Low-level but powerful approach to visualization</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3>Key Concepts:</h3>
-<ul>
-<li>Bind data to DOM elements</li>
-<li>Use data to drive visual properties</li>
-<li>Declarative approach to visualization</li>
-</ul>
-</div></div>
-<aside class="notes">
-<p>Switch gears. D3, Data-Driven Documents, Mike Bostock, 2011, out of the Stanford Vis Group’s Protovis. The one idea to take away: D3 does not draw charts. It binds data to elements of the document and lets you set any property of those elements from the data. That is lower level than every charting library they have used, which is the cost, and it means anything they can draw in SVG they can drive from data, which is the payoff.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>D3 Core Concepts</h2>
-<h3>Selections</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="" aria-label="1"></a>d3<span class="op">.</span><span class="fu">select</span>(<span class="st">"body"</span>)      <span class="co">// Select single element</span></span>
-<span id="cb1-2"><a href="" aria-label="2"></a>d3<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"circle"</span>) <span class="co">// Select all circles</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<h3>Data Binding</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="" aria-label="1"></a>circles<span class="op">.</span><span class="fu">data</span>(dataset)  <span class="co">// Bind data to elements</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<h3>Enter, Update, Exit Pattern</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="" aria-label="1"></a><span class="co">// Enter: Create new elements for new data</span></span>
-<span id="cb3-2"><a href="" aria-label="2"></a><span class="co">// Update: Update existing elements</span></span>
-<span id="cb3-3"><a href="" aria-label="3"></a><span class="co">// Exit: Remove elements with no data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>Three mechanisms. Selections: a jQuery-like way of grabbing DOM elements. Data binding: attach an array to a selection, one datum per element. The enter/update/exit pattern: what to do for data with no element yet, for existing pairs, and for elements with no data left. In modern D3 (v6 and later) selection.join() handles all three in one call; the lab will use join, but they should know the three cases exist because every D3 example on the web older than 2020 spells them out.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>D3 Scales</h2>
-<p>Transform data values to visual values</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="" aria-label="1"></a><span class="co">// Linear scale for continuous data</span></span>
-<span id="cb4-2"><a href="" aria-label="2"></a><span class="kw">const</span> xScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()</span>
-<span id="cb4-3"><a href="" aria-label="3"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>])    <span class="co">// Data space</span></span>
-<span id="cb4-4"><a href="" aria-label="4"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> width])<span class="op">;</span>  <span class="co">// Visual space</span></span>
-<span id="cb4-5"><a href="" aria-label="5"></a></span>
-<span id="cb4-6"><a href="" aria-label="6"></a><span class="co">// Ordinal scale for categories</span></span>
-<span id="cb4-7"><a href="" aria-label="7"></a><span class="kw">const</span> colorScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleOrdinal</span>()</span>
-<span id="cb4-8"><a href="" aria-label="8"></a>  <span class="op">.</span><span class="fu">domain</span>([<span class="st">"A"</span><span class="op">,</span> <span class="st">"B"</span><span class="op">,</span> <span class="st">"C"</span>])</span>
-<span id="cb4-9"><a href="" aria-label="9"></a>  <span class="op">.</span><span class="fu">range</span>([<span class="st">"red"</span><span class="op">,</span> <span class="st">"green"</span><span class="op">,</span> <span class="st">"blue"</span>])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>Scales are the bridge between the two halves of today. A scale is a function from data space to visual space: domain in, range out. Linear for continuous quantities, band for categories on an axis, ordinal for categories to colours, and next week, colour scales specifically. Every encoding decision from the perception half becomes a choice of which scale maps which attribute to which channel.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Simple D3 Bar Chart: Setup</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="" aria-label="1"></a><span class="co">// Set dimensions</span></span>
-<span id="cb5-2"><a href="" aria-label="2"></a><span class="kw">const</span> width <span class="op">=</span> <span class="dv">500</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">300</span><span class="op">;</span></span>
-<span id="cb5-3"><a href="" aria-label="3"></a><span class="kw">const</span> margin <span class="op">=</span> {<span class="dt">top</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span> <span class="dt">right</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span> <span class="dt">bottom</span><span class="op">:</span> <span class="dv">30</span><span class="op">,</span> <span class="dt">left</span><span class="op">:</span> <span class="dv">40</span>}<span class="op">;</span></span>
-<span id="cb5-4"><a href="" aria-label="4"></a></span>
-<span id="cb5-5"><a href="" aria-label="5"></a><span class="co">// Create SVG</span></span>
-<span id="cb5-6"><a href="" aria-label="6"></a><span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">select</span>(<span class="st">"body"</span>)<span class="op">.</span><span class="fu">append</span>(<span class="st">"svg"</span>)</span>
-<span id="cb5-7"><a href="" aria-label="7"></a>  <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width)</span>
-<span id="cb5-8"><a href="" aria-label="8"></a>  <span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height)<span class="op">;</span></span>
-<span id="cb5-9"><a href="" aria-label="9"></a></span>
-<span id="cb5-10"><a href="" aria-label="10"></a><span class="co">// Create scales</span></span>
-<span id="cb5-11"><a href="" aria-label="11"></a><span class="kw">const</span> x <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleBand</span>()</span>
-<span id="cb5-12"><a href="" aria-label="12"></a>  <span class="op">.</span><span class="fu">range</span>([margin<span class="op">.</span><span class="at">left</span><span class="op">,</span> width <span class="op">-</span> margin<span class="op">.</span><span class="at">right</span>])</span>
-<span id="cb5-13"><a href="" aria-label="13"></a>  <span class="op">.</span><span class="fu">padding</span>(<span class="fl">0.1</span>)<span class="op">;</span></span>
-<span id="cb5-14"><a href="" aria-label="14"></a></span>
-<span id="cb5-15"><a href="" aria-label="15"></a><span class="kw">const</span> y <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()</span>
-<span id="cb5-16"><a href="" aria-label="16"></a>  <span class="op">.</span><span class="fu">range</span>([height <span class="op">-</span> margin<span class="op">.</span><span class="at">bottom</span><span class="op">,</span> margin<span class="op">.</span><span class="at">top</span>])<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>First half of a complete bar chart. Dimensions and margins, the SVG element appended to the page, and two scales with ranges set now and domains set once the data arrives. Point out that x is a band scale (categories) and y is linear (quantity), and that y’s range is inverted because SVG y grows downward. Note margin.left of 40 is for the axis, which this snippet does not draw; the lab adds axes.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>Simple D3 Bar Chart: Data and Bars</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href="" aria-label="1"></a><span class="co">// Load and visualize data</span></span>
-<span id="cb6-2"><a href="" aria-label="2"></a>d3<span class="op">.</span><span class="fu">csv</span>(<span class="st">"data.csv"</span>)<span class="op">.</span><span class="fu">then</span>(data <span class="kw">=&gt;</span> {</span>
-<span id="cb6-3"><a href="" aria-label="3"></a>  <span class="co">// Set domains</span></span>
-<span id="cb6-4"><a href="" aria-label="4"></a>  x<span class="op">.</span><span class="fu">domain</span>(data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">category</span>))<span class="op">;</span></span>
-<span id="cb6-5"><a href="" aria-label="5"></a>  y<span class="op">.</span><span class="fu">domain</span>([<span class="dv">0</span><span class="op">,</span> d3<span class="op">.</span><span class="fu">max</span>(data<span class="op">,</span> d <span class="kw">=&gt;</span> <span class="op">+</span>d<span class="op">.</span><span class="at">value</span>)])<span class="op">;</span></span>
-<span id="cb6-6"><a href="" aria-label="6"></a></span>
-<span id="cb6-7"><a href="" aria-label="7"></a>  <span class="co">// Create bars</span></span>
-<span id="cb6-8"><a href="" aria-label="8"></a>  svg<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">".bar"</span>)</span>
-<span id="cb6-9"><a href="" aria-label="9"></a>    <span class="op">.</span><span class="fu">data</span>(data)</span>
-<span id="cb6-10"><a href="" aria-label="10"></a>    <span class="op">.</span><span class="fu">enter</span>()<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
-<span id="cb6-11"><a href="" aria-label="11"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"class"</span><span class="op">,</span> <span class="st">"bar"</span>)</span>
-<span id="cb6-12"><a href="" aria-label="12"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="fu">x</span>(d<span class="op">.</span><span class="at">category</span>))</span>
-<span id="cb6-13"><a href="" aria-label="13"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> x<span class="op">.</span><span class="fu">bandwidth</span>())</span>
-<span id="cb6-14"><a href="" aria-label="14"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="fu">y</span>(d<span class="op">.</span><span class="at">value</span>))</span>
-<span id="cb6-15"><a href="" aria-label="15"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> d <span class="kw">=&gt;</span> height <span class="op">-</span> margin<span class="op">.</span><span class="at">bottom</span> <span class="op">-</span> <span class="fu">y</span>(d<span class="op">.</span><span class="at">value</span>))<span class="op">;</span></span>
-<span id="cb6-16"><a href="" aria-label="16"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>Second half. d3.csv returns a promise; inside it, set the domains from the data, then the data join: selectAll rects that do not exist yet, bind data, enter, append one rect per row. Each attr is a function of the datum. The height expression is the classic first D3 confusion: height equals baseline minus y(value), because y(value) is the top of the bar in screen coordinates. This exact chart is what they build in the lab today; walk through it slowly.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
-<h2>D3 vs.&nbsp;Vega-Lite</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3>D3.js</h3>
-<ul>
-<li><strong>Imperative</strong>: How to create</li>
-<li>Low-level control</li>
-<li>Full flexibility</li>
-<li>Steep learning curve</li>
-<li>~100 lines for bar chart</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3>Vega-Lite</h3>
-<ul>
-<li><strong>Declarative</strong>: What to create</li>
-<li>High-level abstraction</li>
-<li>Quick prototyping</li>
-<li>Limited customization</li>
-<li>~10 lines for bar chart</li>
-</ul>
-</div></div>
-<p><strong>When to use which?</strong></p>
-<ul>
-<li><strong>Vega-Lite</strong>: Exploration, standard charts</li>
-<li><strong>D3</strong>: Custom visualizations, interactions</li>
-</ul>
-<aside class="notes">
-<p>Why both. Vega-Lite (and Altair, which they know) is declarative: say what the encoding is and the grammar renders it. Ten lines for a bar chart, and the grammar enforces most of what we said today. D3 is imperative: say how to build it, a hundred lines, complete freedom, including the freedom to violate every perception rule. Use Vega-Lite to explore and for anything standard; use D3 when the chart does not exist yet or when interaction is the point. The course teaches D3 because the group projects will need things no grammar provides.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
 <h2>Perception Principles in Practice</h2>
 <div class="columns smaller">
 <div class="column" style="width:50%;">
@@ -1771,7 +1515,7 @@ Claudio Silva
 </ul>
 </div></div>
 <aside class="notes">
-<p>Ryan runs the lab after the break. Today’s activities in order: environment, selections and data binding, the bar chart from the code slides, scales and axes, then hover. The three resource links are the ones to keep open while coding; the Observable gallery in particular is where most ‘how do I’ questions are already answered.</p>
+<p>Ryan runs the lab after the break. Today’s activities in order: environment, selections and data binding, a first bar chart, scales and axes, then hover. The three resource links are the ones to keep open while coding; the Observable gallery in particular is where most ‘how do I’ questions are already answered.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1796,18 +1540,17 @@ Claudio Silva
 <li>Humans excel at relative, not absolute judgments</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3>D3 Foundations:</h3>
+<h3>This afternoon (lab):</h3>
 <ul>
-<li>Data-driven approach to visualization</li>
-<li>Selections, data binding, and scales</li>
-<li>More control but steeper learning curve than Vega-Lite</li>
+<li>D3 selections, data binding, scales and axes</li>
+<li>Build the bar chart; the encoding choices are today’s ranking applied</li>
 </ul>
 <h3>Next Week (Oct 2):</h3>
 <p><strong>Color and D3 Scales</strong> - color theory, perceptual color spaces, colorblindness, palette design, D3 scales</p>
 <p><strong>Exercise 4</strong> (perception-based design decisions + D3 implementation) is due <strong>Oct 1</strong></p>
 </div></div>
 <aside class="notes">
-<p>Summary in two columns of memory. Perception: pre-attentive features enable rapid search, Gestalt principles govern grouping, channel effectiveness depends on the task, and we are good at relative and bad at absolute judgments. D3: data binding, selections, scales, more control at the cost of a steeper curve. Next week, Oct 2, colour and D3 scales. Exercise 4 is due Oct 1, the day before.</p>
+<p>Summary in two columns of memory. Perception: pre-attentive features enable rapid search, Gestalt principles govern grouping, channel effectiveness depends on the task, and we are good at relative and bad at absolute judgments. The lab picks up D3 from here. Next week, Oct 2, colour and D3 scales. Exercise 4 is due Oct 1, the day before.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
