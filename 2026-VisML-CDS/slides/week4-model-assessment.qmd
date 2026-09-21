@@ -3,7 +3,7 @@ title: "Model Assessment and Evaluation"
 subtitle: "DS-GA 3001 - Fall 2026"
 author: "Claudio Silva"
 institute: "NYU Center for Data Science"
-date: "September 28, 2026"
+date: "September 22, 2026"
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -19,8 +19,6 @@ format:
     footer: <https://cds.nyu.edu>
     fontsize: 24pt
     css: lab-light-theme.css
-resources:
-  - model_assessment.pdf
 ---
 
 # Model Assessment
@@ -57,35 +55,40 @@ This scenario illustrates a common problem with using a single metric like accur
 
 ## Scenario: Handwritten Digits
 
+:::: {.columns}
+::: {.column width="55%"}
 * Consider a model to identify handwritten digits. All digits are equally probable and equally represented in the training and test datasets.
 
 * The model correctly identifies all of the digits, except for digit $5$, classifying half of the $5$s samples as $6$ and the other half is correctly identified
 
 * The accuracy of this model is $95\%$. Is this information enough to determine whether the model is good or not?
-
-::: {.notes}
-This is another example of how accuracy can be misleading. The model is 95% accurate, but it has a specific, systematic error: it confuses the digit 5 with 6. A single accuracy number hides this important information. We need tools that can show us *what* kinds of errors the model is making.
 :::
-
-![](figs/model_assessment_figs/MNIST.webp){fig-align="center"}
+::: {.column width="45%"}
+![](figs/model_assessment_figs/MNIST.webp){width="100%" fig-align="center"}
+:::
+::::
 
 ::: {.notes}
-This slide shows examples of handwritten digits from the MNIST dataset, which is a widely used benchmark for image classification models. As we just discussed, even with a high accuracy of 95%, there can be underlying issues with how specific digits are classified.
+Second way accuracy misleads. The model is 95% accurate, but the 5% is not spread around: it is one systematic error, half of the 5s read as 6s. A single number cannot distinguish this model from one that makes a scattering of random mistakes, and the fix is completely different in the two cases. What we need is a view that shows which errors, not how many. The digits on the right are MNIST, which comes back on the Squares and Alsallakh slides.
 :::
 
 ## Extended Confusion Matrix
 
 ![](figs/model_assessment_figs/extended_confusion_matrix.png){fig-align="center"}
 
+::: footer
+Table from Wikipedia: [Confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix)
+:::
+
 ::: {.notes}
-Here is a more detailed view of a confusion matrix. It shows the number of true positives, true negatives, false positives, and false negatives. From these four numbers, we can calculate many other metrics, such as precision, recall, and F1-score. It also shows the per-class precision and recall.
+Wikipedia's table, and it is worth a minute because the whole first third of the lecture lives in it. The coloured two-by-two in the top left is the confusion matrix: TP, FN, FP, TN. Everything else on the slide is a ratio of those four numbers. Point at the four we use today: true positive rate or recall (TP over P) and false positive rate (FP over N) are the two axes of the ROC curve; precision or positive predictive value (TP over predicted positive) and recall are the two axes of the PR curve; accuracy is bottom left. Note that TPR and FPR each stay within one row, so they do not depend on class balance, while precision mixes the rows and does. That one observation explains the ROC versus PR discussion later.
 :::
 
 ## Confusion Matrices: A Deeper Look
 
-::::::: {.columns}
+::::::: {.columns .smaller}
 ::: {.column}
-![](figs/model_assessment_figs/sphx_glr_plot_label_propagation_digits_001.png)
+![](figs/model_assessment_figs/sphx_glr_plot_label_propagation_digits_001.png){width="100%" fig-align="center"}
 :::
 ::: {.column}
 
@@ -106,11 +109,7 @@ Here is a more detailed view of a confusion matrix. It shows the number of true 
 ::::
 
 ::: {.notes}
-This slide provides a balanced view of confusion matrices. While they're one of our most fundamental tools for understanding classification performance, they have important limitations. The key insight here is that confusion matrices treat all errors equally - they don't show the confidence of predictions or instance-level details. This is why we'll look at more advanced visualization systems like Squares later, which address these limitations by showing the distribution of instances within each cell.
-:::
-
-::: {.notes}
-This slide summarizes the pros and cons of using confusion matrices. While they are intuitive and provide the basis for many metrics, they have limitations in terms of scalability and the insights they provide for probabilistic outputs. The 'Squares' paper, which we will discuss later, addresses some of these limitations.
+A real ten-class matrix from the scikit-learn digits example. Read it with them: the diagonal is bright, and the off-diagonal mass is concentrated in a few cells: seven 8s read as 1s, five 3s read as 5s, three 7s read as 5s. That is the 'which errors' view the last slide asked for. Then the limits, on the right. It does not scale past a few dozen classes. It throws away the scores: a prediction that was barely wrong looks the same as one that was confidently wrong. And it hides the instances, so you cannot click through to the seven offending 8s. Squares, Neo and the confusion wheel, later today, are each an answer to one of those three complaints.
 :::
 
 ## Confusion Matrices in sklearn
@@ -128,6 +127,7 @@ clf = LogisticRegression(random_state=0)
 
 ```{python}
 #| echo: true
+#| output-location: column
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 
@@ -138,16 +138,16 @@ plt.show()
 ```
 
 ::: {.notes}
-Here's the practical implementation using scikit-learn. The code is straightforward - we generate synthetic data, train a logistic regression classifier, and visualize the results. The ConfusionMatrixDisplay class makes it very easy to generate these visualizations. Notice how the diagonal shows correct predictions while off-diagonal elements show different types of errors. The color intensity helps quickly identify where most errors occur.
-:::
-
-::: {.notes}
-Here we see how to generate a confusion matrix using the scikit-learn library in Python. The code is straightforward. We first define and split the data, then we fit a logistic regression classifier. The `ConfusionMatrixDisplay` function then takes the classifier and the test data as input to plot the matrix.
+The scikit-learn version, and the pattern repeats for every display today: build data, fit, then a Display class with from_estimator. Here it is a synthetic binary problem, 5,000 samples and 10 features, logistic regression. The figure on the right is the live output of the cell on the left, executed when the deck was rendered. Read the matrix: two large diagonal cells, two small off-diagonal ones, roughly balanced errors. The colour ramp is a single-hue sequential scale, the right choice from last week's colour lecture.
 :::
 
 ## Neo: Hierarchical Confusion Matrix
 
 {{< video https://youtu.be/8ZxvsLPIF_Q width="80%" height="80%" >}}
+
+::: footer
+Görtler, J., Hohman, F., Moritz, D., et al. (2022). [*Neo: Generalizing Confusion Matrix Visualization to Hierarchical and Multi-Output Labels*](../refs/Goertler_Hohman_Moritz_2022_Neo_Confusion_Matrix.pdf). CHI.
+:::
 
 ::: {.notes}
 Neo is a research project that introduces a hierarchical confusion matrix. This is particularly useful when you have a large number of classes that have a natural hierarchy. For example, if you are classifying animals, you might have a hierarchy of mammals, birds, reptiles, etc. A hierarchical confusion matrix can help you see if your model is making errors at a high level (e.g., confusing a mammal for a bird) or at a low level (e.g., confusing a cat for a dog).
@@ -169,76 +169,82 @@ Neo is a research project that introduces a hierarchical confusion matrix. This 
 :::
 
 ::: {.column width="35%"}
-![](figs/model_assessment_figs/roc_data_aircraft.png)
+![](figs/model_assessment_figs/roc_data_aircraft.png){width="100%" fig-align="center"}
 :::
 ::::
 
 ::: {.notes}
-ROC curves have a fascinating history rooted in signal detection theory during WWII. Radar operators needed to distinguish between enemy aircraft (signal) and birds or weather phenomena (noise). This same principle applies to any binary classification problem. The key insight is that by varying the decision threshold, we can trade off between catching more true positives (higher TPR) at the cost of more false positives (higher FPR). The ROC curve visualizes all these trade-offs simultaneously.
-:::
-
-::: {.notes}
-We are now moving on to another important tool for model evaluation: the Receiver Operating Characteristic, or ROC curve. The concept of ROC analysis has its roots in signal detection theory, and it has been widely adopted in machine learning. It provides a way to visualize the performance of a classifier at all classification thresholds.
+ROC comes out of signal detection theory and wartime radar: an operator looks at a blip and has to decide aircraft or flock of birds, which is exactly the picture on the right, class 1 and class 0. The operator's willingness to say 'aircraft' is a threshold. Lower it and you catch more aircraft and raise more false alarms. The ROC curve is the plot of that trade-off: true positive rate against false positive rate as the threshold sweeps. Both rates are defined on the slide; note each is computed within one true class, which is why the curve does not move when class balance changes.
 :::
 
 ## ROC Curve
 
 :::: {.columns}
 ::: {.column width="60%"}
-![](figs/model_assessment_figs/intro_roc.png)
+![](figs/model_assessment_figs/intro_roc.png){width="100%"}
 
 ::: {.fragment}
-![](figs/model_assessment_figs/confusion_matrix_roc.png)
+![](figs/model_assessment_figs/confusion_matrix_roc.png){width="100%"}
 :::
 :::
 
 ::: {.column width="40%"}
 ::: {.fragment}
-![](figs/model_assessment_figs/discrete_roc_graph.png)
+![](figs/model_assessment_figs/discrete_roc_graph.png){width="100%"}
 :::
 :::
 ::::
 
-::: {.notes}
-This slide shows the relationship between confusion matrices and ROC curves. Each point on the ROC curve corresponds to a different threshold setting and thus a different confusion matrix. The ideal classifier would reach the top-left corner (TPR=1, FPR=0), meaning it perfectly identifies all positives without any false positives. The diagonal line represents random guessing - any classifier below this line is performing worse than random.
+::: footer
+Fawcett, T. (2006). [*An introduction to ROC analysis*](../refs/Fawcett_2006_Introduction_ROC_Analysis.pdf). Pattern Recognition Letters, 27(8), 861-874.
 :::
 
 ::: {.notes}
-An ROC curve shows the trade-off between the true positive rate and the false positive rate for a binary classifier as the discrimination threshold is varied. The top-left corner of the plot is the ideal point - a false positive rate of 0, and a true positive rate of 1. This is not always possible in practice, but it is the goal.
+Three figures from Tom Fawcett's 2006 tutorial, which is the reference for this section and is linked in the footer. First his confusion matrix, with the rates written out. Then, on the click, ROC space with five discrete classifiers. Walk through them: D at the top left is perfect. A is conservative, few false positives but it misses positives. B is more liberal. C sits on the diagonal, which is random guessing. E is below the diagonal, worse than random, and the classic remark is that E is informative: negate its output and you get a classifier above the diagonal. A discrete classifier is one point; a scoring classifier, next slide, traces a whole curve.
 :::
 
 ## ROC Curve
 
 :::: {.columns}
 ::: {.column width="45%"}
-![](figs/model_assessment_figs/roc_curve_left.png)
+![](figs/model_assessment_figs/roc_curve_left.png){height="700" fig-align="center"}
 :::
 
 ::: {.column width="55%"}
-![](figs/model_assessment_figs/roc_curve_right.png)
+![](figs/model_assessment_figs/roc_curve_right.png){height="760" fig-align="center"}
 :::
 ::::
 
+::: footer
+Fawcett, T. (2006). [*An introduction to ROC analysis*](../refs/Fawcett_2006_Introduction_ROC_Analysis.pdf). Pattern Recognition Letters, 27(8), 861-874.
+:::
+
 ::: {.notes}
-Here we see how the ROC curve is constructed. We have a set of predictions from a model, and we can vary the threshold for what we consider a positive prediction. For each threshold, we can calculate the TPR and FPR and plot a point on the ROC curve. Connecting these points gives us the full curve.
+How the curve is built, Fawcett's Figure 3. Left: twenty test instances sorted by score, with their true class. Right: start at the origin with the threshold at infinity. Lower the threshold past each instance in turn: if it is a positive, step up; if it is a negative, step right. The labels on the curve are the thresholds. Ask them where threshold 0.5 lands and what the accuracy is there: 60 percent. Then ask where the best accuracy is: at 0.54, 70 percent. The default threshold is not the best one. The curve depends only on the ordering of the scores, not their values, which sets up the next slide.
 :::
 
 ## ROC Curve
 
 ![](figs/model_assessment_figs/roc_curve_naive_bayes.png){fig-align="center"}
 
+::: footer
+Fawcett, T. (2006). [*An introduction to ROC analysis*](../refs/Fawcett_2006_Introduction_ROC_Analysis.pdf). Pattern Recognition Letters, 27(8), 861-874.
+:::
+
 ::: {.notes}
-Setting the threshold equal to 0.5, we get an accuracy of 80%. However, the curve indicates a perfect classification performance on this test set. Why is there a discrepancy? The model is not properly calibrated. A threshold of 0.7 has perfect accuracy. We will talk more about calibration later in the lecture.
+Fawcett's Figure 4, and it is the bridge to calibration. Ten instances. The ROC curve is perfect, it goes straight up and then straight across, because every positive outscores every negative. But at the default threshold of 0.5, instances 7 and 8, both negatives with scores 0.68 and 0.51, are called positive, so accuracy is 80 percent. At 0.6 it is 90 percent; anywhere between 0.69 and 0.99 it is 100 percent. So the ranking is perfect and the scores are wrong: they are not probabilities. That is a miscalibrated model, and it is exactly what Naive Bayes does. Hold that thought for the last third of the lecture.
 :::
 
 ## Area under an ROC curve (AUC)
 
-\
-
 ![](figs/model_assessment_figs/roc_auc.png){fig-align="center"}
 
+::: footer
+Fawcett, T. (2006). [*An introduction to ROC analysis*](../refs/Fawcett_2006_Introduction_ROC_Analysis.pdf). Pattern Recognition Letters, 27(8), 861-874.
+:::
+
 ::: {.notes}
-The Area Under the Curve (AUC) is a single number summary of the ROC curve. It represents the probability that a randomly chosen positive instance will be ranked higher than a randomly chosen negative instance. An AUC of 1 represents a perfect model, while an AUC of 0.5 represents a model that is no better than random chance.
+AUC, Fawcett's Figure 8. It has a clean interpretation: the probability that a randomly chosen positive is scored above a randomly chosen negative. One is perfect, 0.5 is chance. Left panel: B has the larger area and is better on average, but look past x equals 0.6, where A is on top. A single number hides crossings, so if you operate at a high false positive rate you would pick the 'worse' model. Right panel: a discrete classifier A is a single point, and its area is what you get by joining it to the corners; the scoring classifier B it was derived from dominates it. Summary numbers are for ranking models, the curve is for choosing an operating point.
 :::
 
 ## ROC curve in sklearn
@@ -267,18 +273,14 @@ plt.show()
 ```
 
 ::: {.notes}
-Scikit-learn makes it easy to generate ROC curves. The diagonal "chance level" line shows the performance of a random classifier. The further the blue curve is above this diagonal, the better the classifier. The AUC (Area Under Curve) score of 0.97 indicates excellent performance. Remember that ROC curves are most appropriate for balanced datasets - for imbalanced data, precision-recall curves may be more informative.
-:::
-
-::: {.notes}
-Similar to the confusion matrix, scikit-learn provides a simple way to generate ROC curves. The `RocCurveDisplay` function can be used to plot the ROC curve for a trained classifier. The `plot_chance_level` argument is useful to visualize the performance of a random classifier.
+Same recipe as the confusion matrix: RocCurveDisplay.from_estimator. The setup cell is hidden; it is the same synthetic data and logistic regression. The figure is live output. plot_chance_level draws the diagonal. The legend reports AUC of 0.94. Remind them what that number means from the previous slide, and that it says nothing about whether 0.5 is a sensible threshold.
 :::
 
 ## Multiclass ROC curve
 
 :::: {.columns}
 ::: {.column width="65%"}
-![](figs/model_assessment_figs/sphx_glr_plot_roc_003.png){fig-align="center" height=100%}
+![](figs/model_assessment_figs/sphx_glr_plot_roc_003.png){height="760" fig-align="center"}
 :::
 ::: {.column width="35%"}
 \
@@ -289,12 +291,12 @@ Similar to the confusion matrix, scikit-learn provides a simple way to generate 
 :::
 ::::
 
-::: {.notes}
-For multiclass classification problems, we can't directly plot a single ROC curve. Instead, we can use techniques like one-vs-rest or one-vs-one to create a curve for each class. We can then average these curves. The micro-average is useful when there is class imbalance, as it aggregates the contributions of all classes. The macro-average treats all classes equally.
-:::
-
 :::footer
 [code](https://scikit-learn.org/stable/auto_examples/model_selection/plot_roc.html)
+:::
+
+::: {.notes}
+Multiclass ROC from the scikit-learn iris example, one-versus-rest: one curve per class, that class against the other two. Setosa 0.89, virginica 0.78, versicolor 0.66, which tells you versicolor is the class the model struggles to separate. Then two ways to average. Micro pools every decision across classes and computes one curve, so big classes dominate: 0.77 here. Macro averages the per-class curves, every class counts equally: 0.78. They are close here because iris is balanced. On imbalanced data they diverge, and which one you report is a decision about whose errors matter.
 :::
 
 ## ROC Curves: Strengths and Limitations
@@ -318,6 +320,7 @@ ROC curves are widely used and intuitive, but they have an important limitation.
 Precision-Recall curves are often more informative than ROC curves, especially for imbalanced datasets. They focus directly on the performance for the positive class, which is usually the class of interest in imbalanced problems. The Alsallakh paper provides an excellent discussion on when to use PR curves over ROC curves.
 :::
 
+## Precision-Recall curve in sklearn
 
 ```{python}
 #| echo: false
@@ -354,12 +357,12 @@ And here is how you can generate a Precision-Recall curve in scikit-learn. The `
 
 ![](figs/model_assessment_figs/squares_teaser.png){fig-align="center"}
 
-::: {.notes}
-Squares is a visual analytics tool designed to make it easier to analyze the performance of multiclass classifiers. The authors argue that traditional confusion matrices can be hard to interpret, especially when there are many classes. Squares provides a more intuitive and effective way to see not just which classes are being confused, but also the distribution of instances within each cell of the confusion matrix. This helps users to quickly identify the most important errors and prioritize their efforts.
+:::footer
+Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). [*Squares: Supporting interactive performance analysis for multiclass classifiers*](../refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares_Interactive_Performance_Analysis.pdf). IEEE TVCG.
 :::
 
-:::footer
-Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). *Squares: Supporting interactive performance analysis for multiclass classifiers*. IEEE transactions on visualization and computer graphics.
+::: {.notes}
+Squares, from Microsoft Research, and the reading for today. Read the caption with them because it is the whole argument: two MNIST classifiers, a random forest on top and an SVM below, with the same accuracy, 0.87. One column per class. Within a column, boxes are stacked by prediction score, high at the top. Solid boxes are correct predictions, striped boxes are errors, coloured by the class they were confused with. The SVM is confident: its mass sits at 0.9 and above. The random forest spreads its scores between 0.2 and 0.6. Same accuracy, completely different behaviour, and a confusion matrix would show them as nearly identical. This answers the 'it throws away the scores' complaint from earlier.
 :::
 
 ---
@@ -370,67 +373,64 @@ Ren, D., Amershi, S., Lee, B., Suh, J., & Williams, J. D. (2016). *Squares: Supp
 This video demonstrates the Squares system in action. Pay attention to how the interactive nature of the tool allows for a more in-depth analysis of the classifier's performance compared to a static confusion matrix.
 :::
 
-## Alsallakh et. al. (2014)
+## Alsallakh et al. (2014)
 
 ![](figs/model_assessment_figs/Alsallakh_teaser.png){fig-align="center"}
 
-::: {.notes}
-This paper by Alsallakh and his colleagues presents a set of visual methods for analyzing probabilistic classification data. They go beyond simple accuracy metrics to look at the model's discriminative power and calibration. The key idea is to provide a suite of linked visualizations that allow users to explore the model's behavior from different perspectives. This includes visualizations of the confusion matrix, feature distributions, and the predicted probabilities themselves.
-:::
-
 :::footer
 Alsallakh, B., Hanbury, A., Hauser, H., Miksch, S., & Rauber, A. (2014). [*Visual methods for analyzing probabilistic classification data*](../refs/Alsallakh_Hanbury_Hauser_Miksch_Rauber_2014_Visual_Methods_Analyzing_Probabilistic_Classification.pdf). IEEE TVCG.
 :::
 
-## Alsallakh et. al. (2014)
+::: {.notes}
+Alsallakh and colleagues, TVCG 2014, the teaser. Three linked views. (a) The confusion wheel: one sector per class, histograms of predicted probability inside each sector, coloured green for true positives, yellow false positives, red false negatives, grey true negatives; chords between sectors show confusion. (b) The feature analysis view: for a selected class, which features separate the true positives from the false positives, ranked by a separation measure. (c) and (d) histograms and scatterplots of the chosen features. The idea that carries forward: do not stop at 'which classes are confused', go on to 'which features explain the confusion'.
+:::
+
+## Alsallakh et al. (2014)
 
 ![](figs/model_assessment_figs/Alsallakh_digits.png){fig-align="center"}
 
-::: {.notes}
-Here is an example from the Alsallakh paper, showing how their system can be used to analyze a digit recognition model. You can see the confusion matrix on the left, and on the right, you can see the distribution of instances for a selected class. This allows you to drill down into the data and understand why the model is making certain errors.
-:::
-
 :::footer
 Alsallakh, B., Hanbury, A., Hauser, H., Miksch, S., & Rauber, A. (2014). [*Visual methods for analyzing probabilistic classification data*](../refs/Alsallakh_Hanbury_Hauser_Miksch_Rauber_2014_Visual_Methods_Analyzing_Probabilistic_Classification.pdf). IEEE TVCG.
 :::
 
-## Beauxis-Aussalet and Hardman (2014)
+::: {.notes}
+The same paper on 10,992 handwritten digits. Left, a confusion matrix drawn with squares sized by count and augmented with probability histograms along the rows and columns. Right, the confusion wheel. Read the two callouts: 'class c9 is often confused for c3 while the opposite happens rarely', which is an asymmetry you can see in the chord thickness at each end; and 'c5 and c8 have lower classification probabilities than c0 and c4', which you read off the histograms inside the sectors. A plain confusion matrix gives you the first with effort and cannot give you the second at all.
+:::
 
-\
-\
+## Beauxis-Aussalet and Hardman (2014)
 
 ![](figs/model_assessment_figs/Beauxis_design.png){fig-align="center"}
 
-::: {.notes}
-This paper focuses on the problem of making confusion matrices more accessible to non-expert users. The authors propose a set of design principles for visualizing confusion matrices in a way that is both informative and easy to understand. They emphasize the use of clear labels, intuitive color schemes, and direct display of counts and percentages.
-:::
-
 :::footer
 Beauxis-Aussalet, E., & Hardman, L. (2014). [*Visualization of confusion matrix for non-expert users*](../refs/Beauxis_Aussalet_Hardman_2014_Visualization_Confusion_Matrix_Non_Expert_Users.pdf). IEEE VAST.
+:::
+
+::: {.notes}
+Beauxis-Aussalet and Hardman, VAST 2014, designing for non-experts, and the red handwriting is the point. Two classifiers, one tested on 340 negatives and 170 positives, the other with the proportions reversed. Their ROC curves are identical, because ROC is built from within-class rates. Their precision-recall curves differ. And the authors' own design, stacked bars by threshold with true positives in blue, false positives in grey above, and missed objects in red below the axis, shows raw counts, so the difference is obvious. This is the concrete version of 'ROC can mislead under class imbalance': it does not mislead, it simply does not show class proportions, and the end user usually cares about counts.
 :::
 
 ## Beauxis-Aussalet and Hardman (2014)
 
-![](figs/model_assessment_figs/confusion_matrix_non_expert.png){fig-align="center"}
-
-::: {.notes}
-Here is an example of the kind of visualization proposed by Beauxis-Aussalet and Hardman. It uses a combination of color, size, and text to convey the information in the confusion matrix in a way that is easy to grasp, even for someone who is not an expert in machine learning.
-:::
+![](figs/model_assessment_figs/confusion_matrix_non_expert.png){.nostretch width="35%" fig-align="center"}
 
 :::footer
 Beauxis-Aussalet, E., & Hardman, L. (2014). [*Visualization of confusion matrix for non-expert users*](../refs/Beauxis_Aussalet_Hardman_2014_Visualization_Confusion_Matrix_Non_Expert_Users.pdf). IEEE VAST.
+:::
+
+::: {.notes}
+Their design for a multiclass problem, fish species from underwater video, with 'Anchovy' selected. Above the axis: everything classified as anchovy, the blue part truly anchovy, the grey parts other species. Below the axis: true anchovies that were rejected. The red segments in the other columns are where the false anchovy detections came from, here mostly barracuda and clown fish, and the donuts repeat that per class. Percentages are of the true class, which is why a bar can exceed 100 percent. The design lesson: non-experts ask 'of the things you told me were anchovies, how many were?', so answer that question directly rather than handing them a matrix.
 :::
 
 ## EnsembleMatrix (2009)
 
 ![](figs/model_assessment_figs/ensemble_matrix.png){fig-align="center"}
 
-::: {.notes}
-EnsembleMatrix is an interactive visualization tool for working with multiple classifiers. In many real-world applications, you might want to combine the predictions of several different models to get a better result. EnsembleMatrix helps you to understand the strengths and weaknesses of each individual classifier and how they can be combined effectively. It provides a graphical view of the confusion matrices of multiple classifiers, allowing you to compare them and build combination models interactively.
-:::
-
 :::footer
 Talbot, J., Lee, B., Kapoor, A., & Tan, D. S. (2009). [*EnsembleMatrix: interactive visualization to support machine learning with multiple classifiers*](../refs/Talbot_Lee_Kapoor_Tan_2009_EnsembleMatrix_Interactive_Visualization_Multiple_Classifiers.pdf). CHI.
+:::
+
+::: {.notes}
+EnsembleMatrix, Talbot and colleagues, CHI 2009, the oldest system today. Caltech-101, eight classifiers trained on different features; their individual confusion matrices are the eight thumbnails, with accuracies from 47 to 69 percent. The polygon at top right is the control: drag the red dot toward a vertex to give that classifier more weight in a linear combination, and the large matrix on the left updates live. Overall accuracy of the combination is 80.9 percent, better than any single member. The orange outline is a partition: you can split the matrix and weight the classifiers differently for different groups of classes. An early example of a human steering a model through a visualization of its errors.
 :::
 
 # Calibration
@@ -449,17 +449,16 @@ Talbot, J., Lee, B., Kapoor, A., & Tan, D. S. (2009). [*EnsembleMatrix: interact
 Now we are moving to the third part of our lecture: calibration. Calibration is about whether the probabilities predicted by a model are reliable. For example, if a model predicts a 70% probability of rain, it should rain 70% of the time. A model can be very accurate in its predictions, but still be poorly calibrated. This is a subtle but important point that we will explore in this section.
 :::
 
-
 ## Calibration - Forecast Example
 
 Weather forecasters started thinking about calibration a long time ago (Brier, 1950): a forecast of "70% chance of rain" should be followed by rain 70% of the time. Let's consider a small toy example:
 
 :::: {.columns}
 ::: {.column width="30%"}
-![](figs/model_assessment_figs/calibration_forecast_table.png){fig-align="center"}
+![](figs/model_assessment_figs/calibration_forecast_table.png){height="600" fig-align="center"}
 :::
 ::: {.column width="70%"}
-This forecast is doing at predicting the rain:
+This forecast is doing well at predicting the rain:
 
 - "10% chance of rain" was a slight over-estimate:
 $(\bar{y} = 0/2 = 0\%)$
@@ -469,79 +468,69 @@ $(\bar{y} = 0/2 = 0\%)$
 :::
 ::::
 
-::: {.notes}
-This weather forecast example perfectly illustrates calibration. When we say "70% chance of rain," it should actually rain about 70% of the time we make that prediction. Notice that this forecaster is pretty well calibrated - their predictions are close to the actual frequencies. This concept extends directly to machine learning: when a model outputs a probability, we want that probability to be reliable and meaningful.
-:::
-
-::: {.notes}
-This is a classic example used to explain calibration. We have a weather forecaster who gives probabilistic predictions of rain. We can check how well calibrated these predictions are by looking at the actual outcomes. For example, for all the days the forecaster predicted a 10% chance of rain, did it actually rain 10% of the time? In this case, the forecaster is not perfectly calibrated, but they are not too far off.
-:::
-
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
+:::
+
+::: {.notes}
+The classic motivating example, from the classifier-calibration tutorial this section follows. Eight days, four distinct forecasts. Group the days by forecast and check the outcome: of the two 10 percent days, none had rain; of the two 40 percent days, one did; of the three 70 percent days, two did; the single 90 percent day had rain. Each group is off by a little, in alternating directions. This forecaster is reasonably calibrated. Note what we just did: we binned by predicted value and compared the bin's mean prediction with the bin's observed frequency. That is a reliability diagram, next slide.
 :::
 
 ## Visualizing forecasts - The Reliability Diagram
 
-\
-
 :::: {.columns}
 ::: {.column width="30%"}
-![](figs/model_assessment_figs/calibration_forecast_table.png){fig-align="center"}
+![](figs/model_assessment_figs/calibration_forecast_table.png){height="600" fig-align="center"}
 :::
 ::: {.column width="70%"}
-![](figs/model_assessment_figs/calibration_forecast_reldiagram.png){fig-align="center"}
+![](figs/model_assessment_figs/calibration_forecast_reldiagram.png){width="100%" fig-align="center"}
 :::
 ::::
 
-::: {.notes}
-A reliability diagram is a standard way to visualize calibration. It plots the observed frequency of an event against the predicted probability of that event. A perfectly calibrated model would have a reliability diagram that is a straight line from (0,0) to (1,1). Deviations from this line indicate miscalibration.
-:::
-
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
+:::
+
+::: {.notes}
+The same eight forecasts as a reliability diagram. X is predicted probability, y is the observed proportion of positives. One blue bar per group, its height the observed frequency. The red box is the gap between the bar and the mean prediction in that bin, marked with the plus; the dashed diagonal is perfect calibration. Read it against the table: the 0.1 bin has height zero and a gap of 0.1; the 0.4 bin is at 0.5, the 0.7 bin at 0.67, the 0.9 bin at 1.0. Bars below the diagonal mean over-estimates, above mean under-estimates.
 :::
 
 ## Reliability diagram - Changing values
 
-\
-
 :::: {.columns}
 ::: {.column width="30%"}
-![](figs/model_assessment_figs/calibration_forecast_table_2.png){fig-align="center"}
+![](figs/model_assessment_figs/calibration_forecast_table_2.png){height="600" fig-align="center"}
 :::
 ::: {.column width="70%"}
-![](figs/model_assessment_figs/calibration_forecast_reldiagram_2.png){fig-align="center"}
+![](figs/model_assessment_figs/calibration_forecast_reldiagram_2.png){width="100%" fig-align="center"}
 :::
 ::::
 
-::: {.notes}
-In this slide, we see the effect of changing the forecast values on the reliability diagram. Notice how the points on the diagram shift as the forecasts are updated. This provides a direct visual feedback on how changes in the model's predictions affect its calibration.
-:::
-
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
+:::
+
+::: {.notes}
+Now perturb four of the forecasts, the red values: 0.2, 0.3, 0.6, 0.8. The outcomes have not changed and we keep the same four groups, so the blue bars are identical. What moves is the mean prediction in each bin, to 0.15, 0.35, 0.7 and 0.9, and so the red gaps change. The point: in real data predictions are not repeated values, so we have to bin, and the bin's mean prediction is what gets compared with its observed frequency.
 :::
 
 ## Reliability diagram - Changing grouping
 
-\
-
 :::: {.columns}
 ::: {.column width="30%"}
-![](figs/model_assessment_figs/calibration_forecast_table_2.png){fig-align="center"}
+![](figs/model_assessment_figs/calibration_forecast_table_2.png){height="600" fig-align="center"}
 :::
 ::: {.column width="70%"}
-![](figs/model_assessment_figs/calibration_forecast_reldiagram_3.png){fig-align="center"}
+![](figs/model_assessment_figs/calibration_forecast_reldiagram_3.png){width="100%" fig-align="center"}
 :::
 ::::
 
-::: {.notes}
-Here, we see another aspect of reliability diagrams: the effect of binning. The way we group the predictions can influence the appearance of the diagram. It's important to be aware of this and to choose a reasonable number of bins when creating these plots.
-:::
-
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
+:::
+
+::: {.notes}
+Same perturbed forecasts, regrouped into two bins instead of four. Left bin: mean prediction 0.25, one positive in four, observed 0.25. Right bin: mean 0.75, three in four, observed 0.75. Both plus signs sit exactly on the diagonal and the gaps vanish. The model now looks perfectly calibrated. Nothing about the forecasts changed, only the binning. Ask the room which of the last two slides is the truth. Neither: the reliability diagram is an estimate with a hyperparameter, and the second half of this section, Calibrate and Smooth ECE, is about that problem.
 :::
 
 ## Reliability Diagram in sklearn
@@ -564,17 +553,9 @@ nb.fit(X_train, y_train)
 print()
 ```
 
-::: {.notes}
-Here we're setting up two different classifiers - Logistic Regression and Gaussian Naive Bayes - to compare their calibration. Logistic Regression is often well-calibrated by design, while Naive Bayes can suffer from poor calibration despite having good discrimination ability. We'll see this difference clearly in the reliability diagram on the next slide.
-:::
-
-::: {.notes}
-Scikit-learn also provides tools for calibration analysis. Here we are setting up two classifiers, Logistic Regression and Gaussian Naive Bayes, to compare their calibration. We will plot their calibration curves on the next slide.
-:::
-
 ```{python}
 #| echo: true
-#| panel: center
+#| output-location: column
 import matplotlib.pyplot as plt
 from sklearn.calibration import CalibrationDisplay
 
@@ -588,7 +569,7 @@ CalibrationDisplay.from_estimator(nb, X_test, y_test, n_bins=10, ax=ax,
 ```
 
 ::: {.notes}
-This code generates the calibration plot, also known as a reliability diagram. We use the `CalibrationDisplay` from scikit-learn. It plots the predicted probabilities against the true frequency of the positive class. A perfectly calibrated model would follow the diagonal line.
+Two classifiers on the same synthetic data: logistic regression and Gaussian Naive Bayes, set up in a hidden cell. CalibrationDisplay.from_estimator with ten bins, both on one axis; the figure on the right is live output. Logistic regression hugs the diagonal, which is expected because it is trained by minimizing log-loss, a proper scoring rule. Naive Bayes bends away from it: its independence assumption counts correlated evidence several times and pushes probabilities toward 0 and 1. Both have similar accuracy. Next slide names the shapes.
 :::
 
 ## Common sources of miscalibration
@@ -615,19 +596,19 @@ Slides based on [classifier-calibration.github.io](https://classifier-calibratio
 
 ## Reliability Diagram in sklearn
 
-![](figs/model_assessment_figs/sphx_glr_plot_compare_calibration_001.png){fig-align="center"}
-
-::: {.notes}
-This is an example of a calibration plot from the scikit-learn documentation. It compares the calibration of a Logistic Regression model with a Gaussian Naive Bayes model. You can see that the Logistic Regression model is better calibrated than the Naive Bayes model, as its curve is closer to the diagonal.
-:::
+![](figs/model_assessment_figs/sphx_glr_plot_compare_calibration_001.png){.nostretch width="45%" fig-align="center"}
 
 :::footer
 [code](https://scikit-learn.org/stable/modules/calibration.html)
 :::
 
+::: {.notes}
+The scikit-learn comparison, four models, and it puts a face on both failure modes from the previous slide. Naive Bayes, orange: an inverse-sigmoid, above the diagonal at low predictions and below it at high ones. It says 0.15 when the truth is 0.4 and 0.85 when the truth is 0.7, and its histogram below is piled at 0 and 1. That is overconfidence. The SVC, purple: a sigmoid, and its histogram is a hump in the middle; it rarely commits. That is underconfidence, typical of max-margin methods. Random forest, pink, is mildly sigmoid too, because averaging trees pulls predictions away from 0 and 1. Logistic regression, green, is close to the diagonal. Always read the histogram with the curve: it tells you where the curve is supported by data.
+:::
+
 ## Calibration metrics
 
-Let $N$ be the total of samples, $B$ the number of binds, $n^b$ the samples in bin $b$, and $conf(b)$ the average predicted probability in bin $b$.
+Let $N$ be the total number of samples, $B$ the number of bins, $n^b$ the samples in bin $b$, $acc(b)$ the fraction of positives in bin $b$, and $conf(b)$ the average predicted probability in bin $b$.
 
 - Expected Calibration Error:
 
@@ -635,50 +616,65 @@ $ECE = \sum_{b=1}^B \frac{n^b}{N}|acc(b) - conf(b)|$
 
 - Maximum Calibration Error:
 
-$MCE = \underset{m \in \{1,2,\dots,|B|\}}{\text{max}} |acc(b) - conf(b)|$
+$MCE = \underset{b \in \{1,2,\dots,B\}}{\text{max}} |acc(b) - conf(b)|$
 
 
 ::: {.notes}
 Besides visualizing calibration with reliability diagrams, we can also quantify it using metrics like Expected Calibration Error (ECE) and Maximum Calibration Error (MCE). ECE gives an overall measure of miscalibration, while MCE tells us the worst-case deviation.
 :::
 
-
 ## Calibration of modern models
 
-![](figs/model_assessment_figs/calibration_nn_2016.png){fig-align="center"}
-
-::: {.notes}
-This landmark paper by Guo et al. (2017) revealed a surprising finding: modern neural networks, despite their impressive accuracy, are often poorly calibrated. As networks have gotten deeper and more complex, they've become increasingly overconfident in their predictions. This graph shows how calibration error has increased with model capacity over the years. This is why calibration has become such an important topic in modern machine learning.
-:::
+![](figs/model_assessment_figs/calibration_nn_2016.png){.nostretch width="35%" fig-align="center"}
 
 :::footer
 Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). [*On calibration of modern neural networks*](../refs/Guo_Pleiss_Sun_Weinberger_2017_Calibration_Modern_Neural_Networks.pdf). ICML.
 :::
 
+::: {.notes}
+Figure 1 of Guo et al., ICML 2017, the paper that made calibration a deep learning topic. Two networks on CIFAR-100: a 5-layer LeNet from 1998 and a 110-layer ResNet from 2016. Top row, confidence histograms: LeNet's average confidence roughly equals its accuracy, the two dashed lines coincide; the ResNet's confidence is piled up near 1 and its average confidence is well above its accuracy. Bottom row, reliability diagrams: LeNet's bars follow the diagonal; the ResNet's sit well below it with large red gaps. Careful with the numbers in the boxes: 'Error' is classification error, 44.9 versus 30.6 percent. So the ResNet is much more accurate and much worse calibrated. Their explanation: depth, width, batch norm and less weight decay let the network keep reducing log-loss by becoming more confident after accuracy stops improving. Their fix is temperature scaling, a one-parameter Platt scaling.
+:::
+
 ## Calibration of modern models
 
-![](figs/model_assessment_figs/calibration_nn_2021_left.png){.absolute top="180" left="0" width="330" height="330"}
+:::: {.columns}
+::: {.column width="30%"}
+![](figs/model_assessment_figs/calibration_nn_2021_left.png){width="100%"}
+:::
+::: {.column width="70%"}
+![](figs/model_assessment_figs/calibration_nn_2021_right.png){width="100%"}
+:::
+::::
 
-![](figs/model_assessment_figs/calibration_nn_2021_right.png){.absolute top="170" left="330" width="800" height="350"}
+**The 2017 trend did not continue: the most accurate recent models (ViT, MLP-Mixer) are also among the best calibrated**
 
 :::footer
 Image taken from Minderer, Matthias, et al. (2021). *Revisiting the calibration of modern neural networks*. Advances in Neural Information Processing Systems.
 :::
 
+::: {.notes}
+Minderer et al., NeurIPS 2021, revisiting that story four years on. Left: ECE against ImageNet error for several model families, marker size is model size. Guo's conclusion would predict that the accurate models in the bottom left are badly calibrated. They are not: the vision transformers and MLP-Mixers are both the most accurate and among the best calibrated, while the ResNeXt WSL and SimCLR families sit higher. Right: reliability diagrams for five of them, the gaps small for Mixer, ViT and BiT and visibly larger for WSL and SimCLR. Their reading: architecture and pretraining matter more than size, and the trend 'bigger means worse calibrated' was a property of a generation of convolutional nets, not a law. The general lesson for the class: measure calibration for your model, do not inherit it from a paper.
+:::
+
 ## Proper Scoring Rules
 
-* Proper scoring rules are calculated at the observation level, where as ECE is binned
+:::: {.columns}
+::: {.column width="40%"}
+* Proper scoring rules are calculated at the observation level, whereas ECE is binned
 
 * Think of them as putting each item in its separate bin, then computing the average of some loss for each predicted probability and its corresponding observed label
-
-![](figs/model_assessment_figs/proper_scoring_rules.png){fig-align="center"}
-
-::: {.notes}
-Proper scoring rules are a more principled way to evaluate probabilistic predictions. Unlike ECE which requires binning (and thus loses information), proper scoring rules evaluate each prediction individually. They're called "proper" because they incentivize the model to output its true belief - a model can't game the system by outputting different probabilities than what it actually believes.
 :::
+::: {.column width="60%"}
+![](figs/model_assessment_figs/proper_scoring_rules.png){width="100%" fig-align="center"}
+:::
+::::
 
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
+:::
+
+::: {.notes}
+Proper scoring rules evaluate each prediction on its own rather than per bin. The figure is the limit of the last three slides: give every distinct prediction its own bin. Each bar is then either 0 or 1, the observed label, and the red gap is the distance from the prediction to that label. Average a loss over those gaps and you have a scoring rule. 'Proper' means the expected score is optimized by reporting your true belief, so a model cannot game it by shading its probabilities.
 :::
 
 ## Proper Scoring Rules
@@ -689,18 +685,18 @@ $$BS = \frac{1}{N} \sum_{i=1}^N (\hat{y}_i - y_i)^2$$
 
 * Log-loss/Cross entropy:
 
-    - Frequently used to as the training loss of machine learning methods, such as neural networks
+    - Frequently used as the training loss of machine learning methods, such as neural networks
 
     - Only penalises the probability given to the true class
 
 $$LL = -\frac{1}{N} \sum_{i=1}^N [y_i \text{log}(\hat{y}_i) + (1-y_i)\text{log}( 1 - \hat{y}_i)]$$
 
-::: {.notes}
-These are the two most common proper scoring rules. The Brier Score is the mean squared error of probabilistic predictions - simple and interpretable. Log-loss (cross-entropy) is what most neural networks optimize during training. An important distinction: log-loss can be infinite if you predict probability 0 for something that happens, while Brier Score is bounded between 0 and 2. Both encourage well-calibrated predictions but in slightly different ways.
-:::
-
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
+:::
+
+::: {.notes}
+The two you will meet. Brier score is mean squared error on probabilities: bounded between 0 and 1 in this binary form, easy to interpret. Log-loss is cross-entropy, the training loss of most neural networks and of logistic regression, which is why those models tend to be calibrated on their training distribution. The practical difference is in the tails: log-loss goes to infinity if you assign probability zero to something that happens, Brier is forgiving. Both reward calibration and sharpness together, which is the next slide.
 :::
 
 ## Proper Scoring Rules
@@ -713,6 +709,10 @@ An intuitive way to decompose proper scoring rules is into refinement and calibr
 
 ::: footer
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
+:::
+
+::: {.notes}
+The decomposition, due to Murphy and generalized by Kull and Flach. Every proper score splits into two parts. Refinement loss: you gave the same probability to instances that differ in class, which is a failure to discriminate, and no recalibration can fix it. Calibration loss: within a group that received the same prediction, the prediction differs from the observed frequency, which a monotone remapping can fix. This is why calibration methods on the next slides never change the ranking, and therefore never change the ROC curve or AUC: they only attack the second term.
 :::
 
 ## Calibration Techniques
@@ -734,6 +734,9 @@ scores already on a [0, 1] scale (Kull et al., 2017)
 Slides based on [classifier-calibration.github.io](https://classifier-calibration.github.io/)
 :::
 
+::: {.notes}
+The map of methods, all of which learn a function from the model's score to a probability on held-out data. Parametric methods assume a shape. Platt scaling fits a sigmoid and is what you get from assuming Gaussian class-conditional scores with equal variance. Beta calibration handles scores already in [0,1] and can fit inverse-sigmoid shapes that Platt cannot. Dirichlet is the multiclass generalization, and temperature scaling for neural nets is its one-parameter special case. Non-parametric: isotonic regression assumes only monotonicity. Two practical rules: always fit the calibrator on data the model was not trained on, and choose by data size, parametric when you have hundreds of samples, isotonic when you have thousands.
+:::
 
 ## Platt scaling
 
@@ -768,22 +771,26 @@ Isotonic regression is a more powerful, non-parametric calibration method. It ca
 
 ## Calibration in sklearn
 
-![](figs/model_assessment_figs/sphx_glr_plot_calibration_curve_001.png){fig-align="center"}
-
-::: {.notes}
-This example shows calibration in action. The Naive Bayes classifier (orange) shows the characteristic S-curve of poor calibration - it's overconfident for low probabilities and underconfident for high probabilities. After calibration using isotonic regression, the curve becomes much closer to the diagonal, meaning the probabilities are now more reliable. Notice how calibration improves the Brier score significantly.
-:::
+![](figs/model_assessment_figs/sphx_glr_plot_calibration_curve_001.png){.nostretch width="45%" fig-align="center"}
 
 :::footer
 [code](https://scikit-learn.org/stable/auto_examples/calibration/plot_calibration_curve.html)
+:::
+
+::: {.notes}
+The scikit-learn calibration example, Naive Bayes. The uncalibrated curve, orange, is the inverse-sigmoid of an overconfident model, and its histogram is two spikes at 0 and 1. Isotonic regression, purple, brings it onto the diagonal alongside logistic regression. Platt or sigmoid scaling, pink, barely helps: it still sits well off the diagonal between 0.2 and 0.8. That is the point of the slide. Platt can only fit a sigmoid-shaped distortion, and this one has the opposite shape. Note also what calibration does to the histograms: isotonic spreads the predictions back across the range.
 :::
 
 ## Calibration in sklearn
 
-![](figs/model_assessment_figs/sphx_glr_plot_calibration_curve_002.png){fig-align="center"}
+![](figs/model_assessment_figs/sphx_glr_plot_calibration_curve_002.png){.nostretch width="45%" fig-align="center"}
 
 :::footer
 [code](https://scikit-learn.org/stable/auto_examples/calibration/plot_calibration_curve.html)
+:::
+
+::: {.notes}
+Same example with a linear SVC. Now the uncalibrated curve is a clean sigmoid, the underconfident shape, with its histogram humped in the middle. Here both methods work: sigmoid and isotonic land on the diagonal and are indistinguishable from logistic regression. Put the two slides side by side in their heads: Platt scaling fixes underconfident sigmoid distortions and fails on overconfident ones; isotonic fixes both but needs more data. Diagnose the shape before choosing the method.
 :::
 
 ## Calibration Takeaways
@@ -801,39 +808,40 @@ This example shows calibration in action. The Naive Bayes classifier (orange) sh
 To summarize the key points on calibration: reliability diagrams are the primary tool for visualizing calibration. ECE and MCE are metrics to quantify it. Proper scoring rules like Brier score and log-loss provide a more detailed view of the correctness of the predicted probabilities. And finally, there are different techniques to calibrate a model, each with its own trade-offs.
 :::
 
-
 ## Hyperparameters of reliability diagrams
 
-\
-
 ![](figs/model_assessment_figs/calibrate_reliability_hyperparameters.png){fig-align="center"}
-
-::: {.notes}
-An important but often overlooked point: reliability diagrams depend heavily on hyperparameters like the number of bins and binning strategy. Different choices can lead to very different visual interpretations of the same model's calibration. This figure from the Calibrate paper shows how the same model can look well-calibrated or poorly calibrated depending on these choices. This is why tools like Calibrate that provide interactive exploration are so valuable.
-:::
 
 :::footer
 Image taken from Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). *Calibrate: Interactive analysis of probabilistic model output*. IEEE Transactions on Visualization and Computer Graphics.
 :::
 
+::: {.notes}
+Figure 3 of our Calibrate paper, and it is the two-bin surprise from earlier at full scale. One model, eight reliability diagrams. Top row: uniform-width bins with 5, 10, 15 and 20 bins. Bottom row: quantile bins, equal counts, same numbers. With quantile bins the model looks well calibrated in every panel. With uniform bins it is visibly off between 0.5 and 0.9, and the curve gets noisier as bins are added because the middle bins hold few samples. ECE and MCE computed from these diagrams inherit the same instability. Most published ECE numbers do not report these choices.
+:::
+
 ## Calibrate (2023)
 
-![](figs/model_assessment_figs/calibrate_teaser.png){fig-align="center"}
+![](figs/model_assessment_figs/calibrate_teaser.png){.nostretch width="50%" fig-align="center"}
 
 :::footer
 Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibrate: Interactive analysis of probabilistic model output*](../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf). IEEE TVCG.
+:::
+
+::: {.notes}
+Calibrate, from our group, TVCG. Letters follow the caption. A: it is one line in a Jupyter notebook. B: controls for bins, class and model. C: the calibration view, with a conventional binned reliability curve in solid and the learned reliability diagram as the red dashed line, over a histogram of predictions so you can see where the curve is supported. D: the instance view, populated by brushing a region of the calibration view. E: the feature view, histograms per feature, where brushing a range defines a subgroup, here a range of age and education, and its curve is drawn against the full population. F: a confusion matrix for the brushed region. The task is income prediction on Census data. The argument: calibration is rarely uniform, a model can be calibrated overall and badly off for a subgroup, and you only find that interactively.
 :::
 
 ## Calibrate (2023) - Learned Reliability Diagram
 
 ![](figs/model_assessment_figs/calibrate_learned_rel_diag.png){fig-align="center"}
 
-::: {.notes}
-The Calibrate system introduces a learned reliability diagram that avoids the binning problem entirely. Instead of fixed bins, it uses kernel density estimation to create a smooth, continuous reliability curve. This gives a more accurate picture of calibration without the artifacts introduced by arbitrary binning choices. The shaded regions show uncertainty in the calibration estimate.
-:::
-
 :::footer
 Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibrate: Interactive analysis of probabilistic model output*](../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf). IEEE TVCG.
+:::
+
+::: {.notes}
+Our answer to the binning problem. Left: conventional diagrams for a random forest on Wisconsin breast cancer, 8 bins dotted and 10 bins solid. Two more bins and the curve changes shape completely, with a spike to 1.0 near 0.7. The rug along the bottom shows why: almost no predictions fall in the middle. Right: the learned reliability diagram. Instead of binning, fit a model that predicts the label from the predicted probability and plot that function. We use an Explainable Boosting Machine, and the three curves are max_bins of 50, 100 and 200: they nearly coincide. ECE is then the area between the curve and the diagonal. Same idea as the calibration maps two slides back, used for diagnosis rather than correction.
 :::
 
 ## Calibrate (2023)
@@ -844,28 +852,32 @@ Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibr
 Xenopoulos, P., Rulff, J., Nonato, L. G., Barr, B., & Silva, C. (2022). [*Calibrate: Interactive analysis of probabilistic model output*](../refs/Xenopoulos_Rulff_Nonato_Barr_Silva_2022_Calibrate_Interactive_Analysis_Probabilistic_Output.pdf). IEEE TVCG.
 :::
 
+::: {.notes}
+Four-minute video of Calibrate in use: loading a model, reading the learned curve, brushing features to define subgroups, inspecting instances. It is a local file, so it plays without the network. If time is short, show the subgroup brushing part and skip the rest.
+:::
+
 ## Smooth ECE (2023)
 
-\
-
 ![](figs/model_assessment_figs/smoothece_teaser.png){fig-align="center"}
-
-::: {.notes}
-Smooth ECE is a recent advancement that addresses the fundamental problem with traditional ECE: the arbitrary choice of bins. By using kernel smoothing instead of hard binning, it provides a more principled and stable measure of calibration error. This visualization shows how different binning choices can give wildly different ECE values for the same model, while Smooth ECE provides a consistent estimate.
-:::
 
 :::footer
 Błasiok, J., & Nakkiran, P. (2023). *Smooth ECE: Principled Reliability Diagrams via Kernel Smoothing*. arXiv preprint arXiv:2309.12236.
 :::
 
-## Smooth ECE (2023)
+::: {.notes}
+Błasiok and Nakkiran, 2023, a second answer to binning, from the theory side. Left: a binned reliability diagram with 15 bins, shaded by bin population, ECE 0.161. Right: the same predictions as a kernel regression of the label on the prediction. The red curve's thickness encodes the density of predictions, so you see where the curve has support, and the grey band is a bootstrapped confidence interval. smECE is 0.138 plus or minus 0.016: the metric comes with an error bar. This model is a clean sigmoid, underconfident, which the binned version only hints at. The bandwidth is chosen by their theory rather than by the user, so there is no hyperparameter left to argue about.
+:::
 
-\
+## Smooth ECE (2023)
 
 ![](figs/model_assessment_figs/smoothece_smoothing.png){fig-align="center"}
 
 :::footer
 Błasiok, J., & Nakkiran, P. (2023). *Smooth ECE: Principled Reliability Diagrams via Kernel Smoothing*. arXiv preprint arXiv:2309.12236.
+:::
+
+::: {.notes}
+How the smooth diagram is built. Left: predictions on a line, negatives drawn up in green and positives down in blue. Step 1: kernel density estimate for each class separately. Step 2: at each value of f, take a vertical slice and normalize: the blue fraction of the slice is the estimated probability of a positive given that prediction. The red dashed curve on the right is that fraction. It is a reliability diagram where every point borrows strength from its neighbours instead of being hard-assigned to a bin. Available as the relplot Python package.
 :::
 
 ## Visualizing Calibration for Multi-Class Problems
@@ -874,6 +886,10 @@ Błasiok, J., & Nakkiran, P. (2023). *Smooth ECE: Principled Reliability Diagram
 
 :::footer
 Vaicenavicius, J., Widmann, D., Andersson, C., et al. (2019). [*Evaluating model calibration in classification*](../refs/Vaicenavicius_Widmann_Andersson_Lindsten_Roll_Schon_2019_Evaluating_Model_Calibration.pdf). AISTATS.
+:::
+
+::: {.notes}
+Calibration beyond binary. Vaicenavicius et al., AISTATS 2019. Reducing a multiclass model to its top-class confidence, as the Guo figure does, hides miscalibration among the other classes. Here a CIFAR-10 LeNet's ten classes are merged into three groups so that a prediction is a point in a triangle. Each small triangle is a bin, coloured by how many predictions fall in it, most are at the corners, and the arrow goes from the bin's mean prediction to its observed class frequencies. Long arrows mean miscalibration, and their direction says which class is over-predicted. Left 25 bins, right 100 bins, and the same binning sensitivity shows up again. It stops at three dimensions, which is the open problem.
 :::
 
 ## Suggested Calibration Literature
@@ -892,16 +908,12 @@ This slide provides a list of important papers on calibration. The Niculescu-Miz
 
 ## Suggested Calibration Literature
 
-* Kull, M., & Flach, P. (2015). [Novel decompositions of proper scoring rules for classification](../refs/Kull_Flach_2015_Novel_Decompositions_Proper_Scoring_Rules.pdf). ECML-PKDD.
+* Kull, M., & Flach, P. (2015). [Novel decompositions of proper scoring rules for classification: Score adjustment as precursor to calibration](../refs/Kull_Flach_2015_Novel_Decompositions_Proper_Scoring_Rules.pdf). ECML-PKDD, pp. 68-85.
 
-* [ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules](../refs/Silva_Filho_2020_ECML_PKDD_Tutorial_Evaluation_Metrics.pdf)
+* Silva Filho, T. et al. (2020). [ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules](../refs/Silva_Filho_2020_ECML_PKDD_Tutorial_Evaluation_Metrics.pdf). Full tutorial at [classifier-calibration.github.io](https://classifier-calibration.github.io/).
 
 * [Google Colab notebook for calibration curves](https://colab.research.google.com/drive/1mqDVJICMBg2eoIr2VPaDjQFUzlDT3grc?usp=sharing)
 
-* Kull, M., & Flach, P. (2015, September). [Novel decompositions of proper scoring rules for classification: Score adjustment as precursor to calibration](https://link.springer.com/content/pdf/10.1007/978-3-319-23528-8_5.pdf). In Joint European Conference on Machine Learning and Knowledge Discovery in Databases (pp. 68-85). Springer, Cham.
-
-* [ECML/PKDD 2020 Tutorial: Evaluation metrics and proper scoring rules](https://classifier-calibration.github.io/assets/slides/clacal_tutorial_ecmlpkdd_2020_evaluation.pdf)
-
 ::: {.notes}
-Here are a few more resources for those interested in diving deeper into calibration. The ECML/PKDD tutorial is a great starting point, and the Google Colab notebook provides a hands-on introduction to calibration curves.
+Where to go deeper. Kull and Flach is the source for the refinement and calibration decomposition. The ECML-PKDD 2020 tutorial by Silva Filho, Song, Perello-Nieto, Kull and Flach is the source for this whole section, and its website has the slides, videos and notebooks. The Colab notebook reproduces the reliability diagrams from today.
 :::

@@ -90,7 +90,7 @@ The repository includes complete course websites as subdirectories:
   |------|------|-----------------|--------|----------|--------|
   | 1 | Sept 8 | week2-intro + week2-infovis | 79 over | week2-lab | 17 ok |
   | 2 | Sept 15 | week3-perception + week3-color | 60 at limit | week3-slides | 11 ok |
-  | 3 | Sept 22 | week4-model-assessment | 51 ok | *none — see below* | — |
+  | 3 | Sept 22 | week4-model-assessment | 52 ok | *none — see below* | — |
   | 4 | Sept 29 | week5-white-box | 64 slightly over | week5-lab | 7 ok |
   | 5 | Oct 6 | week6-black-box + week6-project-discussion | 82 over | week6-lab | 34 over |
   | 6 | Oct 13 | week8-clustering + default-project | 57 ok | week7-lab | 39 over |
@@ -157,7 +157,10 @@ git commit -m "Add Week 1 slides"
 ```
 
 The 2026 sites were copied without rendered output, so each deck needs a
-`quarto render` before its class. `*.html` / `*_files/` are globally ignored with
+`quarto render` before its class. Decks with executable `{python}` cells (VisML
+`week4-model-assessment.qmd`) need a Python with Jupyter, which the system Python lacks:
+`uv venv /tmp/qpy && uv pip install --python /tmp/qpy/bin/python jupyter scikit-learn matplotlib`,
+then `QUARTO_PYTHON=/tmp/qpy/bin/python quarto render <deck>.qmd`. `*.html` / `*_files/` are globally ignored with
 a per-year negation in `.gitignore` — add new course years there or renders stay
 uncommitted.
 
