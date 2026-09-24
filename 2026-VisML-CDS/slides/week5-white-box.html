@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week5-white-box_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week5-white-box_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week5-white-box_files/libs/quarto-html/popper.min.js"></script>
+<script src="week5-white-box_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week5-white-box_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week5-white-box_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week5-white-box_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="week5-white-box_files/libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="week5-white-box_files/libs/quarto-contrib/videojs/video-js.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2026-09-29">
+  <title>White-box Model Interpretation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week5-white-box_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week5-white-box_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="week5-white-box_files/libs/revealjs/dist/theme/quarto-e124fad2ea3a572fe336e1b59f57db0f.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
+  <link href="week5-white-box_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week5-white-box_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week5-white-box_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week5-white-box_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="week5-white-box_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="week5-white-box_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="week5-white-box_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">White-box Model Interpretation</h1>
+  <p class="subtitle">DS-GA 3001 - Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Center for Data Science
+          </p>
+    </div>
+</div>
+
+  <p class="date">2026-09-29</p>
+</section>
+<section class="slide level2">
+<h2>Week 4: White-box Model Interpretation</h2>
+<ul>
+<li>Model Interpretation and Explanation</li>
+<li>White-box Approaches and Visualizations</li>
+<li>Related Research in VIS &amp; AI</li>
+</ul>
+<aside class="notes">
+<p>Today we focus on interpretable machine learning models and their visualization. We’ll explore intrinsically interpretable models like linear regression, GAMs, decision trees, and rule-based systems. We’ll see how visualization helps us understand model behavior and how different model types offer different forms of interpretability.</p>
+<p>Frame the week against last week and next week. Two weeks ago we asked whether a model is any good: confusion matrices, ROC, calibration. That whole apparatus treats the model as a box that emits predictions, and never asks how it got them. Today we open the box, and we do it the easy way, by using models whose insides are readable. Next week is the hard way: explaining a model you cannot see.</p>
+<p>The organizing claim for the next two hours: for these model families the visualization is not an add-on, it is the interpretation. A GAM’s meaning <em>is</em> the set of shape curves. A tree’s meaning <em>is</em> the diagram. So every design decision, what to draw, at what size, in what order, is a decision about what the model means to the person reading it, which is why half this lecture is visual analytics papers rather than algorithms.</p>
+<p>Practical note for their projects: the proposal is due this week, and several of these systems, Gamut, GAM Changer, RuleMatrix, are reasonable models for what a project deliverable can look like.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Outline</h2>
+<ul>
+<li>Model Interpretation and Explanation</li>
+<li><span style="color: grey;">White-box Approaches and Visualizations</span></li>
+<li><span style="color: grey;">Related Research in VIS &amp; AI</span></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>What is Interpretability?</h2>
+<blockquote>
+<p><strong>“Interpretability is the degree to which a human can understand the cause of a decision”</strong></p>
+</blockquote>
+<ul>
+<li class="fragment">Can you predict what the model will do?</li>
+<li class="fragment">Can you understand <em>why</em> it made a particular decision?</li>
+<li class="fragment">Can you trust the model’s reasoning process?</li>
+<li class="fragment"><strong>Key Dimensions:</strong> Local (single prediction) vs.&nbsp;Global (overall model logic)</li>
+</ul>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
+</div>
+<aside class="notes">
+<p>Interpretability fundamentally means understanding causation - why did the model produce this output? A more operational definition: a model is interpretable if a human can correctly and efficiently predict the model’s results. Interpretability has two scopes: global means understanding the overall model logic, local means understanding a single prediction.</p>
+<p>Spend a minute on the operational definition, because it is the one that can be tested. “A human can predict what the model will do” turns a vague property into an experiment: show someone the model and some inputs, ask them for the model’s output, measure the error. That measure has a name, simulatability, and there is a large study of exactly this at the end of the lecture, with a result that should make everyone uncomfortable.</p>
+<p>Then the warning that comes with it. Being able to predict what a model will do is not the same as knowing whether it should do it. A person can learn to anticipate a model that is confidently using a spurious feature, and interpretability of that kind produces smooth agreement rather than scrutiny.</p>
+<p>Insist on the local versus global split now, because every system today sits somewhere on it. Global: what has the model learned, overall? Local: why this applicant, this patient, this case? They need different displays, and they are used by different people, a model developer versus the person receiving the decision. A common failure in student projects is to build a global tool and then answer a local question with it.</p>
+<p>Worth adding: the audience determines what counts as an explanation. A clinician, a regulator, and a data scientist debugging a pipeline want three different objects. There is no such thing as the interpretable model, only a model interpretable to someone for some purpose.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Why Model Interpretation &amp; Explanation?</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<h3>Four Key Functions:</h3>
+<p><strong>🔧 Debugging &amp; Validation</strong></p>
+<ul>
+<li>Detect bugs, biases, data leakage</li>
+<li>Identify spurious correlations</li>
+</ul>
+<p><strong>🔬 Knowledge Discovery</strong></p>
+<ul>
+<li>Learn patterns, generate hypotheses</li>
+<li>Extract scientific insights</li>
+</ul>
+<p><strong>🤝 Building Trust</strong></p>
+<ul>
+<li>Increase confidence, social acceptance</li>
+<li>Enable stakeholder buy-in</li>
+</ul>
+<p><strong>⚖️ Compliance &amp; Ethics</strong></p>
+<ul>
+<li>Meet legal/ethical requirements</li>
+<li>Conduct fairness audits</li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/model-interpretability-overview.mmd.png" style="width:100.0%"></p>
+<figcaption>Model Interpretability Overview</figcaption>
+</figure>
+</div>
+<!-- MERMAID CODE FOR FUTURE REFERENCE:
+Save this to figs/white-box/model-interpretability-overview.mmd and use mermaid.live to generate PNG:
+
+
+::::::{.cell reveal=true layout-align="default"}
+
+:::::{.cell-output-display}
+
+::::{}
+`<figure class=''>`{=html}
+
+:::{}
+
+<pre class="mermaid mermaid-js">graph TD
+    MI[Model Interpretability]
+    MI --&gt; D[🔧 Debugging &amp; Validation]
+    MI --&gt; K[🔬 Knowledge Discovery]
+    MI --&gt; T[🤝 Building Trust]
+    MI --&gt; C[⚖️ Compliance &amp; Ethics]
+
+    D --&gt; D1[Find bugs&lt;br/&gt;Detect bias&lt;br/&gt;Spot leakage]
+    K --&gt; K1[Learn patterns&lt;br/&gt;Test hypotheses&lt;br/&gt;Scientific insight]
+    T --&gt; T1[User confidence&lt;br/&gt;Social acceptance&lt;br/&gt;Stakeholder trust]
+    C --&gt; C1[Legal requirements&lt;br/&gt;Fairness audits&lt;br/&gt;Ethical guidelines]
+
+    style MI fill:#2d3e50,stroke:#1f77b4,stroke-width:3px,color:#fff
+    style D fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    style K fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style T fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    style C fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#fff
+    style D1 fill:#ffebee,stroke:#c0392b,stroke-width:1px,color:#333
+    style K1 fill:#e3f2fd,stroke:#2980b9,stroke-width:1px,color:#333
+    style T1 fill:#e8f5e9,stroke:#27ae60,stroke-width:1px,color:#333
+    style C1 fill:#fff3e0,stroke:#e67e22,stroke-width:1px,color:#333
+</pre>
+:::
+`</figure>`{=html}
+::::
+:::::
+::::::
+-->
+</div></div>
+<aside class="notes">
+<p>Interpretability serves multiple critical functions. For debugging, we can catch issues like the model learning spurious correlations. For science, interpretable models reveal domain insights. For deployment, stakeholders need to trust the system. In regulated domains like healthcare and finance, interpretability may be legally required to justify decisions.</p>
+<p>Give each function a concrete anchor rather than leaving them abstract.</p>
+<p>Debugging is the one they will use most: the model that identified horses by the photographer’s watermark, or the pneumonia model that learned that asthmatic patients have better outcomes, which was true in the data and lethal as a policy, because asthmatics were sent straight to intensive care. Both were caught by looking at what the model used, not by looking at accuracy. Accuracy was excellent in both cases.</p>
+<p>Knowledge discovery is the next slide, a Nature paper where the model was the instrument rather than the product.</p>
+<p>Trust, with a caveat worth planting early: the goal is calibrated trust, not maximal trust. An explanation that makes people believe a bad model has done harm, not good.</p>
+<p>Compliance: GDPR’s provisions on automated decisions, and in the US the adverse action notice requirements in credit, which oblige a lender to state the principal reasons for a denial. Whether or not that amounts to a legal right to explanation is argued about, but the operational pressure on teams is real.</p>
+<p>Ask the room which of the four they think is most common in practice. It is debugging, by a wide margin, and yet almost all of the research attention goes to the other three.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Machine-learning-assisted materials discovery using failed experiments</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/svm.png" style="width:100.0%"></p>
+<figcaption>SVM derived decision tree</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Researchers firstly built a database of chemistry experiments (new material).</li>
+<li>Then they train an SVM to predict whether a new chemistry experiment will be successful.</li>
+<li>Then they train a surrogate DT to explain the model to learn more about the experiment.</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Raccuglia, P., et al.&nbsp;(2016). <a href="https://doi.org/10.1038/nature17439">Machine-learning-assisted materials discovery using failed experiments</a>. <em>Nature</em>, 533, 73-76.</p>
+</div>
+<aside class="notes">
+<p>This Nature paper is the knowledge-discovery case, and it is a lovely one. Raccuglia and colleagues, 2016, on the synthesis of new materials.</p>
+<p>The idea that makes it memorable: they trained on the failures. Chemistry labs record every attempted synthesis in notebooks, and the ones that do not work are never published, so the literature is a record of successes only, which is survivorship bias built into a whole field. They call these the “dark” reactions, mined them out of archived laboratory notebooks, and added computed physicochemical descriptors to the raw notebook entries.</p>
+<p>The headline result, from the abstract, is worth quoting exactly: using previously untested, commercially available organic building blocks, the model “outperformed traditional human strategies, and successfully predicted conditions for new organically templated inorganic product formation with a success rate of 89 per cent”. Note what the baseline is: experienced chemists’ intuition about which reactions to try.</p>
+<p>The part that belongs in this lecture is what came next. A predictive model that says “try this one” is useful but tells a chemist nothing. So they inverted the model into human-readable form, which is what the decision tree on the slide is, and read hypotheses about <em>why</em> certain conditions work off its structure. That is the global surrogate idea, arriving 40 minutes before we define it, in a real scientific setting.</p>
+<p>One caution if anyone asks for specifics: the widely repeated details about the exact classifier and the human baseline number are not in the abstract, and the paper is paywalled, so quote the 89 percent and the dark-reactions idea, and leave the rest.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Properties of Good Explanations</h2>
+<p>Human explanations are naturally:</p>
+<ol type="1">
+<li class="fragment"><strong>Contrastive</strong>: “Why this, rather than that?” (not exhaustive)
+<ul>
+<li class="fragment">Example: “Loan denied because debt-to-income ratio was 45%, not the required ≤30%”</li>
+</ul></li>
+<li class="fragment"><strong>Selective</strong>: Focus on 1-3 key reasons (not all causes)</li>
+<li class="fragment"><strong>Social</strong>: Tailored to audience and context</li>
+<li class="fragment"><strong>Focused on abnormal</strong>: Highlight surprising factors</li>
+<li class="fragment"><strong>Truthful but simple</strong>: Balance accuracy with understandability</li>
+</ol>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/interpretability.html"><em>Interpretable Machine Learning</em></a>. 2nd Edition.</p>
+</div>
+<aside class="notes">
+<p>Research on human explanations reveals important patterns. People don’t want exhaustive causal chains - they want contrastive answers comparing to alternatives. Good explanations are selective, providing just a few key factors rather than everything. They should be tailored to the audience’s knowledge and focus on surprising or abnormal causes rather than routine factors.</p>
+<p>This list comes out of philosophy and cognitive science rather than machine learning, largely via Tim Miller’s survey of that literature for the XAI community, and it is worth the minute because it predicts which of our tools will actually land.</p>
+<p>Contrastive is the deepest point. Nobody asks “why was my loan denied?” in the abstract; they mean “why was it denied <em>rather than approved</em>”, or “why me and not my neighbour”. A feature importance list answers neither. A counterfactual, change income by this much and the decision flips, answers both, which is why the counterfactual interaction in Gamut, dragging an instance along a shape curve, feels so natural.</p>
+<p>Selective, with a number: people handle something like seven items at once, which is the empirical basis for the sparsity constraints in the interpretable-models literature. A twenty-feature explanation is not twenty times better than a three-feature one, it is worse.</p>
+<p>Abnormal-focused: the interesting cause is the one that deviates. A model explanation that lists the base rate contributions of every routine feature buries the one unusual thing that drove the decision.</p>
+<p>Turn it into a design checklist they can apply to every system today: does it let you compare? Does it stop at a few factors? Does it adapt to who is asking? By that standard, most feature-importance bar charts fail on all three.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Why Model Interpretation &amp; Explanation?</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/doshi-velez-interpretable-ml.png" height="760"></p>
+<figcaption>https://arxiv.org/abs/1702.08608</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>Fairness</li>
+<li>Privacy</li>
+<li>Reliability or Robustness</li>
+<li>Causality</li>
+<li>Trust</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>This is Doshi-Velez and Kim’s “Towards a Rigorous Science of Interpretable Machine Learning”, the paper that gave the field its vocabulary, and the list on the right is their account of <em>why</em> we want interpretability at all.</p>
+<p>Their central argument is worth stating because it reframes the whole enterprise: interpretability is not an end in itself, it is a proxy we reach for when the problem is incompletely specified. If you could write down everything you cared about, fairness, safety, the cost of each error, you could optimize it directly and would not need to inspect the model. We ask for explanations exactly when the objective function does not capture everything that matters. Fairness, privacy, robustness, causality and trust on this slide are all examples of that gap.</p>
+<p>Their second contribution is the evaluation taxonomy, which is directly useful for the projects. Three levels: functionally grounded, where you use a proxy such as sparsity or tree depth with no humans involved; human grounded, where lay users do a simplified task; and application grounded, where domain experts do the real task. Cheap to expensive, weak to strong evidence. When someone claims a method is “more interpretable”, ask which of the three they did. Most papers do the first and write as if they had done the third.</p>
+<p>The Poursabzi-Sangdeh study at the end of today is an unusually careful example of the middle level, and its results are humbling.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Taxonomy of Interpretability Methods</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Intrinsic (White-box)</strong></p>
+<ul>
+<li>Interpretability built into model structure</li>
+<li>Examples: Linear models, short decision trees, sparse models</li>
+<li>Understand by examining model internals</li>
+<li><em>Today’s focus</em></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Post-hoc (Black-box)</strong></p>
+<ul>
+<li>Explain after training</li>
+<li>Works with any model (neural nets, ensembles)</li>
+<li>Examples: LIME, SHAP, saliency maps</li>
+<li><em>Next week’s topic</em></li>
+</ul>
+</div></div>
+<p><strong>Additional dimensions:</strong> Model-specific vs Model-agnostic | Local vs Global | Feature importance vs Feature effects</p>
+<div class="footer">
+<p><a href="https://christophm.github.io/interpretable-ml-book/taxonomy-of-interpretability-methods.html">Christoph Molnar: Interpretable Machine Learning</a></p>
+</div>
+<aside class="notes">
+<p>Intrinsic interpretability means the model structure itself is understandable - you can look at a decision tree and trace the logic. Post-hoc methods generate explanations after the fact for any model. We also distinguish: model-specific vs model-agnostic, local vs global, and feature importance vs feature effects.</p>
+<p>This slide is the map for the next two weeks, so make the columns concrete. Left column, intrinsic, is today: the model is the explanation, so the explanation is exact and cannot be unfaithful. Right column, post-hoc, is next week: the model stays opaque and we build a second thing that describes it. That second thing is an approximation, and everything that follows from that, its fidelity, its instability, its potential to mislead, is the subject of next week’s lecture and of the Rudin paper at the end of today.</p>
+<p>On the additional dimensions, two are worth dwelling on. Local versus global we have already met. Feature importance versus feature effects is the one students conflate: importance is a scalar ranking, “age matters a lot”; effects are functional, “here is how the prediction changes across the range of age”. SHAP gives importance; a shape function gives effects. Only the second lets you say anything about a specific value of the feature.</p>
+<p>Then the honest complication: the boundary is not as clean as the slide suggests. A PDP is a post-hoc method, but applied to a GAM it recovers the model exactly. A deep tree is intrinsically interpretable and practically unreadable. So the useful question is not which column a method is in, but whether a human can actually use the artifact it produces on this model at this size.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Outline</h2>
+<ul>
+<li><span style="color: grey;">Model Interpretation and Explanation</span></li>
+<li>White-box Approaches and Visualizations</li>
+<li><span style="color: grey;">Related Research in VIS &amp; AI</span></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>White-box Models</h2>
+<p>We discuss the following models that are intrinsically interpretable:</p>
+<ul>
+<li>Linear Regression</li>
+<li>Generalized Additive Models (GAM)</li>
+<li>Tree-based Models</li>
+<li>Decision Rules</li>
+</ul>
+<aside class="notes">
+<p>These model families offer varying degrees of expressiveness and interpretability. Linear models are simplest but most limited; GAMs add non-linear flexibility; trees provide natural visual structure; rules offer explicit logic.</p>
+<p>Set up the through-line for the next hour. All four are interpretable <em>by construction</em>: the model’s own parameters are the explanation, so there is nothing to approximate and nothing that can be unfaithful. That is the contrast with next week, where we explain a model we are not allowed to see, and the explanation is itself a model that can be wrong.</p>
+<p>Order them by what they give up. A linear model gives you one number per feature, and assumes the effect is constant everywhere. A GAM gives you a curve per feature, and drops the constant-effect assumption while keeping additivity. A tree gives you regions and interactions for free, and drops additivity. Rules give you logic you can read aloud, and drop the requirement that the pieces be mutually exclusive.</p>
+<p>The thing to notice as we go: in each case the visualization is not decoration, it <em>is</em> the interpretation. A GAM is interpretable because you can draw f_j. A tree is interpretable because you can draw the tree. When the drawing stops being readable, at a few hundred rules or a depth-20 tree, the interpretability claim quietly expires, and that is the failure mode the visual analytics papers in this lecture are each attacking.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Linear Regression</h2>
+<p>Linear models can be used to model the dependence of a regression target y on some features x in a format as below: <span class="math display">\[\begin{equation}
+y = \beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n + \varepsilon\end{equation}\]</span></p>
+<p>The predicted target <span class="math inline">\(y\)</span> is a linear combination of the weighted features <span class="math inline">\(\beta_i x_i\)</span>. The estimated linear equation is a hyperplane in the feature/target space (a simple line in the case of a single feature).</p>
+<p>The weights specify the slope (gradient) of the hyperplane in each direction.</p>
+<aside class="notes">
+<p>Linear regression remains one of the most interpretable models. Each coefficient directly tells us how much the prediction changes when that feature increases by one unit, holding all else constant. This direct interpretability makes linear models valuable for policy decisions and scientific inference.</p>
+<p>Be precise about what the model claims, because everything later in the lecture is a reaction to one of these commitments. The prediction is a weighted sum: every feature contributes independently, its effect is the same size at every value, and the contributions add. Those three commitments, plus the error term, are what buy you the one-number-per-feature explanation.</p>
+<p>Make the epsilon explicit. The model is y = beta_0 + sum beta_j x_j + epsilon, and the assumptions that license inference live in epsilon, not in the fit. You can fit any data by least squares; whether the coefficients mean anything is a separate question, which is the next three slides.</p>
+<p>Worth saying once, clearly: interpretability here is conditional on the model being roughly right. If the true relationship curves, the coefficient is the best straight-line summary of a curve, and it is perfectly interpretable and substantively wrong. A model that is easy to read is not the same as a model that is telling the truth.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Linear Regression</h2>
+
+<img data-src="figs/white-box/illustration1.png" class="r-stretch"><aside class="notes">
+<p>This visualization shows the geometric interpretation of linear regression as fitting a hyperplane through the data points. The residuals (vertical distances from points to the plane) are minimized during training using least squares optimization.</p>
+<p>Walk the picture. Two features, so the model is a plane in three dimensions; the red segments are the residuals, and note that they are vertical, in the y direction only. That is a real asymmetry: we assume the features are known and only the target has noise. Least squares minimizes the sum of the squares of those segments, which has a closed form, so there is no learning rate, no seed and no random restart. Fit it twice and you get the same plane, which is itself part of the interpretability story.</p>
+<p>Two things to say about why the squares. Squaring makes the objective differentiable and gives the closed-form solution, and it is equivalent to maximum likelihood under Gaussian noise. It also means one distant point can tilt the whole plane, so a single outlier can change every coefficient on the slide.</p>
+<p>Then the honest limitation of this picture: it works because there are two features. At ten features the hyperplane is real but not drawable, and from here on the visualization has to encode the coefficients rather than the geometry. That shift, from drawing the model to drawing its parameters, is the whole design problem in this lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Linear Regression: An Example of Housing Price</h2>
+
+<img data-src="figs/white-box/housing-linear-regression-example.png" class="r-stretch"><p>How do you interpret the influence of each property on the prediction of housing price?</p>
+<aside class="notes">
+<p>In this housing price model, we can directly read off the coefficients: each additional bedroom adds a certain amount to the price, each square foot contributes its value, proximity to schools has a measurable effect. The sign tells us direction (positive/negative), the magnitude tells us importance.</p>
+<p>Read the figure as an addition problem: each property is multiplied by its weight, the products are summed with an adjustment term, and the result is the prediction. This is the cleanest picture of what “additive” means, and it comes back twice today, for GAMs, where each weight becomes a curve, and for rule lists, where the sum becomes a sequence of tests.</p>
+<p>Now slow down on two entries, because this slide is a trap worth springing. Bathrooms are worth 350,000 each and bedrooms 90,000: does anyone believe that adding a bathroom to their apartment adds a third of a million dollars? And total rooms carries a <em>negative</em> weight. Ask the room how a house can be worth less for having another room.</p>
+<p>The answer is the next two slides. These features are strongly correlated with each other and with size, so the fit splits credit between them in whatever way minimizes error, and the split can put a negative sign on a feature that is positively associated with price on its own. The coefficients are jointly a good predictor and individually not a causal statement about renovating your apartment.</p>
+<p>Also flag the units: 100,000 per mile of subway distance is a coefficient on a feature measured in miles, and the values here are around a tenth of a mile. Magnitude on this slide means nothing until you know the scale of the feature, which is the first bullet on the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interpreting Linear Model Coefficients</h2>
+<p><strong>Basic interpretation:</strong> An increase in feature <span class="math inline">\(x_j\)</span> by one unit changes the prediction by <span class="math inline">\(\beta_j\)</span> units</p>
+<ul>
+<li class="fragment">✅ <strong>Numerical features</strong>: Direct marginal effect (holding others constant)</li>
+<li class="fragment">✅ <strong>Categorical features</strong>: Coefficients show difference from reference category</li>
+<li class="fragment">⚠️ <strong>Scale-dependent</strong>: Coefficients change with feature units</li>
+<li class="fragment">⚠️ <strong>“Holding others constant” assumes Feature Independence</strong> (a strong assumption!)</li>
+</ul>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/limo.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.1.</p>
+</div>
+<aside class="notes">
+<p>The standard interpretation is deceptively simple: each coefficient tells you the marginal effect of that feature. But be careful - this interpretation assumes you can change one feature while holding others constant, which may not be realistic. Coefficients are also scale-dependent - standardizing features helps comparisons.</p>
+<p>Take the three caveats in turn, with the housing slide still in mind.</p>
+<p>Scale. A coefficient is in units of target per unit of feature, so a coefficient on square footage and a coefficient on number of bathrooms are not comparable, any more than a speed in km/h is comparable to a price. If you want to rank features by importance, standardize first, so every coefficient is per standard deviation, or report the coefficient times the feature’s spread. Students routinely present the largest raw coefficient as the most important feature, and it is usually the feature with the smallest units.</p>
+<p>Categorical features. A coefficient is a contrast against the reference category, so it is not a property of the category alone; change the reference and every one of those coefficients changes. Whenever a categorical coefficient is quoted, ask “compared with what?”.</p>
+<p>Ceteris paribus. “Holding all others constant” is a statement about the arithmetic, not about the world. In the housing model you cannot add a bedroom while holding square footage and total rooms fixed. When features cannot move independently, the coefficient describes a comparison the data may not contain, and the model is extrapolating. That is the bridge to the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Important Assumptions for Interpretation</h2>
+<p>Linear models make strong assumptions:</p>
+<ol type="1">
+<li class="fragment"><p><strong>Linearity</strong>: Effects are additive (no interactions unless explicitly added)</p></li>
+<li class="fragment"><p><strong>Independence</strong>: Features are not strongly correlated</p></li>
+<li class="fragment"><p><strong>Homoscedasticity</strong>: Constant error variance</p></li>
+<li class="fragment"><p><strong>No multicollinearity</strong>: Correlated features can flip coefficient signs!</p>
+<p><strong>Example:</strong> Housing model with both “square footage” AND “number of rooms”</p>
+<ul>
+<li class="fragment">These features are highly correlated (VIF &gt; 10)</li>
+<li class="fragment">Coefficients become unstable and unreliable for interpretation</li>
+<li class="fragment">Model predicts well, but individual coefficients are meaningless</li>
+</ul></li>
+</ol>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/limo.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.1.</p>
+</div>
+<aside class="notes">
+<p>When features are correlated (multicollinearity), coefficients become unstable and can even change signs in counterintuitive ways. VIF (Variance Inflation Factor) measures this: VIF = 1 means no correlation, VIF &gt; 10 indicates severe multicollinearity. In the housing example, square footage and rooms are highly correlated - bigger houses have more rooms. The model can still predict well, but you shouldn’t interpret individual coefficients.</p>
+<p>Make VIF concrete, since it is on the slide. To compute it for one feature, regress that feature on all the others and take its R squared, then VIF is 1 over 1 minus that R squared. So VIF 10 means the other features already explain 90 percent of the variation in this one, and VIF 100 means 99 percent. It is not an arbitrary threshold, it is a statement about how little independent information the feature carries.</p>
+<p>Why the coefficients go unstable: if two features move together, many different weightings produce nearly identical predictions, so the fit is nearly flat along that direction and the solution is decided by noise. Resample the data and the split flips, sometimes past zero, which is the negative sign on total rooms.</p>
+<p>State the practical rule clearly, because it is the one that survives the course. Multicollinearity damages <em>interpretation</em>, not <em>prediction</em>. If you only need forecasts, ignore it. If you are going to say “square footage is worth X per foot” in a meeting, check VIF or the correlation matrix first.</p>
+<p>Remedies, briefly: drop one of the pair, combine them into one feature such as rooms per square foot, or regularize. Note that ridge stabilizes the coefficients by shrinking them, so they become more reproducible and no longer unbiased estimates of anything, which is a trade many people make without noticing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Evaluation of Linear Regression Model</h2>
+<p><strong>Notation:</strong></p>
+<ul>
+<li><span class="math inline">\(y_i\)</span> = actual/true value for sample <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\hat{y}_i\)</span> = predicted value for sample <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\bar{y}\)</span> = mean of all actual values</li>
+<li><span class="math inline">\(N\)</span> = number of samples</li>
+</ul>
+<h3>R Square</h3>
+<p><span class="math inline">\(R^2\)</span> (R-squared): Proportion of variance explained <span class="math display">\[\begin{equation}
+R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
+\end{equation}\]</span></p>
+<p>Mean Square Error (MSE)/Root Mean Square Error (RMSE) <span class="math display">\[\begin{equation}
+MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2, \quad RMSE = \sqrt{MSE}
+\end{equation}\]</span></p>
+<p>Mean Absolute Error (MAE) <span class="math display">\[\begin{equation}
+MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
+\end{equation}\]</span></p>
+<aside class="notes">
+<p>R-squared tells us the proportion of variance explained by the model (ranges 0-1, higher is better). MSE/RMSE penalize large errors more heavily than MAE due to squaring. Choose metrics based on your application’s tolerance for outliers - use MAE if you want robust estimates, MSE if large errors are particularly costly. Note that R-squared can be misleading with many features - adjusted R-squared accounts for model complexity.</p>
+<p>Three things worth adding, all of which show up in student projects.</p>
+<p>R squared has a baseline built in. Its denominator is the error of predicting the mean for everyone, so R squared is a comparison against that constant model: zero means you have matched the mean, and it can go negative on test data, which surprises people. It also rises whenever you add a feature, even a column of random numbers, which is why adjusted R squared exists.</p>
+<p>RMSE and MAE are in the units of the target, and R squared is not. For a housing model, “we are off by 65,000 dollars on average” is a sentence a stakeholder can act on, and “R squared is 0.83” is not. Report at least one metric in real units.</p>
+<p>The choice between them is a statement about costs, and it is the same argument as the proper scoring rules discussion two weeks ago. Squared error says one 100,000 dollar mistake is worth a hundred 10,000 dollar mistakes; absolute error says it is worth ten. Neither is neutral, so pick the one that matches what the errors actually cost, and say which you picked.</p>
+<p>Last: these are all computed on some data. Quote them on held-out data, and in a course project, say which split they came from.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visual Analytics (VA) Systems for Linear Regression</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/gam-weather-analysis.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:45%;">
+<p><strong>Core Visualizations:</strong></p>
+<ul>
+<li><strong>Scatterplot Matrix</strong>: Explore feature relationships and partitions</li>
+<li><strong>Parallel Coordinates</strong>: Analyze high-dimensional patterns</li>
+<li><strong>Interactive Partitioning</strong>: Split data to test model stability</li>
+</ul>
+<p><strong>Key Insights:</strong></p>
+<ul>
+<li>Trade-off between model complexity and accuracy</li>
+<li>Feature ranking and selection</li>
+<li>Model validation across partitions</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Mühlbacher, T., &amp; Piringer, H. (2013). <a href="https://doi.org/10.1109/TVCG.2013.125">A Partition-Based Framework for Building and Validating Regression Models</a>. <em>IEEE TVCG</em>. <strong>Best Paper Award, IEEE VAST 2013</strong>.</p>
+</div>
+<aside class="notes">
+<p>Mühlbacher and Piringer, TVCG, presented at VAST 2013 where it won best paper. It is the oldest system in the lecture and still the best argument for why model building is a visualization problem.</p>
+<p>The core idea is partitioning. Rather than assuming a functional form and fitting it, they chop a feature’s range into regions and show the distribution of the target inside each one, drawn like a box plot: median, quartiles, and the 5th and 95th percentiles. Do that for one feature and you see its relationship to the target without assuming linearity. Do it for pairs of features, shown as a matrix coloured by a summary of each cell’s distribution, and you see interactions. Then rank every feature and every pair by how much a small local model fitted inside those regions explains, so the analyst gets an ordered list of what is worth adding next.</p>
+<p>The move I most want them to take away: you can retarget the whole ranking onto the <em>residuals</em> of the current model. So the question stops being “which features matter” and becomes “what does my model still not explain”, and the system answers it over pairs as well as single features. In their energy case study that surfaced a systematic underestimation at high wind speed and low temperature, which the analyst immediately recognized as wind chill, a physical interaction the model lacked.</p>
+<p>Two more things worth a sentence each. Their layout choice changes conclusions: in one view wind speed looks strongly related to the target, and switching to a frequency-preserving layout reveals that the apparent effect lives where there is almost no data. Same data, two layouts, opposite readings, which is the whole argument for this course in one figure.</p>
+<p>And the evaluation is unusual: not a lab study but eleven domain experts at two energy companies using the tool daily for two months. They report that analyses that took about a day were reduced to about half an hour. That is the kind of claim you can only get from deployment, and it is the strongest evidence in today’s lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Pros, Cons, and Limitations of Linear Models</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Pros:</h3>
+<ul>
+<li><strong>Highly interpretable</strong>: Each coefficient has clear meaning</li>
+<li><strong>Statistical guarantees</strong>: Inference possible when assumptions hold</li>
+<li><strong>Fast</strong>: Analytical solution, no hyperparameters</li>
+<li><strong>Transparent</strong>: Easy to explain to stakeholders</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Cons &amp; Limitations:</h3>
+<ul>
+<li><strong>Linearity assumption</strong>: Cannot capture non-linear relationships</li>
+<li><strong>Gaussian assumption</strong>: Features assumed to follow normal distribution</li>
+<li><strong>Multicollinearity</strong>: Correlated features break interpretation</li>
+<li><strong>No interactions</strong>: Must manually add interaction terms</li>
+<li><strong>Assumption violations</strong>: Wrong inference if residuals not normal</li>
+</ul>
+<p><strong>What if your dataset does not follow these assumptions?</strong></p>
+</div></div>
+<aside class="notes">
+<p>Linear models shine when relationships are truly linear and assumptions hold (normal residuals, homoscedasticity, no multicollinearity). But real-world data often violates these assumptions - many real phenomena have non-linear relationships (diminishing returns, threshold effects) and feature interactions (temperature and humidity jointly affecting comfort). When data violates linear assumptions, we need more flexible models like GAMs.</p>
+<p>Before moving on, give them the diagnostic habit, because it is the cheapest useful thing in this whole section: plot the residuals against the fitted values. If the model is right, that plot is a formless cloud. Structure in it is the model telling you what it missed. A U shape means a curved relationship fitted with a straight line; a widening fan means the error grows with the prediction, so a constant-variance assumption is wrong and the confidence intervals are fiction. Five seconds of looking, and it catches most of the bullets on the right of this slide.</p>
+<p>Then set up the transition properly by asking the question the slide asks: what if your data does not follow these assumptions? There are three answers and we take them in order today. Transform the features by hand, which works and does not scale and requires you to guess the shape. Let the model learn the shape per feature, which is a GAM, next. Or let the model carve the space into regions, which is a tree, later.</p>
+<p>Worth naming the fourth answer, so nobody thinks interpretability is mandatory: fit the black box and explain it afterwards, which is next week, and which Rudin at the end of today argues you should not do for consequential decisions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Generalized Additive Models (GAMs)</h2>
+<p>GAMs extend linear models by replacing linear terms with flexible shape functions:</p>
+<p><span class="math display">\[\begin{equation}
+g(\mathbb{E}[y|X]) = \beta_0 + \sum_{j=1}^{p} f_j(x_{j})
+\end{equation}\]</span></p>
+<p><strong>Key idea:</strong> Replace <span class="math inline">\(\beta_j x_j\)</span> (linear) with <span class="math inline">\(f_j(x_j)\)</span> (flexible smooth function)</p>
+<ul>
+<li class="fragment">Each <span class="math inline">\(f_j\)</span> is learned from data (typically using splines)</li>
+<li class="fragment">Maintains additive structure → still interpretable</li>
+<li class="fragment">Can mix linear and non-linear terms</li>
+</ul>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/extend-lm.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.2.</p>
+</div>
+<aside class="notes">
+<p>GAMs replace linear terms with smooth functions that can capture non-linear patterns. Each feature gets its own learned shape function (often splines or smoothing functions). The model remains additive (no interactions by default) which preserves interpretability - we can visualize each function independently. The link function g allows for different target distributions (normal for regression, logistic for classification).</p>
+<p>Read the formula as one substitution: beta_j x_j becomes f_j(x_j). Everything else about the linear model is unchanged, and that is the point. We drop the assumption that the effect is a straight line, and we keep the assumption that effects add. Hastie and Tibshirani introduced these in the mid-1980s, so this is not a new idea, it is a rediscovered one.</p>
+<p>What the substitution buys, in interpretation terms: instead of one number per feature you get one curve per feature, and the curve is the complete story of that feature’s contribution. Nothing is hidden, because the model is literally the sum of what is on the plot. The whole model can be printed on one page as a small multiple of curves, which is why this family keeps coming back in the visualization literature.</p>
+<p>Mention the link function so the notation is not mysterious. With the identity link, this is regression. With the logit link, it is a classifier and each f_j is a contribution to the log odds, which is how the EBM plots later should be read: the y axis is a score, not a probability.</p>
+<p>One identifiability detail that explains the plots: each f_j is centered, its average contribution is zero, so the curves show deviation from the overall mean, and the intercept carries the rest. That is why the y axes on the coming figures are centered on zero.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>GAMs are Interpretable via Partial Dependence Plots (PDPs)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Linear Model:</strong> <span class="math inline">\(y = \beta_j x_j\)</span></p>
+<ul>
+<li>Fixed slope <span class="math inline">\(\beta_j\)</span></li>
+<li>Constant effect across all values</li>
+<li>Example: Each year of age adds $1,000 to salary</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>GAM:</strong> <span class="math inline">\(y = f_j(x_j)\)</span></p>
+<ul>
+<li>Flexible shape function</li>
+<li>Effect varies across feature range</li>
+<li>Example: Salary peaks at age 45-55, declines after</li>
+</ul>
+</div></div>
+<p><strong>Visualization:</strong> PDPs show <span class="math inline">\(f_j(x_j)\)</span> - the contribution of feature <span class="math inline">\(x_j\)</span> to the prediction across its range</p>
+<aside class="notes">
+<p>Partial Dependence Plots are what make GAMs interpretable. Instead of a single coefficient, we get a curve showing how the feature’s contribution changes across its range. This reveals patterns like U-shapes (high at extremes), S-shapes (threshold effects), or plateaus (saturation). The y-axis shows contribution relative to the mean prediction.</p>
+<p>Contrast the two columns on the slide as claims about the world. The linear model says “each year of age adds the same 1,000 dollars, at 22 and at 64”. The GAM says “the effect of age has a shape, and we learned it”. Ask which is more plausible for salary, then for dose response, then for temperature and energy use. The answer is almost always that the effect has a shape.</p>
+<p>There is a subtlety here worth stating explicitly, because it recurs when we get to PDPs for arbitrary models. For a GAM, the partial dependence <em>is</em> the shape function f_j: there is nothing to average, because the model is already a sum of one-dimensional functions. For a model that is not additive, a random forest or a neural network, partial dependence has to be computed by averaging predictions over the other features, and it becomes an approximation that can mislead. Same plot, two very different epistemic statuses. We come back to this in a few slides.</p>
+<p>Practical reading advice for their projects: always plot the data density under the curve, as a rug or a histogram. The interesting wiggles are often in the region where there are twelve data points, and a shape function is only as trustworthy as its support.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How GAMs Work: Splines as Building Blocks</h2>
+<p>GAMs use <strong>splines</strong> (piecewise polynomial functions) to approximate smooth curves:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Technical approach:</strong></p>
+<ul>
+<li>Replace feature <span class="math inline">\(x_j\)</span> with basis functions</li>
+<li>Fit weights to these basis functions</li>
+<li>Add penalty term for smoothness</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li>Visualize each <span class="math inline">\(f_j(x_j)\)</span> as a curve</li>
+<li>Y-axis shows contribution to prediction</li>
+<li>Relative to mean prediction</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/extend-lm.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.2.</p>
+</div>
+<aside class="notes">
+<p>Under the hood, GAMs convert each feature into multiple “basis functions” (like polynomial terms or spline segments). The model learns weights for these basis functions, similar to how linear regression learns coefficients. A smoothness penalty prevents overfitting by penalizing overly wiggly curves. This is controlled by cross-validation. The result: smooth, interpretable curves showing each feature’s effect.</p>
+<p>The trick worth naming: this is still linear regression. Expand x into a handful of basis functions, then fit a linear model in that expanded space. All the machinery, including the closed-form solution, carries over. What has changed is what the columns mean.</p>
+<p>The knots are where the pieces join. More knots means more flexibility and more wiggle; the penalty term, usually on the integrated squared second derivative, buys the wiggle back. So there is a tuning parameter, lambda, and it is chosen by cross-validation or by generalized cross-validation rather than by eye. Say the consequence out loud: the shape of the curve you are about to interpret is partly a hyperparameter choice, exactly as the reliability diagram’s bins were two weeks ago. If you show a GAM curve to a domain expert, show it at two smoothness settings first, and only build a story on the features that survive both.</p>
+<p>One vocabulary item they will meet in the R and Python packages: effective degrees of freedom. It is the honest count of how much flexibility the penalty actually left in a curve. A feature with effective degrees of freedom near 1 has been fitted as a straight line, and the model is telling you a linear term was enough.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Generalized Additive Models (GAMs): An Example</h2>
+<p><span class="math display">\[\begin{equation}
+Wage = f(year, age, education) = b_0 + f_1(year) + f_2(age) + f_3(education)
+\end{equation}\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/exp1.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+<aside class="notes">
+<p>This wage prediction example shows how GAMs capture different functional forms: year has a roughly linear upward trend, age shows a non-monotonic curve peaking in mid-career years, and education shows discrete jumps between levels. Each function is learned from data while the additive structure keeps the model interpretable.</p>
+<p>This is the standard wage example from the statistical learning literature, and it is a good one because the three panels are three different kinds of effect in one model.</p>
+<p>Left, year: nearly a straight line, a slow upward drift. This is the panel where a linear term would have done the job, and the GAM tells you so.</p>
+<p>Middle, age: the shape a linear model cannot express. Wages rise steeply through the twenties and thirties, flatten around the mid-forties, and decline after about sixty. A linear coefficient on age would average the rise and the decline into one lukewarm positive number, and every individual statement made from it would be wrong at both ends.</p>
+<p>Right, education: a categorical feature, so not a curve at all but a set of levels with error bars, increasing monotonically. It is worth pointing out that the same additive framework handles both continuous and categorical features, and that the visual language changes accordingly, points and intervals rather than a line.</p>
+<p>Two details to point at on the figure itself. The dashed bands are pointwise uncertainty, and they flare where the data thins, at the youngest and oldest ages. And the tick marks along the bottom axis are the data itself. Read the curve and the ticks together, always: the decline after sixty is estimated from comparatively few people, which is exactly the kind of caveat a shape function invites you to forget.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<!-- ## Training GAMs (Backfitting)
+![](figs/white-box/algo1.png)
+
+::: {.notes}
+The backfitting algorithm trains GAMs iteratively using a coordinate descent approach. Start with initial functions, then repeatedly update each function to fit the residuals from all other functions. This process converges to the optimal additive decomposition. It's computationally efficient and works well even with many features.
+::: -->
+</section>
+<section class="slide level2">
+<h2>Generalized Additive Models (GAMs): Pros and Cons</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Pros:</h3>
+<ul>
+<li><strong>Non-linear flexibility</strong>: Automatically learns smooth curves for each feature</li>
+<li><strong>Better predictions</strong>: Captures non-linear relationships without manual feature engineering</li>
+<li><strong>Still interpretable</strong>: Visualize each <span class="math inline">\(f_j(x_j)\)</span> independently</li>
+<li><strong>Maintains additivity</strong>: Easy to understand feature contributions</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Cons:</h3>
+<ul>
+<li><strong>No interactions by default</strong>: Must explicitly add interaction terms</li>
+<li><strong>Computationally expensive</strong>: Finding all pairwise interactions is infeasible with many features</li>
+<li><strong>Harder to explain</strong>: Shape functions less intuitive than linear coefficients</li>
+<li><strong>Overfitting risk</strong>: Requires careful smoothness tuning</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>GAMs balance flexibility and interpretability nicely - more expressive than linear models but still visualizable. But the no-interaction constraint can be limiting. If temperature and humidity interact to affect outcomes (e.g., heat index), a pure GAM will miss this synergistic effect and may underfit.</p>
+<p>Push on the interaction point, because it is what motivates the next three slides. A pure GAM assumes the effect of humidity is the same shape at 15 degrees and at 35 degrees. For comfort, or for mortality, that is plainly false: humidity barely matters when it is cold and dominates when it is hot. An additive model can only fit the average of those two shapes.</p>
+<p>The fix is to add a term f_ij(x_i, x_j) for a chosen pair, which is a surface rather than a curve and can still be drawn, as a heatmap. That is a GA2M, and it is what an Explainable Boosting Machine gives you. The catch is combinatorial: with 50 features there are 1,225 candidate pairs, so you cannot simply add them all, and you need a way to decide which pairs earn their place.</p>
+<p>The second honest cost, since the slide raises it: shape functions are harder to communicate than coefficients. “Each bedroom adds 90,000” fits in an email. “Here is the curve for square footage” requires the reader to look at a picture and read it correctly, which is a visualization problem, and is precisely why papers like Gamut and GAM Changer exist.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Explainable Boosting Machines</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><span class="math display">\[\begin{equation}
+g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j)
+
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+g(\mathbb{E}[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)
+
+\end{equation}\]</span></p>
+</div><div class="column" style="width:35%;">
+<p>What if we have a lot of interactions? How do we choose our interactions?</p>
+</div></div>
+<aside class="notes">
+<p>Automatically selecting which interactions to include is an active research area. EBMs use gradient boosting to greedily select the most important pairwise interactions during training. The boosting process alternates between improving main effects and interactions, naturally prioritizing the most impactful terms.</p>
+<p>Describe the training loop, because it explains why the result is still readable. An EBM boosts with very small trees, and it cycles through the features in round-robin: a tiny tree on feature 1, then feature 2, and so on, thousands of passes with a small learning rate. Because each tree only ever sees one feature, the contributions never entangle, and at the end the model collapses into exactly one lookup function per feature. The round-robin also reduces the order dependence you would get if you fitted features one at a time to convergence.</p>
+<p>Then the interactions are chosen in a second stage, by measuring which candidate pairs would most reduce the remaining error and keeping a small number of them. So the model is main effects plus a handful of named pairs, and the pairs are reported, not hidden.</p>
+<p>The two claims to emphasize. First, accuracy: on tabular data these are routinely competitive with random forests and boosted trees, which undercuts the reflex that interpretable means weak, and connects to the Rudin argument at the end of the lecture. Second, exactness: the explanation is not an approximation of the model, it is the model. You can hand someone the curves and they can reproduce any prediction with addition. Every post-hoc method we meet next week is an estimate; this is an identity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Explainable Boosting Machines</h2>
+<div style="text-align: center;">
+<iframe data-external="1" src="https://www.youtube.com/embed/MREiHgHgl0k" width="1400" height="900" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+<aside class="notes">
+<p>This video from Microsoft Research demonstrates the InterpretML library and EBMs in action. Watch how the system automatically discovers important feature interactions and visualizes their effects on predictions using partial dependence plots and interaction heatmaps.</p>
+<p>Things to point at while it plays: the global view, one small multiple per feature, which is the whole model; the ability to sort features by importance, where importance is the average absolute contribution rather than a coefficient; and the local explanation for a single prediction, which for this model class is just the list of the terms that were added up.</p>
+<p>Say the practical line: this is a pip install away, interpret is the package, and an EBM is a drop-in classifier or regressor with the usual fit and predict. For a course project on tabular data it is a reasonable first model rather than a consolation prize, and if it matches your gradient boosting baseline you get the explanation for free.</p>
+<p>If the video does not load, this is a file:// problem with the YouTube embed rather than a broken link; serve the deck over HTTP.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<!-- ![](figs/white-box/exp2.png) -->
+</section>
+<section class="slide level2">
+<h2>Partial Dependence Plots (PDPs)</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>What PDPs show:</strong> The marginal effect of a feature on the predicted outcome</p>
+<p><strong>Mathematical idea:</strong> Average the model’s predictions across all data points while varying one feature</p>
+<ul>
+<li class="fragment"><strong>Y-axis</strong>: Change in prediction (relative to baseline)</li>
+<li class="fragment"><strong>X-axis</strong>: Feature values</li>
+<li class="fragment"><strong>Curve shape</strong>: Reveals linear, monotonic, or complex relationships (U-shaped in example)</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/pdp-example.png" height="760"></p>
+<figcaption>Example of a Partial Dependence Plot (PDP) showing non-linear effect of Age</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/pdp.html"><em>Interpretable Machine Learning</em></a>. Chapter 8.1.</p>
+</div>
+<aside class="notes">
+<p>PDPs marginalize the model output over the distribution of other features. For each value of feature X, we compute predictions for all data points with X set to that value, then average those predictions. This shows the average effect of X on predictions. The curve reveals whether the relationship is linear (straight line), monotonic (always increasing/decreasing), or more complex with peaks and valleys.</p>
+<p>Give them the recipe as an algorithm, because it is three lines and it demystifies the plot. To get the partial dependence at age 40: take every row of your dataset, overwrite the age column with 40 while leaving all other columns as they are, ask the model to predict, and average those predictions. Repeat for a grid of ages and join the dots. Friedman introduced this in the gradient boosting paper, and it is entirely model-agnostic: it only needs a predict function, so it works on a random forest or a neural network.</p>
+<p>Note the cost: it is one pass over the whole dataset per grid point, so a hundred grid points means a hundred full prediction passes. Implementations subsample for a reason.</p>
+<p>Now the point that matters for this lecture. For a GAM the partial dependence is exact, it recovers f_j up to a constant, because the model really is additive. For any other model it is a summary: the curve is an average over interactions and correlations that the model is using but the plot cannot show. So the same picture means “the model” in one case and “one projection of the model” in the other. When you read a PDP in a paper, check which situation you are in. The next slide is about what goes wrong in the second case.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PDPs: Advantages and Limitations</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Advantages:</h3>
+<ul>
+<li><strong>Intuitive</strong>: Easy to understand and explain</li>
+<li><strong>Model-agnostic</strong>: Works with any model</li>
+<li><strong>Causal hints</strong>: Suggests feature importance</li>
+<li><strong>Shows shape</strong>: Reveals non-linear patterns</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Limitations:</h3>
+<ul>
+<li><strong>Independence assumption</strong>: Assumes features are independent (often violated!)</li>
+<li><strong>Averages hide details</strong>: Misses heterogeneous effects</li>
+<li><strong>Unrealistic combinations</strong>: May average over impossible feature values</li>
+<li><strong>Max 2 features</strong>: Can’t visualize high-dimensional interactions</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/pdp.html"><em>Interpretable Machine Learning</em></a>. Chapter 8.1.</p>
+</div>
+<aside class="notes">
+<p>The independence assumption is critical: PDPs assume you can vary one feature while holding others at their marginal distribution. But if features are correlated (e.g., house size and number of rooms), the PDP may average over unrealistic combinations. For example, it might average predictions for “1000 sq ft with 10 bedrooms” which doesn’t exist in reality.</p>
+<p>This is the same defect as the ceteris paribus problem with linear coefficients, now in visual form, and it is worth naming the connection: both procedures answer a question about a world where features move independently, and in the actual data they do not.</p>
+<p>Spell out the consequence. When you overwrite square footage with 4,000 for every row, you are asking the model about 4,000 square foot studios, and the model will happily answer, because it extrapolates. Those predictions come from a region with no training data, they can be arbitrary, and they are averaged into the curve with the same weight as the sensible ones. So the least trustworthy part of the plot looks exactly like the rest of it.</p>
+<p>Two standard repairs, worth naming so they recognize them in papers. ICE plots draw one line per instance instead of the average, which reveals when the average is hiding opposite effects in different subgroups, a flat PDP over a fan of rising and falling lines. ALE plots, accumulated local effects, replace the global average with local differences computed within small windows of the feature, so the model is never asked about combinations that do not occur.</p>
+<p>The second limitation on the slide, the two-feature ceiling, is really a visualization limit rather than a mathematical one: partial dependence is defined for any subset, but we can only look at a curve or a surface. That is the opening the visual analytics systems in the next section walk through.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing EBMs (or GAMs)</h2>
+
+<img data-src="figs/white-box/exp3.png" class="r-stretch quarto-figure-center"><p class="caption">Partial dependency plot</p><aside class="notes">
+<p>The first of four views of the same EBM, trained on census income data. This one is a continuous feature, Age. The step function on top is the learned shape function: the x axis is age, the y axis is the contribution to the score, and because this is a classifier with a logit link, the units are log odds, not probability. Centered at zero, so positive means this age pushes the prediction above the base rate.</p>
+<p>Read the shape with them: flat and negative through the early twenties, rising steeply from about 25 to 50, a plateau with a bump around the early fifties, then a decline and a long flat tail past 60. That is a substantive claim about the world, and it is the kind of claim a single coefficient cannot make.</p>
+<p>Three details on this figure that generalize to every shape function they will draw. The grey band is uncertainty, from bagging inside the EBM; where it widens, the model is guessing. The steps are steps, not a smooth curve, because the model is built from shallow trees, so the function is piecewise constant, and the step boundaries are the thresholds the trees chose. And the orange histogram underneath is the data density: the flat tail past 70 rests on very few people. Curve and density are read together, always.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing EBMs (or GAMs)</h2>
+
+<img data-src="figs/white-box/exp4.png" class="r-stretch quarto-figure-center"><p class="caption">Partial dependency plot</p><aside class="notes">
+<p>The same model, now a categorical feature: WorkClass. The visual language changes to a bar per category, each with an error bar, and the y axis is still a contribution to the log odds.</p>
+<p>The point of showing this next to the age curve is that additive models handle both kinds of feature in the same framework, and the plot just adapts. There is no ordering along the x axis here, so nothing should be read into the left-to-right sequence.</p>
+<p>Read the pattern: Self-emp-inc sits clearly above zero, Private sits slightly below, and the categories with wide error bars are the ones with almost no data, which the density panel underneath confirms. That is the categorical version of the caveat from the previous slide: a tall bar over an empty histogram is a number the model made up from a handful of rows.</p>
+<p>Ask the room what they would do about a category with five observations and an enormous error bar. Merging it into an “other” bucket before training is usually right, and it is exactly the kind of edit the GAM Changer slide later makes possible after training.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing EBMs (or GAMs)</h2>
+
+<img data-src="figs/white-box/exp5.png" class="r-stretch quarto-figure-center"><p class="caption">Partial dependency plot</p><aside class="notes">
+<p>Now a pairwise interaction term, the part a pure GAM cannot express: fnlwgt against HoursPerWeek. The encoding is a heatmap, so the x and y axes are the two features and colour is the joint contribution to the score.</p>
+<p>Say what this term means inside the model. The prediction is still a sum; this surface is simply one more addend, on top of the individual shape functions for both features. So an EBM is not a black box that happens to plot nicely, it is main effects plus a short, named list of pair terms, and you are looking at one of them.</p>
+<p>Read it honestly: most of this surface is flat, one broad band differs, and the effect is modest compared with the age curve two slides ago. That is a useful thing for students to see, because papers tend to show the one interaction that mattered. Being able to see that a term contributes almost nothing is a result.</p>
+<p>One visualization point, since this is that kind of course: the colour map here is a continuous sequential-to-diverging ramp over a quantity that has a meaningful zero, the point where the interaction adds nothing. A diverging map centred at zero would make the sign of the contribution readable at a glance, which this one only partly does.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing EBMs (or GAMs)</h2>
+
+<img data-src="figs/white-box/exp6.png" class="r-stretch quarto-figure-center"><p class="caption">Partial dependency plot</p><aside class="notes">
+<p>A second pairwise interaction, Education against Occupation, and this one is categorical on both axes, so the heatmap becomes a grid of cells rather than a continuous surface.</p>
+<p>This is the figure to use for the scalability question. Sixteen education levels by fourteen occupations is 224 cells, and each cell is estimated from the rows that have that exact combination, which for rare pairs is very few. Ask the room what happens when you go from two categorical features to three: the grid becomes a cube, you cannot draw it, and the counts per cell collapse. That is the real ceiling on interaction terms, and it is a data problem as much as a display problem.</p>
+<p>It is also worth noticing how much of this plot is a single flat colour. The interaction is concentrated in a few combinations. A sorted or clustered layout, ordering rows and columns so that similar effects sit together, would reveal that structure far better than the alphabetical ordering shown here, and that is a direct application of the matrix reordering ideas from the InfoVis literature.</p>
+<p>Taken together, these four slides are the whole EBM: a curve per continuous feature, bars per categorical feature, and a small number of pair surfaces. Nothing else is happening inside the model, which is the claim that makes this family worth the lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visual Analytics (VA) Systems Using GAMs</h2>
+
+<img data-src="figs/white-box/gamut-interface.png" class="r-stretch"><div class="footer">
+<p>Hohman, F., Head, A., Caruana, R., DeLine, R., &amp; Drucker, S. M. (2019). <a href="https://doi.org/10.1145/3290605.3300809">Gamut: A Design Probe to Understand How Data Scientists Understand Machine Learning Models</a>. <em>CHI 2019</em>.</p>
+</div>
+<aside class="notes">
+<p>Gamut, from Microsoft Research, CHI 2019, and it is worth being precise about what kind of paper it is: the system is a <em>design probe</em>. They built it in order to study how data scientists actually interpret models, so the contribution is as much the findings about people as the tool.</p>
+<p>The interface, from the screenshot. Left, the shape curve view: one line chart per feature, contribution on the y axis in dollars, with a histogram of data density under each axis, which is the same discipline we just applied to the EBM plots. Select a house and it appears as a point on every curve. Drag it and you have a counterfactual: what would this prediction be if the house were 300 square feet bigger. Right, the instance explanation is a waterfall chart, one bar per feature contribution plus the intercept, sorted by magnitude, and a second waterfall can be locked to the first’s ordering so two houses can be compared row by row.</p>
+<p>The study: twelve professional data scientists, an hour and a half each, on a housing model. Three findings worth repeating.</p>
+<p>First, expertise changed what people used. The ML novices went to the local, single-prediction explanations; the most expert participants moved fluidly between global shape functions and local explanations. So “explain the model” is not one need, it is several, and the audience determines which.</p>
+<p>Second, interactivity stopped being optional. The authors note that participants could not conceive of answering their own questions without it, even though the standard practice for GAMs at the time was flipping through static printouts of the shape functions.</p>
+<p>Third, and this is the one to leave them with, a warning: participants were eager to rationalize the explanations without first asking whether the explanation was correct. A plausible-looking curve gets believed. That is the risk that runs through the whole second half of this course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visual Analytics (VA) Systems Using GAMs</h2>
+
+<img data-src="figs/white-box/gam-changer-tool.jpg" class="r-stretch"><div class="footer">
+<p>Drucker, S. (2020). <a href="https://www.microsoft.com/en-us/research/video/data-visualization-bridging-the-gap-between-users-and-information/">Data Visualization: Bridging the Gap Between Users and Information</a>. Microsoft Research Webinar.</p>
+</div>
+<aside class="notes">
+<p>A pointer slide rather than a system: this is the title card of Steven Drucker’s Microsoft Research webinar, “Data Visualization: Bridging the Gap Between Users and Information”, which is available on demand and is a good survey talk to send students to. Drucker is a co-author on the Gamut paper we just looked at and leads visualization work at MSR.</p>
+<p>Use this as the moment to step back from the tools and name the pattern they share. Gamut, GAM Changer, and the tree and rule systems coming up are all built on the same three-part recipe: show the model globally, let the user select a case or a region, and show the local consequence in a linked view. Once you see the recipe, the individual systems become variations, and you can design the next one.</p>
+<p>If time is short this is the first slide to skip, since the substance is on the slides either side of it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>GAM Changer: Injecting Domain Knowledge via Interactive Editing</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/drucker-presentation.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:35%;">
+<p><strong>Human-in-the-Loop Features:</strong></p>
+<ul>
+<li><strong>Edit shape functions</strong> to encode domain knowledge</li>
+<li><strong>Enforce monotonicity</strong> where business logic requires</li>
+<li><strong>Smooth noisy patterns</strong> to improve generalization</li>
+<li><strong>Real-time feedback</strong> on model performance</li>
+</ul>
+<p><strong>Key Innovation:</strong> Bridges data-driven learning with expert knowledge through interactive visualization</p>
+</div></div>
+<div class="footer">
+<p>Wang, Z. J., Kale, A., Nori, H., Stella, P., Nunnally, M., Chau, D. H., … &amp; Caruana, R. (2021). <a href="https://arxiv.org/abs/2112.03245">GAM Changer: Editing Generalized Additive Models with Interactive Visualization</a>. arXiv:2112.03245. <a href="https://interpret.ml/gam-changer/">Demo</a> | <a href="https://github.com/interpretml/gam-changer">Code</a></p>
+</div>
+<aside class="notes">
+<p>GAM Changer, from the same Microsoft Research group with Carnegie Mellon, and it answers the question the Gamut study raised: interpretability, then what? Once a domain expert looks at a shape function and says “that part is wrong”, what can they actually do about it? Here they edit the model directly.</p>
+<p>The interface, left to right on the screenshot. The GAM Canvas shows one shape function as a set of editable bins; you can select a region and drag it, interpolate across it, delete a segment, or apply monotonicity, which fits an isotonic regression weighted by the bin counts. The metric panel updates in real time, on the global data, on the selected samples, and on a chosen slice, so you see immediately what an edit costs in accuracy. The feature panel shows which other features the affected samples differ on, which is how you catch an edit that silently targets a subgroup. And the history panel treats edits like commits, with timestamps and messages, so the model’s edit history is auditable. It runs locally in the browser via WebAssembly and ships inside InterpretML.</p>
+<p>The motivating example is medical and it is very clear: in a pneumonia risk model, the learned curve showed elevated risk at a body temperature of 96 degrees Fahrenheit relative to 95. A physician said there is no physiological reason for that, it is an artifact of who got treated, and edited it out.</p>
+<p>The part I would spend a minute on is the disagreement in their user study of seven data scientists. Shown an odd trend where low debt-to-income looked risky, some said it made sense and left it, one edited it away on the grounds that a model should not punish people with no debt, and another refused to touch it. Same chart, same tool, different ethical calls. And the authors are candid that real-time feedback and undo do not prevent someone from injecting bias, or from overfitting the validation set by editing against it. Editing a model is a governance question wearing a visualization interface, which is a good note to carry into the fairness week.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Trees: How They Work</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Decision trees recursively split data based on feature thresholds:</p>
+<ul>
+<li class="fragment"><strong>Internal nodes</strong>: Tests on features</li>
+<li class="fragment"><strong>Branches</strong>: Test outcomes (Yes/No)</li>
+<li class="fragment"><strong>Leaf nodes</strong>: Final predictions</li>
+<li class="fragment"><strong>Algorithm</strong>: CART</li>
+</ul>
+<p><strong>Prediction</strong>: Follow path from root to leaf</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/decision-tree-diabetes.mmd.png" style="width:100.0%"></p>
+<figcaption>Decision Tree Diabetes Example</figcaption>
+</figure>
+</div>
+<!-- MERMAID CODE: decision-tree-diabetes.mmd
+
+::::::{.cell reveal=true layout-align="default"}
+
+:::::{.cell-output-display}
+
+::::{}
+`<figure class=''>`{=html}
+
+:::{}
+
+<pre class="mermaid mermaid-js">graph TD
+    A[Glucose ≤ 127?&lt;br/&gt;Root Node]
+    A --&gt;|Yes| B[BMI ≤ 28?&lt;br/&gt;Internal Node]
+    A --&gt;|No| C[Age ≤ 50?&lt;br/&gt;Internal Node]
+    B --&gt;|Yes| D[Healthy&lt;br/&gt;Leaf: 0.15]
+    B --&gt;|No| E[At Risk&lt;br/&gt;Leaf: 0.45]
+    C --&gt;|Yes| F[Pre-diabetic&lt;br/&gt;Leaf: 0.65]
+    C --&gt;|No| G[Diabetic&lt;br/&gt;Leaf: 0.85]
+
+    style A fill:#e8f4f8,stroke:#2980b9,stroke-width:3px
+    style B fill:#f0f8ff,stroke:#3498db,stroke-width:2px
+    style C fill:#f0f8ff,stroke:#3498db,stroke-width:2px
+    style D fill:#d5f4e6,stroke:#27ae60,stroke-width:2px
+    style E fill:#fff3cd,stroke:#f39c12,stroke-width:2px
+    style F fill:#ffd6cc,stroke:#e67e22,stroke-width:2px
+    style G fill:#f8d7da,stroke:#e74c3c,stroke-width:2px
+</pre>
+:::
+`</figure>`{=html}
+::::
+:::::
+::::::
+-->
+<p><strong>Example:</strong> 3 splits, 4 leaves, depth 2</p>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/tree.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.4.</p>
+</div>
+<aside class="notes">
+<p>Decision trees work by recursively partitioning the feature space. At each internal node, the algorithm chooses a feature and threshold that best splits the data (measured by Gini impurity for classification or variance reduction for regression). This creates a hierarchical structure where each path represents a decision rule. To make a prediction, follow the decision path from root to leaf based on the instance’s feature values.</p>
+<p>Say what “best” means, because it is one greedy line: try every feature and every threshold, score each candidate split by how much purer the two children are than the parent, take the winner, then recurse. Gini impurity for a node is one minus the sum of squared class proportions, so it is zero when a node is all one class and 0.5 for a balanced binary node. Nothing looks ahead: a split that is mediocre now but would enable a perfect split later is never chosen. That greed is why trees are fast and why they are unstable.</p>
+<p>Then the geometry, which is the part students miss. Because every test is on a single feature, every boundary is perpendicular to an axis, so the model carves the space into boxes. A diagonal boundary has to be approximated by a staircase, which is why a two-feature problem with a diagonal separation can need a deep tree, and why trees dislike rotated data while neural networks do not care.</p>
+<p>And say where the interpretability actually comes from. Not from the algorithm, from the drawing: the path from root to leaf is a sentence in plain language, and you can follow one case through it in front of a non-expert. That property survives to about depth four or five and then quietly dies, which is the subject of the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Trees: Interpretation</h2>
+<p><strong>Reading a tree</strong>: “If feature <span class="math inline">\(x_j\)</span> is [smaller/larger] than threshold <span class="math inline">\(c\)</span> AND … then predict <span class="math inline">\(\hat{y}\)</span>”</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Strengths:</h3>
+<ul>
+<li><strong>Natural interactions</strong>: Captures feature interactions automatically</li>
+<li><strong>Visual logic</strong>: Clear decision rules</li>
+<li><strong>No preprocessing</strong>: Works with raw features</li>
+<li><strong>Human-friendly</strong>: Mimics human reasoning</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Limitations:</h3>
+<ul>
+<li><strong>Linear relationships</strong>: Poor at modeling smooth trends</li>
+<li><strong>High variance/instability</strong>: Small data changes → different tree</li>
+<li><strong>Depth problem</strong>: Deep trees become uninterpretable</li>
+<li><strong>Step functions</strong>: Predictions jump at thresholds</li>
+</ul>
+<p><strong>→ This instability motivates ensemble methods</strong> (Random Forests, Gradient Boosting) which average many trees</p>
+</div></div>
+<p><strong>Trade-off:</strong> Ensembles gain accuracy but <strong>lose white-box interpretability</strong> → Need for global surrogates (discussed later)</p>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/tree.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.4.</p>
+</div>
+<aside class="notes">
+<p>The key limitation of decision trees is their instability (high variance) - small changes in training data can produce completely different tree structures. This motivated ensemble methods like Random Forests and Gradient Boosting, which average predictions from hundreds of trees. However, this comes at a major cost: we lose the white-box interpretability of individual trees. You can’t meaningfully inspect 500 trees.</p>
+<p>Explain why the instability happens, since it follows from the greedy split. If two candidate splits at the root score almost the same, a handful of resampled rows can flip which one wins, and because everything below is conditioned on that choice, the entire subtree changes. The predictions may barely move while the explanation changes completely. That is a specific and uncomfortable failure: the model is stable and its interpretation is not. Ask them what it means to show a stakeholder a tree that would look different on next month’s data.</p>
+<p>Put a number on the depth problem too. A balanced tree of depth 10 has up to 1,024 leaves, so “just read the tree” is not available, and the rules at the bottom each cover a handful of cases.</p>
+<p>Then the trade-off at the bottom of the slide, which is the hinge of the whole lecture. Ensembles fix the variance by averaging, and averaging destroys the single readable structure. The rest of today is two answers to that. The surrogate route, coming up shortly, fits one interpretable model to imitate the ensemble. The Rudin route, at the end, says that for high-stakes decisions you should not have built the ensemble in the first place.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Tree-based Models: Example</h2>
+
+<img data-src="figs/white-box/diabetes-decision-tree.png" class="r-stretch quarto-figure-center"><p class="caption">A decision tree of diabetes diagnosis</p><aside class="notes">
+<p>A real tree, from scikit-learn on a diabetes dataset, and it is worth reading a couple of nodes out loud because the box contents are the anatomy of the model.</p>
+<p>Start at the root: the test is glucose at or below 127.5, there are 750 samples, gini is 0.5, and the class distribution is 379 against 371, which is a balanced problem. Follow the left branch, lower glucose, and the next test is BMI at 26.95 with 420 samples now leaning non-diabetic, 295 to 125. So the tree has found the two features a clinician would name first, and it found them in that order because glucose split the data best.</p>
+<p>Three things to point out. The thresholds are oddly precise, 127.5 and 26.95, because they are midpoints between adjacent observed values, not clinical cutoffs; do not over-read them. The colour encodes majority class with saturation for purity, so pale boxes are nodes the model is unsure about. And the sample counts shrink fast: several leaves here hold 35 to 121 cases, which is a reminder that the rules at the bottom of a tree are estimated from very little data.</p>
+<p>Then the interaction point on the slide. The tree tests BMI on both sides of the root, at 26.95 on one side and 29.95 on the other. That is an interaction discovered automatically: the BMI that matters depends on the glucose level. A GAM cannot express that without an explicit pair term, and a linear model cannot express it at all. Trees get interactions for free and pay for it in additivity and stability.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<!-- ## Visualization of Trees
+
+https://treevis.net/ provides a gallery of tree visualization. These trees are used to visualize hierarchical structures, but not just tree-based machine learning models.
+![](figs/white-box/decision-tree-visualization.png)
+
+::: {.notes}
+The TreeVis gallery showcases diverse tree visualization techniques from decades of HCI and InfoVis research. While many are designed for file systems, organizational charts, or taxonomies, the layout algorithms (node-link diagrams, treemaps, sunburst charts, icicle plots) all apply to ML decision trees. Choice of layout depends on what you want to emphasize - structure vs space utilization.
+::: -->
+</section>
+<section class="slide level2">
+<h2>VA Systems Using Tree-based Models</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/baobabview-interface.png" height="760"></p>
+<figcaption>BaobabView</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:35%;">
+<p>It shows the flow of different class, and the class distribution along the feature values.</p>
+</div></div>
+<div class="footer">
+<p>van den Elzen, S., &amp; van Wijk, J. J. (2011). <a href="https://doi.org/10.1109/VAST.2011.6102453">BaobabView: Interactive Construction and Analysis of Decision Trees</a>. <em>IEEE VAST 2011</em>.</p>
+</div>
+<aside class="notes">
+<p>BaobabView, van den Elzen and van Wijk, VAST 2011. Flag up front that this is the same system we return to in detail in four slides, where the title says “Interactive Construction”; the name and the paper are the same.</p>
+<p>The encoding, which is the part to have them read off the figure. The tree is a node-link diagram drawn top down, and the width of every link is proportional to the number of instances flowing from parent to child, so the diagram is also a flow map: thick means most of the data went this way. Each link is split into coloured bands by class, so you see not just how much data flows but what it is made of, and purity becomes visible as a band collapsing to one colour. Inside each node there is a class distribution bar and a small distribution plot for the candidate split attribute, with the split point drawn as a line you can drag.</p>
+<p>That dragging is the point of the paper. This is not a tree viewer, it is a tree <em>editor</em>: the expert grows, prunes and adjusts splits by hand, with the confusion matrix updating alongside.</p>
+<p>The result worth quoting, from their image-segmentation case. Their hand-built tree reached 93.2 percent accuracy with 29 nodes using 6 of the 19 attributes. The automatic J48 tree scored 94.5 percent with 75 nodes and 12 attributes. So they traded about one point of accuracy for a model two and a half times smaller, and they published that as a success. Ask the room whether that is a good trade, and for which use.</p>
+<p>One caveat for honesty: there is no user study here. The authors showed it to three decision tree experts, report that they were positive, and explicitly say a formal evaluation is future work, noting that a controlled experiment is hard when the goal is insight rather than accuracy.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>VA Systems Using Tree-based Models</h2>
+
+<img data-src="figs/white-box/iforest-interface.png" class="r-stretch quarto-figure-center"><p class="caption">iForest</p><div class="footer">
+<p>Zhao, X., Wu, Y., Lee, D. L., &amp; Cui, W. (2019). <a href="https://doi.org/10.1109/TVCG.2018.2864475">iForest: Interpreting Random Forests via Visual Analytics</a>. <em>IEEE TVCG</em>, 25(1), 407-416.</p>
+</div>
+<aside class="notes">
+<p>iForest, Zhao and colleagues, TVCG 2019. The problem it takes on is the one from the decision-tree slide: a random forest is hundreds of trees, and you cannot read them.</p>
+<p>Their move is to shift the unit of analysis from the tree to the <em>decision path</em>. Every instance traverses every tree, producing hundreds of paths; iForest summarizes those paths rather than the trees. The system gives access to all the tree information and then summarizes the decision paths across the forest, so a user can ask what route the ensemble typically takes for a given kind of case.</p>
+<p>The design detail most worth pointing at, and I would mark it as how the system is described in the follow-on literature rather than something I verified in the paper, which is paywalled: the projection view embeds decision <em>paths</em>, not data points. Two dots close together mean the forest reasoned about those two cases similarly, not that the cases have similar feature values. That is an unusual and clever thing to project, and it is easy to misread as an ordinary t-SNE of the data. If you show this figure in a project, label the projection carefully.</p>
+<p>The evaluation is two usage scenarios and a qualitative user study.</p>
+<p>One limitation to note, raised by the ExMatrix authors on the next-but-one slide: iForest focuses on binary classification, and it does not give an overall picture of the voting committee, which is exactly the gap ExMatrix sets out to fill. Useful to point out that the field advances by one system naming another’s blind spot.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interactive Construction and Analysis of Decision Trees</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/elzen-tree-overview.png" style="width:100.0%"></p>
+<figcaption>Elzen &amp; van Wijk, VAST 2011</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Novel node-link visualization for very large decision trees</li>
+<li>Interactive construction: users can split nodes, prune branches</li>
+<li>Multiple views: overview, detail, rules</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Now the same BaobabView system in detail. Say that explicitly, because the slide title changes and students will otherwise think this is a second tool.</p>
+<p>The overview figure shows the scalability claim: a tree far too large to read node by node, laid out so that the shape is still informative. At this zoom the widths and colours still carry the story, where the mass of the data goes and where classes separate, even though the labels are gone. That is a deliberate design position: an overview does not have to be legible in detail to be useful, it has to preserve the structure you navigate by.</p>
+<p>The three bullets are the interaction loop. Construction: the analyst chooses splits rather than accepting the greedy choice, which is how domain knowledge gets in. Pruning: cut a subtree that is fitting noise and watch the confusion matrix. And multiple linked views, overview, detail, and rules, which is the same three-part recipe as Gamut.</p>
+<p>The argument for putting a human in this loop is worth stating, because it is not obvious. A greedy learner optimizes purity at each node; it has no idea that one of your features is expensive to measure, or unavailable at prediction time, or ethically off-limits. A human can decline a split for reasons that are nowhere in the data. That is the same motivation as GAM Changer earlier: the model gets edited to respect knowledge the training set does not contain.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interactive Construction: Video Demonstration</h2>
+<div style="text-align: center;">
+<video id="video_shortcode_videojs_video1" width="1400" height="933" class="video-js vjs-default-skin vjs-big-play-centered " controls="" preload="auto" data-setup="{}" title=""><source src="figs/white-box/Elzen-Wijk-VAST2011.mov"></video>
+</div>
+<aside class="notes">
+<p>The video demonstration of BaobabView. Three things to watch for, and it is worth naming them before pressing play so the room knows where to look.</p>
+<p>First, the immediacy of the feedback loop: a split is chosen and the tree, the flows and the confusion matrix all update at once. The analyst is not running experiments, they are steering.</p>
+<p>Second, the split point interaction, where dragging the threshold along the attribute’s distribution shows how the instances redistribute. Interesting detail from the paper: as the split point is dragged, the totals on the two sides are kept consistent, so the display stays readable while the boundary moves.</p>
+<p>Third, pruning: watch what happens to accuracy when a large, apparently important subtree is cut. Often very little, which is the visual version of the overfitting lesson.</p>
+<p>This is a local file rather than a YouTube embed, so it plays without the network. If you are short on time this is skippable, since the two figures after it cover the same ground statically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interactive Construction: Colored Flow Visualization</h2>
+
+<img data-src="figs/white-box/elzen-tree-colored.png" class="r-stretch quarto-figure-center"><p class="caption">Decision paths colored by class and features</p><aside class="notes">
+<p>The coloured flow view, and this is BaobabView’s signature image. Every link is a bundle of instances, its width is the count, and it is divided into bands by class.</p>
+<p>Read it as a flow rather than as a tree. The trunk at the top is the whole dataset, all classes mixed, so the bundle is striped with every colour. As you move down, each split peels off colour: a good split produces two children whose bands are more single-coloured than the parent. Purity, which is an abstract number in the Gini formula, is directly visible as stripes turning into solid colour.</p>
+<p>The callouts on the right are leaves, labelled with the conditions that reach them, lung, breast, head and neck. Point out that some ribbons stay thick and mixed a long way down: those are the regions the model never manages to separate, and they are where you would look first for a new feature.</p>
+<p>Two design observations for a visualization course. This is a Sankey-like encoding, so it inherits the strength of that family, that quantity is preserved along the flow and you can follow a subpopulation. And the colour here encodes the true class rather than the prediction, which is what lets you see error as colour surviving where it should not. Always check which of the two a figure is showing you, because the same picture means different things.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interactive Construction: Rule Visualization</h2>
+
+<img data-src="figs/white-box/elzen-tree-rules.png" class="r-stretch quarto-figure-center"><p class="caption">Decision rules with feature splits</p><aside class="notes">
+<p>The rule view of the same tree. The structure is unchanged; what has been added is the predicate at each split, so the picture can be read as text: y-bar at most 9.00, then x2ybr above 2.00, and so on down to a leaf.</p>
+<p>This is the moment the tree becomes the rule list of the next section, so make the link explicit. Every root-to-leaf path is a conjunction of conditions with a class at the end, which is exactly the form of a decision rule. A tree with 40 leaves is a rule set with 40 mutually exclusive rules. The difference is only that the tree draws the shared prefixes once, while a rule list repeats them.</p>
+<p>That has a consequence worth stating: trees are compact when rules share conditions and wasteful when they do not, because a condition relevant to two distant branches has to be tested twice. Rule learners can express that in one rule. This is the replicated subtree problem, and it is the standard argument for learning rules directly rather than reading them off a tree.</p>
+<p>On the visual design, the honest note: the rainbow colouring here distinguishes paths, and that is close to the limit of what colour can do, since neighbouring hues in a rainbow ramp are not perceptually uniform and the number of paths exceeds the number of distinguishable hues. Sorting or bundling would carry more information than hue at this scale.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Decision Rules</h1>
+
+</section>
+<section class="slide level2">
+<h2>Decision Rules: What Are They?</h2>
+<p><strong>Definition:</strong> A decision rule is a simple IF-THEN statement consisting of a condition (antecedent) and a prediction (consequent).</p>
+<ul>
+<li class="fragment"><strong>Structure</strong>: IF (condition) THEN (prediction)</li>
+<li class="fragment"><strong>Example</strong>: IF glucose &gt; 120 AND age &gt; 50 THEN diabetes_risk = high</li>
+<li class="fragment"><strong>Natural language</strong>: Rules mirror human decision-making processes</li>
+<li class="fragment"><strong>Sparse representation</strong>: Only relevant features appear in conditions</li>
+<li class="fragment"><strong>Fast prediction</strong>: Simple logical evaluation</li>
+<li class="fragment"><strong>Transparent</strong>: Each rule’s logic is fully exposed</li>
+<li class="fragment"><strong>Compliance-ready</strong>: Rules can be directly translated into legal/regulatory documentation</li>
+</ul>
+<aside class="notes">
+<p>Decision rules represent one of the most interpretable forms of machine learning models. They directly mirror human decision-making processes by explicitly stating conditions and outcomes. This makes them particularly valuable in domains where transparency and explainability are crucial, such as healthcare, finance, and legal applications.</p>
+<p>Make the case concretely: a rule is the only model class whose output can be pasted into a policy document without translation. “IF glucose &gt; 120 AND age &gt; 50 THEN high risk” is simultaneously the model, the explanation, and something a regulator can audit. Clinical scoring systems and lending criteria have looked like this for decades, which means rules are the format the domain already speaks.</p>
+<p>Two properties on the slide worth drawing out. Sparse representation: only the features that appear in a fired rule matter for that decision, so a fifty-feature dataset can produce a three-condition explanation. And fast prediction: evaluation is a few comparisons, which matters when the model runs on a device or inside a database.</p>
+<p>The honest counterweight, so they do not leave thinking rules are free interpretability. Every continuous feature has to be cut into intervals, and those cut points are decisions made by the algorithm, not by medicine. A rule that says “age &gt; 50” implies that 50 and 51 differ and that 51 and 80 do not, which is false as biology and convenient as arithmetic. We will come back to this in the pros and cons.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Key Difference: Trees vs.&nbsp;Rule Systems</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Decision Trees:</strong></p>
+<ul>
+<li><strong>Mutually Exclusive</strong>: Each instance follows exactly one path</li>
+<li><strong>No conflicts</strong>: Instance reaches exactly one leaf</li>
+<li><strong>Hierarchical</strong>: Rules are ordered by tree structure</li>
+<li><strong>Example</strong>: A patient is either “high risk” OR “low risk”, never both</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Rule Systems:</strong></p>
+<ul>
+<li><strong>Not Mutually Exclusive</strong>: Instance can match multiple rules</li>
+<li><strong>Conflict resolution needed</strong>: Voting, priority, or confidence-based</li>
+<li><strong>Flat structure</strong>: Rules can be evaluated in any order</li>
+<li><strong>Example</strong>: A loan can trigger both “high income” AND “high debt” rules</li>
+</ul>
+</div></div>
+<p><strong>Implication:</strong> Rule systems need strategies to handle overlapping rules (majority vote, highest confidence, first match)</p>
+<aside class="notes">
+<p>This is a fundamental distinction often overlooked. In decision trees, the hierarchical structure guarantees mutual exclusivity - you can’t be in two leaves simultaneously. Rule systems allow multiple rules to fire for the same instance, which requires conflict resolution: majority voting, weighted average, or priority ordering where the first matching rule wins.</p>
+<p>Work an example so the abstraction lands. A loan application with high income and high debt. In a tree, the case follows one path and lands in exactly one leaf; whichever of income or debt was tested first has already decided the frame. In a rule set, both “high income implies approve” and “high debt implies deny” can fire, and the system needs a policy for what happens then.</p>
+<p>Now the trade-off, which is the interesting part. Mutual exclusivity is what makes a tree easy to reason about globally, and it is also what forces every case through one ordering of questions. Rules give up the guarantee and buy the ability to state several independent reasons for the same decision, which is closer to how people justify things.</p>
+<p>The conflict resolution strategy is itself a modelling choice with consequences for interpretability. First-match ordering gives you a rule list, which is cheap to explain, and quietly makes rule 1 more important than rule 40 regardless of evidence. Voting treats rules symmetrically and makes the explanation for a single case a tally rather than a sentence. Ask the room which they would rather defend in a meeting, and there is no clean answer, which is the point.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Rules: Key Characteristics</h2>
+<p><strong>Evaluation Metrics:</strong></p>
+<ul>
+<li class="fragment"><strong>Support</strong>: Percentage of instances matching rule conditions</li>
+<li class="fragment"><strong>Confidence/Accuracy</strong>: Percentage of correct predictions when rule fires</li>
+<li class="fragment"><strong>Coverage</strong>: How much of the dataset is explained by the rule set</li>
+</ul>
+<p><strong>Learning Approaches:</strong></p>
+<ul>
+<li class="fragment"><strong>OneR</strong>: Selects single best feature, discretizes it, creates one rule per value</li>
+<li class="fragment"><strong>Sequential Covering</strong>: Learns rules greedily - finds best rule, removes covered instances, repeats</li>
+<li class="fragment"><strong>Bayesian Rule Lists</strong>: Pre-mines frequent patterns, uses Bayesian model selection for optimal ordering</li>
+<li class="fragment"><strong>RIPPER</strong>: Fast rule learner with pruning to prevent overfitting</li>
+</ul>
+<aside class="notes">
+<p>Support measures breadth - does the rule apply to many instances? Confidence measures precision - when the rule fires, is it usually correct? Good rules balance both metrics. Very specific rules (low support) may overfit, while very general rules (high support, low confidence) may be too simplistic. Sequential covering is the classic approach: learn one rule, remove the data it covers, repeat until all data is covered.</p>
+<p>The two metrics are precision and coverage under different names, which is worth saying explicitly so the week 3 vocabulary transfers. Confidence is precision restricted to the cases the rule fires on; support is what fraction of the data that is. A rule with confidence 1.0 and support 0.3 percent is a memorized special case.</p>
+<p>On the learning approaches listed on the slide, one sentence each so the names are not empty. OneR builds the best possible single-feature rule set and is worth running as a baseline, because it is often embarrassingly competitive and it tells you how much your complicated model is actually buying. Sequential covering, the RIPPER family, is greedy in the same way as tree induction: take the best rule, delete the rows it covers, repeat, and prune afterwards. Because each rule is learned on what is left over, the later rules are conditioned on the earlier ones, and that is exactly why the ordering carries meaning.</p>
+<p>Bayesian Rule Lists are the interesting contrast: rather than greedily growing rules, they pre-mine frequent patterns and then search over orderings of them with a prior that prefers short lists and short conditions. The output is a short, readable list with an uncertainty statement attached, and this line of work is Rudin’s, which connects directly to the paper at the end of the lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Rules: Pros and Cons</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>✅ Strengths:</h3>
+<ul>
+<li><strong>Easy to interpret</strong>: Natural language reasoning</li>
+<li><strong>Fast prediction</strong>: Simple logical checks</li>
+<li><strong>Robust</strong>: Invariant to feature transformations</li>
+<li><strong>Feature selection</strong>: Automatically identifies relevant features</li>
+<li><strong>Human-aligned</strong>: Matches how experts explain decisions</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>⚠️ Limitations:</h3>
+<ul>
+<li><strong>Regression challenges</strong>: Works best for classification</li>
+<li><strong>Feature discretization</strong>: Continuous features need binning</li>
+<li><strong>Linear relationships</strong>: Hard to capture smooth trends</li>
+<li><strong>Overfitting risk</strong>: Complex rules may not generalize</li>
+<li><strong>Rule conflicts</strong>: Overlapping rules need resolution</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Molnar, C. (2022). <a href="https://christophm.github.io/interpretable-ml-book/rules.html"><em>Interpretable Machine Learning</em></a>. Chapter 4.7.</p>
+</div>
+<aside class="notes">
+<p>Decision rules excel when you need transparent, auditable models. They’re particularly valuable in regulated industries where you must explain each decision. However, they struggle with continuous relationships - you can’t easily express “price increases smoothly with size” as rules. The discretization required for continuous features can lose information and create artificial boundaries.</p>
+<p>Push on the discretization cost, because it is the mirror image of the GAM section. A GAM’s entire selling point was that it could express a smooth curve for the effect of age. A rule system has to replace that curve with a staircase, and every step boundary is a cliff: two applicants a day apart in age get different decisions. That is an artifact of the representation, and in a lending or medical context it is the kind of artifact that ends up in a complaint.</p>
+<p>The overfitting point on the slide deserves a concrete version too. A rule with three conditions carves a small box out of the feature space, and with enough features you can always find a box containing mostly positives by chance. That is why rule learners prune aggressively and why support is reported alongside confidence.</p>
+<p>And the conflict problem is not a footnote. Once two rules can fire, the model’s behaviour depends on the resolution policy, which is usually buried in the implementation rather than shown to the reader. A rule set is only as interpretable as its tie-breaking.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Rules: Different Structures</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/white-box/rule-list-medical-example.png" style="width:100.0%" alt="Rule List: If-then-else structure."> Clearly see how the decision is made and which rule is more important.</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/rule-set-example.png" style="width:100.0%"></p>
+<figcaption>Rule Set: A set of if-then rules.</figcaption>
+</figure>
+</div>
+<p>The final decision is made based on a voting mechanism.</p>
+<p>A recent user study shows that “if-then structure without any connecting else statements enables users to easily reason about the decision boundaries of classes.”</p>
+</div></div>
+<aside class="notes">
+<p>Rule lists have a clear priority ordering with if-then-else chains - rules are tried sequentially until one fires. Rule sets allow multiple rules to fire simultaneously and vote on the final decision. Each rule stands independently.</p>
+<p>Have them read the two panels side by side, because the difference is visible in the text. On the left, the indentation cascades: each “else if” is only reachable if everything above it failed, so by the time you reach the fifth line you are carrying four negated conditions in your head. On the right, every line starts at the same margin and can be read on its own.</p>
+<p>Then the cost of that readability. In the list, the position of a rule is information: the first rule is the one the model reaches for first, so the structure tells you what dominates. In the set, no rule is privileged, and the price is the voting mechanism, which has to break ties and is rarely shown.</p>
+<p>The claim on the right panel of the slide, that a user study found people reason more easily about if-then structures without the connecting else statements, is the empirical version of this argument, and it is a good example of something a visualization course can contribute: the model class is fixed, and the presentation of the same logic changes how well people use it. That is precisely the question on the next-but-one slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Rules: Different Structures</h2>
+<p>Disjunctive normal form (DNF, OR-of-ANDs) Conjunctive normal form (CNF, AND-of-ORs)</p>
+
+<img data-src="figs/white-box/dnf-rule-example.png" class="r-stretch quarto-figure-center"><p class="caption">What form does this rule set follow?</p><aside class="notes">
+<p>This example shows DNF (Disjunctive Normal Form) rules: each rule is a conjunction (AND) of conditions, and we predict positive if ANY rule fires (OR). DNF is more common in ML because it naturally represents disjoint decision regions in feature space.</p>
+<p>Answer the question on the slide by reading the form off the figure: each line is a set of conditions joined by “and”, and the lines are alternatives, so the whole thing is an OR of ANDs. That is disjunctive normal form, and the geometric reading is that each rule is an axis-aligned box and the model is the union of those boxes. A tree produces the same kind of object with the extra constraint that the boxes cannot overlap.</p>
+<p>The reason DNF dominates is that positives are usually clustered in a few pockets of the space, and a union of boxes is exactly the right shape for that. Conjunctive normal form, an AND of ORs, describes the same logic space, but the natural reading becomes “every one of these requirements must be satisfied in at least one way”, which is how you would write a checklist rather than a diagnosis.</p>
+<p>Useful thing to leave them with: any Boolean function can be written in either form, but the two forms are not equally short. A concept that needs three rules in DNF can need many more clauses in CNF, and since the number of terms is the thing a human has to read, the choice of normal form is an interpretability decision, not just a notational one.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Decision Rules: Visual Factors Influence Rule Understanding</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/rule-evaluation-metrics.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:35%;">
+<p><strong>Research Questions:</strong></p>
+<p>Can different visualizations of rules lead to different levels of understanding?</p>
+<p>What visual factors influence understanding and how do they affect rule comprehension?</p>
+<p><strong>Key findings:</strong> Visual encoding choices significantly impact interpretability</p>
+</div></div>
+<div class="footer">
+<p>Yuan, J., Nov, O., &amp; Bertini, E. (2021). <a href="https://arxiv.org/abs/2109.09160"><em>An Exploration and Validation of Visual Factors in Understanding Classification Rule Sets</em></a>. arXiv:2109.09160.</p>
+</div>
+<aside class="notes">
+<p>Yuan, Nov and Bertini, and this one is from our own community, NYU, so it is worth using as a model for what a course project can look like.</p>
+<p>The setup: hold the model completely fixed, a rule set of 18 rules over 8 features from a diabetes dataset, and vary only how it is drawn. They identify four visual factors and test two of them. Alignment: are the same features in the same column across rules, or does each rule run as a line of text? And predicate encoding: symbolic text, a graphical mark, or a hybrid.</p>
+<p>338 participants from a crowdsourcing platform, between subjects, two task types, predicting what the rule set outputs and characterizing what it does overall.</p>
+<p>The headline is a gift for a visualization lecture. Alignment alone cut response time from over 40 seconds to under 30, an improvement of roughly 20 seconds, with accuracy essentially unchanged and close to ceiling in every condition. Putting the same feature in the same column, which is a typographic decision costing nothing, was the entire effect.</p>
+<p>Two negative results, which are the more instructive part. The hybrid encoding, which they expected to combine the strengths of text and graphics, was slightly <em>worse</em> than graphical alone: the authors suggest the symbols simply take longer to read. And contrary to their expectation, the familiar unaligned text did not make people more confident.</p>
+<p>A methods detail worth pointing at: they renamed the features to Magnesium and Calcium, because in piloting, participants used their own intuitions about age and BMI to answer without reading the visualization at all. If you run a study in this course, you will hit that problem.</p>
+<p>They also deliberately report effect sizes with bootstrap intervals and no p-values, to avoid dichotomous thinking. Good practice to notice.</p>
+<p>The lesson for today: the model class was fixed and interpretability still varied a lot. Interpretability is a property of the artifact a person reads, not only of the model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Evaluation of Rules</h2>
+<p>Given a rule below:</p>
+<p>If <span class="math inline">\(X\)</span>, then class <span class="math inline">\(Y\)</span>.</p>
+<p>Support / Coverage of a rule:</p>
+<p><span class="math display">\[\begin{equation}
+\text{Support} = \frac{\text{number of instances that match the conditions in } X}{\text{total number of instances}}
+\end{equation}\]</span></p>
+<p>Confidence / Accuracy of a rule:</p>
+<p><span class="math display">\[\begin{equation}
+\text{Confidence} = \frac{\text{number of instances that match conditions in } X \text{ and belong to class } Y}{\text{number of instances that match conditions in } X}
+\end{equation}\]</span></p>
+<aside class="notes">
+<p>Support measures how frequently the rule applies (what fraction of data it covers). Confidence measures how accurate the rule is when it fires (what fraction of covered instances are correctly classified). Good rules balance both - high confidence but very low support means the rule is too specific. High support but low confidence means it’s too general and inaccurate.</p>
+<p>Put the two definitions on the board next to their week 3 names, because they are the same quantities. Support is coverage: the denominator is the whole dataset. Confidence is precision: the denominator is the set of cases the rule fires on.</p>
+<p>Work the pathological cases, they make the metrics stick. A rule that fires on one training case it happens to get right has confidence 1.0, and it is noise. A rule that fires on everything and predicts the majority class has support 1.0 and confidence equal to the base rate, and it has learned nothing, which is exactly the base-rate predictor argument from the calibration lecture in a different costume.</p>
+<p>Then the part the slide does not say. These numbers are computed on the training data, where the rule was chosen because it looked good, so both are optimistic; quote them on held-out data. And for a rule <em>set</em> rather than a single rule, the individually reported numbers do not compose: two rules with confidence 0.9 each can disagree on the cases where they overlap, and the set’s accuracy depends on the conflict resolution policy, not on the individual numbers. Evaluate the system, not the parts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Global Surrogate</h2>
+<p>Imagine that we have a black-box model (too complex to understand the internal structure), can we use white-box models to help us understand the model behavior of the black-box model?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/illustration2.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+<aside class="notes">
+<p>Global surrogate models approximate a complex black-box model with an interpretable white-box model. Train a decision tree or rule set to mimic the black-box’s predictions. This trades some accuracy for interpretability - you’re explaining the black-box’s behavior, not the underlying true relationship.</p>
+<p>This slide is the pivot of the lecture, so state the situation plainly: somebody has already trained the accurate opaque model, it is in production, and you are not being allowed to replace it. What can you do?</p>
+<p>The surrogate idea in one line: treat the black box as an oracle, ask it lots of questions, and fit something readable to its answers.</p>
+<p>The critical distinction, and it is the one students get wrong in projects: the surrogate is trained on the black box’s <em>predictions</em>, not on the true labels. So it is a model of the model. If the black box is confidently wrong in some region, a faithful surrogate reproduces that wrongness, and it should. Fidelity to the model and accuracy on the world are different targets, and only one of them is what an explanation is for.</p>
+<p>Flag where this is going: it sounds like a clean solution and we will spend the next three slides on why it is not, ending with a paper arguing you should not be in this position at all.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Global Surrogate</h2>
+<p>Open the black box by understanding a “surrogate model” that approximate the behavior of the original black-box model.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/illustration3.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+<aside class="notes">
+<p>The surrogate training process: feed data through the black-box to get predictions, then train an interpretable model (decision tree, linear model, rules) to predict what the black-box would predict. The surrogate’s feature importances and structure reveal what the black-box learned. Check surrogate fidelity - how well does it match the black-box predictions?</p>
+<p>Give them the recipe as four steps they could implement today: take your dataset, or generate points across the input space; run the black box on it to get predicted labels; throw away the true labels; fit a shallow tree or a rule list to those predicted labels. What comes out is the explanation.</p>
+<p>Then insist on the measurement, because it is the part that gets skipped. Fidelity is the agreement between surrogate and black box, measured as R squared for regression or accuracy for classification, on held-out data. Report it every time you show a surrogate, the way you would report accuracy for a classifier. A tree that agrees with the black box 62 percent of the time is not an explanation of anything, and it will look exactly as convincing as one that agrees 97 percent.</p>
+<p>Two subtleties worth 30 seconds. Where you sample matters: fidelity measured on the training distribution says nothing about behaviour off it, and the interesting failures are usually off it. And the surrogate is not unique: refit it on a different sample, or with a different depth, and you may get a structurally different tree with similar fidelity, in which case “what the black box learned” has several incompatible answers. That is the instability property from the tree slide, now attached to your explanation rather than to your model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The Fidelity-Interpretability Trade-off</h2>
+<p><strong>The Fidelity-Interpretability Trade-off:</strong> A fundamental challenge in XAI where increasing model interpretability often decreases fidelity to the original model’s behavior</p>
+<p><strong>What you want:</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/illustration4.png" class="nostretch quarto-figure quarto-figure-center" width="520"></p>
+</figure>
+</div>
+<p>Simple, interpretable surrogate with high fidelity to the black-box model</p>
+<p><strong>What you get:</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/illustration5.png" class="nostretch quarto-figure quarto-figure-center" width="760"></p>
+</figure>
+</div>
+<p>Either low fidelity (simple but inaccurate) or low interpretability (accurate but complex)</p>
+<aside class="notes">
+<p>This is the Fidelity-Interpretability Trade-off, a foundational problem in Explainable AI (XAI). You want a simple, interpretable surrogate that’s also highly faithful to the black-box model’s decisions. But there’s an inherent tension: simple surrogates miss important patterns (low fidelity), while high-fidelity surrogates become too complex to interpret.</p>
+<p>The two pictures make the argument. Above: the tree you want, small enough to read. Below: the thing you actually get once you demand high agreement with a deep ensemble, thousands of tiny leaves, technically a decision tree and in no sense an explanation.</p>
+<p>The reason is structural, not a matter of effort. The black box is expressing a function that needed a large hypothesis class; if a depth-3 tree could reproduce it, you did not need the black box in the first place. So there is a dial, and every position on it is unsatisfying: turn it towards simplicity and the explanation is unfaithful, turn it towards fidelity and the explanation is unreadable.</p>
+<p>Say the sharpest version of the danger out loud. The failure is silent. A simple surrogate always looks like a good explanation, because simplicity is exactly what we are checking for when we eyeball it. Nothing in the picture tells you it only agrees with the model two-thirds of the time. That is why the previous slide insisted on reporting fidelity.</p>
+<p>This same trade-off reappears next week for local explanations: LIME fits a simple model in a neighbourhood, which is the same bargain made smaller, and the neighbourhood is the new hyperparameter. And it is precisely the situation Rudin’s paper, four slides on, says we should refuse to enter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>VA System for Rule List</h2>
+
+<img data-src="figs/white-box/rulematrix-visualization.png" class="r-stretch quarto-figure-center"><p class="caption">RuleMatrix</p><div class="footer">
+<p>Ming, Y., Qu, H., &amp; Bertini, E. (2019). <a href="https://doi.org/10.1109/TVCG.2018.2864812">RuleMatrix: Visualizing and Understanding Classifiers with Rules</a>. <em>IEEE TVCG</em>, 25(1), 342-352.</p>
+</div>
+<aside class="notes">
+<p>RuleMatrix, Ming, Qu and Bertini, TVCG 2019, from NYU, and this is the rule-list counterpart to everything we did with trees.</p>
+<p>Start with what it takes as input, because it is a surprise: the model is a black box. They extract a rule list from its input-output behaviour, then visualize the rules. So this is a global surrogate, exactly the construction we defined a few slides ago, with the visualization built for the surrogate rather than for a natively interpretable model.</p>
+<p>The layout, read off the figure. Rows are rules, columns are features, so the column position of a condition is fixed across all rules. That is the entire design insight: in a textual rule list, the same feature appears at a different horizontal position in every line, so comparing rules means reading each one. Align the features into columns and comparison becomes a visual scan. Inside a cell, the grey box spans the interval the clause allows, drawn on top of the feature’s distribution, so you see both the condition and how much data it covers. Each row ends with the predicted class and its probability, and the bar under a feature name shows how often that feature is used.</p>
+<p>To the left, a Sankey-style flow shows how the data cascades through the list, since a rule list is evaluated in order and each rule only sees what previous rules did not catch. On the right, a fidelity glyph, which is the number we insisted on reporting for any surrogate.</p>
+<p>Their evaluation is two use cases plus a study with nine participants, mostly graduate students, on a diabetes model, finishing twelve tasks in about fifteen minutes on average.</p>
+<p>The limitation they state is the one to remember, and it is refreshingly precise: the implementation can display rule lists with over 100 rules and 30 features, but readability has only been validated below roughly 60 rules and 20 features. That is an interpretability ceiling stated as a number, which is rarer than it should be.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>VA Systems for Rules in Random Forest</h2>
+
+<img data-src="figs/white-box/explainable-matrix.png" class="r-stretch quarto-figure-center"><p class="caption">Explainable Matrix</p><div class="footer">
+<p>Popolin Neto, M., &amp; Paulovich, F. V. (2021). <a href="https://doi.org/10.1109/TVCG.2020.3030354">Explainable Matrix – Visualization for Global and Local Interpretability of Random Forest Classification Ensembles</a>. <em>IEEE TVCG</em>, 27(2), 1427-1437.</p>
+</div>
+<aside class="notes">
+<p>ExMatrix, Popolin Neto and Paulovich, presented at VAST 2020 and published in TVCG in 2021. It takes the matrix idea from the previous slide and points it at a whole random forest.</p>
+<p>The scale problem first, with their own number: a forest of 128 trees on the Wisconsin breast cancer data produced 3,278 rules, about 25 rules per tree, at 99 percent accuracy. Any approach that asks a person to read the rules has already lost. So their design question is not how to display a rule, it is how to display several thousand of them.</p>
+<p>The answer is a matrix again, rows as rules and columns as features, but now every cell is a tiny glyph: a rectangle whose horizontal extent within the cell encodes the interval the predicate allows, positioned against that feature’s full range. So a cell shows at a glance whether a rule is asking for a low, middle or high value, and an empty cell means the feature is not used. Add a column for how much data each rule covers, a column for its certainty, and a row at the top for feature importance, and you can sort by any of them.</p>
+<p>The local views are the more interesting half. Given one instance, show only the rules that actually voted on it, with a cumulative voting column and a marker for the point where the decision stops changing, so you can see the moment the committee made up its mind. There is also a counterfactual view: the smallest feature changes that would flip the vote.</p>
+<p>Their own honest limits are useful to read out. The global view is bounded by pixels, one rule per line at best, and they say it can be cluttered and tricky to explore. And in their study with thirteen users, the two global and local-voting tasks were answered correctly by about 77 percent, while the counterfactual view dropped to 62 and 46 percent, which they attribute to it suiting experts. A view can be principled and still be hard to use, and reporting that is a service.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Other white-box models?</h2>
+<ul>
+<li>Naive Bayes</li>
+<li>K-nearest neighbors</li>
+<li>etc.</li>
+</ul>
+<aside class="notes">
+<p>Beyond the models we’ve covered, other naturally interpretable models include: Naive Bayes (shows probability contributions from each feature via Bayes rule), K-Nearest Neighbors (predictions explained by showing similar training examples), and Logistic Regression (similar to linear regression but for classification).</p>
+<p>Use this slide to make the taxonomy point rather than to list models, because each of these is interpretable in a <em>different way</em>, and the differences are the interesting part.</p>
+<p>Naive Bayes is additive in log space: take logs and the prediction is a sum of per-feature evidence, so it explains like a linear model. Remind them of two weeks ago: it is also famously miscalibrated, because the independence assumption counts correlated evidence repeatedly. Readable and confidently wrong at the same time, which is a useful pairing to have met twice.</p>
+<p>K-nearest neighbours is a different species entirely. There are no parameters to read; the explanation is “here are the five most similar cases and what happened to them”. That is example-based interpretability, and for clinicians and lawyers it is often the most persuasive kind, because it matches precedent-based reasoning. The catch is that it lives or dies on the distance metric, and in high dimensions distances concentrate, so “similar” quietly stops meaning similar.</p>
+<p>Logistic regression is the workhorse and it deserves its own warning: coefficients are in log odds, so people routinely misreport them. An odds ratio is not a probability ratio, and a coefficient of 0.7 does not mean 70 percent more likely.</p>
+<p>If someone asks what is missing: sparse linear models with integer weights, the scoring-sheet form used in medicine, which is the family Rudin argues for at the end.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Outline</h2>
+<ul>
+<li><span style="color: grey;">Model Interpretation and Explanation</span></li>
+<li><span style="color: grey;">White-box Approaches and Visualizations</span></li>
+<li>Related Research in VIS &amp; AI</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Manipulating and Measuring Model Interpretability</h2>
+
+<img data-src="figs/white-box/global-surrogate-model.png" class="r-stretch"><div class="footer">
+<p>Poursabzi-Sangdeh, F., Goldstein, D. G., Hofman, J. M., Vaughan, J. W., &amp; Wallach, H. (2021). <a href="https://arxiv.org/abs/1802.07810">Manipulating and Measuring Model Interpretability</a>. <em>CHI 2021</em>.</p>
+</div>
+<aside class="notes">
+<p>Poursabzi-Sangdeh and colleagues, CHI 2021, and this is the most important empirical result in today’s lecture, so give it time.</p>
+<p>They did what almost nobody does: a large controlled experiment on whether transparency actually helps people. Two manipulations, crossed. Number of features the model displays, two or eight. And clear versus black-box: whether participants could see the model’s internals at all. The crucial design decision is that the models were constrained to make identical predictions, and every participant saw all eight feature values for each apartment. So the only thing that varied was the presentation of the model. Nearly 3,800 participants across four pre-registered experiments, predicting New York apartment prices from real listings.</p>
+<p>Three findings, in order.</p>
+<p>First, transparency works for the thing it obviously should. People shown the clear two-feature model were much better at simulating it, at predicting what the model would say. Large effect, highly significant.</p>
+<p>Second, it did not make them follow the model more when following it would have helped.</p>
+<p>Third, and this is the one to slow down for: people shown the clear model were <em>worse</em> at catching the model’s mistakes. The experiment included apartments with unusual configurations where the model was badly wrong, and participants with the transparent model deviated less from those wrong predictions than participants shown a black box. The authors’ own phrasing is “contrary to our intuition”, and they attribute it to information overload. In a follow-up, a message telling participants to watch for outliers made the effect disappear.</p>
+<p>So transparency bought simulatability and, in this setting, cost scrutiny. Their closing line is the lesson for this course: these counterintuitive findings emphasize the importance of testing over intuition when developing interpretable models. Everything else in today’s lecture is an intuition that has mostly not been tested this carefully.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Stop explaining black box machine learning models for high stakes decisions</h2>
+
+<img data-src="figs/white-box/surrogate-training-process.png" class="r-stretch"><div class="footer">
+<p>Rudin, C. (2019). <a href="https://doi.org/10.1038/s42256-019-0048-x">Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead</a>. <em>Nature Machine Intelligence</em>, 1(5), 206-215.</p>
+</div>
+<aside class="notes">
+<p>Cynthia Rudin’s 2019 paper in Nature Machine Intelligence, and it is the argument the whole lecture has been building towards. It is a position paper, it is combative, and it is worth reading in full.</p>
+<p>Her central claim, in her words: trying to explain black box models, rather than creating models that are interpretable in the first place, is likely to perpetuate bad practice and can cause catastrophic harm.</p>
+<p>Three arguments to walk through.</p>
+<p>One: the accuracy-interpretability trade-off is, in her words, a myth. Not always false, but assumed rather than demonstrated. Her evidence includes the 2018 FICO challenge, where entrants were told to build a black box and explain it afterwards, and there turned out to be no performance difference between interpretable and explainable models on that data; a globally interpretable model won the recognition prize. Connect this back to EBMs half an hour ago.</p>
+<p>Two, and this is the sharpest: explanations of black boxes must be wrong. If an explanation had perfect fidelity it would <em>be</em> the model, and you would not need the original. So every post-hoc explanation is an approximation, and an explanation that is right 90 percent of the time is wrong 10 percent of the time, which means you cannot trust it, which means you cannot trust the model it is vouching for. She suggests we should call these things summaries or trends rather than explanations.</p>
+<p>Three, COMPAS. The recidivism instrument requires more than 130 factors, and a three-rule model using only age and prior offences matches its accuracy. She also turns the ProPublica analysis around: ProPublica built a linear approximation of COMPAS that used race, then accused COMPAS of using race. If explanations can be unfaithful, they can be unfaithful in the direction of your hypothesis too. And a detail that lands with any audience: typographical errors in entering those 130-plus factors sometimes determine bail outcomes, and at a 1 percent per-field error rate, more than half of surveys contain at least one.</p>
+<p>Leave them with her constructive position, since the title sounds purely negative: build models constrained in form, sparse, monotone where the domain demands it, so they are useful to someone or obey known structure. That is the research programme behind rule lists and EBMs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Slice Finder: Automated Data Slicing for Model Validation</h2>
+<div class="footer">
+<p>Chung, Y., Kraska, T., Polyzotis, N., Tae, K. H., &amp; Whang, S. E. (2019). <a href="https://doi.org/10.1109/ICDE.2019.00139">Slice Finder: Automated Data Slicing for Model Validation</a>. <em>IEEE ICDE 2019</em>, 1550-1553. Extended version: <a href="https://arxiv.org/abs/1807.06068">arXiv:1807.06068</a>.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/white-box/toolkit-comparison.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p>How about we use whether the model prediction is wrong or not to train a “surrogate tree”?</p>
+</div></div>
+<aside class="notes">
+<p>Slice Finder, from a Google and KAIST group, and it is the operational answer to “the model is 92 percent accurate, so what is wrong with it?”.</p>
+<p>The problem: aggregate metrics average over everyone, so a model can look fine and fail systematically on a subgroup. Finding those subgroups by hand means guessing which slice to look at, and there are exponentially many.</p>
+<p>Their definition of a slice is the thing that makes this a white-box lecture topic: a conjunction of feature-value pairs, and fewer pairs counts as more interpretable. Country equals Germany is a better slice than country equals Germany and age 20 to 40 and postcode 12345, even if the second has worse loss, because a person can act on the first.</p>
+<p>Two search strategies: train a decision tree on where the model errs, and read the slices off the paths, or do a lattice search over feature-value combinations. The tree is the version to remember here, because it is the surrogate idea again, pointed at the errors instead of the predictions.</p>
+<p>The part I would emphasize is the statistical discipline. A slice must pass two tests, not one: the loss difference must be statistically significant, and the effect size must be large. And because you are testing thousands of candidate slices, they control the false discovery rate explicitly. Without that, hunting for bad subgroups guarantees you find some.</p>
+<p>Their census example makes the point in one line: the slice for one occupation had average loss on par with the worst slice, but a much smaller effect size, so it was not actually evidence of a problem. High loss alone is not a finding.</p>
+<p>One caveat to state, since we have been holding other papers to it: there is no user study here. The interpretability claim is by construction, few literals per slice, not measured on people, and the authors list a user study as future work.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Toolkits</h2>
+<p>InterpretML: https://github.com/interpretml/interpret</p>
+<aside class="notes">
+<p>InterpretML is Microsoft’s open-source library for interpretable machine learning. It implements GAMs, Explainable Boosting Machines (EBMs), and various explanation techniques. The library includes both glass-box models (inherently interpretable) and black-box explanation methods (LIME, SHAP). It provides unified APIs and visualization tools.</p>
+<p>Practical framing for the projects, since this is the slide they will screenshot. An EBM is a scikit-learn style estimator: fit, predict, and then show the global explanation, which gives you the per-feature curves in a browser, or the local explanation for a single row. The point of the unified API is that you can put a glass-box model and a post-hoc explainer side by side on the same data and compare what they tell you, which is a good project structure in itself.</p>
+<p>Two other things worth naming for their toolbox, since the slide lists only one. The pyGAM and mgcv packages are the statistical lineage of GAMs, in Python and R respectively, and mgcv is what a statistician will expect you to have used. And dtreeviz produces far better decision tree drawings than scikit-learn’s default, with the class distributions shown at each node, which matters if a tree is going into a report.</p>
+<p>The recommendation to give them: for tabular data, fit an EBM early, not as a fallback. If it matches your boosted-trees baseline, you have an accurate model whose explanation is exact, and the rest of the project gets easier.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Practice 1</h2>
+<p>Notebook: https://colab.research.google.com/drive/1nKE6WIApebHi67yfhH6k5mZN86evLZOM?usp=sharing</p>
+<p>Some other libraries for PDP visualization: https://scikit-learn.org/stable/modules/partial_dependence.html https://interpret.ml/docs/pdp.html</p>
+<aside class="notes">
+<p>This hands-on exercise walks through training GAMs with Python’s interpret library and creating partial dependence visualizations. You’ll explore how to identify non-linear patterns, detect feature interactions, and interpret model behavior through visualizations.</p>
+<p>Tell them what to actually look for, otherwise this becomes a run-all-cells exercise. Three things.</p>
+<p>Fit a linear model and a GAM on the same data and compare them on two axes: held-out error, and what each says about one specific feature. The interesting outcome is a feature where the coefficient says “no effect” because the curve rises and then falls, and the average of that is nothing.</p>
+<p>Second, check the data density under every curve you are about to believe, and find one region where the shape function is confidently shaped over almost no data. Every dataset has one.</p>
+<p>Third, turn the smoothing up and down and see which features change shape. The ones whose story survives are the ones to put in the report.</p>
+<p>The notebook link is on the slide, and the scikit-learn partial dependence docs are the reference for the plotting API.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Practice 2</h2>
+<p>Notebook: https://colab.research.google.com/drive/12LV2Z_1BbP3efACYp2QxzsPaOrIn8a8l?usp=sharing</p>
+<aside class="notes">
+<p>This hands-on exercise covers decision tree training, visualization, and rule extraction with sklearn. You’ll experiment with tree depth, pruning strategies, and extracting interpretable rules from trained trees.</p>
+<p>The exercise worth doing here is the instability demonstration from earlier in the lecture, because it takes five lines and it is convincing. Fit a tree, print it. Resample 90 percent of the rows, fit again, print again. Compare the root split. On most real datasets the structure moves while the accuracy barely does, and having seen that once, they will never again present a single tree as “what the data says” without a caveat.</p>
+<p>Two more things to try. Sweep max_depth and plot test accuracy against the number of leaves, so they can see where extra depth stops buying accuracy and starts buying only complexity; that curve is the fidelity-interpretability trade-off in miniature. And use export_text or export_graphviz to pull the rules out as text, which is how a tree turns into the rule list from the last section.</p>
+<p>If anyone finishes early: fit a random forest, then fit a depth-3 tree to the forest’s predictions and measure the fidelity. That is a global surrogate, built by hand, in about ten lines.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week5-white-box_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week5-white-box_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week5-white-box_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week5-white-box_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week5-white-box_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week5-white-box_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week5-white-box_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week5-white-box_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week5-white-box_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week5-white-box_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    <script>videojs(video_shortcode_videojs_video1);</script>
+    
+
+</body></html>
