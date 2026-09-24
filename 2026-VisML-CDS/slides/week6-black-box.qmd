@@ -3,7 +3,7 @@ title: "Black-box Model Interpretation"
 subtitle: "DS-GA 3001 - Fall 2026"
 author: "Claudio Silva"
 institute: "NYU Center for Data Science"
-date: "October 14, 2026"
+date: "October 6, 2026"
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -19,11 +19,9 @@ format:
     footer: <https://cds.nyu.edu>
     fontsize: 24pt
     css: lab-light-theme.css
-resources:
-  - model_assessment.pdf
 ---
 
-# Black Box Model Assessment
+# Black Box Model Interpretation
 
 ## Agenda
 
@@ -51,7 +49,6 @@ Materials adapted from:
 Today we transition from white-box (interpretable) models to black-box explanation methods. These techniques work with ANY machine learning model - neural networks, ensemble methods, etc. The key distinction: white-box models are inherently interpretable, while black-box methods provide post-hoc explanations. We'll cover three major approaches: PDPs for global feature effects, LIME for local instance explanations, and SHAP for theoretically-grounded feature attribution. Each has different trade-offs between computational cost, interpretability, and theoretical guarantees. Significant portions of this lecture are adapted from Christoph Molnar's excellent books on interpretable machine learning and SHAP.
 :::
 
-
 ## Bike Rentals (Regression) 
 
 ::: {.r-fit-text}
@@ -70,6 +67,7 @@ clear, few clouds, partly cloudy, cloudy
 mist + clouds, mist + broken clouds, mist + few clouds, mist
 light snow, light rain + thunderstorm + scattered clouds, light rain + scattered clouds
 heavy rain + ice pallets + thunderstorm + mist, snow + mist
+
 - Temperature in degrees Celsius.
 - Relative humidity in percent (0 to 100).
 - Wind speed in km per hour.
@@ -79,14 +77,22 @@ heavy rain + ice pallets + thunderstorm + mist, snow + mist
 Molnar, C. (2022). [*Interpretable Machine Learning*](https://christophmolnar.com/books/interpretable-machine-learning). 2nd Edition.
 :::
 
-## Partial Dependence Plot (PDP)
+::: {.notes}
+The running example for the whole PDP section, and the one Molnar's book uses. Daily bike counts from Capital Bikeshare in Washington DC over 2011 and 2012, so roughly 730 rows, one per day, with weather and calendar features. The target is the total count of rentals that day.
+
+Two features are worth calling out because students ask about them. The day index, days since 1 January 2011, is in there deliberately to soak up the overall growth trend, so that the weather terms are not forced to explain a two-year ramp. And the weather situation is an ordinal category, not a number, which matters when we later perturb it in LIME.
+
+This dataset comes back twice: the PDP curves on the next slides are computed on it, and the LIME bike example later trains a random forest on the same columns. Keeping one dataset across three methods is the point, because it lets us compare what each method tells us about the same model.
+:::
+
+## Partial Dependence Plot (PDP): What It Shows
 
 Shows the marginal effect **one or two features** have on the predicted outcome of a machine learning model (J. H. Friedman 2001).
 
 :::: {.columns}
 
 ::: {.column width="55%"}
-![](figs/black-box/bike-use-temperature.jpg)
+![](figs/black-box/bike-use-temperature.jpg){width="100%"}
 
 **1D PDP**: Line plot showing effect of single feature
 :::
@@ -115,7 +121,7 @@ Friedman, J. H. (2001). [*Greedy function approximation: A gradient boosting mac
 :::
 
 ::: {.notes}
-PDPs are one of the oldest and most intuitive model-agnostic interpretation methods. The key idea: marginalize over all other features to isolate the effect of one (or two) features on the prediction. Here we see bike rentals vs temperature - notice the non-linear relationship with a sweet spot around 20-25°C. The visualization immediately reveals this pattern that might be hidden in model coefficients. For two features, PDP generates a 2D plot (heatmap) showing interactions - the more complex the contour lines, the stronger the interaction between features. For example, a 2D PDP of temperature × humidity might show that high temperature increases rentals only when humidity is low. PDPs answer: "On average, how does changing this feature affect predictions?"
+PDPs are one of the oldest and most intuitive model-agnostic interpretation methods. The key idea: marginalize over all other features to isolate the effect of one (or two) features on the prediction. The figure is three PDPs side by side from Molnar, all for the bike model: temperature, humidity and wind speed, sharing a y axis of predicted bike count. Temperature climbs from about 3,400 rentals at freezing to roughly 5,000 near 22 degrees, then eases off, the sweet spot the green annotation marks. Humidity is flat until about 60 percent and then falls away. Wind speed declines gently throughout. The black tick marks along the bottom of each panel are a rug plot showing where the data actually is, which is how you know the far right of each curve rests on very few days. The visualization immediately reveals this pattern that might be hidden in model coefficients. For two features, PDP generates a 2D plot (heatmap) showing interactions - the more complex the contour lines, the stronger the interaction between features. For example, a 2D PDP of temperature × humidity might show that high temperature increases rentals only when humidity is low. PDPs answer: "On average, how does changing this feature affect predictions?"
 :::
 
 ## PDP Visualization: Interpreting Feature Effects
@@ -176,7 +182,7 @@ Feature is globally unimportant
 The key visual takeaway is the slope and shape of the line. The slope indicates the marginal effect. A flat line is a visually clear indicator of a globally unimportant feature. Contrast the flat line with the non-linear "sweet spot" of the temperature plot from the previous slide. When reviewing PDPs, look for: (1) Direction of effect (up/down), (2) Linearity vs non-linearity, (3) Interaction points where the effect changes dramatically.
 :::
 
-## Partial Dependence Plot (PDP)
+## Partial Dependence Plot (PDP): How It Is Computed
 
 High level idea: marginalizing the machine learning model output over the distributions of the all other features to show the relationship between the feature we are interested in and the predicted outcome.
 
@@ -260,7 +266,7 @@ display.figure_
 The California Housing dataset provides much clearer, more interpretable patterns: (1) **MedInc (Median Income)**: Shows a strong, near-linear positive relationship - as median income increases, predicted house values increase consistently. This makes intuitive sense and demonstrates a clear monotonic effect. (2) **HouseAge**: Reveals a non-monotonic pattern with a peak for middle-aged houses (around 20-30 years). Very new houses might lack established neighborhoods, while very old houses may need renovation. This is the kind of "sweet spot" pattern we discussed earlier. (3) **Interaction plot**: The 2D heatmap shows that median income has a dominant effect (notice the strong vertical color gradient), while house age modulates this effect more subtly. The interaction reveals that high-income areas command high prices regardless of house age. These diverse patterns demonstrate why PDPs are valuable for understanding feature effects.
 :::
 
-## Partial Dependence Plot (PDP)
+## Partial Dependence Plot (PDP): Pros and Cons
 
 ::: {.fragment}
 **Pros**
@@ -279,6 +285,14 @@ The California Housing dataset provides much clearer, more interpretable pattern
 - Hidden heterogeneous effects from averaging
 :::
 
+::: {.notes}
+Close the PDP section on the trade. Intuitive, one picture per feature, trivial to compute with one scikit-learn call.
+
+Then the three costs, and the third is the one that carries into LIME. Independence: PDP builds its grid by forcing a feature to a value while leaving the others as they are, which manufactures combinations the data never contains, thirty-five degrees in January for instance. Dimensionality: one or two features at a time, so you cannot see a three-way interaction. And averaging: the curve is a mean, so opposite effects in different subgroups cancel and the plot looks flat when in fact the feature matters enormously to two populations in opposite directions.
+
+That last one is the motivation for the next slide and for the rest of the lecture. Ask the room how you would detect the cancellation from the PDP alone. You cannot, which is why we need per-instance explanations.
+:::
+
 ## From Global to Local: Bridging PDP to LIME
 
 **PDP's Limitation: Averaging Hides Individual Differences**
@@ -292,6 +306,7 @@ The California Housing dataset provides much clearer, more interpretable pattern
 PDP shows the **average effect** across all instances.
 
 But what if the effect differs between:
+
 - Cold days vs. warm days?
 - New customers vs. loyal customers?
 - Low-income vs. high-income applicants?
@@ -329,11 +344,11 @@ Training local surrogate models to explain *individual* predictions
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/black-box/lime-global-decision-boundaries.jpg)
+![](figs/black-box/lime-global-decision-boundaries.jpg){height="760" fig-align="center"}
 :::
 
 ::: {.column width="40%"}
-![](figs/black-box/lime-paper.jpg)
+![](figs/black-box/lime-paper.jpg){height="760" fig-align="center"}
 :::
 
 ::::
@@ -346,7 +361,7 @@ Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Ex
 LIME represents a paradigm shift from global to local explanations. The key insight: even if the global decision boundary is complex (left image shows a highly non-linear boundary), we can approximate it LOCALLY with a simple linear model. Think of it like approximating a curve with a tangent line - it only works near the point of tangency. The title "Why Should I Trust You?" captures the motivation: users need to understand individual predictions to build trust. LIME became hugely influential because it's model-agnostic, produces human-interpretable explanations, and works for any data type (tabular, text, images).
 :::
 
-## Training local surrogate models to explain individual predictions
+## LIME: Training Local Surrogate Models
 
 The idea is quite intuitive. **First, forget about the training data and imagine you only have the black box model where you can input data points and get the predictions of the model. You can probe the box as often as you want. Your goal is to understand why the machine learning model made a certain prediction. LIME tests what happens to the predictions when you give variations of your data into the machine learning model.**
 
@@ -362,7 +377,17 @@ $$\text{explanation}(x) = \arg\min_{g \in G} L(f, g, \pi_x) + \Omega(g)$$
 Section 9.2, on Molnar's book.
 :::
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+::: {.notes}
+This is the paragraph from Molnar worth reading slowly, because it defines the method's whole stance. Forget the training data. You have a box: you feed it inputs, it returns predictions, and you can probe it as often as you like. That is the only access LIME assumes, which is exactly why it is model agnostic.
+
+The procedure in one sentence: generate variations of your instance, ask the box what it predicts for each, and fit a simple interpretable model to that new dataset, weighting each sample by how close it is to the instance you care about.
+
+Then the key term: local fidelity. The surrogate does not need to approximate the model anywhere else. It has to be right near this one point. A linear model that is hopeless globally can be an excellent description of a curved boundary over a small neighbourhood, the same way a tangent line describes a curve near the point of tangency.
+
+Unpack the objective on the slide. Three parts: L is the fidelity loss, how badly the surrogate g reproduces the black box f, measured only over the neighbourhood defined by the proximity kernel pi_x; omega of g penalises the surrogate's own complexity, which is what keeps the explanation short; and the arg min over a family G of interpretable models is where you choose between a sparse linear model and a shallow tree. Every knob students will later complain about, kernel width, number of features, choice of surrogate, is one of those three symbols.
+:::
+
+## LIME: The Algorithm
 
 ### Algorithm
 
@@ -371,12 +396,18 @@ Section 9.2, on Molnar's book.
 3. Train a linear classifier on the neighbors.
 4. The weights on the linear classifier is the explanation.
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+::: {.notes}
+The four-line version of the previous slide, and the one to put on the board. Pick an instance. Perturb around it. Fit a weighted linear model on the perturbed set. Read the coefficients as the explanation.
+
+The next four slides walk through exactly these steps on a two-dimensional toy problem, one step per slide, so the room can watch the neighbourhood form.
+:::
+
+## LIME Step 1: The Black-box Decision Boundary
 
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/black-box/lime-random-forest-model.jpg)
+![](figs/black-box/lime-random-forest-model.jpg){height="760" fig-align="center"}
 :::
 
 ::: {.column width="40%"}
@@ -387,13 +418,18 @@ Predicted classes: 1 (dark) or 0 (light).
 
 ::::
 
+::: {.notes}
+Step one, panel A from Molnar. This is the black box we are trying to explain: a random forest on two features, x1 and x2. Light blue is the region predicted class 1, grey is class 0, and the blue region is a narrow inverted V, two thin wedges meeting near x1 equals zero.
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+The shape is the point. No linear model could describe this boundary globally. Ask the room to imagine fitting a single straight line to separate blue from grey, and let them conclude it is hopeless. That global hopelessness is what makes the local trick interesting.
+:::
+
+## LIME Step 2: Sample Around the Instance
 
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/black-box/lime-random-forest-sampling.jpg)
+![](figs/black-box/lime-random-forest-sampling.jpg){height="760" fig-align="center"}
 :::
 
 ::: {.column width="40%"}
@@ -402,13 +438,18 @@ Instance of interest (big yellow dot) and data sampled from a normal distributio
 
 ::::
 
+::: {.notes}
+Step two, panel B. The big yellow dot near x1 equals 1, x2 equals minus 0.5 is the instance we want explained, and it sits in the grey region, so the model predicts class 0 for it.
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+The small black dots are the perturbed samples, drawn here from a normal distribution over the feature space. Note what LIME is doing: it is not using the training data at all, it is manufacturing its own dataset and labelling it with the black box. Note also that the samples are spread across the whole plot, not just near the yellow dot. That is deliberate, and the next slide is what fixes it.
+:::
+
+## LIME Step 3: Weight by Proximity
 
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/black-box/lime-random-forest-weighting.jpg)
+![](figs/black-box/lime-random-forest-weighting.jpg){height="760" fig-align="center"}
 :::
 
 ::: {.column width="40%"}
@@ -420,13 +461,18 @@ instantce of interest, and $w$ is the kernel width (self-defined).
 
 ::::
 
+::: {.notes}
+Step three, panel C. The same samples, now drawn with size proportional to their weight. The weights come from an exponential kernel on distance, the formula on the right, so points near the yellow instance count heavily and far points fade almost to nothing. You can see the black mass concentrated around the instance.
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+The kernel width w is the single most consequential parameter in LIME and it is chosen by the user. Too wide and you are fitting a global model again, and the explanation blurs. Too narrow and only a handful of samples carry any weight, so the fit is noisy and changes every time you run it. There is no principled default. This is the honest answer to the instability complaint on the pros and cons slide, and it is worth saying out loud now rather than later.
+:::
+
+## LIME Step 4: Fit a Local Linear Model
 
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/black-box/lime-random-forest-line.jpg)
+![](figs/black-box/lime-random-forest-line.jpg){height="760" fig-align="center"}
 :::
 
 ::: {.column width="40%"}
@@ -439,13 +485,20 @@ The official implementation uses a Ridge Classifier as the linear model for expl
 
 ::::
 
+::: {.notes}
+Step four, panel D. A ridge classifier is fitted to the weighted samples. The plus and minus signs on the grid show what the local surrogate predicts, and the red line is its decision boundary at probability one half.
 
-## Training local surrogate models to explain individual predictions
+Read the line against the true boundary. Globally it is wrong: it slices straight through the left wedge. Locally, in the neighbourhood of the yellow dot, it tracks the right edge of the blue wedge closely. That is local fidelity, and it is the whole claim of the method.
+
+The coefficients of that red line are the explanation. Two numbers here, one per feature, and their signs and magnitudes are what a user would be shown as the bar chart.
+:::
+
+## LIME: The Weighted Ridge Objective
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-![](figs/black-box/lime-random-forest-line.jpg)
+![](figs/black-box/lime-random-forest-line.jpg){height="640" fig-align="center"}
 
 $s_i$ = sample weight, $\lambda$ = regularization term
 :::
@@ -466,6 +519,14 @@ $$= \sum_{i=1}^{M} s_i(y_i - \sum_{j=0}^{p} w_j \times x_{ij})^2 + \lambda \sum_
 
 ::: footer
 Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Explaining the Predictions of Any Classifier*](https://arxiv.org/pdf/1602.04938.pdf). KDD.
+:::
+
+::: {.notes}
+The objective written out. It is weighted ridge regression: squared error between the surrogate and the black box, each term multiplied by that sample's proximity weight s_i, plus an L2 penalty on the coefficients.
+
+Two things to point at. The s_i is where the previous slide's kernel enters the algebra, so the geometry and the formula are the same idea. And lambda controls how much the coefficients shrink, which is the sparsity knob from the objective two slides back, the omega term. In the reference implementation the surrogate is a ridge classifier, and feature selection is applied on top to cut the explanation down to the few features the user actually sees.
+
+Note the sign convention: w_j is what gets reported as the importance of feature j.
 :::
 
 ## LIME Visualization: Bar Charts for Local Explanations
@@ -494,8 +555,8 @@ Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Ex
 </div>
 
 <div style="margin-top: 20px; font-size: 1.05em; line-height: 1.8;">
-✓ Warm temperature strongly supports high rentals
-✓ Low wind moderately supports
+✓ Warm temperature strongly supports high rentals<br>
+✓ Low wind moderately supports<br>
 ✗ Non-holiday slightly opposes
 </div>
 :::
@@ -520,8 +581,8 @@ Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Ex
 </div>
 
 <div style="margin-top: 20px; font-size: 1.05em; line-height: 1.8;">
-✗ Rain strongly opposes high rentals
-✗ Cold temperature opposes
+✗ Rain strongly opposes high rentals<br>
+✗ Cold temperature opposes<br>
 ✓ Weekday weakly supports
 </div>
 :::
@@ -657,7 +718,7 @@ This slide shows actual LIME explanations for bike rental predictions. The bar c
 Bike Sharing Dataset from UCI Machine Learning Repository. Fanaee-T, H., & Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence, 2(2-3), 113-127.
 :::
 
-## Local Surrogate (LIME)
+## LIME on Images: Superpixels as Features
 
 **Training local surrogate models to explain individual predictions**
 
@@ -671,7 +732,7 @@ Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). [*"Why Should I Trust You?" Ex
 This figure demonstrates LIME's model-agnostic nature applied to image classification with Google's Inception neural network. The key adaptation for images is using superpixels (coherent image regions) as interpretable features instead of individual pixels. Notice how LIME provides instance-specific explanations: when explaining "Electric guitar" (p=0.32), it highlights the guitar; when explaining "Acoustic guitar" (p=0.24), it highlights acoustic features; when explaining "Labrador" (p=0.21), it highlights the dog's face. This shows that different predictions for the same image get different explanations - LIME adapts to explain what matters for each specific prediction. The gray regions are turned off (superpixels not contributing to that prediction), while colored regions are what the local linear model identifies as most important.
 :::
 
-## Local Surrogate (LIME)
+## LIME for Debugging: The Husky and the Wolf
 
 **Raw data and explanation of a bad model's prediction in the "Husky vs Wolf" task**
 
@@ -768,7 +829,7 @@ The bar chart shows which features push the prediction higher (positive) or lowe
 The output shows a horizontal bar chart with the most important features for this specific prediction. Positive bars (pointing right) indicate features that increase the predicted house value, while negative bars (pointing left) decrease it. The length of each bar represents the magnitude of the feature's contribution. Notice this is a LOCAL explanation - it only applies to this one house. If we explained a different house, we'd likely get different important features. This is the key difference from PDP which shows global average effects. The sparse representation (only 5 features) makes it easy for users to understand and trust the prediction.
 :::
 
-## Local Interpretable Model-agnostic Explanations (LIME)
+## LIME: Pros and Cons
 
 
 ::: {.fragment}
@@ -788,12 +849,20 @@ The output shows a horizontal bar chart with the most important features for thi
 - Many parameters for data scientists to hide biases.
 :::
 
+::: {.notes}
+Close LIME on the trade, and be blunt about the cons because students will hit all three in the lab.
+
+Short and contrastive is a genuine strength: you control how many features appear, and the bar chart reads as a sentence. Very easy to use, one object and one call.
+
+Unstable results due to sampling is the big one. Run LIME twice on the same instance with a different seed and you can get different features. That is not a bug, it follows from step two. Distance in high dimensions is the second: with fifty features almost everything is far from everything, so the proximity kernel stops distinguishing neighbours and the local neighbourhood is no longer local. And the third is the uncomfortable one, many parameters means a motivated analyst can tune kernel width and feature count until the explanation says what they want. Hold that thought for the adversarial slides in the SHAP section.
+:::
+
 ## SHAP (SHapley Additive exPlanations)
 
 :::: {.columns}
 
 ::: {.column width="60%"}
-![](figs/black-box/shap-example.jpg)
+![](figs/black-box/shap-example.jpg){height="760" fig-align="center"}
 :::
 
 ::: {.column width="40%"}
@@ -810,7 +879,6 @@ Lundberg, S. M., & Lee, S. I. (2017). [*A Unified Approach to Interpreting Model
 SHAP brings rigorous game theory to ML interpretability. The key innovation: apply Shapley values from cooperative game theory to feature attribution. This provides a principled answer to "how much did each feature contribute?" with mathematical guarantees (efficiency, symmetry, dummy, additivity axioms). SHAP unified several existing methods under one framework. The image shows a typical SHAP force plot - red pushes prediction higher, blue pushes lower. Unlike LIME which is heuristic, SHAP has strong theoretical foundations. Trade-off: computational cost is higher, but you get provably fair attributions.
 :::
 
-
 ## A Short History of Shapley Values and SHAP
 
 **Three key milestones:**
@@ -818,6 +886,10 @@ SHAP brings rigorous game theory to ML interpretability. The key innovation: app
 * **1953**: The introduction of Shapley values in game theory
 * **2010**: The initial steps toward applying Shapley values in machine learning
 * **2017**: The advent of SHAP, a turning point in machine learning
+
+::: {.notes}
+The roadmap for the next block. Three dates: 1953 for the maths, 2010 for the first attempt to apply it to machine learning, 2017 for the version everyone now uses. The gap between the second and third is the interesting part, and it is a lesson about software rather than about theory.
+:::
 
 ## Lloyd Shapley's Pursuit of Fairness (1953)
 
@@ -856,6 +928,14 @@ SHAP brings rigorous game theory to ML interpretability. The key innovation: app
 Shapley, L. S. (1953). A value for n-person games. Contributions to the Theory of Games, 2(28), 307-317.
 :::
 
+::: {.notes}
+Shapley's question had nothing to do with machine learning. A group cooperates, they generate some total value, and the question is how to split it fairly when members contribute differently and in combination. His answer was to define fairness by a set of properties and then show that exactly one allocation satisfies them, which is the uniqueness result we come back to in a few slides.
+
+The Nobel was in 2012, shared with Alvin Roth, and it was for matching and market design rather than for this paper specifically. Shapley died in 2016, the year before SHAP appeared.
+
+The point to leave them with: this is a sixty-year-old piece of economics that turned out to answer a question machine learning did not know it was asking.
+:::
+
 ## Early Days in Machine Learning (2010)
 
 **2010: Erik Štrumbelj and Igor Kononenko propose using Shapley values for ML**
@@ -892,6 +972,14 @@ Shapley, L. S. (1953). A value for n-person games. Contributions to the Theory o
 Štrumbelj, E., & Kononenko, I. (2010). An efficient explanation of individual classifications using game theory. JMLR, 11, 1-18.
 :::
 
+::: {.notes}
+Štrumbelj and Kononenko got there first, in JMLR, seven years before SHAP, with essentially the right idea including the sampling approximation. Almost nobody used it.
+
+Walk the two columns as a case study in why good ideas fail to spread. Interpretability was not yet a named field with a conference track. No code shipped with the paper. The estimator was too slow for images or text, which were the domains generating excitement. And JMLR, while excellent, was not where the deep learning community was looking in 2010.
+
+This is worth a minute for a class full of people about to write research software. The 2017 paper's advantage was not primarily mathematical.
+:::
+
 ## The SHAP Cambrian Explosion (2017)
 
 **2016: LIME paper catalyzes the field**
@@ -909,6 +997,14 @@ Ribeiro et al. introduce Local Interpretable Model-Agnostic Explanations → gro
 3. **Open-source `shap` package**: Wide range of features and plotting capabilities
 4. **High-profile venue**: Published at major ML conference (NIPS/NeurIPS)
 
+::: {.notes}
+What changed. LIME in 2016 created the demand by making interpretability a visible topic. Then Lundberg and Lee published at NeurIPS with four things the 2010 work lacked.
+
+Kernel SHAP, an estimator that recasts the Shapley computation as a weighted linear regression, which is also the formal bridge to LIME. The unification argument, showing that LIME, DeepLIFT and layer-wise relevance propagation are all special cases of one additive attribution framework, which is what the title means by unified. A maintained open-source package with good plots. And a venue the whole field reads.
+
+The unification claim is the intellectually interesting one: it says these methods are not competitors but different estimators of the same quantity.
+:::
+
 ## Why SHAP Gained Popularity
 
 :::: {.columns}
@@ -916,11 +1012,11 @@ Ribeiro et al. introduce Local Interpretable Model-Agnostic Explanations → gro
 ::: {.column width="50%"}
 **Critical success factors:**
 
-✓ Published at prestigious venue (NeurIPS)
-✓ Pioneering work in rapidly growing field
-✓ **Open-source Python package** - enabled integration
-✓ Ongoing development by original authors
-✓ Strong community contributions
+✓ Published at prestigious venue (NeurIPS)<br>
+✓ Pioneering work in rapidly growing field<br>
+✓ **Open-source Python package**, which enabled integration<br>
+✓ Ongoing development by original authors<br>
+✓ Strong community contributions<br>
 ✓ Comprehensive visualization tools
 
 **2020 breakthrough:** TreeSHAP
@@ -947,6 +1043,12 @@ Ribeiro et al. introduce Local Interpretable Model-Agnostic Explanations → gro
 
 ::: footer
 Lundberg, S. M., & Lee, S. I. (2017). A unified approach to interpreting model predictions. NeurIPS. | Lundberg, S. M., et al. (2020). From local explanations to global understanding with explainable AI for trees. Nature Machine Intelligence, 2(1), 56-67.
+:::
+
+::: {.notes}
+Two lists. On the left, why it spread, and note that four of the six reasons are about software and community rather than about mathematics. TreeSHAP in 2020 is the one to emphasise: exact Shapley values for tree ensembles in polynomial rather than exponential time, published in Nature Machine Intelligence. That is what made SHAP usable on the gradient boosting models that win most tabular competitions, and it is why global SHAP summary plots became routine.
+
+On the right, the vocabulary, which trips people up in writing. Shapley values are the 1953 concept, SHAP is the application to a prediction, SHAP values are the outputs, and shap in lower case is the package. Students should use the terms precisely in their project reports.
 :::
 
 ## Theory of Shapley Values
@@ -995,7 +1097,6 @@ We need a principled way to divide costs based on **marginal contributions**.
 The taxi example beautifully illustrates why Shapley values are "fair". A naive split ($17 each) is unfair - Alice subsidizes the others. Shapley values compute each person's marginal contribution across all possible orderings of joining the taxi. This ensures: (1) Total cost is exactly split, (2) Symmetric players pay equally, (3) Non-contributors pay nothing, (4) Values are additive. The same logic applies to features in ML: how much does each feature "contribute" to the prediction, measured fairly across all possible feature coalitions?
 :::
 
-
 ## Calculating Marginal Contributions
 
 <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
@@ -1018,6 +1119,14 @@ The taxi example beautifully illustrates why Shapley values are "fair". A naive 
 | Charlie | {Alice} | $15 | $41 | **$26** |
 | Charlie | {Bob} | $25 | $51 | **$26** |
 | Charlie | {Alice, Bob} | $25 | $51 | **$26** |
+
+::: {.notes}
+The mechanical step. A marginal contribution is what the total changes by when one player joins a specific group. Charlie joining Bob costs 51 minus 25, so 26.
+
+Work two rows out loud with the room. Alice joining the empty taxi contributes 15. Alice joining Bob contributes nothing at all, because Bob's luxury taxi already costs 25 and adding Alice does not change it. That zero is not a rounding artefact, it is the reason a single number cannot describe Alice's contribution: it depends entirely on who is already in the car.
+
+Count the rows: each of three players has four possible coalitions to join, so twelve numbers. In general each of p players faces two to the power p minus one coalitions, which is where the exponential cost comes from later.
+:::
 
 ## Weighted Average via Permutations
 
@@ -1057,6 +1166,14 @@ Coalition size matters: smaller coalitions get higher weight.
 
 ::::
 
+::: {.notes}
+Now the weighting, which is the part people skip and then cannot reconstruct. We have twelve marginal contributions and we need one number per player, so we have to average. The Shapley answer is to average over orderings rather than over coalitions.
+
+Imagine the three of them getting into the taxi one at a time. There are six possible orders. In each order, each player joins whoever is already there. Count how often Alice faces each situation: in two of the six orders she is first, so she joins the empty set; in one she joins Bob alone; in one she joins Charlie alone; and in two she joins both.
+
+That is where the weights come from. They are not arbitrary, they are the frequency with which each coalition arises if every arrival order is equally likely. Small and large coalitions get more weight than middling ones because there are fewer orderings that produce them.
+:::
+
 ## Averaging Marginal Contributions
 
 **Alice's Shapley value:**
@@ -1075,6 +1192,13 @@ $$\phi_{Charlie} = \frac{1}{6}(2 \cdot \$38 + 1 \cdot \$26 + 1 \cdot \$26 + 2 \c
 **Verification:** $5.50 + $15.50 + $30.00 = **$51.00** ✓
 </div>
 
+::: {.notes}
+Apply the weights and out come the three numbers. Alice pays 5.50, Bob 15.50, Charlie 30.
+
+Stop on the verification line, because it is the efficiency axiom made concrete: the three shares add to exactly 51, the actual fare. Nothing is left over and nothing is invented.
+
+Then compare with the naive split of 17 each from two slides ago. Alice pays a third of that, and the reason is visible in the table: she adds almost nothing to any coalition that already contains someone. Ask the room whether 5.50 feels fair. Most people say yes once they have seen the marginal contributions, and that shift is exactly the argument for using this in model explanation.
+:::
 
 ## General Shapley Value Formula
 
@@ -1094,6 +1218,14 @@ $$\phi_j = \sum_{S \subseteq N \setminus \{j\}} \frac{|S|!(N - |S| - 1)!}{N!} \l
 <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px; font-size: 1.1em;">
 **The Shapley value is the weighted average of a player's marginal contributions to all possible coalitions.**
 </div>
+
+::: {.notes}
+The general formula, and every symbol in it has already appeared in the taxi example. The sum ranges over all coalitions not containing player j. The bracket is the marginal contribution of j to that coalition. The fraction in front is the permutation weight we just counted, written combinatorially: the number of orderings in which exactly the members of S precede j, divided by the total number of orderings.
+
+Do not let it look like a new idea. Point back at Alice: the fraction is how we got two sixths, one sixth, one sixth, two sixths.
+
+The sum over all subsets is also where the computational problem lives, and the next section on SHAP is largely about approximating it.
+:::
 
 ## The Four Axioms Behind Shapley Values
 
@@ -1149,6 +1281,16 @@ $$\phi_{j,v_1+v_2} = \phi_{j,v_1} + \phi_{j,v_2}$$
 **These four axioms uniquely determine the Shapley value formula** (Shapley, 1953)
 </div>
 
+::: {.notes}
+Why anyone should accept this particular average rather than some other. Shapley's argument is axiomatic: state four properties any fair allocation ought to have, and show that exactly one allocation satisfies all four.
+
+Efficiency, the shares sum to the total. Symmetry, two players who contribute identically to every coalition get the same share, so the answer does not depend on labels or ordering. Dummy, a player who never changes any coalition's value gets zero. Additivity, if you run two independent games, the fair share in the combined game is the sum of the two shares.
+
+The uniqueness is the punchline, and it is the strongest claim any method in this lecture can make. LIME has no comparable result. Flag that additivity looks like the dullest axiom but is the one that makes TreeSHAP possible: compute per tree, then add.
+
+Worth one honest caveat: uniqueness is conditional on accepting the four axioms, and the critics later in the lecture attack whether they are the right four for feature attribution.
+:::
+
 ## From Shapley Values to SHAP
 
 **A Machine Learning Example**
@@ -1156,12 +1298,14 @@ $$\phi_{j,v_1+v_2} = \phi_{j,v_1} + \phi_{j,v_2}$$
 You have trained a model $f$ to predict apartment prices.
 
 **For a specific apartment $x^{(i)}$:**
+
 - Area: 50 m² (538 sq ft)
 - Floor: 2nd floor
 - Park: Nearby
 - Cats: Banned
 
 **Predictions:**
+
 - $f(x^{(i)}) = \text{€}300,000$ (this apartment)
 - $\mathbb{E}[f(X)] = \text{€}310,000$ (average)
 - **Difference: -€10,000**
@@ -1169,6 +1313,14 @@ You have trained a model $f$ to predict apartment prices.
 <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px;">
 **Goal:** Explain how each feature value contributed to the -€10,000 difference from average.
 </div>
+
+::: {.notes}
+The translation. A trained model f, one apartment, and a prediction of 300,000 against an average prediction of 310,000 across all apartments.
+
+The quantity to be explained is the difference, minus 10,000. Not the prediction itself, the gap between this prediction and the average. That reframing is what turns explanation into a division problem: we have a fixed amount of deviation and we need to hand it out among the features.
+
+Ask which feature they would blame for the 10,000 before revealing anything. Fifty square metres is small, the second floor is unremarkable, the park is a plus, and banning cats is a minus. The point is that reasonable people disagree, which is why we want a principled rule.
+:::
 
 ## Viewing a Prediction as a Coalitional Game
 
@@ -1188,6 +1340,14 @@ You have trained a model $f$ to predict apartment prices.
 <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 20px;">
 We translate concepts from game theory to machine learning predictions → **SHAP**
 </div>
+
+::: {.notes}
+The dictionary between the two halves of this section, and it is worth walking every row rather than flashing it.
+
+A player becomes a feature. A coalition becomes a subset of features. The payout becomes the prediction minus the average prediction, which is the quantity we just agreed to divide. The value function becomes the model's output when only the features in S are known.
+
+That last row is the one with a subtlety, and the next slide is entirely about it. A trained model does not accept partial input. You cannot ask it for a prediction using only the park and the floor. So the translation is not free, and how you fill in the missing features is where all the later controversy comes from.
+:::
 
 ## The SHAP Value Function
 
@@ -1225,6 +1385,14 @@ $$v(\{park, floor\}) = \int f(x_{park}, X_{cat}, X_{area}, x_{floor}) d\mathbb{P
 :::
 
 ::::
+
+::: {.notes}
+Here is the answer to that problem, and it is the technical heart of SHAP. To evaluate a coalition, plug in the known feature values and integrate the model's output over the distribution of the unknown ones. Absent does not mean zero or missing, it means averaged out.
+
+Read the four components on the left. The subtraction of the expected prediction at the end is bookkeeping: it makes the empty coalition worth zero, which is what the game requires.
+
+Then the honest part. The integral is over the marginal distribution of the absent features, treating them as independent of the present ones. For the apartment that means averaging over apartment sizes drawn without regard to the floor or the neighbourhood, which generates combinations that do not exist. This is the same independence assumption we criticised in PDP, reappearing in the method with the strongest theory. The correlation slides later in the lecture come back to precisely this integral, so plant the flag here.
+:::
 
 ## SHAP Visualization: Force Plot
 
@@ -1323,6 +1491,18 @@ For ensemble models: $\phi_j(v_1 + v_2) = \phi_j(v_1) + \phi_j(v_2)$
 Štrumbelj & Kononenko (2010, 2014); Lundberg & Lee (2017)
 :::
 
+::: {.notes}
+Now reap the axioms. Each one buys something concrete for visualization, which is why this slide matters for this course rather than for a statistics course.
+
+Efficiency means the attributions sum to the prediction minus the baseline, so they live on the same scale as the output and can be stacked end to end. That is what makes the force plot and the waterfall plot possible and honest. Gradients do not have this property, which is why saliency maps cannot be summed to anything meaningful.
+
+Symmetry means the ranking in a summary plot is well defined and does not depend on the order features happen to appear in the data frame. Contrast that with breakdown methods, which do depend on order.
+
+Dummy means an unused feature gets exactly zero, so sparsity in the model shows up as sparsity in the explanation. Additivity is what lets you compute SHAP per tree in a forest and add.
+
+The through line: every visualization in the SHAP library is licensed by one of these four properties. Design and theory are not separate here.
+:::
+
 ## Key Differences: LIME vs. SHAP
 
 :::: {.columns}
@@ -1361,6 +1541,16 @@ Best when: You need **complete**, **theoretically grounded** feature attribution
 
 ::: footer
 Source: Molnar, C. (2024). Interpretable Machine Learning.
+:::
+
+::: {.notes}
+The comparison the class will actually use when choosing a tool for their project.
+
+LIME is a heuristic, gives you a handful of features, is fast, and is easy to hand to a non-expert. It has no guarantee that two runs agree or that the numbers mean anything precise.
+
+SHAP has a uniqueness theorem, attributes to every feature, and costs a great deal more compute. The density is a real cost in practice: twenty-three features means twenty-three bars, and nobody reads twenty-three bars.
+
+The line at the bottom is the most commonly misread thing in this lecture, so say it slowly. A SHAP value is not the answer to what happens if I delete this feature and retrain. It is the contribution of this feature's value to this prediction's deviation from the average, under a fixed trained model. People write the first sentence in papers when they mean the second.
 :::
 
 ## SHAP Visualization: Global Feature Analysis (Summary Plot)
@@ -1415,7 +1605,7 @@ Source: Molnar, C. (2024). Interpretable Machine Learning.
 Explain the dual interpretation of this plot: (1) **Feature Importance (Y-Axis)**: Vertical spread/density of points indicates a feature's overall importance (like traditional feature importance). Features at the top matter more globally across all predictions. (2) **Correlation (Color)**: The color coding (Red for high feature value, Blue for low) shows the relationship. For example, 'Red points on the far right' means high feature values are associated with high positive impact on the prediction. Area shows both high importance AND clear directionality - bigger apartments cost more. Compare this to cat-banned which has mixed effects and lower importance. This plot aggregates SHAP values across many instances to give a global view.
 :::
 
-## SHAP (SHapley Additive exPlanations)
+## SHAP: Pros and Cons
 
 ::: {.fragment}
 **Pros**
@@ -1436,16 +1626,34 @@ Explain the dual interpretation of this plot: (1) **Feature Importance (Y-Axis)*
 
 :::
 
-## SHAP (SHapley Additive exPlanations)
+::: {.notes}
+The SHAP trade, and it mirrors the LIME one deliberately, so put them side by side in the room's head.
+
+Fair distribution with a theorem behind it, contrastive by construction because everything is measured against a baseline you choose, and a solid theory that unifies several earlier methods.
+
+Against that: computation, exponential in the number of features unless you have a model-specific shortcut like TreeSHAP. And dense explanations, because the axioms require every feature to receive a value, including the ones worth 0.001. Sparsity has to be imposed afterwards by the visualization, which is a design decision rather than a property of the method, and that is our problem as visualization people rather than theirs as theorists.
+:::
+
+## SHAP: Force Plots for Two Patients
 
 ![](figs/black-box/shap-figure-waterfall.jpg)
+
+::: {.notes}
+Two force plots from Molnar's book, explaining a cervical cancer risk model for two different women. Same model, same features, two very different explanations, which is the case for local methods in one image.
+
+Read the top one. The baseline, the average predicted risk across the dataset, is 0.066. This woman's predicted risk is 0.06, so slightly below average. The red arrows push right, toward higher risk: an STD diagnosis, six years with an IUD, two recorded STDs. The blue arrows push left: seven years of hormonal contraceptives and being 42. The two sides nearly cancel, which is why the final number is so close to the baseline. A pure importance ranking would have told you these features matter; only the force plot tells you they matter in opposite directions and almost exactly offset.
+
+The bottom one runs from the same base value out to 0.71, and it is almost all red. Age 51 and 34 years of smoking are the two widest bands.
+
+Two things to point at as visualization. The widths are the SHAP values and they tile the distance from base value to output exactly, which is the efficiency axiom drawn to scale. And features with small contributions get thin slivers with no room for a label, which is the density problem from the previous slide showing up in the rendering.
+:::
 
 ## SHAP limitations
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-![](figs/black-box/shap-problems.jpg)
+![](figs/black-box/shap-problems.jpg){height="760" fig-align="center"}
 :::
 
 ::: {.column width="50%"}
@@ -1978,4 +2186,39 @@ This verification slide demonstrates the elegant simplicity of SHAP for linear m
 
 ::: {.notes}
 This table provides a decision guide for practitioners. **Choose PDP** when you need to understand how a feature affects predictions globally - great for presentations to stakeholders. **Choose LIME** when you need fast, interpretable explanations for individual predictions - ideal for production systems where speed matters. **Choose SHAP** when you need theoretically grounded attributions and can afford the computational cost - best for research or high-stakes decisions. In practice, use multiple methods: PDP for global insights, LIME for quick checks, SHAP for final validation. Remember: no method is perfect - always validate against domain knowledge and use visualizations to communicate effectively.
+:::
+
+## Next Week (Oct 13): Clustering and Dimensionality Reduction
+
+:::: {.columns}
+::: {.column width="50%"}
+### Topics
+
+- Unsupervised learning, k-means and DBSCAN
+- The manifold hypothesis and intrinsic dimensionality
+- PCA, SVD and Local Linear Embedding
+- **Default project overview**
+
+### Lab
+
+- Interactive clustering and cluster exploration
+:::
+::: {.column width="50%"}
+### Required reading
+
+- [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/)
+
+### Optional
+
+- [A Tutorial on Principal Component Analysis](https://arxiv.org/abs/1404.1100) - Shlens, 2014
+- [Scikit-learn PCA User Guide](https://scikit-learn.org/stable/modules/decomposition.html#pca)
+:::
+::::
+
+::: {.notes}
+Where this lecture sits. Two weeks ago we asked whether a model is any good, last week we opened up models that are readable by construction, and today we explained models we cannot see. All three assumed labelled data and a prediction to explain.
+
+Next week drops that assumption: no labels, no prediction, just structure. Clustering and dimensionality reduction are where visualization stops being a way to check a model and becomes the analysis itself, because a projection is the only way anyone ever looks at a high-dimensional space.
+
+Practical: the default project is introduced next week, which matters for anyone still unsure what to propose.
 :::
