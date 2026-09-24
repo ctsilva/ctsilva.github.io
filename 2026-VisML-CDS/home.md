@@ -64,14 +64,12 @@ author_profile: true
   - Generalized Additive Models (GAMs) and Explainable Boosting Machines
   - Tree-based Models and Visualization Techniques
   - Decision Rules and Global Surrogate Models
-- **Milestone:** Project Proposal (4-page writeup) due
 
 ### Week 5 — Tuesday, Oct 6
-- **Topics:** Black-box Model Interpretation, Project Discussion
+- **Topics:** Black-box Model Interpretation
 - **Materials:**
   - [Black-box Model Interpretation](/2026-VisML-CDS/slides/week6-black-box.html)
   - [Lab: Black-box Explainability Methods](/2026-VisML-CDS/labs/week6-lab/VisML-Lab-Week6-slides.html)
-  - [Project Discussion](/2026-VisML-CDS/slides/week6-project-discussion.html)
 - **Recommended Readings:**
   - ["Why Should I Trust You?" Explaining the Predictions of Any Classifier](https://doi.org/10.1145/2939672.2939778) (Ribeiro et al., 2016, KDD)
   - [SHAP Book: A Unified Approach to Interpreting Model Predictions](https://christophmolnar.com/books/shap) (Molnar, 2024)
@@ -79,13 +77,13 @@ author_profile: true
   - Partial Dependence Plots (PDP)
   - Local Interpretable Model-agnostic Explanations (LIME)
   - SHAP (SHapley Additive exPlanations)
-  - Project Ideas and Guidelines
 
 ### Week 6 — Tuesday, Oct 13
-- **Topics:** Clustering and Dimensionality Reduction, Default Project Details
+- **Topics:** Clustering and Dimensionality Reduction, Default Project Details, Project Discussion
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2026-VisML-CDS/slides/week8-clustering.html)
   - [Default Project: Visual Analytics for AI-Generated Urban Infrastructure Maps](/2026-VisML-CDS/slides/default-project.html)
+  - [Project Discussion](/2026-VisML-CDS/slides/week6-project-discussion.html)
   - [Lab: Dimensionality Reduction](/2026-VisML-CDS/labs/week7-lab/VisML-Lab-Week7-slides.html)
 - **Recommended Readings:**
   - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - **Required**
@@ -101,6 +99,7 @@ author_profile: true
   - Singular Value Decomposition (SVD)
   - Local Linear Embedding (LLE)
   - Default Project Overview and Ideas
+  - Proposal Guidelines, Timeline and Evaluation Criteria
 
 ### Week 7 — Tuesday, Oct 20
 - **Topics:** Dimensionality Reduction (continued)
@@ -117,7 +116,7 @@ author_profile: true
   - UMAP: Uniform Manifold Approximation and Projection
   - Topomap: Topologically-Constrained Dimensionality Reduction
   - Interactive Dimensionality Reduction Techniques
-- **Milestone:** Project Update (1-page writeup) due
+- **Milestone:** Project Proposal (4-page writeup) due
 
 ### Week 8 — Tuesday, Oct 27
 - **Topics:** Deep Learning Visualization Fundamentals
@@ -154,6 +153,7 @@ author_profile: true
   - Model agnostic explanation
   - Examples of RNN Visualization
   - Examples of LLM Visualization
+- **Milestone:** Project Update (1-page writeup) due
 
 ### Week 10 — Tuesday, Nov 10
 - **Topics:** Topological Data Analysis
@@ -194,8 +194,8 @@ author_profile: true
 
 ### Research Project (45% of grade)
 - **Team formation** - *Week 2 (Sept 15)*
-- **Project Proposal** (4-page writeup) - *Week 4 (Sept 29)* - 10%
-- **Project Updates** (1-page writeup) - *Week 7 (Oct 20)* - 10%
+- **Project Proposal** (4-page writeup) - *Week 7 (Oct 20)* - 10%
+- **Project Updates** (1-page writeup) - *Week 9 (Nov 3)* - 10%
 - **Final Project** (8-page writeup + presentation) - *Weeks 13-14 (Dec 1 & 8)*; report due Dec 14 - 25%
 
 ### Class Participation (5% of grade)

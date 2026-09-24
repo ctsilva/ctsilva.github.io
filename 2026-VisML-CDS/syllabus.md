@@ -130,8 +130,8 @@ Weekly programming assignments will be given for the first half of the semester,
 ### Project Timeline
 
 - **Week 2 (Sept 15):** Team formation
-- **Week 4 (Sept 29):** Project proposal due (4 pages)
-- **Week 7 (Oct 20):** Mid-term project update due (1 page)
+- **Week 7 (Oct 20):** Project proposal due (4 pages)
+- **Week 9 (Nov 3):** Mid-term project update due (1 page)
 - **Weeks 13-14 (Dec 1 & 8):** Final project presentations
 - **December 14:** Final project report due (8 pages)
 

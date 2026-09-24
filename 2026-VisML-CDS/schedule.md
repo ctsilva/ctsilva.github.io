@@ -86,18 +86,15 @@ author_profile: true
 - Mühlbacher & Piringer, "A Partition-Based Framework for Building and Validating Regression Models" (2013)
 - Hohman et al., "Gamut: A Design Probe to Understand How Data Scientists Understand Machine Learning Models" (2019)
 
-**Due:** Project proposal (4 pages)
-
 ---
 
 ### Week 5: Tuesday, Oct 6
-## Black-box Model Interpretation & Project Discussion
+## Black-box Model Interpretation
 
 **Lecture Topics:**
 - Partial Dependence Plots (PDP)
 - Local Interpretable Model-agnostic Explanations (LIME)
 - SHAP (SHapley Additive exPlanations)
-- Project ideas and guidelines
 
 **Lab Session:**
 - Black-box explainability methods
@@ -109,7 +106,7 @@ author_profile: true
 ---
 
 ### Week 6: Tuesday, Oct 13
-## Clustering Visualization
+## Clustering Visualization & Project Discussion
 
 **Lecture Topics:**
 - Introduction to unsupervised learning
@@ -118,6 +115,7 @@ author_profile: true
 - Cluster validation and comparison techniques
 - The manifold hypothesis and intrinsic dimensionality
 - Default project overview
+- Project discussion: proposal guidelines, timeline and evaluation criteria
 
 **Lab Session:**
 - Interactive clustering interfaces
@@ -149,7 +147,7 @@ author_profile: true
 - van der Maaten & Hinton, "Visualizing Data using t-SNE" (2008)
 - McInnes et al., "UMAP: Uniform Manifold Approximation and Projection" (2018)
 
-**Due:** Mid-term project update (1 page)
+**Due:** Project proposal (4 pages)
 
 ---
 
@@ -193,6 +191,8 @@ author_profile: true
 - Vaswani et al., "Attention is All You Need" (2017) - **Foundational**
 - Vig, "BertViz: A Tool for Visualizing Multi-Head Self-Attention" (2019)
 - Strobelt et al., "LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in RNNs" (2017)
+
+**Due:** Mid-term project update (1 page)
 
 ---
 
@@ -288,8 +288,8 @@ author_profile: true
 | Type | Due Date | Weight |
 |------|----------|--------|
 | Weekly Assignments | Throughout first half | 50% |
-| Project Proposal (4 pages) | Sept 29 | 10% |
-| Project Update (1 page) | Oct 20 | 10% |
+| Project Proposal (4 pages) | Oct 20 | 10% |
+| Project Update (1 page) | Nov 3 | 10% |
 | Final Project Presentation | Dec 1 / Dec 8 | 10% |
 | Final Project Report (8 pages) | Dec 14 | 15% |
 | Participation | Ongoing | 5% |
