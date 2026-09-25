@@ -63,7 +63,7 @@ author_profile: true
 ### **Week 3** (Sept 18) - Fundamental Graphs and Visual Encoding
 **Learning Objectives:** Master basic chart types and understand when to use each; apply grammar of graphics
 
-**Lecture:** 
+**Lecture:** [Week 3 - Fundamental Graphs and Visual Encoding](slides/week3-fundamental-graphs.html)
 - Chart types and their purposes
 - Marks and channels theory
 - Grammar of graphics principles
@@ -92,7 +92,7 @@ author_profile: true
 ### **Week 4** (Sept 25) - Visual Perception and D3 Foundations
 **Learning Objectives:** Understand human visual perception principles; begin D3 programming
 
-**Lecture:**
+**Lecture:** [Week 4 - Visual Perception and D3 Foundations](slides/week4-perception.html)
 - Pre-attentive processing and visual attention
 - Gestalt principles in visualization
 - Color perception and accessibility
@@ -117,7 +117,7 @@ author_profile: true
 ### **Week 5** (Oct 2) - Color and D3 Scales
 **Learning Objectives:** Master color theory for visualization; implement D3 scales and color schemes
 
-**Lecture:**
+**Lecture:** [Week 5 - Color and D3 Scales](slides/week5-color.html)
 - Color theory fundamentals
 - Perceptual color spaces (RGB, HSL, LAB)
 - Colorblindness and accessibility
