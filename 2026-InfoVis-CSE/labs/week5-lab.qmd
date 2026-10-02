@@ -38,14 +38,21 @@ Today we will be a coding-heavy lab where we will practice with color scales and
 
 ## D3 Scales: Mapping Data to Pixels
 
-- D3 scales map data domain → screen range
-- Common types:
-  - `d3.scaleLinear()` → for numeric data
-  - `d3.scaleLog()` → for skewed data (e.g. income)
-  - `d3.scaleTime()` → for time/date axes
+D3.js scales are intended to map data domain → screen range
 
+Common types:
+
+|Code|Data Type Compatibility|
+|:-|:-|
+|`d3.scaleLinear()`|Numeric data|
+|`d3.scaleLog()`|Skewed numeric data (e.g. income)|
+|`d3.scaleTime()`|Time/date axes|
+
+---
+
+### Linear Scale Example:
 ````js
-linear_scale_example = d3.scaleLinear()
+d3.scaleLinear()
   .domain([0,10])
   .range([0, 100])
 
@@ -53,25 +60,53 @@ linear_scale_example = d3.scaleLinear()
 // linear_scale_example(3) → 30
 ````
 
+<br />
+
+### Log Scale Example:
 ````js
-log_scale_example = d3.scaleLog()
+d3.scaleLog()
   .domain([1,100000])
   .range([0, 100])
 
 // log_scale_example(3233) → 70.19211409223112
 ````
 
+<br />
+
+### Time Scale Example:
 ````js
-time_scale_example = d3.scaleTime()
+d3.scaleTime()
   .domain([new Date(2025, 0, 1), new Date(2025, 11, 31)]) // Jan 1 to Dec 31, 2025
   .range([0, 100]) 
 
 // time_scale_example(new Date(2025, 7, 12)) → 61.25228937728938
 ````
 
-## Sequential Color Scales: Numeric Data
+## Coding Session #1: Scatter Plots, Scales, and Colors [~ 10mins]
 
-We can use `d3.scaleSequential()` with numeric, continuous data to generate gradients:
+### Your Task:
+
+In this coding session, you will be practicing with producing a scatter plot based on health data from different countries/regions. This session uses the gapminder data.
+
+### Starter Code:
+
+An initialized chart with titles, but it's missing the axes and data.
+
+### Goal(s):
+
+- Explore different quantitative scales (`d3.scaleLinear()`, `d3.scaleLog()`)
+- Explore different coloration scales
+- Practice with `domain()` and `range()` when setting up plot axes.
+- Practice with data binding from raw datasets to D3 plots.
+
+## Color Scales: Sequential v.s. Categorical Color Scales
+
+:::{.columns}
+::::{.column width="50%"}
+
+### Sequential Color Scales
+
+Sequential scales are used with numeric, continuous data to generate gradients:
 
 ````js
 d3.scaleSequential(d3.interpolateBlues)
@@ -89,9 +124,12 @@ This is generally good for:
 - Population density
 - Continuous metrics
 
-## Categorical Color Scales: Ordinal/Nominal Data
+::::
+::::{.column width="50%"}
 
-Use `d3.scaleOrdinal() + d3.schemeCategory10`, as an example.
+### Categorical Color Scales
+
+Use combinations such as `d3.scaleOrdinal() + d3.schemeCategory10` to map ordinal or nominal data to specific colors.
 
 ````js
 d3.scaleOrdinal(d3.schemeCategory10)
@@ -104,23 +142,49 @@ Categorical scale are good for:
 - Regions (geodata)
 - Categories like continent, gender, etc.
 
-## Coding Session #1: Scatter Plots, Scales, and Colors [~ 10mins]
+::::
+:::
 
+## D3's In-Built Scales
 
-### Your Task:
+| Category | D3 scale | Typical use |
+|---|---|---|
+| **Continuous** | `d3.scaleLinear()` | Numeric → numeric/color/etc. |
+| | `d3.scalePow()` | Power-transformed quantitative data |
+| | `d3.scaleSqrt()` | Square-root scaling, especially symbol area |
+| | `d3.scaleLog()` | Data spanning orders of magnitude |
+| | `d3.scaleSymlog()` | Log-like scaling that can handle zero/negative values |
+| | `d3.scaleRadial()` | Radial visual encodings |
+| | `d3.scaleIdentity()` | Domain and range are identical |
+| **Temporal** | `d3.scaleTime()` | Dates/times using local time |
+| | `d3.scaleUtc()` | Dates/times using UTC |
+| **Sequential** | `d3.scaleSequential()` | Continuous values → sequential interpolator |
+| | `d3.scaleSequentialLog()` | Sequential + logarithmic transform |
+| | `d3.scaleSequentialPow()` | Sequential + power transform |
+| | `d3.scaleSequentialSqrt()` | Sequential + square-root transform |
+| | `d3.scaleSequentialSymlog()` | Sequential + symmetric-log transform |
+| | `d3.scaleSequentialQuantile()` | Quantile-based sequential encoding |
+| **Diverging** | `d3.scaleDiverging()` | Continuous values around a meaningful midpoint |
+| | `d3.scaleDivergingLog()` | Diverging + logarithmic transform |
+| | `d3.scaleDivergingPow()` | Diverging + power transform |
+| | `d3.scaleDivergingSqrt()` | Diverging + square-root transform |
+| | `d3.scaleDivergingSymlog()` | Diverging + symmetric-log transform |
+| **Discrete / categorical** | `d3.scaleOrdinal()` | Categories → arbitrary discrete values/colors |
+| | `d3.scaleBand()` | Categories → evenly spaced bands |
+| | `d3.scalePoint()` | Categories → evenly spaced points |
+| **Discretizing** | `d3.scaleQuantize()` | Continuous domain → fixed number of discrete bins |
+| | `d3.scaleQuantile()` | Continuous distribution → equal-count bins |
+| | `d3.scaleThreshold()` | User-defined thresholds → discrete values |
 
-In this coding session, you will be practicing with producing a scatter plot based on health data from different countries/regions. This session uses the gapminder data.
+## When in doubt...
 
-### Starter Code:
+Remember the core principles of **domain**, **range**, and **scale**:
 
-An initialized chart with titles, but it's missing the axes and data.
+- **Domain**: The type and data values of the data you wish to manipulate.
+- **Range**: The pixels or colors you wish to map your data values into.
+- **Scale**: How should the mapping occur?
 
-### Goal(s):
-
-- Explore different quantitative scales (`d3.scaleLinear()`, `d3.scaleLog()`)
-- Explore different coloration scales
-- Practice with `domain()` and `range()` when setting up plot axes.
-- Practice with data binding from raw datasets to D3 plots.
+Everything in D3.js, from the X-axis to the Y-axis to the color scale, relies on this pattern.
 
 ## Choropleth Maps
 
