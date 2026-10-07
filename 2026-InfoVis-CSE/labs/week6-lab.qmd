@@ -1,5 +1,5 @@
 ---
-title: "Week 6 Lab: Intro to Interactions"
+title: "Week 6 Lab: Local Observable Frameworks, Group Team Formation"
 subtitle: "CS-GY 6313 - Information Visualization"
 author: "Ryan Kim"
 institute: "New York University"
@@ -21,404 +21,455 @@ format:
 
 ## Week 6 Lab Overview
 
-|User Interface|Graphics Library|Notebook|
+|User Interface|Graphics Library|Notebook(s)|
 |:--|:--|:--|
-|<a href="https://observablehq.com" target="_blank">observablehq.com</a>|<a href="https://d3js.org/" target="_blank">D3</a>|<a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-6-lab" target="_blank">Week 6 Lab Notebook</a>|
+|<a href="https://observablehq.com" target="_blank">observablehq.com</a>|<a href="https://d3js.org/" target="_blank">D3</a><br /><a href="https://observablehq.com/framework/" target="_blank">Framework</a>|<a href="https://observablehq.com/@rk2546/guide-project_structure" target="_blank">Observable Frameworks</a>|
 
 ### Today's Lab Activities
 
 Today we will be a exploring the following topics:
 
-1. Review: HTML DOM and Event Handling
-2. Basic Example: Buttons and Observable
-3. New Chart: Pie Chart
-4. Mouse Interactions
+1. How to set up a local instance of Observable via _Framework_
+2. Group Formation Time - Finding Teammates, Initial Brainstorming
+3. Upcoming Changes to Course Deliverables
 
-## Resources for You
-
-<a href="https://observablehq.com/@rk2546/2025-infovis-cse_notebook-gallery" target="_blank">Notebook Gallery</a>
-
-![](./week6-lab_files/figs/notebook_gallery.png){width="100%"}
-
-## Review: DOM and Event Handling
-
-![](./week6-lab_files/figs/dom_tree.webp){width="1000px"}
-
-_Image souce:_ [GeekForGeeks](https://www.geeksforgeeks.org/javascript/dom-document-object-model/)
+- <a href="https://forms.gle/jiDgZfiez8BJRc8T7" target="_blank">Project Group Check-in</a> - Due by **TONIGHT** @ 11:59pm
 
 
-## Manipulating the DOM
+## Running Observable Locally: "Framework"
 
-:::{.incremental width="75%"}
-- **Direct manipulation**: Users interact directly with the data in the visualizations (e.g., by clicking the bar or item). This must be implemented as part of the visualization itself and requires JS event handling.
-- **Indirect manipulation**: Users interact with a separate, but linked interactive element (e.g., search field to filter). In Observable we can use the Input library for the input forms; in normal HTML5 websites, we need use form elements such as `<button>` and `<input>`.
+In prep for your group projects, it would be ideal to work on your own local instances of Observable...ness. The same group behind Observable also has released <a href="https://observablehq.com/framework/" target="_blank">Framework</a>, a JavaScript ecosystem for generating dashboards and web apps with Observable functionality.
+
+:::{.columns}
+::::{.column width="50%"}
+We will focus a bit on making sure you are ready with a _Framework_ project that you can upload to Github. Make sure to open today's lab notebook, <a href="https://observablehq.com/@rk2546/guide-local_observable_setup" target="_blank">Local Observable Frameworks</a> and follow along with the instructions.
+
+<br />
+<span style="color:blue; font-size:0.9em;">**[Note]**: _Framework_ is one of **many** options you can use for your project. We're introducing it because it's the closest to the Observable notebooks we've generated thus far.</span>
+::::
+::::{.column width="50%"}
+![](./week7-lab_files/figs/Framework.png){width="100%"}
+::::
 :::
 
-## Example: 
+## Framework Prerequisites
 
-<iframe width="100%" height="134" frameborder="0" src="https://observablehq.com/embed/@rk2546/2025-infovis-cse_week-6-lab?cells=interactivity"></iframe>
 
-````js
-interactivity = {
-  const svg = d3.create("svg")
-    .attr('width', width)
-    .attr('height', 50);
+<div style="display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-evenly;align-items:baseline;width:100%;">
+  <a href="https://github.com/" target="_blank" style="display:flex;flex-direction:column;justify-content:center;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" style='width:100%; max-width:300px;margin-left:auto;margin-right:auto;'/>
+    <p style="text-align:center"><strong>Github</strong></p>
+  </a>
+  <a href="https://nodejs.org/en" target="_blank" style="display:flex;flex-direction:column;justify-content:center;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" style='width:100%; max-width:300px;margin-left:auto;margin-right:auto;'/>
+    <p style="text-align:center"><strong>Node.js</strong></p>
+  </a>
+  <a href="https://code.visualstudio.com/" target="_blank" style="display:flex;flex-direction:column;justify-content:center;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" style='width:100%; max-width:300px;margin-left:auto;margin-right:auto;'/>
+    <p style="text-align:center"><strong>A Code Editor<br />(e.g. _Visual Studio Code_)</strong></p>
+  </a>
+</div>
+
+<p style="text-align:center;margin-top:64px;">Our guide assumes that you have a Github account.<br />If you do not, please make an account.</p>
+
+## Installing Node.js and npm: Mac OSX
+
+We will install _Node.js_ and _npm_ with a version manager called _nvm_.
+
+1. Install _nvm_ by following the instructions provided by the <a href="https://github.com/nvm-sh/nvm" target="_blank">version manager's Github documentation</a>.
+2.  Open a CLI ("Command Line Interface") in `Terminal.app` or some other code editor such as _VSCode_. 
+3.  Paste and run the command, which downloads and installs the latest LTS version of _Node.js_: 
+   
+    ````sh
+    nvm install --lts
+    ````
+
+4.  Paste and run the command. This will switch the default _Node.js_ version that your CLI uses to the LTS version you just installed:
+
+    ````sh
+    nvm use --lts
+    ````
+
+## Installing Node.js and npm:  Windows
+
+_nvm_ is a Unix-based _Node.js_ version manager. Windows as its own version, called _nvm-windows_.
+
+1. Install _nvm-windows_ via the installation instructions mentioned in their <a href="https://docs.nvm-windows.com/install/installers" target="_blank">online documentation</a>.
+2. Open <a href="https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/starting-windows-powershell?view=powershell-7.4#with-administrative-privileges-run-as-administrator" target="_blank">PowerShell <strong>as an administrator</strong></a>. Alternatively, open a CLI terminal in your code editor such as _VSCode_.
+3. Paste and run the command, which downloads and installs the latest LTS version of _Node.js_: 
+   
+    ````sh
+    nvm install --lts
+    ````
+
+4. Paste and run the command. This will switch the default _Node.js_ version that your CLI uses to the LTS version you just installed:
+
+    ````sh
+    nvm use --lts
+    ````
+
+## Creating a Framework Project
+
+1. Open a terminal window (either _Terminal.app_ on MacOS, _Command Prompt_ on Windows, or _VS Code_ on either MacOS or Windows). 
+2. Navigate to any folder or location where you will be comfortable creating a new folder (e.g. the `Documents/` directory on MacOS or the `Desktop/` on Windows). You can navigate to that location using the following command:
+
+    ````sh
+    cd [PATH]/[TO]/[LOCATION]
+    ````
+
+3. Paste and run the command:
+
+    ````sh
+    npx @observablehq/framework@latest create
+    ````
+
+---
+
+4. New instructions will be prompted from you in the terminal window. Answer all the directions that appear. 
+
+    - You will likely be asked to install `@observablehq/framework@[VERSION]`. Say "Yes" or "y" to proceed.
+    - The defaults are fine
+    - If you want to have sample pages and content, you are free to say "Yes" to "Include sample files to help you get started?"; otherwise, say "No" to that prompt.
+    - When prompted with "Install dependencies?", you are safe to say "Yes, via npm (recommended)"
+    - When prompted with "Initialize git repository?", you are safe to say "Yes"
+
+At this point, _Framework_ will create a brand new folder for you with all the code necessary to run a Framework project locally. If you ran with defaults, then the new folder will be titled "hello-framework".
+
+## Running a Dev Server
+
+We are ready to run a local server that we can use for development. Run the following command inside your project folder:
+
+````sh
+npm run dev
+````
+
+Your _Framework_ webpage should then be loaded into a `localhost` server that you can view via the browser. The _Framework_ architecture tracks any changes to any files and updates in real-time every time you **save changes in a file**.
+
+## Version Control via Github
+
+After these steps, you should be able to push changes to your Github repository and pull them when needed.
+
+1. Online, create an empty Github repository and feel free to name it anything you want (though generally you should try to match project names when possible).
+2. Locally (via command line or via Github tool), add and commit all files in your project window.
+3. Set the branch to "main", add a new remote origin, and push your changes. The 3 commands to do so are provided below, as an example:
+
+    ````sh
+    git branch -M main
+    git remote add origin git@github.com:[USERNAME]/[PROJECT_NAME].git
+    git push -u origin main
+    ````
+
+<br />
+<span style="color:blue; font-size:0.9em;">**[Note]**: Whenever you clone your repo to another folder or device, you **must** install dependencies again:</span>
+```sh
+npm install
+```
+
+## Framework Setup: Command Line Summary
+
+````sh
+# Step 1: Install Node.js LTS, for Mac OSX (after installing npx)
+nvm install --lts
+nvm use --lts
+
+# Step 1: Install Node.js LTS, for Windows (after installing npx-windows)
+nvm install lts
+nvm use lts
+
+# Step 2: Create a _Framework_ Project
+npx @observablehq/framework@latest create
+
+# Step 3: Run a Development Preview Server
+npm run dev
   
-  const data = [1, 2, 3];
-  const circles = svg.selectAll("circle")
-    .data(data)
-    .enter()
-      .append("circle")
-        .attr("r", 10)
-        .attr("cy", 25)
-        .attr("cx", (d, i) => 30 + i * 30)
-        .on("click", function (event, d) {
-          console.log(`clicked on: ${d}`);
-          const circle = d3.select(this); // can't use arrow scoping
-          circle.style("stroke", "orange").style("stroke-width", "3px");
-        });
+# Step 4: Connecting an Empty Github Repo
+git add -A
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:[USERNAME]/[PROJECT_NAME].git
+git push -u origin main
+````
+
+## How Framework Works
+
+### General Operations:
+:::{.incremental}
+- _Framework_ generates webpages from _Markdown_ files.
+- Markdown files can mix and combine Markdown syntax, HTML, and JavaScript.
+- Helper functions can be written in separate scripts and imported into Markdown files.
+- NPM and Observable modules can be imported.
+
+### Best Practices
+- Try to keep most dev files (major scripts, datasets, etc.) inside of the `src/` folder.
+- [Avoid dashboard rot](https://observablehq.com/blog/five-strategies-fight-dashboard-rot) by knowing beforehand what to create (i.e. a script, a database, a notebook) and keeping efficient/accessible/interactive design practices in mind.
+:::
+
+**Let's Run a Live Demo!**
+
+## Additional Framework Guides For the Course
+
+<a href="https://observablehq.com/@rk2546/2026-infovis-cse_notebook-gallery" target="_blank">Info-Vis Notebook Gallery</a>
+
+Look up our other guides on Framework, if you wish to learn more.
+
+![](./week6-lab_files/figs/framework_notebooks.png)
+
+
+## Changes to Course Materials
+
+1. We only have **2** weekly exercises remaining.
+2. We will soon transition into two new deliverables for the course:
+    - **Bi-weekly mini-projects** that are expected to be delivered through Framework webpages, hosted with Github Pages.
+    - **Group project milestones** to report back on your overall progress as the semester progresses.
+3. We will place more emphasis on our class' <a href="https://ctsilva.github.io/2026-InfoVis-CSE/syllabus#ai-policy" target="_blank">AI Policy</a>:
+  
+    > ... you can use generative AI tools to do the assignments in this class. If you use an AI to guide you in completing an assignment, you must disclose which parts were generated by the AI. Remember that you are responsible for any errors or inaccuracies in AI-generated content, and you must be able to explain all submitted work.
+  
+    Basically **if you use AI for any exercises, mini-projects, milestone deliverables, or even for the final group project, you MUST disclose where and how you used it.**
+
+
+## Project Groups: Finding Partners & Brainstorming
+
+Spend the remainder of the class searching for teammates or datasets to focus working on. Aim to find a group by the end of class today, and report back to us your group members by TONIGHT on <a href="https://forms.gle/jiDgZfiez8BJRc8T7" target="_blank">this Google Form</a>.
+
+### Optimal groups tend to demonstrate:
+
+1. **Diverse Skills and Knowledge**: Each student has something unique they should bring to the table.
+2. **Well-Planned Schedules**: Group members may have different responsibilities, exam schedules, etc. Find members whose schedules align.
+3. **Communication of Expectations**: Students are expected to contribute equally to their group projects. Find members who you think will work well with your way of working.
+4. **Efficient Code Environments & Workflow**: Try to agree on a single code environment and workflow that works for all members. Do all members know how to use Git and version control systems?
+
+The best groups are those that **communicate with each other well, are honest with each other, and are not afraid to ask questions**.
+
+---
+
+### If you're struggling, consider:
+
+- **Follow YOUR interests first!** Don't start by searching for a dataset; instead, focus on discussing at least one _common interest_ among your group members first. Datasets should serve to help you _explore_ those common interests.
+- **Start with simple questions** In <a href="https://ctsilva.github.io/2026-InfoVis-CSE/labs/week3-lab.html#/12" target="_blank">Lab #3</a>, we covered question taxonomies and strategies for forming research questions. Try to:
+  1. Explore what features represent in your chosen datasets.
+  2. Start with simple questions, and use _question-laddering_ to formulate more complex questions.
+  3. Consider your target audience - who are you focusing your questions toward, and what kind of _personas_ populate your target audience?
+
+
+<!--
+## Lab: Interactables
+
+We have a second notebook for today's lab, which further elaborates on some interactable elements.
+
+[Week 7 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-7-lab)
+
+:::{.columns}
+::::{.column width="30%"}
+![](week7-lab_files/figs/ex1.gif){width=300}
+::::
+::::{.column width="30%"}
+![](week7-lab_files/figs/ex2.gif){width=500}
+::::
+::::{.column width="30%"}
+![](week7-lab_files/figs/ex3.gif){width=300}
+::::
+:::
+
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+:::{.columns}
+::::{.column width="15%"}
+![](week7-lab_files/figs/ex1.gif){width="100%"}
+::::
+::::{.column width="40%"}
+````js
+// Manipulation
+viewof replay = Inputs.button("Replay");
+````
+<br />
+````js
+{
+  replay;
+  // ....
+  const circle = svg.append("circle")
+      .attr("r", 10)
+      .attr("cx", 25)
+      .attr("cy", 25)
+      .attr("fill", "steelblue")
+      .call(reveal);    // Event Handling
 
   return svg.node();
 }
 ````
+::::
+::::{.column width="40%"}
+```js
+// Daisy-change of events to this circle
+reveal = circle => {
+  circle
+    .interrupt()      // 1. Stop previous animation
+    .attr("cx", 25)   // 2. Place at origin (25,25)
+    .attr("cy", 25)
+    .transition()     // 3. Start a transition
+    .duration(1500)   // 4. Run for 1.5sec
+    .attr("cx", 175)  // 5. Set new pos (175,175)
+    .attr("cy", 175);
+}
+````
+::::
+:::
 
-## Event Handling Syntax
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+:::{.columns}
+::::{.column width="15%"}
+![](week7-lab_files/figs/ex2.gif){width="100%"}
+::::
+::::{.column width="75%"}
+````js
+// Manipulation
+viewof radius = Inputs.range([15, 75], {label: "Orbit radius", value: 25, step: 1})
+````
 
 ````js
-.on("click", function(event, d) { ... });
+// Create two PERSISTENT variables that will be used across multiple functions within this code block.
+let angle = 0;        // Relative to +x
+const speed = 0.02;   // degrees per frame
+
+// Event Handler that runs every frame. Animates the cirlce
+function animate() {
+    
+  // Update angle since it's a new frame
+  angle += speed;
+    
+  // We grab the value set by our slider variable at this current frame
+  const r = viewof radius.value;
+
+  // Modify the x and y positions of our orbiting circle, mathematically
+  const x = pivot.x + r * Math.cos(angle);
+  const y = pivot.y + r * Math.sin(angle);
+  orbit.attr("cx", x).attr("cy", y);
+
+  // This is a special DOM function that calls `animate()` again when the next frame
+  // of the window is updated. So `animate()` will run at every frame.
+  requestAnimationFrame(animate);
+}
+
+// Call `animate()` to get things rolling when this code block runs
+animate();
+````
+::::
+:::
+
+## General Structure for Interactables
+
+1. A way to manipulate the data (e.g. a button, a mouse event).
+2. Functions to handle changes (e.g. an _event handler_ function).
+3. A connection between (1) and (2).
+
+:::{.columns}
+::::{.column width="15%"}
+![](week7-lab_files/figs/ex3.gif){width="100%"}
+::::
+::::{.column width="75%"}
+
+````js
+// Mouse event handlers
+  const onmousemove = (event) => {
+    const [x, y] = d3.pointer(event);   // Grab the mouse position
+    vLine                               // Modify the position of our vertical line
+      .attr("x1", x)
+      .attr("x2", x)
+      .style("visibility", "visible");  // And make it visbile
+    hLine                               // Same with the horiontal line.
+      .attr("y1", y)
+      .attr("y2", y)
+      .style("visibility", "visible");
+    text.text(`x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`);    // We modify the coordinates text.
+  };
+
+  const onmouseleave = (event) => {
+    vLine.style("visibility", "hidden");    // Make the vertical and horizontal lines invisible
+    hLine.style("visibility", "hidden");
+    text.text("");                          // We make the text empty.
+  };
+
+  // Connect events to handlers.
+  svg.on("mousemove", onmousemove);
+  svg.on("mouseleave", onmouseleave);
+````
+::::
+:::
+
+## Persistence in JavaScript
+
+**Persistent variables** are those that are maintained and are referenced across multiple components, functions, etc. In JavaScript, variables remain persistent **within the context they are defined**.
+
+<br />
+
+#### Example #2:
+
+````js
+let angle = 0;        // Relative to +x
+const speed = 0.02;   // degrees per frame
 ````
 
 <br />
 
-:::{.incremental}
-- `.on(<EVENT>, <HANDLER FUNCTION>)` = We are attaching the `<HANDLER FUNCTION>` onto the `<EVENT>`.
-- `"click"` = We want to attach our function to whenever the user mouse-clicks onto a circle.
-- `function(event, d)` = This handler function has access to the event details as well as the data binded to it.
-:::
+#### Example #3:
+
+````js
+// We must generate our crosshair lines pre-emptively as elements of our svg.
+// We create the vertical line, with some styling
+const vLine = svg.append("line")
+  // ...
+
+// We create a horizontal line, with some styling
+const hLine = svg.append("line")
+  // ...
+
+// Similar to the crosshair lines, we also pre-generate a text display showing the mouse coordinates.
+const text = svg.append("text")
+  // ...
+````
+
+## Review: Basic Input Types
+
+- [Button](https://observablehq.com/@observablehq/input-button) - do something when a button is clicked
+- [Toggle](https://observablehq.com/@observablehq/input-toggle) - toggle between two values (on or off)
+- [Checkbox](https://observablehq.com/@observablehq/input-checkbox) - choose any from a set
+- [Radio](https://observablehq.com/@observablehq/input-radio) - choose one from a set
+- [Range](https://observablehq.com/@observablehq/input-range) or [Number](https://observablehq.com/@observablehq/input-range) - choose a number in a range (slider)
+- [Select](https://observablehq.com/@observablehq/input-select) - choose one or any from a set (drop-down menu)
+- [Text](https://observablehq.com/@observablehq/input-text) - enter freeform single-line text
+- [Textarea](https://observablehq.com/@observablehq/input-textarea) - enter freeform multi-line text
+- [Date](https://observablehq.com/@observablehq/input-date) or [Datetime](https://observablehq.com/@observablehq/input-date) - choose a date
+- [Color](https://observablehq.com/@observablehq/input-color) - choose a color
+- [File](https://observablehq.com/@observablehq/input-file) - choose a local file
+
+## Try For Yourselves
+
+Our lab notebook has two application examples as exercises. Try them for yourselves!
 
 <br />
 
-[_W3Schools_](https://www.w3schools.com/jsref/dom_obj_event.asp) to look up the common event types and their functions
-
-## Basic Input Types
-
-HTML allows you these common types, which you can read more about here: <a href="https://www.w3schools.com/html/html_form_input_types.asp" target="_blank">HTML Input Types</a>.
-
-Here are some common types:
-
-|Input Type|Description|HTML Tag|
-|:-|:-|:-|
-|Button|Do something when a button is clicked|`<input type="button">` or `<button>`|
-|Checkbox|Toggle between two values (on or off); choose any from a set|`<input type="checkbox">`|
-|Radio|Toggle between two values; choose only one from a set|`<input type="radio">`|
-|Range / Number|Choose a number in a range|`<input type="range">` / `<input type="number">`|
-|Select|Choose one or any from a set (drop-down menu)|`<select>` and `<option>`|
-|Text|Enter freeform single-line text|`<input type="text">`|
-|Textarea|Enter freeform multi-line text|`<textarea>`|
-|Date or Datetime|Choose a date|`<input type="date">` or `<input type="datetime-local">`|
-|Color|Choose a color|`<input type="color">`|
-|File|Choose a local file|`<input type="file">`|
-
-## Case Example: Buttons
-
-JavaScript (and by extension, TypeScript) natively allows us to access the DOM and create, modify, or delete HTML elements. We've provided an example of a button that is coded to increment a `count` variable every time you click it. 
-
-Let's observe how we modify attributes such as style, text content, and event listeners to the buttons and other related HTML elements.
-
-```{js}
-// Let's define a local-scope `count` that's a number.
-let count : number = 0;
-
-// We'll create a new `<button>` and attach it to the DOM of this web document
-const button = document.createElement("button");
-button.textContent = "Increment";
-
-// We'll also create a `<span>` and also add it to the DOM.
-// We'll add some styling to make it look good with the button.
-const output = document.createElement("span");
-output.style.display = "inline-block";
-output.style.marginLeft = "8px";
-output.textContent = String(count);
-
-// We'll add a new event to catch when the user clicks the button.
-button.addEventListener("click", () => {
-  // We increment the count, and update the output span's text content.
-  count++;
-  output.textContent = String(count);
-});
-
-// We'll create a div, style it, and append the button and output span to it.
-const container = document.createElement("div");
-container.style.display = "inline-block";
-container.style.marginBottom = "12px";
-container.append(button, output);
-
-// We render the container next to their code block in Observable.
-display(container);
-```
-
----
-
-### Part 1: Defining our `count` variable
-
-If we use `let`, then we're indicating that though the `count` is technically accessible by other code blocks, we're restricting its scope to the current code block. We are allowing it to be reassigned.
-
-```{js}
-// Let's define a local-scope `count` that's a number.
-let count : number = 0;
-```
-
-<br />
-
-### Part 2: Creating our button
-
-We can create new elements using `.createElement(HTML TAG)`.
-
-```{js}
-// We'll create a new `<button>` and attach it to the DOM of this web document
-const button = document.createElement("button");
-button.textContent = "Increment";
-```
-
----
-
-### Part 3: Creating a text display
-
-Similarly, we also use `.createElement(HTML TAG)` here. We modify some additional attributes of our new `<span>` element too.
-
-```{js}
-// We'll also create a `<span>` and also add it to the DOM.
-// We'll add some styling to make it look good with the button.
-const output = document.createElement("span");
-output.style.display = "inline-block";
-output.style.marginLeft = "8px";
-output.textContent = String(count);
-```
-
-<br />
-
-### Part 4: Event Listeners for our button
-
-We use an _arrow function_ with an event listener that checks if the user clicks on the button. If so, we update not just `count` but the `<span>` displaying it.
-
-```{js}
-// We'll add a new event to catch when the user clicks the button.
-button.addEventListener("click", () => {
-  // We increment the count, and update the output span's text content.
-  count++;
-  output.textContent = String(count);
-});
-```
-
----
-
-### Part 5: Creating wrapper `<div>`s
-
-To keep things neat, we wrap both the button and the output `<span>` into a container element.
-
-```{js}
-// We'll create a div, style it, and append the button and output span to it.
-const container = document.createElement("div");
-container.style.display = "inline-block";
-container.style.marginBottom = "12px";
-container.append(button, output);
-```
-
-## Alternative Way for Content Generation, Observable-Style
-
-There is an alternative way that you can create HTML elements, specific to Observable. Observe the code below; this produces the same output as the above code, but using Observable logic.
-
-```{js}
-let count2 : number = 0;
-
-// Programmatically create an HTML button
-const increment_button = html`<button>Increment</button>`;
-
-// Programmatically create an output span
-const output_span = html`<span style="display:inline-block;margin-left:8px;">${count2}</span>`;
-
-// Attach an event to `onclick`.
-increment_button.onclick = () => {
-  ++count2;
-  output_span.textContent = String(count2);
-}
-
-// Programmatically create the div that wraps these elements
-const container = html`<div style="display:inline-block;margin-bottom:12px;">${increment_button}${output_span}</div>`;
-
-display(container);
-```
-
-## In-Lab Exercise: Creating An Interactive Button Panel (10 mins.)
-
-Create some code that does the following:
-
-- Initializes a variable `calc_value` that is set to 0 by default.
-- Create 5 buttons that do the following:
-  - Increments `calc_value` by 1
-  - Decrements `calc_value` by 1
-  - Multiplies `calc_value` by 2
-  - Divides `calc_value` by 3
-  - Resets `calc_value` to 0
-
-How you create the HTML or style it is not important.
-
----
-
-## Warning: Observable Shenanigans
-
-You must note the following behavior when working with Observable notebooks:
-
-- Even though **Observable exposes variables between code blocks**...
-- ... variables are **not dynamically updated if they are changed in their original code block**.
-
-In our lab notebook, we defined `count` and `count2` and incremented them using buttons. If we attempt to implement the code below and play around with our two buttons...
-
-```{js}
-const sum = count + count2;
-display(sum);
-```
-
-... you'll quickly realize that no matter how many times you increment either `count` or `count2` via the buttons, it won't change `sum`.
-
-<br />
-
-### Core Idea: Keep Code Self-Contained
-
-Treat variables from other code blocks as read-only. Each code block must independently determine their own inputs, interactions, etc.
-
-_If you are really interested in having values in specific observable blocks be used and updated whenever those values are changed, then you can read <a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-6-lab" target="_blank">last year's lab notebook</a>._
-
-
-## Mouse Events
-
-Mouse events are events tied specifically to mouse interactions with the DOM. This is useful for generating _tooltips_, similar to Vega-Lite's `.tooltip()` modifier we've worked with prior.
-
-There are three events that will be key to mouse interactions in JavaScript:
-
-- `mouseover`: Triggers when the mouse begins to hover over an element.  
-- `mousemove`: Triggers when the mouse moves along the screen.
-- `mouseout`: Triggers when the mouse stops hovering over an element.
-
-We will need to access these events and the data binded to them.
-
-## Example: Pie Charts and Ice Cream Preferences
-
-_Technically a donut chart_
-
-:::{.columns}
-
-::::{.column width="50%"}
-
-|Type|Value|Total|
-|:-|:-:|:-:|
-|Soft-serve|286|1,098|
-|Scooped|472|1,098|
-|No Preference|318|1,098|
-|Unsure|22|1,098|
-
-::::
-
-::::{.column width="50%"}
-
-![](./week6-lab_files/figs/mouse_interactions.gif)
-
-::::
-
-:::
-
----
-
-```{js}
-const path = svg.chart.selectAll('path')
-  .data(pie(pie_data))
-    .enter()
-      .append('path')
-      // ...
-      .on('mouseover', function (d, i) {    // Add a listener to `mouseover`
-        d3.select(this)                     // Make D3 pay attention to the current `path` element
-          .attr('opacity', '.75')           // Modify the opacity to be 0.75
-      })
-      .on('mouseout', function (d, i) {     // Add a listener to `mouseover`
-        d3.select(this)                     // Make D3 pay attention to the current `path` element
-          .attr('opacity', '1')             // Modify the opacity to be 1.0
-      });
-```
-
-<br />
-
-### Why traditional function over arrow function?
-
-One of the key differences between traditional functions and arrow functions is the scope of `this`.
-
-- In traditional functions, `this` refers to the immediate object that called the function.
-- With arrow functions, `this` refers to the global context.
-
-<a href="https://dev-aditya.medium.com/understanding-this-in-javascript-arrow-functions-vs-regular-functions-704a8452c4f1" target="_blank">Learn more here</a>
-
-## Transitions
-
-Sometimes we want these dynamic changes to have transitions. This allows the interactions of your charts to appear more visually interesting.
-
-Observe the following code sample:
-
-```{js}
-d3.select("body")
-  .transition()
-  .style("background-color", "red");
-```
-
-In this code example, when `<body>` is loaded into the DOM, D3 will perform a transition to adjust the “background-color” of `<body>` to “red”. D3’s transitions support various transition types, such as `.transition().attr()` and `.transition().style()`.
-
-<a href="https://d3js.org/d3-transition" target="_blank">Read more here.</a>
-
-## In-Lab Exercise: Adding Transitions (5 mins.)
-
-Copy the pie chart code and modify the chart so that, on both `mouseover` or `mouseout`, add a transition that has a duration of 1000ms (1 sec.).
-
-You are free to re-use `color_scale`, `arc`, `pie`, and all the dimensional variables such as `_width` and `_margins` without needing to copy them.
-
-<br />
-
-:::{.fragment}
-
-### Solution
-
-```{js}
-// Instantiate our SVG. Reusin g some old variables
-let svg = instantiate_chart({
-  width:_width,
-  height:_height,
-  margins:_margins,
-  titles:{chart:'Ice Cream Preferences'}
-});
-
-// The novelty comes from the two new events we are considering: `mouseover` and `mouseout`
-let path = svg.chart.selectAll('path')
-  .data(pie(pie_data))
-    .enter()
-      .append('path')
-      .attr('d', arc)
-      .attr('fill', (d) => color_scale(d.data.type))
-      .attr('transform', `translate(${_width/2}, ${_height/2})`)
-      .on('mouseover', function (d, i) {    // Add a listener to `mouseover`
-        d3.select(this)                     // Make D3 pay attention to the current `path` element
-          .transition(1000)                 // Make a transition
-            .attr('opacity', '.75')         // Modify the opacity to be 0.75
-      })
-      .on('mouseout', function (d, i) {     // Add a listener to `mouseover`
-        d3.select(this)                     // Make D3 pay attention to the current `path` element
-          .transition(1000)                 // Make a transition
-            .attr('opacity', '1')           // Modify the opacity to be 1.0
-      });
-```
-
-:::
-
-
-## End of Lab
-
-- Exercise #6 will be posted tonight and is due on **October 15th @ 11:59pm**!
-- Where do I ask questions?
-  - Office Hours!
-  - Our course Discord!
+![](week7-lab_files/figs/ex4.gif){width="100%"}
+-->
+
+## Final Reminders & Checks
+
+- Exercise #6 concerns additional chart types in D3.js. it is due **October 15th @ 11:59pm**
+- <a href="https://forms.gle/jiDgZfiez8BJRc8T7" target="_blank">Project Group Check-in</a> - Due by **TONIGHT** @ 11:59pm
+- Have questions?
+    - Discord!
+    - Email!
