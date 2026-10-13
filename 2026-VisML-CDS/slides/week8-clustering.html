@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week8-clustering_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week8-clustering_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week8-clustering_files/libs/quarto-html/popper.min.js"></script>
+<script src="week8-clustering_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week8-clustering_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week8-clustering_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week8-clustering_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2026-10-13">
+  <title>Clustering and Dimensionality Reduction</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week8-clustering_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week8-clustering_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="week8-clustering_files/libs/revealjs/dist/theme/quarto-e124fad2ea3a572fe336e1b59f57db0f.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
+  <link href="week8-clustering_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week8-clustering_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week8-clustering_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week8-clustering_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Clustering and Dimensionality Reduction</h1>
+  <p class="subtitle">DS-GA 3001 - Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Center for Data Science
+          </p>
+    </div>
+</div>
+
+  <p class="date">2026-10-13</p>
+</section>
+<section class="slide level2">
+
+<style>
+.reveal pre { font-size: 0.72em; }
+.reveal .cell-output pre { font-size: 0.9em; }
+</style>
+</section>
+<section class="slide level2">
+<h2>Agenda</h2>
+<ol type="1">
+<li class="fragment"><strong>Clustering</strong>
+<ul>
+<li class="fragment">Introduction to unsupervised learning</li>
+<li class="fragment">K-means clustering on IRIS dataset</li>
+<li class="fragment">DBSCAN and other clustering methods</li>
+<li class="fragment">Choosing <em>k</em>, dendrograms, and validating clusters</li>
+</ul></li>
+<li class="fragment"><strong>Dimensionality Reduction</strong>
+<ul>
+<li class="fragment">The manifold hypothesis and intrinsic dimensionality</li>
+<li class="fragment">Principal Component Analysis (PCA)</li>
+<li class="fragment">Eigenvectors, eigenvalues, and covariance matrices</li>
+<li class="fragment">Singular Value Decomposition (SVD)</li>
+<li class="fragment">Local Linear Embedding (LLE)</li>
+<li class="fragment">Preview: Non-linear Manifold Learning (t-SNE, UMAP)</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Tonight’s lecture block has two parts: this deck, then the project discussion. There’s no default project this year; every group proposes its own, and the proposal is due next Tuesday, Oct 20. Protect the project time. Suggested budget: clustering about 30 minutes, dimensionality reduction about 45, project discussion about 35 (including questions), with 10 minutes in reserve. The time freed by dropping the default-project deck is enough to keep most of the SKIPPABLE slides.</p>
+<p>This deck has 46 slides. Six are marked SKIPPABLE in these notes: k-means steps, two moons, validation, choosing k, the dendrogram, and six projections. If you’re running long, skip them and nothing downstream breaks.</p>
+<p>The thread connecting the two halves: both clustering and dimensionality reduction look for structure without labels. Clustering asks which points belong together. Dimensionality reduction asks how many numbers you really need to describe a point. In a visualization course we care because neither has a ground truth to check against, so the picture is often the only way to judge whether the answer makes sense.</p>
+<p>We use Iris for clustering (150 flowers, 4 measurements, 3 species) and handwritten digits for dimensionality reduction (8x8 images, so 64 dimensions). The math for PCA comes from Luis Gustavo Nonato’s slides. Next week covers t-SNE and UMAP in depth.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<!-- Examples and materials from... -->
+</section>
+<section class="slide level2">
+<h2>Clustering</h2>
+<p><strong>Etienne Bernard: “… the goal of clustering is to separate a set of examples into groups called clusters”</strong></p>
+
+<img data-src="figs/iris.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Bernard, E. (2021). <a href="https://www.wolfram.com/language/introduction-machine-learning/clustering/"><em>Introduction to Machine Learning</em></a>, ch.&nbsp;Clustering. Wolfram Media.</p>
+</div>
+<aside class="notes">
+<p>Clustering is the canonical unsupervised task: there are no labels to fit, only the data. The definition is deliberately loose, “separate examples into groups”, because what counts as a good group depends on the application. That looseness is the theme of the whole first half.</p>
+<p>The figure is from Etienne Bernard’s book, which is tonight’s required reading. It shows Fisher’s Iris data: 150 specimens, four measurements each (sepal length and width, petal length and width), plus the species. Note that the species column is there. Tonight we’ll pretend we can’t see it, cluster on the measurements alone, and then use the species to grade the result. That pattern of clustering blind and then validating against held-out labels is how clustering methods are evaluated in papers.</p>
+<p>Uses worth naming: customer segmentation, grouping documents or images, finding cell types in single-cell RNA data, and anomaly detection (points that don’t fit any cluster). In ML model analysis, which is our course focus, you cluster a model’s errors or embeddings to find failure modes. That’s a good template for a final project: pick a model, cluster its mistakes, and visualize what each cluster has in common.</p>
+<p>Ask: has anyone run k-means on real data, and how did you choose k? Keep the answer in mind; it comes back in a few slides.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a><span class="co"># Code source: Gaël Varoquaux</span></span>
+<span id="cb1-2"><a href="" aria-label="2"></a><span class="co"># Modified for documentation by Jaques Grobler</span></span>
+<span id="cb1-3"><a href="" aria-label="3"></a><span class="co"># License: BSD 3 clause</span></span>
+<span id="cb1-4"><a href="" aria-label="4"></a><span class="co">#</span></span>
+<span id="cb1-5"><a href="" aria-label="5"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="" aria-label="6"></a></span>
+<span id="cb1-7"><a href="" aria-label="7"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb1-8"><a href="" aria-label="8"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb1-9"><a href="" aria-label="9"></a></span>
+<span id="cb1-10"><a href="" aria-label="10"></a>_, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb1-11"><a href="" aria-label="11"></a>scatter <span class="op">=</span> ax.scatter(iris.data[:, <span class="dv">2</span>], iris.data[:, <span class="dv">1</span>])</span>
+<span id="cb1-12"><a href="" aria-label="12"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span>iris.feature_names[<span class="dv">2</span>], ylabel<span class="op">=</span>iris.feature_names[<span class="dv">1</span>])</span>
+<span id="cb1-13"><a href="" aria-label="13"></a>_ <span class="op">=</span> ax.legend(</span>
+<span id="cb1-14"><a href="" aria-label="14"></a>    scatter.legend_elements()[<span class="dv">0</span>], iris.target_names, loc<span class="op">=</span><span class="st">"lower right"</span>, title<span class="op">=</span><span class="st">"Classes"</span></span>
+<span id="cb1-15"><a href="" aria-label="15"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>This is the scikit-learn gallery example, lightly modified. Iris has 4 features and 3 species classes. We plot two of them: column 2, petal length, on x, and column 1, sepal width, on y. These are the same two axes Bernard uses, so our plots line up with the figures from the book on the next slides.</p>
+<p>Point out what’s missing: the scatter call has no <code>c=</code> argument, so every point gets the same color. We’re deliberately looking at the data the way a clustering algorithm sees it. (The legend call is left over from the labeled version of the example; on the next slide it draws nothing useful, so the rendered plot omits it.)</p>
+<p><code>datasets.load_iris()</code> returns a Bunch with <code>.data</code> (150x4), <code>.target</code> (0/1/2) and <code>.feature_names</code>. The same loader pattern works for digits later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS</h2>
+<div id="dba04465" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="1515" height="785"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This is the unlabeled view: petal length on x, sepal width on y, every point the same gray.</p>
+<p>Ask the room: how many groups do you see? Most people say two: a tight blob on the left (petal length under 2 cm) and an elongated cloud on the right. Some say three. Take a quick show of hands, because it sets up the punchline. The honest answer from this picture alone is two. A third group, if there is one, lives inside the right-hand cloud without a visible gap.</p>
+<p>This is a 2-D projection of 4-D data, so a gap could exist in the other two dimensions that this view hides. That’s a preview of the dimensionality reduction half: what you can see depends on the projection you choose.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS – another look</h2>
+<div id="7d5cbc24" class="cell" data-fig-height="6" data-fig-width="9" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="1318" height="866"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Now reveal the species. Setosa (blue) is the isolated blob on the left, with all 50 points below 2 cm petal length. Versicolor (red) and virginica (green) together make up the right-hand cloud. They’re ordered along petal length (versicolor shorter, virginica longer), but they meet around 4.5 to 5 cm with no gap.</p>
+<p>This plot explains every result in the next ten minutes:</p>
+<ul>
+<li>Any reasonable method finds setosa perfectly.</li>
+<li>No method separates versicolor from virginica perfectly using geometry alone, because the species boundary isn’t a density gap.</li>
+<li>Whether the “right” answer is 2 or 3 clusters depends on whether you’re asking about geometry or botany.</li>
+</ul>
+<p>Make the general point: a clustering algorithm optimizes a geometric criterion. Labels encode a different notion of similarity. When the two disagree, the algorithm isn’t wrong; it’s answering a different question.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS – clustering</h2>
+
+<img data-src="figs/iris-bernard-clustering.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>This is Wolfram’s FindClusters run fully automatically, with no number of clusters given. It returns two clusters of 49 and 101 points. So the automatic method agrees with the show of hands, not with the species count.</p>
+<p>Why 49 and not 50: one point the method grouped with the big cluster. You can’t tell which from this 2-D view, a reminder that the method works in all four dimensions. Automatic methods pick k by optimizing an internal score. We’ll compute one such score, the silhouette, in a few slides and find it also prefers k=2 on these features.</p>
+<p>The lesson: “find the clusters” is under-specified. Without telling the algorithm how many clusters you expect, or what similarity means, it falls back on the strongest geometric signal, which here is setosa vs everything else.</p>
+<p>Transition: next slide, we tell it to find three.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS – k-means</h2>
+
+<img data-src="figs/iris-bernard-clustering-kmeans.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Now we guide it with three choices, and the text above the code names them: the number of clusters (3), the method (k-means), and the preprocessing (automatic standardization turned off with FeatureExtractor -&gt; “Minimal”).</p>
+<p>The result: setosa is still its own cluster (blue circles). The right-hand cloud gets cut into two pieces, orange triangles and green diamonds, by what’s essentially a vertical line around petal length 5. That cut is k-means’ signature. Each point goes to its nearest centroid, so boundaries between clusters are straight lines (the Voronoi diagram of the centroids). The cut sits roughly where the species overlap, but some of the true virginica with petal length under 5 end up in the orange cluster.</p>
+<p>Why the preprocessing matters: k-means uses Euclidean distance, so features with larger ranges dominate. Standardizing changes the answer. On the validation slide we’ll see that standardizing Iris actually makes agreement with the species worse.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>K-means in four lines</h2>
+<ol type="1">
+<li>Pick <em>k</em> starting centroids (k-means++ spreads them out)</li>
+<li>Assign each point to its nearest centroid</li>
+<li>Move each centroid to the mean of its assigned points</li>
+<li>Repeat 2–3 until assignments stop changing</li>
+</ol>
+<p><strong>Objective:</strong> minimize within-cluster sum of squares <span class="math inline">\(\;\sum_{c=1}^{k} \sum_{x \in C_c} \lVert x - \mu_c \rVert^2\)</span></p>
+<p><strong>Built-in assumptions:</strong> <em>k</em> is known · clusters are convex and roughly spherical · similar sizes · feature scale is meaningful</p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Wolfram Mathematica FindClusters”.</p>
+<p>This is Lloyd’s algorithm. Each step can only lower the objective: assignment picks the nearest centroid, and the mean is the point that minimizes squared distance to a set. So it always converges, but only to a local minimum. That’s why scikit-learn runs it several times from different starts (<code>n_init</code>) and keeps the best, and why k-means++ seeding (pick each new centroid with probability proportional to squared distance from the existing ones) matters.</p>
+<p>Walk through the assumptions slowly, because each produces a failure you can see in a plot:</p>
+<ul>
+<li><strong>k is known:</strong> you have to supply it. Choosing it is its own problem (a later slide).</li>
+<li><strong>Convex, spherical clusters:</strong> nearest-centroid boundaries are straight lines, so k-means can’t follow a curved cluster. Two moons, coming up, is the classic counterexample.</li>
+<li><strong>Similar sizes:</strong> a large cluster next to a small one gets its edge stolen, because the boundary sits halfway between centroids.</li>
+<li><strong>Feature scale:</strong> distance is Euclidean, so a feature measured in millimeters outvotes one measured in meters.</li>
+</ul>
+<p>Cost is O(n·k·d) per iteration, which is why k-means is the default for large data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Wolfram Mathematica FindClusters</h2>
+
+<img data-src="figs/findclusters-methods.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>FindClusters exposes ten methods besides Automatic. Group them by what they assume a cluster is:</p>
+<ul>
+<li><strong>Centroid-based:</strong> KMeans and KMedoids. A cluster is a ball around a center. KMedoids uses actual data points as centers, so it’s more robust to outliers.</li>
+<li><strong>Density-based:</strong> DBSCAN, MeanShift and NeighborhoodContraction. A cluster is a dense region, and sparse regions separate clusters. DBSCAN also labels points in sparse regions as noise rather than forcing them into a cluster.</li>
+<li><strong>Graph or connectivity-based:</strong> Agglomerate (single linkage), SpanningTree, JarvisPatrick and Spectral. A cluster is a set of points connected by short links. These can follow arbitrary shapes.</li>
+<li><strong>Model-based:</strong> GaussianMixture. A cluster is a probability distribution, so points get soft memberships.</li>
+</ul>
+<p>The method is the definition of a cluster. Choosing a method is choosing what “belongs together” means, which is why the next slide matters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Wolfram Mathematica FindClusters</h2>
+
+<img data-src="figs/findclusters-methods-examples.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Eight methods (columns) on five toy datasets (rows). Read it by row:</p>
+<ul>
+<li><strong>Row 1 (three well-separated blobs):</strong> every method agrees. When structure is obvious, the method doesn’t matter.</li>
+<li><strong>Row 2 (a sparse blob, a small dense blob, a big dense blob):</strong> most methods get three groups. KMeans and KMedoids give the right edge of the sparse blob to the small one, because the boundary sits halfway between centers. DBSCAN does something different: one eps can’t fit both densities, so it merges the sparse and small blobs and calls the fringe noise (gray).</li>
+<li><strong>Row 3 (three parallel strips):</strong> KMeans and KMedoids slice strips across their length. Spectral splits the middle strip into four groups in total. DBSCAN finds the three strips but drops their sparse ends as noise.</li>
+<li><strong>Row 4 (two moons):</strong> KMeans, KMedoids and MeanShift cut each moon in half. DBSCAN, Spectral, JarvisPatrick and Agglomerate follow the curves.</li>
+<li><strong>Row 5 (ring around a disk):</strong> the hardest case. Only DBSCAN, Spectral and JarvisPatrick get it. KMeans and KMedoids cut it in half. SpanningTree and MeanShift break the outer ring into several pieces. Agglomerate (single linkage) also fails here: it splits the ring and joins half of it to the disk, presumably because a few noisy points bridge the gap. Single linkage is the method that’s supposed to follow rings, which shows how fragile chaining is.</li>
+</ul>
+<p>Takeaway: no column is perfect on every row. The right method depends on the shape of the structure you expect, and you usually find that out by looking at the data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>When k-means fails: shape, not count</h2>
+<div id="fecff709" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-5-output-1.png" class="quarto-figure quarto-figure-center" width="1611" height="479"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Right number of clusters, wrong definition of a cluster.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “IRIS - classes”.</p>
+<p>These are live scikit-learn results on the two-moons dataset (400 points). This reproduces row 4 of the Wolfram grid, with a score attached.</p>
+<p>Left: k-means is given the correct k=2 and still fails. It draws a straight boundary and cuts each moon in half. Its adjusted Rand index (ARI) against the true moons is 0.27, where 1 is perfect agreement and 0 is chance level.</p>
+<p>Right: DBSCAN gets ARI 1.00. It has no k at all. It has two parameters: <code>eps</code>, the neighborhood radius, and <code>min_samples</code>, how many neighbors make a point a “core” point. Clusters are chains of core points within eps of each other, so they can bend.</p>
+<p>DBSCAN’s weakness: eps. On this data, eps of 0.15, 0.2 or 0.25 all give the perfect answer, but at 0.3 the moons touch and DBSCAN returns one cluster (ARI 0). One global eps also struggles when clusters have different densities, which is what HDBSCAN fixes.</p>
+<p>Ask: what’s the k-means equivalent of eps? (It’s k. Every method has a knob that decides how many clusters you get. The question is whether the knob is meaningful for your data.)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS - classes</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="aa3d3ac9" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-6-output-1.png" width="881" height="728"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/iris-bernard-clustering-kmeans-crop.jpg" style="width:100.0%"></p>
+</div></div>
+<aside class="notes">
+<p>Side by side: true species on the left (from scikit-learn, same axes), Wolfram’s k-means with k=3 on the right. Point at the same regions in both:</p>
+<ul>
+<li>Setosa (blue on the left) maps exactly to cluster 1. Perfect.</li>
+<li>On the right, the boundary between clusters 2 and 3 is close to vertical at petal length around 5. On the left, the versicolor/virginica boundary is diagonal and interleaved. Virginica with short petals (green points left of x=5) become cluster 2.</li>
+<li>Cluster colors and species colors don’t correspond. Cluster IDs are arbitrary, so “cluster 2” means nothing until you match it to a class. Any score comparing clusters to labels has to be invariant to relabeling (next slide).</li>
+</ul>
+<p>Remember this comparison is a teaching device. In real unsupervised work there’s no left panel. You only get the right one and have to decide whether to trust it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Validating clusters against labels</h2>
+<div id="e15d1aaa" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-7-output-1.png" class="quarto-figure quarto-figure-center" width="1656" height="709"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Recommended reading”.</p>
+<p>When you have labels for a sample, this is how you grade a clustering. These are live results.</p>
+<p>Left, the confusion matrix (species x cluster, columns reordered so matches sit on the diagonal): all 50 setosa in one cluster, 48 of 50 versicolor in the next, 41 of 50 virginica in the last. So 11 of 150 points disagree, all at the versicolor/virginica border we saw.</p>
+<p>Right, the adjusted Rand index (ARI). It asks: for every pair of points, do the clustering and the labels agree on whether the pair is together? It ignores cluster numbering and is corrected for chance, so random labels score about 0. Results:</p>
+<ul>
+<li><strong>k-means on 2 features:</strong> 0.80, the best.</li>
+<li><strong>All 4 features:</strong> 0.73, worse.</li>
+<li><strong>4 standardized features:</strong> 0.62, worse still. More information and “proper” preprocessing both hurt.</li>
+<li><strong>Ward / average linkage:</strong> 0.73 / 0.76.</li>
+<li><strong>Single linkage:</strong> 0.56. It chains: two of its three clusters hold 98 and 50 points, and the third holds just 2.</li>
+</ul>
+<p>Why standardizing hurts: sepal width barely differs between species but has its own spread. Standardizing gives it as much say as petal length, which is the discriminative feature. Preprocessing is a modeling decision, not a formality.</p>
+<p>When you have no labels, use internal scores instead (silhouette, next slide). These measure compactness and separation, not truth.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How many clusters? Two criteria, two answers</h2>
+<div id="55214709" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-8-output-1.png" class="quarto-figure quarto-figure-center" width="1611" height="690"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>The elbow says 3, the silhouette says 2, the botanist says 3.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Recommended reading”.</p>
+<p>Both panels use k-means on the same two Iris features, for k from 2 to 7.</p>
+<p><strong>Elbow (left):</strong> within-cluster sum of squares always falls as k grows, so you look for where the drop flattens. Here it’s 86, then 41, then 27.5, then a slow decline. The bend is at k=3. The elbow is a judgment call: on many real datasets there’s no clear bend.</p>
+<p><strong>Silhouette (right):</strong> for each point, compare a (mean distance to its own cluster) with b (mean distance to the nearest other cluster). The score is (b-a)/max(a,b), from -1 to 1. The average peaks at k=2 (0.74) and falls to 0.59 at k=3. Silhouette prefers k=2 because setosa vs the rest is a clean, wide gap, and splitting the right-hand cloud creates a boundary with no gap.</p>
+<p>This is the same answer the automatic FindClusters gave (two clusters, 49 and 101). Internal criteria measure geometry, and geometrically Iris has two clusters. Three species is a fact about biology that isn’t fully written in these measurements.</p>
+<p>For your projects: report which criterion you used, and show the curve, not just the chosen k. If two reasonable criteria disagree, say so. That’s a finding, not a failure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Hierarchical clustering: the dendrogram</h2>
+<div id="ae37d870" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-9-output-1.png" class="quarto-figure quarto-figure-center" width="1659" height="709"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>One tree, every k: the cut height is the choice.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Recommended reading”.</p>
+<p>Agglomerative clustering starts with every point as its own cluster and repeatedly merges the two closest clusters. The dendrogram records every merge: the height of each horizontal bar is the distance at which the merge happened. Live result, Ward linkage on all four Iris features. To keep it readable we show only the last 30 merges; a leaf label like “(12)” means 12 points collapsed into that branch.</p>
+<p>How to read it:</p>
+<ul>
+<li>A horizontal cut gives a flat clustering. The dashed line gives 3 clusters. Cut higher and you get 2.</li>
+<li><strong>Long vertical gaps mean real structure.</strong> The tallest gap is the last merge, setosa joining everything else. Again that’s the “2 clusters” story, now visible as a height.</li>
+<li>The difference between “Agglomerate” in Wolfram (single linkage) and Ward is the linkage rule, meaning how cluster-to-cluster distance is defined:
+<ul>
+<li><strong>Single:</strong> closest pair. It follows chains, which lets it trace the moons in the Wolfram grid but also makes it fragile: a few bridging points merged ring and disk there, and on Iris it produced a 98/50/2 split.</li>
+<li><strong>Complete:</strong> farthest pair.</li>
+<li><strong>Average:</strong> mean of all pairs.</li>
+<li><strong>Ward:</strong> smallest increase in within-cluster variance. Ward behaves most like k-means.</li>
+</ul></li>
+</ul>
+<p>Why visualization people like dendrograms: they show structure at all scales at once instead of committing to one k. They sit on the margins of clustered heatmaps everywhere in genomics. Cost is the catch: naive agglomerative clustering is O(n²) memory, so it doesn’t scale like k-means.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Recommended reading</h2>
+<ul>
+<li><p><strong>Required:</strong> Bernard, <a href="https://www.wolfram.com/language/introduction-machine-learning/clustering/"><em>Introduction to Machine Learning</em> — Clustering</a> (Wolfram)</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Cluster_analysis">Cluster analysis</a> (Wikipedia)</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/K-means_clustering">k-means clustering</a> (Wikipedia)</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a> (Wikipedia)</p></li>
+</ul>
+<aside class="notes">
+<p>The Wolfram chapter is required and is where the Iris and FindClusters figures came from. It’s short and interactive. Students should read the parts on choosing the number of clusters and on preprocessing, because those are exactly the two places tonight where the answer changed.</p>
+<p>The Wikipedia articles are the reference layer: cluster analysis for the taxonomy of methods (centroid, density, connectivity, distribution), k-means for Lloyd’s algorithm and k-means++, and DBSCAN for core, border and noise points. For anyone using clustering in a project, also skim the scikit-learn “Comparing different clustering algorithms” gallery page, which is the Python equivalent of the Wolfram grid.</p>
+<p>Transition: this ends clustering. If you’re behind schedule, this is a natural point to check the clock before starting dimensionality reduction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Dimensionality Reduction</h2>
+<ul>
+<li><p>Input data may have thousands or millions of dimensions!</p></li>
+<li><p><strong>Dimensionality Reduction</strong> represents data with fewer dimensions</p>
+<ul>
+<li>easier learning – fewer parameters</li>
+<li>visualization – show high-dimensional data in 2D or 3D</li>
+<li>discover “intrinsic dimensionality” of the data</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Second half. Clustering compressed each point to one number, its cluster ID. Dimensionality reduction compresses each point to a few continuous coordinates, keeping as much of the structure as possible.</p>
+<p>Examples of “thousands or millions of dimensions”: a 256x256 grayscale image is 65,536 numbers; a bag-of-words document has one dimension per vocabulary word; a transformer’s hidden state has 768 to 4,096 per token. Every embedding we’ll look at later in the course needs DR before anyone can see it.</p>
+<p>Three motivations on the slide:</p>
+<ul>
+<li><strong>Easier learning:</strong> fewer inputs mean fewer parameters, less overfitting, and less trouble from the curse of dimensionality (distances concentrate in high dimensions, so “nearest” becomes less meaningful).</li>
+<li><strong>Visualization:</strong> the reason this course cares. Screens are 2-D.</li>
+<li><strong>Intrinsic dimensionality:</strong> how many numbers you actually need, as opposed to how many you were given. That’s the next two slides.</li>
+</ul>
+<p>Bridge back to clustering: people often cluster in a reduced space, or color a 2-D projection by cluster. The two tools are used together constantly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Dimensionality Reduction</h2>
+<p><strong>Assumption: data lies on a lower dimensional space</strong></p>
+
+<img data-src="figs/dm-data-is-low-dimensional.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Slides based on material from Prof.&nbsp;Yi Zhang</p>
+</div>
+<aside class="notes">
+<p>Two cartoons of the assumption. Left: points in 2-D (n=2) that hug a line, so one coordinate (k=1), position along the line, describes them almost completely. The scatter perpendicular to the line is small. Right: points in 3-D (n=3) lying close to a tilted plane, so two coordinates (k=2) suffice.</p>
+<p>In both cases the low-dimensional structure is flat (a line, a plane), which is exactly the case PCA handles. Notation on the figure: n is the ambient dimension and k the intrinsic one. On later slides d is the ambient dimension and n the number of points, so warn students about the switch.</p>
+<p>The general version is the manifold hypothesis: real high-dimensional data (faces, digits, speech) concentrates near a low-dimensional surface. Faces make it intuitive. A 100x100 image has 10,000 pixels, but faces vary along far fewer factors: identity, pose, expression, lighting. Random pixel vectors almost never look like a face, so faces occupy a thin sliver of pixel space.</p>
+<p>Ask: which of the two pictures can be “unrolled” by a projection? Both, because they’re flat. The next slide is a case that isn’t.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing the Manifold Hypothesis: Images of ‘3’ Perturbed by Non-linear Operations</h2>
+
+<img data-src="figs/perturbed-3.jpg" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li><p>What operations did we perform? What’s the intrinsic dimensionality?</p></li>
+<li><p>Here the underlying <strong>manifold</strong> is <strong>non-linear</strong></p></li>
+</ul>
+<div class="footer">
+<p>Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning</em>, §12.1. Springer.</p>
+</div>
+<aside class="notes">
+<p>This example is from Bishop, chapter 12. Bishop takes one handwritten 3 (a 64x64 image), embeds it in a larger 100x100 canvas, and varies its position and orientation at random.</p>
+<p>Ask the two questions on the slide before answering:</p>
+<ol type="1">
+<li>What operations? Horizontal translation, vertical translation, and rotation. Look at the five images: the 3 moves around and tilts, but its shape doesn’t change. No scaling, no deformation.</li>
+<li>Intrinsic dimensionality? Three: x-shift, y-shift and angle. Each image is a point in a space with 10,000 pixel dimensions, yet the whole collection is a 3-dimensional manifold inside it. (Bishop also notes real digit data adds noise and writing-style variation, so in practice it’s near a manifold, not exactly on one.)</li>
+</ol>
+<p>Why non-linear: shift the 3 by one pixel and a completely different set of pixels lights up. Moving along the “translate” direction traces a curved path through pixel space, not a straight line. Averaging two shifted 3s gives a blurry double 3, not a 3 at the midpoint. That’s the signature of a curved manifold: the straight line between two valid points leaves the manifold.</p>
+<p>So linear methods like PCA can only approximate this, and we’ll need methods that follow curvature: LLE today, t-SNE and UMAP next week.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Digits</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb2-2"><a href="" aria-label="2"></a></span>
+<span id="cb2-3"><a href="" aria-label="3"></a>digits <span class="op">=</span> load_digits(n_class<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb2-4"><a href="" aria-label="4"></a>X, y <span class="op">=</span> digits.data, digits.target</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Our DR playground is scikit-learn’s digits: small 8x8 grayscale images of handwritten digits, pixel values 0 to 16. Flattened, each image is a 64-dimensional vector. That’s high enough that you can’t plot it, and small enough that every method runs in seconds in class.</p>
+<p><code>n_class=6</code> keeps only digits 0 to 5, which gives 1,083 images and a cleaner picture with fewer colors. Later, the PCA slides load all ten classes (1,797 images); point that out when you get there.</p>
+<p><code>X</code> is 1083x64 (one row per image); <code>y</code> holds the digit labels, which we’ll use only to color plots, never to fit them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Digits - 0</h2>
+<div id="44b7e1da" class="cell columns column-output-location" data-execution_count="9">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb3-2"><a href="" aria-label="2"></a></span>
+<span id="cb3-3"><a href="" aria-label="3"></a>digits <span class="op">=</span> load_digits(n_class<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb3-4"><a href="" aria-label="4"></a>digits.images[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>array([[ 0.,  0.,  5., 13.,  9.,  1.,  0.,  0.],
+       [ 0.,  0., 13., 15., 10., 15.,  5.,  0.],
+       [ 0.,  3., 15.,  2.,  0., 11.,  8.,  0.],
+       [ 0.,  4., 12.,  0.,  0.,  8.,  8.,  0.],
+       [ 0.,  5.,  8.,  0.,  0.,  9.,  8.,  0.],
+       [ 0.,  4., 11.,  0.,  1., 12.,  7.,  0.],
+       [ 0.,  2., 14.,  5., 10., 12.,  0.,  0.],
+       [ 0.,  0.,  6., 13., 10.,  0.,  0.,  0.]])</code></pre>
+</div>
+</div></div>
+<aside class="notes">
+<p>The first image as its raw 8x8 array. Have students find the shape: the zeros form a border and a hole in the middle, and the large values (13 to 16) trace a ring. It’s a 0.</p>
+<p>This is the key mental step: the algorithm never sees the picture, only these 64 numbers in a row. Two images are “close” if these vectors are close in Euclidean distance. That’s a crude notion of visual similarity. Shift this 0 by one pixel and the vector changes a lot, which is exactly the Bishop point from two slides ago.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Digits - 1</h2>
+<div id="9709ffe4" class="cell columns column-output-location" data-execution_count="10">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb5-2"><a href="" aria-label="2"></a></span>
+<span id="cb5-3"><a href="" aria-label="3"></a>digits <span class="op">=</span> load_digits(n_class<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb5-4"><a href="" aria-label="4"></a>digits.images[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>array([[ 0.,  0.,  0., 12., 13.,  5.,  0.,  0.],
+       [ 0.,  0.,  0., 11., 16.,  9.,  0.,  0.],
+       [ 0.,  0.,  3., 15., 16.,  6.,  0.,  0.],
+       [ 0.,  7., 15., 16., 16.,  2.,  0.,  0.],
+       [ 0.,  0.,  1., 16., 16.,  3.,  0.,  0.],
+       [ 0.,  0.,  1., 16., 16.,  6.,  0.,  0.],
+       [ 0.,  0.,  1., 16., 16.,  6.,  0.,  0.],
+       [ 0.,  0.,  0., 11., 16., 10.,  0.,  0.]])</code></pre>
+</div>
+</div></div>
+<aside class="notes">
+<p>The second image is a 1: the large values form a vertical stroke down columns 3 to 5, with zeros everywhere else.</p>
+<p>Compare it with the 0. A 1 has far fewer nonzero pixels, so its vector has a much smaller norm. That’s a hint that a linear method might separate some digits on ink quantity alone. Ask students to predict which digits will be easy to separate in a 2-D projection, and check their guesses on the PCA slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Digits</h2>
+<div id="2d747f79" class="cell columns column-output-location" data-execution_count="11">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_digits</span>
+<span id="cb7-2"><a href="" aria-label="2"></a></span>
+<span id="cb7-3"><a href="" aria-label="3"></a>digits <span class="op">=</span> load_digits(n_class<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb7-4"><a href="" aria-label="4"></a>X, y <span class="op">=</span> digits.data, digits.target</span>
+<span id="cb7-5"><a href="" aria-label="5"></a>n_samples, n_features <span class="op">=</span> X.shape</span>
+<span id="cb7-6"><a href="" aria-label="6"></a>n_neighbors <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb7-7"><a href="" aria-label="7"></a></span>
+<span id="cb7-8"><a href="" aria-label="8"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-9"><a href="" aria-label="9"></a></span>
+<span id="cb7-10"><a href="" aria-label="10"></a>fig, axs <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">10</span>, ncols<span class="op">=</span><span class="dv">10</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb7-11"><a href="" aria-label="11"></a><span class="cf">for</span> idx, ax <span class="kw">in</span> <span class="bu">enumerate</span>(axs.ravel()):</span>
+<span id="cb7-12"><a href="" aria-label="12"></a>    ax.imshow(X[idx].reshape((<span class="dv">8</span>, <span class="dv">8</span>)), cmap<span class="op">=</span>plt.cm.binary)</span>
+<span id="cb7-13"><a href="" aria-label="13"></a>    ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb7-14"><a href="" aria-label="14"></a>_ <span class="op">=</span> fig.suptitle(<span class="st">"A selection from the 64-dimensional digits dataset"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-12-output-1.png" width="614" height="687"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>The first 100 images, reshaped back to 8x8 for display. At this resolution there’s a lot of variation within each class: slanted and upright 1s, open and closed 4s, 5s that look like 3s.</p>
+<p>The goal for every method that follows: map these 1,083 points to 2-D so that images that look alike land near each other. What we’ll check in each embedding: do the six classes separate? Do confusable pairs (1 and 4, 3 and 5) sit next to each other? Does the layout between clusters mean anything?</p>
+<p><code>n_neighbors = 30</code> is set here for the neighborhood-based methods later (Isomap, LLE). They build a nearest-neighbor graph in 64-D first.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Digits: t-SNE embedding</h2>
+<div id="841cf5d1" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-13-output-1.png" class="quarto-figure quarto-figure-center" width="1210" height="679"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>A preview of where we’re headed: t-SNE applied to the 64-D digits, 1,083 points, in about a second. Each colored glyph is one image plotted as its digit label. The gray thumbnails are a sample of the actual images, drawn wherever there’s room, so you can check that neighbors really look alike.</p>
+<p>What to point out:</p>
+<ul>
+<li>The six classes form six well-separated islands with almost no mixing, even though t-SNE never saw the labels. The labels are only used for color.</li>
+<li>Within an island, thumbnails change gradually (slant, thickness). Local neighborhoods are meaningful.</li>
+<li>Between islands, distances and positions are not reliable. t-SNE preserves local neighbors, not global geometry, so “0 is far from 5” means little. This is the most common misreading of t-SNE plots and the main topic of next week’s Distill reading.</li>
+</ul>
+<p>Compare it mentally with PCA on the same kind of data in a few slides. Hold that comparison in mind through the linear algebra.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Same digits, six projections</h2>
+<div id="e6e88dd7" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-14-output-1.png" class="quarto-figure quarto-figure-center" width="1671" height="862"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Principal Component Analysis”.</p>
+<p>These are the same 1,083 digits run through six methods live, colored by digit (colors match the previous slide). The original 2025 code computed thirteen embeddings and plotted one; this shows the comparison it was built for.</p>
+<p>Read left to right, top to bottom, roughly from “linear” to “local”:</p>
+<ul>
+<li><strong>PCA:</strong> the best linear 2-D view. 0 (teal, bottom) and 4 (green, right) pull apart. 2 and 3 overlap on the left, 1 (orange) runs along the top, and 5 (yellow) sits in the middle of everything.</li>
+<li><strong>Random projection:</strong> a random linear map. It’s the baseline and clearly worse than PCA. The lattice pattern comes from the integer pixel values being multiplied by sparse ±1 weights. It’s still not useless, because random projections to <em>enough</em> dimensions approximately preserve distances (Johnson–Lindenstrauss); 2 is far too few.</li>
+<li><strong>MDS:</strong> tries to keep all pairwise distances. Similar global look to PCA.</li>
+<li><strong>Isomap:</strong> keeps distances measured along the neighbor graph (geodesics), not straight through space. Classes start to separate.</li>
+<li><strong>LLE:</strong> keeps each point’s local reconstruction weights (the method we derive at the end of today). Here it largely fails: the 0s shoot out along one long thin arm, the 4s trail off below, and the other four classes pile on top of each other. That’s a known LLE failure mode. The embedding comes from the bottom eigenvectors, which can latch onto one strongly separated component, and the result depends heavily on n_neighbors and regularization. Keep this in mind for the clean face-grid result at the end.</li>
+<li><strong>t-SNE:</strong> the cleanest separation.</li>
+</ul>
+<p>The general rule: the more a method focuses on local neighborhoods, the better it separates clusters, and the less you can trust large-scale distances. Choosing a method means choosing what to preserve, just like choosing a clustering method meant choosing what a cluster is.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis</h2>
+<ul>
+<li class="fragment">PCA is directly related to the eigenvectors and eigenvalues of covariance matrices.</li>
+<li class="fragment">Lets so make a quick review of eigenvectors, eigenvalues, and covariance matrices.</li>
+</ul>
+<div class="footer">
+<p>Slides based on material from Prof.&nbsp;Luis Gustavo Nonato</p>
+</div>
+<aside class="notes">
+<p>Now the workhorse. PCA is linear: it finds a rotation of the coordinate system and then drops axes. It can’t unfold a curved manifold like t-SNE can, but it has properties nothing else has:</p>
+<ul>
+<li><strong>Deterministic:</strong> no random seed, same answer every run.</li>
+<li><strong>Fast:</strong> one SVD.</li>
+<li><strong>Invertible:</strong> you can map back to the original space and reconstruct.</li>
+<li><strong>Interpretable axes:</strong> each component is a weighted combination of original features, and you can inspect the weights.</li>
+<li><strong>Honest variance accounting:</strong> it tells you exactly how much variance each axis keeps.</li>
+</ul>
+<p>That’s why it’s the default first look at any dataset, and why t-SNE and UMAP usually initialize from it.</p>
+<p>Roadmap for the next ten slides, from Nonato’s lectures:</p>
+<ol type="1">
+<li>Eigenvectors and the spectral decomposition of symmetric matrices.</li>
+<li>The covariance matrix, which is symmetric.</li>
+<li>PCA as diagonalizing the covariance.</li>
+<li>Using the eigenvalues to decide how many components to keep.</li>
+</ol>
+<p>If the room has a strong linear algebra background, move quickly through the next two slides.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Eigenvectors and Eigenvalues</h2>
+<p>Given a <span class="math inline">\(d \times d\)</span> matrix <span class="math inline">\(A\)</span>, a pair <span class="math inline">\((\lambda, u)\)</span> that satisfies</p>
+<p><span class="math inline">\(A u = \lambda u\)</span></p>
+<p>is called eigenvalue <span class="math inline">\(\lambda\)</span> and corresponding eigenvector <span class="math inline">\(u\)</span> of <span class="math inline">\(A\)</span>.</p>
+<aside class="notes">
+<p>An eigenvector is a direction that the matrix doesn’t rotate: multiplying by A only stretches or shrinks it, by the factor lambda. Draw it on the board. Most vectors change direction under A; eigenvectors are the special axes along which A acts like simple scaling.</p>
+<p>Eigenvectors are only defined up to scale (if u works, so does 2u or -u), so we normalize them to unit length. This is also why PCA axes can flip sign between runs or libraries. Students who compare their PCA plot with a classmate’s and see it mirrored should know that’s expected and harmless.</p>
+<p>Preview of why this matters: for the covariance matrix, the eigenvectors will be the principal directions of the data cloud, and each eigenvalue will be the variance along its direction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Symmetric Matrices</h2>
+<div class="columns">
+<div class="column" style="width:38%;">
+<ul>
+<li><span class="math inline">\(\lambda \in \mathbb{R}\)</span> and <span class="math inline">\(u \in \mathbb{R}^d\)</span> (no complex numbers involved)</li>
+<li>The eigenvectors are orthogonal</li>
+</ul>
+</div><div class="column" style="width:62%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/pca-spectral-decomposition.jpg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>For a general matrix, eigenvalues can be complex and eigenvectors needn’t be perpendicular. Symmetric matrices (A = Aᵀ) are the well-behaved case: real eigenvalues and orthogonal eigenvectors (the spectral theorem). Covariance matrices are always symmetric, so PCA gets this for free.</p>
+<p>Walk the derivation on the right:</p>
+<ol type="1">
+<li>Stack the d equations A uᵢ = λᵢ uᵢ side by side. A times the matrix U of eigenvector columns equals U times the diagonal matrix D of eigenvalues: AU = UD.</li>
+<li>Because the columns of U are orthonormal, Uᵀ = U⁻¹.</li>
+<li>Multiply both sides on the right by Uᵀ to get A = U D Uᵀ, the spectral decomposition.</li>
+</ol>
+<p>How to read it: any symmetric matrix is “rotate into the eigenbasis (Uᵀ), scale each axis by its eigenvalue (D), rotate back (U)”. Keep this picture, because PCA is the decomposition applied to the covariance matrix, and SVD is its generalization to non-square matrices.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Covariance Matrix</h2>
+
+<img data-src="figs/covariance-matrix.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Start with covariance between two variables. Watch Nonato’s notation on this slide: xᵢ and xⱼ are two attributes (two rows of the data matrix), each holding d observations, and s runs over the observations. The formula is the familiar one: average the product of deviations from each attribute’s mean, dividing by d−1 for an unbiased estimate.</p>
+<p>The last line is the important simplification. If we center the data first (subtract each attribute’s mean), covariance is just a scaled dot product of the two attribute vectors. That’s why every PCA implementation centers first, and why forgetting to center is a classic bug: without centering, the first “principal component” just points at the mean.</p>
+<p>Sign intuition: positive when the two attributes tend to be above their means together, negative when one is high while the other is low, near zero when there’s no linear relationship. Note “linear”: a perfect circle has zero covariance between x and y.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Covariance Matrix</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/large-covariance.jpg" style="width:100.0%"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/zero-convariance.jpg" style="width:100.0%"></p>
+</div></div>
+<aside class="notes">
+<p>Geometric intuition for the sign of each product term in the sum.</p>
+<p>Left, large covariance: the points lie along a rising diagonal. A point in the upper-right quadrant has both coordinates above the mean (both arrows up), so its product is positive. A point in the lower-left has both below (both arrows down), so its product is also positive. Almost every point contributes a positive term, so the sum is large.</p>
+<p>Right, zero covariance: the cloud is round. The highlighted point has x₁ above the mean and x₂ below (one arrow up, one down), so its product is negative, and another point in the opposite quadrant cancels it. Positive and negative products balance, and the sum is near zero.</p>
+<p>PCA’s job, previewed: given a cloud like the left one, find the rotation that makes it look like the right one in its covariance (no correlation between the new axes), but with the variance concentrated in the first axis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Covariance Matrix</h2>
+
+<img data-src="figs/covariance-summary.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Now all attributes at once. The convention here: X is d x n, with each column xᵢ one centered data point in R^d.&nbsp;Warn students that scikit-learn uses the transpose (n x d, rows are points). Whenever a formula looks off by a transpose, this is why.</p>
+<p>With centered data, the full covariance matrix is (1/(n−1)) X Xᵀ, a d x d symmetric matrix:</p>
+<ul>
+<li>The diagonal entry (k,k) is the variance of attribute k (the highlighted boxes).</li>
+<li>The off-diagonal entry (k,l) is the covariance between attributes k and l.</li>
+</ul>
+<p>Because it’s symmetric, everything from the previous slides applies: real eigenvalues, orthogonal eigenvectors, and a spectral decomposition.</p>
+<p>For digits, d = 64, so this is a 64x64 matrix. Each entry says how two pixels co-vary across the 1,797 images. Neighboring pixels in a stroke covary strongly, and border pixels are almost always 0 with near-zero variance. That’s redundancy PCA can remove.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis: intuition</h2>
+
+<img data-src="figs/pca-intuition.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Back to the correlated cloud, in the original axes x₁ and x₂. The dashed box marks the spread along each axis: the variances cov(x₁,x₁) and cov(x₂,x₂) are both large. On the right, the covariance matrix XXᵀ has an off-diagonal entry that the arrow labels “not zero”, because the two attributes are correlated.</p>
+<p>What that means in practice: the two attributes are redundant. Knowing x₁ tells you a lot about x₂. You’re spending two numbers per point to store about one number’s worth of information.</p>
+<p>Ask: is there a choice of axes where the off-diagonal entry would be zero? The next slide answers it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis: intuition</h2>
+
+<img data-src="figs/pca-intuition2.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Same points, new axes. y₁ runs along the diagonal of the cloud and y₂ is perpendicular to it. In these coordinates:</p>
+<ul>
+<li>cov(y₁,y₁) is large: most of the spread lies along y₁.</li>
+<li>cov(y₂,y₂) is small: points barely deviate from the line.</li>
+<li>The off-diagonal covariance is zero. The new covariance matrix YYᵀ is diagonal, which the slide’s arrow labels “close to zero”.</li>
+</ul>
+<p>That’s PCA in one picture: rotate the axes so the new coordinates are uncorrelated and ordered by variance. Then dimensionality reduction is just dropping y₂. You lose the small perpendicular wiggle and keep the position along the line. If that wiggle is mostly measurement noise, dropping it even helps.</p>
+<p>What’s lost, and what PCA can’t do: it only rotates. If the cloud were curved, a banana instead of a cigar, no rotation would put all the variance on one axis. That’s the Bishop 3s, and the reason for LLE at the end.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis</h2>
+
+<img data-src="figs/pca-description.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>The formal statement: find a change of basis P with Y = PX such that YYᵀ = D is diagonal.</p>
+<p>Connect it to the spectral decomposition. Since XXᵀ = U D Uᵀ, choose P = Uᵀ. Then YYᵀ = Uᵀ XXᵀ U = Uᵀ U D Uᵀ U = D. The rows of P are the eigenvectors of the covariance matrix, which are the principal components, and the eigenvalues are the variances of the new coordinates.</p>
+<p>The three bullets are what you get:</p>
+<ol type="1">
+<li><strong>Decorrelated coordinates:</strong> redundancy removed.</li>
+<li><strong>Some coordinates have low variance:</strong> typically noise.</li>
+<li><strong>You can drop those:</strong> reducing dimension while keeping the relevant information.</li>
+</ol>
+<p>Algorithm in practice:</p>
+<ol type="1">
+<li>Center X.</li>
+<li>Compute the covariance, or go straight to SVD.</li>
+<li>Get the eigenvectors and sort them by eigenvalue.</li>
+<li>Keep the top k.</li>
+<li>Project: Y_k = U_kᵀ X.</li>
+</ol>
+<p>Caveat on bullet 2: “low variance = noise” is an assumption, not a theorem. A small-variance direction can be exactly the one that separates two classes. PCA is unsupervised and doesn’t know.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis</h2>
+
+<img data-src="figs/pca-filtering.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>How many components to keep? The plot is a scree plot: variance explained by each component, sorted. Look for the bend. Here it’s at component 4, so keep the top 3; the rest form a flat tail of roughly equal, small eigenvalues, which is what noise looks like. (This is the same elbow logic as choosing k for k-means.)</p>
+<p>The formula T = (sum of top-k eigenvalues) / (sum of all eigenvalues) is the fraction of variance retained. A common rule is “keep enough to reach 90 or 95%”.</p>
+<p>Real numbers for the digits dataset (computed for this lecture):</p>
+<ul>
+<li>2 components keep only 28.5% of the variance.</li>
+<li>10 keep about 74%, 20 keep about 89%, and about 30 reach 95%.</li>
+</ul>
+<p>So the 2-D PCA plot coming up shows less than a third of the information. Be skeptical of any conclusion drawn from it.</p>
+<p>Filtering: set the dropped coordinates of Ŷ to zero and map back with X̂ = UŶ. You get a denoised reconstruction. That works because noise spreads evenly over all directions while signal concentrates in a few. It’s the same idea as JPEG keeping only the large coefficients.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA of digits</h2>
+<div id="33f3445c" class="cell columns column-output-location" data-fig-height="7" data-fig-width="8" data-execution_count="14">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb8-2"><a href="" aria-label="2"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="" aria-label="3"></a>data, labels <span class="op">=</span> load_digits(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-4"><a href="" aria-label="4"></a>reduced_data<span class="op">=</span>pca.fit_transform(data)</span>
+<span id="cb8-5"><a href="" aria-label="5"></a>plt.scatter(reduced_data[:, <span class="dv">0</span>], reduced_data[:, <span class="dv">1</span>])</span>
+<span id="cb8-6"><a href="" aria-label="6"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-15-output-1.png" width="812" height="422"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Three lines of scikit-learn. Note that this loads all ten digit classes (1,797 images), not the six used for t-SNE.</p>
+<p><code>fit_transform</code> centers the data, computes the top 2 components via SVD, and projects. Uncolored, as with Iris at the start: what do you see? A blob with some lobes, and a few dense fingers sticking out, but nothing as obvious as the t-SNE islands.</p>
+<p>Reminder: these two axes keep 28.5% of the variance. You’re looking at a shadow of 64-D data cast onto the plane that makes the shadow as spread out as possible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA of digits</h2>
+<div id="fc01bab8" class="cell columns column-output-location" data-fig-height="7" data-fig-width="8" data-execution_count="15">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb9-2"><a href="" aria-label="2"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb9-3"><a href="" aria-label="3"></a>data, labels <span class="op">=</span> load_digits(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-4"><a href="" aria-label="4"></a>reduced_data<span class="op">=</span>pca.fit_transform(data)</span>
+<span id="cb9-5"><a href="" aria-label="5"></a>plt.scatter(reduced_data[:, <span class="dv">0</span>], reduced_data[:, <span class="dv">1</span>], c<span class="op">=</span>labels, cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb9-6"><a href="" aria-label="6"></a>plt.colorbar(ticks<span class="op">=</span><span class="bu">range</span>(<span class="dv">10</span>), label<span class="op">=</span><span class="st">"digit"</span>)</span>
+<span id="cb9-7"><a href="" aria-label="7"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week8-clustering_files/figure-revealjs/cell-16-output-1.png" width="766" height="424"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Same projection, now colored by the true digit. (The only change from the 2025 version is the colormap and colorbar, so the colors can be decoded.)</p>
+<p>What separates, using class centers I computed on this exact projection:</p>
+<ul>
+<li><strong>0</strong> sits clearly at the bottom (PC2 around −21).</li>
+<li><strong>4</strong> sits at the far right (PC1 around +22).</li>
+<li><strong>6</strong> sits at the lower right.</li>
+<li><strong>3</strong> and <strong>9</strong> lie on the left, overlapping each other.</li>
+<li><strong>1, 5 and 8</strong> sit in the middle. 1 and 5 are among the most spread-out classes, smeared across the plot.</li>
+</ul>
+<p>So “ones are easy” is not true here, despite the ink argument from earlier. Writers draw 1s with and without serifs and at different slants, which spreads them out.</p>
+<p>Compare with the t-SNE slide: t-SNE separated every class, and PCA separates three. That’s linear vs non-linear, and also 28.5% of the variance vs a method that only cares about neighbors. Both plots are “correct”. They answer different questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Scaling Up</h2>
+<ul>
+<li>Covariance matrix can be really big!
+<ul>
+<li><span class="math inline">\(\Sigma\)</span> is <span class="math inline">\(d\)</span> by <span class="math inline">\(d\)</span></li>
+<li>10000 features are not uncommon</li>
+<li>computing eigenvectors is slow…</li>
+</ul></li>
+<li>Solution: Singular Value Decomposition (SVD)
+<ul>
+<li>Finds the <span class="math inline">\(k\)</span> largest eigenvectors</li>
+<li>Widely implemented robustly in major packages</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Note: the slide previously said Σ is n by n.&nbsp;It’s d by d, one row and column per feature, matching the notation on the covariance slides.</p>
+<p>The cost problem: with 10,000 features, Σ has 10⁸ entries (about 800 MB in float64), and a full eigendecomposition is O(d³). We usually want only the top few components.</p>
+<p>What SVD buys:</p>
+<ol type="1">
+<li><strong>No covariance matrix needed:</strong> it works on the centered data matrix directly.</li>
+<li><strong>More numerically stable:</strong> forming XXᵀ squares the condition number, so small eigenvalues lose precision. SVD avoids that.</li>
+<li><strong>Truncated and randomized variants:</strong> they compute only the top k. scikit-learn’s PCA picks a solver automatically and uses randomized SVD for large inputs when n_components is small. For truly huge or sparse data there’s TruncatedSVD (which doesn’t center) and IncrementalPCA (which streams batches).</li>
+</ol>
+<p>In practice, nobody computes PCA by building the covariance matrix. The covariance view is for understanding; SVD is for computing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Singular Value Decomposition (SVD)</h2>
+<p><strong>Any matrix, <span class="math inline">\(M = U \Sigma V^{*}\)</span> — rotate, scale, rotate</strong> (<a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">Wikipedia</a>)</p>
+
+<img data-src="figs/svd.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>SVD factors any m x n matrix, not just square symmetric ones, into rotation, scaling, rotation.</p>
+<p>Left panel, the geometric picture for a 2x2 matrix M applied to the unit disk:</p>
+<ol type="1">
+<li>V* rotates the disk.</li>
+<li>Σ stretches it along the axes by the singular values σ₁ and σ₂, making an ellipse.</li>
+<li>U rotates the ellipse into place.</li>
+</ol>
+<p>Every linear map does this. It’s the spectral decomposition generalized: for a symmetric positive semi-definite matrix, U = V and the singular values are the eigenvalues.</p>
+<p>Right panel, the shapes: U is m x m and V is n x n, both orthogonal (the identity checks below), and Σ is m x n with the singular values on its diagonal.</p>
+<p>The connection to PCA, which is the one thing to remember: write the centered data with points as rows, X (n x d) = U Σ Vᵀ. Then XᵀX = V Σ² Vᵀ. So the right singular vectors V are the principal directions, the eigenvalues of the covariance are σ²/(n−1), and the projected coordinates are UΣ. One SVD gives you everything PCA needs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Dimensionality Reduction Techniques</h2>
+<ul>
+<li>https://en.wikipedia.org/wiki/Dimensionality_reduction
+<ul>
+<li>Principal component analysis (PCA)</li>
+<li>Non-negative matrix factorization (NMF)</li>
+<li>Linear discriminant analysis (LDA)</li>
+<li>t-SNE</li>
+<li>UMAP</li>
+<li><strong>many others</strong></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>PCA is one point in a large family. Organize the list by what each method optimizes:</p>
+<ul>
+<li><strong>PCA:</strong> linear, unsupervised, maximizes variance.</li>
+<li><strong>NMF:</strong> linear, but factors and weights must be non-negative. For images or word counts this gives parts-based components (strokes, topics) that are easier to interpret than PCA’s signed components.</li>
+<li><strong>LDA:</strong> linear and supervised. It uses labels to find directions that separate classes, at most (classes − 1) of them. Use it when you have labels and want to see whether they’re linearly separable. Not to be confused with Latent Dirichlet Allocation, the topic model.</li>
+<li><strong>t-SNE and UMAP:</strong> non-linear, neighbor-preserving, and the standard tools for visualizing embeddings. Next week.</li>
+<li><strong>Many others:</strong>
+<ul>
+<li>MDS and Isomap: preserve distances.</li>
+<li>Autoencoders: learned non-linear PCA.</li>
+<li>Kernel PCA: PCA in a feature space.</li>
+</ul></li>
+</ul>
+<p>Rule of thumb for projects: always look at PCA first (fast, deterministic, honest about variance), then a neighbor-based method if you care about clusters. Report what each one preserves.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Local Linear Embedding</h2>
+
+<img data-src="figs/lle.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Roweis, S. T. &amp; Saul, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> 290(5500).</p>
+</div>
+<aside class="notes">
+<p>Figure 1 of the LLE paper, Roweis and Saul, Science 2000. It was published in the same issue as Isomap, and the pair started the manifold-learning field.</p>
+<p>The three panels:</p>
+<ul>
+<li><strong>(A)</strong> A 2-D sheet bent into an S shape in 3-D (the “S-curve”). The color runs along the sheet, so it encodes position on the manifold.</li>
+<li><strong>(B)</strong> 3-D points sampled from that sheet. This is all the algorithm gets.</li>
+<li><strong>(C)</strong> LLE’s 2-D output. The color gradient runs smoothly from one side to the other. LLE has flattened the S, putting points that were neighbors on the sheet next to each other.</li>
+</ul>
+<p>Ask: what would PCA do with (B)? It can only rotate and drop an axis. Viewed from any direction, the S overlaps itself, so red points from the middle of the sheet would land on top of blue points from the ends. Distances measured straight through 3-D space are misleading: two points on adjacent layers of the S are close in 3-D but far apart along the sheet.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Preserving Local Manifold Neighborhoods</h2>
+
+<img data-src="figs/preserving-local-neighborhoods.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>The core idea of LLE: the manifold is curved globally but approximately flat locally. So describe each point yᵢ (red) by how it sits relative to its nearest neighbors Nᵢ (black). In the left panel, the neighbors are highlighted. In the right, the point is connected to them.</p>
+<p>The formula writes yᵢ as a weighted combination of its neighbors. The weights in this figure are uniform (αᵢⱼ = 1/|Nᵢ|), meaning each point is the centroid of its neighbors. That’s the simplest version, closer to Laplacian smoothing. LLE’s refinement, on the next slide, is to solve for the best weights for each point instead of fixing them.</p>
+<p>Why this is a good invariant: the reconstruction weights don’t change if you rotate, scale or translate a neighborhood. So if the neighborhood is a flat patch, the same weights should still work after the patch is laid flat in 2-D. Stitching all the patches together under that constraint “unrolls” the manifold without tearing it.</p>
+<p>Contrast with PCA: PCA preserves global variance and ignores who’s next to whom. LLE preserves only who’s next to whom, and in what proportions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>LLE</h2>
+
+<img data-src="figs/lle-algorithm.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Roweis, S. T. &amp; Saul, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> 290(5500).</p>
+</div>
+<aside class="notes">
+<p>Figure 2 of the paper, the whole algorithm in three steps:</p>
+<ol type="1">
+<li><strong>Find the neighbors of each point:</strong> the K nearest, or all within a radius. K is the main parameter; we used 30 for digits.</li>
+<li><strong>Solve for the weights W:</strong> minimize the reconstruction error E(W) on the right, each point minus the weighted sum of its neighbors. W is constrained so each row sums to 1 and is zero for non-neighbors. This is a small least-squares problem per point.</li>
+<li><strong>Fix W and solve for the low-dimensional points Y:</strong> minimize Φ(Y), the same cost with Y in place of X. This is a sparse eigenvalue problem: the answer is given by the bottom eigenvectors of (I−W)ᵀ(I−W), discarding the constant one. That’s the same move as PCA (eigenvectors), but of a different, local matrix.</li>
+</ol>
+<p>Points to make:</p>
+<ul>
+<li>No iterative optimization and no local minima, unlike t-SNE. Two eigen-solves and done.</li>
+<li>It’s sensitive to K: too small fragments the manifold, too large short-circuits across folds (the S’s layers).</li>
+<li>When K exceeds the dimension, the weights are underdetermined and need regularization, which is why scikit-learn has the modified, Hessian and LTSA variants.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA vs LLE</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Images of <strong>one face</strong> translated across a noisy background: intrinsically 2-D (x and y position)</li>
+<li><strong>PCA (top):</strong> folds the sheet; nearby images are not neighbors</li>
+<li><strong>LLE (bottom):</strong> recovers a flat grid; corner faces map to corners</li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/pca-vs-lle.jpg" class="quarto-figure quarto-figure-center" height="880"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Roweis, S. T. &amp; Saul, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> 290(5500), Fig. 3.</p>
+</div>
+<aside class="notes">
+<p>Figure 3 of the LLE paper, and the cleanest PCA vs LLE comparison there is. It’s the Bishop idea from earlier made concrete.</p>
+<p>The data: one face image pasted at different positions on a background of random noise. The true degrees of freedom are 2 (horizontal and vertical position), so the ideal embedding is a flat grid.</p>
+<ul>
+<li><strong>Top, PCA:</strong> the embedding is a crumpled, folded surface. Follow the arrows: images with the face in different positions land near each other, and neighboring positions get torn apart. As with the shifted 3s, translating an image moves along a curved path in pixel space, and PCA’s projection collapses that path onto itself.</li>
+<li><strong>Bottom, LLE:</strong> a nearly perfect square grid. The four corner images (face top-left, top-right, and so on) map to the four corners, and neighbors stay neighbors.</li>
+</ul>
+<p>This summarizes the second half: PCA preserves global variance, LLE preserves local neighborhoods, and when the data lives on a curved manifold, preserving neighborhoods is what recovers the true coordinates.</p>
+<p>Fair caveat: on the six-projections slide, LLE on real digits mostly collapsed, with the 0s on one long arm and everything else in a pile. Clean, densely sampled manifolds like this synthetic one are the best case. Real data is rarely that kind.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Beyond PCA: Non-linear Methods</h2>
+<ul>
+<li><strong>t-SNE</strong> (t-Distributed Stochastic Neighbor Embedding)
+<ul>
+<li>Preserves local neighborhood structure</li>
+<li>Great for visualization of clusters</li>
+<li>Non-linear, adapts to different regions of data</li>
+</ul></li>
+<li><strong>UMAP</strong> (Uniform Manifold Approximation and Projection)
+<ul>
+<li>Faster than t-SNE, scales better</li>
+<li>Better preserves global structure</li>
+<li>Based on topological data analysis</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Bridge to next week. Both methods follow LLE’s philosophy (preserve neighborhoods), but with probabilistic or fuzzy neighborhoods instead of linear weights.</p>
+<ul>
+<li><strong>t-SNE</strong> (van der Maaten and Hinton, 2008):
+<ul>
+<li>Turns distances into neighbor probabilities in both high-D and 2-D, then moves the 2-D points to make the two distributions match (minimizing KL divergence).</li>
+<li>The heavy-tailed Student-t in 2-D is what creates the well-separated islands we saw on the digits.</li>
+<li>Key parameter: perplexity, roughly the effective number of neighbors.</li>
+</ul></li>
+<li><strong>UMAP</strong> (McInnes et al., 2018):
+<ul>
+<li>Builds a weighted k-nearest-neighbor graph (the fuzzy simplicial set from the topology side) and lays it out in 2-D.</li>
+<li>Much faster on large data, and usually keeps more of the large-scale arrangement, though “better global structure” is debated and depends heavily on initialization.</li>
+</ul></li>
+</ul>
+<p>Both are stochastic (run twice, get different pictures), both have parameters that change the picture a lot, and in neither should you read cluster sizes or between-cluster distances literally. Those three caveats are next week’s lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Next Week: Advanced Dimensionality Reduction</h2>
+<ul>
+<li><p>Deep dive into t-SNE</p>
+<ul>
+<li>How it works (probability distributions, KL divergence)</li>
+<li>Critical parameters (perplexity)</li>
+<li>Common pitfalls and how to avoid them</li>
+</ul></li>
+<li><p>UMAP in detail</p>
+<ul>
+<li>Comparison with t-SNE</li>
+<li>Parameter tuning (n_neighbors, min_dist)</li>
+</ul></li>
+<li><p>Interactive dimensionality reduction</p></li>
+<li><p>Also: Topomap (topology-preserving layouts) and projection quality metrics</p></li>
+</ul>
+<p><strong>Required reading:</strong> Wattenberg, Viégas &amp; Johnson, <a href="https://distill.pub/2016/misread-tsne/"><em>How to Use t-SNE Effectively</em></a> (Distill, 2016)</p>
+<p><strong>Due Tue Oct 20:</strong> project proposal (4 pages)</p>
+<aside class="notes">
+<p>Next Tuesday, Oct 20: t-SNE, UMAP, Topomap, interactive DR and projection quality metrics. Lab: implementing projection views and comparing projections.</p>
+<p>The required reading is the Distill article “How to Use t-SNE Effectively”. It’s interactive and quick: students should play with the perplexity sliders, not just read. Its lessons, that cluster sizes, distances between clusters, and apparent shapes in random data can all be artifacts, are what we’ll test them on.</p>
+<p>Repeat the deadline: the project proposal (4 pages) is due next Tuesday, Oct 20. Every group proposes its own project, and the project discussion deck comes next, so this is the transition.</p>
+<p>Tonight’s lab (7:10 PM, same room, Bhavya) is dimensionality reduction hands-on, a direct continuation of the second half of this lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week8-clustering_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week8-clustering_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week8-clustering_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week8-clustering_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week8-clustering_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week8-clustering_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week8-clustering_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week8-clustering_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week8-clustering_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week8-clustering_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
