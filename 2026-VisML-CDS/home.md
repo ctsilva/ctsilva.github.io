@@ -79,17 +79,15 @@ author_profile: true
   - SHAP (SHapley Additive exPlanations)
 
 ### Week 6 — Tuesday, Oct 13
-- **Topics:** Clustering and Dimensionality Reduction, Default Project Details, Project Discussion
+- **Topics:** Clustering and Dimensionality Reduction, Project Discussion
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2026-VisML-CDS/slides/week8-clustering.html)
-  - [Default Project: Visual Analytics for AI-Generated Urban Infrastructure Maps](/2026-VisML-CDS/slides/default-project.html)
   - [Project Discussion](/2026-VisML-CDS/slides/week6-project-discussion.html)
   - [Lab: Dimensionality Reduction](/2026-VisML-CDS/labs/week7-lab/VisML-Lab-Week7-slides.html)
 - **Recommended Readings:**
   - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - **Required**
   - [A Tutorial on Principal Component Analysis](https://arxiv.org/abs/1404.1100) (Shlens, 2014)
   - [Scikit-learn PCA User Guide](https://scikit-learn.org/stable/modules/decomposition.html#pca)
-  - [Mapping the walk: A scalable computer vision approach for generating sidewalk network datasets from aerial imagery](https://doi.org/10.1016/j.compenvurbsys.2023.101950) (Hosseini et al., 2023)
 - **Content:**
   - Introduction to Unsupervised Learning
   - K-means Clustering and DBSCAN
@@ -98,8 +96,7 @@ author_profile: true
   - Eigenvectors, Eigenvalues, and Covariance Matrices
   - Singular Value Decomposition (SVD)
   - Local Linear Embedding (LLE)
-  - Default Project Overview and Ideas
-  - Proposal Guidelines, Timeline and Evaluation Criteria
+  - Final Projects: Each Group Proposes Its Own; Proposal Guidelines, Timeline and Evaluation Criteria
 
 ### Week 7 — Tuesday, Oct 20
 - **Topics:** Dimensionality Reduction (continued)

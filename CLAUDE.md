@@ -76,10 +76,10 @@ The repository includes complete course websites as subdirectories:
   (term end), a week after the last class.
 - **Instructor office hours**: Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153 (Brooklyn, not Washington Square).
 - **Session leader (labs) & grader**: **Bhavya Matam** (bm3792@nyu.edu).
-- **Known inconsistency, not yet resolved**: the project proposal is due Week 4, but the project-discussion
-  deck (`slides/week6-project-discussion.qmd`, shown Week 5) presents proposal guidelines *after* it is due.
-  That deck also still carries 2025 content — "Parikshit Solunke (Lead TA)", proposal due "October 13
-  (during Fall Break)", report due "December 11". Decide the proposal date, then fix the deck.
+- **No default project (decided 2026-10-12)**: every group proposes its own project; the proposal is the approval
+  step. `slides/default-project.qmd` (Tile2Net) and `projects/finalproject.md` (StreetAware) are unlinked leftovers.
+- **Project proposal timing (resolved 2026-10-12)**: discussion deck moved to Week 6 (Oct 13), proposal due
+  Week 7 (Oct 20); `week6-project-discussion.qmd` no longer carries 2025 TA names or dates.
 - **Registrar deadlines (Fall 2026)**: add/drop full-semester Sept 15; withdraw & pass/fail Nov 25;
   Thanksgiving recess Thu-Fri Nov 26-27 (does not affect Mon/Tue sessions).
 - Sources copied from 2025-VisML-CSE; rendered `.html` was **not** copied — run `quarto render` per week before class.
@@ -93,7 +93,7 @@ The repository includes complete course websites as subdirectories:
   | 3 | Sept 22 | week4-model-assessment | 52 ok | *none — see below* | — |
   | 4 | Sept 29 | week5-white-box | 64 slightly over | week5-lab | 7 ok |
   | 5 | Oct 6 | week6-black-box + week6-project-discussion | 82 over | week6-lab | 34 over |
-  | 6 | Oct 13 | week8-clustering + default-project | 57 ok | week7-lab | 39 over |
+  | 6 | Oct 13 | week8-clustering + week6-project-discussion | 65 slightly over (6 clustering slides skippable) | week7-lab | 40 over |
   | 7 | Oct 20 | week9-dimensionality | 21 ok | week8-lab | 3 ok |
   | 8 | Oct 27 | week7-deep-learning | 24 ok | week9-lab | 31 over |
   | 9 | Nov 3 | week11-nlp | 35 ok | week11-lab | 51 way over |
@@ -159,7 +159,7 @@ git commit -m "Add Week 1 slides"
 The 2026 sites were copied without rendered output, so each deck needs a
 `quarto render` before its class. Decks with executable `{python}` cells (VisML
 `week4-model-assessment.qmd`) need a Python with Jupyter, which the system Python lacks:
-`uv venv /tmp/qpy && uv pip install --python /tmp/qpy/bin/python jupyter scikit-learn matplotlib`,
+`uv venv /tmp/qpy && uv pip install --python /tmp/qpy/bin/python jupyter scikit-learn matplotlib seaborn pandas scipy plotly umap-learn`,
 then `QUARTO_PYTHON=/tmp/qpy/bin/python quarto render <deck>.qmd`. `*.html` / `*_files/` are globally ignored with
 a per-year negation in `.gitignore` — add new course years there or renders stay
 uncommitted.

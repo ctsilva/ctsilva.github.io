@@ -113,7 +113,7 @@ Here are supplemental readings to be used as reference material:
 
 ## Research Project
 
-This course includes a substantial research project. Please see the project section of the course for more details. As part of the project, you will be expected to reproduce prior work or implement a proposed research idea of your choosing (requirement details will be forthcoming and discussed in class). Moreover, you will be expected to demonstrate both the prior work, and your final research project, to the class during lectures. Projects are expected to be pursued in groups of 2-3, although you can optionally pursue your project by yourself. Once the group is finalized, students cannot change or separate their groups throughout the semester.
+This course includes a substantial research project. Please see the project section of the course for more details. As part of the project, each group chooses its own project (there is no default project) and will be expected to reproduce prior work or implement a proposed research idea of their choosing (requirement details will be forthcoming and discussed in class). Moreover, you will be expected to demonstrate both the prior work, and your final research project, to the class during lectures. Projects are expected to be pursued in groups of 2-3, although you can optionally pursue your project by yourself. Once the group is finalized, students cannot change or separate their groups throughout the semester.
 
 ## Course Assessment
 
@@ -152,8 +152,8 @@ The course schedule is tentative and might need to be adjusted along the way. Se
 | 2 | Sept 15 | Perception and Color Theory |
 | 3 | Sept 22 | Model Assessment and Performance Metrics |
 | 4 | Sept 29 | White-box Model Visualization |
-| 5 | Oct 6 | Black-box Model Interpretation & Project Discussion |
-| 6 | Oct 13 | Clustering Visualization |
+| 5 | Oct 6 | Black-box Model Interpretation |
+| 6 | Oct 13 | Clustering Visualization & Project Discussion |
 | 7 | Oct 20 | Dimensionality Reduction |
 | 8 | Oct 27 | Deep Learning Visualization |
 | 9 | Nov 3 | NLP and Large Language Model Visualization |

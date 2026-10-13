@@ -114,8 +114,7 @@ author_profile: true
 - Hierarchical clustering dendrograms
 - Cluster validation and comparison techniques
 - The manifold hypothesis and intrinsic dimensionality
-- Default project overview
-- Project discussion: proposal guidelines, timeline and evaluation criteria
+- Project discussion: every group proposes its own project; proposal guidelines, timeline and evaluation criteria
 
 **Lab Session:**
 - Interactive clustering interfaces
