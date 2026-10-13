@@ -164,6 +164,12 @@ then `QUARTO_PYTHON=/tmp/qpy/bin/python quarto render <deck>.qmd`. `*.html` / `*
 a per-year negation in `.gitignore` — add new course years there or renders stay
 uncommitted.
 
+**Lab decks must be rendered `--to revealjs`.** The VisML lab `.qmd`s under `labs/` declare
+both `revealjs` and `html` formats; a plain `quarto render` writes both to the same
+`<name>.html` and the html one wins, so the link on the site serves a scrolling page instead of
+slides (and speaker notes become `div.notes`, which reveal ignores). Their Python cells also need
+`lime`, `shap` and `umap-learn` on top of the venv above.
+
 **Template header**:
 ```yaml
 ---
