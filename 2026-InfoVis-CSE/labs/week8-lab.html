@@ -6,12 +6,12 @@
 <script src="week8-lab_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week8-lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week8-lab_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week8-lab_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.34">
+<link href="week8-lab_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
 
   <meta name="author" content="Ryan Kim">
-  <meta name="dcterms.date" content="2025-10-24">
-  <title>Week 8 Lab: Plotting and Troubleshooting GeoJSON with D3</title>
+  <meta name="dcterms.date" content="2026-10-29">
+  <title>Week 8 Lab: Plotting and Troubleshooting GeoJSON with D3.js</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -96,7 +96,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="week8-lab_files/libs/revealjs/dist/theme/quarto-33e1d785821343a3bca9e1e25e4b170a.css">
+  <link rel="stylesheet" href="week8-lab_files/libs/revealjs/dist/theme/quarto-e55469e18d4f1b644de49769da31cbe0.css">
   <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week8-lab_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week8-lab_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -195,7 +195,7 @@
     <div class="slides">
 
 <section class="quarto-title-block center">
-  <h1 class="title">Week 8 Lab: Plotting and Troubleshooting GeoJSON with D3</h1>
+  <h1 class="title">Week 8 Lab: Plotting and Troubleshooting GeoJSON with D3.js</h1>
   <p class="subtitle">CS-GY 6313 - Information Visualization</p>
 
 <div class="quarto-title-authors">
@@ -209,11 +209,16 @@ Ryan Kim
     </div>
 </div>
 
-  <p class="date">2025-10-24</p>
+  <p class="date">2026-10-29</p>
 </section>
 <section class="slide level2">
-<h2>Week 7 Lab Overview</h2>
+<h2>Week 8 Lab Overview</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">User Interface</th>
@@ -223,25 +228,319 @@ Ryan Kim
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><a href="https://observablehq.com">observablehq.com</a></td>
-<td style="text-align: left;"><a href="https://d3js.org/">D3</a></td>
-<td style="text-align: left;"><a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-8-lab">Week 8 Lab Notebook</a></td>
+<td style="text-align: left;"><a href="https://observablehq.com" target="_blank">observablehq.com</a></td>
+<td style="text-align: left;"><a href="https://d3js.org/" target="_blank">D3</a></td>
+<td style="text-align: left;"><a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-8-lab" target="_blank">Week 8 Lab Notebook</a></td>
 </tr>
 </tbody>
 </table>
 <h3>Today’s Lab Activities</h3>
 <p>Today we will be a exploring the following topics:</p>
 <ol type="1">
-<li>Group Projects: Proposal Feedback &amp; Reminders</li>
-<li>Main Lab Activities:
-<ol type="1">
-<li>Understanding GeoJSON - What is it?</li>
-<li>Where to Find Map Data?</li>
+<li>Understanding GeoJSON - What is it?
+<ul>
+<li>GeoJSON’s Coordinate System</li>
+<li>GeoJSON Geometry &amp; Properties</li>
+</ul></li>
+<li>Where to Find Geodata?
+<ul>
 <li>ShapeFiles to GeoJSON</li>
-<li>Troubleshooting GeoJSON</li>
+</ul></li>
+<li>D3.js and Maps</li>
+<li>Troubleshooting GeoJSON and D3.js</li>
 <li>Practice: Creating Maps of Countries</li>
-</ol></li>
 </ol>
+</section>
+<section class="slide level2">
+<h2>What is GeoJSON?</h2>
+<h3>Definition</h3>
+<blockquote>
+<p>GeoJSON is an open standard format designed for representing simple geographical features, along with their non-spatial attributes. It is based on the JSON format. - <a href="https://en.wikipedia.org/wiki/GeoJSON">Wikipedia</a></p>
+</blockquote>
+<p><br></p>
+<h3>GeoJSON Hierarchy</h3>
+
+<img data-src="./week8-lab_files/figs/geojson_hierarchy.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section class="slide level2">
+<h2>Example GeoJSON</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href=""></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href=""></a>  <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"FeatureCollection"</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href=""></a>  <span class="dt">"features"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb1-4"><a href=""></a>    <span class="fu">{</span></span>
+<span id="cb1-5"><a href=""></a>      <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"Feature"</span><span class="fu">,</span></span>
+<span id="cb1-6"><a href=""></a>      <span class="dt">"geometry"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-7"><a href=""></a>        <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"Polygon"</span><span class="fu">,</span></span>
+<span id="cb1-8"><a href=""></a>        <span class="dt">"coordinates"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb1-9"><a href=""></a>          <span class="ot">[</span></span>
+<span id="cb1-10"><a href=""></a>            <span class="ot">[</span><span class="fl">-74.0</span><span class="ot">,</span> <span class="fl">40.7</span><span class="ot">],</span></span>
+<span id="cb1-11"><a href=""></a>            <span class="ot">[</span><span class="fl">-73.9</span><span class="ot">,</span> <span class="fl">40.7</span><span class="ot">],</span></span>
+<span id="cb1-12"><a href=""></a>            <span class="ot">[</span><span class="fl">-73.9</span><span class="ot">,</span> <span class="fl">40.8</span><span class="ot">],</span></span>
+<span id="cb1-13"><a href=""></a>            <span class="ot">[</span><span class="fl">-74.0</span><span class="ot">,</span> <span class="fl">40.8</span><span class="ot">],</span></span>
+<span id="cb1-14"><a href=""></a>            <span class="ot">[</span><span class="fl">-74.0</span><span class="ot">,</span> <span class="fl">40.7</span><span class="ot">]</span></span>
+<span id="cb1-15"><a href=""></a>          <span class="ot">]</span></span>
+<span id="cb1-16"><a href=""></a>        <span class="ot">]</span></span>
+<span id="cb1-17"><a href=""></a>      <span class="fu">},</span></span>
+<span id="cb1-18"><a href=""></a>      <span class="dt">"properties"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-19"><a href=""></a>        <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Example Region"</span><span class="fu">,</span></span>
+<span id="cb1-20"><a href=""></a>        <span class="dt">"population"</span><span class="fu">:</span> <span class="dv">10000</span></span>
+<span id="cb1-21"><a href=""></a>      <span class="fu">}</span></span>
+<span id="cb1-22"><a href=""></a>    <span class="fu">}</span></span>
+<span id="cb1-23"><a href=""></a>  <span class="ot">]</span></span>
+<span id="cb1-24"><a href=""></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>geometry</code> determines where the region is and what its shape is.</li>
+<li><code>properties</code> provides information about that region.</li>
+</ul>
+<p><a href="https://geojson.org/" target="_blank">GeoJSON Markup Guide</a></p>
+</section>
+<section class="slide level2">
+<h2>GeoJSON Coordinate System</h2>
+<p>GeoJSON follows a geographic coordinate system where the positions are usually stored as:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {js} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href=""></a>[LONGITUDE, LATITUDE]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Coordinate</th>
+<th style="text-align: left;">Valid range</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Longitude</td>
+<td style="text-align: left;">−180° to +180°</td>
+<td style="text-align: left;">West to East</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Latitude</td>
+<td style="text-align: left;">−90° to +90°</td>
+<td style="text-align: left;">South to North</td>
+</tr>
+</tbody>
+</table>
+<p>GeoJSON follows a specific standard of long/lat coordinates called the <a href="https://en.wikipedia.org/wiki/World_Geodetic_System" target="_blank"><strong>World Geodetic System (WGS)</strong></a> - specifically, <strong>WGS 84</strong> (or otherwise called <strong>EPSG:4326</strong>). You should remember that long/lat coordinates are not pixel positions; they are degrees relative to the Prime Meridian and Equator, respectively.</p>
+</section>
+<section class="slide level2">
+<h2>GeoJSON Geometry</h2>
+<p>There are <strong>six (6)</strong> fundamental geometry types, plus <code>GeometryCollection</code>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Geometry Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Format</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>Point</code></td>
+<td style="text-align: left;">A single coordinate point, such as a building or pin on a map</td>
+<td style="text-align: left;"><code>[lon, lat]</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>MultiPoint</code></td>
+<td style="text-align: left;">Multiple <em>independent</em> points</td>
+<td style="text-align: left;"><code>[[lon, lat], ...]</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>LineString</code></td>
+<td style="text-align: left;">A connected path, like a river or road</td>
+<td style="text-align: left;"><code>[[lon, lat], ...]</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>MultiLineString</code></td>
+<td style="text-align: left;">Several <em>independent</em> lines</td>
+<td style="text-align: left;"><code>[[[lon, lat], ...], ...]</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Polygon</code></td>
+<td style="text-align: left;">One polygonal region, potentially with <em>holes</em></td>
+<td style="text-align: left;"><code>[[[lon, lat], ...], ...]</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>MultiPolygon</code></td>
+<td style="text-align: left;">Multiple polygonal groups, combined into a single entity</td>
+<td style="text-align: left;"><code>[[[[lon, lat], ...], ...], ...]</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<p>All polygons are constructed from <strong>one or more rings</strong>. Each ring must begin and end <strong>at the same coordinate</strong>. Consider this example, which actually has two (2) rings: an exterior ring, and an interior <em>hole</em>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {js} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href=""></a>{</span>
+<span id="cb3-2"><a href=""></a>  type: "Polygon",</span>
+<span id="cb3-3"><a href=""></a>  coordinates: [</span>
+<span id="cb3-4"><a href=""></a>    // Exterior boundary</span>
+<span id="cb3-5"><a href=""></a>    [</span>
+<span id="cb3-6"><a href=""></a>      [0, 0],</span>
+<span id="cb3-7"><a href=""></a>      [10, 0],</span>
+<span id="cb3-8"><a href=""></a>      [10, 10],</span>
+<span id="cb3-9"><a href=""></a>      [0, 10],</span>
+<span id="cb3-10"><a href=""></a>      [0, 0]</span>
+<span id="cb3-11"><a href=""></a>    ],</span>
+<span id="cb3-12"><a href=""></a></span>
+<span id="cb3-13"><a href=""></a>    // Interior hole</span>
+<span id="cb3-14"><a href=""></a>    [</span>
+<span id="cb3-15"><a href=""></a>      [3, 3],</span>
+<span id="cb3-16"><a href=""></a>      [3, 7],</span>
+<span id="cb3-17"><a href=""></a>      [7, 7],</span>
+<span id="cb3-18"><a href=""></a>      [7, 3],</span>
+<span id="cb3-19"><a href=""></a>      [3, 3]</span>
+<span id="cb3-20"><a href=""></a>    ]</span>
+<span id="cb3-21"><a href=""></a>  ]</span>
+<span id="cb3-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>GeoJSON requires that <strong>Exterior rings should be counterclockwise</strong> and that <strong>Interior holes should be clockwise</strong>, using the <a href="https://en.wikipedia.org/wiki/Right-hand_rule" target="_blank">Right-Hand Rule (RHR)</a>.</p>
+</section>
+<section class="slide level2">
+<h2>GeoJSON Properties</h2>
+<p>Unlike <code>geometry</code>, <code>properties</code> usually contain metadata about the geometry. For example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href=""></a>{</span>
+<span id="cb4-2"><a href=""></a>  <span class="st">"GID_1"</span><span class="op">:</span> <span class="st">"USA.1_1"</span><span class="op">,</span></span>
+<span id="cb4-3"><a href=""></a>  <span class="st">"GID_0"</span><span class="op">:</span> <span class="st">"USA"</span><span class="op">,</span></span>
+<span id="cb4-4"><a href=""></a>  <span class="st">"COUNTRY"</span><span class="op">:</span> <span class="st">"UnitedStates"</span><span class="op">,</span></span>
+<span id="cb4-5"><a href=""></a>  <span class="st">"NAME_1"</span><span class="op">:</span> <span class="st">"Alabama"</span><span class="op">,</span></span>
+<span id="cb4-6"><a href=""></a>  <span class="st">"TYPE_1"</span><span class="op">:</span> <span class="st">"State"</span><span class="op">,</span></span>
+<span id="cb4-7"><a href=""></a>  <span class="st">"ISO_1"</span><span class="op">:</span> <span class="st">"US-AL"</span></span>
+<span id="cb4-8"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These are properties of the state of Alabama. This particular instance gives us a lot of info, such as which country the region is a part of, what kind of region it is to begin with, and other identifiers.</p>
+<ul>
+<li><strong>Properties make it easier to link datasets together</strong>, as you can link identifiers across datasets.</li>
+<li>Properties can also <strong>hold information</strong> (e.g.&nbsp;population counts for a region).</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Where can we Find Geodata?</h2>
+<p>Geodata is usually a combination of different data sources:</p>
+<ol type="1">
+<li>Geographic boundary data (GeoJSON, TopoJSON, etc.) is usually converted from “ShapeFiles” (<code>.shp</code>).</li>
+<li>Geographic data points (e.g.&nbsp;points on a map) can also be encoded as GeoJSON data.</li>
+<li>Data trends and time series data are usually in the typical data format (e.g.&nbsp;<code>.csv</code>, Excel) and need to be mapped to GeoJSON features.</li>
+</ol>
+<p>You can find existing GeoJSON files in the wild, such as in <a href="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json" target="_blank">Vega-Lite’s pre-existing US-Atlas GeoJSON</a> or . However, <em>you don’t really have much control over the fidelity and properties of the GeoJSON itself</em>.</p>
+</section>
+<section class="slide level2">
+
+<h3>Step 1: Find an appropriate ShapeFile</h3>
+<ol type="1">
+<li><a href="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html" target="_blank">US Census Cartographic Boundaries Data</a>: Geographic data of U.S. regions based on different features such as zip code divisions, census data, etc. Optimal for U.S.-focused boundary data.</li>
+<li><a href="https://gadm.org/data.html" target="_blank">https://gadm.org/data.html</a>: An open-source solution that’s freely accessible for academic and non-commercial usage. Recommended to download by country.</li>
+<li><a href="https://www.naturalearthdata.com/downloads/" target="_blank">https://www.naturalearthdata.com/</a>: A sizeable repository of ShapeFiles for world regions.</li>
+</ol>
+<h3>Step 2: Simplify and convert from ShapeFile to GeoJSON</h3>
+<ul>
+<li><a href="https://mapshaper.org/" target="_blank">https://mapshaper.org/</a></li>
+<li><a href="https://www.qgis.org/" target="_blank">https://www.qgis.org/</a></li>
+</ul>
+<h3>Step 3: Load, understand, and troubleshoot your GeoJSON</h3>
+</section>
+<section class="slide level2">
+<h2>Let’s try Steps 1 and 2</h2>
+<p>Let’s download the <code>.shp</code> data from the <a href="https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_region_5m.zip" target="_blank">US Census Cartographic Boundary Files Datasets</a>, then use <a href="https://mapshaper.org/" target="_blank">MapShaper</a> to convert it into GeoJSON</p>
+
+<img data-src="./week8-lab_files/figs/mapshaper.png" style="width:100.0%" class="r-stretch"></section>
+<section class="slide level2">
+<h2>Step 3: Rendering Geomaps in D3.js</h2>
+<p>Rendering geoplots in D3.js is conceptually very similar to what we did with other non-scatter plot types such as Pie Charts and Histograms. Fundamentally, we need to:</p>
+<ol type="1">
+<li>Determine what kind of <strong>projection</strong> we want to project our points onto.</li>
+<li>Create a <strong>path generator</strong> that maps raw points to our projection.</li>
+<li>Render <strong>paths</strong> using our path generator.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {js} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href=""></a>// Determine our plot's dimensions</span>
+<span id="cb5-2"><a href=""></a>const usa_width = 800;</span>
+<span id="cb5-3"><a href=""></a>const usa_height = 550;</span>
+<span id="cb5-4"><a href=""></a></span>
+<span id="cb5-5"><a href=""></a>// Define projection using Albers USA, our plot's dimensions, and `us_state_5m` we imported</span>
+<span id="cb5-6"><a href=""></a>const usa_projection = d3.geoAlbersUsa()</span>
+<span id="cb5-7"><a href=""></a>  .fitSize([usa_width, usa_height], us_state_5m);</span>
+<span id="cb5-8"><a href=""></a></span>
+<span id="cb5-9"><a href=""></a>// Create geographic path generator</span>
+<span id="cb5-10"><a href=""></a>const usa_path = d3.geoPath(usa_projection);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+<h2>Projection Types in D3</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3>Azumithal Projections (<a href="https://d3js.org/d3-geo/azimuthal" target="_blank">documentation</a>)</h3>
+<ul>
+<li><code>d3.geoAzimuthalEqualArea()</code></li>
+<li><code>d3.geoAzimuthalEquidistant()</code></li>
+<li><code>d3.geoOrthographic()</code></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3>Conic Projections (<a href="https://d3js.org/d3-geo/conic" target="_blank">documentation</a>)</h3>
+<ul>
+<li><code>d3.geoConicConformal()</code></li>
+<li><code>d3.geoConicEqualArea()</code></li>
+<li><code>d3.geoAlbers()</code>
+<ul>
+<li>US-centric!</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3>Cylindrical Projections )(<a href="https://d3js.org/d3-geo/cylindrical" target="_blank">documentation</a>)</h3>
+<ul>
+<li><code>d3.geoMercator()</code></li>
+<li><code>d3.geoEquirectangular()</code></li>
+<li><code>d3.geoEqualEarth()</code></li>
+</ul>
+</div></div>
+</section>
+<section class="slide level2">
+<h2>Step 3: Rendering Geomaps in D3.js</h2>
+<p>If we render our SVG as a series of paths:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {js} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href=""></a>// Create SVG</span>
+<span id="cb6-2"><a href=""></a>const usa_svg = d3.create("svg")</span>
+<span id="cb6-3"><a href=""></a>  .attr("width", usa_width)</span>
+<span id="cb6-4"><a href=""></a>  .attr("height", usa_height);</span>
+<span id="cb6-5"><a href=""></a></span>
+<span id="cb6-6"><a href=""></a>// Render each state as a path, with a fill, stroke, and stroke-width</span>
+<span id="cb6-7"><a href=""></a>usa_svg.selectAll("path")</span>
+<span id="cb6-8"><a href=""></a>  .data(us_state_5m.features)</span>
+<span id="cb6-9"><a href=""></a>  .enter()</span>
+<span id="cb6-10"><a href=""></a>    .append("path")</span>
+<span id="cb6-11"><a href=""></a>      .attr("d", usa_path)</span>
+<span id="cb6-12"><a href=""></a>      .attr("fill", "#D9E5EA")</span>
+<span id="cb6-13"><a href=""></a>      .attr("stroke", "#333")</span>
+<span id="cb6-14"><a href=""></a>      .attr("stroke-width", 0.5);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="./week8-lab_files/figs/weird_bounds.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+<p>… <strong>Uh oh.</strong></p>
+</section>
+<section class="slide level2">
+<h2>Troubleshooting GeoJSON and D3.js</h2>
+<p>This is a common problem with D3.js and GeoJSON. Namely, <strong>there is a discrepancy between GeoJSON’s Right-Hand-Rule (RHR) convention and D3.js’s spherical geometry implementation</strong>. To prevent issues like these, we need to consider:</p>
+<ol type="1">
+<li>Are there any <code>null</code> geometries in our data?</li>
+<li>Are the <code>Polygon</code> and <code>MultiPolygon</code> geometries in our dataset the correct winding order?</li>
+</ol>
+<p>The winding direction issue is not always a <em>mandatory</em> fix - it really depends on where you are getting the data from. It is your responsibility to <strong>check if the GeoJSON data renders properly, and if not then fix the two likely problems above</strong>.</p>
+</section>
+<section class="slide level2">
+
+
+<img data-src="./week8-lab_files/figs/corrected.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section class="slide level2">
+<h2>Practice: Produce 3 Graphs (15mins)</h2>
+<p>Attempt to generate the geodata of one other country <strong>other than the USA</strong>. You can use any of the references mentioned above for getting your ShapeFiles, converting them into GeoJSON, and troubleshooting their issues upon importing them.</p>
+<ul>
+<li>Try playing around with different geometries, ouside of just country borders.</li>
+<li>Try different projection types provided by D3</li>
+</ul>
+<p>When you are done, upload a screenshot of your plot to <a href="https://drive.google.com/drive/folders/1z9Xyz-NPLKEWVf3fXKfO3jFM5A1W8LbT?usp=sharing" target="_blank">this Google Drive folder</a> with your name, NetID, and country in the filename.</p>
 </section>
 <section class="slide level2">
 <h2>Group Projects: Proposal Feedback &amp; Reminders</h2>
@@ -293,239 +592,16 @@ Ryan Kim
 </table>
 </section>
 <section class="slide level2">
-<h2>Changes to Framework Guides</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">URL To Guides</th>
-<th style="text-align: center;">Example Github Repo</th>
-<th style="text-align: center;">Example Dashboard</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><a href="https://observablehq.com/@rk2546/2025-infovis-cse_notebook-gallery#framework_guides">Framework Guides</a></td>
-<td style="text-align: center;"><a href="https://github.com/kimryan0416/Observable-Framework-Demo">Repository</a></td>
-<td style="text-align: center;"><a href="https://kimryan0416.github.io/Observable-Framework-Demo/">Dashboard</a></td>
-</tr>
-</tbody>
-</table>
-
-<img data-src="./week8-lab_files/figs/framework_guides.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section class="slide level2">
-<h2>What is GeoJSON?</h2>
-<h3>Definition</h3>
-<blockquote>
-<p>GeoJSON is an open standard format designed for representing simple geographical features, along with their non-spatial attributes. It is based on the JSON format. - <a href="https://en.wikipedia.org/wiki/GeoJSON">Wikipedia</a></p>
-</blockquote>
-<p><br></p>
-<h3>Example GeoJSON</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href=""></a><span class="er">Object</span> <span class="fu">{</span></span>
-<span id="cb1-2"><a href=""></a>  <span class="er">type</span><span class="fu">:</span> <span class="st">"FeatureCollection"</span></span>
-<span id="cb1-3"><a href=""></a>  <span class="er">features:</span> <span class="er">Array(</span><span class="dv">51</span><span class="er">)</span> <span class="ot">[</span></span>
-<span id="cb1-4"><a href=""></a>    <span class="dv">0</span><span class="er">:</span> <span class="er">Object</span> <span class="fu">{</span><span class="er">type</span><span class="fu">:</span> <span class="st">"Feature"</span><span class="fu">,</span> <span class="er">geometry</span><span class="fu">:</span> <span class="er">Object</span><span class="fu">,</span> <span class="er">properties</span><span class="fu">:</span> <span class="er">Object</span><span class="fu">}</span></span>
-<span id="cb1-5"><a href=""></a>    <span class="dv">1</span><span class="er">:</span> <span class="er">Object</span> <span class="fu">{</span><span class="er">type</span><span class="fu">:</span> <span class="st">"Feature"</span><span class="fu">,</span> <span class="er">geometry</span><span class="fu">:</span> <span class="er">Object</span><span class="fu">,</span> <span class="er">properties</span><span class="fu">:</span> <span class="er">Object</span><span class="fu">}</span></span>
-<span id="cb1-6"><a href=""></a>    <span class="dv">2</span><span class="er">:</span> <span class="er">Object</span> <span class="fu">{</span><span class="er">type</span><span class="fu">:</span> <span class="st">"Feature"</span><span class="fu">,</span> <span class="er">geometry</span><span class="fu">:</span> <span class="er">Object</span><span class="fu">,</span> <span class="er">properties</span><span class="fu">:</span> <span class="er">Object</span><span class="fu">}</span></span>
-<span id="cb1-7"><a href=""></a>    <span class="er">///</span> <span class="er">...</span></span>
-<span id="cb1-8"><a href=""></a>  <span class="ot">]</span></span>
-<span id="cb1-9"><a href=""></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section class="slide level2">
-<h2>GeoJSON Markup</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href=""></a><span class="fu">{</span></span>
-<span id="cb2-2"><a href=""></a>  <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"Feature"</span><span class="fu">,</span></span>
-<span id="cb2-3"><a href=""></a>  <span class="dt">"geometry"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb2-4"><a href=""></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"Point"</span><span class="fu">,</span></span>
-<span id="cb2-5"><a href=""></a>    <span class="dt">"coordinates"</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">125.6</span><span class="ot">,</span> <span class="fl">10.1</span><span class="ot">]</span></span>
-<span id="cb2-6"><a href=""></a>  <span class="fu">},</span></span>
-<span id="cb2-7"><a href=""></a>  <span class="dt">"properties"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb2-8"><a href=""></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Dinagat Islands"</span></span>
-<span id="cb2-9"><a href=""></a>  <span class="fu">}</span></span>
-<span id="cb2-10"><a href=""></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><br></p>
-<h3>One way to think about it:</h3>
-<ul>
-<li><a href="https://geojson.org/">GeoJSON Markup Guide</a></li>
-<li>Your map is a the GeoJSON object, comprising of <strong>Segments</strong>
-<ul>
-<li>Each Segment is a <strong>Feature</strong>.
-<ul>
-<li>Each Feature has <strong>geometry</strong> and <strong>properties</strong>.
-<ul>
-<li>Geometry can be a <code>Point</code>, <code>Polygon</code>, <code>MultiPolygon</code>, etc.</li>
-<li>`Properties hold additional info about the Feature (e.g.&nbsp;name, ID, code, zip code).</li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Where can we Find Geodata?</h2>
-<ul>
-<li>Older guides will commonly refer you to <a href="https://data.census.gov/">https://data.census.gov/</a>. But…</li>
-</ul>
-
-<img data-src="./week8-lab_files/figs/funding.png" class="quarto-figure quarto-figure-center r-stretch"><ul>
-<li>You can also likely find existing GeoJSON files in the wild, such as in <a href="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">Vega-Lite’s pre-existing US-Atlas GeoJSON</a>, but <strong>you don’t really have much control over the fidelity and properties of the GeoJSON itself.</strong></li>
-</ul>
-</section>
-<section class="slide level2">
-
-<h3>Step 1: Find an appropriate ShapeFile</h3>
-<ul>
-<li><a href="https://gadm.org/data.html">https://gadm.org/data.html</a>: An open-source solution that’s freely accessible for academic and non-commercial usage. Recommended to download by country.</li>
-<li><a href="https://www.naturalearthdata.com/downloads/">https://www.naturalearthdata.com/</a>: A sizeable repository of ShapeFiles for world regions.</li>
-</ul>
-<h3>Step 2: Simplify and convert from ShapeFile to GeoJSON</h3>
-<ul>
-<li><a href="https://mapshaper.org/">https://mapshaper.org/</a></li>
-<li><a href="https://www.qgis.org/">https://www.qgis.org/</a></li>
-</ul>
-<h3>Step 3: Load, understand, and troubleshoot your GeoJSON</h3>
-<ul>
-<li>Invert Latitude and Longitude Coordinates</li>
-<li>Reverse GeoJSON “Winding Order”</li>
-</ul>
-</section>
-<section class="slide level2">
-<h2>Let’s try Steps 1 and 2</h2>
-<p>Let’s download map data for the US states from <a href="https://gadm.org/data.html">https://gadm.org/data.html</a>, then simplify using <a href="https://mapshaper.org/">https://mapshaper.org/</a>.</p>
-
-<img data-src="./week8-lab_files/figs/mapshaper.png" style="width:100.0%" class="r-stretch"></section>
-<section class="slide level2">
-<h2>D3 GeoMaps</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href=""></a><span class="co">// Define parameters, svg, and chart (we've covered this by now a lot)</span></span>
-<span id="cb3-2"><a href=""></a><span class="kw">const</span> width <span class="op">=</span> <span class="dv">400</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">250</span><span class="op">,</span> margins<span class="op">=</span><span class="dv">50</span><span class="op">;</span></span>
-<span id="cb3-3"><a href=""></a></span>
-<span id="cb3-4"><a href=""></a><span class="co">// Create our SVG and Chart</span></span>
-<span id="cb3-5"><a href=""></a><span class="co">// ...</span></span>
-<span id="cb3-6"><a href=""></a></span>
-<span id="cb3-7"><a href=""></a><span class="co">// Need a projection, with `.scale()`, `.center()`, and `.translate()`</span></span>
-<span id="cb3-8"><a href=""></a><span class="kw">const</span> projection <span class="op">=</span> d3<span class="op">.</span><span class="fu">geoMercator</span>()</span>
-<span id="cb3-9"><a href=""></a>  <span class="op">.</span><span class="fu">scale</span>(<span class="dv">200</span>)</span>
-<span id="cb3-10"><a href=""></a>  <span class="op">.</span><span class="fu">center</span>([<span class="op">-</span><span class="dv">98</span><span class="op">,</span> <span class="dv">39</span>])  <span class="co">// Lat/Lon of the U.S.</span></span>
-<span id="cb3-11"><a href=""></a>  <span class="op">.</span><span class="fu">translate</span>([width<span class="op">/</span><span class="dv">2</span><span class="op">,</span> height<span class="op">*</span><span class="fl">0.75</span>])<span class="op">;</span></span>
-<span id="cb3-12"><a href=""></a></span>
-<span id="cb3-13"><a href=""></a><span class="co">/*</span></span>
-<span id="cb3-14"><a href=""></a><span class="co">// ALTERNATIVE: Let D3 attempt to fit the data</span></span>
-<span id="cb3-15"><a href=""></a><span class="co">const projection = d3.geoMercator()</span></span>
-<span id="cb3-16"><a href=""></a><span class="co">  .fitSize([width, height], usa);</span></span>
-<span id="cb3-17"><a href=""></a><span class="co">*/</span></span>
-<span id="cb3-18"><a href=""></a></span>
-<span id="cb3-19"><a href=""></a><span class="co">// `d3.geoPath()` returns a function that can be called later.</span></span>
-<span id="cb3-20"><a href=""></a><span class="kw">const</span> path <span class="op">=</span> d3<span class="op">.</span><span class="fu">geoPath</span>()<span class="op">.</span><span class="fu">projection</span>(projection)<span class="op">;</span></span>
-<span id="cb3-21"><a href=""></a></span>
-<span id="cb3-22"><a href=""></a><span class="co">// Render our chart.</span></span>
-<span id="cb3-23"><a href=""></a>chart<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)</span>
-<span id="cb3-24"><a href=""></a>  <span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"path"</span>)</span>
-<span id="cb3-25"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(usa<span class="op">.</span><span class="at">features</span>)</span>
-<span id="cb3-26"><a href=""></a>  <span class="op">.</span><span class="fu">enter</span>()</span>
-<span id="cb3-27"><a href=""></a>    <span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
-<span id="cb3-28"><a href=""></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> path)        <span class="co">// Draw each state</span></span>
-<span id="cb3-29"><a href=""></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">'fill'</span><span class="op">,</span><span class="st">'#ccc'</span>)  <span class="co">// Stylize our states</span></span>
-<span id="cb3-30"><a href=""></a>      <span class="op">.</span><span class="fu">style</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#000"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section class="slide level2">
-<h2>D3 GeoMaps… Wait, What?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href=""></a><span class="co">// Define parameters, svg, and chart (we've covered this by now a lot)</span></span>
-<span id="cb4-2"><a href=""></a><span class="kw">const</span> width <span class="op">=</span> <span class="dv">400</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">250</span><span class="op">,</span> margins<span class="op">=</span><span class="dv">50</span><span class="op">;</span></span>
-<span id="cb4-3"><a href=""></a></span>
-<span id="cb4-4"><a href=""></a><span class="co">// Create our SVG and Chart</span></span>
-<span id="cb4-5"><a href=""></a><span class="co">// ...</span></span>
-<span id="cb4-6"><a href=""></a></span>
-<span id="cb4-7"><a href=""></a><span class="co">// Need a projection, with `.scale()`, `.center()`, and `.translate()`</span></span>
-<span id="cb4-8"><a href=""></a><span class="kw">const</span> projection <span class="op">=</span> d3<span class="op">.</span><span class="fu">geoMercator</span>()</span>
-<span id="cb4-9"><a href=""></a>  <span class="op">.</span><span class="fu">scale</span>(<span class="dv">200</span>)</span>
-<span id="cb4-10"><a href=""></a>  <span class="op">.</span><span class="fu">center</span>([<span class="op">-</span><span class="dv">98</span><span class="op">,</span> <span class="dv">39</span>])  <span class="co">// Lat/Lon of the U.S.</span></span>
-<span id="cb4-11"><a href=""></a>  <span class="op">.</span><span class="fu">translate</span>([width<span class="op">/</span><span class="dv">2</span><span class="op">,</span> height<span class="op">*</span><span class="fl">0.75</span>])<span class="op">;</span></span>
-<span id="cb4-12"><a href=""></a></span>
-<span id="cb4-13"><a href=""></a><span class="co">/*</span></span>
-<span id="cb4-14"><a href=""></a><span class="co">// ALTERNATIVE: Let D3 attempt to fit the data</span></span>
-<span id="cb4-15"><a href=""></a><span class="co">const projection = d3.geoMercator()</span></span>
-<span id="cb4-16"><a href=""></a><span class="co">  .fitSize([width, height], usa);</span></span>
-<span id="cb4-17"><a href=""></a><span class="co">*/</span></span>
-<span id="cb4-18"><a href=""></a></span>
-<span id="cb4-19"><a href=""></a><span class="co">// `d3.geoPath()` returns a function that can be called later.</span></span>
-<span id="cb4-20"><a href=""></a><span class="kw">const</span> path <span class="op">=</span> d3<span class="op">.</span><span class="fu">geoPath</span>()<span class="op">.</span><span class="fu">projection</span>(projection)<span class="op">;</span></span>
-<span id="cb4-21"><a href=""></a></span>
-<span id="cb4-22"><a href=""></a><span class="co">// Render our chart.</span></span>
-<span id="cb4-23"><a href=""></a>chart<span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)</span>
-<span id="cb4-24"><a href=""></a>  <span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"path"</span>)</span>
-<span id="cb4-25"><a href=""></a>  <span class="op">.</span><span class="fu">data</span>(usa<span class="op">.</span><span class="at">features</span>)</span>
-<span id="cb4-26"><a href=""></a>  <span class="op">.</span><span class="fu">enter</span>()</span>
-<span id="cb4-27"><a href=""></a>    <span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
-<span id="cb4-28"><a href=""></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> path)        <span class="co">// Draw each state</span></span>
-<span id="cb4-29"><a href=""></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">'fill'</span><span class="op">,</span><span class="st">'#ccc'</span>)  <span class="co">// Stylize our states</span></span>
-<span id="cb4-30"><a href=""></a>      <span class="op">.</span><span class="fu">style</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#000"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="./week8-lab_files/figs/weird_bounds.png" class="quarto-figure quarto-figure-center"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Troubleshooting GeoJSON</h2>
-<h3>Inverted Latitude and Longitude Coordinates</h3>
-<p>Sometimes, your GeoJSON will have inverted coordinates. **D3 expects coordinates to be <code>[longitude, latitude]</code>:</p>
-<blockquote>
-<p>Point coordinates are in x, y order (easting, northing for projected coordinates, longitude, and latitude for geographic coordinates) - <a href="https://www.rfc-editor.org/rfc/rfc7946#section-1.3">specs</a></p>
-</blockquote>
-<p><br></p>
-<h3>Incorrect “Winding Order”</h3>
-<p>GeoJSON has an unspoken property called the “winding order”. Basically:</p>
-<ul>
-<li>Outer rings (the main polygon) should be <strong>counterclockwise</strong> (CCW).</li>
-<li>Inner rings (holes) should be <strong>clockwise</strong> (CW).</li>
-</ul>
-<p>You may produce weird bugs if the winding order is reversed.</p>
-</section>
-<section class="slide level2">
-<h2>Projection Types in D3</h2>
-<div class="columns">
-<div class="column" style="width:33%;">
-<h3>Azumithal Projections (<a href="https://d3js.org/d3-geo/azimuthal">documentation</a>)</h3>
-<ul>
-<li><code>d3.geoAzimuthalEqualArea()</code></li>
-<li><code>d3.geoAzimuthalEquidistant()</code></li>
-<li><code>d3.geoOrthographic()</code></li>
-</ul>
-</div><div class="column" style="width:33%;">
-<h3>Conic Projections (<a href="https://d3js.org/d3-geo/conic">documentation</a>)</h3>
-<ul>
-<li><code>d3.geoConicConformal()</code></li>
-<li><code>d3.geoConicEqualArea()</code></li>
-<li><code>d3.geoAlbers()</code>
-<ul>
-<li>US-centric!</li>
-</ul></li>
-</ul>
-</div><div class="column" style="width:33%;">
-<h3>Cylindrical Projections )(<a href="https://d3js.org/d3-geo/cylindrical">documentation</a>)</h3>
-<ul>
-<li><code>d3.geoMercator()</code></li>
-<li><code>d3.geoEquirectangular()</code></li>
-<li><code>d3.geoEqualEarth()</code></li>
-</ul>
-</div></div>
-</section>
-<section class="slide level2">
-<h2>Practice: Produce 3 Graphs (15mins)</h2>
-<p>Attempt to generate the geodata of 3 separate countries other than the USA. You can use any of the references mentioned before for getting your ShapeFiles, converting them into GeoJSON, and troubleshooting their issues upon importing them.</p>
-<ul>
-<li>Try playing around with different geometries, ouside of just country borders.</li>
-<li>Try different projection types provided by D3</li>
-</ul>
-</section>
-<section class="slide level2">
 <h2>Final Reminders &amp; Checks</h2>
 <ul>
-<li><a href="https://forms.gle/ddJ4tXX2bBbooARJ6"><strong>Lab Feedback Form</strong></a> - Due Anytime (optional)</li>
 <li><strong>Data Analysis &amp; Sketches</strong> - Due Nov 3 @ 11:59pm - Data tables and visualization sketches.</li>
-<li><strong>Mini-Project #1</strong>: Due on Nov 6 @ 11:59pm</li>
+<li><strong>Mini-Project #1</strong>: Due next week (Oct.&nbsp;29 @ 11:59pm)</li>
+<li>Questions?
+<ul>
+<li>Office Hours!</li>
+<li>Discord!</li>
+<li>Email!</li>
+</ul></li>
 </ul>
 
 </section>
@@ -719,7 +795,7 @@ Ryan Kim
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -793,13 +869,14 @@ Ryan Kim
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
