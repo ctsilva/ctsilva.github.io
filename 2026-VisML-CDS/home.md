@@ -83,7 +83,7 @@ author_profile: true
 - **Materials:**
   - [Clustering and Dimensionality Reduction](/2026-VisML-CDS/slides/week8-clustering.html)
   - [Project Discussion](/2026-VisML-CDS/slides/week6-project-discussion.html)
-  - [Lab: Dimensionality Reduction](/2026-VisML-CDS/labs/week7-lab/VisML-Lab-Week7-slides.html)
+  - [Lab: Project Proposal Workshop](/2026-VisML-CDS/labs/week8-lab/VisML-Lab-Week8-slides.html)
 - **Recommended Readings:**
   - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - **Required**
   - [A Tutorial on Principal Component Analysis](https://arxiv.org/abs/1404.1100) (Shlens, 2014)
@@ -102,7 +102,7 @@ author_profile: true
 - **Topics:** Dimensionality Reduction (continued)
 - **Materials:**
   - [Dimensionality Reduction (continued)](/2026-VisML-CDS/slides/week9-dimensionality.html)
-  - [Lab: Dimensionality Reduction in Practice](/2026-VisML-CDS/labs/week8-lab/VisML-Lab-Week8-slides.html)
+  - [Lab: Dimensionality Reduction in Practice](/2026-VisML-CDS/labs/week7-lab/VisML-Lab-Week7-slides.html)
 - **Recommended Readings:**
   - [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) (Wattenberg, Viégas, Johnson, 2016) - **Required**
   - [Visualizing Data using t-SNE](https://www.jmlr.org/papers/v9/vandermaaten08a.html) (van der Maaten & Hinton, 2008)

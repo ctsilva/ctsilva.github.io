@@ -117,8 +117,8 @@ author_profile: true
 - Project discussion: every group proposes its own project; proposal guidelines, timeline and evaluation criteria
 
 **Lab Session:**
-- Interactive clustering interfaces
-- Cluster exploration tools
+- Project proposal workshop: analyzing a research paper
+- Group formation and brainstorming
 
 **Readings:**
 - Wolfram Clustering Tutorial - **Required**
@@ -137,9 +137,9 @@ author_profile: true
 - Projection quality metrics
 
 **Lab Session:**
-- Implementing projection views
-- Interactive parameter tuning
-- Projection comparisons
+- Dimensionality reduction in practice: PCA, LLE, t-SNE and UMAP on a digits dataset
+- Exercises: perplexity, a noise baseline, trustworthiness and continuity
+- Project proposal questions
 
 **Readings:**
 - Wattenberg, Viégas & Johnson, "How to Use t-SNE Effectively" (2016) - **Required**

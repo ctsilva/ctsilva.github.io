@@ -93,8 +93,8 @@ The repository includes complete course websites as subdirectories:
   | 3 | Sept 22 | week4-model-assessment | 52 ok | *none — see below* | — |
   | 4 | Sept 29 | week5-white-box | 64 slightly over | week5-lab | 7 ok |
   | 5 | Oct 6 | week6-black-box + week6-project-discussion | 82 over | week6-lab | 34 over |
-  | 6 | Oct 13 | week8-clustering + week6-project-discussion | 65 slightly over (6 clustering slides skippable) | week7-lab | 40 over |
-  | 7 | Oct 20 | week9-dimensionality | 21 ok | week8-lab | 3 ok |
+  | 6 | Oct 13 | week8-clustering + week6-project-discussion | 65 slightly over (6 clustering slides skippable) | week8-lab (project proposal workshop; this is what ran) | 3 ok |
+  | 7 | Oct 20 | week9-dimensionality | 36 (was 21; 14 new slides, all skippable) | week7-lab (DR in practice; did not run Oct 13) | 48, about 25 core plus a backup block with jump links |
   | 8 | Oct 27 | week7-deep-learning | 24 ok | week9-lab | 31 over |
   | 9 | Nov 3 | week11-nlp | 35 ok | week11-lab | 51 way over |
   | 10 | Nov 10 | week10-tda | 99 way over | week12-lab | 35 over |
@@ -104,6 +104,15 @@ The repository includes complete course websites as subdirectories:
   Lecture problem is concentrated: **Week 10 TDA (99 slides)**, then Weeks 5 and 1. Labs run long more often
   (six of nine) because 50 min is tight — but lab overflow is far less disruptive than lecture overflow.
 
+- **Week 7 (Oct 20) deck and lab, built 2026-10-15.** Lecture adds t-SNE equations, the crowding problem, live
+  perplexity/seed/UMAP demos on sklearn digits, trustworthiness/continuity (a flat-with-perplexity result is shown on
+  purpose), a PCA/t-SNE/UMAP table, a checklist, and a next-week slide; its Python cells need the uv venv and re-run on
+  every render (about a minute). Speaker notes on the Distill/UMAP/TopoMap figure slides were rewritten against the
+  figures (5 perplexities not 4, steps 10/20/60/120/1000, Fashion-MNIST not digits, TopoMap preserves components not
+  holes). Lab `week7-lab` loads sklearn's 8x8 digits (64 features), not MNIST; there is a heads-up slide for that.
+  Jump links need ids: `[text](#lab-lle)` (Quarto adds the `/`; writing `#/lab-lle` produces `#//lab-lle`).
+  Known environment limits: the 3D plotly slides need WebGL and plotly's CDN scripts (jquery, requirejs) and show
+  "WebGL is not supported" in headless Chrome; the YouTube embed on the lab t-SNE slide errors (153) from `file://`.
 - **Unresolved lab materials.** Nine lab decks exist as `.qmd` and are scheduled. Still open:
   - **Model Assessment lab** (2026 Week 3, Sept 22). In 2025 this deck lived only in external Google Slides
     (linked from `labs/week4-recap.md`), never in the repo — so it silently dropped out of the schedule.

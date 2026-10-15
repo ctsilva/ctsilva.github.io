@@ -1,5 +1,5 @@
-## VisML Lab Week 8 - DS-GA 3001 Fall 2026
-### Final Project Group Formation and Brainstorming
+## VisML Lab Week 6 - DS-GA 3001 Fall 2026
+### Project Proposal Workshop: Group Formation and Brainstorming
 
 ### Slides
 

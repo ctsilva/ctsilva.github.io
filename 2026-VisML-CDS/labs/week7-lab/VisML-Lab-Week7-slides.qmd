@@ -1,9 +1,9 @@
 ---
 title: "VisML Lab Week 7"
-subtitle: "DS-GA 3001 - Fall 2026 - Clustering and Dimensionality Reduction"
-author: "TBD - Teaching Assistant"
+subtitle: "DS-GA 3001 - Fall 2026 - Dimensionality Reduction in Practice"
+author: "Bhavya Matam"
 institute: "NYU Center for Data Science"
-date: "October 19, 2026"
+date: "October 20, 2026"
 format:
   revealjs:
     theme: [default, ../../slides/custom.scss]
@@ -19,8 +19,6 @@ format:
     footer: <https://cds.nyu.edu>
   html:
     code-fold: true
-resources:
-  - demo.pdf
 execute:
   echo: true
 jupyter: python3
@@ -35,6 +33,30 @@ bibliography: lab_references.bib
 
 ::: {.notes}
 Today we'll explore how to visualize high-dimensional data by projecting it into lower dimensions. We'll apply various dimensionality reduction techniques to the MNIST dataset and compare their effectiveness.
+:::
+
+## Plan for tonight (50 minutes)
+
+| | Minutes |
+|---|---|
+| Setup and PCA recap | 5 |
+| [LLE](#lab-lle) | 8 |
+| [t-SNE](#lab-tsne) | 10 |
+| [UMAP](#lab-umap) | 7 |
+| [Exercises](#lab-ex1): perplexity, noise, scoring | 15 |
+| [Proposal questions](#lab-qa) | 5 |
+
+* MDS, Sammon's mapping and random projection are [backup slides](#lab-mds): skip them unless there is time
+* Each link jumps straight to that section
+
+::: {.notes}
+SKIPPABLE - this is the schedule for the session; the links jump to each section.
+
+The deck has about 40 slides plus the exercises, which is too much for 50 minutes if every method gets equal time. PCA was covered in the lecture and the first half of the deck is a recap, so aim to be at LLE by about the 5 minute mark. The optimization-based methods (MDS, Sammon's mapping, sparse random projection) are the backup block; there is a 'Choose your path' slide after the PCA slides that jumps over them.
+
+The exercises are the part that matters most: they reproduce, on a dataset students can run, the pitfalls from the required reading. If time runs short, cut UMAP down to the single result slide, not the exercises.
+
+Project proposals are due today, so the last five minutes are for questions about them.
 :::
 
 ## Dimensionality Reduction
@@ -294,6 +316,21 @@ def plot_3d_clustering(X_red, labels, title=None):
 The 3D visualization uses color-coding and interactive rotation to explore cluster structure. Hovering over points reveals both the true digit label and data point index.
 :::
 
+## Heads-up: which dataset is this?
+
+* The slides say "MNIST" for the idea, but the code uses scikit-learn's small **digits** dataset
+* Same task, much smaller: **8 × 8** pixel images, so **64 features** instead of 784
+* We keep digits 0-5 only: **1,083 images**. Runs in seconds in class
+* Everything works the same on full MNIST (28 × 28, 784 features, 70,000 images), just slower
+
+::: {.notes}
+SKIPPABLE - jump to the next slide, the one that loads the data.
+
+A transparency point: the explanatory slides (from Olah's article) show 28 by 28 MNIST images, but load_digits is the 8 by 8 UCI digits set that ships with scikit-learn. We use it so that t-SNE, MDS and LLE finish in seconds on a laptop. With n_class=6 we keep digits 0 to 5, which is 1,083 images.
+
+Expect the pictures to look somewhat different from the MNIST pictures in the blog post: fewer points and lower resolution.
+:::
+
 ## PCA on MNIST
 
 Load the MNIST dataset:
@@ -370,7 +407,18 @@ plot_3d_clustering(X_trans_3d, "", "PCA")
 Adding a third principal component provides additional separation between clusters. The interactive 3D view lets us explore the data from different angles to better understand the cluster structure.
 :::
 
-## Optimization-Based Dimensionality Reduction
+## Choose your path
+
+* [**Backup block**: MDS, Sammon's mapping and sparse random projection](#lab-mds): optimization-based and random methods
+* [**Skip ahead**: LLE, t-SNE and UMAP](#lab-lle): the methods we compare in the exercises
+
+::: {.notes}
+SKIPPABLE - this slide is itself the skip control.
+
+If more than about 5 minutes have gone by, take the second link. MDS, Sammon's mapping and random projection are a useful contrast (global vs local, and cheap vs expensive) but the exercises need only LLE, t-SNE and UMAP. The backup block runs from here to the LLE slide; after it, continue in order.
+:::
+
+## Optimization-Based Dimensionality Reduction {#lab-mds}
 
 <ul >
 <li style="font-size:30px";>What if the distances between points in our visualization were the same as the distances between points in the original space?
@@ -421,9 +469,8 @@ X_mds = mds.fit_transform(X)
 plot_clustering(X_mds, "", "MDS")
 ```
 ::: {.notes}
-MDS creates a different projection than PCA, often better preserving global structure. Notice how the relative positions of digit clusters reflect their relationships in the original high-dimensional space.
+MDS tries to preserve all pairwise distances. On this data its 2-D picture is about as good as PCA's, not clearly better: one digit separates, the others overlap (k-NN accuracy in the map is about 0.8 for both). It is also much slower than PCA because it works with all pairs of points.
 :::
-
 
 ## MDS on MNIST
 
@@ -484,7 +531,6 @@ Ref: @scikit
 This method projects data through a sparse random matrix, providing computational efficiency. The sparsity reduces memory requirements while theoretical guarantees ensure the projection preserves distances with high probability.
 :::
 
-
 ## Sparse Random Projection on MNIST 
 
 ``` {python}
@@ -494,7 +540,7 @@ plot_clustering(X_srp, "", "Sparse Random Projection")
 ```
 
 ::: {.notes}
-Random projection surprisingly preserves cluster structure despite its simplicity. While not as refined as optimization-based methods, it runs much faster and scales well to large datasets.
+Sparse random projection is very cheap, but on this data it keeps little of the class structure: in 2-D most digits sit on top of each other (a k-NN classifier on the map gets about 0.4 accuracy, against about 0.8 for PCA). Random projections are best used to reduce a very large number of dimensions before another method, not as a final 2-D picture.
 :::
 
 ## Sparse Random Projection on MNIST 
@@ -507,10 +553,10 @@ plot_3d_clustering(X_srp_3d, "", "Sparse Random Projection")
 ```
 
 ::: {.notes}
-The 3D random projection shows reasonable digit separation with minimal computational cost. This makes it useful for quick exploratory analysis before applying more sophisticated methods.
+A third random dimension helps a little (k-NN accuracy about 0.6) but the digits still overlap heavily. It is the fastest method here, and the weakest picture. Note that the 3-D plots need a browser with WebGL.
 :::
 
-## Locally Linear Embedding
+## Locally Linear Embedding {#lab-lle}
 
 * First we find the k-nearest neighbors of each data point
   * One advantage of the LLE algorithm is that there is only one parameter to tune (K). If K is chosen to be too small or too large, it will not be able to accomodate the geometry of the original data. Here, for each data point that we have we compute the K nearest neighbours.
@@ -560,7 +606,32 @@ X_lle=lle.fit_transform(X)
 plot_clustering(X_lle, "", "LLE")
 ```
 ::: {.notes}
-LLE often creates more tightly clustered digit groups compared to PCA or MDS. The focus on local structure can better separate classes that differ in fine details.
+With n_neighbors=5 this plot looks almost empty: a few outlying points stretch the axes (the helper function rescales to the min-max range), so nearly all the points sit in a tiny spot. The structure is there but cannot be seen at this scale. This is a real property of LLE and the one-parameter sensitivity on the previous slides: the next slide zooms in and compares with n_neighbors=30.
+:::
+
+## LLE: the one parameter matters
+
+```{python}
+#| echo: true
+#| output-location: column
+fig, axs = plt.subplots(1, 2, figsize=(9, 4.5))
+for ax, k in zip(axs, [5, 30]):
+    e = LocallyLinearEmbedding(
+        n_neighbors=k, n_components=2).fit_transform(X)
+    lo, hi = np.percentile(e, [2, 98], axis=0)  # skip outliers
+    ax.scatter(e[:, 0], e[:, 1], c=plt.cm.tab10(y), s=6)
+    ax.set_xlim(lo[0], hi[0]); ax.set_ylim(lo[1], hi[1])
+    ax.set_title(f"LLE, n_neighbors={k}"); ax.axis("off")
+plt.tight_layout()
+```
+
+* With 5 neighbors the embedding is almost one-dimensional; with 30 it spreads out, but most digits overlap
+* Compare with t-SNE and UMAP below
+
+::: {.notes}
+SKIPPABLE - go to 't-Distributed Stochastic Neighbor Embedding (t-SNE)'.
+
+The previous slide looked nearly empty: with n_neighbors=5 a few outlying points stretch the axes (the helper rescales to the min-max range), so almost all the points sit in a tiny spot. This slide zooms in on the central 96 percent of the points. With 5 neighbors the embedding is close to a line; with 30 it fills the plane, but only digit 0 (blue) separates cleanly and digit 4 (purple) partly; the other digits overlap heavily. That is the one-parameter sensitivity mentioned two slides back: K too small or too large and LLE cannot follow the geometry. The takeaway is not that LLE is broken, but that on this data it needs tuning and gives a weaker picture than t-SNE or UMAP.
 :::
 
 ## LLE on MNIST
@@ -572,10 +643,10 @@ X_lle_3d=lle_3d.fit_transform(X)
 plot_3d_clustering(X_lle_3d, "", "LLE")
 ```
 ::: {.notes}
-The 3D LLE embedding shows distinct digit clusters with clear boundaries. The neighborhood parameter significantly affects results, so experimentation is often needed for optimal visualization.
+With n_neighbors=30 the 3-D view separates some digits better than the 30-neighbor 2-D embedding on the earlier slide (k-NN accuracy about 0.8 against 0.7), but several classes still overlap, and it is clearly less clean than t-SNE or UMAP below. Needs a browser with WebGL.
 :::
 
-## t-Distributed Stochastic Neighbor Embedding (t-SNE)
+## t-Distributed Stochastic Neighbor Embedding (t-SNE) {#lab-tsne}
 
 * Very popular for deep learning
 * Tries to optimize for preserving the topology of the data
@@ -624,7 +695,6 @@ plot_3d_clustering(X_tsne_3d, "", "T-SNE")
 Even in 3D, t-SNE creates visually striking cluster separation. However, remember that hyperparameters like perplexity strongly influence the results and must be tuned carefully.
 :::
 
-
 ## Using t-SNE Effectively
 * t-SNE plots are popular and can be useful, but only if you avoid common misreadings
   * Beware of hyperparameter values
@@ -642,7 +712,7 @@ Ref: @Wattenberg_Viégas_Johnson_2016
 While t-SNE plots are visually appealing, they can be misleading if misinterpreted. Cluster sizes and inter-cluster distances don't necessarily reflect true relationships in the original high-dimensional space.
 :::
 
-## Uniform Manifold Approximation and Projection (UMAP)
+## Uniform Manifold Approximation and Projection (UMAP) {#lab-umap}
 
 * Similar to t-SNE, but with some advantages:
   * Increased speed 
@@ -690,5 +760,119 @@ plot_clustering(X_umap, "not used", "UMAP")
 UMAP creates clean cluster separation similar to t-SNE but runs significantly faster on large datasets. The visualization often better preserves relationships between clusters compared to t-SNE.
 :::
 
-## References (Good for Further Reading)
+## Exercise 1: perplexity {#lab-ex1}
 
+```{python}
+#| echo: true
+#| output-location: column
+fig, axs = plt.subplots(2, 2, figsize=(6, 6))
+for ax, perp in zip(axs.ravel(), [2, 10, 50, 300]):
+    emb = TSNE(perplexity=perp, random_state=0).fit_transform(X)
+    ax.scatter(emb[:, 0], emb[:, 1], c=plt.cm.tab10(y), s=8)
+    ax.set_title(f"perplexity = {perp}"); ax.axis("off")
+plt.tight_layout()
+```
+
+*Discuss in pairs (2 min):*
+
+* Which perplexity would you show in a paper? Why?
+* What goes wrong at 2? At 300?
+* Change `random_state`: what changes, what does not?
+
+::: {.notes}
+SKIPPABLE - if short on time, go to the 'Exercise 3' slide.
+
+This is the perplexity experiment from the Distill article, on the lab dataset. Run it, then let pairs discuss. What the run shows: at perplexity 2 the groups blur into one round cloud, because each point only attends to a couple of neighbors; at 10 the groups are visible but some are split into pieces; at 50 there are six clean groups (one still in two pieces); at 300, more than a quarter of the 1,083 points, the groups press against each other. Changing random_state keeps the groups but moves them around, so the positions of groups relative to each other are not a finding. See the lecture slides 'Try it: perplexity on 1,797 digits' and 'same perplexity, different random start'.
+:::
+
+## Exercise 2: is it real? {#lab-ex2}
+
+```{python}
+#| echo: true
+#| output-location: column
+rng = np.random.default_rng(0)
+noise = rng.normal(size=(500, 64))   # no structure
+embs = {"PCA": PCA(2).fit_transform(noise)}
+for p in [2, 5, 30]:
+    embs[f"t-SNE, perplexity {p}"] = TSNE(
+        perplexity=p, random_state=0).fit_transform(noise)
+fig, axs = plt.subplots(2, 2, figsize=(6, 6))
+for ax, (name, e) in zip(axs.ravel(), embs.items()):
+    ax.scatter(e[:, 0], e[:, 1], s=8)
+    ax.set_title(name); ax.axis("off")
+plt.tight_layout()
+```
+
+*Discuss:*
+
+* The data is pure random noise. Do you see clusters?
+* Which setting would have fooled you? What did every t-SNE panel lose?
+
+::: {.notes}
+SKIPPABLE - if short on time, go to the 'Exercise 3' slide.
+
+500 random 64-dimensional Gaussian points: there is nothing to find. PCA shows one round cloud that is denser in the middle, as it should. t-SNE at perplexity 2 shows small clumps and gaps, which look like tiny clusters; at 5 the effect is weak; from 30 up it is a nearly uniform disk with no clusters. Two lessons. First, a low perplexity can invent clusters, so structure is not evidence until it survives a change of settings and a comparison with a noise baseline. Second, even when there are no false clusters, every t-SNE panel has flattened the dense center that PCA shows: t-SNE does not preserve density. Compare the lecture slide on random noise from the Wattenberg et al. article.
+:::
+
+## Exercise 3: score the projections {#lab-ex3}
+
+```{python}
+#| echo: true
+#| output-location: column
+from sklearn.manifold import trustworthiness
+embs = {
+    "PCA": PCA(2).fit_transform(X),
+    "LLE": LocallyLinearEmbedding(
+        n_neighbors=30, random_state=0).fit_transform(X),
+    "t-SNE": TSNE(random_state=0).fit_transform(X),
+    "UMAP": UMAP(random_state=0).fit_transform(X),
+}
+for name, e in embs.items():
+    t = trustworthiness(X, e, n_neighbors=15)
+    c = trustworthiness(e, X, n_neighbors=15)
+    print(f"{name:6s} trust {t:.2f}  continuity {c:.2f}")
+```
+
+*Discuss:*
+
+* Which method scores best? Does the ranking match what you saw in the plots?
+* Trustworthiness and continuity are *local*. What can they not tell you?
+
+::: {.notes}
+SKIPPABLE - if short on time, go to the 'Takeaways' slide.
+
+Trustworthiness asks whether the 15 nearest neighbors of each point in the map were really near in the original 64-dimensional data; continuity is the same with the two spaces swapped. They were introduced in the lecture (slides 'Is this projection any good?' and 'Four projections of the digits, scored').
+
+Expect t-SNE and UMAP to score highest, PCA lower, and LLE lowest on this data (the numbers shown in the output are the ones to read out; they vary slightly with the version of scikit-learn and umap-learn). The follow-up question is the important one: a high score says local neighborhoods are preserved; it does not say that distances between clusters or cluster sizes mean anything, which the exercises above showed they do not.
+:::
+
+## Takeaways
+
+* PCA first: it is the baseline, and its axes mean something
+* t-SNE and UMAP show **local** structure well; their **gaps, sizes and positions** are not findings
+* Always vary the settings (perplexity, n_neighbors, seed) and keep what is stable
+* Compare against a noise baseline and score the result (trustworthiness, continuity)
+* Report the method, parameters and seed whenever you show a projection
+
+*Required reading:* [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) (Wattenberg, Viégas, Johnson, 2016)
+
+::: {.notes}
+SKIPPABLE - go straight to the proposal questions.
+
+Closing summary: the same checklist as the lecture slide 'Before you trust a projection'. If your project shows an embedding plot, expect to be asked about these in the final presentation.
+:::
+
+## Project proposal questions {#lab-qa}
+
+* **Due today (Oct 20):** 4-page proposal. It is also the approval step: we reply with approve, approve with changes, or rescope
+* A good proposal names **a key paper, data you can actually get, and how you will evaluate** the result
+* Be concrete: not "improve the visualization" but *what* you will build and *how* you will measure it
+* Ask now, or: Bhavya (here, on lab nights) · Claudio (office hours Fridays 1:30-2:30 PM, 370 Jay Street, Room 1153) · Pari
+
+::: {.notes}
+SKIPPABLE - end of the session.
+
+Use any remaining time for questions about the proposal; the Week 6 project discussion deck has the full guidelines. Next week: Deep Learning Visualization, with readings from Prince's Understanding Deep Learning (Chapters 2-4).
+:::
+
+## References (Good for Further Reading)
