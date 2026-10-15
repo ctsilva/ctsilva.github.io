@@ -2,9 +2,12 @@
 title: "Interactivity in Information Visualization"
 subtitle: "A Dialogue with Data - CS-GY 6313 - Fall 2026"
 author: "Claudio Silva"
+institute: "NYU Tandon School of Engineering"
+date: "October 16, 2026"
 format:
   revealjs:
     theme: [default, custom.scss]
+    css: section-dividers.css
     logo: figs/vida.jpg
     width: 1920
     height: 1080
@@ -154,7 +157,7 @@ A foundational moment for interactive visualization design.
 :::
 
 :::footer
-Shneiderman, B. (1996). [*The Eyes Have It*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE VIS.
+Shneiderman, B. (1996). [*The Eyes Have It*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE Symposium on Visual Languages.
 :::
 
 ::: {.notes}
@@ -205,7 +208,7 @@ This mantra has endured for nearly 30 years because it captures the essence of v
 :::
 
 :::footer
-Shneiderman, B. (1996). [*The Eyes Have It*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE VIS.
+Shneiderman, B. (1996). [*The Eyes Have It*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE Symposium on Visual Languages.
 :::
 
 ::: {.notes}
@@ -246,8 +249,12 @@ A fuller "Task by Data Type Taxonomy"
 This shows a move towards a more **comprehensive understanding** of the analysis process.
 :::
 
+::: {.notes}
+The mantra is only the first four tasks of the 1996 paper. The same paper adds three more: Relate (see relationships between items), History (keep a trail of actions, which supports undo and replay) and Extract (save a subset). Notice that History is exactly what Heer and Shneiderman later expand into the Record, Annotate, Share group.
+:::
+
 :::footer
-Shneiderman, B. (1996). [*The Eyes Have It*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE VIS.
+Shneiderman, B. (1996). [*The Eyes Have It*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE Symposium on Visual Languages.
 :::
 
 ## A Modern Framework
@@ -277,6 +284,10 @@ Shneiderman, B. (1996). [*The Eyes Have It*](../refs/Shneiderman_1996_The_Eyes_H
 
 ::: {.fragment}
 **12 specific interaction techniques** - our focus for the rest of the lecture.
+:::
+
+::: {.notes}
+The table on the right is the taxonomy from the 2012 paper: three categories and twelve tasks. Read the first column top to bottom: Data and View Specification (Visualize, Filter, Sort, Derive), View Manipulation (Select, Navigate, Coordinate, Organize), Process and Provenance (Record, Annotate, Share, Guide). We take them one at a time.
 :::
 
 :::footer
@@ -379,7 +390,9 @@ Filtering is about reducing the data to what's relevant. You do this all day, ev
 :::
 
 ::: {.notes}
-Sorting is about imposing order. It's one of the simplest, yet most powerful, interactions. When you land on a product page, what's the first thing you sort by? Price low-to-high? Average customer rating? That single click instantly helps you find patterns and priorities in the data. A sorted list immediately answers "what's the biggest?" or "what's the trend?" It's also a great example of how a simple interaction can completely change the story a visualization tells.
+Sorting is about imposing order. It's one of the simplest, yet most powerful, interactions. When you land on a product page, what's the first thing you sort by? Price low-to-high? Average customer rating? That single click instantly helps you find patterns and priorities in the data. A sorted list immediately answers "what's the biggest?" or "what's the trend?"
+
+The figure is the catalogue exploration interface from Urbane, our own work on urban design. Panel (e) lists candidate building designs with their scores in a table next to a parallel-coordinates plot: ranking the candidates is what lets the planner go from hundreds of designs to a handful worth looking at in 3D (panels a-c).
 :::
 
 ## 4. Derive
@@ -433,7 +446,7 @@ This is where analysis happens. You're not just viewing the data; you're transfo
 :::
 
 ::: {.column width="65%"}
-![](figs/interaction/taxivis-select.png){fig-align="center" width="85%"}
+![](figs/interaction/taxivis-select.png){fig-align="center" height="800"}
 :::
 :::
 
@@ -473,7 +486,9 @@ Selection is foundational. Once you've selected items, you can delete them, anno
 :::
 
 ::: {.notes}
-Navigation is what makes large datasets tractable. You can show an overview of a million points, then zoom in to see detail. Semantic zoom is particularly interesting - think of Google Maps, where zooming in doesn't just make things bigger, it reveals new information like street names and building outlines. Here we see two different views showing how navigation changes what you can see in the visualization.
+Navigation is what makes large datasets tractable. You can show an overview of a million points, then zoom in to see detail. Semantic zoom is particularly interesting: in Google Maps, zooming in doesn't just make things bigger, it reveals new information.
+
+The two images are the same Seattle map at two zoom levels (click to reveal the second). In the zoomed-out view you see neighborhoods and major roads; zoomed in on the University of Washington you get building and library names, parking areas, and local street names. Nothing was just magnified: different labels and features appear at each scale. That is semantic zoom.
 :::
 
 ## 7. Coordinate
@@ -496,14 +511,16 @@ Navigation is what makes large datasets tractable. You can show an overview of a
 :::
 
 ::: {.column width="65%"}
-![](figs/interaction/vistrails-multiview.png){fig-align="center" width="85%"}
+![](figs/interaction/vistrails-multiview.png){fig-align="center" height="440"}
 
-![](figs/interaction/urbane-brushing.png){fig-align="center" width="85%"}
+![](figs/interaction/urbane-brushing.png){fig-align="center" height="270"}
 :::
 :::
 
 ::: {.notes}
-Now, coordination is a critical concept, and it's what makes dashboards so powerful. It's the idea of linking multiple views together. The magic here is called brushing and linking. When I 'brush' or select a set of dots in the scatterplot, notice how they instantly light up in the bar chart and the map. The views are talking to each other. This lets you explore relationships across different dimensions of your data simultaneously. This is where interaction becomes truly powerful for analysis - this is how you discover multi-dimensional patterns.
+Coordination is a critical concept, and it's what makes dashboards so powerful: linking multiple views so that an action in one is reflected in the others. The best-known form is brushing and linking: select items in one view and they are highlighted in the others.
+
+Both figures show it. Top: the VisTrails spreadsheet, six renderings of the same Visible Human head with different algorithms; the cameras in the right-hand column are synchronized, so rotating one rotates the other. Bottom: Urbane. Brushing ranges on the parallel-coordinates axes (b) selects neighborhoods or sites, and the matching buildings light up in green on the 3D map (c, d). The views are talking to each other, which is how you discover multi-dimensional patterns.
 :::
 
 ## 8. Organize
@@ -521,14 +538,16 @@ Now, coordination is a critical concept, and it's what makes dashboards so power
 :::
 
 ::: {.column width="65%"}
-![](figs/interaction/design-gallery-organize.png){fig-align="center" width="85%"}
+![](figs/interaction/design-gallery-organize.png){fig-align="center" height="440"}
 
-![](figs/interaction/vistrails-organize.png){fig-align="center" width="85%"}
+![](figs/interaction/vistrails-organize.png){fig-align="center" height="290"}
 :::
 :::
 
 ::: {.notes}
-This seems mundane, but it's essential for real analysis work. Different tasks need different layouts. When you're comparing views, you want them side-by-side. When one view is primary, you maximize it. Good tools make this easy to adjust on the fly. The Design Gallery and VisTrails examples show different approaches to organizing multiple views in a workspace.
+This seems mundane, but it's essential for real analysis work. Different tasks need different layouts: side by side when comparing, one maximized when it is primary. Good tools make this easy to adjust on the fly.
+
+The top figure is the Design Gallery: a large central view of many thumbnails arranged by similarity, with a few chosen examples pulled out to larger tiles around the edge and connected by lines. The bottom figure is the VisTrails workspace: the pipeline builder on the left and a spreadsheet of results on the right, each window arranged for its own job.
 :::
 
 ## Category 3: Process & Provenance
@@ -557,14 +576,16 @@ This seems mundane, but it's essential for real analysis work. Different tasks n
 :::
 
 ::: {.column width="65%"}
-![](figs/interaction/cosmology.png){fig-align="center" width="85%"}
+![](figs/interaction/cosmology.png){fig-align="center" height="400"}
 
-![](figs/interaction/vistrails-evolution.png){fig-align="center" width="85%"}
+![](figs/interaction/vistrails-evolution.png){fig-align="center" height="400"}
 :::
 :::
 
 ::: {.notes}
-Think about your last serious data analysis session. You probably took 20 different paths, most of which were dead ends. Recording history means you can backtrack without starting over. It also creates a record of your analytical process, which is crucial for reproducibility. The cosmology and VisTrails examples show different approaches to history visualization and workflow tracking.
+Think about your last serious data analysis session. You probably took 20 different paths, most of which were dead ends. Recording history means you can backtrack without starting over. It also creates a record of your analytical process, which is crucial for reproducibility.
+
+Both figures are VisTrails history trees. In the top one every node is a version of the workflow, and each edge is a change made to get from one version to the next (the 'Annotated' node is one the user tagged). The bottom one, from a survey of provenance in visualization, shows the same idea linked to its outputs: select a node and you see the visualization it generated, plus the notes, tags, date and user stored with it.
 :::
 
 ## Record: VisTrails Movie Generation
@@ -671,6 +692,25 @@ Modern visualization is inherently collaborative. You're rarely analyzing data i
 The Guide dynamic is about turning an exploration into an explanation. Instead of letting the user explore freely, you take them by the hand and lead them through a pre-defined path to tell a story. This is the technique behind 'scrollytelling'. Think of the best interactive articles from The New York Times or The Pudding. As you scroll, the visualizations animate and change to support the narrative. It's a powerful way to communicate specific findings. This is about finding the sweet spot between a static presentation (full author control) and a completely open exploration tool (full reader control).
 :::
 
+## Name that dynamic
+
+![](figs/interaction/urbane-brushing.png){fig-align="center" height="520"}
+
+**Which of the 12 dynamics do you see in this analysis of the Financial District?**
+
+::: {.incremental}
+- (a) Neighborhoods compared on parallel axes: **Visualize** and **Select**
+- (b) Boxes drawn on the axes: **Filter** (brushing ranges)
+- (c) Matching buildings lit in green on the map: **Coordinate** (linked views)
+- (d) Labels "Site 1-3": **Annotate**
+:::
+
+::: {.notes}
+SKIPPABLE - if running long, jump to 'The Challenge of Reusable Interactions'.
+
+Two minutes in pairs, then reveal. The reading follows the figure caption: (a) the data exploration view compares the Financial District with other neighborhoods; (b) ranges are brushed on the axes to filter; (c) the buildings that satisfy the constraints are highlighted on the map; (d) further filtering isolates three sites. Students will disagree about whether (b) is Select or Filter: it is both, since brushing a range selects items and the filter removes the rest. That is a good point to make: the 12 dynamics overlap in practice and are a vocabulary, not a set of exclusive boxes.
+:::
+
 # Part 4: Advanced Topic & Case Study {background-color="#2c5f77"}
 
 ## The Challenge of Reusable Interactions
@@ -734,11 +774,11 @@ Break interactions down into reusable components:
 :::
 
 :::footer
-Zhao, J. et al. (2025). [*Libra: Composable Interactions*](../refs/Zhao_2025_Libra_Composable_Interactions.pdf). CHI.
+Zhao, Y. et al. (2025). [*Libra: Composable Interactions*](../refs/Zhao_2025_Libra_Composable_Interactions.pdf). CHI.
 :::
 
 ::: {.notes}
-Libra's key insight is that most interactions can be decomposed into a small set of primitive operations. Instead of writing custom code for each interaction, you compose these primitives. It's like building with LEGO blocks instead of carving each piece from scratch.
+Libra's key insight is that most interactions can be decomposed into a small set of reusable parts. In the paper's model, an instrument is the mediator between the user and the objects in the view: it receives input events, an interactor translates them into high-level actions, and those actions call services (selection, filtering, k-means, and so on) that manage data and produce feedback in separate layers. The slide's one-line version, instruments are inputs and services are data operations, is a simplification of that. It's like building with LEGO blocks instead of carving each piece from scratch.
 :::
 
 ## Libra Example: Building Interactions
@@ -753,7 +793,7 @@ Libra's key insight is that most interactions can be decomposed into a small set
 :::
 
 :::footer
-Zhao, J. et al. (2025). [*Libra: Composable Interactions*](../refs/Zhao_2025_Libra_Composable_Interactions.pdf). CHI.
+Zhao, Y. et al. (2025). [*Libra: Composable Interactions*](../refs/Zhao_2025_Libra_Composable_Interactions.pdf). CHI.
 :::
 
 ::: {.notes}
@@ -826,7 +866,7 @@ We're at an inflection point. Just as D3 and Vega transformed how we build visua
 
 **Foundational Papers:**
 
-- Shneiderman, B. (1996). [*The Eyes Have It: A Task by Data Type Taxonomy*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE VIS.
+- Shneiderman, B. (1996). [*The Eyes Have It: A Task by Data Type Taxonomy*](../refs/Shneiderman_1996_The_Eyes_Have_It.pdf). IEEE Symposium on Visual Languages.
 - Card, Mackinlay & Shneiderman (1999). [*Readings in Information Visualization: Using Vision to Think*](../refs/Card_Mackinlay_Shneiderman_1999_Using_Vision_to_Think_Chapter1.pdf).
 
 **Interaction Theory & Practice:**
@@ -837,11 +877,41 @@ We're at an inflection point. Just as D3 and Vega transformed how we build visua
 
 **Recent Research:**
 
-- Zhao, J. et al. (2025). [*Libra: Composable Interactions*](../refs/Zhao_2025_Libra_Composable_Interactions.pdf). CHI.
+- Zhao, Y. et al. (2025). [*Libra: Composable Interactions*](../refs/Zhao_2025_Libra_Composable_Interactions.pdf). CHI.
+
+## Next Week (Oct 23): Geographic and Urban Visualization I
+
+:::: {.columns}
+::: {.column width="50%"}
+### Topics:
+
+- Map projections and their trade-offs
+- Geographic data formats (GeoJSON, TopoJSON, Shapefiles)
+- Choropleth and point maps
+
+### Due:
+
+- **Exercise 7** - Interactive visualization design and implementation (**Oct 22**)
+- **Mini-project 1 begins** - geographic visualization (due Nov 5)
+- Teams formed by **Oct 16** (today)
+:::
+::: {.column width="50%"}
+### Required reading:
+
+- [GeoLinter: A Linting Framework for Choropleth Maps](https://arxiv.org/pdf/2310.13707) - Lei, Fan, MacEachren & Maciejewski, IEEE TVCG 2023
+- [Research Challenges in Geovisualization](https://www.researchgate.net/publication/313573280_Research_challenges_in_geovisualization_Cartography_Geograph) - MacEachren & Kraak, 2001
+:::
+::::
+
+::: {.notes}
+SKIPPABLE - if running long, jump to 'Questions?'.
+
+Next Friday is the first geographic session: map projections, data formats and choropleth design, with the D3 geo lab. Two dates to repeat: Exercise 7 (the interactive visualization from today's lab) is due Thursday Oct 22, and Mini-project 1 starts next week. Teams are due today, Oct 16: use Discord #project-teams if you are still looking for a group.
+:::
 
 ## Questions?
 
-## {background-image="figs/vida.jpg" background-size="cover"}
+## {background-image="figs/vida.jpg" background-size="30%" background-repeat="no-repeat" background-position="center 70%"}
 
 ::: {.r-fit-text}
 Thank you!

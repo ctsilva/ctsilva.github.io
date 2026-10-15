@@ -187,7 +187,7 @@ author_profile: true
 - Case studies: FilmFinder, VisTrails, TaxiVis
 
 **Required Readings:**
-- [The Eyes Have It: A Task by Data Type Taxonomy](/2026-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf). Shneiderman. IEEE VIS 1996.
+- [The Eyes Have It: A Task by Data Type Taxonomy](/2026-InfoVis-CSE/refs/Shneiderman_1996_The_Eyes_Have_It.pdf). Shneiderman. IEEE Symposium on Visual Languages 1996.
 - [Interactive Dynamics for Visual Analysis](/2026-InfoVis-CSE/refs/Heer_Shneiderman_2012_Interactive_Dynamics_Visual_Analysis.pdf). Heer & Shneiderman. ACM Queue 2012.
 
 **Recommended Readings:**
