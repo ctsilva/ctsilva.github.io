@@ -204,23 +204,26 @@ author_profile: true
 
 **Assignment:** Exercise 7 - Interactive visualization design and implementation (due Oct 22)
 
-### **Week 8** (Oct 23) - Geographic and Urban Visualization I
+### **Week 8** (Oct 23) - Foundations of Geovisualization: 2D Maps
 **Learning Objectives:** Understand map projections and geographic data; create effective choropleth and point maps
 
-**Lecture:** 
+**Lecture:** [Week 8 - Foundations of Geovisualization](slides/week8-geovis-2d-maps.html)
+- When to use a map (and when a bar chart is better)
 - Map projections and their trade-offs
-- Geographic data formats (GeoJSON, TopoJSON, Shapefiles)
-- Choropleth map design principles
-- Point mapping and density visualization
-- Multi-scale geographic visualization
+- Map taxonomy: choropleth, proportional symbol, cartogram, flow
+- Four choropleth pitfalls: normalization, classification, color, geography
+- When to abandon geographic accuracy (the London Tube map)
+- Supplemental: GeoJSON/TopoJSON, classification methods, Leaflet.js
 
 **Required Readings:**
 - [GeoLinter: A Linting Framework for Choropleth Maps](https://arxiv.org/pdf/2310.13707). Lei, Fan, MacEachren & Maciejewski. IEEE TVCG 2023.
-- [Research Challenges in Geovisualization](https://www.researchgate.net/publication/313573280_Research_challenges_in_geovisualization_Cartography_Geograph). MacEachren & Kraak. Cartography and Geographic Information Science 2001.
+- [When Maps Shouldn't Be Maps](https://www.ericson.net/content/2011/10/when-maps-shouldnt-be-maps/). Matthew Ericson. 2011.
 
 **Optional Readings:**
-- [When Maps Shouldn't Be Maps](http://uxblog.idvsolutions.com/2011/10/when-maps-shouldnt-be-maps.html). Matthew Ericson. 2011.
-- [Surprise! Bayesian Weighting for De-Biasing Thematic Maps](https://idl.cs.washington.edu/files/2013-BayesianSurpriseMaps-InfoVis.pdf). Correll & Heer. IEEE InfoVis 2017.
+- [Datawrapper Guide to Choropleth Maps](https://www.datawrapper.de/blog/choroplethmaps)
+- [Surprise! Bayesian Weighting for De-Biasing Thematic Maps](https://idl.cs.washington.edu/files/2017-SurpriseMaps-InfoVis.pdf). Correll & Heer. IEEE TVCG 2017.
+- [Research Challenges in Geovisualization](https://www.researchgate.net/publication/313573280_Research_challenges_in_geovisualization_Cartography_Geograph). MacEachren & Kraak. Cartography and Geographic Information Science 2001.
+- *How to Lie with Maps*. Mark Monmonier. University of Chicago Press.
   
 **Lab:** [Plotting and Troubleshooting GeoJSON with D3](/2026-InfoVis-CSE/labs/week8-lab.html)
 - D3 geo projection setup

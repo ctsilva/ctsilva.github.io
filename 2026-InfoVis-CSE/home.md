@@ -93,8 +93,12 @@ author_profile: true
 - **Lab:** Creating interactive geographic visualizations with Leaflet and D3
 - **Assignment:** Exercise 8 - Geographic visualization with proper normalization and projection (due Oct 29)
 - **Required Readings:**
-  - [Datawrapper Guide to Choropleth Maps](https://www.datawrapper.de/blog/choroplethmaps)
+  - [GeoLinter: A Linting Framework for Choropleth Maps](https://arxiv.org/pdf/2310.13707) - Lei, Fan, MacEachren & Maciejewski, IEEE TVCG 2023
   - [When Maps Shouldn't Be Maps](https://www.ericson.net/content/2011/10/when-maps-shouldnt-be-maps/) - Matthew Ericson (NYT)
+- **Optional Readings:**
+  - [Datawrapper Guide to Choropleth Maps](https://www.datawrapper.de/blog/choroplethmaps)
+  - [Surprise! Bayesian Weighting for De-Biasing Thematic Maps](https://idl.cs.washington.edu/files/2017-SurpriseMaps-InfoVis.pdf) - Correll & Heer, IEEE TVCG 2017
+  - [Research Challenges in Geovisualization](https://www.researchgate.net/publication/313573280_Research_challenges_in_geovisualization_Cartography_Geograph) - MacEachren & Kraak, 2001
 - **Recommended Resources:**
   - [The True Size Of...](https://thetruesize.com/) - Interactive projection demo
   - [Reuters: The True Size of Africa](https://www.reuters.com/graphics/AFRICA-MAP/lgpdaqrdyvo/)
@@ -107,7 +111,7 @@ author_profile: true
 - **Lab:** Building interactive spatio-temporal visualizations, Implementing linked views
 - **Assignment:** Exercise 9 - Urban data exploration and visual queries (due Nov 5)
 - **Required Readings:**
-  - Ferreira et al. (2013) - [TaxiVis: An Interactive Visualization System for Taxi Trajectories](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/TaxiVis.pdf) - IEEE VAST 2013
+  - [Visual Exploration of Big Spatio-Temporal Urban Data: A Study of New York City Taxi Trips](https://ieeexplore.ieee.org/document/6634127/) - Ferreira, Poco, Vo, Freire & Silva, IEEE TVCG 2013
   - [NYC Taxi Open Data](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
 - **Recommended Resources:**
   - [Hägerstrand's Space-Time Cube](https://en.wikipedia.org/wiki/Space-time_cube)
