@@ -3,7 +3,7 @@ title: "Week 9 Lab: Building interactive spatio-temporal visualizations"
 subtitle: "CS-GY 6313 - Information Visualization"
 author: "Ryan Kim"
 institute: "New York University"
-date: "October 31, 2025"
+date: "Nov. 6, 2026"
 format:
   revealjs:
     theme: [default, ../slides/custom.scss]
@@ -23,19 +23,17 @@ format:
 
 |User Interface|Graphics Library|Notebook(s)|
 |:--|:--|:--|
-|[observablehq.com](https://observablehq.com)|[D3](https://d3js.org/)|[Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab)|
+|<a href="https://observablehq.com" target="_blank">observablehq.com</a>|<a href="https://d3js.org/" target="_blank">D3</a>|<a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a>|
 
 ### Today's Lab Activities
 
 Today we will be a exploring the following topics:
 
-1. Group and Mini Projects: Reminders
-2. Main Lab Activities:
-    1. Understanding Time and JavaScript/D3
-    2. Creating new columns from timestamps
-    3. Creating scatterplots with timescales
-    4. `d3.rollup()` and lookup dictionaries
-    5. Mapping geodata to NYC taxi trips
+1. Understanding Time and JavaScript/D3
+2. Creating new columns from timestamps
+3. Creating scatterplots with timescales
+4. `d3.rollup()` and lookup dictionaries
+5. Mapping geodata to NYC taxi trips
 
 ## Group and Mini Projects: Reminders
 
@@ -128,9 +126,12 @@ parser2("15-01-2020");
 ... and so on.
 
 
-## Practice: Time Formatting (10-15 mins)
+## Lab Exercises #1 and #2: Time Formatting (10-15 mins)
 
-In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab), complete the code blocks from `ex1` to `ex10`.
+In our <a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a>, complete the code blocks under Parts 1C and 1D.
+
+1. In Part 1C, your goal is to return what `parser(...)` returns for each situation; your job is to modify `parser()` to fit the timestamp formats given to you.
+2. In Part 1D, your goal is to not only correctly configure `parser(...)` with the correct timestamp format, but also extract the listed date value.
 
 
 ## Application: Why Do All This?
@@ -149,11 +150,14 @@ In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_w
 |`Array.agg()`|Condenses large datasets into smaller data types, such as scalar values or smaller arrays.|
 |`[...old_data, /* new items */]`|Create a new Array by adopting values from an existing Array, then appending new items|
 
-## Practice: Implementing Time-Series Charts [~20 mins]
+## Lab Exercises #3 and #4: Implementing Time-Series Charts (~20 mins)
 
-In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab), we've imported the ["Daily Climate time series data"](https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data) dataset, which features climate data from Delhi from 2013 to 2017. The data is imported under the variable `climate_data`.
+In our <a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a>, we've imported the <a href="https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data" target="_blank">"Daily Climate time series data"</a> dataset, which features climate data from Delhi from 2013 to 2017. The data is imported under the variable `climate_data`.
 
-1. Using either `Array.map` or `forEach()`, create a new version of the climate data called `climate_data_2` that features two new columns: a new "year" column extracted from the existing "date" column, and a new "day_month" column that keeps the day and month of the "date" but sets the year to some constant (e.g. 2020).
+1. Using either `Array.map` or `forEach()`, create a new version of the climate data called `climate_data_2` that features two new columns: 
+    - A new "year" column extracted from the existing "date" column, and 
+    - A new "day_month" column that keeps the day and month of the "date" but sets the year to some constant (e.g. 2020).
+
 2. Using `climate_data_2`, produce a simple scatter plot where:
     1. The chart is a 600px wide and 400px tall chart, with margins of 50px on all sides.
     2. Each point represents a single row.
@@ -164,7 +168,7 @@ In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_w
 
 ## NYC Taxi Data
 
-We covered the [NYC Taxi Open Dataset](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page), which gives us a lot of juicy info about taxi pickups across many years in NYC. Let's look at one specific subset of that data: the week of Thanksgiving in November, 2024.
+We covered the <a href="https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page" target="_blank">NYC Taxi Open Dataset</a>, which gives us a lot of juicy info about taxi pickups across many years in NYC. Let's look at one specific subset of that data: the week of Thanksgiving in November, 2024.
 
 - `yellow_tripdata_2024-11_thanksgiving.csv`: The taxi data was originally formatted in the `.parquet` format, which JavaScript and D3 cannot read. We've pre-processed the dataset, removed some unnecessary columns, and converted it into a `.csv` for you.
     - <a href="https://drive.google.com/file/d/1XiztOBkjIdhCR-2Fx02DHM8WPmzifRvo/view?usp=sharing" target="_blank">Google Drive alternative</a>
@@ -176,16 +180,44 @@ We covered the [NYC Taxi Open Dataset](https://www1.nyc.gov/site/tlc/about/tlc-t
 
 ## `d3.Rollup()`
 
+Our <code class="styled">taxi_data</code> dataset has the weekly taxi pickups and drop-offs for the week of Thanksgiving. Let's say that we want to aggregate, for the entire week, the total number of pickups and drop-offs that occurred per location in our taxi zones.
+
+To achieve this, we will have to use a <a href="https://d3js.org/d3-array/group#rollup" target="_blank">special function from D3 called <code class="styled">d3.rollup()</code></a>. It's a special function that lets you create a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" target="_blank">JavaScript Map</a> that effectively acts as a dictionary. The general syntax is as follows:
+
 ```js
 d3.rollup(data,
          v => // the aggregated rows as an array
          d => d.key);
 ```
 
-## Practice: Plotting GeoJSON of NYC with Taxi Data (~30 mins)
+## Lab Exercises #5 - #7: Plotting GeoJSON of NYC with Taxi Data (Remainder of the class)
 
-In our [Week 9 Lab Notebook](https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab), complete the code blocks to plot a geovisualization using
+In our <a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a>, complete the code blocks to plot a geovisualization of NYC's buroughs that depict the number of taxi pickups and dropoffs.
 
-- Dropdown inputs
-- `d3.rollup()` => dictionary lookup
-- Geovisualization with Zoom
+:::{.columns}
+
+::::{.column width="30%"}
+
+### Goal #1: Use `d3.rollup()`
+
+Use `d3.rollup()` to create `pickup_lookup` and `dropoff_lookup`. E.g. if you call `pickup_lookup.get(QUERY VALUE)`, it should return the number of pickups in the `QUERY_VALUE` region.
+
+::::
+
+::::{.column width="30%"}
+
+### Goal #2: Generating a `<select>` Dropdown
+
+Using D3.js, create a dropdown that lets users select between "PickUp" and "DropOff".
+
+::::
+
+::::{.column width="40%"}
+
+### Goal #3: Dynamic Geomap With Zoom Interactivity
+
+Using everything we've worked up to so far, plot a GeoJSON map that changes its coloration depending on what the user has selected using the dropdown.
+
+::::
+
+:::

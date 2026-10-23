@@ -6,11 +6,11 @@
 <script src="week9-lab_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="week9-lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="week9-lab_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="week9-lab_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.34">
+<link href="week9-lab_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
 
   <meta name="author" content="Ryan Kim">
-  <meta name="dcterms.date" content="2025-10-31">
+  <meta name="dcterms.date" content="2026-11-06">
   <title>Week 9 Lab: Building interactive spatio-temporal visualizations</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -96,7 +96,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="week9-lab_files/libs/revealjs/dist/theme/quarto-33e1d785821343a3bca9e1e25e4b170a.css">
+  <link rel="stylesheet" href="week9-lab_files/libs/revealjs/dist/theme/quarto-e55469e18d4f1b644de49769da31cbe0.css">
   <link rel="stylesheet" href="lab-light-theme.css">
   <link href="week9-lab_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week9-lab_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -209,11 +209,16 @@ Ryan Kim
     </div>
 </div>
 
-  <p class="date">2025-10-31</p>
+  <p class="date">2026-11-06</p>
 </section>
 <section class="slide level2">
 <h2>Week 9 Lab Overview</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">User Interface</th>
@@ -223,24 +228,20 @@ Ryan Kim
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><a href="https://observablehq.com">observablehq.com</a></td>
-<td style="text-align: left;"><a href="https://d3js.org/">D3</a></td>
-<td style="text-align: left;"><a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab">Week 9 Lab Notebook</a></td>
+<td style="text-align: left;"><a href="https://observablehq.com" target="_blank">observablehq.com</a></td>
+<td style="text-align: left;"><a href="https://d3js.org/" target="_blank">D3</a></td>
+<td style="text-align: left;"><a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a></td>
 </tr>
 </tbody>
 </table>
 <h3>Today’s Lab Activities</h3>
 <p>Today we will be a exploring the following topics:</p>
 <ol type="1">
-<li>Group and Mini Projects: Reminders</li>
-<li>Main Lab Activities:
-<ol type="1">
 <li>Understanding Time and JavaScript/D3</li>
 <li>Creating new columns from timestamps</li>
 <li>Creating scatterplots with timescales</li>
 <li><code>d3.rollup()</code> and lookup dictionaries</li>
 <li>Mapping geodata to NYC taxi trips</li>
-</ol></li>
 </ol>
 </section>
 <section class="slide level2">
@@ -315,24 +316,24 @@ Ryan Kim
 <li>this class gives you some nifty functions, such as using <code>.getYear()</code> or <code>.getMonth()</code> to extract the year and month of a timestamp.</li>
 <li>You can look up the properties and functions of the <code>Date()</code> class <a href="https://www.w3schools.com/jsref/jsref_obj_Date.asp" target="_blank">here</a>.</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href=""></a><span class="co">// Returns "2020-01-15T15:30Z"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href=""></a><span class="co">// Returns "2020-01-15T15:30Z"</span></span>
 <span id="cb1-2"><a href=""></a><span class="kw">new</span> <span class="bu">Date</span>(<span class="st">"2020-01-15T10:30:00"</span>)<span class="op">;</span></span>
 <span id="cb1-3"><a href=""></a></span>
 <span id="cb1-4"><a href=""></a><span class="co">// ERORR: Not ISO-8601 Format; this will return `null`</span></span>
-<span id="cb1-5"><a href=""></a><span class="kw">new</span> <span class="bu">Date</span>(<span class="st">"15-01-2020"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href=""></a><span class="kw">new</span> <span class="bu">Date</span>(<span class="st">"15-01-2020"</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <h3>D3: <code>d3.timeParse()</code></h3>
 <ul>
 <li>Unlike JavaScript’s <code>Date()</code> object class, D3 lets you <strong>define the expected format of your input string</strong>.</li>
 <li>The output is generally the same: it’ll return a <code>Date()</code> object class in the ISO-8601 format.</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href=""></a><span class="co">// Returns "2020-01-15T15:30Z"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href=""></a><span class="co">// Returns "2020-01-15T15:30Z"</span></span>
 <span id="cb2-2"><a href=""></a><span class="kw">const</span> parser1 <span class="op">=</span> d3<span class="op">.</span><span class="fu">timeParse</span>(<span class="st">"%Y-%m-%dT%H:%M:%S"</span>)<span class="op">;</span></span>
 <span id="cb2-3"><a href=""></a><span class="fu">parser1</span>(<span class="st">"2020-01-15T10:30:00"</span>)<span class="op">;</span></span>
 <span id="cb2-4"><a href=""></a></span>
 <span id="cb2-5"><a href=""></a><span class="co">// Will return successfully: "2020-01-15T05:00Z"</span></span>
 <span id="cb2-6"><a href=""></a><span class="kw">const</span> parser2 <span class="op">=</span> d3<span class="op">.</span><span class="fu">timeParse</span>(<span class="st">"%d-%m-%Y"</span>)<span class="op">;</span></span>
-<span id="cb2-7"><a href=""></a><span class="fu">parser2</span>(<span class="st">"15-01-2020"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-7"><a href=""></a><span class="fu">parser2</span>(<span class="st">"15-01-2020"</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <p><br> <span style="color:blue;">When working with D3 and need to work with time-series data, you are <strong>heavily encouraged</strong> to use <code>d3.timeParse()</code> to force timestamps into a <code>Date()</code> object with the ISO-8601 format. You’ll know if you’ve implemented it correctly if <code>d3.timeParse()</code> doesn’t return <code>null</code>.</span></p>
 </section>
@@ -381,8 +382,12 @@ Ryan Kim
 <p>… and so on.</p>
 </section>
 <section class="slide level2">
-<h2>Practice: Time Formatting (10-15 mins)</h2>
-<p>In our <a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab">Week 9 Lab Notebook</a>, complete the code blocks from <code>ex1</code> to <code>ex10</code>.</p>
+<h2>Lab Exercises #1 and #2: Time Formatting (10-15 mins)</h2>
+<p>In our <a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a>, complete the code blocks under Parts 1C and 1D.</p>
+<ol type="1">
+<li>In Part 1C, your goal is to return what <code>parser(...)</code> returns for each situation; your job is to modify <code>parser()</code> to fit the timestamp formats given to you.</li>
+<li>In Part 1D, your goal is to not only correctly configure <code>parser(...)</code> with the correct timestamp format, but also extract the listed date value.</li>
+</ol>
 </section>
 <section class="slide level2">
 <h2>Application: Why Do All This?</h2>
@@ -426,10 +431,14 @@ Ryan Kim
 </table>
 </section>
 <section class="slide level2">
-<h2>Practice: Implementing Time-Series Charts [~20 mins]</h2>
-<p>In our <a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab">Week 9 Lab Notebook</a>, we’ve imported the <a href="https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data">“Daily Climate time series data”</a> dataset, which features climate data from Delhi from 2013 to 2017. The data is imported under the variable <code>climate_data</code>.</p>
+<h2>Lab Exercises #3 and #4: Implementing Time-Series Charts (~20 mins)</h2>
+<p>In our <a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a>, we’ve imported the <a href="https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data" target="_blank">“Daily Climate time series data”</a> dataset, which features climate data from Delhi from 2013 to 2017. The data is imported under the variable <code>climate_data</code>.</p>
 <ol type="1">
-<li>Using either <code>Array.map</code> or <code>forEach()</code>, create a new version of the climate data called <code>climate_data_2</code> that features two new columns: a new “year” column extracted from the existing “date” column, and a new “day_month” column that keeps the day and month of the “date” but sets the year to some constant (e.g.&nbsp;2020).</li>
+<li>Using either <code>Array.map</code> or <code>forEach()</code>, create a new version of the climate data called <code>climate_data_2</code> that features two new columns:
+<ul>
+<li>A new “year” column extracted from the existing “date” column, and</li>
+<li>A new “day_month” column that keeps the day and month of the “date” but sets the year to some constant (e.g.&nbsp;2020).</li>
+</ul></li>
 <li>Using <code>climate_data_2</code>, produce a simple scatter plot where:
 <ol type="1">
 <li>The chart is a 600px wide and 400px tall chart, with margins of 50px on all sides.</li>
@@ -442,7 +451,7 @@ Ryan Kim
 </section>
 <section class="slide level2">
 <h2>NYC Taxi Data</h2>
-<p>We covered the <a href="https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page">NYC Taxi Open Dataset</a>, which gives us a lot of juicy info about taxi pickups across many years in NYC. Let’s look at one specific subset of that data: the week of Thanksgiving in November, 2024.</p>
+<p>We covered the <a href="https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page" target="_blank">NYC Taxi Open Dataset</a>, which gives us a lot of juicy info about taxi pickups across many years in NYC. Let’s look at one specific subset of that data: the week of Thanksgiving in November, 2024.</p>
 <ul>
 <li><code>yellow_tripdata_2024-11_thanksgiving.csv</code>: The taxi data was originally formatted in the <code>.parquet</code> format, which JavaScript and D3 cannot read. We’ve pre-processed the dataset, removed some unnecessary columns, and converted it into a <code>.csv</code> for you.
 <ul>
@@ -458,18 +467,26 @@ Ryan Kim
 </section>
 <section class="slide level2">
 <h2><code>d3.Rollup()</code></h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href=""></a>d3<span class="op">.</span><span class="fu">rollup</span>(data<span class="op">,</span></span>
+<p>Our <code class="styled">taxi_data</code> dataset has the weekly taxi pickups and drop-offs for the week of Thanksgiving. Let’s say that we want to aggregate, for the entire week, the total number of pickups and drop-offs that occurred per location in our taxi zones.</p>
+<p>To achieve this, we will have to use a <a href="https://d3js.org/d3-array/group#rollup" target="_blank">special function from D3 called <code class="styled">d3.rollup()</code></a>. It’s a special function that lets you create a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" target="_blank">JavaScript Map</a> that effectively acts as a dictionary. The general syntax is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href=""></a>d3<span class="op">.</span><span class="fu">rollup</span>(data<span class="op">,</span></span>
 <span id="cb3-2"><a href=""></a>         v <span class="kw">=&gt;</span> <span class="co">// the aggregated rows as an array</span></span>
-<span id="cb3-3"><a href=""></a>         d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">key</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href=""></a>         d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">key</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
-<h2>Practice: Plotting GeoJSON of NYC with Taxi Data (~30 mins)</h2>
-<p>In our <a href="https://observablehq.com/@rk2546/2025-infovis-cse_week-9-lab">Week 9 Lab Notebook</a>, complete the code blocks to plot a geovisualization using</p>
-<ul>
-<li>Dropdown inputs</li>
-<li><code>d3.rollup()</code> =&gt; dictionary lookup</li>
-<li>Geovisualization with Zoom</li>
-</ul>
+<h2>Lab Exercises #5 - #7: Plotting GeoJSON of NYC with Taxi Data (Remainder of the class)</h2>
+<p>In our <a href="https://observablehq.com/@rk2546/2026-infovis-cse_week-9-lab" target="_blank">Week 9 Lab Notebook</a>, complete the code blocks to plot a geovisualization of NYC’s buroughs that depict the number of taxi pickups and dropoffs.</p>
+<div class="columns">
+<div class="column" style="width:30%;">
+<h3>Goal #1: Use <code>d3.rollup()</code></h3>
+<p>Use <code>d3.rollup()</code> to create <code>pickup_lookup</code> and <code>dropoff_lookup</code>. E.g. if you call <code>pickup_lookup.get(QUERY VALUE)</code>, it should return the number of pickups in the <code>QUERY_VALUE</code> region.</p>
+</div><div class="column" style="width:30%;">
+<h3>Goal #2: Generating a <code>&lt;select&gt;</code> Dropdown</h3>
+<p>Using D3.js, create a dropdown that lets users select between “PickUp” and “DropOff”.</p>
+</div><div class="column" style="width:40%;">
+<h3>Goal #3: Dynamic Geomap With Zoom Interactivity</h3>
+<p>Using everything we’ve worked up to so far, plot a GeoJSON map that changes its coloration depending on what the user has selected using the dropdown.</p>
+</div></div>
 
 </section>
     </div>
@@ -662,7 +679,7 @@ Ryan Kim
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -736,13 +753,14 @@ Ryan Kim
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
