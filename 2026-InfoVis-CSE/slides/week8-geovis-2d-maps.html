@@ -891,39 +891,106 @@ Claudio Silva
 <h1>Pitfall 2: Classification (Binning)</h1>
 
 </section>
-<section id="how-you-bin-changes-the-story" class="slide level2">
-<h2>How You Bin Changes the Story</h2>
+<section id="how-you-map-values-to-color-changes-the-story" class="slide level2">
+<h2>How You Map Values to Color Changes the Story</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p><strong>Same data, different binning methods:</strong></p>
-<h3 id="equal-interval">Equal Interval</h3>
-<p>Divides range into equal steps</p>
+<p><strong>Same data, same gradient. Only the color stops move.</strong></p>
 <ul>
-<li>Prone to outliers</li>
-<li>Can leave bins empty</li>
+<li><p><strong>Min / Max:</strong> color is linear in the value. Honest about size, but skewed data look uniformly pale; only outliers stand out</p></li>
+<li><p><strong>Median, quartiles, deciles:</strong> stops pinned at percentiles. Contrast goes to the crowded 4–8% middle; the map shows <strong>rank</strong>, and outliers disappear</p></li>
 </ul>
-<h3 id="quantile">Quantile</h3>
-<p>Same number of items per bin</p>
-<ul>
-<li>Good for ranking</li>
-<li>Can be misleading if data is clustered</li>
-</ul>
-<h3 id="natural-breaks-jenks">Natural Breaks (Jenks)</h3>
-<p>Finds “natural” clusters</p>
-<ul>
-<li>Minimizes within-class variance</li>
-<li>More complex to compute</li>
-</ul>
+<p><em>Continuous scales, not bins. Classing is next.</em></p>
 </div><div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figs/week8/binning-comparison.png" height="780"></p>
-<figcaption>County unemployment rate, same data, five classification schemes</figcaption>
+<figcaption>County unemployment rate, same data, five color-stop placements</figcaption>
 </figure>
 </div>
 </div></div>
+<div class="footer">
+<p>After Muth, L. C. (2022). <a href="https://www.datawrapper.de/blog/interpolation-for-color-scales-and-maps">How to choose an interpolation for your color scale</a>. Datawrapper Blog.</p>
+</div>
 <aside class="notes">
-<p>Look at these maps: the <em>exact same data</em> (county unemployment rate), five ways of cutting it into colors. Only the cut-off points change. Top left, a plain min-to-max ramp, which behaves like equal intervals: a few extreme counties stretch the scale, so nearly everything is the same pale color and the map looks calm. Adding a midpoint, then quartiles, quintiles and deciles (quantile classes, with equal numbers of counties per color), progressively reveals the structure: the West Coast, the Southeast and the northern border light up. Notice the legend breaks for the quantile maps (1, 5, 6, 8, 26 for quartiles): they sit in the crowded low end of the data. Jenks is described on the left but not drawn here. There is no single “right” answer, but you <em>must</em> be aware of your choice and be able to defend it. Ask the room which map they would use to argue that unemployment is a crisis, and which to argue it is not.</p>
+<p>Be precise about what this figure is, because the title used to say “bin” and it isn’t binning. All five maps use the same continuous yellow-to-blue gradient on the same county unemployment data. Nothing is cut into classes. The only thing that changes is which data value is pinned to which point on the gradient.</p>
+<p>How to read a panel: the black triangles above each color bar are the stops, the data values pinned there. The data run from about 1% to 26%, and the median county is about 6%.</p>
+<ul>
+<li><strong>Min/Max</strong> pins only the ends, so color is linear in the value. Because the data are right-skewed, the median county (6%) sits only a fifth of the way along the ramp. So most of the country is pale, and only the real outliers stand out: the Arizona border, parts of Alaska.</li>
+<li><strong>Min/“Medium”/Max</strong> (the label means median) pins 6% to the middle color. Half the counties are on each side of the middle hue, and the map turns teal.</li>
+<li><strong>Quartiles, quintiles and deciles</strong> pin more stops at percentiles. In the deciles bar, ten stops are packed into 4-10% and a single segment covers 10-26%. A county at 8%, two points above the median, is already dark blue and looks almost the same as one at 26%.</li>
+</ul>
+<p>So the progression doesn’t “reveal” structure for free. It spends the color contrast on small differences in the crowded middle, and the picture shifts from showing how high unemployment is to showing each county’s rank. That’s why the West Coast and the Southeast seem to light up.</p>
+<p>Point at the small legends (5/10/15/20%): the color for 10% changes from pale to dark blue across the panels. Same number, different color, which is the whole lesson in one detail.</p>
+<p>Muth’s verdict in the Datawrapper article: min/max is “the most honest one because it shows the values on a linear scale and draws immediate attention to the outliers”. Percentile stops make differences look “stark in areas where they’re actually not stark at all”, and the choice is a compromise between truthfulness and usefulness. (The figure is in the style of that article. Its numbers, median 6% and max 26%, don’t match the article’s 2016 data, so treat the image source as unverified.)</p>
+<p>Ask the room: which panel would you show to argue there’s an unemployment crisis, and which to argue there isn’t?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="birdvis-the-same-problem-over-time" class="slide level2">
+<h2>BirdVis: The Same Problem, Over Time</h2>
+<p><strong>One color range can’t serve both dates: 0–0.7 shows May, 0–0.1 shows September.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week8/birdvis-colormap-ranges.png" class="quarto-figure quarto-figure-center" alt="BirdVis occurrence probability for the Baltimore Oriole, May 25 and Sep 7, 2009, under two colormap settings" height="760"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Ferreira et al.&nbsp;(2011). <a href="../refs/Ferreira_2011_BirdVis.pdf"><em>BirdVis</em></a>, IEEE TVCG 17(12), Fig. 3. <a href="https://doi.org/10.1109/TVCG.2011.176">doi:10.1109/TVCG.2011.176</a></p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Classing: Same Data, Same Colors, Three Breaks”.</p>
+<p>This is Figure 3 of our BirdVis paper (TVCG 2011), the same stop-placement problem as the previous slide, from the point of view of building a tool. The maps show eBird/STEM model predictions of occurrence probability for the Baltimore Oriole on two dates.</p>
+<ul>
+<li><strong>Top row:</strong> one sequential colormap from 0 to 0.7. May 25 (breeding season, high probabilities) looks great, with the Northeast and the Plains clearly dark. September 7 (migration, much lower probabilities) is almost blank, because every value is near the pale end.</li>
+<li><strong>Bottom row:</strong> the same colormap with an extra handle at 0.1, so everything above 0.1 is saturated dark red. September now shows the migration corridor down the Plains to the Texas coast. But May is a solid dark-red block, with all its internal structure lost.</li>
+</ul>
+<p>The cause, as the paper explains: during migration fewer birds are reported, so predicted probabilities are much lower than in the breeding season. A single fixed color range throughout the year either washes out one season or saturates the other. The paper notes you <em>could</em> design one hand-tuned multi-hue colormap that works for both dates, but it’s less intuitive and doesn’t generalize to other sub-ranges.</p>
+<p>The design answer was interactivity: the colormap widget under the maps is both the legend and a controller, and scientists drag handles, including intermediate ones, to move the stops. That’s the same knob as the Datawrapper stops, handed to the analyst.</p>
+<p>The lesson for honesty: when stops are adjustable, the legend has to stay visible and truthful. The bottom-row bar shows exactly where the saturation starts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="classing-same-data-same-colors-three-breaks" class="slide level2">
+<h2>Classing: Same Data, Same Colors, Three Breaks</h2>
+<p><strong>Five classes each. Only the break values change.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week8/classed-maps-comparison.png" class="quarto-figure quarto-figure-center" alt="County unemployment rate (≈2009, BLS LAUS) classed three ways; histograms show where each method puts its breaks" height="740"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Data: BLS LAUS county rates (≈2009) via <a href="https://github.com/vega/vega-datasets">vega-datasets</a>; breaks by <a href="https://pysal.org/mapclassify/">mapclassify</a></p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Classification Methods Compared”.</p>
+<p>This is the classed (binned) counterpart to the color-stop figure. It uses real data: county unemployment rates from the BLS LAUS program, roughly 2009 levels (3,218 counties, median 8.5%, range 1.2% to 30.1%, right-skewed). Same five ColorBrewer colors in every panel. Under each map, the histogram of all counties is colored by class, and the red lines are that method’s breaks. Gray counties have no data. Maps show the lower 48 in an equal-area projection; the breaks use all counties.</p>
+<ul>
+<li><strong>Equal interval</strong> (breaks every 5.8 points: 7.0, 12.8, 18.5, 24.3): 2,800 of 3,218 counties (87%) fall in the two lightest classes, and the darkest class holds just 7 counties. The map is calm and honest about magnitude, but nearly all the variation sits inside one color.</li>
+<li><strong>Quantile</strong> (breaks 6.0, 7.8, 9.3, 11.6): about 640 counties per class, so the map uses every color equally and looks dramatic. Look at the class widths, though: the middle class spans only 1.5 points (7.8-9.3), while the top class spans 18.5 points (11.6-30.1). A county at 12% and one at 30% get the same color.</li>
+<li><strong>Natural breaks (Jenks, computed as Fisher’s exact optimum)</strong> (6.1, 8.8, 11.6, 16.1): breaks are placed to minimize within-class variance, so it lands between the two. 142 counties are in the top class.</li>
+</ul>
+<p>Jenks is the one method the earlier color-stop figure didn’t show. On smooth, unimodal data like this there are no real “natural” gaps, so its breaks are an optimization result, not a discovery. That’s the pitfall in the table on the next slide.</p>
+<p>Figure generated by <code>slides/code/week8-classed-maps.py</code> (downloads its data from vega-datasets 2.8.0).</p>
+<p>Same question as before: which map would a campaign use to say unemployment is everywhere, and which to say it’s a few isolated places? All three are “correct”.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1044,6 +1111,42 @@ Claudio Silva
 </div></div>
 <aside class="notes">
 <p>All three maps here use the same synthetic data; only the color scale changes (illustration, not a real dataset). Rainbows are bad for data because they aren’t perceptually ordered: is yellow “more” or “less” than green? Brightness goes up and down along the scale, so equal data steps look unequal, and sharp hue changes create apparent boundaries in smooth data. Rainbow scales are also a problem for people with color vision deficiency. On the right, viridis is perceptually uniform and works in grayscale, and the diverging scale is centered on the median so that above and below read as two directions. Connect back to the color lecture from Week 5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-data-what-the-rainbow-hides" class="slide level2">
+<h2>Real Data: What the Rainbow Hides</h2>
+<p><strong>Same county unemployment data, three scales. Bottom row: lightness only.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week8/colormap-real-data.png" class="quarto-figure quarto-figure-center" alt="County unemployment rate (≈2009) in rainbow (jet), viridis and a diverging scale centered on the 2009 U.S. rate; bottom row keeps only each map's lightness (CIE L*)" height="760"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Borland &amp; Taylor (2007). <a href="https://doi.org/10.1109/MCG.2007.323435">Rainbow color map (still) considered harmful</a>. IEEE CG&amp;A. Data: BLS LAUS (≈2009)</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Choose the Right Color Scale”.</p>
+<p>The previous slide used synthetic data. This one uses real data: the same county unemployment rates as the classing slide (BLS, about 2009 levels; 3,218 counties, median 8.5%). All three maps share one range, 0-20% (38 counties above 20% get the top color). The bottom row is the same three maps with hue removed, keeping only CIE L* lightness. That’s roughly what a grayscale printout keeps, and lightness is the channel the eye actually uses to read “more vs less”.</p>
+<p>Read the rainbow column top to bottom:</p>
+<ul>
+<li><strong>In color, it looks informative and dramatic.</strong> But notice the sharp yellow band and the cyan-to-green transition in the Southeast and Midwest. They look like regional boundaries, yet the data change smoothly there. Those edges come from the colormap, not the data.</li>
+<li><strong>In lightness, it falls apart.</strong> Jet’s lightness rises to almost white at 12.8% and falls again. So North Dakota (median county 3.3%, the lowest in the country) is dark, and the worst-hit counties above 15-20% are also dark. Meanwhile Michigan, at the center of the 2009 auto-industry collapse with a median county at 13.7%, comes out nearly white, the “calmest” state on the map. 28% of all counties sit in the 10-15% band that jet renders near white.</li>
+</ul>
+<p>Viridis (middle) is less flashy in color, but its lightness runs steadily from dark to light, so the gray version tells the same story as the color one.</p>
+<p>The diverging map (right) answers a different question: above or below the 2009 national rate of 9.3%? Red is above, blue below. Its lightness is light in the middle and dark at both ends by design, so in gray you lose the direction. That’s acceptable for a diverging scale as long as hue carries the sign, but it’s another reason to use diverging scales only when the midpoint means something, as the next slide says.</p>
+<p>Research backs this up. Borland &amp; Taylor (2007) is the classic argument against rainbow colormaps. Liu &amp; Heer’s CHI 2018 study “Somewhere Over the Rainbow” measured it: rainbow colormaps did poorly when people judged value differences, and perceptually ordered schemes like viridis did well.</p>
+<p>Figure generated by <code>slides/code/week8-colormap-maps.py</code>.</p>
+<p>Ask the room: on the rainbow map, which state looks worst? Most people say California or the Southeast, because red and orange draw the eye. Then show Michigan in the lightness row.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1181,6 +1284,77 @@ Claudio Silva
 </div></div>
 <aside class="notes">
 <p>How do we <em>honestly</em> show the election data? The NYT has great solutions. The symbol map shows <em>where</em> the votes are and <em>how big</em> the leads are, ignoring the land area. The cartogram <em>distorts</em> the geography to make each state’s size proportional to its actual power (its electoral votes). Both of these are arguably more “truthful” representations of the election than the standard map. Be fair about the costs: symbol maps overplot in dense regions, and cartograms distort shapes so much that places become hard to find, so they work best when readers already know the geography. There is no free lunch.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="uniform-cells-instead-of-counties-ubers-h3" class="slide level2">
+<h2>Uniform Cells Instead of Counties: Uber’s H3</h2>
+<p><strong>Replace arbitrary regions with a grid of equal hexagons: count events per cell.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week8/h3-uber-explainer.png" class="quarto-figure quarto-figure-center" alt="From Uber's H3 post: points bucketed into hexagons and shaded by count; neighbor distances for triangle, square and hexagon grids" height="740"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Figures from Brodsky, I. (2018). <a href="https://www.uber.com/us/en/blog/h3/">H3: Uber’s Hexagonal Hierarchical Spatial Index</a>. Uber Engineering Blog. Library: <a href="https://h3geo.org">h3geo.org</a></p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Part 6: Beyond Geographic Accuracy”.</p>
+<p>One more answer to the geography problem, the one industry actually uses. Instead of counties, ZIP codes or districts, which vary wildly in size and shape and were drawn for unrelated reasons, cover the map with a grid of equal cells and count events per cell. Then a big cell can’t dominate just by being big.</p>
+<p>Top row, the workflow from Uber’s post (San Francisco): cars as points, the H3 hexagon grid laid over them, then each cell shaded by its count. Uber computes surge pricing exactly this way, by measuring supply and demand in hexagons across each city.</p>
+<p>Bottom row, why hexagons rather than squares or triangles. On a triangle grid a cell has neighbors at three different distances, and on a square grid two (edge neighbors vs diagonal neighbors). On a hexagon grid all six neighbors are the same distance from the center. That makes smoothing, “everything within k rings”, and movement between cells much simpler. The post also argues that hexagons reduce the error when moving people are snapped to cells.</p>
+<p>A few facts worth saying:</p>
+<ul>
+<li>H3 covers the whole globe by projecting from the faces of an icosahedron.</li>
+<li>There are 16 resolutions; each finer one has cells with one seventh the area.</li>
+<li>A pure hexagon tiling of a sphere is impossible, so there are exactly 12 pentagons, placed in the ocean.</li>
+<li>Children are only approximately contained in their parent cell.</li>
+</ul>
+<p>Why it belongs under the geography pitfall: it removes the area-dominance problem from the election map. But it doesn’t remove the choice of unit size, which is the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="same-crashes-three-cell-sizes" class="slide level2">
+<h2>Same Crashes, Three Cell Sizes</h2>
+<p><strong>Change the cell size and the “worst” place moves.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week8/h3-nyc-crashes-resolutions.png" class="quarto-figure quarto-figure-center" alt="NYC motor-vehicle crashes in September 2025 counted in H3 cells at resolutions 7, 8 and 9; circles mark the busiest cell(s)" height="700"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Data: NYC Open Data, Motor Vehicle Collisions – Crashes (Sept 2025, 7,289 with coordinates); cells via <a href="https://h3geo.org">H3</a></p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Part 6: Beyond Geographic Accuracy”.</p>
+<p>This is the real modifiable areal unit problem, which the election slide only gestured at. Same data in all three panels: every crash with coordinates reported in NYC in September 2025 (7,289 crashes, NYC Open Data). Same H3 grid system. Only the resolution changes, each step making cells about seven times smaller. Each panel has its own color scale, because counts per cell aren’t comparable across sizes. Blue circles mark the busiest cell(s).</p>
+<ul>
+<li><strong>Resolution 7</strong> (cells about 5 km², 190 cells): the busiest cell, 172 crashes, is a block of Midtown Manhattan. The story is “Midtown and central Brooklyn”.</li>
+<li><strong>Resolution 8</strong> (about 0.74 km², 940 cells): the busiest cell moves to the west side, around Port Authority (W 42nd St &amp; 9th Ave), with 44 crashes.</li>
+<li><strong>Resolution 9</strong> (about 0.11 km², 3,341 cells): there’s no single worst place. Three cells tie at 13 crashes: the East Side near the Queensboro Bridge approach, Downtown Brooklyn near Tillary St and the Flatbush Ave Extension, and East New York near Atlantic Ave. And 1,536 cells (46%) contain exactly one crash, so the map is dominated by noise.</li>
+</ul>
+<p>That’s the scale effect of the MAUP: aggregation level changes the answer to “where is it worst?”. Too coarse and you average away the specific intersections. Too fine and counts become so small that chance decides the ranking (the small-numbers problem from Pitfall 1). There’s also a zoning effect: shift the grid without changing its size and cells split and merge differently.</p>
+<p>Practical advice for the mini-project: pick the resolution for the question (a borough-level decision needs coarse cells, a street-safety intervention fine ones), say which you chose, and check that your conclusion survives one level up and one level down. Uber’s own post makes the same move: they analyze at several resolutions and use H3’s hierarchy to go between them.</p>
+<p>Bridge to next week: urban flows are the same problem in motion. Trips are counted from origin cell to destination cell, and the cell size shapes the flow map just as much.</p>
+<p>Figure generated by <code>slides/code/week8-h3-figures.py</code>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1633,8 +1807,8 @@ Claudio Silva
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/week8/binning-comparison.png" height="640"></p>
-<figcaption>County unemployment rate, same data, five classification schemes</figcaption>
+<p><img data-src="figs/week8/classed-maps-comparison.png" height="620"></p>
+<figcaption>County unemployment rate (≈2009, BLS LAUS): equal interval, quantile and Jenks classes on the same five colors</figcaption>
 </figure>
 </div>
 </div>
@@ -1644,7 +1818,7 @@ Claudio Silva
 </div>
 </div>
 <aside class="notes">
-<p>This is one of the most critical decisions you’ll make when creating a choropleth map, yet it’s often done automatically by software with no thought. Let’s understand the three main methods.</p>
+<p>This is one of the most critical decisions you’ll make when creating a choropleth map, yet it’s often done automatically by software with no thought. The figure is the same one from the Classification pitfall in Part 5: county unemployment (about 2009), five colors, and breaks from equal interval, quantile and Jenks. If Part 5 ran long and you skipped it there, this is the place to walk through it. Equal interval puts 87% of counties in the two lightest classes; quantile gives every class about 640 counties, but its top class spans 11.6-30.1%; Jenks lands in between. Use the histograms to show where each method draws its lines. Then the next slide defines the three methods.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1659,7 +1833,7 @@ Claudio Silva
 </section>
 <section id="classification-methods-compared-1" class="slide level2">
 <h2>Classification Methods Compared</h2>
-<h3 id="equal-interval-1">Equal Interval</h3>
+<h3 id="equal-interval">Equal Interval</h3>
 <p>Divides the <strong>range</strong> into equal-sized steps (e.g., 0-10, 10-20, 20-30).</p>
 <ul>
 <li>✓ Easy to understand and explain</li>
