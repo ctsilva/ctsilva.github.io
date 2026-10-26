@@ -24,23 +24,23 @@ author_profile: true
 ### Week 1 — Tuesday, Sept 8
 - **Topics:** Course Introduction, Syllabus, Introduction to Visualization, Hands-on Vega-Lite
 - **Materials:**
-  - [Course Introduction & Syllabus](/2026-VisML-CDS/slides/week2-intro.html)
-  - [Information Visualization Introduction](/2026-VisML-CDS/slides/week2-infovis.html)
-  - [Vega-Lite Lab](/2026-VisML-CDS/labs/week2-lab.html)
+  - [Course Introduction & Syllabus](/2026-VisML-CDS/slides/course-intro.html)
+  - [Information Visualization Introduction](/2026-VisML-CDS/slides/visualization-intro.html)
+  - [Vega-Lite Lab](/2026-VisML-CDS/labs/vega-lite/lab.html)
 - **Assignment:** TBD
 
 ### Week 2 — Tuesday, Sept 15
 - **Topics:** Perception for Design, Color Theory for Visualization
 - **Materials:**
-  - [Perception for Design](/2026-VisML-CDS/slides/week3-perception.html)
-  - [Color Theory for Visualization](/2026-VisML-CDS/slides/week3-color.html)
-  - [Lab: Perception and Color in Practice](/2026-VisML-CDS/labs/week3-slides.html)
+  - [Perception for Design](/2026-VisML-CDS/slides/perception.html)
+  - [Color Theory for Visualization](/2026-VisML-CDS/slides/color.html)
+  - [Lab: Perception and Color in Practice](/2026-VisML-CDS/labs/perception-color/lab.html)
 - **Action Item:** Form project teams this week
 
 ### Week 3 — Tuesday, Sept 22
 - **Topics:** Model Assessment and Evaluation
 - **Materials:**
-  - [Model Assessment and Evaluation](/2026-VisML-CDS/slides/week4-model-assessment.html)
+  - [Model Assessment and Evaluation](/2026-VisML-CDS/slides/model-assessment.html)
   - Lab: Model Assessment in Practice — *materials in preparation, to be posted*
 - **Recommended Readings:**
   - [Squares: Supporting Interactive Performance Analysis for Multiclass Classifiers](/2026-VisML-CDS/refs/Ren_Amershi_Lee_Suh_Williams_2016_Squares_Interactive_Performance_Analysis.pdf) (Ren et al., 2016)
@@ -53,8 +53,8 @@ author_profile: true
 ### Week 4 — Tuesday, Sept 29
 - **Topics:** Visualization for White-box Machine Learning Models
 - **Materials:**
-  - [White-box Model Interpretation](/2026-VisML-CDS/slides/week5-white-box.html)
-  - [Lab: Interpretable ML Methods](/2026-VisML-CDS/labs/week5-lab.html)
+  - [White-box Model Interpretation](/2026-VisML-CDS/slides/white-box-models.html)
+  - [Lab: Interpretable ML Methods](/2026-VisML-CDS/labs/interpretable-ml/lab.html)
 - **Recommended Readings:**
   - [A Partition-Based Framework for Building and Validating Regression Models](https://doi.org/10.1109/TVCG.2013.125) (Mühlbacher & Piringer, 2013) - **Best Paper Award, IEEE VAST 2013**
   - [Gamut: A Design Probe to Understand How Data Scientists Understand Machine Learning Models](https://doi.org/10.1145/3290605.3300809) (Hohman et al., 2019)
@@ -68,8 +68,8 @@ author_profile: true
 ### Week 5 — Tuesday, Oct 6
 - **Topics:** Black-box Model Interpretation
 - **Materials:**
-  - [Black-box Model Interpretation](/2026-VisML-CDS/slides/week6-black-box.html)
-  - [Lab: Black-box Explainability Methods](/2026-VisML-CDS/labs/week6-lab/VisML-Lab-Week6-slides.html)
+  - [Black-box Model Interpretation](/2026-VisML-CDS/slides/black-box-models.html)
+  - [Lab: Black-box Explainability Methods](/2026-VisML-CDS/labs/black-box-explainability/lab.html)
 - **Recommended Readings:**
   - ["Why Should I Trust You?" Explaining the Predictions of Any Classifier](https://doi.org/10.1145/2939672.2939778) (Ribeiro et al., 2016, KDD)
   - [SHAP Book: A Unified Approach to Interpreting Model Predictions](https://christophmolnar.com/books/shap) (Molnar, 2024)
@@ -81,9 +81,9 @@ author_profile: true
 ### Week 6 — Tuesday, Oct 13
 - **Topics:** Clustering and Dimensionality Reduction, Project Discussion
 - **Materials:**
-  - [Clustering and Dimensionality Reduction](/2026-VisML-CDS/slides/week8-clustering.html)
-  - [Project Discussion](/2026-VisML-CDS/slides/week6-project-discussion.html)
-  - [Lab: Project Proposal Workshop](/2026-VisML-CDS/labs/week8-lab/VisML-Lab-Week8-slides.html)
+  - [Clustering and Dimensionality Reduction](/2026-VisML-CDS/slides/clustering.html)
+  - [Project Discussion](/2026-VisML-CDS/slides/project-discussion.html)
+  - [Lab: Project Proposal Workshop](/2026-VisML-CDS/labs/project-proposal/lab.html)
 - **Recommended Readings:**
   - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - **Required**
   - [A Tutorial on Principal Component Analysis](https://arxiv.org/abs/1404.1100) (Shlens, 2014)
@@ -101,8 +101,8 @@ author_profile: true
 ### Week 7 — Tuesday, Oct 20
 - **Topics:** Dimensionality Reduction (continued)
 - **Materials:**
-  - [Dimensionality Reduction (continued)](/2026-VisML-CDS/slides/week9-dimensionality.html)
-  - [Lab: Dimensionality Reduction in Practice](/2026-VisML-CDS/labs/week7-lab/VisML-Lab-Week7-slides.html)
+  - [Dimensionality Reduction (continued)](/2026-VisML-CDS/slides/dimensionality-reduction.html)
+  - [Lab: Dimensionality Reduction in Practice](/2026-VisML-CDS/labs/dimensionality-reduction/lab.html)
 - **Recommended Readings:**
   - [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) (Wattenberg, Viégas, Johnson, 2016) - **Required**
   - [Visualizing Data using t-SNE](https://www.jmlr.org/papers/v9/vandermaaten08a.html) (van der Maaten & Hinton, 2008)
@@ -118,8 +118,9 @@ author_profile: true
 ### Week 8 — Tuesday, Oct 27
 - **Topics:** Deep Learning Visualization Fundamentals
 - **Materials:**
-  - [Deep Learning Visualization](/2026-VisML-CDS/slides/week7-deep-learning.html)
-  - [Lab: Deep Learning Visualization](/2026-VisML-CDS/labs/week9-lab/VisML-Lab-Week9-slides.html)
+  - [Deep Learning Visualization](/2026-VisML-CDS/slides/deep-learning.html)
+  - [Lab: Deep Learning, Hands-On](/2026-VisML-CDS/labs/deep-learning/lab.html)
+  - [Lab: Writing a Research Paper](/2026-VisML-CDS/labs/paper-writing/lab.html)
 - **Recommended Readings:**
   - [Understanding Deep Learning](https://udlbook.github.io/udlbook/) (Prince, 2023) - Chapters 2-4
   - [TensorFlow Playground](https://playground.tensorflow.org) - Interactive neural network visualization
@@ -134,8 +135,8 @@ author_profile: true
 ### Week 9 — Tuesday, Nov 3
 - **Topics:** Visualization for NLP and Large Language Models
 - **Materials:**
-  - [NLP and LLM Visualization](/2026-VisML-CDS/slides/week11-nlp.html)
-  - [Lab: NLP Visualization](/2026-VisML-CDS/labs/week11-lab/VisML-Lab-Week11-slides.html)
+  - [NLP and LLM Visualization](/2026-VisML-CDS/slides/nlp.html)
+  - [Lab: Visualization for NLP](/2026-VisML-CDS/labs/nlp-vis/lab.html)
 - **Recommended Readings:**
   - [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/)
   - [Efficient estimation of word representations in vector space](https://arxiv.org/abs/1301.3781)
@@ -155,8 +156,8 @@ author_profile: true
 ### Week 10 — Tuesday, Nov 10
 - **Topics:** Topological Data Analysis
 - **Materials:**
-  - [Topological Data Analysis](/2026-VisML-CDS/slides/week10-tda.html)
-  - [Lab: TDA in Practice](/2026-VisML-CDS/labs/week12-lab/VisML-Lab-Week12-slides.html)
+  - [Topological Data Analysis](/2026-VisML-CDS/slides/tda.html)
+  - [Lab: Topological Data Analysis](/2026-VisML-CDS/labs/tda/lab.html)
 - **Recommended Readings:**
   - [An Introduction to Topological Data Analysis: Fundamental and Practical Aspects for Data Scientists](https://doi.org/10.3389/frai.2021.667963) (Chazal & Michel, 2021) - **Required**
   - [Computational Topology: An Introduction](https://doi.org/10.1090/mbk/069) (Edelsbrunner & Harer, 2022)

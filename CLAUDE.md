@@ -79,7 +79,7 @@ The repository includes complete course websites as subdirectories:
 - **No default project (decided 2026-10-12)**: every group proposes its own project; the proposal is the approval
   step. `slides/default-project.qmd` (Tile2Net) and `projects/finalproject.md` (StreetAware) are unlinked leftovers.
 - **Project proposal timing (resolved 2026-10-12)**: discussion deck moved to Week 6 (Oct 13), proposal due
-  Week 7 (Oct 20); `week6-project-discussion.qmd` no longer carries 2025 TA names or dates.
+  Week 7 (Oct 20); `project-discussion.qmd` no longer carries 2025 TA names or dates.
 - **Registrar deadlines (Fall 2026)**: add/drop full-semester Sept 15; withdraw & pass/fail Nov 25;
   Thanksgiving recess Thu-Fri Nov 26-27 (does not affect Mon/Tue sessions).
 - Sources copied from 2025-VisML-CSE; rendered `.html` was **not** copied — run `quarto render` per week before class.
@@ -88,16 +88,16 @@ The repository includes complete course websites as subdirectories:
 
   | Week | Date | Lecture deck(s) | Slides | Lab deck | Slides |
   |------|------|-----------------|--------|----------|--------|
-  | 1 | Sept 8 | week2-intro + week2-infovis | 79 over | week2-lab | 17 ok |
-  | 2 | Sept 15 | week3-perception + week3-color | 60 at limit | week3-slides | 11 ok |
-  | 3 | Sept 22 | week4-model-assessment | 52 ok | *none — see below* | — |
-  | 4 | Sept 29 | week5-white-box | 64 slightly over | week5-lab | 7 ok |
-  | 5 | Oct 6 | week6-black-box + week6-project-discussion | 82 over | week6-lab | 34 over |
-  | 6 | Oct 13 | week8-clustering + week6-project-discussion | 65 slightly over (6 clustering slides skippable) | week8-lab (project proposal workshop; this is what ran) | 3 ok |
-  | 7 | Oct 20 | week9-dimensionality | 36 (was 21; 14 new slides, all skippable) | week7-lab (DR in practice; did not run Oct 13) | 48, about 25 core plus a backup block with jump links |
-  | 8 | Oct 27 | week7-deep-learning | 24 ok | week9-lab | 31 over |
-  | 9 | Nov 3 | week11-nlp | 35 ok | week11-lab | 51 way over |
-  | 10 | Nov 10 | week10-tda | 99 way over | week12-lab | 35 over |
+  | 1 | Sept 8 | course-intro + visualization-intro | 79 over | vega-lite | 17 ok |
+  | 2 | Sept 15 | perception + color | 60 at limit | perception-color | 11 ok |
+  | 3 | Sept 22 | model-assessment | 52 ok | *none — see below* | — |
+  | 4 | Sept 29 | white-box-models | 64 slightly over | interpretable-ml | 7 ok |
+  | 5 | Oct 6 | black-box-models + project-discussion | 82 over | black-box-explainability | 34 over |
+  | 6 | Oct 13 | clustering + project-discussion | 65 slightly over (6 clustering slides skippable) | project-proposal (workshop; this is what ran) | 3 ok |
+  | 7 | Oct 20 | dimensionality-reduction | 36 (was 21; 14 new slides, all skippable) | dimensionality-reduction (DR in practice; did not run Oct 13) | 48, about 25 core plus a backup block with jump links |
+  | 8 | Oct 27 | deep-learning | 32 ok (24 + 8 split-out text slides, laid out 2026-10-26) | deep-learning (new; Playground + CNN Explainer, run by Claudio) + paper-writing (about 25 core min) | 12 + 39 |
+  | 9 | Nov 3 | nlp | 35 ok | nlp-vis | 35 over |
+  | 10 | Nov 10 | tda | 99 way over | tda (Mapper, persistent homology) | 31 over |
   | 11 | Nov 17 | Time Series — no deck yet | — | — | — |
   | 12 | Nov 24 | Interpretable ML & Fairness — no deck yet | — | — | — |
 
@@ -109,15 +109,23 @@ The repository includes complete course websites as subdirectories:
   purpose), a PCA/t-SNE/UMAP table, a checklist, and a next-week slide; its Python cells need the uv venv and re-run on
   every render (about a minute). Speaker notes on the Distill/UMAP/TopoMap figure slides were rewritten against the
   figures (5 perplexities not 4, steps 10/20/60/120/1000, Fashion-MNIST not digits, TopoMap preserves components not
-  holes). Lab `week7-lab` loads sklearn's 8x8 digits (64 features), not MNIST; there is a heads-up slide for that.
+  holes). Lab `labs/dimensionality-reduction` loads sklearn's 8x8 digits (64 features), not MNIST; there is a heads-up slide for that.
   Jump links need ids: `[text](#lab-lle)` (Quarto adds the `/`; writing `#/lab-lle` produces `#//lab-lle`).
   Known environment limits: the 3D plotly slides need WebGL and plotly's CDN scripts (jquery, requirejs) and show
   "WebGL is not supported" in headless Chrome; the YouTube embed on the lab t-SNE slide errors (153) from `file://`.
+- **File naming (renamed 2026-10-26): topic names, no week numbers.** Lectures are `slides/<topic>.qmd`
+  (`deep-learning`, `nlp`, `tda`, ...). Labs are `labs/<topic>/lab.qmd` with a `recap.md` beside it
+  (`labs/deep-learning/`, `labs/nlp-vis/`, `labs/paper-writing/`, ...). Only `schedule.md` and `home.md` map
+  weeks to files, so a schedule change never makes a filename lie. Old URLs for the 16 pages that had
+  already been published are tiny redirect stubs at their old paths (e.g. `slides/week2-intro.html`); leave them.
+  Not renamed on purpose: `labs/week5/` (Colab links on the interpretable-ml lab point at that GitHub path),
+  the loose `labs/*.ipynb` notebooks, and `slides/default-project*`. `labs/archive/` holds 2025 recaps whose
+  topic could not be verified. The Discord channel `#week3-lab` is still named in the perception-color lab.
 - **Unresolved lab materials.** Nine lab decks exist as `.qmd` and are scheduled. Still open:
   - **Model Assessment lab** (2026 Week 3, Sept 22). In 2025 this deck lived only in external Google Slides
-    (linked from `labs/week4-recap.md`), never in the repo — so it silently dropped out of the schedule.
+    (linked from `labs/model-assessment/recap.md`), never in the repo — so it silently dropped out of the schedule.
     Currently listed on home/schedule as *"materials in preparation"*.
-  - **`labs/week10-lab/`** holds only a recap; the 2025 session was a guest presentation (Parikshit,
+  - **`labs/guest-talk/`** holds only a recap; the 2025 session was a guest presentation (Parikshit,
     external Google Slides). Not placed in the 2026 schedule — decide whether to repeat it.
   - **Orphaned notebooks**, not linked from any page: `labs/Lab_white_box_vis1.ipynb`,
     `labs/Lab_white_box_vis2.ipynb` (white-box, Week 4), `labs/VisML_TDA_Lab.ipynb` (TDA, Week 10).
@@ -126,7 +134,7 @@ The repository includes complete course websites as subdirectories:
 - **Schedule**: Mondays 5-7:30PM (Sept 2-Dec 11), Room 473
 - **Status**: Week 11 (NLP and LLMs) COMPLETE ✅
 - **Discord**: https://discord.gg/dyHSFN65
-- **Materials**: week2-intro, week2-infovis, week2-lab, week4-model-assessment, week5-white-box, week6-black-box, week7-deep-learning, week11-nlp
+- **Materials**: week2-intro, week2-infovis, week2-lab, week4-model-assessment, week5-white-box, week6-black-box, week7-deep-learning, week11-nlp  (file names as they were in 2025; the 2026 site uses topic names)
 
 
 
@@ -167,13 +175,13 @@ git commit -m "Add Week 1 slides"
 
 The 2026 sites were copied without rendered output, so each deck needs a
 `quarto render` before its class. Decks with executable `{python}` cells (VisML
-`week4-model-assessment.qmd`) need a Python with Jupyter, which the system Python lacks:
+`model-assessment.qmd`) need a Python with Jupyter, which the system Python lacks:
 `uv venv /tmp/qpy && uv pip install --python /tmp/qpy/bin/python jupyter scikit-learn matplotlib seaborn pandas scipy plotly umap-learn`,
 then `QUARTO_PYTHON=/tmp/qpy/bin/python quarto render <deck>.qmd`. `*.html` / `*_files/` are globally ignored with
 a per-year negation in `.gitignore` — add new course years there or renders stay
 uncommitted.
 
-**Lab decks must be rendered `--to revealjs`.** The VisML lab `.qmd`s under `labs/` declare
+**Lab decks must be rendered `--to revealjs`.** The VisML lab `.qmd`s under `labs/<topic>/lab.qmd` (some, not all) declare
 both `revealjs` and `html` formats; a plain `quarto render` writes both to the same
 `<name>.html` and the html one wins, so the link on the site serves a scrolling page instead of
 slides (and speaker notes become `div.notes`, which reveal ignores). Their Python cells also need

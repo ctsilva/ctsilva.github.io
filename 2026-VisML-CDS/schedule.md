@@ -162,9 +162,10 @@ author_profile: true
 - CNN filter visualization
 
 **Lab Session:**
-- TensorBoard integration
-- Building network diagrams
-- Interactive layer exploration
+- [Deep Learning, Hands-On](/2026-VisML-CDS/labs/deep-learning/lab.html)
+- TensorFlow Playground experiments: hidden layers, activations, learning rate
+- CNN Explainer walkthrough
+- [Writing a Research Paper](/2026-VisML-CDS/labs/paper-writing/lab.html): structure of the final paper, section by section, figures, and BibTeX
 
 **Readings:**
 - Prince, "Understanding Deep Learning" (2023), Chapters 2-4
@@ -183,8 +184,9 @@ author_profile: true
 - Examples of RNN and LLM visualization
 
 **Lab Session:**
-- Building text visualization systems
-- Interactive embedding exploration
+- [Visualization for NLP](/2026-VisML-CDS/labs/nlp-vis/lab.html)
+- Natural language as input and output for visualization (ChartQA, chart-to-text)
+- Open challenges in NLP + Vis
 
 **Readings:**
 - Vaswani et al., "Attention is All You Need" (2017) - **Foundational**
@@ -206,8 +208,8 @@ author_profile: true
 - Applications in biology, chemistry, and machine learning
 
 **Lab Session:**
-- TDA tool integration (GUDHI, scikit-tda, Ripser, KeplerMapper)
-- Interactive topology exploration
+- [Topological Data Analysis](/2026-VisML-CDS/labs/tda/lab.html)
+- The Mapper algorithm and persistent homology, with a worked example in Python
 
 **Readings:**
 - Chazal & Michel, "An Introduction to Topological Data Analysis" (2021) - **Required**
