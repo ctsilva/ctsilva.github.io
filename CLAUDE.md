@@ -96,7 +96,7 @@ The repository includes complete course websites as subdirectories:
   | 6 | Oct 13 | clustering + project-discussion | 65 slightly over (6 clustering slides skippable) | project-proposal (workshop; this is what ran) | 3 ok |
   | 7 | Oct 20 | dimensionality-reduction | 36 (was 21; 14 new slides, all skippable) | dimensionality-reduction (DR in practice; did not run Oct 13) | 48, about 25 core plus a backup block with jump links |
   | 8 | Oct 27 | deep-learning | 32 ok (24 + 8 split-out text slides, laid out 2026-10-26) | deep-learning (new; Playground + CNN Explainer, run by Claudio) + paper-writing (about 25 core min) | 12 + 39 |
-  | 9 | Nov 3 | nlp | 35 ok | nlp-vis | 35 over |
+  | 9 | Nov 3 | nlp | 35 ok | nlp-vis (rebuilt 2026-10-28: Embedding Projector, Transformer Explainer, LIME Colab `lime_text.ipynb`; chart QA survey is a backup block) | 23 core + 33 backup |
   | 10 | Nov 10 | tda | 99 way over | tda (Mapper, persistent homology) | 31 over |
   | 11 | Nov 17 | Time Series — no deck yet | — | — | — |
   | 12 | Nov 24 | Interpretable ML & Fairness — no deck yet | — | — | — |
