@@ -132,11 +132,26 @@ author_profile: true
   - [3D Building Models](https://www.openstreetmap.org/#map=5/38.007/-95.844)
 - **Supplemental Material:** When to use 2D vs 3D, Hybrid visualization approaches, Precomputation for real-time queries
 
-### Week 11 (Nov 13) - Visualizing Time-Oriented Data
-- **Slides:** [Visualizing Time-Oriented Data](/2026-InfoVis-CSE/slides/week11-temporal-data.html) | **Lab:** [Building temporal visualizations, Time series analysis with D3](/2026-InfoVis-CSE/labs/week11-lab.html)
-- **Topics:** Temporal data fundamentals (event vs measurement data), Time structures (sequential, cyclic, hierarchical), Line charts and aspect ratios (Banking to 45°), Multiple time series (spaghetti plots, small multiples), Stacked area charts and limitations, Interaction techniques (semantic vs geometric zoom), Heat maps and calendar visualizations, Periodic patterns (radial layouts, spirals), Horizon charts and sparklines
+### Week 11 (Nov 13) - Clustering and Dimensionality Reduction
+- **Presenter:** Parikshit Solunke
+- **Slides:** [Clustering and Dimensionality Reduction](/2026-InfoVis-CSE/slides/week11-clustering.html) | **Lab:** [Building temporal visualizations, Time series analysis with D3](/2026-InfoVis-CSE/labs/week11-lab.html)
+- **Topics:** Clustering Iris (K-means, DBSCAN, hierarchical clustering, when each fails), Judging a clustering (elbow, silhouette, dendrograms), Visualizing clusterings (cluster colors, clustered heatmaps, silhouette plots), Dimensionality reduction fundamentals, Linear methods (PCA), Non-linear methods (t-SNE, UMAP), Judging a projection (trustworthiness and continuity), Critical visualization principles for high-dimensional data
 - **Lab:** Building temporal visualizations, Time series analysis with D3
 - **Assignment:** Exercise 11 - Temporal data visualization (due Nov 19)
+- **Required Readings:**
+  - van der Maaten & Hinton (2008) - [Visualizing Data using t-SNE](https://jmlr.org/papers/v9/vandermaaten08a.html) - JMLR
+  - Wattenberg et al. (2016) - [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) - Distill
+- **Recommended Resources:**
+  - Bernard - [Introduction to Machine Learning: Clustering](https://www.wolfram.com/language/introduction-machine-learning/clustering/) - Wolfram
+  - [Understanding UMAP](https://pair-code.github.io/understanding-umap/) - Google PAIR
+  - [PCA Explained Visually](https://setosa.io/ev/principal-component-analysis/)
+- **Supplemental Material:** Curse of dimensionality, Cluster validation metrics, Choosing perplexity parameters
+
+### Week 12 (Nov 20) - Visualizing Time-Oriented Data
+- **Slides:** [Visualizing Time-Oriented Data](/2026-InfoVis-CSE/slides/week11-temporal-data.html) | **Lab:** [Dimensionality Reduction with D3](/2026-InfoVis-CSE/labs/week12-lab.html)
+- **Topics:** Temporal data fundamentals (event vs measurement data), Time structures (sequential, cyclic, hierarchical), Line charts and aspect ratios (Banking to 45°), Multiple time series (spaghetti plots, small multiples), Stacked area charts and limitations, Interaction techniques (semantic vs geometric zoom), Heat maps and calendar visualizations, Periodic patterns (radial layouts, spirals), Horizon charts and sparklines
+- **Lab:** Implementing PCA and t-SNE visualizations with D3
+- **Assignment:** Exercise 12 - Clustering and dimensionality reduction visualization (due Dec 3)
 - **Required Readings:**
   - Cleveland et al. (1988) - [The Shape Parameter of a Two-Variable Graph](https://doi.org/10.1080/01621459.1988.10478613) - JASA
   - Heer et al. (2009) - [Sizing the Horizon: Chart Size and Layering Effects](https://doi.org/10.1145/1518701.1518897) - CHI
@@ -145,19 +160,6 @@ author_profile: true
   - [D3 Time Scales Documentation](https://github.com/d3/d3-scale#time-scales)
   - Weber et al. (2001) - [Visualizing Time-Series on Spirals](https://doi.org/10.1109/INFVIS.2001.963273) - IEEE InfoVis
 - **Supplemental Material:** Aggregation trade-offs, Baseline bias in stacked charts, When to use radial vs linear layouts
-
-### Week 12 (Nov 20) - Clustering and Dimensionality Reduction
-- **Slides:** [Clustering and Dimensionality Reduction](/2026-InfoVis-CSE/slides/week12-clustering-dimreduction.html) | **Lab:** [Dimensionality Reduction with D3](/2026-InfoVis-CSE/labs/week12-lab.html)
-- **Topics:** Clustering visualization (K-means, hierarchical clustering, comparing methods), Dimensionality reduction fundamentals, Linear methods (PCA), Non-linear methods (t-SNE, UMAP), Critical visualization principles for high-dimensional data
-- **Lab:** Implementing PCA and t-SNE visualizations with D3
-- **Assignment:** Exercise 12 - Clustering and dimensionality reduction visualization (due Dec 3)
-- **Required Readings:**
-  - van der Maaten & Hinton (2008) - [Visualizing Data using t-SNE](https://jmlr.org/papers/v9/vandermaaten08a.html) - JMLR
-  - Wattenberg et al. (2016) - [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) - Distill
-- **Recommended Resources:**
-  - [Understanding UMAP](https://pair-code.github.io/understanding-umap/) - Google PAIR
-  - [PCA Explained Visually](https://setosa.io/ev/principal-component-analysis/)
-- **Supplemental Material:** Curse of dimensionality, Cluster validation metrics, Choosing perplexity parameters
 
 ### No Class (Nov 27) - Thanksgiving Recess
 

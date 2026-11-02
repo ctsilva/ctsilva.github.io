@@ -1,0 +1,2301 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week11-clustering_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week11-clustering_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week11-clustering_files/libs/quarto-html/popper.min.js"></script>
+<script src="week11-clustering_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week11-clustering_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week11-clustering_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week11-clustering_files/libs/quarto-html/quarto-syntax-highlighting-17888a1159294d3eb470f19f6f52f5a5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.20">
+
+  <meta name="author" content="Parikshit Solunke">
+  <meta name="dcterms.date" content="2026-11-13">
+  <title>Clustering and Dimensionality Reduction</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="week11-clustering_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week11-clustering_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="week11-clustering_files/libs/revealjs/dist/theme/quarto-90ad8e8d08c7c4903b28606a32a1c842.css">
+  <link href="week11-clustering_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week11-clustering_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week11-clustering_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week11-clustering_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Clustering and Dimensionality Reduction</h1>
+  <p class="subtitle">CS-GY 6313 - Fall 2026 - Instructor: Claudio Silva</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Parikshit Solunke
+</div>
+</div>
+</div>
+
+  <p class="date">2026-11-13</p>
+</section>
+<section class="slide level2">
+
+<style>
+.reveal pre { font-size: 0.72em; }
+.reveal .cell-output pre { font-size: 0.9em; }
+</style>
+</section>
+<section class="slide level2">
+<h2>Agenda</h2>
+<ol type="1">
+<li class="fragment"><strong>What is clustering, and why does a visualization class care?</strong></li>
+<li class="fragment"><strong>Clustering Iris:</strong> k-means, other methods, when each fails</li>
+<li class="fragment"><strong>Judging a clustering:</strong> against labels, choosing <em>k</em>, the dendrogram</li>
+<li class="fragment"><strong>Seeing a clustering:</strong> cluster colors, clustered heatmaps, silhouette plots</li>
+<li class="fragment"><strong>Pitfalls</strong> and a checklist</li>
+<li class="fragment"><strong>Dimensionality reduction:</strong> why, PCA, t-SNE, UMAP, and how to tell whether a projection can be trusted</li>
+</ol>
+<aside class="notes">
+<p>Plan for today: clustering is the first 24 slides and about 60 minutes (25 on the idea and methods, 15 on judging a clustering, 20 on visualizing one); dimensionality reduction is the remaining slides and about 60 to 70 minutes. The slides marked SKIPPABLE in these notes can go if you run long. If you have to cut one half to protect the other, cut the t-SNE and UMAP parameter demos before cutting the section on how to judge a projection.</p>
+<p>Why clustering in an Information Visualization course? A visualization of thousands of items fails when you can’t see individual marks. Clustering is one answer: group the items, then show the groups. We’ve met that idea already in this course: aggregation in the taxi data, binning in maps, small multiples. What’s new today is that the grouping is computed from the data rather than imposed, which means the grouping can be wrong, and the picture is how we find out.</p>
+<p>This deck is adapted from the clustering half of the VisML course, with the machine-learning emphasis replaced by a visualization emphasis. The second half of the lecture covers dimensionality reduction (PCA, t-SNE, UMAP), taken from the same course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Why does a visualization class care about clustering?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Clustering as a tool for visualization</strong></p>
+<ul>
+<li>Too many items to draw: show groups, not points</li>
+<li>Ordering rows and columns of a matrix or heatmap</li>
+<li>Coloring a scatterplot or map by group</li>
+<li>Summarizing a time series or trip collection by pattern</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Visualization as a tool for clustering</strong></p>
+<ul>
+<li>Is there structure at all?</li>
+<li>How many groups, and how clean are the boundaries?</li>
+<li>Did the algorithm find what I think it found?</li>
+<li>Where are the points that don’t fit?</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Two directions, and today covers both.</p>
+<p>Left: clustering helps visualization. Examples you have seen in this course: aggregating taxi trips into origin-destination flows (Week 9), classing values on a choropleth (Week 8, which is one-dimensional clustering: equal interval, quantile and natural breaks are clustering rules). Natural breaks is literally k-means in one dimension (Jenks is the exact version).</p>
+<p>Right: visualization helps clustering. There is no ground truth in unsupervised work, so a clustering is a claim that needs checking, and the checking is usually visual. Every slide today ends up being about one of these two directions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Clustering</h2>
+<p><strong>Etienne Bernard: “… the goal of clustering is to separate a set of examples into groups called clusters”</strong></p>
+
+<img data-src="figs/iris.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Bernard, E. (2021). <a href="https://www.wolfram.com/language/introduction-machine-learning/clustering/"><em>Introduction to Machine Learning</em></a>, ch.&nbsp;Clustering. Wolfram Media.</p>
+</div>
+<aside class="notes">
+<p>Clustering is the canonical unsupervised task: there are no labels to fit, only the data. The definition is deliberately loose, “separate examples into groups”, because what counts as a good group depends on the application. That looseness is the theme of the whole first half.</p>
+<p>The figure is from Etienne Bernard’s book, which is the required reading. It shows Fisher’s Iris data: 150 specimens, four measurements each (sepal length and width, petal length and width), plus the species. Note that the species column is there. Today we’ll pretend we can’t see it, cluster on the measurements alone, and then use the species to grade the result. That pattern of clustering blind and then validating against held-out labels is how clustering methods are evaluated in papers.</p>
+<p>Uses worth naming: customer segmentation, grouping documents or images, finding cell types in single-cell RNA data, and anomaly detection (points that don’t fit any cluster). In urban data, you cluster trips, sensors or neighborhoods by their temporal profile to find typical patterns and outliers. That is a good template for a project: cluster something, then use visualization to check and explain what each group has in common.</p>
+<p>Ask: has anyone run k-means on real data, and how did you choose k? Keep the answer in mind; it comes back in a few slides.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a><span class="co"># Code source: Gaël Varoquaux</span></span>
+<span id="cb1-2"><a href="" aria-label="2"></a><span class="co"># Modified for documentation by Jaques Grobler</span></span>
+<span id="cb1-3"><a href="" aria-label="3"></a><span class="co"># License: BSD 3 clause</span></span>
+<span id="cb1-4"><a href="" aria-label="4"></a><span class="co">#</span></span>
+<span id="cb1-5"><a href="" aria-label="5"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="" aria-label="6"></a></span>
+<span id="cb1-7"><a href="" aria-label="7"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb1-8"><a href="" aria-label="8"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb1-9"><a href="" aria-label="9"></a></span>
+<span id="cb1-10"><a href="" aria-label="10"></a>_, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb1-11"><a href="" aria-label="11"></a>scatter <span class="op">=</span> ax.scatter(iris.data[:, <span class="dv">2</span>], iris.data[:, <span class="dv">1</span>])</span>
+<span id="cb1-12"><a href="" aria-label="12"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span>iris.feature_names[<span class="dv">2</span>], ylabel<span class="op">=</span>iris.feature_names[<span class="dv">1</span>])</span>
+<span id="cb1-13"><a href="" aria-label="13"></a>_ <span class="op">=</span> ax.legend(</span>
+<span id="cb1-14"><a href="" aria-label="14"></a>    scatter.legend_elements()[<span class="dv">0</span>], iris.target_names, loc<span class="op">=</span><span class="st">"lower right"</span>, title<span class="op">=</span><span class="st">"Classes"</span></span>
+<span id="cb1-15"><a href="" aria-label="15"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>This is the scikit-learn gallery example, lightly modified. Iris has 4 features and 3 species classes. We plot two of them: column 2, petal length, on x, and column 1, sepal width, on y. These are the same two axes Bernard uses, so our plots line up with the figures from the book on the next slides.</p>
+<p>Point out what’s missing: the scatter call has no <code>c=</code> argument, so every point gets the same color. We’re deliberately looking at the data the way a clustering algorithm sees it. (The legend call is left over from the labeled version of the example; on the next slide it draws nothing useful, so the rendered plot omits it.)</p>
+<p><code>datasets.load_iris()</code> returns a Bunch with <code>.data</code> (150x4), <code>.target</code> (0/1/2) and <code>.feature_names</code>. The same loader pattern works for digits later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS</h2>
+<div id="31f7acf8" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="1497" height="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This is the unlabeled view: petal length on x, sepal width on y, every point the same gray.</p>
+<p>Ask the room: how many groups do you see? Most people say two: a tight blob on the left (petal length under 2 cm) and an elongated cloud on the right. Some say three. Take a quick show of hands, because it sets up the punchline. The honest answer from this picture alone is two. A third group, if there is one, lives inside the right-hand cloud without a visible gap.</p>
+<p>This is a 2-D projection of 4-D data, so a gap could exist in the other two dimensions that this view hides. That is a preview of the dimensionality reduction lecture: what you can see depends on the projection you choose.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS – another look</h2>
+<div id="be6fa32b" class="cell" data-fig-height="6" data-fig-width="9" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-5-output-1.png" class="quarto-figure quarto-figure-center" width="1289" height="839"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Now reveal the species. Setosa (blue) is the isolated blob on the left, with all 50 points below 2 cm petal length. Versicolor (red) and virginica (green) together make up the right-hand cloud. They’re ordered along petal length (versicolor shorter, virginica longer), but they meet around 4.5 to 5 cm with no gap.</p>
+<p>This plot explains every result in the next few slides:</p>
+<ul>
+<li>Any reasonable method finds setosa perfectly.</li>
+<li>No method separates versicolor from virginica perfectly using geometry alone, because the species boundary isn’t a density gap.</li>
+<li>Whether the “right” answer is 2 or 3 clusters depends on whether you’re asking about geometry or botany.</li>
+</ul>
+<p>Make the general point: a clustering algorithm optimizes a geometric criterion. Labels encode a different notion of similarity. When the two disagree, the algorithm isn’t wrong; it’s answering a different question.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS – clustering</h2>
+
+<img data-src="figs/iris-bernard-clustering.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>This is Wolfram’s FindClusters run fully automatically, with no number of clusters given. It returns two clusters of 49 and 101 points. So the automatic method agrees with the show of hands, not with the species count.</p>
+<p>Why 49 and not 50: one point the method grouped with the big cluster. You can’t tell which from this 2-D view, a reminder that the method works in all four dimensions. Automatic methods pick k by optimizing an internal score. We’ll compute one such score, the silhouette, in a few slides and find it also prefers k=2 on these features.</p>
+<p>The lesson: “find the clusters” is under-specified. Without telling the algorithm how many clusters you expect, or what similarity means, it falls back on the strongest geometric signal, which here is setosa vs everything else.</p>
+<p>Transition: next slide, we tell it to find three.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS – k-means</h2>
+
+<img data-src="figs/iris-bernard-clustering-kmeans.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Now we guide it with three choices, and the text above the code names them: the number of clusters (3), the method (k-means), and the preprocessing (automatic standardization turned off with FeatureExtractor -&gt; “Minimal”).</p>
+<p>The result: setosa is still its own cluster (blue circles). The right-hand cloud gets cut into two pieces, orange triangles and green diamonds, by what’s essentially a vertical line around petal length 5. That cut is k-means’ signature. Each point goes to its nearest centroid, so boundaries between clusters are straight lines (the Voronoi diagram of the centroids). The cut sits roughly where the species overlap, but some of the true virginica with petal length under 5 end up in the orange cluster.</p>
+<p>Why the preprocessing matters: k-means uses Euclidean distance, so features with larger ranges dominate. Standardizing changes the answer. On the validation slide we’ll see that standardizing Iris actually makes agreement with the species worse.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>K-means in four lines</h2>
+<ol type="1">
+<li>Pick <em>k</em> starting centroids (k-means++ spreads them out)</li>
+<li>Assign each point to its nearest centroid</li>
+<li>Move each centroid to the mean of its assigned points</li>
+<li>Repeat 2–3 until assignments stop changing</li>
+</ol>
+<p><strong>Objective:</strong> minimize within-cluster sum of squares <span class="math inline">\(\;\sum_{c=1}^{k} \sum_{x \in C_c} \lVert x - \mu_c \rVert^2\)</span></p>
+<p><strong>Built-in assumptions:</strong> <em>k</em> is known · clusters are convex and roughly spherical · similar sizes · feature scale is meaningful</p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Wolfram Mathematica FindClusters”.</p>
+<p>This is Lloyd’s algorithm. Each step can only lower the objective: assignment picks the nearest centroid, and the mean is the point that minimizes squared distance to a set. So it always converges, but only to a local minimum. That’s why scikit-learn runs it several times from different starts (<code>n_init</code>) and keeps the best, and why k-means++ seeding (pick each new centroid with probability proportional to squared distance from the existing ones) matters.</p>
+<p>Walk through the assumptions slowly, because each produces a failure you can see in a plot:</p>
+<ul>
+<li><strong>k is known:</strong> you have to supply it. Choosing it is its own problem (a later slide).</li>
+<li><strong>Convex, spherical clusters:</strong> nearest-centroid boundaries are straight lines, so k-means can’t follow a curved cluster. Two moons, coming up, is the classic counterexample.</li>
+<li><strong>Similar sizes:</strong> a large cluster next to a small one gets its edge stolen, because the boundary sits halfway between centroids.</li>
+<li><strong>Feature scale:</strong> distance is Euclidean, so a feature measured in millimeters outvotes one measured in meters.</li>
+</ul>
+<p>Cost is O(n·k·d) per iteration, which is why k-means is the default for large data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Wolfram Mathematica FindClusters</h2>
+
+<img data-src="figs/findclusters-methods.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>FindClusters exposes ten methods besides Automatic. Group them by what they assume a cluster is:</p>
+<ul>
+<li><strong>Centroid-based:</strong> KMeans and KMedoids. A cluster is a ball around a center. KMedoids uses actual data points as centers, so it’s more robust to outliers.</li>
+<li><strong>Density-based:</strong> DBSCAN, MeanShift and NeighborhoodContraction. A cluster is a dense region, and sparse regions separate clusters. DBSCAN also labels points in sparse regions as noise rather than forcing them into a cluster.</li>
+<li><strong>Graph or connectivity-based:</strong> Agglomerate (single linkage), SpanningTree, JarvisPatrick and Spectral. A cluster is a set of points connected by short links. These can follow arbitrary shapes.</li>
+<li><strong>Model-based:</strong> GaussianMixture. A cluster is a probability distribution, so points get soft memberships.</li>
+</ul>
+<p>The method is the definition of a cluster. Choosing a method is choosing what “belongs together” means, which is why the next slide matters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Wolfram Mathematica FindClusters</h2>
+
+<img data-src="figs/findclusters-methods-examples.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Eight methods (columns) on five toy datasets (rows). Read it by row:</p>
+<ul>
+<li><strong>Row 1 (three well-separated blobs):</strong> every method agrees. When structure is obvious, the method doesn’t matter.</li>
+<li><strong>Row 2 (a sparse blob, a small dense blob, a big dense blob):</strong> most methods get three groups. KMeans and KMedoids give the right edge of the sparse blob to the small one, because the boundary sits halfway between centers. DBSCAN does something different: one eps can’t fit both densities, so it merges the sparse and small blobs and calls the fringe noise (gray).</li>
+<li><strong>Row 3 (three parallel strips):</strong> KMeans and KMedoids slice strips across their length. Spectral splits the middle strip into four groups in total. DBSCAN finds the three strips but drops their sparse ends as noise.</li>
+<li><strong>Row 4 (two moons):</strong> KMeans, KMedoids and MeanShift cut each moon in half. DBSCAN, Spectral, JarvisPatrick and Agglomerate follow the curves.</li>
+<li><strong>Row 5 (ring around a disk):</strong> the hardest case. Only DBSCAN, Spectral and JarvisPatrick get it. KMeans and KMedoids cut it in half. SpanningTree and MeanShift break the outer ring into several pieces. Agglomerate (single linkage) also fails here: it splits the ring and joins half of it to the disk, presumably because a few noisy points bridge the gap. Single linkage is the method that’s supposed to follow rings, which shows how fragile chaining is.</li>
+</ul>
+<p>Takeaway: no column is perfect on every row. The right method depends on the shape of the structure you expect, and you usually find that out by looking at the data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>When k-means fails: shape, not count</h2>
+<div id="3c11e852" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-6-output-1.png" class="quarto-figure quarto-figure-center" width="1594" height="471"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Right number of clusters, wrong definition of a cluster.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “IRIS - classes”.</p>
+<p>These are live scikit-learn results on the two-moons dataset (400 points). This reproduces row 4 of the Wolfram grid, with a score attached.</p>
+<p>Left: k-means is given the correct k=2 and still fails. It draws a straight boundary and cuts each moon in half. Its adjusted Rand index (ARI) against the true moons is 0.27, where 1 is perfect agreement and 0 is chance level.</p>
+<p>Right: DBSCAN gets ARI 1.00. It has no k at all. It has two parameters: <code>eps</code>, the neighborhood radius, and <code>min_samples</code>, how many neighbors make a point a “core” point. Clusters are chains of core points within eps of each other, so they can bend.</p>
+<p>DBSCAN’s weakness: eps. On this data, eps of 0.15, 0.2 or 0.25 all give the perfect answer, but at 0.3 the moons touch and DBSCAN returns one cluster (ARI 0). One global eps also struggles when clusters have different densities, which is what HDBSCAN fixes.</p>
+<p>Ask: what’s the k-means equivalent of eps? (It’s k. Every method has a knob that decides how many clusters you get. The question is whether the knob is meaningful for your data.)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>IRIS - classes</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="8ea7de8b" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-7-output-1.png" width="864" height="711"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/iris-bernard-clustering-kmeans-crop.jpg" style="width:100.0%"></p>
+</div></div>
+<aside class="notes">
+<p>Side by side: true species on the left (from scikit-learn, same axes), Wolfram’s k-means with k=3 on the right. Point at the same regions in both:</p>
+<ul>
+<li>Setosa (blue on the left) maps exactly to cluster 1. Perfect.</li>
+<li>On the right, the boundary between clusters 2 and 3 is close to vertical at petal length around 5. On the left, the versicolor/virginica boundary is diagonal and interleaved. Virginica with short petals (green points left of x=5) become cluster 2.</li>
+<li>Cluster colors and species colors don’t correspond. Cluster IDs are arbitrary, so “cluster 2” means nothing until you match it to a class. Any score comparing clusters to labels has to be invariant to relabeling (next slide).</li>
+</ul>
+<p>Remember this comparison is a teaching device. In real unsupervised work there’s no left panel. You only get the right one and have to decide whether to trust it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Validating clusters against labels</h2>
+<div id="ebfca3bf" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-8-output-1.png" class="quarto-figure quarto-figure-center" width="1637" height="691"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Cluster IDs are arbitrary”.</p>
+<p>When you have labels for a sample, this is how you grade a clustering. These are live results.</p>
+<p>Left, the confusion matrix (species x cluster, columns reordered so matches sit on the diagonal): all 50 setosa in one cluster, 48 of 50 versicolor in the next, 41 of 50 virginica in the last. So 11 of 150 points disagree, all at the versicolor/virginica border we saw.</p>
+<p>Right, the adjusted Rand index (ARI). It asks: for every pair of points, do the clustering and the labels agree on whether the pair is together? It ignores cluster numbering and is corrected for chance, so random labels score about 0. Results:</p>
+<ul>
+<li><strong>k-means on 2 features:</strong> 0.80, the best.</li>
+<li><strong>All 4 features:</strong> 0.73, worse.</li>
+<li><strong>4 standardized features:</strong> 0.62, worse still. More information and “proper” preprocessing both hurt.</li>
+<li><strong>Ward / average linkage:</strong> 0.73 / 0.76.</li>
+<li><strong>Single linkage:</strong> 0.56. It chains: two of its three clusters hold 98 and 50 points, and the third holds just 2.</li>
+</ul>
+<p>Why standardizing hurts: sepal width barely differs between species but has its own spread. Standardizing gives it as much say as petal length, which is the discriminative feature. Preprocessing is a modeling decision, not a formality.</p>
+<p>When you have no labels, use internal scores instead (silhouette, next slide). These measure compactness and separation, not truth.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How many clusters? Two criteria, two answers</h2>
+<div id="c8f9a2eb" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-9-output-1.png" class="quarto-figure quarto-figure-center" width="1594" height="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>The elbow says 3, the silhouette says 2, the botanist says 3.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Cluster IDs are arbitrary”.</p>
+<p>Both panels use k-means on the same two Iris features, for k from 2 to 7.</p>
+<p><strong>Elbow (left):</strong> within-cluster sum of squares always falls as k grows, so you look for where the drop flattens. Here it’s 86, then 41, then 27.5, then a slow decline. The bend is at k=3. The elbow is a judgment call: on many real datasets there’s no clear bend.</p>
+<p><strong>Silhouette (right):</strong> for each point, compare a (mean distance to its own cluster) with b (mean distance to the nearest other cluster). The score is (b-a)/max(a,b), from -1 to 1. The average peaks at k=2 (0.74) and falls to 0.59 at k=3. Silhouette prefers k=2 because setosa vs the rest is a clean, wide gap, and splitting the right-hand cloud creates a boundary with no gap.</p>
+<p>This is the same answer the automatic FindClusters gave (two clusters, 49 and 101). Internal criteria measure geometry, and geometrically Iris has two clusters. Three species is a fact about biology that isn’t fully written in these measurements.</p>
+<p>For your projects: report which criterion you used, and show the curve, not just the chosen k. If two reasonable criteria disagree, say so. That’s a finding, not a failure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Hierarchical clustering: the dendrogram</h2>
+<div id="0e9041d1" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-10-output-1.png" class="quarto-figure quarto-figure-center" width="1642" height="691"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>One tree, every k: the cut height is the choice.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Cluster IDs are arbitrary”.</p>
+<p>Agglomerative clustering starts with every point as its own cluster and repeatedly merges the two closest clusters. The dendrogram records every merge: the height of each horizontal bar is the distance at which the merge happened. Live result, Ward linkage on all four Iris features. To keep it readable we show only the last 30 merges; a leaf label like “(12)” means 12 points collapsed into that branch.</p>
+<p>How to read it:</p>
+<ul>
+<li>A horizontal cut gives a flat clustering. The dashed line gives 3 clusters. Cut higher and you get 2.</li>
+<li><strong>Long vertical gaps mean real structure.</strong> The tallest gap is the last merge, setosa joining everything else. Again that’s the “2 clusters” story, now visible as a height.</li>
+<li>The difference between “Agglomerate” in Wolfram (single linkage) and Ward is the linkage rule, meaning how cluster-to-cluster distance is defined:
+<ul>
+<li><strong>Single:</strong> closest pair. It follows chains, which lets it trace the moons in the Wolfram grid but also makes it fragile: a few bridging points merged ring and disk there, and on Iris it produced a 98/50/2 split.</li>
+<li><strong>Complete:</strong> farthest pair.</li>
+<li><strong>Average:</strong> mean of all pairs.</li>
+<li><strong>Ward:</strong> smallest increase in within-cluster variance. Ward behaves most like k-means.</li>
+</ul></li>
+</ul>
+<p>Why visualization people like dendrograms: they show structure at all scales at once instead of committing to one k. They sit on the margins of clustered heatmaps everywhere in genomics. Cost is the catch: naive agglomerative clustering is O(n²) memory, so it doesn’t scale like k-means.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Cluster IDs are arbitrary: the colors mean nothing</h2>
+<div id="6c920c33" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-11-output-1.png" class="quarto-figure quarto-figure-center" width="1593" height="595"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Same partition, different picture. Colors should not suggest an order or a meaning the clusters don’t have.</strong></p>
+<aside class="notes">
+<p>Both panels are the identical k-means partition. Only the label numbers, and therefore the colors, changed. Run k-means twice with different seeds and you can get this: the groups are the same but “cluster 0” is now “cluster 2”.</p>
+<p>Visualization consequences, which connect to the color lecture in Week 5:</p>
+<ul>
+<li>Use a <strong>categorical</strong> palette, never a sequential one. A sequential ramp on cluster IDs invents an order (cluster 2 is “more” than cluster 1) that doesn’t exist.</li>
+<li>Keep at most about 7 colors. Past that, people can’t match marks to the legend. If you have 30 clusters, color won’t carry it; use small multiples, labels, or a hierarchy.</li>
+<li>If you compare two clusterings, or a clustering over time, match the clusters first (for example by overlap) and keep a color tied to a group, not to an ID. Otherwise the viewer sees change that isn’t there.</li>
+<li>Don’t rely on the viewer checking agreement by eye with colors that change between panels. Where possible, use a confusion matrix, which we show next.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Seeing the whole tree: clustered heatmap</h2>
+<div id="40103b41" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-12-output-1.png" class="quarto-figure quarto-figure-center" width="1501" height="690"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Rows are flowers, columns are measurements, the tree reorders the rows. The side bar is the species, held out.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE.</p>
+<p>This is the visualization most associated with hierarchical clustering: a heatmap whose rows are ordered by the dendrogram. Here 150 flowers by 4 measurements (z-scored per column so the color scale is comparable, diverging blue to red), rows clustered with Ward linkage. The thin bar next to the tree gives the true species, which the clustering never saw.</p>
+<p>How to read it:</p>
+<ul>
+<li>Blocks of similar color are clusters. Setosa forms one block (low petal length and width, high sepal width), and the species bar beside it is solid blue: essentially a perfect group. Cutting the tree at three clusters, 49 of the 50 setosa land together.</li>
+<li>The other two blocks are where the species mix. On these standardized features, versicolor is split (27 in one cluster, 23 in the other) and 48 of the 50 virginica sit together. The bar shows red and green mixed across the boundary, the same overlap region we saw in the scatterplot. Note this differs from the 2-feature k-means result earlier, another sign that features and method both matter.</li>
+<li>The heatmap shows something the scatterplot can’t: all four dimensions at once. The cost is that you compare colors, which is a weak visual channel (Week 4), so use it for patterns, not exact values.</li>
+</ul>
+<p>Where this is used: gene-expression heatmaps, correlation matrices, user-by-item matrices. In any of them, the row order is a clustering result, so a different linkage gives a different picture. Treat the ordering as one of many valid ones; the leaves of a dendrogram can be flipped at every node without changing the tree.</p>
+<p>Note we turned off column clustering, since four named measurements have a natural order. With hundreds of columns you’d cluster both axes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Per-point quality: the silhouette plot</h2>
+<div id="37ada650" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-13-output-1.png" class="quarto-figure quarto-figure-center" width="1586" height="653"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>One bar per point, grouped by cluster. Thin or negative bars are points that may be in the wrong place.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE.</p>
+<p>The silhouette score from the “how many clusters” slide is an average. Averages hide structure, so here’s the same quantity as one horizontal bar per point, grouped by cluster, sorted within each cluster. Dashed line is the mean. Cluster sizes sit on the left of each block.</p>
+<p>How to read it: a bar near 1 means the point is much closer to its own cluster than to the next one. Near 0 means it sits on a boundary. Negative means it’s closer to another cluster, so it is probably misassigned.</p>
+<p>Compare the panels. At k=2 both blocks are long and fairly uniform: two clean groups. At k=3 the setosa block is unchanged (mean 0.83, no point below 0.6), but the two blocks that split the right-hand cloud (57 and 43 points) have means of only about 0.47 and 0.48, and their weakest points are close to zero. No bar is actually negative here, which is itself worth saying: the points are ambiguous, not misassigned. That’s the visual form of “the mean silhouette dropped from 0.74 to 0.59”. The plot also tells you where the problem is: it’s confined to the two clusters that share a boundary, not the whole dataset.</p>
+<p>This is a good example of a general design move: replace a single summary number with a small display that shows its distribution. Anscombe’s quartet argument, applied to a clustering metric.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Pitfalls checklist</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>About the algorithm</strong></p>
+<ul>
+<li>Every method returns clusters, even on noise</li>
+<li><em>k</em> is your choice unless the method is density-based</li>
+<li>Preprocessing (scaling, features) can change the answer more than the method</li>
+<li>Results can depend on random starts: run several, report stability</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>About the picture</strong></p>
+<ul>
+<li>A 2-D projection can hide or invent separation</li>
+<li>Cluster IDs and colors are arbitrary</li>
+<li>Show the ambiguous points, not just the centers</li>
+<li>Report the criterion you used to pick <em>k</em>, and show its curve</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Use this as the summary slide and tie each bullet back to a slide.</p>
+<p>“Every method returns clusters, even on noise”: run k-means on uniform random points and you get a clean-looking partition. A colored scatterplot of that looks as convincing as the Iris one. The defense is to ask what the clusters are for, check stability across seeds and subsamples, and look at a measure like the silhouette distribution.</p>
+<p>“Preprocessing”: the Iris validation slide, where standardizing the four measurements made agreement with the species worse (ARI 0.73 to 0.62).</p>
+<p>“A 2-D projection can hide or invent separation”: the two Iris scatterplots use only two of the four measurements. Next lecture on dimensionality reduction takes this up directly, and the t-SNE warnings there (cluster sizes and distances between clusters don’t mean much) are the same issue at higher stakes.</p>
+<p>“Show the ambiguous points”: the silhouette plot and the confusion matrix both do this. Color a scatterplot by cluster and the boundary points look as certain as the core ones. Encoding membership strength (for example with lower opacity, or the silhouette value) is a cheap way to keep the uncertainty visible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Part 2: Dimensionality reduction</h2>
+<p>Clustering asked <em>which points belong together</em>.</p>
+<p>Dimensionality reduction asks <em>how do we draw 64 numbers per item on a 2-D screen</em>, and it is the tool behind most cluster pictures you will meet.</p>
+<aside class="notes">
+<p>Bridge. Everything in the clustering half used two measurements picked by hand. With real data there may be dozens or thousands of dimensions, and the usual move is to project to 2-D and then color by cluster. That projection can distort exactly what we just learned to judge, so we spend the second half on how projections work and where they mislead.</p>
+<p>Handwritten digits replace Iris from here on: 1,797 8x8 images, so 64 dimensions per image.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Dimensionality Reduction</h2>
+<ul>
+<li><p>Input data may have thousands or millions of dimensions!</p></li>
+<li><p><strong>Dimensionality Reduction</strong> represents data with fewer dimensions</p>
+<ul>
+<li>easier learning – fewer parameters</li>
+<li>visualization – show high-dimensional data in 2D or 3D</li>
+<li>discover “intrinsic dimensionality” of the data</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Second half. Clustering compressed each point to one number, its cluster ID. Dimensionality reduction compresses each point to a few continuous coordinates, keeping as much of the structure as possible.</p>
+<p>Examples of “thousands or millions of dimensions”: a 256x256 grayscale image is 65,536 numbers; a bag-of-words document has one dimension per vocabulary word; a transformer’s hidden state has 768 to 4,096 per token. Every embedding we’ll look at later in the course needs DR before anyone can see it.</p>
+<p>Three motivations on the slide:</p>
+<ul>
+<li><strong>Easier learning:</strong> fewer inputs mean fewer parameters, less overfitting, and less trouble from the curse of dimensionality (distances concentrate in high dimensions, so “nearest” becomes less meaningful).</li>
+<li><strong>Visualization:</strong> the reason this course cares. Screens are 2-D.</li>
+<li><strong>Intrinsic dimensionality:</strong> how many numbers you actually need, as opposed to how many you were given. That’s the next two slides.</li>
+</ul>
+<p>Bridge back to clustering: people often cluster in a reduced space, or color a 2-D projection by cluster. The two tools are used together constantly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Dimensionality Reduction</h2>
+<p><strong>Assumption: data lies on a lower dimensional space</strong></p>
+
+<img data-src="figs/dm-data-is-low-dimensional.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Slides based on material from Prof.&nbsp;Yi Zhang</p>
+</div>
+<aside class="notes">
+<p>Two cartoons of the assumption. Left: points in 2-D (n=2) that hug a line, so one coordinate (k=1), position along the line, describes them almost completely. The scatter perpendicular to the line is small. Right: points in 3-D (n=3) lying close to a tilted plane, so two coordinates (k=2) suffice.</p>
+<p>In both cases the low-dimensional structure is flat (a line, a plane), which is exactly the case PCA handles. Notation on the figure: n is the ambient dimension and k the intrinsic one. On later slides d is the ambient dimension and n the number of points, so warn students about the switch.</p>
+<p>The general version is the manifold hypothesis: real high-dimensional data (faces, digits, speech) concentrates near a low-dimensional surface. Faces make it intuitive. A 100x100 image has 10,000 pixels, but faces vary along far fewer factors: identity, pose, expression, lighting. Random pixel vectors almost never look like a face, so faces occupy a thin sliver of pixel space.</p>
+<p>Ask: which of the two pictures can be “unrolled” by a projection? Both, because they’re flat. The next slide is a case that isn’t.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Visualizing the Manifold Hypothesis: Images of ‘3’ Perturbed by Non-linear Operations</h2>
+
+<img data-src="figs/perturbed-3.jpg" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li><p>What operations did we perform? What’s the intrinsic dimensionality?</p></li>
+<li><p>Here the underlying <strong>manifold</strong> is <strong>non-linear</strong></p></li>
+</ul>
+<div class="footer">
+<p>Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning</em>, §12.1. Springer.</p>
+</div>
+<aside class="notes">
+<p>This example is from Bishop, chapter 12. Bishop takes one handwritten 3 (a 64x64 image), embeds it in a larger 100x100 canvas, and varies its position and orientation at random.</p>
+<p>Ask the two questions on the slide before answering:</p>
+<ol type="1">
+<li>What operations? Horizontal translation, vertical translation, and rotation. Look at the five images: the 3 moves around and tilts, but its shape doesn’t change. No scaling, no deformation.</li>
+<li>Intrinsic dimensionality? Three: x-shift, y-shift and angle. Each image is a point in a space with 10,000 pixel dimensions, yet the whole collection is a 3-dimensional manifold inside it. (Bishop also notes real digit data adds noise and writing-style variation, so in practice it’s near a manifold, not exactly on one.)</li>
+</ol>
+<p>Why non-linear: shift the 3 by one pixel and a completely different set of pixels lights up. Moving along the “translate” direction traces a curved path through pixel space, not a straight line. Averaging two shifted 3s gives a blurry double 3, not a 3 at the midpoint. That’s the signature of a curved manifold: the straight line between two valid points leaves the manifold.</p>
+<p>So linear methods like PCA can only approximate this, and we’ll need methods that follow curvature, which is what t-SNE and UMAP do. (LLE, Locally Linear Embedding, is an older method of this kind; it appears later only as a comparison point. It rebuilds each point from its neighbors and keeps those weights in 2-D.)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis: intuition</h2>
+
+<img data-src="figs/pca-intuition.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Back to the correlated cloud, in the original axes x₁ and x₂. The dashed box marks the spread along each axis: the variances cov(x₁,x₁) and cov(x₂,x₂) are both large. On the right, the covariance matrix XXᵀ has an off-diagonal entry that the arrow labels “not zero”, because the two attributes are correlated.</p>
+<p>What that means in practice: the two attributes are redundant. Knowing x₁ tells you a lot about x₂. You’re spending two numbers per point to store about one number’s worth of information.</p>
+<p>Ask: is there a choice of axes where the off-diagonal entry would be zero? The next slide answers it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis: intuition</h2>
+
+<img data-src="figs/pca-intuition2.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Same points, new axes. y₁ runs along the diagonal of the cloud and y₂ is perpendicular to it. In these coordinates:</p>
+<ul>
+<li>cov(y₁,y₁) is large: most of the spread lies along y₁.</li>
+<li>cov(y₂,y₂) is small: points barely deviate from the line.</li>
+<li>The off-diagonal covariance is zero. The new covariance matrix YYᵀ is diagonal, which the slide’s arrow labels “close to zero”.</li>
+</ul>
+<p>That’s PCA in one picture: rotate the axes so the new coordinates are uncorrelated and ordered by variance. Then dimensionality reduction is just dropping y₂. You lose the small perpendicular wiggle and keep the position along the line. If that wiggle is mostly measurement noise, dropping it even helps.</p>
+<p>What’s lost, and what PCA can’t do: it only rotates. If the cloud were curved, a banana instead of a cigar, no rotation would put all the variance on one axis. That’s the Bishop 3s, and the reason we turn to non-linear methods next.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis</h2>
+
+<img data-src="figs/pca-description.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>The formal statement: find a change of basis P with Y = PX such that YYᵀ = D is diagonal.</p>
+<p>Connect it to the spectral decomposition. Since XXᵀ = U D Uᵀ, choose P = Uᵀ. Then YYᵀ = Uᵀ XXᵀ U = Uᵀ U D Uᵀ U = D. The rows of P are the eigenvectors of the covariance matrix, which are the principal components, and the eigenvalues are the variances of the new coordinates.</p>
+<p>The three bullets are what you get:</p>
+<ol type="1">
+<li><strong>Decorrelated coordinates:</strong> redundancy removed.</li>
+<li><strong>Some coordinates have low variance:</strong> typically noise.</li>
+<li><strong>You can drop those:</strong> reducing dimension while keeping the relevant information.</li>
+</ol>
+<p>Algorithm in practice:</p>
+<ol type="1">
+<li>Center X.</li>
+<li>Compute the covariance, or go straight to SVD.</li>
+<li>Get the eigenvectors and sort them by eigenvalue.</li>
+<li>Keep the top k.</li>
+<li>Project: Y_k = U_kᵀ X.</li>
+</ol>
+<p>Caveat on bullet 2: “low variance = noise” is an assumption, not a theorem. A small-variance direction can be exactly the one that separates two classes. PCA is unsupervised and doesn’t know.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Principal Component Analysis</h2>
+
+<img data-src="figs/pca-filtering.jpg" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>How many components to keep? The plot is a scree plot: variance explained by each component, sorted. Look for the bend. Here it’s at component 4, so keep the top 3; the rest form a flat tail of roughly equal, small eigenvalues, which is what noise looks like. (This is the same elbow logic as choosing k for k-means.)</p>
+<p>The formula T = (sum of top-k eigenvalues) / (sum of all eigenvalues) is the fraction of variance retained. A common rule is “keep enough to reach 90 or 95%”.</p>
+<p>Real numbers for the digits dataset (computed for this lecture):</p>
+<ul>
+<li>2 components keep only 28.5% of the variance.</li>
+<li>10 keep about 74%, 20 keep about 89%, and about 30 reach 95%.</li>
+</ul>
+<p>So the 2-D PCA plot coming up shows less than a third of the information. Be skeptical of any conclusion drawn from it.</p>
+<p>Filtering: set the dropped coordinates of Ŷ to zero and map back with X̂ = UŶ. You get a denoised reconstruction. That works because noise spreads evenly over all directions while signal concentrates in a few. It’s the same idea as JPEG keeping only the large coefficients.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA of digits</h2>
+<div id="e07bc793" class="cell columns column-output-location" data-fig-height="7" data-fig-width="8" data-execution_count="13">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb2-2"><a href="" aria-label="2"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="" aria-label="3"></a>data, labels <span class="op">=</span> load_digits(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-4"><a href="" aria-label="4"></a>reduced_data<span class="op">=</span>pca.fit_transform(data)</span>
+<span id="cb2-5"><a href="" aria-label="5"></a>plt.scatter(reduced_data[:, <span class="dv">0</span>], reduced_data[:, <span class="dv">1</span>])</span>
+<span id="cb2-6"><a href="" aria-label="6"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-14-output-1.png" width="829" height="425"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Three lines of scikit-learn. Note that this loads all ten digit classes (1,797 images), not the six used for t-SNE.</p>
+<p><code>fit_transform</code> centers the data, computes the top 2 components via SVD, and projects. Uncolored, as with Iris at the start: what do you see? A blob with some lobes, and a few dense fingers sticking out, but nothing as obvious as the t-SNE islands.</p>
+<p>Reminder: these two axes keep 28.5% of the variance. You’re looking at a shadow of 64-D data cast onto the plane that makes the shadow as spread out as possible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA of digits</h2>
+<div id="c2884655" class="cell columns column-output-location" data-fig-height="7" data-fig-width="8" data-execution_count="14">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-label="1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb3-2"><a href="" aria-label="2"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="" aria-label="3"></a>data, labels <span class="op">=</span> load_digits(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-4"><a href="" aria-label="4"></a>reduced_data<span class="op">=</span>pca.fit_transform(data)</span>
+<span id="cb3-5"><a href="" aria-label="5"></a>plt.scatter(reduced_data[:, <span class="dv">0</span>], reduced_data[:, <span class="dv">1</span>], c<span class="op">=</span>labels, cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-6"><a href="" aria-label="6"></a>plt.colorbar(ticks<span class="op">=</span><span class="bu">range</span>(<span class="dv">10</span>), label<span class="op">=</span><span class="st">"digit"</span>)</span>
+<span id="cb3-7"><a href="" aria-label="7"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-15-output-1.png" width="787" height="435"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Same projection, now colored by the true digit. (The only change from the 2025 version is the colormap and colorbar, so the colors can be decoded.)</p>
+<p>What separates, using class centers I computed on this exact projection:</p>
+<ul>
+<li><strong>0</strong> sits clearly at the bottom (PC2 around −21).</li>
+<li><strong>4</strong> sits at the far right (PC1 around +22).</li>
+<li><strong>6</strong> sits at the lower right.</li>
+<li><strong>3</strong> and <strong>9</strong> lie on the left, overlapping each other.</li>
+<li><strong>1, 5 and 8</strong> sit in the middle. 1 and 5 are among the most spread-out classes, smeared across the plot.</li>
+</ul>
+<p>So “ones are easy” is not true here, despite the ink argument from earlier. Writers draw 1s with and without serifs and at different slants, which spreads them out.</p>
+<p>Compare with the t-SNE slide: t-SNE separated every class, and PCA separates three. That’s linear vs non-linear, and also 28.5% of the variance vs a method that only cares about neighbors. Both plots are “correct”. They answer different questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>SNE and t-SNE</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/sne.jpg" height="780"></p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figs/tsne.jpg"></p>
+</div></div>
+<aside class="notes">
+<p>SNE (Stochastic Neighbor Embedding), the predecessor, defines probability distributions over the high-dimensional data, where neighbors have high probability. It then tries to replicate these probabilities in low-dimensional space. The key addition of t-SNE is using the Student’s t-distribution in the low-dimensional space. This distribution has a ‘heavy tail,’ which means it allows points that are far apart in the low-dimensional space to still model moderately small distances in the high-dimensional space. This heavy-tail property is what creates the excellent separation between clusters compared to SNE. It prevents the “crowding problem” where all points try to squeeze into the center.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<!-- ##
+
+ -->
+</section>
+<section class="slide level2">
+<h2>t-SNE in three steps</h2>
+<div id="d489b973" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-16-output-1.png" class="quarto-figure quarto-figure-center" width="1651" height="806"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Wattenberg, Viégas, and Johnson, 2016’.</p>
+<p>These are the equations behind the two screenshots on the SNE and t-SNE slide. SNE used Gaussians in both spaces (the first screenshot); t-SNE replaces the Gaussian on the map side with a Student-t distribution with one degree of freedom (the second screenshot, the q_ij formula).</p>
+<p>Step 1: for each point i, a Gaussian over its neighbors. The width sigma_i is found by binary search so that every point’s neighborhood has the same perplexity, where perplexity is 2 to the power of the entropy of that distribution, the ‘effective number of neighbors’. Dense regions therefore get small sigma and sparse regions large sigma, which is the root of the ‘cluster sizes mean nothing’ lesson. P is then symmetrized: p_ij = (p_j|i + p_i|j) / 2N.</p>
+<p>Step 2: similarities between the map points y, with the heavy-tailed kernel (next slide).</p>
+<p>Step 3: minimize the KL divergence by gradient descent on the y’s. KL is asymmetric. Placing true neighbors far apart in the map (p large, q small) costs a lot; placing non-neighbors close together (p small, q large) costs little. So t-SNE is mostly about keeping neighbors together and says little about how far apart non-neighbors end up, which is why distances between clusters are not trustworthy. The gradient has the same shape as the force-directed layout in the video: each map point is pulled toward its neighbors and pushed away from the rest.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Why a heavy tail? The crowding problem</h2>
+<div class="columns">
+<div class="column" style="width:38%;">
+<ul>
+<li>In high dimensions a point can have many neighbors that are all about equally far from it. In 2-D there is not room for them</li>
+<li>With a Gaussian in the map (SNE), moderately distant pairs look very dissimilar, so the optimizer pulls everything into one crowded blob</li>
+<li>The Student-t tail decays polynomially: pairs at moderate distance can sit far apart in the map at almost no cost, which opens gaps between clusters</li>
+</ul>
+</div><div class="column" style="width:62%;">
+<div id="9a92c875" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-17-output-1.png" class="quarto-figure quarto-figure-center" width="1065" height="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Illustrative kernels: Gaussian vs Student-t (1 degree of freedom), both scaled to 1 at distance 0.</em></p>
+</div></div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Wattenberg, Viégas, and Johnson, 2016’.</p>
+<p>Why does t-SNE use a Student-t kernel in the map? The crowding problem: in 10 or 50 dimensions a point can have many neighbors at about the same distance, but a 2-D map has far less room around a point. If we model map similarities with a Gaussian, any pair that ends up moderately far apart gets a vanishing similarity, which the cost punishes, so the optimizer squeezes everything together.</p>
+<p>The right panel is the log-scale view of the two kernels: by distance 5 the Gaussian is more than ten orders of magnitude below the Student-t. Because the t-distribution’s tail is so much heavier, moderately dissimilar points can be placed far apart for free. This is what produces the well-separated clusters, and also why gaps between clusters mean little.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Wattenberg, Viégas, and Johnson, 2016</h2>
+
+<img data-src="figs/using-tsne.jpg" class="r-stretch"><p>https://distill.pub/2016/misread-tsne/</p>
+<aside class="notes">
+<p>This article, ‘How to Use t-SNE Effectively,’ is essential reading. It represents a pivot point in the visualization community, moving from simply celebrating t-SNE’s results to critically analyzing its pitfalls. The authors demonstrate, using controlled experiments, which visual properties are meaningful and which are not. The main takeaway is that t-SNE is a visualization tool, not a clustering tool—its output must be treated as a suggestion of structure, not a definitive map of reality. This paper should be required reading for anyone using t-SNE in their work.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>Wattenberg et al writes “A popular method for exploring high-dimensional data is something called t-SNE… it has an almost magical ability to create compelling two-dimensonal “maps” from data with hundreds or even thousands of dimensions. Although impressive, these images can be tempting to misread.”</p></li>
+<li><p>Wattenberg: “The algorithm is <strong>non-linear</strong> and adapts to the underlying data, performing <strong>different transformations on different regions</strong>. Those differences can be a major source of confusion.”</p></li>
+<li><p>Watternberg: “A second feature of t-SNE is a tuneable parameter, <strong>“perplexity,”</strong> which says (loosely) how to balance attention between local and global aspects of your data. The parameter is, in a sense, a guess about the number of close neighbors each point has. The perplexity value has a complex effect on the resulting pictures.”</p></li>
+</ul>
+<aside class="notes">
+<p>This is THE critical article to read before using t-SNE. Wattenberg, Viégas, and Johnson from Google Brain systematically explore how t-SNE can be misread. Key point #1: t-SNE is non-linear and does different transformations in different regions - you can’t directly compare distances. Key point #2: perplexity is crucial - it’s roughly the number of close neighbors each point should have. Too low and you get disconnected clusters, too high and everything merges. We’ll see concrete examples next.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li>“Those hyperparameters really matter”</li>
+</ul>
+
+<img data-src="figs/tsneperplexity.jpg" class="r-stretch"><ul>
+<li>“The image for perplexity 100, with merged clusters, illustrates a pitfall: for the algorithm to operate properly, the perplexity really should be smaller than the number of points.”</li>
+</ul>
+<aside class="notes">
+<p>The toy data in Wattenberg et al.&nbsp;is two Gaussian clusters of 50 points each, 100 points in all (the ‘Original’ panel on the left). The other five panels are t-SNE at perplexity 2, 5, 30, 50 and 100, each run for 5,000 steps.</p>
+<p>At perplexity 2 and 5 each cluster shatters into small clumps and strings: with so few neighbors t-SNE only sees micro-structure, and it invents sub-clusters that are not in the data. At 30 and 50 we get two clean, compact clusters. At 100 the perplexity equals the number of points, and the two clusters dissolve into one mixed cloud, which is the pitfall quoted on the slide: perplexity must be smaller than the number of points.</p>
+<p>Lesson: never trust a single t-SNE plot. Typical values are 5 to 50, and you should try several. The next slide runs the same experiment on a real dataset.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Try it: perplexity on 1,797 digits</h2>
+<div id="27fc199a" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-18-output-1.png" class="quarto-figure quarto-figure-center" width="1594" height="486"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Same data and seed; only the perplexity changes</li>
+<li>At 5 the groups are loose and fragmented; 30 and 100 give ten clear groups; at 500 (more than a quarter of the dataset) they press into each other</li>
+<li><em>Which</em> groups end up next to each other changes from panel to panel</li>
+</ul>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Wattenberg, Viégas, and Johnson, 2016’.</p>
+<p>This is the perplexity experiment from the article on a real dataset: the 1,797 handwritten digits that ship with scikit-learn (8 by 8 pixel images, 64 features), colored by digit. This is the same dataset the lab uses.</p>
+<p>Perplexity 5: ten groups, but loose, with small islands. 30 and 100: clean, compact groups. 500: the groups are still distinguishable but crowd each other and the middle of the map gets mixed. Ask the class: which of these would you show in a paper, and what would you want to say about how you chose it? Point out that the neighbors of each group differ between panels, so the layout of the groups is not a finding.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li>“Each of the plots above was made with 5,000 iterations with a learning rate (often called “epsilon”) of 10, and had reached a point of stability by step 5,000. How much of a difference do those values make?”</li>
+</ul>
+
+<img data-src="figs/tsnesteps.jpg" class="r-stretch"><aside class="notes">
+<p>Same two-cluster data, perplexity fixed at 30 in every panel; only the number of optimization steps changes: 10, 20, 60, 120 and 1,000.</p>
+<p>The intermediate pictures are not ‘less converged versions of the answer’, they are different-looking artifacts: at step 10 the clusters are separated; at 20 each is squashed into a line; at 60 each has collapsed to almost a single point; at 120 they have re-expanded into ragged shapes; only by step 1,000 do we get two compact clusters. Shapes at intermediate steps come from the optimizer, not the data.</p>
+<p>Lesson: run until the picture stops changing. In scikit-learn the defaults are max_iter=1000 and learning_rate=‘auto’; the 5,000-step runs in the other figures are the article’s choice, not a default.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li>“Cluster sizes in a t-SNE plot mean nothing”</li>
+</ul>
+
+<img data-src="figs/tsneclustersizes.jpg" class="r-stretch"><ul>
+<li><p>“Size refers to spatial extent/area, not the number of points in the cluster.”</p></li>
+<li><p>“The t-SNE algorithm adapts its notion of”distance” to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes.”</p></li>
+</ul>
+<aside class="notes">
+<p>The reason t-SNE expands dense clusters and contracts sparse ones is due to its cost function, specifically the use of the heavy-tailed t-distribution, which is designed to resolve points within a cluster clearly. If a cluster is naturally dense, t-SNE must push points further apart in the low-dimensional embedding to satisfy the local probability distribution, effectively equalizing the density of the clusters in 2D space. Therefore, the area or size of a cluster in a t-SNE plot is not proportional to the cluster’s density or variance in the original space. This is a feature, not a bug - it ensures all clusters are visible, but it means you can’t compare cluster sizes visually.</p>
+<p>Look at the ‘Original’ panel: the blue cluster is much more spread out than the tight orange one. At perplexity 30 and 50 t-SNE draws the two clusters at about the same size, which is the point of the slide: it expands dense regions and contracts sparse ones. At perplexity 100 the orange cluster is even drawn as a ring.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>“Distances between clusters might not mean anything”</p></li>
+<li><p>“The next diagrams show three Gaussians of 50 points each, one pair being 5 times as far apart as another pair.”</p></li>
+</ul>
+
+<img data-src="figs/tsneclusterdistances.jpg" class="r-stretch"><aside class="notes">
+<p>Original data: three clusters, where the blue and orange clusters are close together and the green one is far away. Then t-SNE at perplexity 2, 5, 30, 50 and 100 (5,000 steps each).</p>
+<p>At 2 and 5 every cluster fragments. At perplexity 30 the three clusters end up at roughly the corners of a triangle: the near pair is no longer near, and the far cluster is no longer far. At 50 and 100 the original arrangement is roughly recovered (orange and blue close, green far), but at 50 the green cluster has shrunk to a speck.</p>
+<p>So the gaps between clusters depend on the perplexity, and at the commonly used values they can be wrong. Do not read ‘these two clusters are related because they are close’. The next-but-one slide repeats this with the same perplexity and different random starts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Try it: same perplexity, different random start</h2>
+<div id="5c495210" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-19-output-1.png" class="quarto-figure quarto-figure-center" width="1594" height="545"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Same data, same perplexity (30), random initialization; only the seed changes</li>
+<li>The same ten groups appear each time, but the arrangement changes</li>
+<li>Digit 0 (blue) sits at the bottom, the top left, and the far right</li>
+</ul>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Topomap (Doraiswamy et al)’.</p>
+<p>Same experiment as the ‘distances between clusters’ slide, but now we vary only the random seed. We use init=‘random’ to make the effect visible; scikit-learn’s default is PCA initialization, which makes runs much more repeatable. The ten groups are always found, but the position of each group relative to the others is not stable: in the three panels the blue 0s are at the bottom, top left and far right.</p>
+<p>Ask: if you only had one of these three plots, which relationships would you be tempted to read into it? None of the between-group distances should be reported as a finding.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>“Random noise doesn’t always look random.”</p></li>
+<li><p>“The next diagrams show genuinely random data, 500 points drawn from a unit Gaussian distribution in 100 dimensions. The left image is a projection onto the first two coordinates.”</p></li>
+</ul>
+
+<img data-src="figs/tsnerandom.jpg" class="r-stretch"><aside class="notes">
+<p>The data is 500 points from a unit Gaussian in 100 dimensions: pure noise, no clusters. The ‘Original’ panel is the projection onto the first two coordinates, a Gaussian cloud denser in the middle. Then t-SNE at perplexity 2, 5, 30, 50 and 100.</p>
+<p>At perplexity 2 and 5 t-SNE produces clumps, gaps and filaments, i.e.&nbsp;apparent clusters, from noise. At 30 the output is close to a uniform disk (the dense center has been flattened: density information is lost). At 50 and 100 there is still some faint swirl structure.</p>
+<p>Lesson: apparent clusters at low perplexity may be noise. Compare against a linear baseline and run several perplexities before believing structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>t-SNE</h2>
+<ul>
+<li><p>“For topology, you may need more than one plot”</p></li>
+<li><p>“The plots below show two groups of 75 points in 50 dimensional space. Both are sampled from symmetric Gaussian distributions centered at the origin, but one is 50 times more tightly dispersed than the other. The “small” distribution is in effect contained in the large one.”</p></li>
+</ul>
+
+<img data-src="figs/tsnetopology.jpg" class="r-stretch"><aside class="notes">
+<p>Two Gaussians of 75 points each in 50 dimensions. Both are centered at the origin, but the blue one is 50 times tighter, so it sits inside the orange one.</p>
+<p>Perplexity 2 and 5: the two groups are mixed together, there is no containment. At 30 the blue points concentrate in the middle but are still intermingled with orange. At 50 we finally get the right picture: a blue core inside an orange ring. At 100 the blue cluster collapses to a single dot inside a circle of orange.</p>
+<p>So the topology (one group inside another) shows up only for a middle range of perplexities, and even then the sizes are not to scale. One plot can mislead; you may need several. Topomap, next, tries to guarantee some of this.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Topomap (Doraiswamy et al)</h2>
+
+<img data-src="figs/topomap.jpg" class="r-stretch"><ul>
+<li>Topomap preserves the 0-dimensional persistence diagram of the Rips filtration of the high-dimensional data.</li>
+</ul>
+<aside class="notes">
+<p>The figure is Fig. 1 of the TopoMap paper. Three 3-D datasets, top to bottom: three separated clusters (800 points), three interlinked rings (3,210 points), and a small cluster nested inside a large spherical shell (4,002 points). Columns: the input, then MDS, Isomap, t-SNE, UMAP and TopoMap in 2-D, with run times.</p>
+<p>The paper’s point: geometry-preserving methods either split a connected component (t-SNE and UMAP break the rings into several pieces) or mix components up (MDS and Isomap stack the rings on top of each other). TopoMap is built from the 0-dimensional persistence of the Rips filtration, i.e.&nbsp;how connected components merge as the scale grows, and it preserves that exactly, so each component stays in one piece and components that are separate stay separate.</p>
+<p>What you give up: it preserves components, not loops or holes (the rings come out as branching blobs), and the layouts look like trees. Run times in the figure are comparable to t-SNE and UMAP (for example 2.9 s vs 13.3 s for t-SNE on the first dataset, 47.9 s vs 48.0 s on the rings), so it is not obviously slower.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Understanding UMAP (Coenen &amp; Pearce)</h2>
+
+<img data-src="figs/understanding-umap.jpg" class="r-stretch"><p>https://pair-code.github.io/understanding-umap/</p>
+<aside class="notes">
+<p>We transition now to UMAP (Uniform Manifold Approximation and Projection). UMAP has rapidly replaced t-SNE as the go-to default for many visualization tasks. It shares the same philosophy as t-SNE—preserving local neighborhood structure—but it is built on a more rigorous theoretical foundation derived from Riemannian geometry and algebraic topology. This foundation is why UMAP is typically faster, scales better, and is often cited as better at preserving global data structure. This interactive article from Google’s PAIR team is THE best resource for understanding UMAP, with interactive visualizations showing exactly how the algorithm works.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP</h2>
+<ul>
+<li>Coenen and Pearce: “UMAP is fast, scaling well in terms of both dataset size and dimensionality. … UMAP can project the 784-dimensional, 70,000-point MNIST dataset in less than 3 minutes, compared to 45 minutes for scikit-learn’s t-SNE implementation. Additionally, UMAP tends to better preserve the global structure of the data.”</li>
+</ul>
+
+<img data-src="figs/umapvstsne.jpg" class="r-stretch"><aside class="notes">
+<p>The figure is from Coenen and Pearce’s ‘Understanding UMAP’. It is Fashion-MNIST, not digits: 28 by 28 images of clothing in 10 categories, encoded as 784-dimensional vectors and projected to 3-D with UMAP (left) and t-SNE (right).</p>
+<p>Both methods put footwear (sandal, sneaker, ankle boot) in one region away from the garments, and both separate trousers and bags. In the UMAP view the groups are separated by visible gaps; in the t-SNE view the upper-body garments (T-shirt, shirt, pullover, coat) form one continuous mass.</p>
+<p>The speed numbers quoted on the slide (under 3 minutes vs 45 minutes for 70,000 MNIST points) are from the same article and are order-of-magnitude. At our scale the difference reverses: in the 1,797-point digits demos on the following slides, t-SNE takes about 2 s and UMAP about 5 s (including numba compilation). UMAP’s speed advantage appears as the dataset grows.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP</h2>
+<ul>
+<li>“UMAP, at its core, works very similarly to t-SNE - both use graph layout algorithms to arrange data in low-dimensional space.”</li>
+</ul>
+
+<img data-src="figs/umapfuzzygraph.jpg" class="r-stretch"><aside class="notes">
+<p>How UMAP works: it builds a “fuzzy topological representation” of the high-dimensional data. Essentially, it creates a weighted graph where edges represent neighborhood relationships, but the weights are “fuzzy” (probabilistic) rather than binary. Then it tries to find a similar graph structure in low dimensions. The theoretical foundation involves category theory and Riemannian geometry - much more sophisticated than t-SNE’s probability distributions. But practically, you can think of it like force-directed graph layout with better math.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP parameters</h2>
+<ul>
+<li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
+<li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
+</ul>
+<aside class="notes">
+<p>The two core UMAP parameters, n_neighbors and min_dist, allow precise control over the resulting visualization. n_neighbors dictates the local/global balance (high value = more global view, lower value = more local focus). min_dist acts as a repulsion force, ensuring a minimum separation between points. These two parameters are typically tuned together to find an embedding that maximizes the visualization of the data’s inherent structure. Unlike t-SNE’s perplexity which can dramatically change results, UMAP parameters tend to be more stable and intuitive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP parameters</h2>
+<ul>
+<li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
+<li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
+</ul>
+
+<img data-src="figs/umapmindist-0.jpg" class="r-stretch"><aside class="notes">
+<p>The data is a 3-D woolly mammoth skeleton (50,000 points, 10,000 shown), colored by body part on the left; the right panel is its 2-D UMAP projection with n_neighbors=15 and min_dist=0.0.</p>
+<p>With min_dist=0 points may sit right on top of each other. The projection breaks into thin strands and small fragments: local connectivity is clearly drawn, but the global shape, the mammoth, is hard to recognize. This setting is good for tight clusters and bad for seeing individual points.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP parameters</h2>
+<ul>
+<li><p><strong>n_neighbors</strong> - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.</p></li>
+<li><p><strong>min_dist</strong> - the minimum distance between points in low-dimensional space.</p></li>
+</ul>
+
+<img data-src="figs/umapmindist-0.8.jpg" class="r-stretch"><aside class="notes">
+<p>Same mammoth and the same n_neighbors=15, but now min_dist=0.8. Points are forced apart, and the picture becomes one filled blob in which the body-part colors form patches. It is easier to see individual points and there is less overplotting, but the fine strand structure from the previous slide is gone.</p>
+<p>Neither setting recovers the mammoth’s shape. Typical advice: smaller min_dist (0 to 0.1) when you care about clusters, larger (0.5 and up) when you want to see the points. UMAP is fast enough that trying several is practical.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Try it: UMAP n_neighbors × min_dist</h2>
+<div id="83fd181e" class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-20-output-1.png" class="quarto-figure quarto-figure-center" width="1594" height="753"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Rows: min_dist 0.0 vs 0.5. Columns: n_neighbors 5, 15, 50. min_dist changes how tightly points pack; n_neighbors changes how the groups are laid out relative to each other</li>
+</ul>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘PCA, t-SNE or UMAP: which one when?’.</p>
+<p>The same digits, now with UMAP. Top row min_dist 0.0: tight, small blobs. Bottom row min_dist 0.5: the same groups, but spread out so individual points are visible. Columns are n_neighbors 5, 15 and 50: the groups are the same, but their placement relative to each other changes, for example where digit 0 (blue) lands. Compared with the perplexity sweep, the groups themselves look more stable across these settings, though the arrangement still moves.</p>
+<p>UMAP took a few seconds per panel here (including numba compilation on the first call), which is why trying several settings is practical.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>UMAP</h2>
+<ul>
+<li><p>“However, it’s important to note that, because UMAP and t-SNE both necessarily warp the high-dimensional shape of the data when projecting to lower dimensions, <strong>any given axis or distance in lower dimensions still isn’t directly interpretable in the way of techniques such as PCA.</strong>”</p></li>
+<li><p>Suggested reading: https://pair-code.github.io/understanding-umap/supplement.html</p>
+<ul>
+<li>“Most dimensionality reduction algorithms fit into either one of two broad categories: Matrix factorization (such as PCA) or Graph layout (such as t-SNE).”</li>
+<li>“At its core, UMAP is a graph layout algorithm, very similar to t-SNE, but with a number of key theoretical underpinnings that give the algorithm a more solid footing.”</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>UMAP</h2>
+
+<img data-src="figs/umapvstsne-param.jpg" class="r-stretch"><aside class="notes">
+<p>This figure from Coenen and Pearce uses one toy dataset, a dense, tight cluster inside a wide, sparse one (100 points per cluster, 50 dimensions), and varies t-SNE’s perplexity (top row) and UMAP’s n_neighbors (bottom row) over 3, 5, 15, 30, 50 and 100.</p>
+<p>t-SNE: at 3 and 5 the two groups are mixed; at 15 and 30 the small one concentrates in the middle; at 50 there is a clear core inside a ring; at 100 the core collapses to a dot inside a circle. UMAP: whatever n_neighbors we choose, the two groups stay mixed; the containment that t-SNE finds at perplexity 50 never appears.</p>
+<p>So UMAP’s output is more stable across parameters here, but stable is not the same as right. The practical conclusion is not ‘always use UMAP’. UMAP is a sensible first try on large data because it is fast, but run both when the structure matters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>PCA, t-SNE or UMAP: which one when?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>PCA</th>
+<th>t-SNE</th>
+<th>UMAP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Kind</strong></td>
+<td>linear</td>
+<td>non-linear, neighbor graph + KL divergence</td>
+<td>non-linear, fuzzy neighbor graph</td>
+</tr>
+<tr class="even">
+<td><strong>Keeps</strong></td>
+<td>global variance</td>
+<td>local neighborhoods</td>
+<td>local neighborhoods, some coarse layout</td>
+</tr>
+<tr class="odd">
+<td><strong>Axes and distances mean something?</strong></td>
+<td>yes: axes are directions in the data</td>
+<td>no: sizes and gaps are artifacts</td>
+<td>no: gaps are not reliable</td>
+</tr>
+<tr class="even">
+<td><strong>Knobs</strong></td>
+<td>number of components</td>
+<td>perplexity, steps, learning rate</td>
+<td>n_neighbors, min_dist</td>
+</tr>
+<tr class="odd">
+<td><strong>Repeatable?</strong></td>
+<td>yes</td>
+<td>depends on initialization and seed</td>
+<td>depends on seed</td>
+</tr>
+<tr class="even">
+<td><strong>New points</strong></td>
+<td><code>transform</code></td>
+<td>refit</td>
+<td><code>transform</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Reach for it to</strong></td>
+<td>get a first look, denoise, preprocess</td>
+<td>see local cluster structure on small and medium data</td>
+<td>see structure on larger data, reuse the mapping</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Is this projection any good?’.</p>
+<p>A summary, not a ranking. PCA is the only one whose axes you can interpret and the only one that is trivially repeatable, so it is the baseline you should always look at first.</p>
+<p>Be careful with the claim that UMAP preserves global structure better than t-SNE. It is often repeated, but Kobak and Linderman (Nature Biotechnology, 2021) showed that most of the difference comes from initialization: with PCA initialization, t-SNE preserves global layout about as well. In scikit-learn, t-SNE already defaults to PCA initialization.</p>
+<p>On new points: UMAP can embed new data with transform; scikit-learn’s TSNE has no transform, so new points need a refit. On speed: PCA takes a hundredth of a second on the digits, t-SNE about 2 s and UMAP about 5 s (including compilation); UMAP’s advantage shows up at larger N.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Is this projection any good?</h2>
+<ul>
+<li>Score a projection by checking whether <strong>neighborhoods survive</strong>: for each point, compare its <em>k</em> nearest neighbors in the original space with its <em>k</em> nearest neighbors in the map</li>
+<li><strong>Trustworthiness</strong>: are the neighbors in the map <em>real</em> neighbors? It penalizes <strong>false neighbors</strong>: points that look close in the map but were far apart in the data</li>
+<li><strong>Continuity</strong>: were the real neighbors <em>kept</em>? It penalizes <strong>tears</strong>: points that were close in the data but ended up far apart in the map</li>
+<li>Both run from 0 to 1 (1 is perfect). In scikit-learn: <code>trustworthiness(X, X_map, n_neighbors=k)</code>; continuity is the same function with the two spaces swapped</li>
+<li>Both are <strong>local</strong>: they say nothing about the distances between clusters</li>
+</ul>
+<p>T(k) = 1 − 2 / (N·k·(2N − 3k − 1)) · Σ<sub>i</sub> Σ<sub>j ∈ U<sub>i</sub></sub> (r(i,j) − k)</p>
+<p><span style="font-size:70%">U<sub>i</sub> = false neighbors of <em>i</em> (in its map neighborhood, not in its data neighborhood); r(i,j) = rank of <em>j</em> among <em>i</em>’s neighbors in the original space</span></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Before you trust a projection’.</p>
+<p>So far we judged t-SNE and UMAP by eye. Here is a way to put a number on it. Both measures, due to Venna and Kaski, look at each point’s k nearest neighbors.</p>
+<p>Trustworthiness asks: of the points that are among this point’s k nearest neighbors in the map, how many were really nearby in the original space? The ones that were not are false neighbors, and they are penalized by how far down the original ranking they were (the r(i,j) minus k term). Continuity is the mirror image: of the points that were among its k nearest neighbors in the data, how many did we keep in the map? Ones that got torn away are penalized.</p>
+<p>Both are local, so they cannot detect a wrong picture of how clusters relate to each other. That limitation matters for t-SNE, and the next two slides show it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Four projections of the digits, scored</h2>
+<div id="583990af" class="cell" data-execution_count="20">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-21-output-1.png" class="quarto-figure quarto-figure-center" width="1593" height="749"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Before you trust a projection’.</p>
+<p>The same 1,797 digits, projected four ways, with trustworthiness and continuity at k=15 under each. PCA: trustworthiness 0.83, continuity 0.95. It keeps almost all true neighbors but also brings in many false ones (different digits overlap in the middle). LLE with n_neighbors=30: 0.68 and 0.83, the worst of the four; it collapses most points near one spot. t-SNE: 0.99 and 0.98. UMAP: 0.99 and 0.98.</p>
+<p>Caveats to say out loud: these are single runs with one setting each (LLE in particular might do better with other neighbors), the metric is computed at one k, and both scores say the local neighborhoods are good, not that the picture is a faithful map. The numbers on the bars are computed when the deck is rendered.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>But the score barely moves with perplexity</h2>
+<div id="6d111c12" class="cell" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="week11-clustering_files/figure-revealjs/cell-22-output-1.png" class="quarto-figure quarto-figure-center" width="1593" height="595"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Perplexity 5 to 500 stays between 0.98 and 0.99, although the maps on the earlier slides look quite different. The metric separates <strong>methods</strong> (dashed lines: PCA, LLE) but is too coarse to pick a <strong>perplexity</strong>, and it cannot see cluster sizes or the gaps between clusters</li>
+</ul>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Before you trust a projection’.</p>
+<p>A deliberately uncomfortable result. We ran t-SNE at seven perplexities, 5 to 500, on the digits, and scored each. The curves are almost flat: trustworthiness between 0.98 and 0.99 and continuity between 0.98 and 0.99 (the dashed lines show how much lower PCA and LLE are for comparison).</p>
+<p>So the metric is useful for ruling out a bad method, such as LLE here, but it does not tell you which t-SNE picture to show. The earlier slides show that those pictures differ in what a viewer would read from them: fragments, cluster sizes, which groups are neighbors. Quality metrics complement looking at the picture and varying parameters; they do not replace either.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Before you trust a projection</h2>
+<ol type="1">
+<li><strong>Vary the settings</strong>: several perplexities (5 to 100) or n_neighbors (5 to 50), and at least two seeds. Keep only what is stable</li>
+<li><strong>Do not read</strong> cluster size, cluster density, or the distance between clusters</li>
+<li><strong>Compare with a baseline</strong>: PCA, and a noise dataset of the same size. Do the “clusters” appear there too?</li>
+<li><strong>Score it</strong>: trustworthiness and continuity; if you have labels, how well do they predict from the map (for example k-NN accuracy)?</li>
+<li><strong>Report it</strong>: method, parameters, seed and preprocessing, in the caption</li>
+<li><strong>Use it to ask questions</strong> of the original data, not as evidence on its own</li>
+</ol>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘What about user interaction?’.</p>
+<p>A checklist to take away, and something you can apply directly in your projects. If your project includes any embedding plot (of images, text, or a model’s hidden activations), expect to be asked in the final presentation which of these you did.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What about user interaction?</h2>
+
+<img data-src="figs/projections.jpg" class="r-stretch"><aside class="notes">
+<p>This slide is a table from the visualization literature, not a system. It lists projection algorithms from Kruskal (1964) to LAMP (2011) with their time complexity, whether they mainly preserve local or global structure, and whether they are ‘steerable’, meaning that a user can influence the layout, typically by placing control points. The check marks are LSP, PLMP, PLP and LAMP (Paulovich et al.&nbsp;and Joia et al.); Glimmer has a partial mark.</p>
+<p>The table predates the popularity of t-SNE and UMAP in visualization work, and it labels t-SNE as ‘Global’. After today’s slides you should be cautious about that: what t-SNE preserves best is local neighborhoods. The next slide explains what steerable means.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Steering a projection</h2>
+<ul>
+<li><strong>Steerable</strong> methods (the check marks in the table: LSP, PLMP, PLP, LAMP) let the user influence the layout instead of accepting one static map</li>
+<li>A common recipe: pick a small set of <strong>control points</strong>, place them where you want them in 2-D, and position the remaining points relative to them</li>
+<li>Interactions follow from that: drag a point, group points, change a parameter and see the map update</li>
+<li>Questions to ask of any interactive projection in a project: <strong>what can the user change, and what stays fixed?</strong></li>
+</ul>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Recommended reading’.</p>
+<p>What ‘steerable’ means in the table on the previous slide. In control-point methods such as LSP and LAMP the layout of a small subset is placed first, by the user or by a slower algorithm, and the rest of the points are positioned from the control points quickly, which is fast enough to be interactive. Interaction with t-SNE or UMAP usually means changing a parameter and recomputing the whole layout, which is slower.</p>
+<p>For your projects: if your system shows a projection, be explicit about which parts the user can influence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Recommended reading</h2>
+<ul>
+<li><p><strong>Clustering:</strong> Bernard, <a href="https://www.wolfram.com/language/introduction-machine-learning/clustering/"><em>Introduction to Machine Learning</em> — Clustering</a> (Wolfram), and the scikit-learn page <a href="https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html">Comparing different clustering algorithms on toy datasets</a></p></li>
+<li><p><strong>Projections, required:</strong> Wattenberg, Viégas &amp; Johnson, <a href="https://distill.pub/2016/misread-tsne/"><em>How to Use t-SNE Effectively</em></a> (Distill, 2016)</p></li>
+<li><p>Coenen &amp; Pearce, <a href="https://pair-code.github.io/understanding-umap/"><em>Understanding UMAP</em></a></p></li>
+</ul>
+<aside class="notes">
+<p>Two readings, one per half. The Wolfram chapter is short and interactive; read the parts on choosing the number of clusters and on preprocessing, since those are the places today where the answer changed. The Distill article is the one to read before using t-SNE for anything: it shows, with interactive examples, the pitfalls from the t-SNE slides.</p>
+<p>The scikit-learn page is the Python counterpart of the FindClusters grid shown in the first half, and the quickest way to try several clustering methods on your own data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://engineering.nyu.edu" class="uri">https://engineering.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week11-clustering_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week11-clustering_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week11-clustering_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week11-clustering_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week11-clustering_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week11-clustering_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week11-clustering_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week11-clustering_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week11-clustering_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week11-clustering_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

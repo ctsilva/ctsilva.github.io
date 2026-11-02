@@ -289,10 +289,42 @@ author_profile: true
 
 **Assignment:** Continue Mini-project 2 (due Nov 19)
 
-### **Week 11** (Nov 13) - Visualizing Time-Oriented Data
+### **Week 11** (Nov 13) - Clustering and Dimensionality Reduction
+**Presenter:** Parikshit Solunke
+**Learning Objectives:** Understand how to compute, judge and visualize clusterings; understand PCA, t-SNE, and UMAP for high-dimensional data visualization; recognize critical pitfalls in dimensionality reduction
+
+**Lecture:** [Week 11 - Clustering and Dimensionality Reduction](slides/week11-clustering.html)
+- Clustering Iris: K-means, DBSCAN, hierarchical methods, and when each fails
+- Judging a clustering: against labels, choosing k (elbow and silhouette), dendrograms
+- Seeing a clustering: arbitrary cluster colors, clustered heatmaps, silhouette plots
+- Dimensionality reduction fundamentals and the manifold hypothesis
+- Principal Component Analysis (PCA)
+- t-SNE: power and pitfalls
+- UMAP: modern alternative
+- Critical visualization principles for non-linear methods
+- Judging a projection: trustworthiness and continuity
+
+**Required Readings:**
+- [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/). Wattenberg, Viégas & Johnson. Distill 2016. **ESSENTIAL!**
+- [Understanding UMAP](https://pair-code.github.io/understanding-umap/). Coenen & Pearce. Google PAIR.
+
+**Optional Readings:**
+- [Visualizing Data using t-SNE](http://jmlr.org/papers/v9/vandermaaten08a.html). van der Maaten & Hinton. JMLR 2008.
+- [UMAP: Uniform Manifold Approximation and Projection](https://arxiv.org/abs/1802.03426). McInnes, Healy & Melville. ArXiv 2018.
+- [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/)
+
+**Lab:** [Building temporal visualizations](/2026-InfoVis-CSE/labs/week11-lab.html)
+- D3 time scales and axes
+- Line charts and area charts for time series
+- Small multiples for temporal comparison
+- Heat map and calendar layouts
+
+**Assignment:** **Mini-project 3 begins** - Network visualization (due Dec 10)
+
+### **Week 12** (Nov 20) - Visualizing Time-Oriented Data
 **Learning Objectives:** Design effective time series visualizations; understand sequential, cyclic, and hierarchical time structures
 
-**Lecture:** [Week 11 - Visualizing Time-Oriented Data](slides/week11-temporal-data.html)
+**Lecture:** [Week 12 - Visualizing Time-Oriented Data](slides/week11-temporal-data.html)
 - Temporal data fundamentals (event vs measurement data)
 - Time structures: sequential, cyclic, hierarchical
 - Line charts and aspect ratios (Banking to 45°)
@@ -311,34 +343,6 @@ author_profile: true
 - [Graphical Perception of Multiple Time Series](https://idl.cs.washington.edu/files/2009-GraphicalPerceptionMultiple-InfoVis.pdf). Heer, Kong & Agrawala. IEEE InfoVis 2009.
 - [The Connected Scatterplot for Presenting Paired Time Series](https://eagereyes.org/papers/the-connected-scatterplot-for-presenting-paired-time-series). Haroz, Kosara & Franconeri. IEEE TVCG 2016.
 - [Visualizing Time-Series on Spirals](https://doi.org/10.1109/INFVIS.2001.963273). Weber, Alexa & Müller. IEEE InfoVis 2001.
-
-**Lab:** [Building temporal visualizations](/2026-InfoVis-CSE/labs/week11-lab.html)
-- D3 time scales and axes
-- Line charts and area charts for time series
-- Small multiples for temporal comparison
-- Heat map and calendar layouts
-
-**Assignment:** **Mini-project 3 begins** - Network visualization (due Dec 10)
-
-### **Week 12** (Nov 20) - Clustering and Dimensionality Reduction
-**Learning Objectives:** Understand clustering visualization techniques; master PCA, t-SNE, and UMAP for high-dimensional data visualization; recognize critical pitfalls in dimensionality reduction
-
-**Lecture:** [Week 12 - Clustering and Dimensionality Reduction](slides/week12-clustering-dimreduction.html)
-- Clustering visualization (K-means, DBSCAN, hierarchical methods)
-- Dimensionality reduction fundamentals
-- Principal Component Analysis (PCA)
-- t-SNE: power and pitfalls
-- UMAP: modern alternative
-- Critical visualization principles for non-linear methods
-
-**Required Readings:**
-- [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/). Wattenberg, Viégas & Johnson. Distill 2016. **ESSENTIAL!**
-- [Understanding UMAP](https://pair-code.github.io/understanding-umap/). Coenen & Pearce. Google PAIR.
-
-**Optional Readings:**
-- [Visualizing Data using t-SNE](http://jmlr.org/papers/v9/vandermaaten08a.html). van der Maaten & Hinton. JMLR 2008.
-- [UMAP: Uniform Manifold Approximation and Projection](https://arxiv.org/abs/1802.03426). McInnes, Healy & Melville. ArXiv 2018.
-- [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/)
 
 **Lab:**
 - Implementing PCA visualizations
