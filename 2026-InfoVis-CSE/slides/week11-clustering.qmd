@@ -17,12 +17,13 @@ format:
     transition-speed: fast
     footer: <https://engineering.nyu.edu>
     fontsize: 24pt
+    include-in-header:
+      - text: |
+          <style>
+          .reveal pre { font-size: 0.72em; }
+          .reveal .cell-output pre { font-size: 0.9em; }
+          </style>
 ---
-
-<style>
-.reveal pre { font-size: 0.72em; }
-.reveal .cell-output pre { font-size: 0.9em; }
-</style>
 
 ```{python}
 #| include: false
@@ -78,7 +79,7 @@ E = {
 :::
 
 ::: {.notes}
-Plan for today: clustering is the first 24 slides and about 60 minutes (25 on the idea and methods, 15 on judging a clustering, 20 on visualizing one); dimensionality reduction is the remaining slides and about 60 to 70 minutes. The slides marked SKIPPABLE in these notes can go if you run long. If you have to cut one half to protect the other, cut the t-SNE and UMAP parameter demos before cutting the section on how to judge a projection.
+Plan for today: clustering is the first 20 slides and about 60 minutes (25 on the idea and methods, 15 on judging a clustering, 20 on visualizing one); dimensionality reduction is the remaining slides and about 60 to 70 minutes. The slides marked SKIPPABLE in these notes can go if you run long. If you have to cut one half to protect the other, cut the t-SNE and UMAP parameter demos before cutting the section on how to judge a projection.
 
 Why clustering in an Information Visualization course? A visualization of thousands of items fails when you can't see individual marks. Clustering is one answer: group the items, then show the groups. We've met that idea already in this course: aggregation in the taxi data, binning in maps, small multiples. What's new today is that the grouping is computed from the data rather than imposed, which means the grouping can be wrong, and the picture is how we find out.
 
@@ -368,12 +369,12 @@ Ask: what's the k-means equivalent of eps? (It's k. Every method has a knob that
 from sklearn import datasets
 iris = datasets.load_iris()
 
-_, ax = plt.subplots(figsize=(9.4, 7.8))
+_, ax = plt.subplots(figsize=(9.4, 5.4))
 for i, name in enumerate(iris.target_names):
     m = iris.target == i
     ax.scatter(iris.data[m, 2], iris.data[m, 1], s=40, color=SPECIES_COLORS[i], label=name)
 ax.set(xlabel=iris.feature_names[2], ylabel=iris.feature_names[1], title="True species")
-_ = ax.legend(loc="lower right", title="Classes")
+_ = ax.legend(loc="upper center", title="Classes")
 plt.tight_layout()
 plt.show()
 ```
@@ -385,6 +386,8 @@ plt.show()
 :::
 
 ::::
+
+**Same axes, same flowers: the species (left) and what k-means found (right).**
 
 ::: {.notes}
 Side by side: true species on the left (from scikit-learn, same axes), Wolfram's k-means with k=3 on the right. Point at the same regions in both:
@@ -682,7 +685,7 @@ Use this as the summary slide and tie each bullet back to a slide.
 
 "Preprocessing": the Iris validation slide, where standardizing the four measurements made agreement with the species worse (ARI 0.73 to 0.62).
 
-"A 2-D projection can hide or invent separation": the two Iris scatterplots use only two of the four measurements. Next lecture on dimensionality reduction takes this up directly, and the t-SNE warnings there (cluster sizes and distances between clusters don't mean much) are the same issue at higher stakes.
+"A 2-D projection can hide or invent separation": the two Iris scatterplots use only two of the four measurements. The second half of today takes this up directly, and the t-SNE warnings there (cluster sizes and distances between clusters don't mean much) are the same issue at higher stakes.
 
 "Show the ambiguous points": the silhouette plot and the confusion matrix both do this. Color a scatterplot by cluster and the boundary points look as certain as the core ones. Encoding membership strength (for example with lower opacity, or the silhouette value) is a cheap way to keep the uncertainty visible.
 :::
@@ -742,13 +745,11 @@ The general version is the manifold hypothesis: real high-dimensional data (face
 Ask: which of the two pictures can be "unrolled" by a projection? Both, because they're flat. The next slide is a case that isn't.
 :::
 
-## Visualizing the Manifold Hypothesis: Images of '3' Perturbed by Non-linear Operations
+## The manifold hypothesis: a '3' perturbed
+
+**What operations did we perform, and what is the intrinsic dimensionality?**
 
 ![](figs/perturbed-3.jpg){fig-align="center"}
-
-* What operations did we perform? What's the intrinsic dimensionality?
-
-* Here the underlying **manifold** is **non-linear**
 
 :::: footer
 Bishop, C. M. (2006). *Pattern Recognition and Machine Learning*, §12.1. Springer.
@@ -757,7 +758,7 @@ Bishop, C. M. (2006). *Pattern Recognition and Machine Learning*, §12.1. Spring
 ::: {.notes}
 This example is from Bishop, chapter 12. Bishop takes one handwritten 3 (a 64x64 image), embeds it in a larger 100x100 canvas, and varies its position and orientation at random.
 
-Ask the two questions on the slide before answering:
+Ask the two questions on the slide before answering. The reveal, which was a second bullet on the slide: the underlying manifold is non-linear.
 
 1. What operations? Horizontal translation, vertical translation, and rotation. Look at the five images: the 3 moves around and tilts, but its shape doesn't change. No scaling, no deformation.
 2. Intrinsic dimensionality? Three: x-shift, y-shift and angle. Each image is a point in a space with 10,000 pixel dimensions, yet the whole collection is a 3-dimensional manifold inside it. (Bishop also notes real digit data adds noise and writing-style variation, so in practice it's near a manifold, not exactly on one.)
@@ -856,7 +857,7 @@ plt.show()
 ```
 
 ::: {.notes}
-Three lines of scikit-learn. Note that this loads all ten digit classes (1,797 images), not the six used for t-SNE.
+Three lines of scikit-learn. Note that this loads all ten digit classes (1,797 images), the same data used for every t-SNE and UMAP demo later in the deck.
 
 `fit_transform` centers the data, computes the top 2 components via SVD, and projects. Uncolored, as with Iris at the start: what do you see? A blob with some lobes, and a few dense fingers sticking out, but nothing as obvious as the t-SNE islands.
 
@@ -880,7 +881,7 @@ plt.show()
 ```
 
 ::: {.notes}
-Same projection, now colored by the true digit. (The only change from the 2025 version is the colormap and colorbar, so the colors can be decoded.)
+Same projection, now colored by the true digit. The colorbar is there so the colors can be decoded.
 
 What separates, using class centers I computed on this exact projection:
 
@@ -888,23 +889,23 @@ What separates, using class centers I computed on this exact projection:
 - **4** sits at the far right (PC1 around +22).
 - **6** sits at the lower right.
 - **3** and **9** lie on the left, overlapping each other.
-- **1, 5 and 8** sit in the middle. 1 and 5 are among the most spread-out classes, smeared across the plot.
+- **7** and **2** sit toward the top, **1** at the upper right (PC2 around +13), and **5** and **8** in the middle, mixed with their neighbors. 1 and 5 are among the most spread-out classes, smeared across the plot.
 
-So "ones are easy" is not true here, despite the ink argument from earlier. Writers draw 1s with and without serifs and at different slants, which spreads them out.
+So "ones are easy" is not true here. Writers draw 1s with and without serifs and at different slants, which spreads them out.
 
-Compare with the t-SNE slide: t-SNE separated every class, and PCA separates three. That's linear vs non-linear, and also 28.5% of the variance vs a method that only cares about neighbors. Both plots are "correct". They answer different questions.
+Compare with the t-SNE slides coming up: t-SNE separates every class, and PCA cleanly separates only three (0, 4 and 6). That's linear vs non-linear, and also 28.5% of the variance vs a method that only cares about neighbors. Both plots are "correct". They answer different questions.
 :::
 
 ## SNE and t-SNE
 
 :::: {.columns}
 
-::: {.column width="50%"}
-![](figs/sne.jpg){height="780"}
+::: {.column width="45%"}
+![](figs/sne.jpg){height="760" fig-align="center"}
 :::
 
-::: {.column width="40%"}
-![](figs/tsne.jpg)
+::: {.column width="55%"}
+![](figs/tsne.jpg){width="100%" fig-align="center"}
 :::
 
 ::::
@@ -949,20 +950,20 @@ Step 1: for each point i, a Gaussian over its neighbors. The width sigma_i is fo
 
 Step 2: similarities between the map points y, with the heavy-tailed kernel (next slide).
 
-Step 3: minimize the KL divergence by gradient descent on the y's. KL is asymmetric. Placing true neighbors far apart in the map (p large, q small) costs a lot; placing non-neighbors close together (p small, q large) costs little. So t-SNE is mostly about keeping neighbors together and says little about how far apart non-neighbors end up, which is why distances between clusters are not trustworthy. The gradient has the same shape as the force-directed layout in the video: each map point is pulled toward its neighbors and pushed away from the rest.
+Step 3: minimize the KL divergence by gradient descent on the y's. KL is asymmetric. Placing true neighbors far apart in the map (p large, q small) costs a lot; placing non-neighbors close together (p small, q large) costs little. So t-SNE is mostly about keeping neighbors together and says little about how far apart non-neighbors end up, which is why distances between clusters are not trustworthy. The gradient has the same shape as a force-directed layout: each map point is pulled toward its neighbors and pushed away from the rest.
 :::
 
 ## Why a heavy tail? The crowding problem
 
 :::: {.columns}
 
-::: {.column width="38%"}
+::: {.column width="40%"}
 * In high dimensions a point can have many neighbors that are all about equally far from it. In 2-D there is not room for them
 * With a Gaussian in the map (SNE), moderately distant pairs look very dissimilar, so the optimizer pulls everything into one crowded blob
 * The Student-t tail decays polynomially: pairs at moderate distance can sit far apart in the map at almost no cost, which opens gaps between clusters
 :::
 
-::: {.column width="62%"}
+::: {.column width="60%"}
 ```{python}
 #| echo: false
 #| fig-align: center
@@ -991,40 +992,42 @@ SKIPPABLE - if running long, jump to 'Wattenberg, Viégas, and Johnson, 2016'.
 
 Why does t-SNE use a Student-t kernel in the map? The crowding problem: in 10 or 50 dimensions a point can have many neighbors at about the same distance, but a 2-D map has far less room around a point. If we model map similarities with a Gaussian, any pair that ends up moderately far apart gets a vanishing similarity, which the cost punishes, so the optimizer squeezes everything together.
 
-The right panel is the log-scale view of the two kernels: by distance 5 the Gaussian is more than ten orders of magnitude below the Student-t. Because the t-distribution's tail is so much heavier, moderately dissimilar points can be placed far apart for free. This is what produces the well-separated clusters, and also why gaps between clusters mean little.
+The right panel is the log-scale view of the two kernels: by distance 5 the Gaussian is about nine orders of magnitude below the Student-t (1.4e-11 against 0.04). Because the t-distribution's tail is so much heavier, moderately dissimilar points can be placed far apart for free. This is what produces the well-separated clusters, and also why gaps between clusters mean little.
 :::
 
 ## Wattenberg, Viégas, and Johnson, 2016
 
-![](figs/using-tsne.jpg)
+![](figs/using-tsne.jpg){fig-align="center"}
 
-https://distill.pub/2016/misread-tsne/
+:::: footer
+Wattenberg, M., Viégas, F., & Johnson, I. (2016). [*How to Use t-SNE Effectively*](https://distill.pub/2016/misread-tsne/). Distill.
+::::
 
 ::: {.notes}
 This article, 'How to Use t-SNE Effectively,' is essential reading. It represents a pivot point in the visualization community, moving from simply celebrating t-SNE's results to critically analyzing its pitfalls. The authors demonstrate, using controlled experiments, which visual properties are meaningful and which are not. The main takeaway is that t-SNE is a visualization tool, not a clustering tool—its output must be treated as a suggestion of structure, not a definitive map of reality. This paper should be required reading for anyone using t-SNE in their work.
 :::
 
-## t-SNE
+## t-SNE: why it is easy to misread
 
-* Wattenberg et al writes "A popular method for exploring high-dimensional data is something called t-SNE... it has an almost magical ability to create compelling two-dimensonal “maps” from data with hundreds or even thousands of dimensions. Although impressive, these images can be tempting to misread."
+* Wattenberg et al. write "A popular method for exploring high-dimensional data is something called t-SNE... it has an almost magical ability to create compelling two-dimensional “maps” from data with hundreds or even thousands of dimensions. Although impressive, these images can be tempting to misread."
 
-* Wattenberg: "The algorithm is **non-linear** and adapts to the underlying data, performing **different transformations on different regions**. Those differences can be a major source of confusion."
+* Wattenberg et al.: "The algorithm is **non-linear** and adapts to the underlying data, performing **different transformations on different regions**. Those differences can be a major source of confusion."
 
-* Watternberg: "A second feature of t-SNE is a tuneable parameter, **“perplexity,”** which says (loosely) how to balance attention between local and global aspects of your data. The parameter is, in a sense, a guess about the number of close neighbors each point has. The perplexity value has a complex effect on the resulting pictures."
+* Wattenberg et al.: "A second feature of t-SNE is a tuneable parameter, **“perplexity,”** which says (loosely) how to balance attention between local and global aspects of your data. The parameter is, in a sense, a guess about the number of close neighbors each point has. The perplexity value has a complex effect on the resulting pictures."
 
 ::: {.notes}
 This is THE critical article to read before using t-SNE. Wattenberg, Viégas, and Johnson from Google Brain systematically explore how t-SNE can be misread. Key point #1: t-SNE is non-linear and does different transformations in different regions - you can't directly compare distances. Key point #2: perplexity is crucial - it's roughly the number of close neighbors each point should have. Too low and you get disconnected clusters, too high and everything merges. We'll see concrete examples next.
 :::
 
-## t-SNE
+## t-SNE: perplexity
 
-* "Those hyperparameters really matter"
+**"Those hyperparameters really matter"**
 
-![](figs/tsneperplexity.jpg)
-
-* "The image for perplexity 100, with merged clusters, illustrates a pitfall: for the algorithm to operate properly, the perplexity really should be smaller than the number of points."
+![](figs/tsneperplexity.jpg){fig-align="center"}
 
 ::: {.notes}
+Wattenberg et al. on the perplexity-100 panel: "The image for perplexity 100, with merged clusters, illustrates a pitfall: for the algorithm to operate properly, the perplexity really should be smaller than the number of points."
+
 The toy data in Wattenberg et al. is two Gaussian clusters of 50 points each, 100 points in all (the 'Original' panel on the left). The other five panels are t-SNE at perplexity 2, 5, 30, 50 and 100, each run for 5,000 steps.
 
 At perplexity 2 and 5 each cluster shatters into small clumps and strings: with so few neighbors t-SNE only sees micro-structure, and it invents sub-clusters that are not in the data. At 30 and 50 we get two clean, compact clusters. At 100 the perplexity equals the number of points, and the two clusters dissolve into one mixed cloud, which is the pitfall quoted on the slide: perplexity must be smaller than the number of points.
@@ -1050,20 +1053,22 @@ plt.tight_layout(rect=[0, 0.07, 1, 1])
 * *Which* groups end up next to each other changes from panel to panel
 
 ::: {.notes}
-SKIPPABLE - if running long, jump to 'Wattenberg, Viégas, and Johnson, 2016'.
+SKIPPABLE - if running long, jump to 't-SNE: iterations'.
 
-This is the perplexity experiment from the article on a real dataset: the 1,797 handwritten digits that ship with scikit-learn (8 by 8 pixel images, 64 features), colored by digit. This is the same dataset the lab uses.
+This repeats the perplexity experiment from the article on a real dataset: the 1,797 handwritten digits that ship with scikit-learn (8 by 8 pixel images, 64 features), colored by digit. It is the same data as the PCA slides.
 
 Perplexity 5: ten groups, but loose, with small islands. 30 and 100: clean, compact groups. 500: the groups are still distinguishable but crowd each other and the middle of the map gets mixed. Ask the class: which of these would you show in a paper, and what would you want to say about how you chose it? Point out that the neighbors of each group differ between panels, so the layout of the groups is not a finding.
 :::
 
-## t-SNE
+## t-SNE: iterations
 
-* "Each of the plots above was made with 5,000 iterations with a learning rate (often called “epsilon”) of 10, and had reached a point of stability by step 5,000. How much of a difference do those values make?"
+**How much of a difference do the number of steps and the learning rate make?**
 
-![](figs/tsnesteps.jpg)
+![](figs/tsnesteps.jpg){fig-align="center"}
 
 ::: {.notes}
+The article's own setup, quoted: "Each of the plots above was made with 5,000 iterations with a learning rate (often called “epsilon”) of 10, and had reached a point of stability by step 5,000. How much of a difference do those values make?"
+
 Same two-cluster data, perplexity fixed at 30 in every panel; only the number of optimization steps changes: 10, 20, 60, 120 and 1,000.
 
 The intermediate pictures are not 'less converged versions of the answer', they are different-looking artifacts: at step 10 the clusters are separated; at 20 each is squashed into a line; at 60 each has collapsed to almost a single point; at 120 they have re-expanded into ragged shapes; only by step 1,000 do we get two compact clusters. Shapes at intermediate steps come from the optimizer, not the data.
@@ -1071,31 +1076,29 @@ The intermediate pictures are not 'less converged versions of the answer', they 
 Lesson: run until the picture stops changing. In scikit-learn the defaults are max_iter=1000 and learning_rate='auto'; the 5,000-step runs in the other figures are the article's choice, not a default.
 :::
 
-## t-SNE
+## t-SNE: cluster sizes
 
-* "Cluster sizes in a t-SNE plot mean nothing"
+**"Cluster sizes in a t-SNE plot mean nothing"**
 
-![](figs/tsneclustersizes.jpg)
-
-* "Size refers to spatial extent/area, not the number of points in the cluster."
-
-* "The t-SNE algorithm adapts its notion of "distance" to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes."
+![](figs/tsneclustersizes.jpg){fig-align="center"}
 
 ::: {.notes}
+Two quotes from the article: "Size refers to spatial extent/area, not the number of points in the cluster." and "The t-SNE algorithm adapts its notion of "distance" to regional density variations in the data set. As a result, it naturally expands dense clusters, and contracts sparse ones, evening out cluster sizes."
+
 The reason t-SNE expands dense clusters and contracts sparse ones is due to its cost function, specifically the use of the heavy-tailed t-distribution, which is designed to resolve points within a cluster clearly. If a cluster is naturally dense, t-SNE must push points further apart in the low-dimensional embedding to satisfy the local probability distribution, effectively equalizing the density of the clusters in 2D space. Therefore, the area or size of a cluster in a t-SNE plot is not proportional to the cluster's density or variance in the original space. This is a feature, not a bug - it ensures all clusters are visible, but it means you can't compare cluster sizes visually.
 
 Look at the 'Original' panel: the blue cluster is much more spread out than the tight orange one. At perplexity 30 and 50 t-SNE draws the two clusters at about the same size, which is the point of the slide: it expands dense regions and contracts sparse ones. At perplexity 100 the orange cluster is even drawn as a ring.
 :::
 
-## t-SNE
+## t-SNE: distances between clusters
 
-* "Distances between clusters might not mean anything"
+**"Distances between clusters might not mean anything"**
 
-* "The next diagrams show three Gaussians of 50 points each, one pair being 5 times as far apart as another pair."
-
-![](figs/tsneclusterdistances.jpg)
+![](figs/tsneclusterdistances.jpg){fig-align="center"}
 
 ::: {.notes}
+The article's setup: "The next diagrams show three Gaussians of 50 points each, one pair being 5 times as far apart as another pair."
+
 Original data: three clusters, where the blue and orange clusters are close together and the green one is far away. Then t-SNE at perplexity 2, 5, 30, 50 and 100 (5,000 steps each).
 
 At 2 and 5 every cluster fragments. At perplexity 30 the three clusters end up at roughly the corners of a triangle: the near pair is no longer near, and the far cluster is no longer far. At 50 and 100 the original arrangement is roughly recovered (orange and blue close, green far), but at 50 the green cluster has shrunk to a speck.
@@ -1127,15 +1130,15 @@ Same experiment as the 'distances between clusters' slide, but now we vary only 
 Ask: if you only had one of these three plots, which relationships would you be tempted to read into it? None of the between-group distances should be reported as a finding.
 :::
 
-## t-SNE
+## t-SNE: random noise
 
-* "Random noise doesn’t always look random."
+**"Random noise doesn’t always look random."**
 
-* "The next diagrams show genuinely random data, 500 points drawn from a unit Gaussian distribution in 100 dimensions. The left image is a projection onto the first two coordinates."
-
-![](figs/tsnerandom.jpg)
+![](figs/tsnerandom.jpg){fig-align="center"}
 
 ::: {.notes}
+The article's setup: "The next diagrams show genuinely random data, 500 points drawn from a unit Gaussian distribution in 100 dimensions. The left image is a projection onto the first two coordinates."
+
 The data is 500 points from a unit Gaussian in 100 dimensions: pure noise, no clusters. The 'Original' panel is the projection onto the first two coordinates, a Gaussian cloud denser in the middle. Then t-SNE at perplexity 2, 5, 30, 50 and 100.
 
 At perplexity 2 and 5 t-SNE produces clumps, gaps and filaments, i.e. apparent clusters, from noise. At 30 the output is close to a uniform disk (the dense center has been flattened: density information is lost). At 50 and 100 there is still some faint swirl structure.
@@ -1143,15 +1146,15 @@ At perplexity 2 and 5 t-SNE produces clumps, gaps and filaments, i.e. apparent c
 Lesson: apparent clusters at low perplexity may be noise. Compare against a linear baseline and run several perplexities before believing structure.
 :::
 
-## t-SNE
+## t-SNE: topology
 
-* "For topology, you may need more than one plot"
+**"For topology, you may need more than one plot"**
 
-* "The plots below show two groups of 75 points in 50 dimensional space. Both are sampled from symmetric Gaussian distributions centered at the origin, but one is 50 times more tightly dispersed than the other. The “small” distribution is in effect contained in the large one."
-
-![](figs/tsnetopology.jpg)
+![](figs/tsnetopology.jpg){fig-align="center"}
 
 ::: {.notes}
+The article's setup: "The plots below show two groups of 75 points in 50 dimensional space. Both are sampled from symmetric Gaussian distributions centered at the origin, but one is 50 times more tightly dispersed than the other. The “small” distribution is in effect contained in the large one."
+
 Two Gaussians of 75 points each in 50 dimensions. Both are centered at the origin, but the blue one is 50 times tighter, so it sits inside the orange one.
 
 Perplexity 2 and 5: the two groups are mixed together, there is no containment. At 30 the blue points concentrate in the middle but are still intermingled with orange. At 50 we finally get the right picture: a blue core inside an orange ring. At 100 the blue cluster collapses to a single dot inside a circle of orange.
@@ -1161,9 +1164,13 @@ So the topology (one group inside another) shows up only for a middle range of p
 
 ## Topomap (Doraiswamy et al)
 
-![](figs/topomap.jpg)
+**Topomap preserves the 0-dimensional persistence diagram of the Rips filtration of the high-dimensional data.**
 
-* Topomap preserves the 0-dimensional persistence diagram of the Rips filtration of the high-dimensional data.
+![](figs/topomap.jpg){fig-align="center"}
+
+:::: footer
+Doraiswamy, H., Tierny, J., Silva, P. J. S., Nonato, L. G., & Silva, C. (2021). *TopoMap: A 0-dimensional homology preserving projection of high-dimensional data*. IEEE TVCG.
+::::
 
 ::: {.notes}
 The figure is Fig. 1 of the TopoMap paper. Three 3-D datasets, top to bottom: three separated clusters (800 points), three interlinked rings (3,210 points), and a small cluster nested inside a large spherical shell (4,002 points). Columns: the input, then MDS, Isomap, t-SNE, UMAP and TopoMap in 2-D, with run times.
@@ -1175,9 +1182,11 @@ What you give up: it preserves components, not loops or holes (the rings come ou
 
 ## Understanding UMAP (Coenen & Pearce)
 
-![](figs/understanding-umap.jpg)
+![](figs/understanding-umap.jpg){.nostretch width="50%" fig-align="center"}
 
-https://pair-code.github.io/understanding-umap/
+:::: footer
+Coenen, A., & Pearce, A. (2019). [*Understanding UMAP*](https://pair-code.github.io/understanding-umap/). Google PAIR.
+::::
 
 ::: {.notes}
 We transition now to UMAP (Uniform Manifold Approximation and Projection). UMAP has rapidly replaced t-SNE as the go-to default for many visualization tasks. It shares the same philosophy as t-SNE—preserving local neighborhood structure—but it is built on a more rigorous theoretical foundation derived from Riemannian geometry and algebraic topology. This foundation is why UMAP is typically faster, scales better, and is often cited as better at preserving global data structure. This interactive article from Google's PAIR team is THE best resource for understanding UMAP, with interactive visualizations showing exactly how the algorithm works.
@@ -1185,12 +1194,25 @@ We transition now to UMAP (Uniform Manifold Approximation and Projection). UMAP 
 
 ## UMAP
 
-* Coenen and Pearce: "UMAP is fast, scaling well in terms of both dataset size and dimensionality. ... UMAP can project the 784-dimensional, 70,000-point MNIST dataset in less than 3 minutes, compared to 45 minutes for scikit-learn's t-SNE implementation. Additionally, UMAP tends to better preserve the global structure of the data." 
+:::: {.columns}
+::: {.column width="40%"}
+* **Fast:** 70,000 MNIST images (784 dimensions) in under 3 minutes, against 45 minutes for scikit-learn's t-SNE
+* **Reported** to preserve global structure better than t-SNE; later work credits much of this to initialization
+* Shown: Fashion-MNIST in 3-D, UMAP left, t-SNE right
+:::
+::: {.column width="60%"}
+![](figs/umapvstsne.jpg){width="100%" fig-align="center"}
+:::
+::::
 
-![](figs/umapvstsne.jpg)
+:::: footer
+Coenen, A., & Pearce, A. (2019). [*Understanding UMAP*](https://pair-code.github.io/understanding-umap/). Google PAIR.
+::::
 
 ::: {.notes}
-The figure is from Coenen and Pearce's 'Understanding UMAP'. It is Fashion-MNIST, not digits: 28 by 28 images of clothing in 10 categories, encoded as 784-dimensional vectors and projected to 3-D with UMAP (left) and t-SNE (right).
+The slide condenses this passage from Coenen and Pearce: "UMAP is fast, scaling well in terms of both dataset size and dimensionality. ... UMAP can project the 784-dimensional, 70,000-point MNIST dataset in less than 3 minutes, compared to 45 minutes for scikit-learn's t-SNE implementation. Additionally, UMAP tends to better preserve the global structure of the data." The caveat in the second bullet is ours (Kobak and Linderman, see the comparison table later).
+
+The figure is from the same article. It is Fashion-MNIST, not digits: 28 by 28 images of clothing in 10 categories, encoded as 784-dimensional vectors and projected to 3-D with UMAP (left) and t-SNE (right).
 
 Both methods put footwear (sandal, sneaker, ankle boot) in one region away from the garments, and both separate trousers and bags. In the UMAP view the groups are separated by visible gaps; in the t-SNE view the upper-body garments (T-shirt, shirt, pullover, coat) form one continuous mass.
 
@@ -1199,9 +1221,13 @@ The speed numbers quoted on the slide (under 3 minutes vs 45 minutes for 70,000 
 
 ## UMAP
 
-* "UMAP, at its core, works very similarly to t-SNE - both use graph layout algorithms to arrange data in low-dimensional space."
+**UMAP, like t-SNE, is a graph layout algorithm: it arranges points in 2-D so that a neighbor graph is preserved.**
 
-![](figs/umapfuzzygraph.jpg)
+![](figs/umapfuzzygraph.jpg){fig-align="center"}
+
+:::: footer
+Coenen, A., & Pearce, A. (2019). [*Understanding UMAP*](https://pair-code.github.io/understanding-umap/). Google PAIR.
+::::
 
 ::: {.notes}
 How UMAP works: it builds a "fuzzy topological representation" of the high-dimensional data. Essentially, it creates a weighted graph where edges represent neighborhood relationships, but the weights are "fuzzy" (probabilistic) rather than binary. Then it tries to find a similar graph structure in low dimensions. The theoretical foundation involves category theory and Riemannian geometry - much more sophisticated than t-SNE's probability distributions. But practically, you can think of it like force-directed graph layout with better math.
@@ -1219,11 +1245,16 @@ The two core UMAP parameters, n_neighbors and min_dist, allow precise control ov
 
 ## UMAP parameters
 
-* **n_neighbors** - the number of approximate nearest neighbors used to construct the initial high-dimensional graph. 
+:::: {.columns}
+::: {.column width="40%"}
+* **n_neighbors** - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.
 
 * **min_dist** - the minimum distance between points in low-dimensional space.
-
-![](figs/umapmindist-0.jpg)
+:::
+::: {.column width="60%"}
+![](figs/umapmindist-0.jpg){width="100%" fig-align="center"}
+:::
+::::
 
 ::: {.notes}
 The data is a 3-D woolly mammoth skeleton (50,000 points, 10,000 shown), colored by body part on the left; the right panel is its 2-D UMAP projection with n_neighbors=15 and min_dist=0.0.
@@ -1233,11 +1264,16 @@ With min_dist=0 points may sit right on top of each other. The projection breaks
 
 ## UMAP parameters
 
-* **n_neighbors** - the number of approximate nearest neighbors used to construct the initial high-dimensional graph. 
+:::: {.columns}
+::: {.column width="40%"}
+* **n_neighbors** - the number of approximate nearest neighbors used to construct the initial high-dimensional graph.
 
 * **min_dist** - the minimum distance between points in low-dimensional space.
-
-![](figs/umapmindist-0.8.jpg)
+:::
+::: {.column width="60%"}
+![](figs/umapmindist-0.8.jpg){width="100%" fig-align="center"}
+:::
+::::
 
 ::: {.notes}
 Same mammoth and the same n_neighbors=15, but now min_dist=0.8. Points are forced apart, and the picture becomes one filled blob in which the body-part colors form patches. It is easier to see individual points and there is less overplotting, but the fine strand structure from the previous slide is gone.
@@ -1279,7 +1315,7 @@ UMAP took a few seconds per panel here (including numba compilation on the first
 
 ## UMAP
 
-![](figs/umapvstsne-param.jpg)
+![](figs/umapvstsne-param.jpg){fig-align="center"}
 
 ::: {.notes}
 This figure from Coenen and Pearce uses one toy dataset, a dense, tight cluster inside a wide, sparse one (100 points per cluster, 50 dimensions), and varies t-SNE's perplexity (top row) and UMAP's n_neighbors (bottom row) over 3, 5, 15, 30, 50 and 100.
@@ -1414,7 +1450,7 @@ A checklist to take away, and something you can apply directly in your projects.
 
 ## What about user interaction?
 
-![](figs/projections.jpg)
+![](figs/projections-crop.jpg){fig-align="center"}
 
 ::: {.notes}
 This slide is a table from the visualization literature, not a system. It lists projection algorithms from Kruskal (1964) to LAMP (2011) with their time complexity, whether they mainly preserve local or global structure, and whether they are 'steerable', meaning that a user can influence the layout, typically by placing control points. The check marks are LSP, PLMP, PLP and LAMP (Paulovich et al. and Joia et al.); Glimmer has a partial mark.
