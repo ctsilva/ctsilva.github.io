@@ -290,7 +290,7 @@ author_profile: true
 **Assignment:** Continue Mini-project 2 (due Nov 19)
 
 ### **Week 11** (Nov 13) - Clustering and Dimensionality Reduction
-**Presenter:** Parikshit Solunke
+**Presenter:** Giancarlo Pereira
 **Learning Objectives:** Understand how to compute, judge and visualize clusterings; understand PCA, t-SNE, and UMAP for high-dimensional data visualization; recognize critical pitfalls in dimensionality reduction
 
 **Lecture:** [Week 11 - Clustering and Dimensionality Reduction](slides/week11-clustering.html)

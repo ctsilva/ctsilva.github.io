@@ -133,7 +133,7 @@ author_profile: true
 - **Supplemental Material:** When to use 2D vs 3D, Hybrid visualization approaches, Precomputation for real-time queries
 
 ### Week 11 (Nov 13) - Clustering and Dimensionality Reduction
-- **Presenter:** Parikshit Solunke
+- **Presenter:** Giancarlo Pereira
 - **Slides:** [Clustering and Dimensionality Reduction](/2026-InfoVis-CSE/slides/week11-clustering.html) | **Lab:** [Building temporal visualizations, Time series analysis with D3](/2026-InfoVis-CSE/labs/week11-lab.html)
 - **Topics:** Clustering Iris (K-means, DBSCAN, hierarchical clustering, when each fails), Judging a clustering (elbow, silhouette, dendrograms), Visualizing clusterings (cluster colors, clustered heatmaps, silhouette plots), Dimensionality reduction fundamentals, Linear methods (PCA), Non-linear methods (t-SNE, UMAP), Judging a projection (trustworthiness and continuity), Critical visualization principles for high-dimensional data
 - **Lab:** Building temporal visualizations, Time series analysis with D3
