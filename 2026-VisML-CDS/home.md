@@ -171,8 +171,15 @@ author_profile: true
   - TDA Software: GUDHI, scikit-tda, Ripser, KeplerMapper
 
 ### Week 11 — Tuesday, Nov 17
-- **Topics:** TBA
-- **Materials:** *To be posted*
+- **Topics:** Time Series and Temporal Data in ML
+- **Materials:**
+  - [Time Series and Temporal Data in ML](/2026-VisML-CDS/slides/time-series.html)
+  - [Lab: Time Series, Hands-On](/2026-VisML-CDS/labs/time-series/lab.html)
+- **Content:**
+  - Temporal data basics and charts for time (line charts, heat maps, horizon charts)
+  - Evaluating a forecast: prediction intervals, backtesting, residuals
+  - Drift and monitoring of deployed models
+  - Anomaly detection and the threshold trade-off
 
 ### Week 12 — Tuesday, Nov 24
 - **Topics:** TBA

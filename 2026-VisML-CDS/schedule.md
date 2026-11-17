@@ -218,20 +218,22 @@ author_profile: true
 ---
 
 ### Week 11: Tuesday, Nov 17
-## Time Series and Streaming Data
+## Time Series and Temporal Data in ML
 
 **Lecture Topics:**
-- Temporal model performance
-- Concept drift visualization
-- Real-time monitoring
-- Anomaly detection displays
+- Temporal data basics and charts for time: line charts, heat maps, horizon charts
+- Evaluating a forecast: prediction intervals, backtesting, residuals
+- Drift and monitoring of deployed models
+- Anomaly detection and the threshold trade-off
 
 **Lab Session:**
-- Streaming visualization implementation
-- Dashboard design patterns
+- [Time Series, Hands-On](/2026-VisML-CDS/labs/time-series/lab.html)
+- NYC taxi demand: views at different resolutions, random vs. time-ordered validation, anomaly detection
+- Project check-in
 
 **Readings:**
-- Selected papers on temporal visualization
+- Hyndman & Athanasopoulos, "Forecasting: Principles and Practice" (3rd ed.), Chapter 5
+- Gama et al., "A Survey on Concept Drift Adaptation" (2014)
 
 ---
 

@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="time-series_files/libs/clipboard/clipboard.min.js"></script>
+<script src="time-series_files/libs/quarto-html/tabby.min.js"></script>
+<script src="time-series_files/libs/quarto-html/popper.min.js"></script>
+<script src="time-series_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="time-series_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="time-series_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="time-series_files/libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2026-11-17">
+  <title>Time Series and Temporal Data in ML</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="time-series_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="time-series_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="time-series_files/libs/revealjs/dist/theme/quarto-301a79802fc6fcd8a59c67ad00211b93.css">
+  <link rel="stylesheet" href="lab-light-theme.css">
+  <link href="time-series_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="time-series_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="time-series_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="time-series_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Time Series and Temporal Data in ML</h1>
+  <p class="subtitle">DS-GA 3001 - Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Center for Data Science
+          </p>
+    </div>
+</div>
+
+  <p class="date">2026-11-17</p>
+</section>
+<section class="slide level2">
+<h2>Today</h2>
+<ol type="1">
+<li><strong>Temporal data basics</strong>: events and measurements, time structures, aggregation</li>
+<li><strong>Charts for time</strong>: line charts and aspect ratio, many series, heat maps, horizon charts</li>
+<li><strong>Evaluating a forecast</strong>: prediction intervals, time-ordered validation, residuals, horizon</li>
+<li><strong>Drift and monitoring</strong>: when a deployed model goes stale, and how to see it</li>
+<li><strong>Anomaly detection</strong>: showing anomalies in context, and the threshold trade-off</li>
+</ol>
+<p><em>Parts 1 and 2 are based on materials by Enrico Bertini (NYU Tandon).</em></p>
+<aside class="notes">
+<p>TIMING (120 min): parts 1 and 2 about 45 min, part 3 about 30, part 4 about 25, part 5 about 15. If part 2 runs long, skip the two ‘Building a horizon chart’ slides.</p>
+<p>Last week Pari covered topological data analysis. Today is time: first how to draw temporal data well (parts 1 and 2, about 50 minutes), then three places where time changes how we evaluate and monitor a model (parts 3 to 5, about 60 minutes).</p>
+<p>Parts 3 to 5 connect back to Week 3, model assessment. Everything there assumed the test set looks like the training set. With time in the data that assumption fails in specific, visible ways.</p>
+<p>All the charts in parts 3 to 5 are computed in this deck from synthetic data, so that we know the ground truth (where the drift starts, which points are anomalies). Each one says so.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section>
+<section class="title-slide slide level1 center" data-background-color="#57068c">
+<h1>Temporal Data Basics</h1>
+
+</section>
+<section class="slide level2">
+<h2>What is temporal data?</h2>
+<p><strong>Data in which values depend on time, and time is explicitly recorded.</strong></p>
+
+<img data-src="figs/time-series/temporal-dataset-structure.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>The table is a list of incidents in New York City just after midnight on June 12, 2018. The DAT and TIME columns are what make it temporal: each row is one event with a timestamp, plus where it happened (borough, zip code, latitude and longitude, street names).</p>
+<p>Ask: what datasets have you worked with that have time in them? How is time recorded, and at what granularity?</p>
+<p>Ordered data is not automatically temporal. A ranking has an order but no timestamps.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Two kinds of temporal data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Event data</h3>
+<p><strong>Time + object (with attributes)</strong></p>
+<p>“Something happened at time T”</p>
+<ul>
+<li>A tweet, an email, an alarm, a model prediction request</li>
+<li>Often irregular: events happen when they happen</li>
+<li>Question: when, how often, in what order?</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Measurement data</h3>
+<p><strong>Time + measure(s)</strong></p>
+<p>“This was the value at time T”</p>
+<ul>
+<li>Temperature, revenue, a stock price, daily model accuracy</li>
+<li>Usually sampled at regular intervals</li>
+<li>Question: how does the value change?</li>
+</ul>
+</div></div>
+<p><strong>Counting events per interval turns event data into measurement data.</strong></p>
+<aside class="notes">
+<p>The table on the previous slide is event data: each row happened once, at its own time.</p>
+<p>Measurement data is what most people mean by ‘time series’: a value recorded at each time step.</p>
+<p>The line between them is aggregation. Count incidents per day and you have a measurement series. That is also how most ML monitoring works: individual predictions are events, weekly accuracy is a measurement. We come back to this in part 4.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Three time structures</h2>
+<ol type="1">
+<li><strong>Sequential</strong>: time as a line (Jan 1, …, Dec 31). Shows trends and change.</li>
+<li><strong>Cyclic</strong>: time as a repeating cycle (Mon, Tue, …, Sun). Shows rhythms.</li>
+<li><strong>Hierarchical</strong>: nested resolutions (year / month / week / day / hour). Allows drill-down.</li>
+</ol>
+<p><strong>Most real series have all three at once. You choose which one a chart emphasizes.</strong></p>
+<aside class="notes">
+<p>Website traffic is the standard example: it grows over years (sequential), it dips every weekend (cyclic), and you can look at it by hour, day or month (hierarchical).</p>
+<p>For ML this is also a statement about features. A model that only sees a time index can learn the trend. To learn the weekly rhythm it needs day-of-week as an input. We will see what a model’s errors look like when that feature is missing (part 3).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The same orders, two time structures</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Sequential: sales by month, 2013 to 2016</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/sales-sequential-view.png" class="quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Cyclic: number of orders by day of the week</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/sales-cyclic-view.png" class="quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>Neither chart can show what the other shows.</strong></p>
+<ul>
+<li>Left answers: is the business growing, and when are the peaks?</li>
+<li>Right answers: which day of the week is slow?</li>
+<li>Same order records both times. Choosing the bin (month or weekday) is choosing the question.</li>
+</ul>
+<aside class="notes">
+<p>Left: monthly sales over four years. You can see growth and a spiky pattern that repeats toward the end of each year. You cannot see anything about weekdays.</p>
+<p>Right: the same order records, counted by day of the week. Tuesday is the low point by a wide margin, under 400 orders against roughly 1,450 to 1,900 on the other days. You cannot see anything about growth.</p>
+<p>Same data, two aggregations, two different stories.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Aggregation is a design decision</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>What aggregation buys</strong></p>
+<ul>
+<li>Less noise</li>
+<li>Visible long-term trends</li>
+<li>A manageable number of points</li>
+</ul>
+<p><em>Daily to monthly averages makes a seasonal pattern readable.</em></p>
+</div><div class="column" style="width:50%;">
+<p><strong>What aggregation costs</strong></p>
+<ul>
+<li>Short events disappear</li>
+<li>Extreme values are averaged away</li>
+<li>The pattern can depend on the bin size</li>
+</ul>
+<p><em>A one-hour outage is invisible in a monthly average.</em></p>
+</div></div>
+<p><strong>Choose the granularity from the question: trends want coarse bins, anomalies want fine ones.</strong></p>
+<aside class="notes">
+<p>You cannot avoid aggregating: raw data at the finest granularity rarely fits on a screen. But every choice hides something.</p>
+<p>For monitoring a model this is a real trade-off. Weekly accuracy is stable enough to read, and it will hide a failure that lasted an afternoon.</p>
+<p>A common answer is interaction: let the reader change the bin size, or show an overview with a detail view beside it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center" data-background-color="#57068c">
+<h1>Charts for Time</h1>
+
+</section>
+<section class="slide level2">
+<h2>Line charts: time on x, value on y</h2>
+<p><strong>Position encodes both time and value; the line’s slope encodes the rate of change.</strong></p>
+
+<img data-src="figs/time-series/line-chart-basic.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>The default chart for measurement data, here quarterly sales from 2013 to 2016.</p>
+<p>Because the line connects consecutive points, the reader’s eye goes to slopes: where it rises, where it falls, how steeply. That is exactly why the next slides matter. The slope you see depends on the shape of the chart.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The same data at three aspect ratios</h2>
+<p><strong>The aspect ratio (width / height) changes how steep every change looks.</strong></p>
+
+<img data-src="figs/time-series/aspect-ratio-impact.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Three panels, one series (February to October). In the tall narrow panel the drop after August looks like a cliff. In the wide flat panel at the bottom the same drop looks moderate.</p>
+<p>Nothing about the data changed. Plotting libraries pick a default aspect ratio, and that default is making a claim about how dramatic your data is.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Banking to 45°</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>We compare the slopes of line segments most accurately when they are <strong>near 45°</strong></li>
+<li><strong>Banking to 45°</strong>: choose the aspect ratio so the typical segment has a 45° slope</li>
+<li>Right: Canadian lynx trappings, 1821 to 1934</li>
+<li>Wide and flat (bottom): each cycle <strong>rises slowly and falls quickly</strong>, which the tall version hides</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/lynx-aspect-square.png" class="quarto-figure quarto-figure-center" height="560"></p>
+</figure>
+</div>
+<p><img data-src="figs/time-series/lynx-aspect-banked.png" style="width:100.0%"></p>
+</div></div>
+<div class="footer">
+<p>Cleveland, W. S., McGill, M. E., &amp; McGill, R. (1988). <a href="https://doi.org/10.1080/01621459.1988.10478598"><em>The shape parameter of a two-variable graph</em></a>. JASA.</p>
+</div>
+<aside class="notes">
+<p>Both plots are from Cleveland, McGill and McGill (1988): the log of the number of lynx trapped each year.</p>
+<p>In the tall plot the cycles are obvious, about ten years apart, but every segment is nearly vertical, so you cannot compare a rise with a fall.</p>
+<p>In the banked plot the segments sit near 45 degrees and an asymmetry appears: the population climbs gradually and crashes fast. That is a real feature of the data that one aspect ratio shows and the other does not.</p>
+<p>Practical rule: try more than one aspect ratio before you settle.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Several series: color by category</h2>
+<p><strong>Three categories on shared axes are easy to compare.</strong></p>
+
+<img data-src="figs/time-series/multiple-line-charts.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Quarterly sales for three customer segments: Consumer, Corporate and Home Office. With three lines, color works: you can follow each one and see that they move together, with Consumer highest in almost every quarter.</p>
+<p>The next slide is the same idea with seventeen lines.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The spaghetti plot</h2>
+<p><strong>Seventeen categories on shared axes: color runs out and lines hide each other.</strong></p>
+
+<img data-src="figs/time-series/spaghetti-plot.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Same sales data, now split into seventeen product sub-categories.</p>
+<p>Ask: what can you still read here? The overall envelope, and maybe the top one or two series. What can’t you read? Any individual series in the middle, or a comparison between two specific ones.</p>
+<p>This is the chart you get if you plot per-class or per-segment model metrics over time with default settings.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Two fixes: filter, or highlight</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Filter: show only the series you care about</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/lines-filtered.png" class="quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Highlight: keep the rest as faded context</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/lines-highlighted.png" class="quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+</div></div>
+<ul>
+<li><strong>Filtering</strong> removes the context: are these three series typical?</li>
+<li><strong>Highlighting</strong> keeps the context, at the cost of some clutter</li>
+<li>A third fix is <strong>small multiples</strong>: one small chart per series on shared axes. Nothing is hidden, but two series are harder to overlay.</li>
+</ul>
+<aside class="notes">
+<p>Left: only Chairs, Phones and Tables are drawn. Clean, but you no longer know whether these three are typical.</p>
+<p>Right: the same three are emphasized and the other fourteen stay as faint lines. You can read the three and still see where they sit relative to everything else. In an interactive tool this is what hovering or selecting does.</p>
+<p>Small multiples give every series its own panel. You lose the ability to overlay two series precisely, and gain a view where nothing is hidden. Several of the charts in parts 3 to 5 are small multiples with a shared time axis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Stacked areas are hard to read</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Four regions as lines</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/regions-lines.png" class="quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>The same four regions stacked</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/regions-stacked-area.png" class="quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>Only the bottom layer and the total have a flat baseline. Every other layer rides on the ones below it.</strong></p>
+<ul>
+<li>Left: comparing any two regions takes a glance, but the total is not drawn</li>
+<li>Right: the total is the top edge, but try to say whether South (red) rose or fell in a given quarter</li>
+<li>Stack when the total and the bottom layer are what matter</li>
+</ul>
+<aside class="notes">
+<p>Both charts show quarterly sales for four regions: Central, East, South and West.</p>
+<p>On the right, try to say whether South (the red layer) went up or down in a given quarter. It is hard, because its baseline is the top of West, which is moving. On the left the same question takes a second.</p>
+<p>The stacked version does one thing the lines do not: it shows the total. Use it when the total and the bottom layer are what matter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Heat maps: time on one axis, categories on the other</h2>
+<p><strong>Color replaces height, so many series fit in the space of one line chart.</strong></p>
+
+<img data-src="figs/time-series/heatmap-temporal.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Rows are the seventeen product sub-categories from the spaghetti plot. Columns are the day of the month, 1 to 31. Color is sales, light to dark.</p>
+<p>Now all seventeen are readable at once: the Chairs and Phones rows are dark across the whole month, and Machines has a few very dark days. What you give up is precision, since color is a much weaker channel for magnitude than position (Week 2).</p>
+<p>This layout, entities by time with color for a metric, is one of the most useful for model monitoring: features by week, classes by week, customer segments by day.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Measles in the United States, by state and year</h2>
+
+<img data-src="figs/time-series/wsj-vaccine-heatmap.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>DeBold, T., &amp; Friedman, D. (2015). <a href="http://graphics.wsj.com/infectious-diseases-and-vaccines/"><em>Battling Infectious Diseases in the 20th Century: The Impact of Vaccines</em></a>. The Wall Street Journal.</p>
+</div>
+<aside class="notes">
+<p>One row per US state, one column per year, color for measles cases (the scale runs from 0 to 4k). The black vertical line marks the introduction of the vaccine in 1963.</p>
+<p>To the left of the line almost every cell is colored. Within a few years to the right the grid turns pale and stays that way.</p>
+<p>This is the same visual signature as a change point in a monitored model: a before, an after, and an annotation that says what happened at the boundary. Annotating known events on the time axis is something every monitoring chart later in this lecture does.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Calendar heat maps</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>A heat map laid out by the calendar: <strong>rows are weekdays, columns are weeks</strong></li>
+<li>Weekly rhythm reads down a column, seasonal rhythm across a row</li>
+<li>Here: daily bike-share rides, 2014 to mid-2017</li>
+<li>Summers are bright, winters dark, every year</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/calendar-visualization.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Each block is one year of daily Divvy (Chicago bike-share) rides. Rows run Monday to Sunday and columns are weeks from January to December. The last block stops in June because the data ends there.</p>
+<p>The seasonal pattern dominates: ridership peaks in the middle of each year. Within the summer months the brightest cells are in the weekend rows.</p>
+<p>This is the cyclic and the sequential structure in one picture. The GitHub contribution graph is the same design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Horizon charts: many series in little space</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Line charts squeezed into thin rows</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/horizon-before-line-charts.png" class="quarto-figure quarto-figure-center" height="480"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>The same rows as horizon charts</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/horizon-after.png" class="quarto-figure quarto-figure-center" height="480"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>Same data, same space. The next two slides show how the right-hand version is built.</strong></p>
+<ul>
+<li>Left: about fifty line charts, each a few pixels tall. They all look flat.</li>
+<li>Right: blue is above the baseline, red below, and darker is further from it</li>
+</ul>
+<div class="footer">
+<p>Heer, J., Kong, N., &amp; Agrawala, M. (2009). <a href="https://doi.org/10.1145/1518701.1518897"><em>Sizing the horizon: the effects of chart size and layering on the graphical perception of time series visualizations</em></a>. CHI.</p>
+</div>
+<aside class="notes">
+<p>About fifty stocks, one per row. On the left each row is a line chart only a few pixels tall, and they all look flat.</p>
+<p>On the right the same rows use color: blue for above the baseline, red for below, darker for further away. You can see at a glance which stocks fell and when, and that many of them fell together.</p>
+<p>Heer, Kong and Agrawala studied how far charts like these can be compressed before reading accuracy suffers.</p>
+<p>Note the name clash: later today ‘horizon’ also means how far ahead a forecast looks. The two are unrelated.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Building a horizon chart (1): cut into bands</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/horizon-step1-area.png" class="nostretch quarto-figure quarto-figure-center" style="width:74.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/horizon-step2-bands.png" class="nostretch quarto-figure quarto-figure-center" style="width:74.0%"></p>
+</figure>
+</div>
+<p><strong>Fill the area between the line and the baseline, then slice it into bands of equal height. Darker means further from the baseline.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Sparklines’.</p>
+<p>Top: an ordinary line chart with a horizontal baseline.</p>
+<p>Bottom: the area is filled, blue above the baseline and red below, and divided into bands. The first band is light, the next darker, the third darkest. So far nothing has been compressed. It is the same chart with a layered color scale.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Building a horizon chart (2): mirror and collapse</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/horizon-step3-flip.png" class="nostretch quarto-figure quarto-figure-center" style="width:74.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/horizon-step4-collapse.png" class="nostretch quarto-figure quarto-figure-center" style="width:46.0%"></p>
+</figure>
+</div>
+<p><strong>Mirror the negative values above the baseline, then slide every band down to the baseline. Height becomes color intensity.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Sparklines’.</p>
+<p>Top: the red (negative) part is flipped up, so everything sits above the baseline and the chart needs half the height. Color still tells you the sign.</p>
+<p>Bottom: a close-up of one peak after the bands are slid down on top of each other. The chart is now one band tall. A dark patch means the value reached the third band there.</p>
+<p>That is why the horizon chart two slides back reads as ‘darker is more extreme’.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Sparklines</h2>
+<blockquote>
+<p>“Small, intense, word-sized graphics with typographic resolution.” (Edward Tufte, <em>Beautiful Evidence</em>, 2006)</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/sparklines-dashboard.png" class="quarto-figure quarto-figure-center" style="width:92.0%"></p>
+</figure>
+</div>
+<p><strong>No axes and no labels: a sparkline sits beside a number and shows where it came from.</strong></p>
+<aside class="notes">
+<p>A 28-day summary from a Twitter analytics page (October 2015). Each number has its change over the previous period and a tiny line of its recent history underneath.</p>
+<p>The sparkline does not let you read values. It answers one question: is this number part of a trend, a spike, or business as usual?</p>
+<p>Most monitoring dashboards are built from this pattern: one row per metric, the current value, and a sparkline.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center" data-background-color="#57068c">
+<h1>Evaluating a Forecast</h1>
+
+</section>
+<section class="slide level2">
+<h2>Time series tasks in ML</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>What we ask a model to do</strong></p>
+<ul>
+<li><strong>Forecast</strong>: predict the next values</li>
+<li><strong>Classify</strong>: label a whole series or a window</li>
+<li><strong>Detect anomalies</strong>: flag what does not belong</li>
+<li><strong>Monitor</strong>: watch a deployed model’s inputs and outputs over time</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>What time changes</strong></p>
+<ul>
+<li>Observations are <strong>not independent</strong>: today looks like yesterday</li>
+<li>The <strong>order matters</strong>: you may only train on the past</li>
+<li>The <strong>future differs from the past</strong>: trends, new behavior, drift</li>
+</ul>
+</div></div>
+<p><strong>The evaluation tools from Week 3 assumed none of these three. Each one has a visual check.</strong></p>
+<aside class="notes">
+<p>The first three are tasks on temporal data. The fourth applies to every model you deploy, including ones whose inputs are images or text: once a model runs for months, its accuracy is itself a time series.</p>
+<p>The right column is the outline for the rest of the lecture. Dependence between observations is why random splits fail (next slides). Order is why we backtest. The future differing from the past is drift (part 4).</p>
+<p>Running example for part 3: a synthetic series of daily demand over three years, with an upward trend, a yearly cycle, a strong weekly cycle (weekends are low) and autocorrelated noise.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>A forecast is a line and a band</h2>
+<div id="1f66dff7" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="1551" height="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Synthetic daily demand. Linear model on a time index, a yearly cycle and day of week; band from the model’s errors on its last 180 training days.</em></p>
+<aside class="notes">
+<p>Gray is what happened. To the right of the dashed line the model has seen nothing: purple is its forecast, the shaded band is its 90% prediction interval.</p>
+<p>Three things to read. First, does the forecast have the right shape? Here it reproduces the weekly dips. Second, the size of the error, an MAE of about 51 on a series that runs between 1,100 and 1,700. Third, the band.</p>
+<p>The band is nominally 90%, and the label says about 78% of the future days fell inside it. That gap is a calibration failure, the same idea as the reliability diagrams in Week 3: the band was sized from past errors, and the noise in this series is autocorrelated, so errors come in runs that last several days.</p>
+<p>Always report the coverage of an interval next to the interval.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>A random train/test split is too optimistic</h2>
+<div id="295b6953" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="1576" height="671"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Same synthetic series; gradient-boosted trees on time index, day of week and day of year.</em></p>
+<aside class="notes">
+<p>Left: which days are held out. With a random split (top) the test days are scattered among the training days. With a time-ordered split (bottom) the test days come after all the training days.</p>
+<p>Right: the error each scheme reports, and the error the model really makes on the 120 days that follow.</p>
+<p>Random 5-fold cross-validation reports an MAE of about 25. On the real future the model’s error is about 95, almost four times worse. The time-ordered estimate, about 116, is in the right range, and errs on the pessimistic side.</p>
+<p>Why: with a random split every test day has training days right next to it, so the model only has to interpolate. Forecasting is extrapolation. Tree models cannot extrapolate a trend, and the random split never asks them to.</p>
+<p>This is the most common evaluation mistake with temporal data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Backtesting: rolling-origin evaluation</h2>
+<div id="a0d56a5c" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-5-output-1.png" class="quarto-figure quarto-figure-center" width="1591" height="671"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Same synthetic series and the linear model from two slides back; six folds, each tested on the next 120 days.</em></p>
+<aside class="notes">
+<p>The fix has a name: rolling-origin evaluation, or backtesting. Train on everything up to a date, test on the period that follows, move the date forward, repeat. In scikit-learn this is TimeSeriesSplit.</p>
+<p>Left: the six folds. Gray is training data, orange is the 120-day test window. The training set grows each time.</p>
+<p>Right: the error on each fold. It ranges from about 36 to about 59, with a mean of 48. The single split we used earlier is fold 6.</p>
+<p>Show the per-fold errors, not only the mean. The spread is the honest answer to ‘how good is this model’: it depends on which four months you ask about.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Residuals show what the model missed</h2>
+<div id="fe9cefcc" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-6-output-1.png" class="quarto-figure quarto-figure-center" width="1594" height="671"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Same synthetic series; the linear model with the day-of-week inputs removed.</em></p>
+<aside class="notes">
+<p>Residual means actual minus predicted. If a model has captured the structure, the residuals look like noise. Here we deliberately removed day of week from the inputs.</p>
+<p>Left: residuals over time. They form a band with regular downward spikes, but at this scale it is hard to say why.</p>
+<p>Middle: the same residuals grouped by weekday. Monday to Friday are all above zero, Saturday and Sunday far below, around minus 120 and minus 190. The model is missing a weekly pattern.</p>
+<p>Right: the autocorrelation of the residuals. The bars at lags 7, 14, 21 and 28 (purple) are near 0.8. Errors a week apart are almost the same error.</p>
+<p>Same data, three views, and only the views that use the cyclic structure reveal the problem. This is part 1 of the lecture applied to a model’s errors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Error grows with the forecast horizon</h2>
+<div id="47e3718b" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-7-output-1.png" class="quarto-figure quarto-figure-center" width="1593" height="671"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Same synthetic series; a separate linear model per horizon, each given the 14 most recent days observed when the forecast is issued. All horizons are scored on the same 93 days, each forecast issued on or after the last training day.</em></p>
+<aside class="notes">
+<p>A model that can see recent observations does better, but only for a while.</p>
+<p>One day ahead the MAE is about 27. It climbs to about 55 at seven days ahead and then stays between 55 and 60. The dashed line is the calendar-only model from the earlier slides, which uses no recent observations, at about 57 on these same days.</p>
+<p>So past about a week, yesterday’s value tells this model nothing beyond what the calendar already does. The noise in the series has a memory of only a few days. The small bumps above the dashed line at 10 to 21 days are noise from scoring 93 days, not a real disadvantage.</p>
+<p>How this is scored matters. An h-day-ahead forecast for day d is issued on day d minus h, its forecast origin, and can only use what was known then. Every model here was fitted on days up to the end of training, so we only score forecasts whose origin is at or after that day. That leaves the last 93 of the 120 future days for a 28-day horizon, and we use those same 93 days for every horizon so the points are comparable. Splitting by the target’s date alone is a common leak: the model for a long horizon would have been trained on outcomes that did not exist yet when its first forecasts were issued.</p>
+<p>A single accuracy number for a forecaster hides this curve. Always ask: accurate at what horizon?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center" data-background-color="#57068c">
+<h1>Drift and Monitoring</h1>
+
+</section>
+<section class="slide level2">
+<h2>Why deployed models go stale</h2>
+<p>A model learns <span class="math inline">\(P(y \mid x)\)</span> from data drawn from <span class="math inline">\(P(x)\)</span>. After deployment either can change.</p>
+<ul>
+<li><strong>Data drift</strong> (covariate shift): the inputs change, <span class="math inline">\(P(x)\)</span>. New customers, a new sensor, a season the model never saw.</li>
+<li><strong>Concept drift</strong>: the relationship changes, <span class="math inline">\(P(y \mid x)\)</span>. The same input now deserves a different answer.</li>
+</ul>
+<p><strong>What we can watch</strong></p>
+<ul>
+<li><strong>Inputs and predictions</strong>: available immediately, no labels needed</li>
+<li><strong>Accuracy</strong>: needs the true labels, which often arrive days or months later</li>
+</ul>
+<div class="footer">
+<p>Gama, J., Žliobaitė, I., Bifet, A., Pechenizkiy, M., &amp; Bouchachia, A. (2014). <a href="https://doi.org/10.1145/2523813"><em>A survey on concept drift adaptation</em></a>. ACM Computing Surveys.</p>
+</div>
+<aside class="notes">
+<p>Every model in this course so far was evaluated once, on a held-out set, and then we stopped. In production the model keeps running while the world changes.</p>
+<p>Two different things can change. The inputs can move to a region the model saw little of. Or the right answer for a given input can change: fraud patterns adapt, prices change, a policy changes what a label means.</p>
+<p>The practical asymmetry is in the bottom half. You see the inputs the moment a request arrives. You see whether the prediction was right only when the label arrives: whether the loan defaulted, whether the patient was readmitted. So teams monitor inputs as an early proxy for accuracy. The next slides show when that proxy works and when it fails.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Four shapes of drift</h2>
+<div id="8128392e" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-8-output-1.png" class="quarto-figure quarto-figure-center" width="1589" height="499"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>The shape decides how to respond: a sudden change calls for retraining, a recurring one for keeping the old model around.</strong></p>
+<p><em>Schematic, after Gama et al.&nbsp;(2014).</em></p>
+<aside class="notes">
+<p>These are schematic pictures of how the data-generating process moves from one concept to another over time, following the taxonomy in Gama et al.</p>
+<p>Sudden: one day it is different. A new product launch, a changed sensor.</p>
+<p>Incremental: a slow slide through intermediate states. Wear on a machine, inflation.</p>
+<p>Gradual: both concepts are active for a while and the new one takes over a growing share. Customers migrating from one behavior to another.</p>
+<p>Recurring: the old concept comes back. Seasons, weekday versus weekend behavior.</p>
+<p>A detector tuned for sudden jumps will miss the incremental case, and a team that throws away the old model will relearn it every winter in the recurring case.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Accuracy over time</h2>
+<div id="4aee80b1" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-9-output-1.png" class="quarto-figure quarto-figure-center" width="1592" height="671"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Synthetic stream: a two-feature classifier scored on 400 new labeled points each week. The labeling rule changes at week 44.</em></p>
+<aside class="notes">
+<p>The simplest monitoring chart: the metric from Week 3, computed per week, plotted as a line, with known events annotated.</p>
+<p>Purple is a model trained once on weeks 0 to 7 (shaded) and never touched again. It holds at about 0.89 for 36 more weeks. At week 44 the labeling rule changes and it drops to about 0.45, worse than a coin flip, and stays there.</p>
+<p>Green is the same kind of model retrained every week on the previous eight weeks. It falls just as far at week 44, because its training window contains only old data. It then recovers as new data fills the window, and is back near 0.9 by about week 52.</p>
+<p>Two lessons. Retraining repairs drift but does not prevent the drop. And the recovery time is set by the length of the training window.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Two monitors, two different alarms</h2>
+<div id="9def5a2b" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-10-output-1.png" class="quarto-figure quarto-figure-center" width="1592" height="748"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Same synthetic stream. Weeks 20 to 32: the inputs shift and the labeling rule is unchanged. Week 44: the rule changes and the inputs do not.</em></p>
+<aside class="notes">
+<p>Three views of the same stream on a shared time axis. Small multiples again.</p>
+<p>Top: the distribution of one input feature per week, one histogram per column. The band drifts upward between weeks 20 and 32 (shaded) and then stays at the new level.</p>
+<p>Middle: a drift statistic, the Kolmogorov-Smirnov distance between this week’s values and the training weeks. It crosses the alert threshold at week 23 and keeps climbing.</p>
+<p>Bottom: the deployed model’s accuracy. Nothing happens during the input shift. The model’s decision does not depend on the direction that moved, so the shift is harmless. Then at week 44 accuracy collapses, and the input monitor shows no change at all at that point.</p>
+<p>So the input monitor raised an alarm when the model was fine, and was silent when the model broke. Input drift and performance loss are different events. Monitor inputs because they are available early, and monitor accuracy as soon as labels allow.</p>
+<p>The synthetic stream was constructed to separate the two cases. In real systems they usually overlap.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Designing a monitoring view</h2>
+<div class="columns smaller">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Overview first</strong>: one row per metric or feature, on a shared time axis (heat map, horizon chart, sparklines)</li>
+<li><strong>Show the reference</strong>: the training period, a baseline value, an alert threshold</li>
+<li><strong>Annotate events</strong>: deployments, retraining, data pipeline changes</li>
+<li><strong>Pick the bin size on purpose</strong>: weekly hides a bad afternoon, hourly is mostly noise</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>Link inputs to outcomes</strong>: selecting a time range in one view filters the others</li>
+<li><strong>Slice</strong>: overall accuracy can stay flat while one segment collapses</li>
+<li><strong>Say what is delayed</strong>: mark the last week for which labels are complete</li>
+<li><strong>Read:</strong> Yang et al., <a href="https://doi.org/10.1109/VAST50239.2020.00007"><em>Diagnosing Concept Drift with Visual Analytics</em></a> (DriftVis), IEEE VAST 2020</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>This slide joins the two halves of the lecture. The charts from part 2 are the building blocks, and the last two slides showed what they need to display.</p>
+<p>Overview first: with hundreds of features nobody reads hundreds of line charts. A features-by-week heat map of a drift statistic shows which features moved and when.</p>
+<p>Reference and annotation: a line going down means little without the training-period level and the date of the last deployment drawn on it.</p>
+<p>Slicing: the per-group analysis from Week 3 applies over time too. A model can be stable overall and failing for one region or one device type.</p>
+<p>Label delay: the right-hand end of any accuracy chart is built from incomplete labels. Draw that boundary so nobody reacts to a dip that is only missing data.</p>
+<p>DriftVis is a visual analytics system built around these ideas, and a good model for a project.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center" data-background-color="#57068c">
+<h1>Anomaly Detection</h1>
+
+</section>
+<section class="slide level2">
+<h2>Three kinds of anomaly</h2>
+<div id="4d301ecb" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-11-output-1.png" class="quarto-figure quarto-figure-center" width="1593" height="710"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Schematic series. Dotted lines mark the highest and lowest values of the normal series.</em></p>
+<div class="footer">
+<p>Chandola, V., Banerjee, A., &amp; Kumar, V. (2009). <a href="https://doi.org/10.1145/1541880.1541882"><em>Anomaly detection: a survey</em></a>. ACM Computing Surveys.</p>
+</div>
+<aside class="notes">
+<p>The taxonomy is from Chandola, Banerjee and Kumar. The dotted lines are the range the normal series covers.</p>
+<p>Point anomaly: one value far outside that range. A fixed threshold catches it.</p>
+<p>Contextual anomaly: the red values are around 128, which the series reaches at every peak. They are anomalous only because of when they occur, at the bottom of a cycle. A fixed threshold cannot catch this. You need a model of what is expected at that time.</p>
+<p>Collective anomaly: one cycle is missing. Every single value is in range and close to the series average. Only the sequence is wrong.</p>
+<p>Showing the context is what makes the second and third kind visible. A red dot on an otherwise empty chart explains nothing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Flagging what the forecast did not expect</h2>
+<div id="fe5c8663" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-12-output-1.png" class="quarto-figure quarto-figure-center" width="1585" height="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Synthetic demand series, last 240 days, with 12 injected anomalies; σ is a robust estimate of the forecast’s typical error on the training data. A retrospective demonstration: the first 120 of these days are days the forecast model was trained on.</em></p>
+<aside class="notes">
+<p>A common detector: forecast the series, then flag any day that falls outside the forecast plus or minus k times the typical error. Here k is 3. This handles contextual anomalies, because the band moves with the weekly cycle.</p>
+<p>One caveat on the set-up: the window is 240 days, and the first 120 are inside the forecast model’s training data (the anomalies were injected afterward, so the model never saw them). This is a retrospective demonstration of the mechanism. A live detector only ever scores days after its training data ends.</p>
+<p>We injected 12 anomalies, so we can grade it. Red circles: 7 flagged correctly. Black crosses: 5 missed, all inside the band, so by this detector’s logic they look ordinary. Orange squares: 3 false alarms, normal days that were flagged.</p>
+<p>Look at where the false alarms are: all three sit together in late October. Forecast errors are autocorrelated, so false alarms arrive in clusters, which is what makes on-call staff stop trusting an alert.</p>
+<p>Draw the band, not just the flagged points. With the band visible, a reader can judge each flag: how far outside was it?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The threshold is a trade-off</h2>
+<div id="af1ab39c" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="time-series_files/figure-revealjs/cell-13-output-1.png" class="quarto-figure quarto-figure-center" width="1593" height="671"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Same detector and data as the previous slide; the dashed line marks k = 3.</em></p>
+<aside class="notes">
+<p>The same trade-off as the ROC and precision-recall curves in Week 3, with the threshold k on the x axis.</p>
+<p>Left: with a low threshold recall is high and precision is poor. At k = 2 the detector catches 11 of the 12 anomalies and flags 30 days, so about two alarms in three are false. At k = 3, 10 days are flagged: precision 0.7, recall about 0.58. Above k = 4 almost nothing is flagged. The precision line stops where there are no alarms left, since precision is undefined there.</p>
+<p>The precision curve is jagged because there are only 12 anomalies. With rare events every estimate of detector quality is noisy, which is itself worth showing.</p>
+<p>Right: the number of days flagged, on a log scale. This is the chart for whoever has to respond: how many alerts per month can the team actually look at? That budget often sets the threshold.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What to take away</h2>
+<ul>
+<li><strong>Pick the time structure first</strong>: sequential, cyclic or hierarchical. It decides the chart.</li>
+<li><strong>The aspect ratio and the bin size are choices</strong>, and both change what the reader sees</li>
+<li><strong>Many series</strong>: filter, highlight, small multiples, heat maps, horizon charts</li>
+<li><strong>Never evaluate a forecaster on a random split</strong>; backtest, and show the error per fold and per horizon</li>
+<li><strong>Plot residuals against time, weekday and lag</strong>; structure there is something the model missed</li>
+<li><strong>Input drift and accuracy loss are different events</strong>; watch both, and annotate what changed</li>
+<li><strong>An anomaly needs its context</strong>: show the expected band, and count false alarms as well as hits</li>
+</ul>
+<aside class="notes">
+<p>One line per section of the lecture. The first three are about drawing temporal data. The last four are about using those drawings to evaluate and monitor a model.</p>
+<p>For projects with any temporal component: the evaluation section of your final report should say how the data was split in time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>References</h2>
+<div class="smaller">
+<ul>
+<li>Aigner, W., Miksch, S., Schumann, H., &amp; Tominski, C. (2023). <a href="https://doi.org/10.1007/978-1-4471-7527-8"><em>Visualization of Time-Oriented Data</em></a> (2nd ed.). Springer.</li>
+<li>Hyndman, R. J., &amp; Athanasopoulos, G. (2021). <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practice</em></a> (3rd ed.). OTexts. Free online.</li>
+<li>Tashman, L. J. (2000). <a href="https://doi.org/10.1016/S0169-2070(00)00065-0"><em>Out-of-sample tests of forecasting accuracy: an analysis and review</em></a>. International Journal of Forecasting.</li>
+<li>Bergmeir, C., &amp; Benítez, J. M. (2012). <a href="https://doi.org/10.1016/j.ins.2011.12.028"><em>On the use of cross-validation for time series predictor evaluation</em></a>. Information Sciences.</li>
+<li>Gama, J., et al.&nbsp;(2014). <a href="https://doi.org/10.1145/2523813"><em>A survey on concept drift adaptation</em></a>. ACM Computing Surveys.</li>
+<li>Yang, W., et al.&nbsp;(2020). <a href="https://doi.org/10.1109/VAST50239.2020.00007"><em>Diagnosing Concept Drift with Visual Analytics</em></a>. IEEE VAST.</li>
+<li>Chandola, V., Banerjee, A., &amp; Kumar, V. (2009). <a href="https://doi.org/10.1145/1541880.1541882"><em>Anomaly detection: a survey</em></a>. ACM Computing Surveys.</li>
+<li>Heer, J., Kong, N., &amp; Agrawala, M. (2009). <a href="https://doi.org/10.1145/1518701.1518897"><em>Sizing the horizon</em></a>. CHI.</li>
+<li>Cleveland, W. S., McGill, M. E., &amp; McGill, R. (1988). <a href="https://doi.org/10.1080/01621459.1988.10478598"><em>The shape parameter of a two-variable graph</em></a>. JASA.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Hyndman and Athanasopoulos is the place to start for forecasting and is free online; chapter 5 covers residual diagnostics, prediction intervals and time series cross-validation. Aigner et al.&nbsp;is the reference for time-oriented visualization. Gama et al.&nbsp;and Chandola et al.&nbsp;are the standard surveys for drift and anomaly detection.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Next: the last lecture before presentations</h2>
+<ul>
+<li><strong>Tuesday, Nov 24</strong>: Interpretable ML and Fairness</li>
+<li><strong>Dec 1 and Dec 8</strong>: final project presentations</li>
+<li><strong>Dec 14</strong>: final project report due (8 pages)</li>
+</ul>
+<aside class="notes">
+<p>Next Tuesday is the last regular lecture. The two sessions after that are project presentations, and the final report is due December 14, the week after the last class.</p>
+<p>Thanksgiving recess is Thursday and Friday of next week and does not affect our Tuesday meeting.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="time-series_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="time-series_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="time-series_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="time-series_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="time-series_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="time-series_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="time-series_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="time-series_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="time-series_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="time-series_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+              if (!link.classList.contains('no-external-icon')) {
+              }
+            }
+          }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
