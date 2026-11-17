@@ -159,7 +159,7 @@ The course schedule is tentative and might need to be adjusted along the way. Se
 | 9 | Nov 3 | NLP and Large Language Model Visualization |
 | 10 | Nov 10 | Topological Data Analysis |
 | 11 | Nov 17 | Time Series and Streaming Data |
-| 12 | Nov 24 | Interpretable ML and Fairness |
+| 12 | Nov 24 | Looking Inside Large Language Models |
 | 13 | Dec 1 | Project Presentations I |
 | 14 | Dec 8 | Project Presentations II and Wrap-up |
 

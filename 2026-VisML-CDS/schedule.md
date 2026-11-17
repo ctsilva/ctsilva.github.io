@@ -238,20 +238,23 @@ author_profile: true
 ---
 
 ### Week 12: Tuesday, Nov 24
-## Interpretable ML and Fairness
+## Looking Inside Large Language Models
 
 **Lecture Topics:**
-- Fairness metrics visualization
-- Bias detection interfaces
-- Interpretability vs accuracy
-- Ethical considerations
+- Superposition: why single neurons are hard to read
+- From neurons to features: dictionary learning and the replacement model
+- Attribution graphs: one prompt's computation as a graph
+- Case studies: multi-step reasoning, planning, hallucination, chain-of-thought faithfulness
+- Attention and filter heads; limits of mechanistic explanations
 
 **Lab Session:**
-- Fairness dashboard creation
-- What-if tool exploration
+- *Materials in preparation*
 
 **Readings:**
-- Selected papers on ML fairness
+- Elhage et al., ["Toy Models of Superposition"](https://transformer-circuits.pub/2022/toy_model/index.html) (2022)
+- Ameisen et al., ["Circuit Tracing: Revealing Computational Graphs in Language Models"](https://transformer-circuits.pub/2025/attribution-graphs/methods.html) (2025)
+- Lindsey et al., ["On the Biology of a Large Language Model"](https://transformer-circuits.pub/2025/attribution-graphs/biology.html) (2025)
+- Sen Sharma et al., ["LLMs Process Lists With General Filter Heads"](https://filter.baulab.info/) (2025)
 
 ---
 

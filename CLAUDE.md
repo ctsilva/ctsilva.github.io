@@ -97,13 +97,22 @@ The repository includes complete course websites as subdirectories:
   | 7 | Oct 20 | dimensionality-reduction | 36 (was 21; 14 new slides, all skippable) | dimensionality-reduction (DR in practice; did not run Oct 13) | 48, about 25 core plus a backup block with jump links |
   | 8 | Oct 27 | deep-learning | 32 ok (24 + 8 split-out text slides, laid out 2026-10-26) | deep-learning (new; Playground + CNN Explainer, run by Claudio) + paper-writing (about 25 core min) | 12 + 39 |
   | 9 | Nov 3 | nlp | 35 ok | nlp-vis (rebuilt 2026-10-28: Embedding Projector, Transformer Explainer, LIME Colab `lime_text.ipynb`; chart QA survey is a backup block) | 23 core + 33 backup |
-  | 10 | Nov 10 | tda | 99 way over | tda (Mapper, persistent homology) | 31 over |
-  | 11 | Nov 17 | Time Series — no deck yet | — | — | — |
-  | 12 | Nov 24 | Interpretable ML & Fairness — no deck yet | — | — | — |
+  | 10 | Nov 10 | tda-pari (as presented by Parikshit Solunke); tda is Claudio's original | 104 / 99, both way over | tda (Mapper, persistent homology) | 31 over |
+  | 11 | Nov 17 | time-series (12 Python cells on synthetic data; needs the uv venv; 17 SKIPPABLE InfoVis examples) | 54 ok if skippables are cut | time-series (NYC taxi passengers, notebook `time_series.ipynb`; presented by Bhavya Matam) | 20 ok |
+  | 12 | Nov 24 | llm-interpretability (Looking Inside LLMs; replaced Interpretable ML & Fairness) | 40 ok | *materials in preparation* | — |
 
-  Lecture problem is concentrated: **Week 10 TDA (99 slides)**, then Weeks 5 and 1. Labs run long more often
+  Lecture problem is concentrated: **Week 10 TDA (99 slides; 104 as presented)**, then Weeks 5 and 1. Labs run long more often
   (six of nine) because 50 min is tight — but lab overflow is far less disruptive than lecture overflow.
 
+- **Week 10 TDA has two decks (added 2026-11-16).** `slides/tda-pari.qmd` is what Parikshit Solunke presented on
+  Nov 10 and carries his name as author; `slides/tda.qmd` is Claudio's original and stays separate — do not merge
+  them or fold Pari's edits into `tda.qmd`. Pari's version is `tda.qmd` plus a speaker-notes script on every slide
+  (replacing the 7 original notes), a "Persistent homology" summary slide, Mapper frames 35-37 (the original stops
+  at 34, before the Y graph is finished), and three closing slides (persistence vs Mapper, TDA vs t-SNE/UMAP,
+  takeaways). It drops the duplicate `mapper-31` frame and the `{a,b,c}` simplicial-complex example. Kept as
+  presented, typos in the notes included; the only change from Pari's file is that `embed-resources: true` was removed
+  so it renders to html + `_files/` like every other deck. Home lists both, Pari's first. Both declare
+  `resources: tda.pdf`, which does not exist.
 - **Week 7 (Oct 20) deck and lab, built 2026-10-15.** Lecture adds t-SNE equations, the crowding problem, live
   perplexity/seed/UMAP demos on sklearn digits, trustworthiness/continuity (a flat-with-perplexity result is shown on
   purpose), a PCA/t-SNE/UMAP table, a checklist, and a next-week slide; its Python cells need the uv venv and re-run on

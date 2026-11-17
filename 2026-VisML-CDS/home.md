@@ -183,8 +183,14 @@ author_profile: true
   - Anomaly detection and the threshold trade-off
 
 ### Week 12 — Tuesday, Nov 24
-- **Topics:** TBA
-- **Materials:** *To be posted*
+- **Topics:** Looking Inside Large Language Models
+- **Materials:**
+  - [Looking Inside Large Language Models](/2026-VisML-CDS/slides/llm-interpretability.html)
+- **Content:**
+  - Superposition: why single neurons are hard to read
+  - From neurons to features: dictionary learning and the replacement model
+  - Attribution graphs and case studies (reasoning, planning, hallucination, chain of thought)
+  - Attention and filter heads; what these pictures can and cannot claim
 
 ### Week 13 — Tuesday, Dec 1
 - **Topics:** Final Project Presentations I
