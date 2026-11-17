@@ -155,17 +155,18 @@ Claudio Silva
 <h2>Today</h2>
 <ol type="1">
 <li><strong>Temporal data basics</strong>: events and measurements, time structures, aggregation</li>
-<li><strong>Charts for time</strong>: line charts and aspect ratio, many series, heat maps, horizon charts</li>
+<li><strong>Charts for time</strong>: line charts and aspect ratio, many series, heat maps, radial layouts, horizon charts, event data, interaction</li>
 <li><strong>Evaluating a forecast</strong>: prediction intervals, time-ordered validation, residuals, horizon</li>
 <li><strong>Drift and monitoring</strong>: when a deployed model goes stale, and how to see it</li>
 <li><strong>Anomaly detection</strong>: showing anomalies in context, and the threshold trade-off</li>
 </ol>
 <p><em>Parts 1 and 2 are based on materials by Enrico Bertini (NYU Tandon).</em></p>
 <aside class="notes">
-<p>TIMING (120 min): parts 1 and 2 about 45 min, part 3 about 30, part 4 about 25, part 5 about 15. If part 2 runs long, skip the two ‘Building a horizon chart’ slides.</p>
-<p>Last week Pari covered topological data analysis. Today is time: first how to draw temporal data well (parts 1 and 2, about 50 minutes), then three places where time changes how we evaluate and monitor a model (parts 3 to 5, about 60 minutes).</p>
-<p>Parts 3 to 5 connect back to Week 3, model assessment. Everything there assumed the test set looks like the training set. With time in the data that assumption fails in specific, visible ways.</p>
-<p>All the charts in parts 3 to 5 are computed in this deck from synthetic data, so that we know the ground truth (where the drift starts, which points are anomalies). Each one says so.</p>
+<p><strong>Purpose.</strong> Frame the lecture around a question students can use in their projects: what changes when the order of the observations carries information?</p>
+<p><strong>Opening.</strong> “Last week Pari showed how topology helps us understand the shape of data. Today we look at another kind of structure: time. A model can have a convincing test score and still fail next month. A chart can show a reassuring average and hide an afternoon of failures. We need both an appropriate evaluation and a view that makes those failures visible.”</p>
+<p><strong>Road map.</strong> Parts 1 and 2 establish the visual vocabulary. Parts 3 to 5 use that vocabulary to inspect forecasts and deployed models. Connect this to Week 3: the metrics still apply, but we must be explicit about which observations the test set represents and what information was available when each prediction was made. Credit Enrico Bertini for the temporal visualization material.</p>
+<p><strong>Pacing.</strong> Budget about 60 minutes for parts 1 and 2, 25 for forecasting, 20 for drift, and 15 for anomalies. There are 16 optional InfoVis examples marked SKIPPABLE, plus the two horizon-construction slides. Use those as the first cuts if discussion runs long. The later synthetic examples have known mechanisms so we can explain why a chart looks as it does.</p>
+<p><strong>Transition.</strong> “Before choosing a chart or a model, we need to know what a timestamp means in our data.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -181,16 +182,31 @@ Claudio Silva
 <section>
 <section class="title-slide slide level1 center">
 <h1>Temporal Data Basics</h1>
-
+<aside class="notes">
+<p><strong>Section bridge.</strong> “We will begin with the meaning of the records. Before drawing a temporal chart, decide whether each row is an event or a measurement, what its timestamp refers to, and which temporal structure matters for the question.”</p>
+<p><strong>Rationale.</strong> These decisions determine what information an aggregation preserves and what the later chart can legitimately show. Move directly to the incident table.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>What is temporal data?</h2>
 <p><strong>Data in which values depend on time, and time is explicitly recorded.</strong></p>
 
 <img data-src="figs/time-series/temporal-dataset-structure.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>The table is a list of incidents in New York City just after midnight on June 12, 2018. The DAT and TIME columns are what make it temporal: each row is one event with a timestamp, plus where it happened (borough, zip code, latitude and longitude, street names).</p>
-<p>Ask: what datasets have you worked with that have time in them? How is time recorded, and at what granularity?</p>
-<p>Ordered data is not automatically temporal. A ranking has an order but no timestamps.</p>
+<p><strong>Purpose.</strong> Establish the unit of observation before introducing a time series. Students often start with a line chart without asking what one row represents.</p>
+<p><strong>Talk through the table.</strong> “Each row here records an incident in New York City. The date and time tell us when it occurred. Borough, street, and coordinates tell us where. Several incidents can share a timestamp, and the gaps between rows need not be equal.” Point to the records just after midnight on June 12, 2018. The temporal structure comes from those timestamps, not from the table’s current row order.</p>
+<p><strong>Emphasize.</strong> A timestamp makes temporal analysis possible. It does not by itself establish that the other attributes change systematically over time. Also distinguish event time from the time a system received or entered the record. A delay between the two can matter in monitoring.</p>
+<p><strong>Ask.</strong> “In a dataset you have used, what does one timestamp refer to: an event, a measurement, or a database update?” Take one example and identify its unit of observation. A ranking is ordered but has no temporal meaning unless time is recorded separately.</p>
+<p><strong>Transition.</strong> “Those answers usually lead to two different kinds of temporal data.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -227,9 +243,40 @@ Claudio Silva
 </div></div>
 <p><strong>Counting events per interval turns event data into measurement data.</strong></p>
 <aside class="notes">
-<p>The table on the previous slide is event data: each row happened once, at its own time.</p>
-<p>Measurement data is what most people mean by ‘time series’: a value recorded at each time step.</p>
-<p>The line between them is aggregation. Count incidents per day and you have a measurement series. That is also how most ML monitoring works: individual predictions are events, weekly accuracy is a measurement. We come back to this in part 4.</p>
+<p><strong>Purpose.</strong> Explain why some temporal displays use individual marks and others use a connected series.</p>
+<p><strong>Talk through.</strong> An email is an event: it happened at a particular moment and has attributes such as sender and recipient. A temperature reading is a measurement: it gives a value at a particular moment. Measurements can be irregular too, so regular sampling is common rather than part of the definition.</p>
+<p>Use the incident table as a concrete transformation. “If I count incidents in each hour, I have created a measurement series from event records. The count depends on my choice of interval.” That transformation discards the order and spacing of events within each hour.</p>
+<p><strong>ML connection.</strong> Individual prediction requests are events. To produce a weekly accuracy series, join the requests to their eventual labels and compute correct predictions divided by labeled predictions in each week. Keep the denominator available: an accuracy based on ten cases carries different evidence from one based on ten thousand.</p>
+<p><strong>Check understanding.</strong> “Is a week with no recorded requests necessarily a week with zero requests?” No: missing logging and a true zero require different treatment.</p>
+<p><strong>Transition.</strong> “We also need to distinguish when something happened from how long it lasted and how precisely we recorded it.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Describing time: position, interval, granularity</h2>
+<ul>
+<li><strong>Position</strong>: when did it happen? A timestamp, absolute (Nov 17, 4:55 PM) or relative (three hours ago).</li>
+<li><strong>Interval</strong>: for how long? A duration. Point events have none.</li>
+<li><strong>Granularity</strong>: at what resolution was time recorded? Seconds, hours, days.</li>
+</ul>
+<p><em>A meeting starts at 2:00 PM (position), lasts 90 minutes (interval), and is recorded to the minute (granularity).</em></p>
+<p><strong>For a deployed model, the gap between a prediction and its true label is an interval. It sets how soon accuracy can be measured.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Three time structures’.</p>
+<p><strong>Purpose.</strong> Give students vocabulary for checking a time column before plotting it or using it as a feature.</p>
+<p><strong>Talk through.</strong> Use the meeting example to keep the terms separate. Two o’clock locates the meeting. The interval runs from 2:00 to 3:30, with a duration of 90 minutes. Recording only whole minutes limits the precision of its endpoints. An instantaneous event has a position, even when no duration is meaningful.</p>
+<p><strong>Why it matters.</strong> Hourly measurements cannot reveal the detailed shape of a ten-minute fluctuation. Aggregating second-level records into hours is possible, but recovering the lost timing from hourly totals is not. Distinguish the original recording precision from a coarser bin chosen for display.</p>
+<p><strong>ML example.</strong> “A prediction is made today, but its outcome may become known next month. That interval sets the earliest time at which we can score it.” A monitoring chart needs to account for that delay. Otherwise the latest dates can appear to have fewer successes simply because their outcomes are incomplete.</p>
+<p><strong>Transition.</strong> “Even with the same timestamps, there are several ways to organize time visually.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -251,8 +298,12 @@ Claudio Silva
 </ol>
 <p><strong>Most real series have all three at once. You choose which one a chart emphasizes.</strong></p>
 <aside class="notes">
-<p>Website traffic is the standard example: it grows over years (sequential), it dips every weekend (cyclic), and you can look at it by hour, day or month (hierarchical).</p>
-<p>For ML this is also a statement about features. A model that only sees a time index can learn the trend. To learn the weekly rhythm it needs day-of-week as an input. We will see what a model’s errors look like when that feature is missing (part 3).</p>
+<p><strong>Purpose.</strong> Make chart selection follow the question. These are different views of the same timestamps, not three mutually exclusive kinds of dataset.</p>
+<p><strong>Talk through.</strong> For website traffic, a chronological line answers whether usage is growing. Grouping all Mondays together answers whether Monday behaves differently from Sunday. Moving from years to months to hours lets us inspect a broad change and then locate it more precisely.</p>
+<p><strong>Emphasize.</strong> A cyclic view deliberately discards some chronological information. Once all Mondays are pooled, we cannot tell whether the Monday pattern changed last year. A hierarchical view also needs calendar care: months have different lengths, and weeks can cross month boundaries.</p>
+<p><strong>ML connection.</strong> A linear model given only a time index can fit a linear trend. A weekday feature lets it represent a weekly rhythm. Later we will remove that feature and use the errors to recover the missing cycle. This gives the visual vocabulary a modeling consequence.</p>
+<p><strong>Ask.</strong> “For staffing next Tuesday, which view helps? For estimating annual growth, which view helps?” Expect cyclic for the first and sequential for the second, possibly combined when both effects matter.</p>
+<p><strong>Transition.</strong> “Here is what that choice does to a real set of order records.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -290,9 +341,79 @@ Claudio Silva
 <li>Same order records both times. Choosing the bin (month or weekday) is choosing the question.</li>
 </ul>
 <aside class="notes">
-<p>Left: monthly sales over four years. You can see growth and a spiky pattern that repeats toward the end of each year. You cannot see anything about weekdays.</p>
-<p>Right: the same order records, counted by day of the week. Tuesday is the low point by a wide margin, under 400 orders against roughly 1,450 to 1,900 on the other days. You cannot see anything about growth.</p>
-<p>Same data, two aggregations, two different stories.</p>
+<p><strong>Purpose.</strong> Demonstrate that aggregation determines which question a chart can answer.</p>
+<p><strong>Walk through.</strong> On the left, read the horizontal axis as successive months from 2013 to 2016 and the vertical axis as sales. Point to the larger later peaks. On the right, read the horizontal axis as weekday and the vertical axis as the number of order records pooled across the period. Tuesday is conspicuously low.</p>
+<p><strong>Important distinction.</strong> The two views change both the time grouping and the measure: sales dollars on the left, order counts on the right. We can compare the questions they support, but cannot attribute every visual difference to the time structure alone. A strict comparison of structure would keep the measure fixed.</p>
+<p><strong>Rationale.</strong> “The monthly view helps us discuss growth. The weekday view helps us discuss scheduling. Neither tells us whether the weekday rhythm stayed stable as the business grew.” Also avoid explaining the Tuesday dip as customer behavior without checking collection and processing practices.</p>
+<p><strong>Ask.</strong> “Could one unusually large purchase create a sales peak without creating a peak in order count?” Yes. This reinforces the need to name the measure.</p>
+<p><strong>Transition.</strong> “We can also keep the measure fixed and change only the temporal resolution.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The same sales at two resolutions</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/sales-weekly.png" class="nostretch quarto-figure quarto-figure-center" style="width:72.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/sales-monthly.png" class="nostretch quarto-figure quarto-figure-center" style="width:72.0%"></p>
+</figure>
+</div>
+<p><strong>Weekly bins (top) show individual spikes. Monthly bins (bottom) show the yearly shape and the growth.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Aggregation is a design decision’.</p>
+<p><strong>Purpose.</strong> Show the information lost when we combine observations into larger bins.</p>
+<p><strong>Walk through.</strong> Both charts show sales over the same four years. The upper chart groups orders by week, and the lower chart groups them by month. Point to an isolated weekly peak, then find the corresponding period in the monthly view. Its contribution remains in the monthly total, but its timing within that month is lost.</p>
+<p><strong>Emphasize.</strong> These are sales totals. The spike has been combined with other sales in its month, rather than averaged away. The scales also differ: the weekly axis reaches roughly $40,000 and the monthly axis roughly $120,000. Taller monthly values do not imply a higher rate of sales, because the exposure period is longer.</p>
+<p><strong>Rationale.</strong> The monthly view makes the broad progression easier to follow. The weekly view better supports questions about short promotions or disruptions. If the question concerns intensity, compare sales per day or per open day, accounting for unequal interval lengths.</p>
+<p><strong>Transition.</strong> “A second way to expose structure is to align repeated cycles and compare them directly.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>A cycle nested in a sequence: one line per year</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Orders by day of the week, one line per year</strong></p>
+<p><img data-src="figs/time-series/weekday-by-year.png" style="width:100.0%"></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Sales by month, one line per year</strong></p>
+<p><img data-src="figs/time-series/month-by-year.png" style="width:100.0%"></p>
+</div></div>
+<p><strong>Overlaying the years asks: is the cycle the same every year?</strong></p>
+<ul>
+<li>Left: Tuesday is the slow day in 2014, 2015 and 2016. In 2013 the slow day is Wednesday.</li>
+<li>Right: every year is low in February and has peaks in September and near the end of the year</li>
+</ul>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Aggregation is a design decision’.</p>
+<p><strong>Purpose.</strong> Recover information that disappeared when all years were pooled into one cycle.</p>
+<p><strong>Walk through.</strong> The horizontal axis now repeats the same weekdays or months for every year. Color identifies the year. In the weekday chart, point to the Tuesday lows in 2014, 2015, and 2016, then to the Wednesday low in the blue 2013 line. The earlier pooled weekday chart concealed that disagreement. In the monthly chart, compare the recurring February low and the later-year peaks. The 2016 line generally sits higher.</p>
+<p><strong>Rationale.</strong> Alignment separates a change in overall level from a change in the timing or shape of a cycle. A higher line with a similar shape suggests one kind of modeling adjustment. A peak moving to a different weekday suggests another.</p>
+<p><strong>Caution.</strong> Treat the weekday discrepancy as a question to investigate. Check date handling, coverage, and aggregation before declaring behavioral drift. A chart can identify a discrepancy without establishing its cause.</p>
+<p><strong>Ask.</strong> “Would a model trained on the pooled weekday pattern capture the 2013 minimum?” This prepares students to look for systematic residuals later.</p>
+<p><strong>Transition.</strong> “These examples make the costs and benefits of aggregation concrete.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -327,9 +448,12 @@ Claudio Silva
 </div></div>
 <p><strong>Choose the granularity from the question: trends want coarse bins, anomalies want fine ones.</strong></p>
 <aside class="notes">
-<p>You cannot avoid aggregating: raw data at the finest granularity rarely fits on a screen. But every choice hides something.</p>
-<p>For monitoring a model this is a real trade-off. Weekly accuracy is stable enough to read, and it will hide a failure that lasted an afternoon.</p>
-<p>A common answer is interaction: let the reader change the bin size, or show an overview with a detail view beside it.</p>
+<p><strong>Purpose.</strong> Turn the preceding examples into a rule students can apply when building a visualization.</p>
+<p><strong>Talk through.</strong> “Start with the shortest event that would change a decision. If a one-hour outage matters, a monthly average cannot be the only view.” Coarser bins can reduce distracting variation and make broad patterns easier to see. They also remove within-bin timing and can dilute short failures.</p>
+<p><strong>Specify the operation.</strong> A sum answers how much activity occurred. A mean answers the average level. A maximum preserves a peak but says little about its duration. For accuracy, combine counts of correct and total predictions rather than averaging percentages from differently sized groups without weights.</p>
+<p><strong>ML example.</strong> A model may be correct on 95% of requests in a week while failing for most requests during a particular afternoon. The weekly average can be accurate and still be inadequate for diagnosis. A coarse overview linked to a finer detail view supports both questions.</p>
+<p><strong>Ask.</strong> “For a monitoring dashboard, what interval would you show first, and what failure would that choice hide?” There is no single correct bin size without a task.</p>
+<p><strong>Transition.</strong> “Once we have chosen what each value means, we can choose how to draw it.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -345,15 +469,31 @@ Claudio Silva
 <section>
 <section class="title-slide slide level1 center">
 <h1>Charts for Time</h1>
-
+<aside class="notes">
+<p><strong>Section bridge.</strong> “We have decided what one value means and how time is grouped. Now we choose the display. For each chart, ask which comparison it makes easy and what information becomes harder to recover.”</p>
+<p><strong>Rationale.</strong> Organize the section as a progression of problems: reading change, comparing several series, fitting many series, and examining individual events. This gives the examples a purpose beyond learning chart names.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Line charts: time on x, value on y</h2>
 <p><strong>Position encodes both time and value; the line’s slope encodes the rate of change.</strong></p>
 
 <img data-src="figs/time-series/line-chart-basic.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>The default chart for measurement data, here quarterly sales from 2013 to 2016.</p>
-<p>Because the line connects consecutive points, the reader’s eye goes to slopes: where it rises, where it falls, how steeply. That is exactly why the next slides matter. The slope you see depends on the shape of the chart.</p>
+<p><strong>Purpose.</strong> Explain why a line chart is a useful default for measurements and what assumptions its connecting segments introduce.</p>
+<p><strong>Walk through.</strong> The figure shows quarterly sales. Read one point as sales for a quarter, then trace successive rises and falls. Position supports comparisons of values, while the connected path makes changes and repeated peaks easy to follow.</p>
+<p><strong>Emphasize.</strong> The segment between two quarterly totals is a visual connection. It does not tell us that sales evolved linearly within the quarter. Missing periods should not silently become zero, and a long connecting line across a gap can suggest more continuity than the data supports.</p>
+<p><strong>Rationale.</strong> On linear axes, the numerical rate of change is change in value divided by elapsed time. The angle we see also depends on the displayed axis scales and the plot’s dimensions. Students should distinguish the numerical rate from its visual steepness.</p>
+<p><strong>Ask.</strong> “If I stretch this chart vertically, did the business start growing faster?” The answer leads directly to the next comparison.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -371,8 +511,11 @@ Claudio Silva
 <p><strong>The aspect ratio (width / height) changes how steep every change looks.</strong></p>
 
 <img data-src="figs/time-series/aspect-ratio-impact.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Three panels, one series (February to October). In the tall narrow panel the drop after August looks like a cliff. In the wide flat panel at the bottom the same drop looks moderate.</p>
-<p>Nothing about the data changed. Plotting libraries pick a default aspect ratio, and that default is making a claim about how dramatic your data is.</p>
+<p><strong>Purpose.</strong> Make students notice a design choice that plotting software usually makes for them.</p>
+<p><strong>Walk through.</strong> Ask everyone to find the August-to-September drop in all three panels. The dates and values agree. In the tall, narrow panel it looks almost vertical. In the wide panel it occupies a gentler angle. Then compare the recovery after the trough to make clear that every segment changes appearance.</p>
+<p><strong>Rationale.</strong> Screen slope depends on vertical pixels per unit divided by horizontal pixels per unit. Changing width or height changes that ratio even when axis limits and data stay fixed. This is why perceived urgency or volatility can change with the shape of the plot.</p>
+<p><strong>Emphasize.</strong> A wide chart is not automatically more honest. A very flat chart can make important changes hard to distinguish. Choose dimensions that support the intended comparison and keep scales consistent when comparing panels.</p>
+<p><strong>Transition.</strong> “There is a classic perceptual guideline for choosing dimensions when the task is to compare slopes.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -407,10 +550,11 @@ Claudio Silva
 <p>Cleveland, W. S., McGill, M. E., &amp; McGill, R. (1988). <a href="https://doi.org/10.1080/01621459.1988.10478598"><em>The shape parameter of a two-variable graph</em></a>. JASA.</p>
 </div>
 <aside class="notes">
-<p>Both plots are from Cleveland, McGill and McGill (1988): the log of the number of lynx trapped each year.</p>
-<p>In the tall plot the cycles are obvious, about ten years apart, but every segment is nearly vertical, so you cannot compare a rise with a fall.</p>
-<p>In the banked plot the segments sit near 45 degrees and an asymmetry appears: the population climbs gradually and crashes fast. That is a real feature of the data that one aspect ratio shows and the other does not.</p>
-<p>Practical rule: try more than one aspect ratio before you settle.</p>
+<p><strong>Purpose.</strong> Explain the reasoning behind banking, rather than asking students to memorize 45 degrees as a universal rule.</p>
+<p><strong>Walk through.</strong> Both charts show the same annual lynx trapping series on a logarithmic vertical scale. First identify the repeated peaks in the tall plot. Then use the lower plot to compare the rising and falling sides of a cycle. The rises tend to extend over more years than the sharp declines. Nearly vertical segments in the tall chart make that asymmetry harder to judge.</p>
+<p><strong>Explain.</strong> Banking changes the aspect ratio so a representative absolute segment slope is near 45 degrees. Segments that all look nearly horizontal or nearly vertical offer little visible angular separation. The guideline gives their differences more room to be seen.</p>
+<p><strong>Qualification.</strong> It is a guideline for slope comparisons, not a requirement that every segment be at 45 degrees or a guarantee of the best layout for every task. The logarithmic scale also means we are comparing proportional changes in trapping counts. Trappings are the measured quantity, so avoid presenting the figure as a direct census of the animal population.</p>
+<p><strong>Transition.</strong> “So far we have drawn one series. What changes when several series share the same chart?”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -428,8 +572,12 @@ Claudio Silva
 <p><strong>Three categories on shared axes are easy to compare.</strong></p>
 
 <img data-src="figs/time-series/multiple-line-charts.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Quarterly sales for three customer segments: Consumer, Corporate and Home Office. With three lines, color works: you can follow each one and see that they move together, with Consumer highest in almost every quarter.</p>
-<p>The next slide is the same idea with seventeen lines.</p>
+<p><strong>Purpose.</strong> Establish what an overlay does well before showing where it breaks down.</p>
+<p><strong>Walk through.</strong> Identify Consumer, Corporate, and Home Office in the legend, then follow one line across time. Consumer is highest in most quarters. Because all three use the same axes, we can compare their levels at a date and see whether peaks occur together.</p>
+<p><strong>Rationale.</strong> With a small number of distinguishable lines, shared position makes comparisons economical. Color identifies a category while vertical position carries the quantity. Direct labels near the lines can reduce repeated trips to the legend.</p>
+<p><strong>Emphasize.</strong> Similar timing suggests a common pattern worth investigating, but does not establish that one category causes another to move. Also keep the units and aggregation interval consistent across the series.</p>
+<p><strong>Ask.</strong> “Can you follow the orange line without losing it at a crossing? What if we added fourteen more categories?”</p>
+<p><strong>Transition.</strong> “The next chart makes exactly that addition.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -447,9 +595,11 @@ Claudio Silva
 <p><strong>Seventeen categories on shared axes: color runs out and lines hide each other.</strong></p>
 
 <img data-src="figs/time-series/spaghetti-plot.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Same sales data, now split into seventeen product sub-categories.</p>
-<p>Ask: what can you still read here? The overall envelope, and maybe the top one or two series. What can’t you read? Any individual series in the middle, or a comparison between two specific ones.</p>
-<p>This is the chart you get if you plot per-class or per-segment model metrics over time with default settings.</p>
+<p><strong>Purpose.</strong> Let the audience experience why adding more categories can reduce useful information, even when every value remains on the screen.</p>
+<p><strong>Activity.</strong> Give students a few seconds to find one mid-range category and follow it through several crossings. Then ask what they can still judge confidently. The overall range and a few dominant peaks remain visible. Following an individual series through the center is much harder.</p>
+<p><strong>Explain.</strong> Seventeen product subcategories compete for the same position and color channels. Crossings interrupt visual tracing, similar colors become hard to distinguish, and the legend requires repeated searching. The failure depends on the task: an overview of the envelope may still be useful, while a comparison of two named categories becomes difficult.</p>
+<p><strong>ML connection.</strong> This is what can happen when a monitoring dashboard overlays every class, region, or device type on one metric chart. An important failure in a small group can become visually inaccessible.</p>
+<p><strong>Transition.</strong> “We can reduce what is visible, emphasize a selection, or give the series separate space. Each choice has a cost.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -486,9 +636,35 @@ Claudio Silva
 <li>A third fix is <strong>small multiples</strong>: one small chart per series on shared axes. Nothing is hidden, but two series are harder to overlay.</li>
 </ul>
 <aside class="notes">
-<p>Left: only Chairs, Phones and Tables are drawn. Clean, but you no longer know whether these three are typical.</p>
-<p>Right: the same three are emphasized and the other fourteen stay as faint lines. You can read the three and still see where they sit relative to everything else. In an interactive tool this is what hovering or selecting does.</p>
-<p>Small multiples give every series its own panel. You lose the ability to overlay two series precisely, and gain a view where nothing is hidden. Several of the charts in parts 3 to 5 are small multiples with a shared time axis.</p>
+<p><strong>Purpose.</strong> Explain the trade-off between focusing attention and preserving context.</p>
+<p><strong>Walk through.</strong> On the left, trace Chairs, Phones, and Tables. Filtering removes the other series, so the selected lines are easy to read. On the right, trace the same lines again, then inspect the faded background. Highlighting lets us see how the selection sits within the rest of the data.</p>
+<p><strong>Rationale.</strong> Filtering suits a question about a known subset. Highlighting helps when we also need to know whether that subset is typical. A filtered chart should make its selection clear so the reader does not mistake three selected categories for the whole dataset.</p>
+<p><strong>ML example.</strong> Select a failing region while retaining the other regions as faint context. If every region dips at the same time, a shared pipeline problem becomes a plausible hypothesis. If only the selected region dips, a local explanation becomes more plausible. Neither picture alone proves the cause.</p>
+<p><strong>Transition.</strong> “If every series deserves attention, small multiples allocate a separate panel to each one.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Small multiples: one panel per series</h2>
+
+<img data-src="figs/time-series/small-multiples-line-3col.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>The seventeen series from the spaghetti plot, each in its own panel on the same axes. Nothing is hidden.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Stacked areas are hard to read’.</p>
+<p><strong>Purpose.</strong> Show how spatial separation removes occlusion, and why scale choices remain part of the design.</p>
+<p><strong>Walk through.</strong> Locate the seventeen product subcategories from the spaghetti plot. Each panel uses the same time range and a common vertical scale. Chairs and Phones show large fluctuations. Art, Envelopes, Fasteners, and Labels appear close to the bottom because their magnitudes are small relative to that common range.</p>
+<p><strong>Emphasize.</strong> “Nearly flat on this scale does not mean unchanging.” Separate vertical scales could expose the smaller series’ shapes, but would make the same screen height represent different amounts in different panels. Choose common scales for magnitude comparison and clearly labeled separate scales when shape is the primary question.</p>
+<p><strong>Rationale.</strong> Occlusion disappears, but readers must move their eyes between panels to compare two series. A stable ordering, aligned dates, and consistent scales reduce that effort. Highlighting the same time range across panels can help further.</p>
+<p><strong>ML connection.</strong> Per-class recall or regional accuracy often benefits from this layout because a small group receives its own visible space.</p>
+<p><strong>Transition.</strong> “Another common way to combine categories is to stack them, which changes the comparison task.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -526,9 +702,35 @@ Claudio Silva
 <li>Stack when the total and the bottom layer are what matter</li>
 </ul>
 <aside class="notes">
-<p>Both charts show quarterly sales for four regions: Central, East, South and West.</p>
-<p>On the right, try to say whether South (the red layer) went up or down in a given quarter. It is hard, because its baseline is the top of West, which is moving. On the left the same question takes a second.</p>
-<p>The stacked version does one thing the lines do not: it shows the total. Use it when the total and the bottom layer are what matter.</p>
+<p><strong>Purpose.</strong> Explain why the apparent movement of a stacked boundary can differ from the movement of the category it represents.</p>
+<p><strong>Walk through.</strong> Start with South, the red line on the left. Choose two adjacent quarters and compare their sales. Then ask the same question for the red layer on the right. Its value is the vertical thickness of the layer, the difference between its upper and lower boundaries. Both boundaries move as the categories beneath it change.</p>
+<p><strong>Rationale.</strong> The bottom layer has a fixed zero baseline, and the top boundary gives the total. Interior layers require comparing differences between moving positions, which is harder than comparing positions on a shared baseline. The layer order changes which category is easiest to inspect.</p>
+<p><strong>Emphasize.</strong> Stacking works for additive components of a meaningful total. Counts of requests by mutually exclusive category can be added. Accuracies or error rates for different groups generally cannot be stacked to produce overall accuracy.</p>
+<p><strong>Ask.</strong> “If the top edge of South rises, must South’s own sales have risen?” No: an underlying region may have increased.</p>
+<p><strong>Transition.</strong> “Normalizing the stack changes the question again, from amounts to shares.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Normalized stacked areas: shares instead of totals</h2>
+
+<img data-src="figs/time-series/regions-normalized-area.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Every quarter sums to 100%, so the chart shows composition. Whether total sales grew or fell is no longer visible.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Heat maps: time on one axis, categories on the other’.</p>
+<p><strong>Purpose.</strong> Explain what a 100% stack preserves and what normalization removes.</p>
+<p><strong>Walk through.</strong> Every quarter fills the same height. Read the thickness of South’s red band as its share of that quarter’s total. It occupies roughly 60% in the first quarter of 2013 and much less in the next quarter. West has a fixed edge at 0%, and Central has a fixed edge at 100%. The middle layers still have moving baselines.</p>
+<p><strong>Rationale.</strong> Dividing each region’s sales by the total isolates composition. If all regions doubled their sales together, this chart would look unchanged. Conversely, one region’s share could fall while its sales increased, if the others grew faster.</p>
+<p><strong>ML connection.</strong> A changing mix of incoming classes or customer segments can affect an aggregate metric. Show volume alongside proportions when the operational question depends on both. A shift in the mix is a reason to inspect performance, not proof of performance loss.</p>
+<p><strong>Transition.</strong> “For more categories, a matrix can give each category its own row while keeping a compact overview.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -546,9 +748,36 @@ Claudio Silva
 <p><strong>Color replaces height, so many series fit in the space of one line chart.</strong></p>
 
 <img data-src="figs/time-series/heatmap-temporal.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
-<p>Rows are the seventeen product sub-categories from the spaghetti plot. Columns are the day of the month, 1 to 31. Color is sales, light to dark.</p>
-<p>Now all seventeen are readable at once: the Chairs and Phones rows are dark across the whole month, and Machines has a few very dark days. What you give up is precision, since color is a much weaker channel for magnitude than position (Week 2).</p>
-<p>This layout, entities by time with color for a metric, is one of the most useful for model monitoring: features by week, classes by week, customer segments by day.</p>
+<p><strong>Purpose.</strong> Explain the exchange of precise position judgments for a compact view of many series.</p>
+<p><strong>Walk through.</strong> Rows are product subcategories. Columns are days of the month, 1 through 31. Darker color indicates larger sales. Trace Chairs and Phones across the row, then compare their sustained darker values with the isolated dark cells for Machines or Copiers.</p>
+<p><strong>Important context.</strong> The columns are day-of-month groups, not a continuous sequence of dated observations. A column labeled 15 pools records for the fifteenth. It does not identify one particular month, and the 31st occurs in fewer months than the 15th. This matters if we want to compare activity rates rather than totals.</p>
+<p><strong>Rationale.</strong> Fixed cell positions prevent lines from hiding each other. Color reveals broad patterns but makes exact differences harder to judge. A legend and access to values are useful when a particular cell matters.</p>
+<p><strong>ML connection.</strong> A features-by-week matrix can show which features changed together. Keep the meaning of the color scale clear, especially when features have different units or require normalization.</p>
+<p><strong>Transition.</strong> “We can keep the matrix and change only the visual channel used for magnitude.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The same matrix with size instead of color</h2>
+
+<img data-src="figs/time-series/matrix-size-encoding.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Same rows and columns as the heat map; the area of each square encodes sales. Small values almost disappear, and large squares touch.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Measles in the United States, by state and year’.</p>
+<p><strong>Purpose.</strong> Isolate the effect of the encoding channel while preserving the row-and-column layout.</p>
+<p><strong>Walk through.</strong> The rows and day-of-month columns match the previous slide. Now square area carries sales. Locate Chairs and Phones, which remain prominent. Then find the tiny marks for Fasteners or Labels and the large adjacent marks in the Copiers row.</p>
+<p><strong>Rationale.</strong> A color heat map gives every cell the same footprint. With size, small values become difficult to inspect and large values can touch their neighbors. This can serve a task focused on locating large values, but it offers less support for differences among small values.</p>
+<p><strong>Emphasize.</strong> If constructing this chart, map the quantity to area. Mapping it directly to square side length would make the displayed area grow quadratically. Also distinguish a missing observation from a true zero, which may have no visible square.</p>
+<p><strong>Ask.</strong> “Which view would you use to find consistently low-activity categories? Which would draw attention to the largest cells?” Ask for the task behind the choice.</p>
+<p><strong>Transition.</strong> “The next heat map shows why aligned rows are particularly useful for seeing a change shared by many series.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -568,9 +797,83 @@ Claudio Silva
 <p>DeBold, T., &amp; Friedman, D. (2015). <a href="http://graphics.wsj.com/infectious-diseases-and-vaccines/"><em>Battling Infectious Diseases in the 20th Century: The Impact of Vaccines</em></a>. The Wall Street Journal.</p>
 </div>
 <aside class="notes">
-<p>One row per US state, one column per year, color for measles cases (the scale runs from 0 to 4k). The black vertical line marks the introduction of the vaccine in 1963.</p>
-<p>To the left of the line almost every cell is colored. Within a few years to the right the grid turns pale and stays that way.</p>
-<p>This is the same visual signature as a change point in a monitored model: a before, an after, and an annotation that says what happened at the boundary. Annotating known events on the time axis is something every monitoring chart later in this lecture does.</p>
+<p><strong>Purpose.</strong> Show how a common time axis and an event annotation help readers recognize a broad temporal change.</p>
+<p><strong>Walk through.</strong> Each row is a state and each column a year. The original WSJ graphic reports cases per 100,000 people, so the color encodes a population-normalized rate. Point to the vertical marker for the vaccine’s introduction in 1963, then compare the many colored cells before it with the much paler region afterward.</p>
+<p><strong>Rationale.</strong> A separate chart for every state would make this synchronized change harder to scan. Here, the transition forms a visible boundary across the rows. The annotation gives that boundary historical context.</p>
+<p><strong>Emphasize.</strong> The visual comparison shows timing and association. A before-and-after chart alone does not estimate a causal effect or account for every reporting difference. We can explain the design without treating the image as a complete causal analysis.</p>
+<p><strong>ML connection.</strong> Mark a model deployment or data-pipeline change on aligned monitoring plots. That gives a viewer a concrete event to investigate when several metrics move together.</p>
+<p><strong>Source detail.</strong> The rate denominator is specified in the <a href="https://graphics.wsj.com/infectious-diseases-and-vaccines/">original WSJ graphic</a>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Measles today: new U.S. cases by week, 2025-2026</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/nyt-measles-weekly-2025-2026.png" class="quarto-figure quarto-figure-center" height="820"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Migliozzi, B. (2026). New measles cases by week. <em>The New York Times</em>. Data: CDC confirmed cases through Nov.&nbsp;12, 2026.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Careers as rows: goal-scoring rate by age’.</p>
+<p><strong>Purpose.</strong> Bring the previous slide’s story up to the present, and contrast a single national series with the state-by-year heat map.</p>
+<p><strong>Walk through.</strong> Each bar is one week of confirmed U.S. cases, from late 2024 to mid-November 2026. Point to the three annotations: the West Texas outbreak declared in early 2025, the surge in South Carolina around January 2026 (the tallest week, near 300 cases), and the large outbreaks in Pennsylvania, Wisconsin and New York from late summer 2026 onward.</p>
+<p><strong>Contrast with the heat map.</strong> The WSJ chart aligns many states on a decades-long axis to show one shared change. This chart collapses the states into a single total at weekly resolution, so it shows the timing of individual outbreaks, but the annotations have to carry the geography the heat map showed with rows. It also reports counts, not rates per 100,000.</p>
+<p><strong>Emphasize.</strong> The last bar is much lower than the weeks before it. Ask whether that is a real drop or a week whose cases have not all been confirmed and reported yet. This is the same label-delay problem from the start of the lecture: the most recent points of a monitoring chart are often incomplete.</p>
+<p><strong>ML connection.</strong> Annotating outbreaks here plays the same role as marking a deployment or pipeline change on a monitoring plot: it gives the viewer a named event to check a spike against.</p>
+<p><strong>Transition.</strong> “Rows do not have to share a calendar. The next chart aligns them by age.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Careers as rows: goal-scoring rate by age</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>One row per player, <strong>aligned by age</strong>, not by calendar year</li>
+<li><strong>Color</strong>: non-penalty goals per 90 minutes</li>
+<li><strong>Size</strong>: share of the available minutes the player was on the field</li>
+<li>Rows are sorted by career scoring rate</li>
+<li>The time axis is relative: every career starts at the left, so careers can be compared</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/ft-football-heatmap.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Source: Financial Times, <em>The finest goalscorers of modern European football</em> (FT research).</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Calendar heat maps’.</p>
+<p><strong>Purpose.</strong> Introduce alignment by a meaningful relative clock when calendar dates would obscure the comparison.</p>
+<p><strong>Walk through.</strong> Each row is a player and each mark represents a season positioned at the player’s age. Color encodes non-penalty goals per 90 minutes. Size encodes the share of available playing minutes. Compare a small dark square with a large dark square: both show a high scoring rate, but the smaller square represents less playing time.</p>
+<p><strong>Clarify the alignment.</strong> The shared clock is age, not time since each player’s first season. Players can therefore have different ages at their first visible mark. The chart aligns comparable stages of life while giving up the calendar context in which those seasons occurred.</p>
+<p><strong>Rationale.</strong> Rate and exposure answer different questions. Small exposure can make a rate less stable, although mark size is not a formal uncertainty interval. Sorting by career scoring rate helps organize the rows but does not explain why players differ.</p>
+<p><strong>ML connection.</strong> Align models by time since deployment to compare how performance evolves after launch. Use calendar dates instead when a common external event is the question.</p>
+<p><strong>Transition.</strong> “Calendar layouts retain another useful alignment: familiar days and weeks.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -601,9 +904,160 @@ Claudio Silva
 </div>
 </div></div>
 <aside class="notes">
-<p>Each block is one year of daily Divvy (Chicago bike-share) rides. Rows run Monday to Sunday and columns are weeks from January to December. The last block stops in June because the data ends there.</p>
-<p>The seasonal pattern dominates: ridership peaks in the middle of each year. Within the summer months the brightest cells are in the weekend rows.</p>
-<p>This is the cyclic and the sequential structure in one picture. The GitHub contribution graph is the same design.</p>
+<p><strong>Purpose.</strong> Explain how calendar geometry lets the reader compare weekly rhythm and seasonal progression in the same view.</p>
+<p><strong>Walk through.</strong> Each block is a year of daily Divvy rides. Rows run from Monday to Sunday, and columns advance through the weeks. Read down one column to compare days within a week, then across a row to follow that weekday through the year. The brighter summer region appears in each complete year, with many bright weekend cells.</p>
+<p><strong>Rationale.</strong> The layout uses the reader’s familiarity with the calendar and aligns comparable weekdays. A single long line chart preserves chronology more directly, but makes it harder to compare corresponding days across many weeks.</p>
+<p><strong>Emphasize.</strong> The 2017 block ends in June because the records stop there. Blank future cells do not mean zero rides. Missing observations, zero values, and dates outside the dataset should have distinguishable appearances.</p>
+<p><strong>Ask.</strong> “Would this be a good view for reading the exact difference between two dates?” It is stronger for locating patterns than for precise value comparison.</p>
+<p><strong>Transition.</strong> “We can use the same alignment idea for hours within a day.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Hour of day by month: the daily cycle over the years</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><strong>Columns</strong>: hour of the day, 0 to 23</li>
+<li><strong>Rows</strong>: months, January 2015 (bottom) to April 2017 (top)</li>
+<li><strong>Color</strong>: number of recorded events in that hour, summed over the month</li>
+<li>Quiet from 1 to 5 AM and a peak at 4 to 5 PM, in every month</li>
+<li>The pale top row is the last month in the data. Check that it is complete before reading it as a drop.</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/hour-by-month-heatmap.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Horizon charts: many series in little space’.</p>
+<p><strong>Purpose.</strong> Show how to inspect whether a daily rhythm persists, and how incomplete bins can mimic a change.</p>
+<p><strong>Walk through.</strong> Columns are hours from 0 to 23. Rows are months, with January 2015 at the bottom and April 2017 at the top. Each cell counts records in that hour across the month. Follow the dark afternoon columns vertically. Their persistence indicates a similar daily rhythm over many months. The early morning hours remain quieter.</p>
+<p><strong>Rationale.</strong> Repeated vertical bands make a stable daily pattern easier to recognize than a long sequence of hourly peaks. Comparing rows can reveal changes in the shape or timing of that pattern.</p>
+<p><strong>Caution.</strong> The pale top row could reflect a partial final month. The image alone does not establish that explanation, so check the date coverage before announcing a collapse. Counts also depend on month length. For intensity comparisons, consider events per observed day and account for missing hours.</p>
+<p><strong>Color connection.</strong> These are nonnegative counts with no meaningful midpoint. A sequential color scale is easier to justify than a diverging scale that suggests values on opposite sides of a reference.</p>
+<p><strong>Transition.</strong> “Another way to align repeated phases is to wrap time around a circle.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Spirals: the cycle on the angle, time on the radius</h2>
+
+<img data-src="figs/time-series/spiral-plot-concept.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Left: a periodic series on a straight time axis. Right: a spiral with one period per turn, so the peaks line up in one sector.</strong></p>
+<div class="footer">
+<p>Weber, M., Alexa, M., &amp; Müller, W. (2001). <a href="https://doi.org/10.1109/INFVIS.2001.963273"><em>Visualizing time-series on spirals</em></a>. IEEE InfoVis.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Horizon charts: many series in little space’.</p>
+<p><strong>Purpose.</strong> Explain the encoding before evaluating whether a spiral helps the task.</p>
+<p><strong>Walk through.</strong> On the left, time advances along a straight axis. On the right, it advances along a spiral. One complete turn represents a chosen period, so angle identifies phase within that period and successive turns represent successive cycles. Brightness carries the measured value. Point to the bright sector that repeats across turns.</p>
+<p><strong>Rationale.</strong> When the chosen period matches the data, peaks at the same phase align visually. The display combines repetition with chronological progression in a compact space.</p>
+<p><strong>Emphasize.</strong> The turn length is an analytical choice. If it is wrong, the peaks shift around the spiral from one turn to the next. That shift could reflect a mismatched period or a changing process. It needs investigation, rather than an immediate interpretation as noise.</p>
+<p><strong>Ask.</strong> “If the phenomenon repeats every seven days, what should one turn represent? What would happen if we chose six?” The peaks would gradually move around the circle.</p>
+<p><strong>Transition.</strong> “The climate spiral uses a related visual form, but assigns a different meaning to radius.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The climate spiral</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<ul>
+<li><strong>Angle</strong>: month of the year</li>
+<li><strong>Radius</strong>: global temperature change; the red rings mark 1.5 °C and 2.0 °C</li>
+<li><strong>One loop per year</strong>, 1850 to 2016, colored from purple (early) to yellow (recent)</li>
+<li>What it shows well: the loops move outward, and the recent ones are the outermost</li>
+<li>What it shows poorly: the value in any particular year</li>
+</ul>
+</div><div class="column" style="width:58%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/climate-spiral-2016.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Hawkins, E. (2016). <a href="https://www.climate-lab-book.ac.uk/spirals/"><em>Climate spirals</em></a>. Climate Lab Book. Data: HadCRUT4.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Horizon charts: many series in little space’.</p>
+<p><strong>Purpose.</strong> Distinguish a graphic designed to communicate a broad change from one designed for detailed comparison.</p>
+<p><strong>Walk through.</strong> In this historical frame, angle identifies the month and color identifies the year. Radius represents the global temperature anomaly. Unlike the previous spiral, moving outward here means a larger measured value, rather than simply a later turn along the time axis. Trace a recent yellow loop and compare it with the earlier purple loops.</p>
+<p><strong>Context.</strong> Hawkins’s original animation uses HadCRUT4 monthly values relative to the 1850–1900 mean. The red reference rings give the radial distance a temperature scale. Keep the discussion tied to the historical data shown, which end in 2016. A monthly value near a ring is a monthly comparison, not a statement about a sustained multi-year average.</p>
+<p><strong>Rationale.</strong> The outward movement of recent loops communicates warming clearly. Recovering an individual older year or comparing two exact values is harder because many paths overlap. An annual line chart would support those tasks more directly.</p>
+<p><strong>Ask.</strong> “What do you learn in two seconds? What question would require a different view?”</p>
+<p><strong>Source.</strong> <a href="https://www.climate-lab-book.ac.uk/2016/spiralling-global-temperatures/">Hawkins’s explanation of the original spiral</a>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Radial or linear: the same events both ways</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/arab-spring-radial.png" class="quarto-figure quarto-figure-center" height="620"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/arab-spring-linear.png" class="quarto-figure quarto-figure-center" height="620"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>Which country’s unrest lasted longest? Which ended first? Try each chart.</strong></p>
+<ul>
+<li>We read lengths on a common straight axis faster and more accurately than angles and arcs</li>
+<li>On the left, the same number of months is a longer arc on an outer ring than on an inner one</li>
+<li>Use a radial layout when the cycle itself is the message</li>
+</ul>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Horizon charts: many series in little space’.</p>
+<p><strong>Purpose.</strong> Evaluate a visual layout with a concrete reading task.</p>
+<p><strong>Activity.</strong> Ask students to compare the duration and endpoints of two countries in the radial chart, then repeat in the linear chart. In the linear version, endpoints share a horizontal month axis. In the radial version, readers must map angles back to months and follow separate rings.</p>
+<p><strong>Explain.</strong> At radius r, an angular span has arc length r times the angle. Equal durations can therefore occupy different physical lengths on different rings. The encoding can be decoded through angle, but its visible arc lengths can mislead a quick comparison.</p>
+<p><strong>Read the endpoint marks carefully.</strong> Symbols indicate reported outcomes. A bar reaching the graphic’s time boundary does not necessarily mean the unrest ended there. Restrict claims to the period and endpoint information shown. Color encodes reported victims, which is a separate variable from duration.</p>
+<p><strong>Rationale.</strong> These events unfold over a year without forming a repeating cycle. The straight axis supports the stated duration questions. A radial layout is easier to motivate when joining the end of a cycle to its beginning helps the reader.</p>
+<p><strong>Transition.</strong> “Space constraints can justify less familiar encodings. Horizon charts provide a different example.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -643,10 +1097,11 @@ Claudio Silva
 <p>Heer, J., Kong, N., &amp; Agrawala, M. (2009). <a href="https://doi.org/10.1145/1518701.1518897"><em>Sizing the horizon: the effects of chart size and layering on the graphical perception of time series visualizations</em></a>. CHI.</p>
 </div>
 <aside class="notes">
-<p>About fifty stocks, one per row. On the left each row is a line chart only a few pixels tall, and they all look flat.</p>
-<p>On the right the same rows use color: blue for above the baseline, red for below, darker for further away. You can see at a glance which stocks fell and when, and that many of them fell together.</p>
-<p>Heer, Kong and Agrawala studied how far charts like these can be compressed before reading accuracy suffers.</p>
-<p>Note the name clash: later today ‘horizon’ also means how far ahead a forecast looks. The two are unrelated.</p>
+<p><strong>Purpose.</strong> Motivate a more complex encoding by showing the problem it addresses.</p>
+<p><strong>Walk through.</strong> Each row is a stock series. On the left, squeezing line charts into thin rows makes vertical variation difficult to see. On the right, hue indicates the sign of deviation from a baseline and darker bands indicate larger deviations. Ask students to find a time when several rows turn red together.</p>
+<p><strong>Rationale.</strong> Horizon charts exchange some position reading for color and layering to preserve useful patterns at small heights. They can help locate coordinated changes across many rows, but require learning the legend and the band construction.</p>
+<p><strong>Emphasize.</strong> Red and blue describe a relationship to a specified baseline. They do not automatically mean bad and good. The baseline and band widths must be stated, and comparable rows need compatible scales if magnitude comparisons matter. The study by Heer and colleagues examines the trade-off between compactness and reading accuracy, rather than establishing that more compression is always better.</p>
+<p><strong>Transition.</strong> “The next two slides unpack the transformation. Later, forecast horizon will mean how far ahead we predict, which is a different use of the word.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -674,8 +1129,11 @@ Claudio Silva
 <p><strong>Fill the area between the line and the baseline, then slice it into bands of equal height. Darker means further from the baseline.</strong></p>
 <aside class="notes">
 <p>SKIPPABLE - if running long, jump to ‘Sparklines’.</p>
-<p>Top: an ordinary line chart with a horizontal baseline.</p>
-<p>Bottom: the area is filled, blue above the baseline and red below, and divided into bands. The first band is light, the next darker, the third darkest. So far nothing has been compressed. It is the same chart with a layered color scale.</p>
+<p><strong>Purpose.</strong> Make the compact encoding readable by building it from an ordinary signed series.</p>
+<p><strong>Walk through.</strong> Start with the line and horizontal baseline in the upper image. Fill the area above the baseline blue and below it red. Divide positive and negative deviations into equally sized magnitude bands, using darker shades for bands further from zero. At this stage the geometry retains its full height.</p>
+<p><strong>Use a simple example.</strong> “Suppose one band is ten units high. A value of +25 fills the first two positive bands and five units of the third. A value of −25 fills the corresponding negative bands.” Sign selects the hue, and magnitude determines which bands are present.</p>
+<p><strong>Rationale.</strong> We are assigning color to information that will no longer be recoverable from full vertical displacement after compression. The reader needs to understand the band scale before looking at the final compact row.</p>
+<p><strong>Transition.</strong> “Now we can fold and layer the bands while retaining clues to their original values.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -703,9 +1161,11 @@ Claudio Silva
 <p><strong>Mirror the negative values above the baseline, then slide every band down to the baseline. Height becomes color intensity.</strong></p>
 <aside class="notes">
 <p>SKIPPABLE - if running long, jump to ‘Sparklines’.</p>
-<p>Top: the red (negative) part is flipped up, so everything sits above the baseline and the chart needs half the height. Color still tells you the sign.</p>
-<p>Bottom: a close-up of one peak after the bands are slid down on top of each other. The chart is now one band tall. A dark patch means the value reached the third band there.</p>
-<p>That is why the horizon chart two slides back reads as ‘darker is more extreme’.</p>
+<p><strong>Purpose.</strong> Explain how the final height reduction preserves sign and approximate magnitude.</p>
+<p><strong>Walk through.</strong> In the upper image, the negative region has been reflected above the baseline. It remains red, so reflection does not change the meaning of the values. In the lower image, bands have been shifted down onto a shared baseline and layered. The entire row is now only one band high.</p>
+<p><strong>Return to the example.</strong> With ten-unit bands, +25 belongs to the third positive band and extends five units into it. Its blue shade identifies the band and its remaining height carries the within-band amount. For −25 the corresponding mark is red. Hue, shade, and height work together.</p>
+<p><strong>Emphasize.</strong> Compression has a reading cost. A dark region means a larger absolute deviation, but exact values require the band scale and some decoding. More layers increase density while making that task harder.</p>
+<p><strong>Transition.</strong> “Sparklines make a different compromise: they retain a familiar line and usually give up explicit axes.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -730,9 +1190,192 @@ Claudio Silva
 </div>
 <p><strong>No axes and no labels: a sparkline sits beside a number and shows where it came from.</strong></p>
 <aside class="notes">
-<p>A 28-day summary from a Twitter analytics page (October 2015). Each number has its change over the previous period and a tiny line of its recent history underneath.</p>
-<p>The sparkline does not let you read values. It answers one question: is this number part of a trend, a spike, or business as usual?</p>
-<p>Most monitoring dashboards are built from this pattern: one row per metric, the current value, and a sparkline.</p>
+<p><strong>Purpose.</strong> Explain how a tiny historical trace adds context to a summary number.</p>
+<p><strong>Walk through.</strong> The image is a 28-day Twitter analytics summary. Choose one metric, read the large number, then point to its small line below. The number summarizes the period. The line shows whether activity was steady, concentrated in a spike, or changed toward the end. Two periods can have the same total and very different histories.</p>
+<p><strong>Rationale.</strong> A sparkline is useful when the reader needs a quick temporal pattern beside a value. Omitting axes saves space, while the surrounding labels supply meaning. It provides less support for reading exact values or estimating a numerical slope.</p>
+<p><strong>Emphasize.</strong> Check whether different sparklines share a scale. If each has its own range, equally tall spikes do not imply equal magnitudes. A monitoring sparkline also needs a known time window and a way to inspect detail when something looks unusual.</p>
+<p><strong>Transition.</strong> “So far our compact views have mostly shown measurements. Event records need marks that preserve individual occurrences.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Event data: one mark per event</h2>
+
+<img data-src="figs/time-series/event-proportional-symbols.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Position is the date, row is the city, size is the quantity shipped, color is the shipping mode. No line connects the marks, because nothing is measured between events.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Evaluating a Forecast’.</p>
+<p><strong>Purpose.</strong> Return to the event/measurement distinction and show what individual-event marks preserve.</p>
+<p><strong>Walk through.</strong> Position locates a shipment date, the row identifies a city, size represents quantity shipped, and color identifies shipping mode. Look first for dense rows and long gaps, then for unusually large marks. There is no measured value to interpolate between two separate shipments, so connecting all the marks with a line would suggest the wrong structure.</p>
+<p><strong>Rationale.</strong> This display preserves event timing and attributes that a line of daily totals would combine. Dense rows also reveal its limitation: overlapping marks make individual events and colors hard to distinguish. Transparency or interactive inspection can help, while binning trades detail for a readable count series.</p>
+<p><strong>Caution.</strong> If jitter is used to separate overlaps, keep the actual timestamp recoverable and explain any displacement. A logging gap can also look like an absence of events.</p>
+<p><strong>ML connection.</strong> Prediction requests, alerts, and deployments are event records. Deployment marks are especially useful as annotations alongside continuous performance metrics.</p>
+<p><strong>Transition.</strong> “For an event that lasts, show both endpoints.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Events with duration: one bar per interval</h2>
+<div class="columns">
+<div class="column" style="width:34%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/anchor-tenures.png" class="quarto-figure quarto-figure-center" height="640"></p>
+</figure>
+</div>
+</div><div class="column" style="width:66%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/time-series/tape-mounts-gantt.png" class="quarto-figure quarto-figure-center" height="640"></p>
+</figure>
+</div>
+</div></div>
+<ul>
+<li><strong>A bar runs from start to end on a shared time axis</strong> (a Gantt chart). It shows overlaps, gaps, and what ran at the same time.</li>
+<li>Left: tenures of evening news anchors since 1948. Right: tape mounts on 24 drives over about two and a half days.</li>
+</ul>
+<div class="footer">
+<p>Left: FiveThirtyEight, <em>The Lifespan Of An Evening News Anchor</em>.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Evaluating a Forecast’.</p>
+<p><strong>Purpose.</strong> Explain why interval bars support questions about duration, overlap, and resource occupancy.</p>
+<p><strong>Walk through.</strong> On the left, the horizontal endpoints locate news-anchor tenures, grouped by network. Point to a succession of tenures and then an overlap. On the right, each row is a tape drive and each bar is a mount. Its endpoints locate the start and finish, while color distinguishes the requesting system. Compare a long occupancy with a burst of short mounts.</p>
+<p><strong>Rationale.</strong> A common horizontal axis makes duration a length comparison. Vertical alignment reveals simultaneous activity across resources. An event count alone would discard the difference between one long job and many short jobs.</p>
+<p><strong>Emphasize.</strong> Name what each row represents. A row per person, resource, or task supports a different comparison. If an interval is ongoing at the end of the data, mark that status rather than implying a known finish time.</p>
+<p><strong>ML connection.</strong> The same design can show training jobs on GPUs or pipeline stages within runs. Overlaps and idle periods become visible, providing concrete questions about bottlenecks or scheduling.</p>
+<p><strong>Transition.</strong> “For long histories, interaction helps us move between the overview and the events that need attention.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interaction (1): zoom and pan</h2>
+<p><strong>A long series does not fit in one static view. Show the whole extent first, then let the reader move through it.</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3>Geometric zoom</h3>
+<ul>
+<li>Magnifies the picture: the same points, drawn larger</li>
+<li>Use an <strong>overview + detail</strong> pair so the reader always knows where they are</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3>Semantic zoom</h3>
+<ul>
+<li>Changes the data: hourly, then daily, then monthly</li>
+<li>It is the aggregation trade-off from part 1, made interactive</li>
+</ul>
+</div></div>
+<p><strong>Demo:</strong> <a href="https://vega.github.io/vega-lite/examples/interactive_overview_detail.html">overview + detail in Vega-Lite</a>. Drag a range in the lower chart; the upper chart shows only that range.</p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Evaluating a Forecast’.</p>
+<p><strong>Purpose.</strong> Distinguish changing the visible range from changing the representation at different scales.</p>
+<p><strong>Demo script.</strong> Open the linked Vega-Lite example. First point to the lower chart as the full history. Drag a short interval there and show how the upper chart displays the selection. Move the selection so students see both navigation and the persistent indication of where they are. If the demo is unavailable, describe the same two-view sequence verbally.</p>
+<p><strong>Explain.</strong> This example changes the visible domain without recomputing temporal bins. Geometric zoom enlarges a portion of the existing representation. Semantic zoom changes what is represented, such as showing monthly summaries at a broad scale and daily values at a fine scale.</p>
+<p><strong>Rationale.</strong> Overview plus detail reduces the risk of losing temporal context while investigating a local feature. Semantic zoom also manages the number of marks, but must update labels and units so a monthly total is not mistaken for a daily total.</p>
+<p><strong>Ask.</strong> “When a spike becomes taller after zooming, did we discover a larger value, change the vertical scale, or change the aggregation?” A usable interface makes the answer clear.</p>
+<p><strong>Transition.</strong> “Selecting a time interval becomes more powerful when the other views respond to the same selection.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Interaction (2): brushing and linking</h2>
+<ul>
+<li><strong>Filtering</strong>: show only a time range, a category, or values above a threshold</li>
+<li><strong>Brushing</strong>: select marks in one view by dragging over them</li>
+<li><strong>Linking</strong>: the selection is applied to every other view of the same data</li>
+<li><strong>Dynamic aggregation</strong>: change the bin size with a control; click a month to see its days</li>
+</ul>
+<p><strong>For ML: brush a bad stretch of the accuracy chart, and the linked views show those rows: their feature distributions, their classes, the individual errors.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Evaluating a Forecast’.</p>
+<p><strong>Purpose.</strong> Show how interaction connects a symptom to records that may help explain it.</p>
+<p><strong>Talk through a scenario.</strong> “Suppose accuracy drops during two weeks. Brush that interval. A linked feature histogram now shows the inputs from those requests. A class view shows their composition, and a table lets us inspect the errors.” Compare the selected period against a reference period rather than viewing its distribution in isolation.</p>
+<p><strong>Clarify the terms.</strong> Brushing defines a selection. Linking propagates that selection across views. A linked view may highlight selected records or filter to them, and those behaviors have different consequences for context. Dynamic aggregation changes the level of summary.</p>
+<p><strong>Rationale.</strong> An accuracy timeline can locate a problem in time. Linked views let us ask which groups or inputs changed during the same period. They generate hypotheses for diagnosis, while overlap in time alone does not establish causation.</p>
+<p><strong>Emphasize.</strong> Keep the selected interval and its sample size visible. Also decide whether time means prediction time or label-arrival time, especially when outcomes are delayed.</p>
+<p><strong>Transition.</strong> “We have assigned time a spatial axis throughout these examples. Sometimes that axis is already needed for something else.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>When position is already taken</h2>
+<p><strong>Every chart so far put time on a spatial axis. On a map or a scatterplot, x and y are already in use.</strong></p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3>Animation</h3>
+<ul>
+<li>Time is shown as time</li>
+<li>Good for one clear change</li>
+<li>Hard to compare two moments: you have to remember the earlier frame</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3>Color</h3>
+<ul>
+<li>Color each mark by its time</li>
+<li>Shows order and direction</li>
+<li>Imprecise, and it uses up the color channel</li>
+</ul>
+</div><div class="column" style="width:34%;">
+<h3>Trajectories</h3>
+<ul>
+<li>Connect an object’s positions in time order</li>
+<li>Shows the path</li>
+<li>Speed and timing need extra marks</li>
+</ul>
+</div></div>
+<p><strong>If you animate: add pause and scrub controls, keep it short, and show a few key frames side by side as small multiples.</strong></p>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to ‘Evaluating a Forecast’.</p>
+<p><strong>Purpose.</strong> Explain the alternatives when x and y already encode location, features, or an embedding.</p>
+<p><strong>Talk through one example.</strong> Imagine the positions of moving objects on a map. Animation advances the displayed moment. Color can mark when positions occurred. A trajectory connects positions in temporal order. Each makes a different question easier.</p>
+<p><strong>Explain the costs.</strong> Animation shows motion directly but asks the viewer to remember earlier frames. Color leaves multiple moments visible, but offers limited temporal precision and occupies a channel that might otherwise show category. A trajectory preserves the path, but speed requires timestamps or a known sampling interval. A long segment may mean fast motion or a long gap between observations.</p>
+<p><strong>Course connection.</strong> Comparing embeddings at successive training iterations with small multiples puts several moments in view at once. A path through a projection of model parameters can show movement, while inheriting the projection’s distortions.</p>
+<p><strong>Rationale.</strong> Match the display to the comparison the viewer must make. Pause and scrub controls, a stable scale, and selected frames alongside an animation can support inspection.</p>
+<p><strong>Transition.</strong> “We now have a set of temporal displays. The next step is to use them to evaluate predictions honestly.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -748,7 +1391,20 @@ Claudio Silva
 <section>
 <section class="title-slide slide level1 center">
 <h1>Evaluating a Forecast</h1>
-
+<aside class="notes">
+<p><strong>Section bridge.</strong> “We will now use those displays to evaluate a model. A forecast makes a claim about observations that were unavailable when it was issued. Our split, our features, and our error plots all have to respect that boundary.”</p>
+<p><strong>Rationale.</strong> Remind students of Week 3’s metrics, then distinguish the metric from the experiment used to estimate it. The synthetic demand series lets us connect each diagnostic pattern to a known ingredient of the data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Time series tasks in ML</h2>
@@ -771,9 +1427,12 @@ Claudio Silva
 </div></div>
 <p><strong>The evaluation tools from Week 3 assumed none of these three. Each one has a visual check.</strong></p>
 <aside class="notes">
-<p>The first three are tasks on temporal data. The fourth applies to every model you deploy, including ones whose inputs are images or text: once a model runs for months, its accuracy is itself a time series.</p>
-<p>The right column is the outline for the rest of the lecture. Dependence between observations is why random splits fail (next slides). Order is why we backtest. The future differing from the past is drift (part 4).</p>
-<p>Running example for part 3: a synthetic series of daily demand over three years, with an upward trend, a yearly cycle, a strong weekly cycle (weekends are low) and autocorrelated noise.</p>
+<p><strong>Purpose.</strong> Connect the visualization material to modeling decisions without turning the lecture into a catalog of forecasting algorithms.</p>
+<p><strong>Talk through.</strong> Forecasting predicts future demand. Classification might label a window of sensor readings as walking or running. Anomaly detection asks whether a value or sequence departs from expected behavior. Monitoring applies even to a model whose individual inputs are images or text: once deployed, its requests and errors form a temporal history.</p>
+<p><strong>Explain the right column.</strong> Nearby observations can share information. Prediction requires respecting when information becomes available. The process that generates future observations can also change. These are reasons to reconsider the evaluation design, not reasons to discard MAE, accuracy, or precision and recall from Week 3.</p>
+<p><strong>Set up the example.</strong> “Our daily demand series has three years of observations. We constructed it with an upward trend, annual seasonality, weekday effects, and noise that carries over from one day to the next. We know those ingredients, so we can deliberately omit one and inspect the resulting failure.” The last 120 days serve as the initial future test period.</p>
+<p><strong>Emphasize.</strong> Temporal dependence and distribution change are common possibilities, not properties that every timestamped dataset must exhibit. The test design should match the use case.</p>
+<p><strong>Transition.</strong> “First, what should a forecast display tell us beyond its central prediction?”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -788,7 +1447,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>A forecast is a line and a band</h2>
-<div id="d80c0534" class="cell" data-execution_count="2">
+<div id="ef9e448f" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -799,10 +1458,13 @@ Claudio Silva
 </div>
 <p><em>Synthetic daily demand. Linear model on a time index, a yearly cycle and day of week; band from the model’s errors on its last 180 training days.</em></p>
 <aside class="notes">
-<p>Gray is what happened. To the right of the dashed line the model has seen nothing: purple is its forecast, the shaded band is its 90% prediction interval.</p>
-<p>Three things to read. First, does the forecast have the right shape? Here it reproduces the weekly dips. Second, the size of the error, an MAE of about 51 on a series that runs between 1,100 and 1,700. Third, the band.</p>
-<p>The band is nominally 90%, and the label says about 78% of the future days fell inside it. That gap is a calibration failure, the same idea as the reliability diagrams in Week 3: the band was sized from past errors, and the noise in this series is autocorrelated, so errors come in runs that last several days.</p>
-<p>Always report the coverage of an interval next to the interval.</p>
+<p><strong>Purpose.</strong> Separate point accuracy from the quality of an uncertainty statement.</p>
+<p><strong>Walk through.</strong> Start at the dashed boundary. Everything to its left is available for fitting. To its right, purple gives the linear model’s predictions and gray shows what subsequently happened. The model uses a time index, annual sine/cosine features, and weekdays, all of which are known for future dates. Point to the repeated weekly dips before discussing the error.</p>
+<p><strong>Explain the numbers.</strong> MAE is the average absolute difference between actual and predicted demand, in demand units. Here it is about 51. The band extends about 85 units on either side, using the 90th percentile of absolute residuals from the last 180 training days. Only about 78% of the 120 future observations fall inside it.</p>
+<p><strong>Explain the limitation.</strong> The label “90%” is a nominal target based on those past residuals. Those days were also used to fit the model, so they are not an independent calibration set. The correlated noise produces runs of errors, and one future period need not match the past residual distribution. The observed coverage shows undercoverage in this test period, but the plot alone does not isolate one cause.</p>
+<p><strong>Emphasize.</strong> This is a simple constant-width band for individual observations, with no guarantee that the whole future path stays inside. A stronger evaluation would assess coverage and width on later data, including by forecast horizon. Widening a band can improve coverage while reducing its usefulness.</p>
+<p><strong>Ask.</strong> “Could a model have low MAE but an unreliable interval?” Yes. Point predictions and interval calibration need separate checks. See <a href="https://otexts.com/fpp3/toolbox.html">Forecasting: Principles and Practice, Chapter 5</a> for the interval and residual concepts.</p>
+<p><strong>Transition.</strong> “Even the point-error estimate can be misleading if the train/test split asks the wrong question.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -817,7 +1479,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>A random train/test split is too optimistic</h2>
-<div id="a400e9c9" class="cell" data-execution_count="3">
+<div id="c34ebd23" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -828,11 +1490,12 @@ Claudio Silva
 </div>
 <p><em>Same synthetic series; gradient-boosted trees on time index, day of week and day of year.</em></p>
 <aside class="notes">
-<p>Left: which days are held out. With a random split (top) the test days are scattered among the training days. With a time-ordered split (bottom) the test days come after all the training days.</p>
-<p>Right: the error each scheme reports, and the error the model really makes on the 120 days that follow.</p>
-<p>Random 5-fold cross-validation reports an MAE of about 25. On the real future the model’s error is about 95, almost four times worse. The time-ordered estimate, about 116, is in the right range, and errs on the pessimistic side.</p>
-<p>Why: with a random split every test day has training days right next to it, so the model only has to interpolate. Forecasting is extrapolation. Tree models cannot extrapolate a trend, and the random split never asks them to.</p>
-<p>This is the most common evaluation mistake with temporal data.</p>
+<p><strong>Purpose.</strong> Explain the mechanism of optimistic temporal evaluation and make the prediction task explicit.</p>
+<p><strong>Walk through.</strong> The left panel illustrates the split patterns. Randomly scattered test days have training observations on both sides. In a forward split, the test block follows the training block. These are illustrations of the placement of held-out days, rather than drawings of all five folds used in the right panel.</p>
+<p><strong>Read the comparison.</strong> Here the model is gradient-boosted trees, using time index, weekday, and day of year. Random five-fold evaluation reports MAE about 25. Time-ordered evaluation reports about 116. Training on the available history and testing on the actual next 120 days gives about 95. The forward estimate is pessimistic in this example, but much closer to the future task.</p>
+<p><strong>Explain why.</strong> The series has a trend and correlated neighboring values. Random folds let the model learn from later dates surrounding a held-out date. That makes the task closer to filling gaps within an observed history. Deployment instead asks it to predict beyond the available history. Ordinary regression trees have particular difficulty extending a trend beyond their training range.</p>
+<p><strong>Emphasize.</strong> The nearly fourfold gap is an outcome of this example, not a universal factor. Time-ordered folds also differ in training size and test period. If the real task were historical interpolation, a different split might be appropriate. For future forecasting, reproduce future information availability, including in preprocessing and feature construction.</p>
+<p><strong>Transition.</strong> “Backtesting repeats that deployment-like experiment at several points in history.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -847,7 +1510,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Backtesting: rolling-origin evaluation</h2>
-<div id="a4c215a4" class="cell" data-execution_count="4">
+<div id="3c83ffaf" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -858,10 +1521,13 @@ Claudio Silva
 </div>
 <p><em>Same synthetic series and the linear model from two slides back; six folds, each tested on the next 120 days.</em></p>
 <aside class="notes">
-<p>The fix has a name: rolling-origin evaluation, or backtesting. Train on everything up to a date, test on the period that follows, move the date forward, repeat. In scikit-learn this is TimeSeriesSplit.</p>
-<p>Left: the six folds. Gray is training data, orange is the 120-day test window. The training set grows each time.</p>
-<p>Right: the error on each fold. It ranges from about 36 to about 59, with a mean of 48. The single split we used earlier is fold 6.</p>
-<p>Show the per-fold errors, not only the mean. The spread is the honest answer to ‘how good is this model’: it depends on which four months you ask about.</p>
+<p><strong>Purpose.</strong> Show why one chronological holdout is useful but gives an incomplete account of performance across time.</p>
+<p><strong>Walk through.</strong> Pick the first row. Gray is the available past and orange is the following 120 days. Move down one row: the origin advances and the training set expands. Previously tested observations may now enter training because they would have become available by that later origin. Within each fold, future outcomes remain excluded.</p>
+<p><strong>Read the results.</strong> We have returned to the calendar-based linear model, so do not compare these errors to the previous slide as though only the split changed. Fold MAEs range from about 36 to 59, averaging about 48. The sixth fold uses the same last 120 days as the first forecast example.</p>
+<p><strong>Rationale.</strong> The per-fold curve tells us whether performance is consistent across deployment dates. A mean hides differences in season, training history, and the particular errors encountered. The folds share training data, so the six scores are not independent experimental replicates.</p>
+<p><strong>Practical extension.</strong> Choose the test window to match the decision horizon. An expanding window uses all available history. A fixed-length training window can prioritize recent behavior. Fit preprocessing inside each fold and account for labels or features that arrive late. A gap can exclude observations close to the boundary when the information timing requires one.</p>
+<p><strong>Emphasize.</strong> If these backtests guide model selection, reserve a later untouched period for final assessment. See the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html">TimeSeriesSplit documentation</a> for expanding windows and the gap parameter.</p>
+<p><strong>Transition.</strong> “A large error tells us that something is wrong. Residual views help us work out what structure the model missed.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -876,7 +1542,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Residuals show what the model missed</h2>
-<div id="2d7e0d5e" class="cell" data-execution_count="5">
+<div id="8d892f6c" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -887,11 +1553,13 @@ Claudio Silva
 </div>
 <p><em>Same synthetic series; the linear model with the day-of-week inputs removed.</em></p>
 <aside class="notes">
-<p>Residual means actual minus predicted. If a model has captured the structure, the residuals look like noise. Here we deliberately removed day of week from the inputs.</p>
-<p>Left: residuals over time. They form a band with regular downward spikes, but at this scale it is hard to say why.</p>
-<p>Middle: the same residuals grouped by weekday. Monday to Friday are all above zero, Saturday and Sunday far below, around minus 120 and minus 190. The model is missing a weekly pattern.</p>
-<p>Right: the autocorrelation of the residuals. The bars at lags 7, 14, 21 and 28 (purple) are near 0.8. Errors a week apart are almost the same error.</p>
-<p>Same data, three views, and only the views that use the cyclic structure reveal the problem. This is part 1 of the lecture applied to a model’s errors.</p>
+<p><strong>Purpose.</strong> Use complementary views to turn an aggregate error into a specific modeling hypothesis.</p>
+<p><strong>Define the sign.</strong> A residual is actual minus predicted. Positive means the model predicted too little, and negative means it predicted too much. Here we deliberately remove weekday inputs while retaining the trend and yearly cycle. These are residuals on the training period, used for diagnosis rather than as a final performance estimate.</p>
+<p><strong>Walk through left to right.</strong> The time plot shows repeated downward spikes but does not make their calendar alignment obvious. The weekday boxplots reveal the explanation: weekday errors are mostly positive, while Saturday and Sunday errors center near −120 and −186. The model fails to represent the weekend reduction in demand.</p>
+<p><strong>Explain autocorrelation.</strong> At lag seven, compare residuals with the residuals seven days earlier. A large positive correlation means similar errors recur a week apart. The peaks around 0.8 at lags 7, 14, 21, and 28 support the weekly explanation. The lag-zero bar is one by definition and provides no diagnostic evidence.</p>
+<p><strong>Rationale.</strong> We are applying the sequential and cyclic views from part 1 to the same errors. Adding weekday features is a well-motivated response, and subsequent backtesting checks whether it helps on future data. The synthetic noise is itself correlated, so adding weekdays will not make every residual dependency disappear.</p>
+<p><strong>Ask.</strong> “What would mostly positive residuals on every day suggest?” A general underprediction bias, rather than just a missing weekly effect.</p>
+<p><strong>Transition.</strong> “Recent observations can also help, but their value depends on how far ahead the prediction is made.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -906,7 +1574,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Error grows with the forecast horizon</h2>
-<div id="b3a77c91" class="cell" data-execution_count="6">
+<div id="939329a3" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -917,11 +1585,13 @@ Claudio Silva
 </div>
 <p><em>Same synthetic series; a separate linear model per horizon, each given the 14 most recent days observed when the forecast is issued. All horizons are scored on the same 93 days, each forecast issued on or after the last training day.</em></p>
 <aside class="notes">
-<p>A model that can see recent observations does better, but only for a while.</p>
-<p>One day ahead the MAE is about 27. It climbs to about 55 at seven days ahead and then stays between 55 and 60. The dashed line is the calendar-only model from the earlier slides, which uses no recent observations, at about 57 on these same days.</p>
-<p>So past about a week, yesterday’s value tells this model nothing beyond what the calendar already does. The noise in the series has a memory of only a few days. The small bumps above the dashed line at 10 to 21 days are noise from scoring 93 days, not a real disadvantage.</p>
-<p>How this is scored matters. An h-day-ahead forecast for day d is issued on day d minus h, its forecast origin, and can only use what was known then. Every model here was fitted on days up to the end of training, so we only score forecasts whose origin is at or after that day. That leaves the last 93 of the 120 future days for a 28-day horizon, and we use those same 93 days for every horizon so the points are comparable. Splitting by the target’s date alone is a common leak: the model for a long horizon would have been trained on outcomes that did not exist yet when its first forecasts were issued.</p>
-<p>A single accuracy number for a forecaster hides this curve. Always ask: accurate at what horizon?</p>
+<p><strong>Purpose.</strong> Explain that forecasting accuracy is conditional on how far into the future we ask the model to predict.</p>
+<p><strong>Define the setup.</strong> An h-day-ahead forecast for day d is issued on day d minus h. Each purple point comes from a separate linear model using calendar features for the target day and the 14 most recent observations available at that forecast origin. These are direct forecasts for each horizon, not a recursive rollout that feeds predictions back into the model.</p>
+<p><strong>Walk through.</strong> One day ahead, MAE is about 27. At seven days it is about 55. At longer horizons it is mostly between 55 and 60, close to the calendar-only reference near 57. Recent values help track the correlated noise at short horizons. As the horizon increases, that information becomes less predictive, while the calendar remains available.</p>
+<p><strong>Explain fair scoring.</strong> Model coefficients are fitted using targets before the training cutoff. Every scored forecast must also have an origin at or after the last training day. The 28-day horizon leaves 93 eligible target days, and all horizons use those same days. Otherwise differences could come from evaluating different periods or using training outcomes that had not yet occurred at the forecast origin. As time advances, newly observed demand may enter the lag inputs, but the model coefficients stay fixed.</p>
+<p><strong>Qualification.</strong> Error need not increase monotonically in every finite sample. The small reversals and differences from the dashed line are not enough to establish a general advantage or disadvantage. This experiment shows a short useful memory for this particular process.</p>
+<p><strong>Ask.</strong> “If an operational decision must be made three weeks ahead, which point matters?” The three-week result, even if tomorrow’s prediction is excellent.</p>
+<p><strong>Transition.</strong> “So far the underlying process has stayed the same. Next we let the world change after deployment.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -937,7 +1607,20 @@ Claudio Silva
 <section>
 <section class="title-slide slide level1 center">
 <h1>Drift and Monitoring</h1>
-
+<aside class="notes">
+<p><strong>Section bridge.</strong> “Backtesting asks how the model would have performed at earlier deployment dates. Monitoring asks what is happening after the deployment we actually made. The input population and the input-to-outcome relationship can both change.”</p>
+<p><strong>Rationale.</strong> Shift from selecting a model to maintaining useful predictions over time. Keep the distinction between early evidence from inputs and delayed evidence from outcomes in view throughout this section.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Why deployed models go stale</h2>
@@ -955,9 +1638,12 @@ Claudio Silva
 <p>Gama, J., Žliobaitė, I., Bifet, A., Pechenizkiy, M., &amp; Bouchachia, A. (2014). <a href="https://doi.org/10.1145/2523813"><em>A survey on concept drift adaptation</em></a>. ACM Computing Surveys.</p>
 </div>
 <aside class="notes">
-<p>Every model in this course so far was evaluated once, on a held-out set, and then we stopped. In production the model keeps running while the world changes.</p>
-<p>Two different things can change. The inputs can move to a region the model saw little of. Or the right answer for a given input can change: fraud patterns adapt, prices change, a policy changes what a label means.</p>
-<p>The practical asymmetry is in the bottom half. You see the inputs the moment a request arrives. You see whether the prediction was right only when the label arrives: whether the loan defaulted, whether the patient was readmitted. So teams monitor inputs as an early proxy for accuracy. The next slides show when that proxy works and when it fails.</p>
+<p><strong>Purpose.</strong> Separate a changing input population from a changing relationship between inputs and outcomes.</p>
+<p><strong>Translate the notation.</strong> P(x) describes which inputs arrive and how frequently. P(y given x) describes the outcome distribution for a particular input. A model estimates that relationship from the data it has seen. Incoming customers can change even if the relationship stays the same. Conversely, a policy or behavioral change can make the same input require a different prediction.</p>
+<p><strong>Example.</strong> If a service expands into a new region, the input mix may change. If the definition of a positive outcome changes, the label relationship may change. Neither situation guarantees a particular amount of accuracy loss. The effect depends on what changed and what the model relies on.</p>
+<p><strong>Explain the monitoring asymmetry.</strong> Inputs and predictions are available as requests arrive. Scoring requires the eventual outcomes. A loan-default label, for example, may arrive much later. Input monitoring therefore gives earlier evidence of change, while labeled performance tells us whether predictions remain useful.</p>
+<p><strong>Rationale.</strong> A training distribution is a reference, not a permanent promise about deployment. Monitoring asks whether that reference is still relevant.</p>
+<p><strong>Transition.</strong> “Changes also unfold at different speeds, which affects how quickly we can notice and respond to them.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -972,7 +1658,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Four shapes of drift</h2>
-<div id="1353da39" class="cell" data-execution_count="7">
+<div id="77bfc9f9" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -984,12 +1670,12 @@ Claudio Silva
 <p><strong>The shape decides how to respond: a sudden change calls for retraining, a recurring one for keeping the old model around.</strong></p>
 <p><em>Schematic, after Gama et al.&nbsp;(2014).</em></p>
 <aside class="notes">
-<p>These are schematic pictures of how the data-generating process moves from one concept to another over time, following the taxonomy in Gama et al.</p>
-<p>Sudden: one day it is different. A new product launch, a changed sensor.</p>
-<p>Incremental: a slow slide through intermediate states. Wear on a machine, inflation.</p>
-<p>Gradual: both concepts are active for a while and the new one takes over a growing share. Customers migrating from one behavior to another.</p>
-<p>Recurring: the old concept comes back. Seasons, weekday versus weekend behavior.</p>
-<p>A detector tuned for sudden jumps will miss the incremental case, and a team that throws away the old model will relearn it every winter in the recurring case.</p>
+<p><strong>Purpose.</strong> Explain why the temporal form of change matters for detection and adaptation.</p>
+<p><strong>Walk through.</strong> The vertical positions labeled A and B are schematic regimes, not measured accuracy. Sudden drift switches abruptly. Incremental drift moves through intermediate states. Gradual drift has periods of both regimes, with B becoming increasingly prevalent. Recurring drift returns to a regime seen before. The purple lines illustrate the mechanism and gray points suggest noisy observations.</p>
+<p><strong>Resolve the confusing pair.</strong> “Incremental means the relationship itself is changing step by step. Gradual means old and new relationships coexist during a transition.” A worn sensor provides an intuition for incremental change. A staged migration between two user behaviors provides an intuition for gradual change.</p>
+<p><strong>Rationale.</strong> A short window can respond quickly but fluctuate with noise. A long window is more stable but can mix old and new regimes. Recurrence suggests retaining useful history rather than assuming all old behavior is irrelevant.</p>
+<p><strong>Qualification.</strong> The slide’s response suggestions are possibilities, not automatic rules. A sudden change may be a broken pipeline that needs repair rather than retraining. A recurring seasonal pattern that the model already represents need not be a failure. Establish the cause and performance effect before choosing an intervention.</p>
+<p><strong>Transition.</strong> “The next example shows how a change in the labeling rule appears in accuracy, including what retraining can and cannot prevent.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1004,7 +1690,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Accuracy over time</h2>
-<div id="380f433c" class="cell" data-execution_count="8">
+<div id="912b5f78" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1015,10 +1701,13 @@ Claudio Silva
 </div>
 <p><em>Synthetic stream: a two-feature classifier scored on 400 new labeled points each week. The labeling rule changes at week 44.</em></p>
 <aside class="notes">
-<p>The simplest monitoring chart: the metric from Week 3, computed per week, plotted as a line, with known events annotated.</p>
-<p>Purple is a model trained once on weeks 0 to 7 (shaded) and never touched again. It holds at about 0.89 for 36 more weeks. At week 44 the labeling rule changes and it drops to about 0.45, worse than a coin flip, and stays there.</p>
-<p>Green is the same kind of model retrained every week on the previous eight weeks. It falls just as far at week 44, because its training window contains only old data. It then recovers as new data fills the window, and is back near 0.9 by about week 52.</p>
-<p>Two lessons. Retraining repairs drift but does not prevent the drop. And the recovery time is set by the length of the training window.</p>
+<p><strong>Purpose.</strong> Make model aging and adaptation visible in an operationally familiar metric.</p>
+<p><strong>Set up.</strong> The synthetic stream contains 400 labeled examples per week with two features. Purple is a logistic regression trained on weeks 0 through 7 and then frozen. Green is the same model family retrained each week on the preceding eight weeks. The shaded initial period is training data, so the frozen model’s scores there are not prospective test scores.</p>
+<p><strong>Walk through.</strong> After training, the frozen model stays near 0.89 accuracy until week 44. At the annotated rule change it falls to roughly 0.45 and remains there. The retrained model falls too, because at the moment of change its recent training data still reflects the old rule. It recovers as the eight-week window fills with examples from the new rule, reaching roughly its earlier performance by week 52.</p>
+<p><strong>Explain the assumptions.</strong> This simulation makes prior weeks’ labels available for retraining. With delayed outcomes, adaptation would begin later. The recovery shown depends on the window length, the amount of new data, and the model’s ability to represent the new rule. It is not a guarantee that weekly retraining repairs every change.</p>
+<p><strong>Rationale.</strong> A single accuracy averaged over all weeks hides both the failure date and the recovery. The shared time axis and event annotation make those operationally important details visible.</p>
+<p><strong>Ask.</strong> “Could scheduled retraining have prevented the first drop?” Not without information about the new regime before the change.</p>
+<p><strong>Transition.</strong> “Could an input monitor have warned us? We can test that because we know what changed in this stream.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1033,7 +1722,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Two monitors, two different alarms</h2>
-<div id="b43d5d99" class="cell" data-execution_count="9">
+<div id="c8f33313" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1044,12 +1733,13 @@ Claudio Silva
 </div>
 <p><em>Same synthetic stream. Weeks 20 to 32: the inputs shift and the labeling rule is unchanged. Week 44: the rule changes and the inputs do not.</em></p>
 <aside class="notes">
-<p>Three views of the same stream on a shared time axis. Small multiples again.</p>
-<p>Top: the distribution of one input feature per week, one histogram per column. The band drifts upward between weeks 20 and 32 (shaded) and then stays at the new level.</p>
-<p>Middle: a drift statistic, the Kolmogorov-Smirnov distance between this week’s values and the training weeks. It crosses the alert threshold at week 23 and keeps climbing.</p>
-<p>Bottom: the deployed model’s accuracy. Nothing happens during the input shift. The model’s decision does not depend on the direction that moved, so the shift is harmless. Then at week 44 accuracy collapses, and the input monitor shows no change at all at that point.</p>
-<p>So the input monitor raised an alarm when the model was fine, and was silent when the model broke. Input drift and performance loss are different events. Monitor inputs because they are available early, and monitor accuracy as soon as labels allow.</p>
-<p>The synthetic stream was constructed to separate the two cases. In real systems they usually overlap.</p>
+<p><strong>Purpose.</strong> Demonstrate why input drift and performance loss need separate evidence.</p>
+<p><strong>Read top to bottom.</strong> Each top-panel column is a histogram of feature x1 for one week, drawn as color density. Between weeks 20 and 32, the band moves upward. The middle panel compares that week’s x1 distribution with the original training reference. The KS statistic is the largest vertical difference between their cumulative distribution functions. It crosses the illustrative 0.15 threshold at week 23.</p>
+<p><strong>First case.</strong> Accuracy remains stable during that input shift. Before week 44 the synthetic labeling rule depends on x2, so moving x1 has little effect on the relevant relationship. The input alarm correctly detects a distribution change, but that change is not an accuracy failure in this example.</p>
+<p><strong>Second case.</strong> At week 44 the labeling rule changes while the input distributions stay at their new levels. Accuracy collapses. The input monitor remains elevated relative to its original reference, but shows no new change at week 44. It is therefore more precise to say it provides no new warning than to say it is silent.</p>
+<p><strong>Rationale.</strong> A distribution statistic measures a discrepancy, not its practical consequence. A monitor of one feature also cannot characterize every change in a joint distribution. The 0.15 threshold here is a teaching choice, not a universal significance cutoff.</p>
+<p><strong>Ask.</strong> “Would you retrain automatically whenever the orange line crossed its threshold?” Use the two cases to motivate investigation, performance monitoring, and awareness of label delay.</p>
+<p><strong>Transition.</strong> “Now we can specify what a useful monitoring interface should let us inspect.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1081,12 +1771,12 @@ Claudio Silva
 </ul>
 </div></div>
 <aside class="notes">
-<p>This slide joins the two halves of the lecture. The charts from part 2 are the building blocks, and the last two slides showed what they need to display.</p>
-<p>Overview first: with hundreds of features nobody reads hundreds of line charts. A features-by-week heat map of a drift statistic shows which features moved and when.</p>
-<p>Reference and annotation: a line going down means little without the training-period level and the date of the last deployment drawn on it.</p>
-<p>Slicing: the per-group analysis from Week 3 applies over time too. A model can be stable overall and failing for one region or one device type.</p>
-<p>Label delay: the right-hand end of any accuracy chart is built from incomplete labels. Draw that boundary so nobody reacts to a dip that is only missing data.</p>
-<p>DriftVis is a visual analytics system built around these ideas, and a good model for a project.</p>
+<p><strong>Purpose.</strong> Bring the chart choices and modeling concerns together in a diagnostic workflow.</p>
+<p><strong>Talk through a concrete incident.</strong> “An alert says accuracy fell last week. First locate the interval in an overview. Compare it with the training reference and mark recent deployments. Select the bad interval, inspect which features or groups moved, and examine representative errors.” This makes the bullets parts of an investigation rather than a dashboard checklist to memorize.</p>
+<p><strong>Explain the display choices.</strong> A features-by-week heat map can locate broad change. Aligned detail plots show selected inputs and outcomes on the same dates. Filtering or highlighting a segment can reveal failure hidden in the aggregate. Show counts alongside rates so the reader can distinguish a large failure from a noisy estimate based on few cases.</p>
+<p><strong>Handle incomplete information.</strong> Mark the latest prediction period whose labels are sufficiently complete. If only a subset of outcomes has arrived, the recent accuracy can be biased as well as uncertain. Offer finer bins to investigate a brief incident, while retaining the overview for context.</p>
+<p><strong>Rationale.</strong> The interface should support a decision about what to inspect or fix. A single drift score rarely supplies that decision by itself. The cited DriftVis paper provides a concrete visual analytics example for further reading.</p>
+<p><strong>Transition.</strong> “Sometimes the problem is a localized departure from expected behavior rather than a lasting new regime. That leads to anomaly detection.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1102,11 +1792,24 @@ Claudio Silva
 <section>
 <section class="title-slide slide level1 center">
 <h1>Anomaly Detection</h1>
-
+<aside class="notes">
+<p><strong>Section bridge.</strong> “A lasting change can make yesterday’s model obsolete. A brief departure may instead need an individual investigation. To flag either usefully, we must say what behavior we expected at that time.”</p>
+<p><strong>Rationale.</strong> An anomaly is relative to a context and a task. The opening examples show why a global threshold is insufficient, and the later detector connects the expected pattern to false alarms and missed events. A sustained run of anomalies may also be evidence of drift, so the two topics can overlap.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section class="slide level2">
 <h2>Three kinds of anomaly</h2>
-<div id="58c21581" class="cell" data-execution_count="10">
+<div id="d1e207e4" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1120,11 +1823,12 @@ Claudio Silva
 <p>Chandola, V., Banerjee, A., &amp; Kumar, V. (2009). <a href="https://doi.org/10.1145/1541880.1541882"><em>Anomaly detection: a survey</em></a>. ACM Computing Surveys.</p>
 </div>
 <aside class="notes">
-<p>The taxonomy is from Chandola, Banerjee and Kumar. The dotted lines are the range the normal series covers.</p>
-<p>Point anomaly: one value far outside that range. A fixed threshold catches it.</p>
-<p>Contextual anomaly: the red values are around 128, which the series reaches at every peak. They are anomalous only because of when they occur, at the bottom of a cycle. A fixed threshold cannot catch this. You need a model of what is expected at that time.</p>
-<p>Collective anomaly: one cycle is missing. Every single value is in range and close to the series average. Only the sequence is wrong.</p>
-<p>Showing the context is what makes the second and third kind visible. A red dot on an otherwise empty chart explains nothing.</p>
+<p><strong>Purpose.</strong> Explain why unusual values and unusual temporal behavior require different notions of normality.</p>
+<p><strong>Walk through.</strong> The dotted lines mark the observed range of the normal synthetic series. In the top panel, the red spike exceeds that range. A threshold on the raw value could identify this particular point anomaly. In the middle, values around 128 occur normally at peaks, but these red values appear during a trough. Their timing makes them anomalous. In the bottom panel, a whole cycle has become nearly flat even though the individual values stay in the usual range.</p>
+<p><strong>Rationale.</strong> Context changes the expected value. Sequence structure changes what counts as a normal run. A detector that only checks whether every observation lies between a global minimum and maximum misses the second and third examples.</p>
+<p><strong>Clarify the taxonomy.</strong> These are illustrative cases. A point anomaly need not be the largest or smallest value ever observed, and the contextual and collective categories can overlap. The relevant question is which features of normal behavior the detector represents.</p>
+<p><strong>Ask.</strong> “Could a sensor stuck at its average value be faulty?” Yes. A flat sequence can be unusual for a process that normally cycles.</p>
+<p><strong>Transition.</strong> “A forecast gives us one way to define the expected value at each moment, which helps with contextual anomalies.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1139,7 +1843,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Flagging what the forecast did not expect</h2>
-<div id="7f83d1e0" class="cell" data-execution_count="11">
+<div id="2fb62fbb" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1150,11 +1854,12 @@ Claudio Silva
 </div>
 <p><em>Synthetic demand series, last 240 days, with 12 injected anomalies; σ is a robust estimate of the forecast’s typical error on the training data. A retrospective demonstration: the first 120 of these days are days the forecast model was trained on.</em></p>
 <aside class="notes">
-<p>A common detector: forecast the series, then flag any day that falls outside the forecast plus or minus k times the typical error. Here k is 3. This handles contextual anomalies, because the band moves with the weekly cycle.</p>
-<p>One caveat on the set-up: the window is 240 days, and the first 120 are inside the forecast model’s training data (the anomalies were injected afterward, so the model never saw them). This is a retrospective demonstration of the mechanism. A live detector only ever scores days after its training data ends.</p>
-<p>We injected 12 anomalies, so we can grade it. Red circles: 7 flagged correctly. Black crosses: 5 missed, all inside the band, so by this detector’s logic they look ordinary. Orange squares: 3 false alarms, normal days that were flagged.</p>
-<p>Look at where the false alarms are: all three sit together in late October. Forecast errors are autocorrelated, so false alarms arrive in clusters, which is what makes on-call staff stop trusting an alert.</p>
-<p>Draw the band, not just the flagged points. With the band visible, a reader can judge each flag: how far outside was it?</p>
+<p><strong>Purpose.</strong> Explain a residual-based detector and make both its decisions and its evaluation limits visible.</p>
+<p><strong>Define the rule.</strong> Compare observed demand with the calendar model’s expected value for that day. Flag an absolute residual greater than k times a robust error scale. Here k is 3 and the estimated scale is about 51 demand units, so the band extends roughly 152 units on either side. The scale uses the median absolute deviation of the clean training residuals, multiplied by 1.4826. That conventional scaling is not a guarantee that these errors are independent or Gaussian.</p>
+<p><strong>Walk through.</strong> The band follows the expected weekly cycle, so the same raw value can be ordinary on one day and suspicious on another. Twelve perturbations were injected. Red circles mark seven correctly flagged anomalies. Black crosses mark five injected anomalies that stayed within the band. Orange squares mark three normal days that crossed it.</p>
+<p><strong>Explain the limitations.</strong> “Injected” is our ground-truth label, even if a perturbation remains within normal-looking variation. The detector sees the residual, not the injection process. The 240-day display also includes 120 days used to train the forecast model before anomalies were added. This is a retrospective demonstration, not a clean estimate of prospective detection performance.</p>
+<p><strong>Rationale.</strong> The three false alarms cluster because forecast errors are temporally correlated. A run of flags may represent one episode rather than several independent incidents. For deployment, score only information available at each time, estimate thresholds on a separate historical period, and evaluate on later data.</p>
+<p><strong>Transition.</strong> “The threshold decides how often we ask someone to investigate. The next slide makes that cost visible.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1169,7 +1874,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>The threshold is a trade-off</h2>
-<div id="03f9f54d" class="cell" data-execution_count="12">
+<div id="bf07c5e8" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1180,10 +1885,12 @@ Claudio Silva
 </div>
 <p><em>Same detector and data as the previous slide; the dashed line marks k = 3.</em></p>
 <aside class="notes">
-<p>The same trade-off as the ROC and precision-recall curves in Week 3, with the threshold k on the x axis.</p>
-<p>Left: with a low threshold recall is high and precision is poor. At k = 2 the detector catches 11 of the 12 anomalies and flags 30 days, so about two alarms in three are false. At k = 3, 10 days are flagged: precision 0.7, recall about 0.58. Above k = 4 almost nothing is flagged. The precision line stops where there are no alarms left, since precision is undefined there.</p>
-<p>The precision curve is jagged because there are only 12 anomalies. With rare events every estimate of detector quality is noisy, which is itself worth showing.</p>
-<p>Right: the number of days flagged, on a log scale. This is the chart for whoever has to respond: how many alerts per month can the team actually look at? That budget often sets the threshold.</p>
+<p><strong>Purpose.</strong> Connect statistical detection quality to the practical workload created by alerts.</p>
+<p><strong>Define the quantities.</strong> Precision is true anomalies divided by flagged days. Recall is caught anomalies divided by all injected anomalies. Increasing k widens the expected band, so fewer days cross it. The dashed vertical line marks k = 3 from the previous slide.</p>
+<p><strong>Walk through.</strong> At k = 2, 30 days are flagged and 11 of the 12 anomalies are caught. Precision is about 0.37 and recall about 0.92. At k = 3, ten days are flagged, with seven correct detections: precision 0.70 and recall about 0.58. At k = 4, only two days are flagged, both true anomalies, but ten anomalies are missed. A high precision value can therefore accompany poor detection coverage.</p>
+<p><strong>Emphasize.</strong> Precision need not increase smoothly as the threshold rises. There are only twelve anomalies, so the curve changes in steps as individual flags disappear. When no days are flagged, precision is undefined, which explains the missing end of that curve. The right panel uses a logarithmic vertical scale and counts flagged days, not distinct incidents after grouping adjacent alarms.</p>
+<p><strong>Rationale.</strong> Choose a threshold using the cost of misses and the capacity to investigate false alarms. The same data used to choose a threshold cannot provide an independent final estimate of its quality. The synthetic anomaly frequency and magnitudes also affect these precision values.</p>
+<p><strong>Ask.</strong> “Would you choose the same threshold for an expensive manual investigation and a cheap automated follow-up? Why?”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1208,8 +1915,11 @@ Claudio Silva
 <li><strong>An anomaly needs its context</strong>: show the expected band, and count false alarms as well as hits</li>
 </ul>
 <aside class="notes">
-<p>One line per section of the lecture. The first three are about drawing temporal data. The last four are about using those drawings to evaluate and monitor a model.</p>
-<p>For projects with any temporal component: the evaluation section of your final report should say how the data was split in time.</p>
+<p><strong>Purpose.</strong> Consolidate the lecture into decisions students can explain in their own projects.</p>
+<p><strong>Closing synthesis.</strong> “Start by stating what time means and what comparison matters. Choose a temporal view that exposes that structure. Evaluate using only information that would have been available at the prediction time. Then keep checking the model as new observations arrive.”</p>
+<p>Return to one connected example rather than reading every bullet. For daily demand, a weekday view exposes seasonality. A chronological split tests the future task. Residual plots reveal missing weekday effects. Horizon-specific errors show when recent observations help. After deployment, input and performance views distinguish changes in the stream from changes that hurt predictions. An expected band makes an anomaly flag interpretable.</p>
+<p><strong>Project application.</strong> Ask students to identify one temporal decision in their project: the bin size, the prediction horizon, the training cutoff, or the delay before an outcome becomes known. Their evaluation section should explain the split and what information the model could use.</p>
+<p><strong>Exit question.</strong> “A dashboard shows stable overall accuracy but a large input-drift alert. What would you inspect next?” Good answers include affected segments, feature relevance, label completeness, and sample sizes. Automatic retraining is not the only possible response.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1238,7 +1948,11 @@ Claudio Silva
 </ul>
 </div>
 <aside class="notes">
-<p>Hyndman and Athanasopoulos is the place to start for forecasting and is free online; chapter 5 covers residual diagnostics, prediction intervals and time series cross-validation. Aigner et al.&nbsp;is the reference for time-oriented visualization. Gama et al.&nbsp;and Chandola et al.&nbsp;are the standard surveys for drift and anomaly detection.</p>
+<p><strong>Purpose.</strong> Give students a route from a practical question to a deeper source.</p>
+<p><strong>Guide the reading.</strong> For forecasting diagnostics and evaluation, point to Hyndman and Athanasopoulos’s freely available book, especially Chapter 5. For time-oriented visualization beyond the examples shown, point to Aigner and colleagues. Students studying evaluation protocols can follow Tashman and Bergmeir and Benítez.</p>
+<p>For monitoring projects, Gama and colleagues provide the drift framework, and the DriftVis paper shows a visual analytics system. For anomaly definitions and detection families, use Chandola and colleagues. The Heer and Cleveland papers connect chart-design choices to perceptual tasks and empirical evaluation.</p>
+<p><strong>Rationale.</strong> Students do not need to read every source before applying today’s ideas. Start with the source closest to the decision they need to justify. Encourage them to distinguish an illustrative example in this lecture from evidence supporting a general claim.</p>
+<p><strong>Transition.</strong> “Next week we turn from watching a model’s outputs over time to looking inside the model itself.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1254,13 +1968,15 @@ Claudio Silva
 <section class="slide level2">
 <h2>Next: the last lecture before presentations</h2>
 <ul>
-<li><strong>Tuesday, Nov 24</strong>: Interpretable ML and Fairness</li>
+<li><strong>Tuesday, Nov 24</strong>: Looking Inside Large Language Models</li>
 <li><strong>Dec 1 and Dec 8</strong>: final project presentations</li>
 <li><strong>Dec 14</strong>: final project report due (8 pages)</li>
 </ul>
 <aside class="notes">
-<p>Next Tuesday is the last regular lecture. The two sessions after that are project presentations, and the final report is due December 14, the week after the last class.</p>
-<p>Thanksgiving recess is Thursday and Friday of next week and does not affect our Tuesday meeting.</p>
+<p><strong>Purpose.</strong> Close with the course schedule and a concrete way to carry today’s material into the final projects.</p>
+<p><strong>Say.</strong> “Next Tuesday, November 24, we look inside large language models: superposition, features, and attribution graphs. December 1 and December 8 are project presentations. The final report is due December 14 and has an eight-page limit.” Thanksgiving recess falls later in the week and does not remove the Tuesday meeting.</p>
+<p><strong>Connect to today.</strong> Today we judged a model from the outside, by its errors over time. Next week asks what computation produced a particular output. Both are ways of checking whether a model is doing what we think it is doing. For projects with temporal data, use the remaining preparation time to check whether the evaluation matches the intended prediction scenario and whether one temporal view would make the findings easier to explain.</p>
+<p><strong>Close.</strong> Invite final questions about the lecture or the temporal evaluation choices students need to make for their projects.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
