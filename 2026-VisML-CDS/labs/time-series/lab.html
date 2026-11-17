@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lab_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lab_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lab_files/libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2026-11-17">
+  <title>VisML Lab: Time Series, Hands-On</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="lab_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lab_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="lab_files/libs/revealjs/dist/theme/quarto-06dbc48ebe4a2c1959b4626227b1996a.css">
+  <link href="lab_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lab_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lab_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lab_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">VisML Lab: Time Series, Hands-On</h1>
+  <p class="subtitle">DS-GA 3001 - Fall 2026 - Seven Months of NYC Taxi Passengers</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva
+</div>
+        <p class="quarto-title-affiliation">
+            NYU Center for Data Science
+          </p>
+    </div>
+</div>
+
+  <p class="date">2026-11-17</p>
+</section>
+<section class="slide level2">
+<h2>Lab Overview</h2>
+<ul>
+<li>Today: apply tonight’s lecture to <strong>a real series</strong>, the number of NYC taxi passengers every 30 minutes for seven months</li>
+<li>One Colab notebook, six short experiments. Work in pairs</li>
+<li>For every experiment: <strong>predict first, then run, then explain any surprise</strong></li>
+<li>Three parts: see the series, evaluate a forecaster, find anomalies</li>
+</ul>
+<aside class="notes">
+<p>Same loop as the deep learning and NLP labs: say a prediction out loud, run the cell, explain what surprised you.</p>
+<p>The lecture used synthetic data so that the ground truth was known. Tonight the data is real, and it has surprises that nobody planted: holidays, a blizzard, and one spike that looks like a data artifact.</p>
+<p>The slides titled ‘What you should see’ hold the expected output. Show each one only after pairs have run the experiment, or use it if Colab is slow for someone.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Plan for tonight (50 minutes)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>Minutes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Open the notebook, load the data</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td><a href="#/lab-see">Part 1: see the series</a> (Experiments 1-2)</td>
+<td>14</td>
+</tr>
+<tr class="odd">
+<td><a href="#/lab-eval">Part 2: evaluate a forecaster</a> (Experiments 3-4)</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td><a href="#/lab-anom">Part 3: find anomalies</a> (Experiments 5-6)</td>
+<td>13</td>
+</tr>
+<tr class="odd">
+<td><a href="#/lab-debrief">Debrief and project check-in</a></td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>Experiment 4 is optional if we run short.</p>
+<aside class="notes">
+<p>If time is short, cut Experiment 4 (residuals) and keep Experiment 6, which has the best surprise in the lab.</p>
+<p>Keep the debrief. Final presentations start in two weeks (Dec 1), so the last minutes are also for groups to raise project questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Set-up</h2>
+<p><strong>Notebook:</strong> <a href="https://colab.research.google.com/github/ctsilva/ctsilva.github.io/blob/main/2026-VisML-CDS/labs/time-series/time_series.ipynb">time_series.ipynb on Colab</a></p>
+<ul>
+<li>Needs a Google account. Nothing to install: pandas, matplotlib and scikit-learn are already in Colab</li>
+<li>Run the first code cell. It downloads the data and should print <strong>10,320 rows</strong></li>
+<li><strong>The data:</strong> NYC taxi passengers per 30-minute interval, July 1, 2014 to January 31, 2015, from the <a href="https://github.com/numenta/NAB">Numenta Anomaly Benchmark</a> (built from NYC Taxi and Limousine Commission trip records)</li>
+<li><strong>The unit is passengers, not trips</strong>: the benchmark <a href="https://github.com/numenta/NAB/blob/master/data/README.md">describes the values</a> as the total number of taxi passengers in each 30-minute bucket</li>
+</ul>
+<aside class="notes">
+<p>The first cell reads a 265 KB CSV from the Numenta Anomaly Benchmark repository on GitHub, so it needs a network connection.</p>
+<p>The benchmark’s documentation says the values are passenger counts, and the size of the numbers agrees: 600,000 to 900,000 a day is more than the number of taxi trips New York had in 2014, and about right for trips times passengers per trip. So we say passengers throughout, not rides or trips.</p>
+<p>Columns after loading: timestamp, passengers, date, hour (0 to 23.5 in half-hour steps), dow (0 is Monday) and t (days since July 1).</p>
+<p>If someone cannot use Colab, the notebook also runs locally with pandas, matplotlib and scikit-learn.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lab-see" class="slide level2">
+<h2>Part 1: See the Series</h2>
+<p><strong>Experiments 1 and 2</strong> &nbsp;·&nbsp; about 14 minutes</p>
+<p><em>The same 10,320 numbers as a line, as daily totals, and as a heat map.</em></p>
+</section>
+<section class="slide level2">
+<h2>Experiment 1: One Line, Two Resolutions</h2>
+<p><strong>Predict:</strong> the first chart draws all 10,320 half-hour values as one line. What will you be able to read from it?</p>
+<ol type="1">
+<li>Run the full-resolution line chart. What can you actually see?</li>
+<li>Before running the daily totals: <strong>write down two dates</strong> between July and January that you expect to be unusual for taxis in New York</li>
+<li>Run the daily totals. Were your dates right?</li>
+<li>Change <code>START</code> in the one-week chart. What does a normal week look like?</li>
+</ol>
+<p><strong>Connect to lecture:</strong> aggregation is a design decision. Each bin size shows some things and hides others.</p>
+<aside class="notes">
+<p>Expected: the full-resolution line is a solid purple band from about 2,000 to 27,000 passengers. You can see one tall spike near November 1 (39,197, the maximum) and a dip to almost zero in late January. You cannot see the weekly pattern.</p>
+<p>Daily totals (215 points): a clear weekly rhythm between roughly 600,000 and 900,000 passengers per day, and obvious low days: early July, late November, a deep drop around Christmas, and the lowest point of all in late January.</p>
+<p>One week: weekdays have a morning shoulder and an evening peak around 7 pm. Friday and Saturday nights run late: Saturday’s highest half hour is 11:30 pm, and Sunday’s is midnight, which is still Saturday night.</p>
+<p>Common student predictions for unusual dates: Thanksgiving, Christmas, New Year’s Eve, July 4. Keep their list for Experiment 5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Experiment 2: The Whole Series as a Heat Map</h2>
+<p><strong>Predict:</strong> one row per day, one column per half hour, color for passengers. What will a weekend look like? What will a snowstorm look like?</p>
+<ol type="1">
+<li>Run the heat map. Nothing is aggregated: every value is on screen</li>
+<li>A bright band at the left edge comes back every seven rows. What is it?</li>
+<li>Find <strong>at least three rows that break the pattern</strong> and estimate their dates</li>
+<li>Run the average-week chart. Which weekday has the latest peak?</li>
+</ol>
+<p><strong>Connect to lecture:</strong> heat maps put time on both axes here, so the cyclic structure (hour of day) and the sequential structure (date) are visible together.</p>
+<aside class="notes">
+<p>Give pairs a few minutes before showing the next slide.</p>
+<p>The repeating bright band at the left edge is Friday night and Saturday night running past midnight: columns 0 to 4 am are bright on Saturday and Sunday rows and dark on weekday rows.</p>
+<p>Rows that break the pattern: the bottom of the chart has a row that is almost entirely dark (January 27, the blizzard); there is a dark stretch around December 25; rows in early July are dimmer than their neighbors; and one very bright short dash sits near November 1 at about 1 am. That dash comes back in Experiment 6.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What You Should See: the Heat Map</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><strong>Every seventh row</strong> is bright from midnight to 4 am: weekend nights</li>
+<li><strong>Dark band at 3 to 5 am</strong>, every day</li>
+<li><strong>Late January:</strong> one row almost entirely dark</li>
+<li><strong>Late December:</strong> several dim rows in a row</li>
+<li><strong>Near November 1:</strong> one very bright dash around 1 am</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="expected-heatmap.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Show after pairs have looked for themselves.</p>
+<p>Ask which view found the unusual days fastest. Most people say the daily totals for the big drops, and the heat map for anything that depends on time of day. The bright dash near November 1 is invisible in the daily totals as a single event: the daily chart only shows that November 1 was a high day.</p>
+<p>The dark row near the bottom is January 27, 2015. At 3 am that day there were 8 passengers in half an hour in the whole city.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lab-eval" class="slide level2">
+<h2>Part 2: Evaluate a Forecaster</h2>
+<p><strong>Experiments 3 and 4</strong> &nbsp;·&nbsp; about 13 minutes</p>
+<p><em>Train on July to September. How good will the model be in October?</em></p>
+</section>
+<section class="slide level2">
+<h2>Experiment 3: Random Split vs.&nbsp;Time-Ordered Split</h2>
+<p><strong>Predict:</strong> the model gets hour of day, weekday and a <strong>time index</strong> (days since July 1). Which estimate will be closest to its real error in October: random 5-fold or time-ordered 5-fold? Will the random estimate be too high or too low?</p>
+<ol type="1">
+<li>Run the cell with <code>USE_TIME_INDEX = True</code>. Compare the three bars</li>
+<li>Set <code>USE_TIME_INDEX = False</code> and run again. What happened to the gap?</li>
+<li>Which of the two models would you deploy? Which model does each evaluation prefer?</li>
+<li>Run the per-fold cell. Which fold drives the time-ordered average?</li>
+</ol>
+<p><strong>Connect to lecture:</strong> a random split asks the model to interpolate between neighbors. Forecasting is extrapolation.</p>
+<aside class="notes">
+<p>Give pairs time to run both settings before showing the next slide.</p>
+<p>The first surprise is in step 2. The time index is what creates the gap between the random estimate and October. Removing it makes the model much worse on the random split and slightly better on the time-ordered one.</p>
+<p>The second surprise is in step 3, and it goes against the prediction most pairs make. With the time index, the random estimate (553) is closer to the October error (837) than the time-ordered one (1,419). And the time-ordered split prefers the model without the index, which is the worse model in October. Do not smooth this over. Step 4 and the slide after the expected output explain it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What You Should See: Three Estimates of One Error</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<p>Mean absolute error, in passengers per 30 minutes:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Features</th>
+<th>Random</th>
+<th>Time-ordered</th>
+<th>Real October</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>hour, weekday, <strong>time index</strong></td>
+<td>553</td>
+<td>1,419</td>
+<td>837</td>
+</tr>
+<tr class="even">
+<td>hour, weekday</td>
+<td>1,127</td>
+<td>1,248</td>
+<td>1,239</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>With the time index, random 5-fold says 553. The real error is about <strong>50% higher</strong></li>
+<li>Without it, the three numbers nearly agree</li>
+</ul>
+</div><div class="column" style="width:58%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="expected-split-comparison.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+<p><strong>Time-ordered 5-fold prefers the wrong model:</strong> 1,248 beats 1,419, but in October 837 beats 1,239.</p>
+</div></div>
+<aside class="notes">
+<p>With the time index: random 5-fold reports 553, the real October error is 837, and the time-ordered estimate is 1,419. Random is too optimistic; time-ordered is too pessimistic here, partly because its early folds train on only a few weeks.</p>
+<p>Without the time index: 1,127, 1,248 and 1,239. The estimates agree with each other and with reality.</p>
+<p>Why: with a time index the trees can learn the level of each individual week. On a random split every test row has neighbors from the same week in the training set, so that knowledge transfers. October has no neighbors in the training set.</p>
+<p>Notice also that the model with the time index is the better one in October, 837 against 1,239. So the lesson is about the evaluation, not about the feature: random cross-validation overstated how good it is by a wide margin.</p>
+<p>The time-ordered estimate has its own failure here. It overstates the error by about 70% (1,419 against 837), and it ranks the two models in the wrong order: 1,248 against 1,419 says drop the time index, while in October the index cuts the error by about a third. The next slide shows why.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lab-folds" class="slide level2">
+<h2>Time-Ordered Is Plausible, Not Automatically Accurate</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Time-ordered 5-fold, model <strong>with</strong> the time index:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fold</th>
+<th>Trained&nbsp;on</th>
+<th>Tested&nbsp;on</th>
+<th>MAE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>15&nbsp;days</td>
+<td>Jul&nbsp;16&nbsp;to&nbsp;Jul&nbsp;31</td>
+<td>1,457</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>31&nbsp;days</td>
+<td>Jul&nbsp;31&nbsp;to&nbsp;Aug&nbsp;15</td>
+<td>708</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>46&nbsp;days</td>
+<td>Aug&nbsp;16&nbsp;to&nbsp;Aug&nbsp;31</td>
+<td>834</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>61&nbsp;days</td>
+<td>Aug&nbsp;31&nbsp;to&nbsp;Sep&nbsp;15</td>
+<td><strong>3,039</strong></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>77&nbsp;days</td>
+<td>Sep&nbsp;15&nbsp;to&nbsp;Sep&nbsp;30</td>
+<td>1,058</td>
+</tr>
+<tr class="even">
+<td><strong>Deployed</strong></td>
+<td><strong>92&nbsp;days</strong></td>
+<td><strong>Oct&nbsp;1&nbsp;to&nbsp;Oct&nbsp;31</strong></td>
+<td><strong>837</strong></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>The average, 1,419, is <strong>mostly fold 4</strong>. The other four folds average about 1,000</li>
+<li><strong>Fold 1 trains on 15 days</strong>; the deployed model trains on 92</li>
+<li><strong>Each fold predicts 15 days</strong>; the deployed model predicts 31</li>
+</ul>
+<p><strong>Respecting time makes an evaluation plausible. It does not guarantee an accurate estimate, or the right ranking of two models.</strong></p>
+<p>Make the rehearsal look like the deployment: enough training history, the same horizon, and the error <strong>per fold</strong>.</p>
+</div></div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to Experiment 4. But if pairs noticed that the time-ordered estimate was the worse of the two, use this slide to answer them.</p>
+<p>The table is the output of the per-fold cell in the notebook, plus the October row.</p>
+<p>Fold 4 is tested on August 31 to September 15. That window contains Labor Day, and it is when the city comes back from the late-August lull: the average daily total goes from about 683,000 in the second half of August to about 753,000 in the first half of September, roughly 10% up. A tree model with a time index holds the last level it saw, so it carries late August forward. That is consistent with the error of 3,039, though we have not isolated the cause. The model without the index also has its worst fold there (1,839), but by much less; its five folds are 1,468, 742, 923, 1,839 and 1,266.</p>
+<p>So one 15-day window decides both the size of the time-ordered estimate and which model it prefers. This is the reason the lecture said to show the error per fold and not only the mean.</p>
+<p>Two more mismatches with deployment. Fold 1 trains on 15 days, about two weeks of history, where the real model gets 92. And every fold predicts 15 days ahead, where the real task is a 31-day month.</p>
+<p>The statement in bold is the takeaway. A time-ordered split never trains on the future, so it is the only kind of split that could happen in practice. That makes it necessary. It does not make its number right. What to do about it: set a minimum training length so no fold is starved, make each test window as long as the deployment horizon, report the spread across folds, and remember that three months of data cannot tell you anything about a yearly cycle.</p>
+<p>The random split is still not the answer: its 553 was closer to 837 only because two errors of opposite sign happened to be different sizes. It rewards a model for interpolating between neighbors, which deployment never asks for.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Experiment 4: What Did the Model Miss? (optional)</h2>
+<p><strong>Predict:</strong> a model that only knows the <strong>hour of day</strong>. What will its October residuals look like by weekday?</p>
+<ol type="1">
+<li>Run the cell. Left: residuals grouped by weekday. Right: mean residual by weekday and hour</li>
+<li>Where is the model too low (red), and too high (blue)?</li>
+<li>What feature would fix it? Would the MAE alone have told you?</li>
+</ol>
+<p><strong>Connect to lecture:</strong> plot residuals against the cyclic structure. Structure in the residuals is something the model missed.</p>
+<aside class="notes">
+<p>Optional: the first thing to cut if time is short. The next slide has the expected output.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What You Should See: Residuals With Structure</h2>
+<p><strong>Too low on weekend nights, too high on weekend mornings: the model does not know what day it is.</strong></p>
+
+<img data-src="expected-residuals.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Left: residuals by weekday. The medians climb from slightly below zero on Monday to clearly above zero on Saturday, and Sunday has by far the widest spread.</p>
+<p>Right: mean residual by weekday and hour. Saturday and Sunday from midnight to about 4 am are deep red: the model, which knows only the hour, predicts a quiet night and gets weekend nightlife. Weekend mornings from about 6 to 9 am are blue: it predicts a commute that does not happen. Weekday mornings around 8 am are red for the same reason in reverse.</p>
+<p>The fix is a weekday feature, or better, an hour-by-weekday interaction, which the tree model learns once it has both.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lab-anom" class="slide level2">
+<h2>Part 3: Find Anomalies</h2>
+<p><strong>Experiments 5 and 6</strong> &nbsp;·&nbsp; about 13 minutes</p>
+<p><em>Expected value, a band around it, and a threshold you have to choose.</em></p>
+</section>
+<section class="slide level2">
+<h2>Experiment 5: A Detector on Daily Totals</h2>
+<p><strong>Predict:</strong> expected passengers = the median for that weekday (learned from July to October). Flag a day when it is more than <code>K</code> robust standard deviations away. With <code>K = 3</code>, how many of the 215 days get flagged?</p>
+<ol type="1">
+<li>Run the cell with <code>K = 3</code>. Are your two dates from Experiment 1 in the list?</li>
+<li>Run the next two cells. The first checks <strong>one date for each of the five events</strong> the benchmark names; the second checks the benchmark’s <strong>anomaly windows</strong>, which span several days each</li>
+<li>Try <code>K = 2</code>, <code>4</code> and <code>5</code>. How many days would you want to be alerted for?</li>
+<li>Some flagged days are <strong>before November</strong>, inside the data the baseline was learned from. What happened on those days?</li>
+</ol>
+<p><strong>Connect to lecture:</strong> the threshold is a trade-off, and neighboring alarms are often one event.</p>
+<aside class="notes">
+<p>Expected counts: K = 2 flags 40 days, K = 3 flags 17, K = 4 flags 12, K = 5 flags 9.</p>
+<p>At K = 3 the flagged days outside the baseline period are: November 1; November 27 and 28 (Thanksgiving and the day after); December 24 to 28; January 2 and 4; January 26 to 28 (the blizzard).</p>
+<p>Inside the baseline period: July 4, 5 and 6 (the holiday weekend) and August 30 (the Saturday of Labor Day weekend). Good discussion point: the ‘normal’ data used to define normal contained anomalies. The median and the robust standard deviation are what keep four odd days from distorting the baseline.</p>
+<p>Seventeen flagged days are really about six events. Runs of alarms are the rule with temporal data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What You Should See: Flags and Known Events</h2>
+<p><strong>All five benchmark windows contain a flagged day at K = 3. January 1 itself, at −2.1σ, is not flagged; January 2 is.</strong></p>
+
+<img data-src="expected-anomalies.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>Distance from the expected value, in robust standard deviations: Saturday November 1 (marathon weekend) +5.0; Thanksgiving −6.6; Christmas −10.4; New Year’s Day −2.1; blizzard on January 27 −12.9. K = 3 flags 17 days in all, about six events, and four of those days are inside the baseline period.</p>
+<p>Checked date by date, four of our five chosen dates are flagged at K = 3 and January 1 is not. But the benchmark does not label dates. It labels windows of four to five days: October 30 to November 3, November 25 to 29, December 23 to 27, December 29 to January 3, and January 24 to 29. Every one of the five windows contains at least one flagged day. For New Year the flag is January 2, at −4.7σ. So the detector did not miss the New Year event; the daily total for January 1 failed to show how unusual that day was.</p>
+<p>Three different scores, and the notebook’s window cell shows all three. Point level: 17 days flagged, 11 inside a window and 6 outside (July 4, 5 and 6, August 30, December 28, January 4). Event level: 5 of 5 windows detected. Delay: the first flag comes 1 to 4 days after each window opens, and New Year is the slowest at 4 days. A detector can look good on one of these and poor on another, so say which one you are reporting.</p>
+<p>The six flags outside the windows are false alarms by the benchmark’s labels, yet July 4 and Labor Day weekend are real holidays. Labels are also a design decision.</p>
+<p>The blizzard is the largest: 232,058 passengers against an expected 714,714, almost 13 robust standard deviations below a normal Tuesday.</p>
+<p>November 1 is the only flagged day that is above the band.</p>
+<p>January 1 is not flagged: its total is only 2.1 standard deviations below a normal Thursday. To flag that day with this detector you would have to lower K to 2, which flags 40 days. That is the trade-off slide from the lecture on real data. Experiment 6 shows why the daily total hides what happened that day.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Experiment 6: What the Daily Total Hides</h2>
+<p><strong>Predict:</strong> New Year’s Day has a nearly normal daily total. What does it look like half hour by half hour?</p>
+<ol type="1">
+<li>Run the cell with <code>DAY = "2015-01-01"</code></li>
+<li>Then try <code>"2014-11-02"</code>. The largest value in the whole series is on that night. <strong>What do you think happened at 2 am on November 2, 2014</strong>, and what evidence would confirm it?</li>
+<li>Try <code>"2015-01-27"</code></li>
+</ol>
+<p><strong>Connect to lecture:</strong> a contextual anomaly. Every value is in range; it is the time of day that is wrong.</p>
+<aside class="notes">
+<p>Give pairs time on step 2 before showing the next slide. Someone usually proposes the clock change. Treat it as a hypothesis: ask what evidence would confirm it, and whether this file can provide that evidence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What You Should See: New Year’s Day</h2>
+<p><strong>A busy night and a quiet day nearly cancel in the daily total.</strong></p>
+
+<img data-src="expected-new-year.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<p>New Year’s Day against a typical Thursday: from 1 am to 5 am there are three to seven times the usual count, with a peak of about 30,000 per half hour at 1 am. Then the morning commute never happens (around 8 am the count is about a fifth of normal) and the rest of the day runs below normal. The excess at night and the deficit by day nearly cancel, which is why the daily total looked ordinary.</p>
+<p>November 2, 2014: the 1:00 am and 1:30 am bins hold 39,197 and 35,212 passengers, about 1.7 times a normal Sunday at that hour, and the highest values in the series. Daylight saving time ended that night: clocks went back from 2 am to 1 am, so the local hour from 1 to 2 happened twice. Our hypothesis is that both passes were added into the same two local-time bins.</p>
+<p>What supports it: only those two bins are high. Midnight and 12:30 are at 0.98 and 0.94 of a typical Sunday, 1:00 and 1:30 jump to 1.70 and 1.64, and from 2:00 on the counts drop to 0.6 to 0.7. The file also has exactly one row per local half hour that night, with no repeated timestamp, which is what a double count would produce.</p>
+<p>What it does not establish: the file is an aggregate, and nothing in it records how the buckets were built. A busy night would also raise the counts, and this was the Saturday night of Halloween weekend, before the NYC Marathon on Sunday, which is the cause the benchmark names for this window. To confirm the clock-change explanation we would need the benchmark’s aggregation code, or the trip-level records with unambiguous timestamps (UTC, or local time with an offset) to recount that hour. Say this to the class as a strong hypothesis, not as a fact.</p>
+<p>January 27: counts fall to single digits per half hour around 3 to 4 am during the blizzard travel ban, and the whole day reaches about a third of normal.</p>
+<p>Takeaway: an anomaly detector finds things that are unusual in the data. Deciding whether one is an event, a holiday or a clock change takes a person, a chart, and usually a second source of evidence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lab-debrief" class="slide level2">
+<h2>Debrief</h2>
+<ul>
+<li>Which view showed you the unusual days fastest: the line, the daily totals, or the heat map?</li>
+<li>January 1’s daily total looked ordinary, although the day was not. What does that say about choosing the <strong>bin size</strong> for a monitoring chart?</li>
+<li>The random split made the model look much better than it was, and the time-ordered split preferred the wrong model. <strong>Where in your own project could either happen?</strong></li>
+<li>The biggest spike in the data lines up with a clock change. What would confirm that? On a live system, how would you find out whether an alarm is an event or an artifact?</li>
+</ul>
+<p><strong>Project check-in:</strong> final presentations are <strong>Dec 1 and Dec 8</strong>. Use the remaining time for questions about your project.</p>
+<aside class="notes">
+<p>The third question is the one that matters most for the projects: any group whose data has timestamps should say in the final report how the data was split in time.</p>
+<p>On the last question, useful answers include: annotate known calendar events on the chart, keep timestamps in UTC as well as local time, and always let the reader drill from an alarm to the raw data behind it.</p>
+<p>Use whatever time is left for project questions. Final presentations are in two weeks and the final report is due December 14.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Further Exploration</h2>
+<ul>
+<li>Going further in the notebook: use the Part 2 model as the “expected” value and run the detector on half-hour data. Does it find the marathon?</li>
+<li><a href="https://github.com/numenta/NAB">Numenta Anomaly Benchmark</a>: more labeled real-world series</li>
+<li>Hyndman &amp; Athanasopoulos, <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practice</em></a> (3rd ed.), free online</li>
+<li>scikit-learn: <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html"><code>TimeSeriesSplit</code></a></li>
+<li>Next week (Nov 24): Interpretable ML and Fairness</li>
+</ul>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../../slides/figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://cds.nyu.edu" class="uri">https://cds.nyu.edu</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lab_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lab_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lab_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lab_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lab_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lab_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lab_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lab_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lab_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lab_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+              if (!link.classList.contains('no-external-icon')) {
+              }
+            }
+          }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
