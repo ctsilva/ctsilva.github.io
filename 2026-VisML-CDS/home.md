@@ -156,7 +156,8 @@ author_profile: true
 ### Week 10 — Tuesday, Nov 10
 - **Topics:** Topological Data Analysis
 - **Materials:**
-  - [Topological Data Analysis](/2026-VisML-CDS/slides/tda.html)
+  - [Topological Data Analysis](/2026-VisML-CDS/slides/tda-pari.html) (Parikshit Solunke; as presented Nov 10, with speaker notes)
+  - [Topological Data Analysis — original deck](/2026-VisML-CDS/slides/tda.html)
   - [Lab: Topological Data Analysis](/2026-VisML-CDS/labs/tda/lab.html)
 - **Recommended Readings:**
   - [An Introduction to Topological Data Analysis: Fundamental and Practical Aspects for Data Scientists](https://doi.org/10.3389/frai.2021.667963) (Chazal & Michel, 2021) - **Required**
