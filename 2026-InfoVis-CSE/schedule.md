@@ -313,13 +313,13 @@ author_profile: true
 - [UMAP: Uniform Manifold Approximation and Projection](https://arxiv.org/abs/1802.03426). McInnes, Healy & Melville. ArXiv 2018.
 - [Wolfram Clustering Tutorial](https://www.wolfram.com/language/introduction-machine-learning/clustering/)
 
-**Lab:** [Building temporal visualizations](/2026-InfoVis-CSE/labs/week11-lab.html)
-- D3 time scales and axes
-- Line charts and area charts for time series
-- Small multiples for temporal comparison
-- Heat map and calendar layouts
+**Lab:** [Dimensionality Reduction & Clustering](/2026-InfoVis-CSE/labs/week11-lab.html) (Observable notebook)
+- Re-exploring the Iris dataset
+- Principal Component Analysis in JavaScript
+- K-means clustering in JavaScript
+- Group project and AI-policy reminders
 
-**Assignment:** **Mini-project 3 begins** - Network visualization (due Dec 10)
+**Assignment:** **Mini-project 3 begins** - Network visualization (due date announced in lab)
 
 ### **Week 12** (Nov 20) - Visualizing Time-Oriented Data
 **Learning Objectives:** Design effective time series visualizations; understand sequential, cyclic, and hierarchical time structures
@@ -334,6 +334,8 @@ author_profile: true
 - Heat maps and calendar visualizations
 - Periodic patterns: radial layouts and spirals
 - Horizon charts and sparklines
+- Measles by state and year: the WSJ heat map (1928-2012), 2025-2026 weekly cases, and an updated 1928-2026 heat map
+- Opening example: NYC taxi and for-hire trips, 2009-2025
 
 **Required Readings:**
 - [The Shape Parameter of a Two-Variable Graph](https://doi.org/10.1080/01621459.1988.10478613). Cleveland, McGill & McGill. JASA 1988.
@@ -344,14 +346,12 @@ author_profile: true
 - [The Connected Scatterplot for Presenting Paired Time Series](https://eagereyes.org/papers/the-connected-scatterplot-for-presenting-paired-time-series). Haroz, Kosara & Franconeri. IEEE TVCG 2016.
 - [Visualizing Time-Series on Spirals](https://doi.org/10.1109/INFVIS.2001.963273). Weber, Alexa & Müller. IEEE InfoVis 2001.
 
-**Lab:**
-- Implementing PCA visualizations
-- Exploring t-SNE with multiple perplexity values
-- UMAP parameter tuning
-- Comparing dimensionality reduction methods
-- Avoiding common visualization pitfalls
+**Lab:** [Group Project Evaluation](/2026-InfoVis-CSE/labs/week12-lab.html)
+- Group project milestone reminders
+- What makes a good project; evaluation criteria
+- Exercise: critiquing existing visualizations and dashboards
 
-**Assignment:** Continue Mini-project 3 + dimensionality reduction exercises (due Dec 3)
+**Assignment:** Continue Mini-project 3
 
 ### **Thanksgiving Recess** (Nov 26-27) - **NO CLASS**
 **Assignment:** Continue Mini-project 3 and prepare group project presentations
@@ -387,7 +387,7 @@ author_profile: true
 - Treemap implementation
 - Network layout algorithm exploration
 
-**Assignment:** Complete Mini-project 3 (due Dec 10) and prepare final project presentations
+**Assignment:** Complete Mini-project 3 (due date announced in lab) and prepare final project presentations
 
 ### **Week 14** (Dec 11) - Final Project Presentations and Course Wrap-up
 **Learning Objectives:** Present and critique visualization projects; reflect on learning; plan continued development

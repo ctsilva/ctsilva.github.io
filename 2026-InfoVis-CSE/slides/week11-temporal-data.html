@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="week11-temporal-data_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week11-temporal-data_files/libs/quarto-html/tabby.min.js"></script>
+<script src="week11-temporal-data_files/libs/quarto-html/popper.min.js"></script>
+<script src="week11-temporal-data_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="week11-temporal-data_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week11-temporal-data_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="week11-temporal-data_files/libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
+
+  <meta name="author" content="Claudio Silva">
+  <meta name="dcterms.date" content="2026-11-20">
+  <title>Visualizing Time-Oriented Data</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="week11-temporal-data_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="week11-temporal-data_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="week11-temporal-data_files/libs/revealjs/dist/theme/quarto-18001e9be81c373b69ba8d821205bbd6.css">
+  <link href="week11-temporal-data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="week11-temporal-data_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="week11-temporal-data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="week11-temporal-data_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Visualizing Time-Oriented Data</h1>
+  <p class="subtitle">CS-GY 6313 - Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Claudio Silva
+</div>
+</div>
+</div>
+
+  <p class="date">2026-11-20</p>
+</section>
+<section>
+<section id="introduction" class="title-slide slide level1 center">
+<h1>Introduction</h1>
+<p>Based on materials by Enrico Bertini</p>
+<aside class="notes">
+<p><strong>LECTURE TIMING GUIDANCE (150 min total)</strong></p>
+<p>This is a PACKED lecture with lots of content. Suggested timing:</p>
+<p><strong>Core Material (90-100 min):</strong> MUST COVER - Intro + Temporal Data Fundamentals (15 min): Types, structures, aggregation - Line Charts + Aspect Ratio + Banking to 45° (20 min): Cleveland’s research - Multiple Lines + Spaghetti Plots + Solutions (15 min): Critical problem - Small Multiples transition to Interaction (20 min): Zoom, brushing &amp; linking - Area Charts + Baseline Bias (10 min): Another critical limitation - Event Data + Gantt Charts (10 min): Practical techniques</p>
+<p><strong>Important but Optional (30-40 min):</strong> COVER IF TIME PERMITS - Heat Maps + WSJ Vaccine Example (15 min): Famous example, worth showing - Calendar Visualizations (10 min): Students will use these - Radial Layout Warnings (5 min): Important cautionary note</p>
+<p><strong>Advanced/Optional (20-30 min):</strong> READING ASSIGNMENT IF SHORT ON TIME - Spiral Plots (5 min) - Horizon Charts (15 min): Complex technique, needs slow walkthrough - Sparklines (5 min) - Alternative Encodings (5 min)</p>
+<p><strong>Strategy if running short:</strong> 1. Skip Spiral Plots entirely 2. Show Horizon Charts as “further reading” 3. Make sure to cover Banking to 45°, Spaghetti Plots, Baseline Bias (core perceptual issues)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-does-time-matter" class="slide level2">
+<h2>Why Does Time Matter?</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/three_years_2011_2013_light_2x.png" class="nostretch quarto-figure quarto-figure-center" style="width:90.0%" alt="Daily NYC taxi trips in 2011, 2012, and 2013 aligned by calendar date, showing recurring weekly fluctuations and occasional sharp drops."></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/trend_2009_2025_dark_2x.png" class="nostretch quarto-figure quarto-figure-center" style="width:90.0%" alt="NYC taxi and for-hire trips from 2009 to 2025, showing changes in the mix of services and a steep drop in 2020 followed by a recovery."></p>
+</figure>
+</div>
+<aside class="notes">
+<p>SKIPPABLE opener (new for 2026, shared with the VisML deck).</p>
+<ul>
+<li>Ask what a single average of daily trips would hide.</li>
+<li>Top: three years aligned by calendar date. The weekly rhythm repeats and a few days drop sharply (holidays, storms). That is a cyclic structure plus events.</li>
+<li>Bottom: zoomed out to 2009-2025, the mix of services shifts (yellow, green, then for-hire vehicles such as Uber and Lyft) and there is the sharp drop in 2020. That is a sequential structure.</li>
+<li>Careful reading: the purple-to-orange switch in 2019 is mostly a reporting change (the TLC began publishing high-volume for-hire trips, i.e.&nbsp;Uber/Lyft, as their own category in Feb 2019), not a jump in service. A good example of a data-definition change showing up as a pattern in time.</li>
+<li>Callback to Week 9 (TaxiVis): the same taxi data, now read only along time.</li>
+<li>Transition: “Both charts are the same kind of data. What makes data temporal?”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-temporal-data" class="slide level2">
+<h2>What is Temporal Data?</h2>
+<p><strong>Definition</strong>: Data in which values depend on time and time is explicitly recorded.</p>
+<p>In other words: we track <strong>when</strong> things happened or <strong>what values were</strong> at specific points in time</p>
+<aside class="notes">
+<ul>
+<li>This is a fundamental concept - time is not just an attribute, it’s THE organizing dimension</li>
+<li><strong>START WITH THIS QUESTION</strong>: “What datasets have you used or seen that have time in them?”
+<ul>
+<li>Get 3-4 student examples on the board</li>
+<li>For each example, ask: “How is time recorded? What’s the granularity?”</li>
+</ul></li>
+<li>Emphasize that temporal data requires explicit time recording - not just “ordered” data</li>
+<li>Common misconception: Students often think any sequential data is temporal (e.g., ranking lists)</li>
+<li>Key distinction: Temporal data has meaningful time stamps/intervals, not just ordering</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-temporal-dataset-structure" class="slide level2">
+<h2>Example: Temporal Dataset Structure</h2>
+<p><strong>The DATE and TIME columns make each collision record temporal data.</strong></p>
+
+<img data-src="figs/week11/temporal-dataset-structure.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ul>
+<li>Each row is one <strong>incident/event</strong> at a specific location and time, so we can ask when, where, and how often</li>
+<li>These are NYC motor vehicle collision records (NYC Open Data): borough, ZIP, lat/long, street names. The first header reads DAT only because the column is truncated in the screenshot</li>
+<li><strong>PHYSICALLY POINT</strong> to the DAT and TIME columns on screen with mouse/pointer
+<ul>
+<li>“See these columns? This is what makes this temporal data - explicit timestamps”</li>
+<li>Make sure image is zoomed/large enough for back row to see</li>
+</ul></li>
+<li>Note the other attributes (location, type) that we might want to analyze over time</li>
+<li>Questions to pose: “What patterns might we want to find? Daily patterns? Seasonal? Hot spots over time?”
+<ul>
+<li>Wait for answers - students might suggest: “crime by hour of day”, “seasonal trends”, “geographic patterns over time”</li>
+</ul></li>
+<li>This is event data (discrete occurrences) rather than continuous measurements</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="application-domains" class="slide level2">
+<h2>Application Domains</h2>
+<ul>
+<li>Business</li>
+<li>Natural Phenomena</li>
+<li>Behaviors/Movement</li>
+<li>Traffic/Mobility</li>
+<li>Medical/Healthcare</li>
+<li>Finance</li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Temporal data is EVERYWHERE - this is one of the most common data types</li>
+<li>Ask students to give specific examples for each domain:
+<ul>
+<li>Business: Sales trends, customer activity, website traffic</li>
+<li>Natural Phenomena: Weather, earthquakes, climate change</li>
+<li>Behaviors/Movement: GPS tracks, social media activity, eye tracking</li>
+<li>Traffic/Mobility: Vehicle flow, public transit usage, flight patterns</li>
+<li>Medical: Patient vitals, disease progression, treatment outcomes</li>
+<li>Finance: Stock prices, trading volume, economic indicators</li>
+</ul></li>
+<li>Emphasize: Different domains have different temporal characteristics (irregular vs regular sampling, event-based vs continuous)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="type-1-event-data" class="slide level2">
+<h2>Type 1: Event Data</h2>
+<p><strong>Time + Object (Attributes)</strong></p>
+<p>“Something happened at time T”</p>
+<p>Examples: Tweet, Email, Alarm</p>
+<aside class="notes">
+<ul>
+<li>CRITICAL distinction: Event data represents discrete occurrences at points in time</li>
+<li>Events often have irregular timing - they happen when they happen (not sampled at regular intervals)</li>
+<li>Each event is an object with attributes (who, what, where, why)</li>
+<li>Examples to emphasize:
+<ul>
+<li>Tweet: timestamp + user + text + location</li>
+<li>Email: sent time + sender + recipient + subject</li>
+<li>Alarm: trigger time + sensor + type + severity</li>
+</ul></li>
+<li>Key visualization challenge: How do we show when events occurred and their attributes?</li>
+<li>Often visualized as dots, marks, or bars on a timeline</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="type-2-measurement-data" class="slide level2">
+<h2>Type 2: Measurement Data</h2>
+<p><strong>Time + Measure(s)</strong></p>
+<p>“This is the value at time T”</p>
+<p>Examples: Temperature, revenue, stock value</p>
+<aside class="notes">
+<ul>
+<li><strong>EXPLICIT CONTRAST WITH TYPE 1</strong>: “Remember Event Data? Tweet, Email, Alarm - something just <em>happened</em>. Measurement data is different - we’re recording a <em>value</em> at each time point.”</li>
+<li>Measurement data: Continuous or regularly sampled values over time</li>
+<li>Unlike events (which happen irregularly), measurements are typically taken at regular intervals</li>
+<li>Each measurement records one or more quantitative values at a timestamp</li>
+<li><strong>Side-by-side comparison to emphasize</strong>:
+<ul>
+<li>Event: “Email sent at 3:42 PM” (binary - it happened)</li>
+<li>Measurement: “Temperature was 72°F at 3:42 PM” (quantitative value)</li>
+</ul></li>
+<li>Examples to discuss:
+<ul>
+<li>Temperature: Recorded every hour → time series of temperature values</li>
+<li>Revenue: Daily sales figures → continuous tracking of performance</li>
+<li>Stock value: Price sampled every second during trading hours</li>
+</ul></li>
+<li>Key difference from events: We care about the VALUE at each time point, not just that something occurred</li>
+<li>Primary visualization: Line charts, area charts - showing how values change over time</li>
+<li>This is what most people think of as “time series data”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="temporal-information-components" class="slide level2">
+<h2>Temporal Information Components</h2>
+<p><strong>Time = Position + Interval + Granularity</strong></p>
+<ul>
+<li><strong>Position</strong>: When did it occur? (specific timestamp)</li>
+<li><strong>Interval</strong>: For how long? (duration)</li>
+<li><strong>Granularity</strong>: At what scale? (seconds, hours, days, years)</li>
+</ul>
+<p><strong>Example</strong>: A meeting starts at 2:00 PM (position), lasts 90 minutes (interval), measured in minutes (granularity)</p>
+<aside class="notes">
+<ul>
+<li>These three components help us fully characterize temporal data</li>
+<li><strong>Position (When)</strong>: The anchor point in time - can be absolute (Jan 1, 2025, 3:00 PM) or relative (3 hours ago)</li>
+<li><strong>Interval (Duration)</strong>: How long something lasted - critical for event data with duration (meetings, system outages, sessions)
+<ul>
+<li>Point events have duration ≈ 0</li>
+<li>Interval events have meaningful duration</li>
+</ul></li>
+<li><strong>Granularity (Scale)</strong>: The resolution at which we’re measuring/recording time
+<ul>
+<li>Affects what patterns we can see (hourly data can’t show minute-level patterns)</li>
+<li>Choice of granularity is a design decision - finer = more detail but more data</li>
+</ul></li>
+<li>Example: “Meeting from 2:00-3:30 PM” has position (2:00 PM), interval (90 min), granularity (minutes)</li>
+<li>These components influence visualization choices</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="time-structures" class="slide level2">
+<h2>Time Structures</h2>
+<p>Three key structures for temporal data:</p>
+<ol type="1">
+<li><strong>Sequential</strong> - Linear progression over time</li>
+<li><strong>Cyclic</strong> - Repeating patterns (daily, weekly, seasonal)</li>
+<li><strong>Hierarchical</strong> - Nested time resolutions (year/month/day)</li>
+</ol>
+<p><strong>Key insight</strong>: Most real temporal data has ALL THREE structures simultaneously!</p>
+<aside class="notes">
+<ul>
+<li>These are the three fundamental ways time can be structured in data</li>
+<li><strong>Sequential</strong>: Time flows in one direction - useful for showing trends, growth, changes
+<ul>
+<li>Example: Company revenue from 2015-2025</li>
+</ul></li>
+<li><strong>Cyclic</strong>: Patterns repeat on a regular basis - reveals rhythms and regularities
+<ul>
+<li>Example: Traffic by hour of day, sales by day of week, temperature by season</li>
+<li>Natural cycles: daily, weekly, monthly, yearly</li>
+</ul></li>
+<li><strong>Hierarchical</strong>: Multiple nested time scales - enables drill-down and multi-resolution analysis
+<ul>
+<li>Example: Years contain quarters contain months contain weeks contain days</li>
+</ul></li>
+<li><strong>EMPHASIZE THIS POINT</strong>: “Most real temporal data has ALL THREE structures simultaneously!”
+<ul>
+<li>Example: Website traffic has sequential trends (growing over years), cyclic patterns (weekday vs weekend), and hierarchical structure (hour/day/week/month)</li>
+<li>You choose which structure to visualize based on your question</li>
+</ul></li>
+<li>Visualization choice depends on which structure you want to emphasize</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sequential-and-cyclic-patterns" class="slide level2">
+<h2>Sequential and Cyclic Patterns</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Sequential</strong></p>
+<p>(Jan 1, … , Dec 31)</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Cyclic</strong></p>
+<p>(S, M, T, W, T, F, S)</p>
+</div></div>
+</section>
+<section id="hierarchical-time-resolutions" class="slide level2">
+<h2>Hierarchical Time Resolutions</h2>
+<p><strong>Multiple Resolutions</strong></p>
+<ul>
+<li>Years</li>
+<li>Months</li>
+<li>Weeks</li>
+<li>Days</li>
+<li>Hours</li>
+</ul>
+</section>
+<section id="linking-data-types-to-time-structures" class="slide level2">
+<h2>Linking Data Types to Time Structures</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Event Data</strong></p>
+<p>Time + Object (Attributes)</p>
+<ul>
+<li>Sequential: Transaction logs over years</li>
+<li>Cyclic: User logins by day of week</li>
+<li>Hierarchical: System alerts by hour/day/month</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Measurement Data</strong></p>
+<p>Time + Measure(s)</p>
+<ul>
+<li>Sequential: Stock prices over time (line charts)</li>
+<li>Cyclic: Temperature patterns by season</li>
+<li>Hierarchical: Revenue by year/quarter/month</li>
+</ul>
+</div></div>
+<p><strong>Key Insight</strong>: Data type + time structure → visualization choice</p>
+<aside class="notes">
+<ul>
+<li><strong>NOW we can synthesize</strong>: You’ve seen Event vs Measurement AND Sequential/Cyclic/Hierarchical</li>
+<li>This slide connects the two fundamental concepts: data types AND time structures</li>
+<li>Both event and measurement data can have sequential, cyclic, or hierarchical patterns</li>
+<li>The combination determines the best visualization approach</li>
+<li>Sequential structure → line charts, area charts (show progression)</li>
+<li>Cyclic structure → radial layouts, calendars (emphasize repetition)</li>
+<li>Hierarchical structure → multi-scale views, drill-down interactions</li>
+<li>Ask students: “If you have daily website traffic, what structures might you see?” (Answer: Sequential trend over months, cyclic pattern by day of week, hierarchical hour/day/week)</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="aggregation-trade-offs" class="slide level2">
+<h2>Aggregation Trade-offs</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Benefits of Aggregation</strong></p>
+<ul>
+<li>Reduces noise</li>
+<li>Shows overall trends</li>
+<li>Manageable data size</li>
+<li>Clearer patterns</li>
+</ul>
+<p><em>Example</em>: Daily → Monthly averages reveals seasonal trends</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Risks of Aggregation</strong></p>
+<ul>
+<li>Masks short-term events</li>
+<li>Loses extreme values</li>
+<li>Can hide critical peaks</li>
+<li><strong>Simpson’s Paradox</strong></li>
+</ul>
+<p><em>Example</em>: A 1-hour server outage disappears in monthly view</p>
+</div></div>
+<p><strong>Design principle</strong>: Choose granularity based on the questions you need to answer</p>
+<p><strong>Warning</strong>: This is Simpson’s Paradox for temporal data - aggregation can completely reverse or hide patterns!</p>
+<aside class="notes">
+<ul>
+<li><strong>CRITICAL SLIDE</strong> - This is Simpson’s paradox for temporal data!</li>
+<li>Aggregation is necessary (can’t show raw data at finest granularity) BUT dangerous</li>
+<li>Benefits are obvious - reduced noise, clearer trends, manageable visualization</li>
+<li>But risks are severe - can completely hide important events</li>
+<li><strong>Real example to share</strong>: Netflix outage for 1 hour affects millions, but disappears in daily/weekly aggregates</li>
+<li><strong>Another example</strong>: Daily COVID cases show spikes, but monthly averages smooth them out - which matters for policy?</li>
+<li>The “right” aggregation depends on your analytical question:
+<ul>
+<li>Looking for long-term trends? → Aggregate more</li>
+<li>Looking for anomalies/outliers? → Aggregate less</li>
+</ul></li>
+<li>Best practice: Provide interactive controls to change aggregation level</li>
+<li>Mention multi-resolution techniques (coming later): horizon charts, overview+detail</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-sales-over-time---sequential-view" class="slide level2">
+<h2>Example: Sales Over Time - Sequential View</h2>
+<p><strong>Sequential: “How did our sales change over the years?”</strong></p>
+
+<img data-src="figs/week11/sales-sequential-view.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="example-sales-over-time---cyclic-view" class="slide level2">
+<h2>Example: Sales Over Time - Cyclic View</h2>
+<p><strong>Cyclic: “How does the number of orders change by day of the week?”</strong></p>
+
+<img data-src="figs/week11/sales-cyclic-view.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="hierarchical-structure-and-resolution" class="slide level2">
+<h2>Hierarchical Structure and Resolution</h2>
+<p>Combining multiple time resolutions in one view</p>
+</section>
+<section id="time-resolution-sequential-views" class="slide level2">
+<h2>Time Resolution: Sequential Views</h2>
+<p><strong>The same sales by week (top) and by month (bottom): granularity changes what you see.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/time-resolution-sequential-1.png" class="nostretch quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/time-resolution-sequential-2.png" class="nostretch quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+</section>
+<section id="time-resolution-cyclic-views" class="slide level2">
+<h2>Time Resolution: Cyclic Views</h2>
+<p><strong>The same orders folded by month of year (top) and by day of week (bottom).</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/time-resolution-cyclic-1.png" class="nostretch quarto-figure quarto-figure-center" style="width:75.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/time-resolution-cyclic-2.png" class="nostretch quarto-figure quarto-figure-center" style="width:75.0%"></p>
+</figure>
+</div>
+</section>
+<section id="example-nesting-cyclic-day-within-sequential-year" class="slide level2">
+<h2>Example: Nesting Cyclic (Day) within Sequential (Year)</h2>
+<p><strong>One line per year (2013-2016) across the days of the week: a cyclic view nested in a sequential one.</strong></p>
+
+<img data-src="figs/week11/nesting-cyclic-in-sequential.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="example-nested-time-patterns-monthly" class="slide level2">
+<h2>Example: Nested Time Patterns (Monthly)</h2>
+<p><strong>Sales by month of the year, one line per year (2013-2016).</strong></p>
+
+<img data-src="figs/week11/nested-quarterly-patterns.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
+<section>
+<section id="visualization-methods" class="title-slide slide level1 center">
+<h1>Visualization Methods</h1>
+<p>Line charts, area charts, and their variations</p>
+</section>
+<section id="line-charts-time-quantity" class="slide level2">
+<h2>Line Charts: Time + Quantity</h2>
+<p><strong>The fundamental temporal chart: position encodes both time (x) and value (y).</strong></p>
+
+<img data-src="figs/week11/line-chart-basic.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
+<section>
+<section id="aspect-ratio" class="title-slide slide level1 center">
+<h1>Aspect Ratio</h1>
+<p>How chart dimensions affect perception</p>
+<p><strong>Definition</strong>: Aspect Ratio = Width / Height</p>
+</section>
+<section id="impact-on-trend-visibility" class="slide level2">
+<h2>Impact on Trend Visibility</h2>
+<p><strong>The same data at three aspect ratios: the trend looks steeper or flatter.</strong></p>
+
+<img data-src="figs/week11/aspect-ratio-impact.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="perceptual-principle-slope-judgment" class="slide level2">
+<h2>Perceptual Principle: Slope Judgment</h2>
+<p><strong>Key finding</strong>: Humans judge slopes most accurately at 45°</p>
+<ul>
+<li>Too shallow (&lt;&lt; 45°): Hard to distinguish small differences</li>
+<li>Too steep (&gt;&gt; 45°): Also difficult to compare</li>
+<li><strong>Optimal: ~45°</strong> - Maximum perceptual sensitivity</li>
+</ul>
+<p>This principle guides aspect ratio selection</p>
+<aside class="notes">
+<ul>
+<li><strong>Fundamental perceptual principle</strong> from Cleveland &amp; McGill’s research</li>
+<li>Our visual system is optimized for judging slopes near 45 degrees</li>
+<li>Demo: Show how very flat lines (&lt;10°) make it hard to see if trend is up or down</li>
+<li>Demo: Show how very steep lines (&gt;80°) also make comparison difficult</li>
+<li>This isn’t arbitrary - it’s based on empirical perceptual experiments</li>
+<li>Practical implication: Don’t just use default aspect ratios from your plotting library!</li>
+<li>The aspect ratio is a design parameter that affects what viewers perceive</li>
+<li>Ask: “Which stock would you invest in based on this chart?” - then show same data with different aspect ratio revealing different impression</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="banking-to-45" class="slide level2">
+<h2>Banking to 45°</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>Method</strong>: set the aspect ratio so that the average slope of the line segments is 45°</p>
+<ul>
+<li>Makes trends perceptually salient and comparable</li>
+<li>Cleveland, McGill &amp; McGill introduced it in this 1988 JASA paper (a required reading this week)</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/banking-45-comparison-1.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Cleveland, W. S., McGill, M. E., &amp; McGill, R. (1988). <a href="https://doi.org/10.1080/01621459.1988.10478613"><em>The shape parameter of a two-variable graph</em></a>. JASA.</p>
+</div>
+</section>
+<section id="example-banking-to-45-comparison" class="slide level2">
+<h2>Example: Banking to 45° Comparison</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/banking-45-comparison-2.png" class="quarto-figure quarto-figure-center" height="700"></p>
+</figure>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/banking-45-comparison-3.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>Canadian lynx trappings: a square frame (left) vs.&nbsp;banked to 45° (right). Which shows the shape of each cycle?</strong></p>
+<aside class="notes">
+<ul>
+<li>Same series twice (log2 lynx trapped per year, Cleveland’s classic example).</li>
+<li>In the square frame every cycle is a near-vertical spike; you cannot judge how each cycle rises and falls.</li>
+<li>Banked to 45°, the plot becomes very wide and short, and the shape of each cycle becomes something you can compare. The wide, short result is the point, not a layout mistake.</li>
+<li>The paper’s first page is on the previous slide.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="best-practice" class="slide level2">
+<h2>Best Practice</h2>
+<p><strong>Rule of thumb</strong>: Always test different aspect ratios to see which one best conveys your message</p>
+</section>
+<section id="multiple-line-charts-adding-categories" class="slide level2">
+<h2>Multiple Line Charts: Adding Categories</h2>
+<p><strong>Color encodes the category: three customer segments over time.</strong></p>
+
+<img data-src="figs/week11/multiple-line-charts.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-spaghetti-plot-problem" class="slide level2">
+<h2>The “Spaghetti Plot” Problem</h2>
+<p><strong>It does not scale: 17 sub-categories in one chart.</strong></p>
+
+<img data-src="figs/week11/spaghetti-plot.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ul>
+<li>Classic problem in temporal visualization - too many lines creates visual chaos</li>
+<li>With 50+ lines, you can’t distinguish individual series</li>
+<li>Lines occlude each other - can’t see what’s underneath</li>
+<li>Colors become indistinguishable - limited palette</li>
+<li>Called “spaghetti plot” because it looks like tangled pasta!</li>
+<li>Ask students: “Have you seen plots like this? What questions CAN you answer? What can’t you answer?”</li>
+<li>Can answer: Overall envelope, outliers, general trend</li>
+<li>Cannot answer: Specific values for individual series, comparisons between specific pairs</li>
+<li>This motivates the solutions on next slides: grouping, filtering, highlighting, small multiples</li>
+<li>Real-world example: Stock market with hundreds of stocks - spaghetti plot is useless</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="solutions-for-multiple-lines" class="slide level2">
+<h2>Solutions for Multiple Lines</h2>
+<p>Possible solutions:</p>
+<ol type="1">
+<li>Grouping</li>
+<li>Filtering/Focus</li>
+<li>Highlighting</li>
+</ol>
+</section>
+<section id="comparison-grouping-filtering-highlighting" class="slide level2">
+<h2>Comparison: Grouping, Filtering, Highlighting</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Original: 17 sub-categories</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/comparison-original.png" class="quarto-figure quarto-figure-center" height="330"></p>
+</figure>
+</div>
+<p><strong>Filtering: keep 3 sub-categories</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/comparison-filtering.png" class="quarto-figure quarto-figure-center" height="330"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Grouping: roll up to 3 categories</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/comparison-grouping.png" class="quarto-figure quarto-figure-center" height="330"></p>
+</figure>
+</div>
+<p><strong>Highlighting: 3 in color, the rest faded</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/comparison-highlighting.png" class="quarto-figure quarto-figure-center" height="330"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="small-multiples" class="slide level2">
+<h2>Small Multiples</h2>
+<p>Small Multiple Line Charts and Area Charts</p>
+<aside class="notes">
+<ul>
+<li>Small multiples = static solution to spaghetti plots</li>
+<li>But note: Filtering and Highlighting are often INTERACTIVE techniques</li>
+<li>This leads us to the next major topic: Interaction</li>
+<li><strong>Transition</strong>: “We’ve seen static solutions - but in practice, filtering and highlighting are interactive. Let’s talk about interaction techniques for temporal data…”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-small-multiple-line-charts" class="slide level2">
+<h2>Example: Small Multiple Line Charts</h2>
+<p><strong>One panel per sub-category on a shared y-axis: each series is readable and comparable.</strong></p>
+
+<img data-src="figs/week11/small-multiples-line-grid.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="example-small-multiple-area-charts" class="slide level2">
+<h2>Example: Small Multiple Area Charts</h2>
+<p><strong>The same panels as areas: filled area emphasizes magnitude.</strong></p>
+
+<img data-src="figs/week11/small-multiples-area-grid.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="stacked-area-charts-total-and-parts" class="slide level2">
+<h2>Stacked Area Charts: Total and Parts</h2>
+<p><strong>Stacked areas show the total and how it splits across four regions.</strong></p>
+
+<img data-src="figs/week11/area-chart-proportions.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="stacked-area-charts-limitations" class="slide level2">
+<h2>Stacked Area Charts: Limitations</h2>
+<p><strong>“Baseline bias”: only the bottom layer sits on a common baseline.</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/week11/stacked-area-baseline-bias-1.png" style="width:100.0%"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week11/stacked-area-baseline-bias-2.png" style="width:100.0%"></p>
+</div></div>
+<p><strong>The same four regions as lines (left) and stacked (right). Try reading East’s trend on the right.</strong></p>
+<aside class="notes">
+<ul>
+<li>Problem: temporal trends for upper layers are hard to interpret because they don’t share a common baseline</li>
+<li>In this figure East is orange, West (teal) is the bottom layer</li>
+<li><strong>IMPORTANT PERCEPTUAL LIMITATION</strong> - students often misuse stacked area charts</li>
+<li>The bottom layer (touching x-axis) is easy to read - it has a stable baseline</li>
+<li>But upper layers “float” on changing baselines - very hard to judge their values or trends</li>
+<li><strong>INTERACTIVE DEMO</strong>: Point to an upper layer (e.g., green category) and ask:
+<ul>
+<li>“Did this category increase or decrease between these two time points?”</li>
+<li>“Can anyone tell me the actual value for this category in Q3?”</li>
+<li>Students will struggle - this proves the baseline bias!</li>
+<li>Then show: Only the bottom layer can be read accurately</li>
+</ul></li>
+<li>The total height is easy to read, but individual layer trends are ambiguous</li>
+<li>Example: If bottom layer increases sharply, upper layers appear to go up even if their actual values are flat</li>
+<li>When to use: When you care about total AND composition, and bottom layer is most important</li>
+<li>When NOT to use: When you need to compare trends across all categories</li>
+<li>Better alternatives: Small multiples (separate charts), normalized stacked (next slide), or just don’t stack</li>
+<li>Real example: COVID dashboards with stacked areas - very misleading for comparing different variants</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="normalized-stacked-area-charts" class="slide level2">
+<h2>Normalized Stacked Area Charts</h2>
+<p><strong>Normalized to 100%: composition only, the total is gone.</strong></p>
+
+<img data-src="figs/week11/normalized-stacked-area.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
+<section>
+<section id="interaction-techniques" class="title-slide slide level1 center">
+<h1>Interaction Techniques</h1>
+<p>Critical for exploring temporal data</p>
+</section>
+<section id="why-interaction-matters-for-temporal-data" class="slide level2">
+<h2>Why Interaction Matters for Temporal Data</h2>
+<p><strong>Challenge</strong>: Time series data is often too large or complex to understand in a single static view</p>
+<p><strong>Solution</strong>: Interactive techniques allow users to:</p>
+<ul>
+<li>Navigate through time (zoom, pan)</li>
+<li>Focus on specific patterns or events</li>
+<li>Link multiple views for comparison</li>
+<li>Dynamically adjust aggregation levels</li>
+</ul>
+</section>
+<section id="zoom-and-pan" class="slide level2">
+<h2>Zoom and Pan</h2>
+<p><strong>Purpose</strong>: Navigate dense sequential time series</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Semantic Zoom</strong></p>
+<ul>
+<li>Change level of detail</li>
+<li>Hourly → Daily → Monthly</li>
+<li>Preserve context</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Geometric Zoom</strong></p>
+<ul>
+<li>Magnify visual space</li>
+<li>See more detail</li>
+<li>Focus + context techniques</li>
+</ul>
+</div></div>
+<p><strong>Example</strong>: Stock chart with overview + detail panes</p>
+<aside class="notes">
+<ul>
+<li>Two fundamentally different types of zoom - students often confuse these!</li>
+<li><strong>LINK BACK</strong>: “Remember our Aggregation Trade-offs slide? Semantic zoom is interactive aggregation!”</li>
+<li><strong>Semantic Zoom</strong> = change aggregation level (connect back to earlier aggregation slide)
+<ul>
+<li>Zoom out: Hourly → Daily (aggregate 24 hours into 1 point)</li>
+<li>Zoom in: Daily → Hourly (show finer resolution)</li>
+<li>Data actually changes - different level of detail</li>
+<li><strong>This lets you explore different aggregation levels interactively</strong> rather than committing to one upfront</li>
+<li>Example: Google Maps showing cities vs streets vs buildings</li>
+</ul></li>
+<li><strong>Geometric Zoom</strong> = magnify the view (like a magnifying glass)
+<ul>
+<li>Same data points, just bigger</li>
+<li>Doesn’t change aggregation, just visual scale</li>
+<li>Example: Zoom into a region of a line chart to see fluctuations better</li>
+</ul></li>
+<li>Best practice: Combine both - overview + detail where overview provides context</li>
+<li>Example to show: Stock charts with small overview at bottom + zoomed detail above</li>
+<li>Interaction: Brushing in overview selects region shown in detail</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="filtering-and-brushing" class="slide level2">
+<h2>Filtering and Brushing</h2>
+<p><strong>Filtering</strong>: Show/hide data based on criteria</p>
+<ul>
+<li>Time range selection</li>
+<li>Category filtering (e.g., show only certain products)</li>
+<li>Threshold filtering (e.g., values &gt; X)</li>
+</ul>
+<p><strong>Brushing</strong>: Select data in one view, highlight in others</p>
+<ul>
+<li><strong>Temporal brushing</strong>: Select time range, see corresponding events</li>
+<li><strong>Linked views</strong>: Brush on map → highlight in timeline</li>
+</ul>
+</section>
+<section id="brushing-linking-example" class="slide level2">
+<h2>Brushing &amp; Linking Example</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>View 1</strong>: Geographic map</p>
+<p>User brushes (selects) a region</p>
+</div><div class="column" style="width:50%;">
+<p><strong>View 2</strong>: Time series</p>
+<p>Corresponding temporal data highlights automatically</p>
+</div></div>
+<p><strong>Power</strong>: Discover spatio-temporal patterns (e.g., “Sales peak in Region A during Q4”)</p>
+<aside class="notes">
+<ul>
+<li><strong>LIVE DEMO OPPORTUNITY</strong>: If you have a prepared D3 example, Tableau dashboard, or Observable notebook, SHOW THIS LIVE
+<ul>
+<li>Static images can’t convey the interactivity</li>
+<li>Seeing the linking happen in real-time is 100x more impactful</li>
+<li>Even a simple example (brush a time range, see map update) will make this memorable</li>
+</ul></li>
+<li>If no live demo available: At minimum, verbally walk through the interaction
+<ul>
+<li>“Imagine I click and drag on the map to select this region…”</li>
+<li>“…instantly, the time series highlights just those data points”</li>
+<li>“Now I can see: this region has a spike every December”</li>
+</ul></li>
+<li>This is the payoff of brushing &amp; linking - cross-view pattern discovery</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dynamic-aggregation" class="slide level2">
+<h2>Dynamic Aggregation</h2>
+<p><strong>Interactive granularity control</strong></p>
+<p>Users adjust time resolution on-the-fly:</p>
+<ul>
+<li>Slider: “Show me data aggregated by: Hour / Day / Week / Month”</li>
+<li>Drill-down: Click on a month → see daily breakdown</li>
+<li>Roll-up: Aggregate noisy hourly data to daily averages</li>
+</ul>
+<p><strong>Advanced</strong>: Time-series bagging, dynamic binning for very long series</p>
+</section>
+<section id="time-warping-and-distortion" class="slide level2">
+<h2>Time Warping and Distortion</h2>
+<p><strong>Fisheye/distortion</strong>:</p>
+<ul>
+<li>Focus region shows detail</li>
+<li>Context regions compressed</li>
+<li>Maintains overview while examining specifics</li>
+</ul>
+<p><strong>Time-warping</strong>:</p>
+<ul>
+<li>Align periodic patterns despite phase shifts</li>
+<li>Dynamic time warping (DTW) for comparing similar patterns</li>
+<li>Useful for comparing multiple time series with lag</li>
+</ul>
+</section>
+<section id="best-practices-for-interaction-design" class="slide level2">
+<h2>Best Practices for Interaction Design</h2>
+<ol type="1">
+<li><strong>Provide overview first</strong>: Show full temporal extent</li>
+<li><strong>Progressive disclosure</strong>: Start simple, reveal detail on demand</li>
+<li><strong>Maintain context</strong>: Always show where you are in time</li>
+<li><strong>Link multiple views</strong>: Connect temporal, spatial, and categorical views</li>
+<li><strong>Smooth transitions</strong>: Animate changes to maintain mental model</li>
+<li><strong>Direct manipulation</strong>: Let users interact with the visualization itself</li>
+</ol>
+</section></section>
+<section>
+<section id="event-data-visualization" class="title-slide slide level1 center">
+<h1>Event Data Visualization</h1>
+<p>Visualizing discrete events and durations</p>
+</section>
+<section id="types-of-event-data" class="slide level2">
+<h2>Types of Event Data</h2>
+<p><strong>Timestamp + Event Properties</strong></p>
+<ul>
+<li>Incidents</li>
+<li>Activity Logs</li>
+<li>Messages (Emails, Chats, etc.)</li>
+</ul>
+</section>
+<section id="example-dot-plot-for-events" class="slide level2">
+<h2>Example: Dot Plot for Events</h2>
+<p><strong>Rows = cities, x = ship date; dot size encodes a count (legend 1-52).</strong></p>
+
+<img data-src="figs/week11/event-dot-plot.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="example-proportional-symbols-plus-color" class="slide level2">
+<h2>Example: Proportional Symbols plus Color</h2>
+<p><strong>The same dots colored by ship mode: size and color carry two event attributes.</strong></p>
+
+<img data-src="figs/week11/event-proportional-symbols.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="events-with-duration" class="slide level2">
+<h2>Events with Duration</h2>
+<p>How do you visualize events that have duration?</p>
+</section>
+<section id="gantt-charts" class="slide level2">
+<h2>Gantt Charts</h2>
+<p><strong>Horizontal bars show each event’s start, duration, and end.</strong></p>
+
+<img data-src="figs/week11/gantt-chart-intro.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ul>
+<li><strong>CONNECT BACK TO EVENT DATA</strong>: “Remember our Event Data definition? Events with duration? Gantt charts are THE classic visualization for this.”</li>
+<li><strong>Origin story</strong>: Named after Henry Gantt (1910s) - originally invented for project management
+<ul>
+<li>Shows tasks, dependencies, timelines</li>
+<li>Still dominates project management software (MS Project, Asana, Jira, etc.)</li>
+</ul></li>
+<li><strong>Modern applications</strong> have expanded far beyond projects:
+<ul>
+<li>Server/system activity monitoring (next slides)</li>
+<li>Resource allocation (people, machines, rooms)</li>
+<li>Manufacturing schedules</li>
+<li>Any scenario with concurrent activities over time</li>
+</ul></li>
+<li>Key visual features:
+<ul>
+<li>Time on x-axis</li>
+<li>Tasks/resources on y-axis</li>
+<li>Bars show start, duration, end</li>
+<li>Can show dependencies with arrows</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-gantt-chart" class="slide level2">
+<h2>Example: Gantt Chart</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>The lifespan of an evening news anchor</strong></p>
+<ul>
+<li>One row per anchor, grouped by network (NBC, CBS, ABC), since 1948</li>
+<li>A line from start to end shows each tenure</li>
+<li>The annotation calls out the longest run: Jennings, 27 years</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/gantt-chart-example.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="example-system-activity-monitoring" class="slide level2">
+<h2>Example: System Activity Monitoring</h2>
+<p><strong>Tape mounts per drive over a day and a half: concurrent activity at a glance.</strong></p>
+
+<img data-src="figs/week11/system-activity-gantt.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
+<section>
+<section id="alternative-visualizations" class="title-slide slide level1 center">
+<h1>Alternative Visualizations</h1>
+<p>Heat maps and real-world examples</p>
+</section>
+<section id="heat-maps-for-temporal-data" class="slide level2">
+<h2>Heat Maps for Temporal Data</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>Matrix representation</strong>: one axis is time, the other is categories, color shows the value</p>
+<ul>
+<li>Think of it as a table with colored cells</li>
+<li>Here: sub-category × day of month, color = sales</li>
+<li>Compact; shows patterns along both axes</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/heatmap-temporal.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li><strong>Explicit mapping</strong>: Heat map = fancy table
+<ul>
+<li>One axis: time units (here, day of month across the top)</li>
+<li>Other axis: categories (here, product sub-categories as rows)</li>
+<li>Cell color: The value at that time/category combination</li>
+</ul></li>
+<li>This is a 2D visualization of 3D data (time × category × value)</li>
+<li>Students often confuse heat maps with other color-based visualizations</li>
+<li>Key advantage: Can see patterns across BOTH dimensions simultaneously
+<ul>
+<li>Temporal patterns (when are values high?)</li>
+<li>Categorical patterns (which categories have high values?)</li>
+<li>Interactions (does Category A peak at different times than Category B?)</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-wsj-vaccine-impact-visualization" class="slide level2">
+<h2>Example: WSJ Vaccine Impact Visualization</h2>
+
+<img data-src="figs/week11/wsj-vaccine-heatmap.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>DeBold, T., &amp; Friedman, D. (2015). <a href="https://graphics.wsj.com/infectious-diseases-and-vaccines/"><em>Battling Infectious Diseases in the 20th Century: The Impact of Vaccines</em></a>. The Wall Street Journal.</p>
+</div>
+<aside class="notes">
+<ul>
+<li><strong>FAMOUS EXAMPLE</strong> - one of the most impactful data visualizations of 2015</li>
+<li>Shows measles cases by state (rows) over decades (columns)</li>
+<li>Color: incidence (WSJ reported cases per 100,000 people), running from pale blue (near zero) through green and yellow to red; it is a rainbow scale, a good hook back to the color lecture</li>
+<li><strong>The dramatic pattern</strong>: Clear vertical line when vaccine was introduced - cases drop to nearly zero</li>
+<li>Powerfully communicates vaccine effectiveness without words</li>
+<li>Design choices worth noting:
+<ul>
+<li>States are listed alphabetically (Alaska at the top), not sorted by burden</li>
+<li>Color scale emphasizes the contrast (before/after)</li>
+<li>Vertical line marks vaccine introduction</li>
+</ul></li>
+<li>Impact: Widely shared during vaccine debates, changed minds</li>
+<li>Ask: “What does this visualization communicate that a line chart couldn’t?”</li>
+<li>Answer: Spatial patterns (which states), temporal patterns (when), and magnitude (how many) simultaneously</li>
+<li>This is heat maps at their best - revealing multidimensional patterns at a glance</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="measles-today-new-u.s.-cases-by-week-2025-2026" class="slide level2">
+<h2>Measles Today: New U.S. Cases by Week, 2025-2026</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/nyt-measles-weekly-2025-2026.png" class="quarto-figure quarto-figure-center" height="820"></p>
+</figure>
+</div>
+<div class="footer">
+<p>Migliozzi, B. (2026). New measles cases by week. <em>The New York Times</em>. Data: CDC confirmed cases through Nov.&nbsp;12, 2026.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE (new for 2026) - if running long, jump to ‘Example: FT European Football Visualization’.</p>
+<ul>
+<li><strong>Purpose:</strong> bring the WSJ story up to the present, and contrast a single national series with the state-by-year heat map.</li>
+<li><strong>Walk through:</strong> each bar is one week of confirmed U.S. cases, from late 2024 to mid-November 2026. Point to the three annotations: the West Texas outbreak declared in early 2025, the surge in South Carolina around January 2026 (the tallest week, near 300 cases), and the large outbreaks in Pennsylvania, Wisconsin and New York from late summer 2026 onward.</li>
+<li><strong>Design contrast:</strong> the heat map compares annual rates across states; this bar chart shows <em>when</em> outbreaks happened, nationally, and uses annotations to name the states.</li>
+<li><strong>Ask:</strong> the last bar is much lower than the weeks before it. Real drop, or a week whose cases have not all been confirmed and reported yet? The most recent points of a live chart are often incomplete.</li>
+<li><strong>Transition:</strong> “Where do those outbreaks show up on the long state-by-year chart?”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="measles-in-the-united-states-1928-2026" class="slide level2">
+<h2>Measles in the United States, 1928-2026</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/measles-state-year.svg" class="quarto-figure quarto-figure-center" alt="Heatmap of reported measles cases per 100,000 people across the 50 states and D.C. from 1928 through November 12, 2026. Rates generally fall after the 1963 vaccine introduction, with increases in some states in 2025 and 2026. Gray indicates missing data, including 2023." height="790"></p>
+</figure>
+</div>
+<div class="footer">
+<p><a href="https://graphics.wsj.com/infectious-diseases-and-vaccines/">WSJ, 1928-2012</a>, <a href="https://ourworldindata.org/grapher/reported-measles-case-rate-by-state-in-the-united-states">Our World in Data, 2013-2022</a>, <a href="https://www.cdc.gov/measles/data-research/">CDC, 2024-2026</a>, and <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2020s-state-total.html">U.S. Census Bureau</a>.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE (new for 2026).</p>
+<ul>
+<li><strong>Purpose:</strong> put the recent outbreaks on the same state-by-year scale as the WSJ chart.</li>
+<li><strong>Walk through:</strong> each row is a state or D.C., each column a year. Purple intensity encodes reported cases per 100,000 people on a symmetric log scale; gray cells are missing. Point to the 1963 vaccine marker, then the much paler region after it, then the recent cells in 2025-2026.</li>
+<li><strong>Compare with the WSJ version (design discussion):</strong> a single-hue sequential scale instead of the rainbow, and a log scale so low recent rates are still distinguishable from zero while the historical range still fits. Ask which reads more honestly, and what the log scale costs (differences look smaller than they are).</li>
+<li><strong>Emphasize:</strong> the chart shows timing and association, not a causal estimate.</li>
+<li><strong>Source detail:</strong> the 2023 column is missing because the sources lack comparable state-year totals for that year. Recent CDC counts are for U.S. residents assigned to a reporting jurisdiction; New York City is combined with New York State. 2026 uses provisional counts through November 12, divided by 2025 Census population estimates.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="variation-size-instead-of-color" class="slide level2">
+<h2>Variation: Size Instead of Color</h2>
+<p><strong>The sub-category × day-of-month grid again, with square size encoding sales.</strong></p>
+
+<img data-src="figs/week11/subcategory-day-size-grid.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="example-ft-european-football-visualization" class="slide level2">
+<h2>Example: FT European Football Visualization</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>How to read it:</strong></p>
+<ul>
+<li><strong>x</strong>: player’s age</li>
+<li><strong>Rows</strong>: one player each</li>
+<li><strong>Length</strong>: career span</li>
+<li><strong>Color</strong>: non-penalty goalscoring rate (darker = higher)</li>
+<li><strong>Square size</strong>: share of minutes played</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/ft-football-heatmap.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Goals over careers: the heat map shows performance across age and seasons</li>
+<li>Dense but information-rich: career trajectories and productivity over time in one view</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="periodic-patterns" class="title-slide slide level1 center">
+<h1>Periodic Patterns</h1>
+<p>Calendars, radial layouts, and spirals</p>
+<aside class="notes">
+<p><strong>OPTIONAL SECTION</strong> - If running short on time, you can skip spirals and cover calendars quickly (10 min) - Calendars are most practical for students - Radial layout warnings are important (5 min) - Spirals are interesting but not essential</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="understanding-periodicity" class="slide level2">
+<h2>Understanding Periodicity</h2>
+<p>Often the focus is on investigating and presenting periodical patterns:</p>
+<ul>
+<li>Yearly, seasonal, monthly</li>
+<li>Weekly, daily, hourly</li>
+</ul>
+</section>
+<section id="alternative-approaches" class="slide level2">
+<h2>Alternative Approaches</h2>
+<p><strong>One line per year across the week: what else could show this periodic pattern?</strong></p>
+
+<img data-src="figs/week11/periodic-alternatives.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="calendar-based-visualizations" class="slide level2">
+<h2>Calendar-Based Visualizations</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>Key difference from heat maps</strong>: time is laid out by day-of-week and month</p>
+<ul>
+<li><strong>Heat maps</strong>: linear time progression</li>
+<li><strong>Calendar views</strong>: explicit cyclic layout (7-day weeks, 12 months)</li>
+<li>Better for weekly and seasonal patterns</li>
+<li>Here: Divvy bike-share rides per day, 2014-2017</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/calendar-visualization.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Calendar views leverage our familiarity with calendar structure</li>
+<li>Key insight: Days of the week align vertically - easy to spot weekly patterns</li>
+<li>Example: Website traffic calendar - weekend days align vertically, immediately see weekend dip</li>
+<li>Difference from heat maps:
+<ul>
+<li>Heat maps: continuous time, arbitrary row breaks</li>
+<li>Calendars: structured by weeks/months, meaningful breaks</li>
+</ul></li>
+<li>When to use calendars:
+<ul>
+<li>Data with strong weekly patterns (work/weekend differences)</li>
+<li>Data people think about in calendar terms (appointments, events, habits)</li>
+</ul></li>
+<li>Limitations:
+<ul>
+<li>Only works for day-level or finer granularity</li>
+<li>Months have different lengths - creates visual gaps</li>
+<li>Not good for long time spans (multiple years gets unwieldy)</li>
+</ul></li>
+<li>Real examples: GitHub contribution calendar, fitness tracking apps, habit trackers</li>
+<li>Ask: “What apps use calendar views? Why does it work for them?”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="calendar-variations" class="slide level2">
+<h2>Calendar Variations</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/calendar-variation-1.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/calendar-variation-2.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>Month × hour of day, two ways: a grid of marks (left) and a continuous heat map (right).</strong></p>
+</section>
+<section id="radial-layouts-for-periodic-data" class="slide level2">
+<h2>Radial Layouts for Periodic Data</h2>
+<p>Periodic phenomena are cyclical. Radial layouts can reduce temporal discontinuities</p>
+</section>
+<section id="spiral-plots" class="slide level2">
+<h2>Spiral Plots</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>Key insight</strong>: spirals show cycles and progression at the same time</p>
+<ul>
+<li><strong>Cycles</strong>: the same phase of each period sits at the same angle</li>
+<li><strong>Progression</strong>: each turn moves outward in time</li>
+<li>Weber et al.: the same periodic series as a line (left) and a spiral (right)</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/spiral-plot-concept.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Weber, M., Alexa, M., &amp; Müller, W. (2001). <a href="https://doi.org/10.1109/INFVIS.2001.963273"><em>Visualizing time-series on spirals</em></a>. IEEE InfoVis.</p>
+</div>
+<aside class="notes">
+<ul>
+<li><strong>The brilliance of spirals</strong>: They encode TWO temporal structures at once
+<ul>
+<li><strong>Cyclic structure</strong>: Each complete rotation = one cycle (year, month, day)</li>
+<li><strong>Sequential structure</strong>: As you spiral outward = progression through time</li>
+</ul></li>
+<li>Temperature example (next slide):
+<ul>
+<li>Angle = month of year (seasonal cycle)</li>
+<li>Radius = temperature anomaly, NOT year; color = year (purple 1850s to yellow 2010s)</li>
+<li>So Hawkins’ spiral is a radial line chart with one loop per year rather than a Weber spiral: outward = warmer</li>
+</ul></li>
+<li>The climate spiral makes the warming vivid: later (yellow) loops sit further out</li>
+<li>Trade-off: Harder to read precise values (radial layout limitations)</li>
+<li>Use when: The dual encoding (cycle + trend) is more important than precision</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="spiral-example-temperature-data" class="slide level2">
+<h2>Spiral Example: Temperature Data</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><strong>Angle</strong>: month of the year</li>
+<li><strong>Radius</strong>: temperature anomaly vs.&nbsp;1850-1900 (red rings at 1.5 °C and 2.0 °C)</li>
+<li><strong>Color</strong>: year, purple (1850) to yellow (2016)</li>
+<li>Later loops sit further out: warming</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/spiral-temperature-data.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<div class="footer">
+<p>Hawkins, E. (2016). <a href="https://www.climate-lab-book.ac.uk/spirals/"><em>Climate spirals</em></a>. Climate Lab Book. Data: HadCRUT4.</p>
+</div>
+</section>
+<section id="climate-spiral-visualization" class="slide level2">
+<h2>Climate Spiral Visualization</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>The animated version</strong> draws one loop per year, month by month, from 1850 to 2017</p>
+<ul>
+<li>This still is its first frame, before any data is drawn</li>
+<li><a href="https://www.climate-lab-book.ac.uk/spirals/">Play the animation</a> to watch the loops push toward the 1.5 °C ring</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/climate-spiral.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="caution-radial-layout-limitations" class="slide level2">
+<h2>Caution: Radial Layout Limitations</h2>
+<p><strong>Use circular layouts with care!</strong></p>
+<p><strong>Research finding</strong>: Humans are significantly slower and less accurate at judging radial distances and angles compared to linear position</p>
+<p>Comparing values radially is harder than in Cartesian space - use only when cyclical nature is essential</p>
+<aside class="notes">
+<ul>
+<li><strong>CRITICAL WARNING</strong> - radial layouts look cool but are perceptually problematic</li>
+<li>Research shows 2-3x slower and less accurate judgments in radial vs linear layouts</li>
+<li>Why are they harder?
+<ul>
+<li>Angles are harder to judge than horizontal/vertical distances</li>
+<li>Outer rings have more space than inner rings (same value, different visual area)</li>
+<li>Hard to compare values at different angles</li>
+</ul></li>
+<li>When ARE they appropriate? When emphasizing cyclical nature is more important than precise reading
+<ul>
+<li>Example: 24-hour clock pattern - circular makes sense conceptually</li>
+<li>Example: Climate spiral - the spiraling metaphor communicates urgency</li>
+</ul></li>
+<li>But for most analytical tasks: stick to linear layouts!</li>
+<li>Ask: “When have you seen radial visualizations in the wild? Were they effective?”</li>
+<li>Common misuse: Corporate dashboards with radial charts just because they look fancy</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="comparison-linear-vs-radial" class="slide level2">
+<h2>Comparison: Linear vs Radial</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/linear-vs-radial-1.png" class="quarto-figure quarto-figure-center" height="720"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/linear-vs-radial-2.png" class="quarto-figure quarto-figure-center" height="720"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>Arab Spring timeline, radial (left) vs.&nbsp;linear (right): which makes durations easier to compare?</strong></p>
+</section></section>
+<section>
+<section id="scalable-visualizations" class="title-slide slide level1 center">
+<h1>Scalable Visualizations</h1>
+<p>Horizon charts and sparklines for dense temporal data</p>
+<aside class="notes">
+<p><strong>ADVANCED/OPTIONAL SECTION</strong> - This can be assigned as reading if short on time - Horizon charts are complex and need 15 min to walk through properly - Sparklines are quick (5 min) and useful, show if you can - If pressed for time: Show the horizon chart concept but assign the step-by-step as reading - Students don’t NEED to build horizon charts, but should know they exist</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="horizon-charts" class="slide level2">
+<h2>Horizon Charts</h2>
+<p><strong>Maximum density in minimal height: dozens of time series compared at once.</strong></p>
+
+<img data-src="figs/week11/horizon-chart-intro.png" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Heer, J., Kong, N., &amp; Agrawala, M. (2009). <a href="https://doi.org/10.1145/1518701.1518897"><em>Sizing the horizon: The effects of chart size and layering on the graphical perception of time series visualizations</em></a>. CHI.</p>
+</div>
+<aside class="notes">
+<ul>
+<li><strong>Advanced technique</strong> - horizon charts solve a specific problem: showing MANY time series compactly</li>
+<li>Problem: Line charts need vertical space - can only show ~10 series before running out of screen space</li>
+<li>Horizon charts compress vertical space by 2-4x while maintaining readability</li>
+<li>Used in: Server monitoring dashboards, financial data with hundreds of stocks, climate data arrays</li>
+<li>Key innovation: Trade vertical space for color intensity</li>
+<li><strong>CRITICAL</strong>: This looks like “magic” unless you understand the construction</li>
+<li><strong>Next slides walk through step-by-step</strong>: This is NOT optional - you MUST show the construction process
+<ul>
+<li>Without understanding HOW it’s built, students will just see a confusing colored chart</li>
+<li>The 4-step process (area → bands → flip → collapse) demystifies it</li>
+<li>Heer et al.’s paper/video has excellent animations of this - reference them</li>
+</ul></li>
+<li>Takes practice to read - not intuitive at first glance</li>
+<li>Heer et al.’s CHI paper showed horizon charts can be as accurate as line charts but in 1/4 the space</li>
+<li>Real-world example: Cubism.js library for real-time dashboards</li>
+<li>When to use: When you have &gt;20 time series and need to see them all simultaneously</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-not-line-charts-same-series-same-height" class="slide level2">
+<h2>Why Not Line Charts? Same Series, Same Height</h2>
+<p><strong>The same series as plain line charts at this height: almost flat, nothing to read.</strong></p>
+
+<img data-src="figs/week11/horizon-chart-multiple.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="how-horizon-charts-work-step-1" class="slide level2">
+<h2>How Horizon Charts Work: Step 1</h2>
+<p><strong>Start with a standard area chart.</strong></p>
+
+<img data-src="figs/week11/horizon-step1-area.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ul>
+<li><strong>SLOW DOWN</strong>: Take your time with these construction slides</li>
+<li>Step 1 is familiar - just a normal area chart</li>
+<li>“This is what we know - a regular area chart. Now watch what happens…”</li>
+<li>Make sure students understand this baseline before moving forward</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="step-2-discretizing-into-bands" class="slide level2">
+<h2>Step 2: Discretizing into Bands</h2>
+<p><strong>Divide values into equal-height bands (e.g., 0-1, 1-2, 2-3).</strong></p>
+
+<img data-src="figs/week11/horizon-step2-bands.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ul>
+<li><strong>Key transformation #1</strong>: Chop the area into horizontal slices</li>
+<li>“We’re dividing the chart into bands of equal height”</li>
+<li>Point to each band: “0-1 gets one color, 1-2 gets another, 2-3 gets a darker shade”</li>
+<li>This is like creating a color scale for elevation on a topographic map</li>
+<li>Make sure students see: Same data, just segmented into layers</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="step-3-flipping-negative-values" class="slide level2">
+<h2>Step 3: Flipping Negative Values</h2>
+<p><strong>Mirror negative values above the baseline, told apart by hue.</strong></p>
+
+<img data-src="figs/week11/horizon-step3-flip.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ul>
+<li><strong>Key transformation #2</strong>: Handle negative values</li>
+<li>“Notice negative values? We flip them UP above the baseline”</li>
+<li>Use different color (or saturation) to distinguish positive from negative</li>
+<li>In this figure blue = positive, red = negative</li>
+<li>Why flip? Because next step collapses everything - we need both directions in same vertical space</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="step-4-collapsing-bands" class="slide level2">
+<h2>Step 4: Collapsing Bands</h2>
+<p><strong>Overlay the bands in one strip (left to right): darker = larger magnitude.</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/week11/horizon-step4-collapse-1.png" style="width:100.0%"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/week11/horizon-step4-collapse-2.png" style="width:100.0%"></p>
+</div></div>
+<aside class="notes">
+<ul>
+<li><strong>THE MAGIC STEP</strong>: Now we collapse all the bands into the same vertical space</li>
+<li>“All those layers we created? We stack them on top of each other”</li>
+<li><strong>This is the key insight</strong>: Height → Color intensity
+<ul>
+<li>Band 1 (0-1): Light color</li>
+<li>Band 2 (1-2): Medium color (stacked on top, shows darker)</li>
+<li>Band 3 (2-3): Dark color (all three stacked)</li>
+</ul></li>
+<li>The result: Same temporal patterns, but 1/3 the height</li>
+<li>“Look at the before and after - same pattern, compressed vertically”</li>
+<li>This is why color intensity = magnitude in horizon charts</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="final-result-horizon-chart" class="slide level2">
+<h2>Final Result: Horizon Chart</h2>
+<p><strong>A compact view that keeps temporal patterns in minimal height.</strong></p>
+
+<img data-src="figs/week11/horizon-final-result.png" class="quarto-figure quarto-figure-center r-stretch"><aside class="notes">
+<ul>
+<li><strong>Recap the transformation</strong>: “We went from area chart → banded → flipped → collapsed”</li>
+<li>Now students should understand WHY darker colors = higher values</li>
+<li>“Without understanding the construction, this just looks like random colored bands”</li>
+<li>“But now you know: it’s a compressed area chart where height became color intensity”</li>
+<li>Practical reading tip: Darker/more saturated = higher magnitude</li>
+<li>Point out: You can still see the temporal patterns (peaks and valleys), just compressed</li>
+<li><strong>Reference Heer’s work</strong>: “The original CHI paper and video show this animation - highly recommended”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sparklines" class="slide level2">
+<h2>Sparklines</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<blockquote>
+<p>“Small, intense, word-sized graphics with typographic resolution. Sparklines can be placed anywhere that words or numbers can be: in sentences, maps, graphics, tables.”</p>
+<p>— Edward Tufte</p>
+</blockquote>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/sparkline-definition.png" class="quarto-figure quarto-figure-center" height="760"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li><strong>Edward Tufte’s concept</strong> - minimal, inline visualizations</li>
+<li>Philosophy: Data should be integrated into text, not separated</li>
+<li>Key characteristics:
+<ul>
+<li>No axes, no labels, no gridlines - just the trend</li>
+<li>Fits inline with text (same height as text line)</li>
+<li>Shows pattern at a glance, not precise values</li>
+<li>“Data-intense, design-simple, word-sized”</li>
+</ul></li>
+<li>When to use: Tables, dashboards, reports where you want to show trend alongside numbers</li>
+<li>Example: Stock table showing current price + sparkline of last 30 days</li>
+<li>Not for: Detailed analysis, precise reading, standalone charts</li>
+<li>Implementation: Easy in modern tools (Excel, Tableau, D3, etc.)</li>
+<li>Ask students: “Where have you seen sparklines? What made them effective?”</li>
+<li>Common examples: Google Finance, Twitter analytics, GitHub contribution graphs</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="footer">
+<p>Tufte, E. R. (2006). <a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR"><em>Beautiful Evidence</em></a>. Graphics Press.</p>
+</div>
+</section>
+<section id="sparklines-in-context" class="slide level2">
+<h2>Sparklines in Context</h2>
+<p><strong>In a table (top) and a dashboard summary (bottom): the data becomes part of the text.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/sparkline-context-1.png" class="nostretch quarto-figure quarto-figure-center" style="width:50.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/sparkline-context-2.png" class="nostretch quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</section>
+<section id="sparkline-examples" class="slide level2">
+<h2>Sparkline Examples</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/sparkline-example-1.png" class="quarto-figure quarto-figure-center" height="700"></p>
+</figure>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/week11/sparkline-example-2.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<p><strong>On a watch face (left) and in Tufte’s mutual-fund table (right).</strong></p>
+</section></section>
+<section>
+<section id="alternative-encodings" class="title-slide slide level1 center">
+<h1>Alternative Encodings</h1>
+<p>Beyond position: animation, color, and trajectories</p>
+</section>
+<section id="when-position-is-already-used" class="slide level2">
+<h2>When Position is Already Used</h2>
+<p>All methods so far use <strong>space</strong> to represent time.</p>
+<p>What if position is already taken (e.g., maps)?</p>
+</section>
+<section id="three-alternative-encodings" class="slide level2">
+<h2>Three Alternative Encodings</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Animation</strong></p>
+<p>Show changes over time through motion</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Color</strong></p>
+<p>Use color/saturation to encode time</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Trajectories</strong></p>
+<p>Draw paths showing movement</p>
+</div></div>
+</section>
+<section id="caution-animation-limitations" class="slide level2">
+<h2>Caution: Animation Limitations</h2>
+<p>While animation can be effective, it has significant drawbacks:</p>
+<p><strong>Cognitive Limitations:</strong></p>
+<ul>
+<li>Limits working memory - hard to remember previous frames</li>
+<li>Difficult to compare non-adjacent time points</li>
+<li>Requires replay to catch missed details</li>
+</ul>
+<p><strong>Best Practices:</strong></p>
+<ul>
+<li>Provide playback controls (pause, rewind, speed)</li>
+<li>Keep animations short (&lt; 10 seconds)</li>
+<li>Combine with static “key frames”</li>
+<li>Consider small multiples instead of animation</li>
+</ul>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section id="key-topics-covered" class="slide level2">
+<h2>Key Topics Covered</h2>
+<ol type="1">
+<li>Structure of temporal data (linear, cyclic, hierarchical)</li>
+<li>Line charts and variations (area charts, small multiples)</li>
+<li>Heat maps/grids, calendars, circular layouts</li>
+<li>Event data (dot/bubble charts, gantt)</li>
+<li>Scalable visualizations: horizon, sparklines</li>
+</ol>
+</section>
+<section id="key-takeaways" class="slide level2">
+<h2>Key Takeaways</h2>
+<p><strong>Design guidelines:</strong></p>
+<ul>
+<li>Consider time structure (sequential, cyclic, hierarchical)</li>
+<li>Be cautious with stacked designs (hard to read upper layers)</li>
+<li>Test different aspect ratios for line charts</li>
+<li>Use circular layouts carefully (harder to compare values)</li>
+<li>Choose the right technique for the data density</li>
+</ul>
+</section>
+<section id="key-references-12" class="slide level2">
+<h2>Key References (1/2)</h2>
+<div style="font-size: 0.7em;">
+<ul>
+<li>Taxonomy of timeline visualizations</li>
+<li>The TimeViz Browser</li>
+<li>Visualizing time-oriented data—A systematic view</li>
+<li>Visualizing pedestrian data</li>
+<li>Cloudlines visualization method for event data</li>
+<li>Banking to 45 degrees explained</li>
+<li>Banking to 45 degrees: Aspect ratios for time series plots</li>
+<li>The Shape Parameter of a Two-Variable Graph (original paper on banking to 45 degrees)</li>
+<li>An Empirical Model of Slope Ratio Comparisons (follow-up work on banking to 45 degrees)</li>
+<li>Quantitative Displays for Combining Time-Series and Part-to-Whole Relationships</li>
+<li>Stacked area chart vs.&nbsp;Line chart – The great debate</li>
+<li>The Fine Line In a Gray Area: When to Use Line vs Area Charts</li>
+<li>Climate spirals (great example of use of spirals)</li>
+<li>Enhanced interactive spiral display</li>
+<li>Spirals for periodic data</li>
+<li>Interactive Visualization of Serial Periodic Data</li>
+<li>Visualizing Time-Series on Spirals</li>
+<li>Explanation of Horizon charts</li>
+<li>User study on effectiveness of Horizon Charts</li>
+</ul>
+</div>
+</section>
+<section id="key-references-22" class="slide level2">
+<h2>Key References (2/2)</h2>
+<div style="font-size: 0.7em;">
+<ul>
+<li>Visualizing Time with the Double-Time Bar Chart | Doug McCune</li>
+<li>Visualizing Cyclical Time – Hour of Day Charts | Doug McCune</li>
+<li>Visual analytics techniques for time series data</li>
+<li>On the Benefits and Drawbacks of Radial Diagrams | SpringerLink</li>
+<li>Visualizing Time with the Infinity Hour Chart | Doug McCune</li>
+</ul>
+</div>
+</section>
+<section id="next-class-friday-december-4" class="slide level2">
+<h2>Next Class: Friday, December 4</h2>
+<p><strong>No class on November 27 (Thanksgiving).</strong> Week 13: Visualizing Network Data</p>
+<ul>
+<li>Node-link diagrams, force-directed layouts, adjacency matrices</li>
+<li>Trees: treemaps, sunbursts, dendrograms; edge bundling</li>
+</ul>
+<p><strong>Required readings:</strong></p>
+<ul>
+<li>Holten (2006). <a href="http://www.aviz.fr/wiki/uploads/Teaching2014/bundles_infovis.pdf"><em>Hierarchical Edge Bundles</em></a>. IEEE InfoVis.</li>
+<li>Bruls, Huizing &amp; van Wijk (2000). <a href="https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/trees/Bruls_SquarifiedTreemaps.pdf"><em>Squarified Treemaps</em></a>.</li>
+</ul>
+<p><strong>Mini-project 3</strong> (network visualization): due date as announced in lab.</p>
+</section>
+<section id="thank-you" class="slide level2">
+<h2>Thank You!</h2>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/vida.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="week11-temporal-data_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="week11-temporal-data_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+              if (!link.classList.contains('no-external-icon')) {
+              }
+            }
+          }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

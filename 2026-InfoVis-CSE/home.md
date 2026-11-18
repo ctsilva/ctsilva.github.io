@@ -134,9 +134,9 @@ author_profile: true
 
 ### Week 11 (Nov 13) - Clustering and Dimensionality Reduction
 - **Presenter:** Giancarlo Pereira
-- **Slides:** [Clustering and Dimensionality Reduction](/2026-InfoVis-CSE/slides/week11-clustering.html) | **Lab:** [Building temporal visualizations, Time series analysis with D3](/2026-InfoVis-CSE/labs/week11-lab.html)
+- **Slides:** [Clustering and Dimensionality Reduction](/2026-InfoVis-CSE/slides/week11-clustering.html) | **Lab:** [Dimensionality Reduction & Clustering](/2026-InfoVis-CSE/labs/week11-lab.html)
 - **Topics:** Clustering Iris (K-means, DBSCAN, hierarchical clustering, when each fails), Judging a clustering (elbow, silhouette, dendrograms), Visualizing clusterings (cluster colors, clustered heatmaps, silhouette plots), Dimensionality reduction fundamentals, Linear methods (PCA), Non-linear methods (t-SNE, UMAP), Judging a projection (trustworthiness and continuity), Critical visualization principles for high-dimensional data
-- **Lab:** Building temporal visualizations, Time series analysis with D3
+- **Lab:** Re-exploring Iris; PCA and K-means clustering in JavaScript (Observable)
 - **Assignment:** Exercise 11 - Temporal data visualization (due Nov 19)
 - **Required Readings:**
   - van der Maaten & Hinton (2008) - [Visualizing Data using t-SNE](https://jmlr.org/papers/v9/vandermaaten08a.html) - JMLR
@@ -148,15 +148,16 @@ author_profile: true
 - **Supplemental Material:** Curse of dimensionality, Cluster validation metrics, Choosing perplexity parameters
 
 ### Week 12 (Nov 20) - Visualizing Time-Oriented Data
-- **Slides:** [Visualizing Time-Oriented Data](/2026-InfoVis-CSE/slides/week11-temporal-data.html) | **Lab:** [Dimensionality Reduction with D3](/2026-InfoVis-CSE/labs/week12-lab.html)
-- **Topics:** Temporal data fundamentals (event vs measurement data), Time structures (sequential, cyclic, hierarchical), Line charts and aspect ratios (Banking to 45°), Multiple time series (spaghetti plots, small multiples), Stacked area charts and limitations, Interaction techniques (semantic vs geometric zoom), Heat maps and calendar visualizations, Periodic patterns (radial layouts, spirals), Horizon charts and sparklines
-- **Lab:** Implementing PCA and t-SNE visualizations with D3
-- **Assignment:** Exercise 12 - Clustering and dimensionality reduction visualization (due Dec 3)
+- **Slides:** [Visualizing Time-Oriented Data](/2026-InfoVis-CSE/slides/week11-temporal-data.html) | **Lab:** [Group Project Evaluation](/2026-InfoVis-CSE/labs/week12-lab.html)
+- **Topics:** Temporal data fundamentals (event vs measurement data), Time structures (sequential, cyclic, hierarchical), Line charts and aspect ratios (Banking to 45°), Multiple time series (spaghetti plots, small multiples), Stacked area charts and limitations, Interaction techniques (semantic vs geometric zoom), Heat maps and calendar visualizations, Periodic patterns (radial layouts, spirals), Horizon charts and sparklines, Measles heat maps from 1928 to 2026 (WSJ and an updated version) with 2025-2026 weekly cases
+- **Lab:** What makes a good project, evaluation criteria, critiquing existing dashboards
+- **Assignment:** Continue Mini-project 3
 - **Required Readings:**
   - Cleveland et al. (1988) - [The Shape Parameter of a Two-Variable Graph](https://doi.org/10.1080/01621459.1988.10478613) - JASA
   - Heer et al. (2009) - [Sizing the Horizon: Chart Size and Layering Effects](https://doi.org/10.1145/1518701.1518897) - CHI
 - **Recommended Resources:**
-  - [WSJ Vaccine Impact Visualization](http://graphics.wsj.com/infectious-diseases-and-vaccines/) - Famous heat map example
+  - [WSJ Vaccine Impact Visualization](https://graphics.wsj.com/infectious-diseases-and-vaccines/) - Famous heat map example
+  - [CDC Measles Cases and Outbreaks](https://www.cdc.gov/measles/data-research/) - Current data behind the updated heat map
   - [D3 Time Scales Documentation](https://github.com/d3/d3-scale#time-scales)
   - Weber et al. (2001) - [Visualizing Time-Series on Spirals](https://doi.org/10.1109/INFVIS.2001.963273) - IEEE InfoVis
 - **Supplemental Material:** Aggregation trade-offs, Baseline bias in stacked charts, When to use radial vs linear layouts

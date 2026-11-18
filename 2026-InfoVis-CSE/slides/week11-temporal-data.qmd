@@ -2,7 +2,7 @@
 title: "Visualizing Time-Oriented Data"
 subtitle: "CS-GY 6313 - Fall 2026"
 author: "Claudio Silva"
-date: "November 13, 2026"
+date: "November 20, 2026"
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -16,8 +16,6 @@ format:
 # Introduction
 
 Based on materials by Enrico Bertini
-enrico.bertini@nyu.edu
-NYU Tandon School of Engineering
 
 ::: notes
 **LECTURE TIMING GUIDANCE (150 min total)**
@@ -49,7 +47,22 @@ This is a PACKED lecture with lots of content. Suggested timing:
 3. Make sure to cover Banking to 45°, Spaghetti Plots, Baseline Bias (core perceptual issues)
 :::
 
----
+## Why Does Time Matter?
+
+![](figs/week11/three_years_2011_2013_light_2x.png){.nostretch width="90%" fig-align="center" fig-alt="Daily NYC taxi trips in 2011, 2012, and 2013 aligned by calendar date, showing recurring weekly fluctuations and occasional sharp drops."}
+
+![](figs/week11/trend_2009_2025_dark_2x.png){.nostretch width="90%" fig-align="center" fig-alt="NYC taxi and for-hire trips from 2009 to 2025, showing changes in the mix of services and a steep drop in 2020 followed by a recovery."}
+
+::: notes
+SKIPPABLE opener (new for 2026, shared with the VisML deck).
+
+- Ask what a single average of daily trips would hide.
+- Top: three years aligned by calendar date. The weekly rhythm repeats and a few days drop sharply (holidays, storms). That is a cyclic structure plus events.
+- Bottom: zoomed out to 2009-2025, the mix of services shifts (yellow, green, then for-hire vehicles such as Uber and Lyft) and there is the sharp drop in 2020. That is a sequential structure.
+- Careful reading: the purple-to-orange switch in 2019 is mostly a reporting change (the TLC began publishing high-volume for-hire trips, i.e. Uber/Lyft, as their own category in Feb 2019), not a jump in service. A good example of a data-definition change showing up as a pattern in time.
+- Callback to Week 9 (TaxiVis): the same taxi data, now read only along time.
+- Transition: "Both charts are the same kind of data. What makes data temporal?"
+:::
 
 ## What is Temporal Data?
 
@@ -67,20 +80,15 @@ In other words: we track **when** things happened or **what values were** at spe
 - Key distinction: Temporal data has meaningful time stamps/intervals, not just ordering
 :::
 
----
-
 ## Example: Temporal Dataset Structure
 
-![Image](figs/week11/temporal-dataset-structure.png)
+**The DATE and TIME columns make each collision record temporal data.**
 
-**Why is this temporal data?**
-
-- **DAT** and **TIME** columns explicitly record when events occurred
-- Each row represents an **incident/event** at a specific location and time
-- Can analyze patterns: when, where, and how frequently events happen
+![](figs/week11/temporal-dataset-structure.png){fig-align="center"}
 
 ::: notes
-- This appears to be crime or incident data - good real-world example
+- Each row is one **incident/event** at a specific location and time, so we can ask when, where, and how often
+- These are NYC motor vehicle collision records (NYC Open Data): borough, ZIP, lat/long, street names. The first header reads DAT only because the column is truncated in the screenshot
 - **PHYSICALLY POINT** to the DAT and TIME columns on screen with mouse/pointer
   - "See these columns? This is what makes this temporal data - explicit timestamps"
   - Make sure image is zoomed/large enough for back row to see
@@ -89,8 +97,6 @@ In other words: we track **when** things happened or **what values were** at spe
   - Wait for answers - students might suggest: "crime by hour of day", "seasonal trends", "geographic patterns over time"
 - This is event data (discrete occurrences) rather than continuous measurements
 :::
-
----
 
 ## Application Domains
 
@@ -113,8 +119,6 @@ In other words: we track **when** things happened or **what values were** at spe
 - Emphasize: Different domains have different temporal characteristics (irregular vs regular sampling, event-based vs continuous)
 :::
 
----
-
 ## Type 1: Event Data
 
 **Time + Object (Attributes)**
@@ -134,8 +138,6 @@ Examples: Tweet, Email, Alarm
 - Key visualization challenge: How do we show when events occurred and their attributes?
 - Often visualized as dots, marks, or bars on a timeline
 :::
-
----
 
 ## Type 2: Measurement Data
 
@@ -162,8 +164,6 @@ Examples: Temperature, revenue, stock value
 - This is what most people think of as "time series data"
 :::
 
----
-
 ## Temporal Information Components
 
 **Time = Position + Interval + Granularity**
@@ -186,8 +186,6 @@ Examples: Temperature, revenue, stock value
 - Example: "Meeting from 2:00-3:30 PM" has position (2:00 PM), interval (90 min), granularity (minutes)
 - These components influence visualization choices
 :::
-
----
 
 ## Time Structures
 
@@ -214,8 +212,6 @@ Three key structures for temporal data:
 - Visualization choice depends on which structure you want to emphasize
 :::
 
----
-
 ## Sequential and Cyclic Patterns
 
 ::: {.columns}
@@ -232,9 +228,6 @@ Three key structures for temporal data:
 :::
 :::
 
-
----
-
 ## Hierarchical Time Resolutions
 
 **Multiple Resolutions**
@@ -244,9 +237,6 @@ Three key structures for temporal data:
 - Weeks
 - Days
 - Hours
-
-
----
 
 ## Linking Data Types to Time Structures
 
@@ -284,8 +274,6 @@ Time + Measure(s)
 - Hierarchical structure → multi-scale views, drill-down interactions
 - Ask students: "If you have daily website traffic, what structures might you see?" (Answer: Sequential trend over months, cyclic pattern by day of week, hierarchical hour/day/week)
 :::
-
----
 
 ## Aggregation Trade-offs
 
@@ -331,80 +319,59 @@ Time + Measure(s)
 - Mention multi-resolution techniques (coming later): horizon charts, overview+detail
 :::
 
----
-
 ## Example: Sales Over Time - Sequential View
 
-Sequential: "How did our sales change over the years?"
+**Sequential: "How did our sales change over the years?"**
 
-
-![Image](figs/week11/sales-sequential-view.png)
-
----
+![](figs/week11/sales-sequential-view.png){fig-align="center"}
 
 ## Example: Sales Over Time - Cyclic View
 
-"How does the number of orders change by day of the week?"
+**Cyclic: "How does the number of orders change by day of the week?"**
 
-
-![Image](figs/week11/sales-cyclic-view.png)
-
----
+![](figs/week11/sales-cyclic-view.png){fig-align="center"}
 
 ## Hierarchical Structure and Resolution
 
 Combining multiple time resolutions in one view
 
-
----
-
 ## Time Resolution: Sequential Views
 
-Different temporal granularities reveal different patterns in sequential data
+**The same sales by week (top) and by month (bottom): granularity changes what you see.**
 
-![Image](figs/week11/time-resolution-sequential-1.png)
+![](figs/week11/time-resolution-sequential-1.png){.nostretch width="80%" fig-align="center"}
 
-![Image](figs/week11/time-resolution-sequential-2.png)
-
----
+![](figs/week11/time-resolution-sequential-2.png){.nostretch width="80%" fig-align="center"}
 
 ## Time Resolution: Cyclic Views
 
-Choosing the right resolution (hourly, daily, weekly) affects what patterns emerge
+**The same orders folded by month of year (top) and by day of week (bottom).**
 
-![Image](figs/week11/time-resolution-cyclic-1.png)
+![](figs/week11/time-resolution-cyclic-1.png){.nostretch width="75%" fig-align="center"}
 
-![Image](figs/week11/time-resolution-cyclic-2.png)
-
----
+![](figs/week11/time-resolution-cyclic-2.png){.nostretch width="75%" fig-align="center"}
 
 ## Example: Nesting Cyclic (Day) within Sequential (Year)
 
-Each row = one year, columns = days of week, showing how daily patterns evolve annually
+**One line per year (2013-2016) across the days of the week: a cyclic view nested in a sequential one.**
 
-![Image](figs/week11/nesting-cyclic-in-sequential.png)
+![](figs/week11/nesting-cyclic-in-sequential.png){fig-align="center"}
 
----
+## Example: Nested Time Patterns (Monthly)
 
-## Example: Nested Time Patterns (Quarterly)
+**Sales by month of the year, one line per year (2013-2016).**
 
-Days within weeks within quarters - revealing both micro and macro patterns
-
-![Image](figs/week11/nested-quarterly-patterns.png)
-
----
+![](figs/week11/nested-quarterly-patterns.png){fig-align="center"}
 
 # Visualization Methods
 
 Line charts, area charts, and their variations
 
----
-
 ## Line Charts: Time + Quantity
 
-The fundamental temporal visualization: position encodes both time (x) and values (y)
+**The fundamental temporal chart: position encodes both time (x) and value (y).**
 
-![Image](figs/week11/line-chart-basic.png)
+![](figs/week11/line-chart-basic.png){fig-align="center"}
 
 # Aspect Ratio
 
@@ -412,17 +379,11 @@ How chart dimensions affect perception
 
 **Definition**: Aspect Ratio = Width / Height
 
-
----
-
 ## Impact on Trend Visibility
 
-Different ratios make trends more or less visible
+**The same data at three aspect ratios: the trend looks steeper or flatter.**
 
-
-![Image](figs/week11/aspect-ratio-impact.png)
-
----
+![](figs/week11/aspect-ratio-impact.png){fig-align="center"}
 
 ## Perceptual Principle: Slope Judgment
 
@@ -445,56 +406,59 @@ This principle guides aspect ratio selection
 - Ask: "Which stock would you invest in based on this chart?" - then show same data with different aspect ratio revealing different impression
 :::
 
----
-
 ## Banking to 45°
 
-**Method**: Set aspect ratio so that the average slope is 45°
+:::: {.columns}
+::: {.column width="40%"}
+**Method**: set the aspect ratio so that the average slope of the line segments is 45°
 
-Ensures trends are perceptually salient and comparable
+- Makes trends perceptually salient and comparable
+- Cleveland, McGill & McGill introduced it in this 1988 JASA paper (a required reading this week)
+:::
+::: {.column width="60%"}
+![](figs/week11/banking-45-comparison-1.png){height="760" fig-align="center"}
+:::
+::::
 
 :::footer
 Cleveland, W. S., McGill, M. E., & McGill, R. (1988). [*The shape parameter of a two-variable graph*](https://doi.org/10.1080/01621459.1988.10478613). JASA.
 :::
 
-
----
-
 ## Example: Banking to 45° Comparison
 
-Same data, different aspect ratios - which reveals patterns best?
+:::: {.columns}
+::: {.column width="40%"}
+![](figs/week11/banking-45-comparison-2.png){height="700" fig-align="center"}
+:::
+::: {.column width="60%"}
+![](figs/week11/banking-45-comparison-3.png){width="100%" fig-align="center"}
+:::
+::::
 
-![Image](figs/week11/banking-45-comparison-1.png)
+**Canadian lynx trappings: a square frame (left) vs. banked to 45° (right). Which shows the shape of each cycle?**
 
-![Image](figs/week11/banking-45-comparison-2.png)
-
-![Image](figs/week11/banking-45-comparison-3.png)
-
----
+::: notes
+- Same series twice (log2 lynx trapped per year, Cleveland's classic example).
+- In the square frame every cycle is a near-vertical spike; you cannot judge how each cycle rises and falls.
+- Banked to 45°, the plot becomes very wide and short, and the shape of each cycle becomes something you can compare. The wide, short result is the point, not a layout mistake.
+- The paper's first page is on the previous slide.
+:::
 
 ## Best Practice
 
 **Rule of thumb**: Always test different aspect ratios to see which one best conveys your message
 
-
----
-
----
-
 ## Multiple Line Charts: Adding Categories
 
-Encoding categorical data with color/line style to compare multiple time series
+**Color encodes the category: three customer segments over time.**
 
-![Image](figs/week11/multiple-line-charts.png)
-
----
+![](figs/week11/multiple-line-charts.png){fig-align="center"}
 
 ## The "Spaghetti Plot" Problem
 
-It does not scale!
+**It does not scale: 17 sub-categories in one chart.**
 
-
-![Image](figs/week11/spaghetti-plot.png)
+![](figs/week11/spaghetti-plot.png){fig-align="center"}
 
 ::: notes
 - Classic problem in temporal visualization - too many lines creates visual chaos
@@ -509,39 +473,36 @@ It does not scale!
 - Real-world example: Stock market with hundreds of stocks - spaghetti plot is useless
 :::
 
----
-
 ## Solutions for Multiple Lines
 
-Possible Solutions ...
+Possible solutions:
+
 1. Grouping
 2. Filtering/Focus
 3. Highlighting
 
-
----
-
 ## Comparison: Grouping, Filtering, Highlighting
 
-::: {.columns}
+:::: {.columns}
 ::: {.column width="50%"}
-**Original**
-![](figs/week11/comparison-original.png)
+**Original: 17 sub-categories**
 
-**Filtering**
-![](figs/week11/comparison-filtering.png)
+![](figs/week11/comparison-original.png){height="330" fig-align="center"}
+
+**Filtering: keep 3 sub-categories**
+
+![](figs/week11/comparison-filtering.png){height="330" fig-align="center"}
 :::
-
 ::: {.column width="50%"}
-**Grouping**
-![](figs/week11/comparison-grouping.png)
+**Grouping: roll up to 3 categories**
 
-**Highlighting**
-![](figs/week11/comparison-highlighting.png)
-:::
-:::
+![](figs/week11/comparison-grouping.png){height="330" fig-align="center"}
 
----
+**Highlighting: 3 in color, the rest faded**
+
+![](figs/week11/comparison-highlighting.png){height="330" fig-align="center"}
+:::
+::::
 
 ## Small Multiples
 
@@ -554,45 +515,42 @@ Small Multiple Line Charts and Area Charts
 - **Transition**: "We've seen static solutions - but in practice, filtering and highlighting are interactive. Let's talk about interaction techniques for temporal data..."
 :::
 
----
-
 ## Example: Small Multiple Line Charts
 
-Separate panels for each series - easier to see individual patterns
+**One panel per sub-category on a shared y-axis: each series is readable and comparable.**
 
-![Image](figs/week11/small-multiples-line.png)
-
----
+![](figs/week11/small-multiples-line-grid.png){fig-align="center"}
 
 ## Example: Small Multiple Area Charts
 
-Area encoding helps emphasize magnitude while maintaining separate views
+**The same panels as areas: filled area emphasizes magnitude.**
 
-![Image](figs/week11/small-multiples-area.png)
+![](figs/week11/small-multiples-area-grid.png){fig-align="center"}
 
----
+## Stacked Area Charts: Total and Parts
 
-## Area Charts for Proportions
+**Stacked areas show the total and how it splits across four regions.**
 
-Useful to depict proportion changes over time
-
-
-![Image](figs/week11/area-chart-proportions.png)
-
----
+![](figs/week11/area-chart-proportions.png){fig-align="center"}
 
 ## Stacked Area Charts: Limitations
 
-**"Baseline Bias"** - only the baseline layer is easy to read accurately
+**"Baseline bias": only the bottom layer sits on a common baseline.**
 
-Problem: Temporal trends for upper layers are hard to interpret because they don't share a common baseline
+:::: {.columns}
+::: {.column width="50%"}
+![](figs/week11/stacked-area-baseline-bias-1.png){width="100%"}
+:::
+::: {.column width="50%"}
+![](figs/week11/stacked-area-baseline-bias-2.png){width="100%"}
+:::
+::::
 
-
-![Image](figs/week11/stacked-area-baseline-bias-1.png)
-
-![Image](figs/week11/stacked-area-baseline-bias-2.png)
+**The same four regions as lines (left) and stacked (right). Try reading East's trend on the right.**
 
 ::: notes
+- Problem: temporal trends for upper layers are hard to interpret because they don't share a common baseline
+- In this figure East is orange, West (teal) is the bottom layer
 - **IMPORTANT PERCEPTUAL LIMITATION** - students often misuse stacked area charts
 - The bottom layer (touching x-axis) is easy to read - it has a stable baseline
 - But upper layers "float" on changing baselines - very hard to judge their values or trends
@@ -609,21 +567,15 @@ Problem: Temporal trends for upper layers are hard to interpret because they don
 - Real example: COVID dashboards with stacked areas - very misleading for comparing different variants
 :::
 
----
-
 ## Normalized Stacked Area Charts
 
+**Normalized to 100%: composition only, the total is gone.**
 
-![Image](figs/week11/normalized-stacked-area.png)
-
----
+![](figs/week11/normalized-stacked-area.png){fig-align="center"}
 
 # Interaction Techniques
 
 Critical for exploring temporal data
-
-
----
 
 ## Why Interaction Matters for Temporal Data
 
@@ -635,9 +587,6 @@ Critical for exploring temporal data
 - Focus on specific patterns or events
 - Link multiple views for comparison
 - Dynamically adjust aggregation levels
-
-
----
 
 ## Zoom and Pan
 
@@ -681,8 +630,6 @@ Critical for exploring temporal data
 - Interaction: Brushing in overview selects region shown in detail
 :::
 
----
-
 ## Filtering and Brushing
 
 **Filtering**: Show/hide data based on criteria
@@ -695,9 +642,6 @@ Critical for exploring temporal data
 
 - **Temporal brushing**: Select time range, see corresponding events
 - **Linked views**: Brush on map → highlight in timeline
-
-
----
 
 ## Brushing & Linking Example
 
@@ -729,8 +673,6 @@ Corresponding temporal data highlights automatically
 - This is the payoff of brushing & linking - cross-view pattern discovery
 :::
 
----
-
 ## Dynamic Aggregation
 
 **Interactive granularity control**
@@ -742,9 +684,6 @@ Users adjust time resolution on-the-fly:
 - Roll-up: Aggregate noisy hourly data to daily averages
 
 **Advanced**: Time-series bagging, dynamic binning for very long series
-
-
----
 
 ## Time Warping and Distortion
 
@@ -760,9 +699,6 @@ Users adjust time resolution on-the-fly:
 - Dynamic time warping (DTW) for comparing similar patterns
 - Useful for comparing multiple time series with lag
 
-
----
-
 ## Best Practices for Interaction Design
 
 1. **Provide overview first**: Show full temporal extent
@@ -772,15 +708,9 @@ Users adjust time resolution on-the-fly:
 5. **Smooth transitions**: Animate changes to maintain mental model
 6. **Direct manipulation**: Let users interact with the visualization itself
 
-
----
-
 # Event Data Visualization
 
 Visualizing discrete events and durations
-
-
----
 
 ## Types of Event Data
 
@@ -790,37 +720,27 @@ Visualizing discrete events and durations
 - Activity Logs
 - Messages (Emails, Chats, etc.)
 
-
----
-
 ## Example: Dot Plot for Events
 
-Each dot = one event, position = time, rows = categories
+**Rows = cities, x = ship date; dot size encodes a count (legend 1-52).**
 
-![Image](figs/week11/event-dot-plot.png)
+![](figs/week11/event-dot-plot.png){fig-align="center"}
 
----
+## Example: Proportional Symbols plus Color
 
-## Example: Proportional Symbols
+**The same dots colored by ship mode: size and color carry two event attributes.**
 
-Symbol size encodes additional attributes (e.g., event magnitude or importance)
-
-![Image](figs/week11/event-proportional-symbols.png)
-
----
+![](figs/week11/event-proportional-symbols.png){fig-align="center"}
 
 ## Events with Duration
 
 How do you visualize events that have duration?
 
-
----
-
 ## Gantt Charts
 
-Horizontal bars show event start, duration, and end times
+**Horizontal bars show each event's start, duration, and end.**
 
-![Image](figs/week11/gantt-chart-intro.png)
+![](figs/week11/gantt-chart-intro.png){fig-align="center"}
 
 ::: notes
 - **CONNECT BACK TO EVENT DATA**: "Remember our Event Data definition? Events with duration? Gantt charts are THE classic visualization for this."
@@ -839,45 +759,50 @@ Horizontal bars show event start, duration, and end times
   - Can show dependencies with arrows
 :::
 
----
-
 ## Example: Gantt Chart
 
-Project management: showing task dependencies and overlaps
+:::: {.columns}
+::: {.column width="40%"}
+**The lifespan of an evening news anchor**
 
-![Image](figs/week11/gantt-chart-example.png)
-
----
+- One row per anchor, grouped by network (NBC, CBS, ABC), since 1948
+- A line from start to end shows each tenure
+- The annotation calls out the longest run: Jennings, 27 years
+:::
+::: {.column width="60%"}
+![](figs/week11/gantt-chart-example.png){height="760" fig-align="center"}
+:::
+::::
 
 ## Example: System Activity Monitoring
 
-Tape drives and servers: visualizing concurrent processes and resource usage
+**Tape mounts per drive over a day and a half: concurrent activity at a glance.**
 
-![Image](figs/week11/system-activity-gantt.png)
-
----
+![](figs/week11/system-activity-gantt.png){fig-align="center"}
 
 # Alternative Visualizations
 
 Heat maps and real-world examples
 
-
----
-
 ## Heat Maps for Temporal Data
 
-**Matrix representation**: Time units as rows/columns, color encodes values
+:::: {.columns}
+::: {.column width="40%"}
+**Matrix representation**: one axis is time, the other is categories, color shows the value
 
-**Think of it as**: A table where one axis is time, the other is categories, and color shows the value
-
-**Benefits**: Compact, shows patterns across multiple dimensions
-
-![Image](figs/week11/heatmap-temporal.png)
+- Think of it as a table with colored cells
+- Here: sub-category × day of month, color = sales
+- Compact; shows patterns along both axes
+:::
+::: {.column width="60%"}
+![](figs/week11/heatmap-temporal.png){width="100%" fig-align="center"}
+:::
+::::
 
 ::: notes
 - **Explicit mapping**: Heat map = fancy table
-  - Rows: Time units (hours, days, weeks, months)
-  - Columns: Categories (states, products, sensors)
+  - One axis: time units (here, day of month across the top)
+  - Other axis: categories (here, product sub-categories as rows)
   - Cell color: The value at that time/category combination
 - This is a 2D visualization of 3D data (time × category × value)
 - Students often confuse heat maps with other color-based visualizations
@@ -887,24 +812,22 @@ Heat maps and real-world examples
   - Interactions (does Category A peak at different times than Category B?)
 :::
 
----
-
 ## Example: WSJ Vaccine Impact Visualization
 
-![Image](figs/week11/wsj-vaccine-heatmap.png)
+![](figs/week11/wsj-vaccine-heatmap.png){fig-align="center"}
 
 :::footer
-Wall Street Journal (2015). [*Battling Infectious Diseases in the 20th Century: The Impact of Vaccines*](http://graphics.wsj.com/infectious-diseases-and-vaccines/)
+DeBold, T., & Friedman, D. (2015). [*Battling Infectious Diseases in the 20th Century: The Impact of Vaccines*](https://graphics.wsj.com/infectious-diseases-and-vaccines/). The Wall Street Journal.
 :::
 
 ::: notes
 - **FAMOUS EXAMPLE** - one of the most impactful data visualizations of 2015
 - Shows measles cases by state (rows) over decades (columns)
-- Color: disease incidence rate (darker = more cases)
+- Color: incidence (WSJ reported cases per 100,000 people), running from pale blue (near zero) through green and yellow to red; it is a rainbow scale, a good hook back to the color lecture
 - **The dramatic pattern**: Clear vertical line when vaccine was introduced - cases drop to nearly zero
 - Powerfully communicates vaccine effectiveness without words
 - Design choices worth noting:
-  - Sorted states by total cases (puts high-burden states at top)
+  - States are listed alphabetically (Alaska at the top), not sorted by burden
   - Color scale emphasizes the contrast (before/after)
   - Vertical line marks vaccine introduction
 - Impact: Widely shared during vaccine debates, changed minds
@@ -913,33 +836,69 @@ Wall Street Journal (2015). [*Battling Infectious Diseases in the 20th Century: 
 - This is heat maps at their best - revealing multidimensional patterns at a glance
 :::
 
----
+## Measles Today: New U.S. Cases by Week, 2025-2026
 
-## Detail View
+![](figs/week11/nyt-measles-weekly-2025-2026.png){.nostretch height="820" fig-align="center"}
 
-Zooming in reveals granular patterns in measles cases by state over decades
+:::footer
+Migliozzi, B. (2026). New measles cases by week. *The New York Times*. Data: CDC confirmed cases through Nov. 12, 2026.
+:::
 
-![Image](figs/week11/wsj-vaccine-detail.png)
+::: notes
+SKIPPABLE (new for 2026) - if running long, jump to 'Example: FT European Football Visualization'.
 
----
+- **Purpose:** bring the WSJ story up to the present, and contrast a single national series with the state-by-year heat map.
+- **Walk through:** each bar is one week of confirmed U.S. cases, from late 2024 to mid-November 2026. Point to the three annotations: the West Texas outbreak declared in early 2025, the surge in South Carolina around January 2026 (the tallest week, near 300 cases), and the large outbreaks in Pennsylvania, Wisconsin and New York from late summer 2026 onward.
+- **Design contrast:** the heat map compares annual rates across states; this bar chart shows *when* outbreaks happened, nationally, and uses annotations to name the states.
+- **Ask:** the last bar is much lower than the weeks before it. Real drop, or a week whose cases have not all been confirmed and reported yet? The most recent points of a live chart are often incomplete.
+- **Transition:** "Where do those outbreaks show up on the long state-by-year chart?"
+:::
+
+## Measles in the United States, 1928-2026
+
+![](figs/week11/measles-state-year.svg){.nostretch height="790" fig-align="center" fig-alt="Heatmap of reported measles cases per 100,000 people across the 50 states and D.C. from 1928 through November 12, 2026. Rates generally fall after the 1963 vaccine introduction, with increases in some states in 2025 and 2026. Gray indicates missing data, including 2023."}
+
+:::footer
+[WSJ, 1928-2012](https://graphics.wsj.com/infectious-diseases-and-vaccines/), [Our World in Data, 2013-2022](https://ourworldindata.org/grapher/reported-measles-case-rate-by-state-in-the-united-states), [CDC, 2024-2026](https://www.cdc.gov/measles/data-research/), and [U.S. Census Bureau](https://www.census.gov/data/datasets/time-series/demo/popest/2020s-state-total.html).
+:::
+
+::: notes
+SKIPPABLE (new for 2026).
+
+- **Purpose:** put the recent outbreaks on the same state-by-year scale as the WSJ chart.
+- **Walk through:** each row is a state or D.C., each column a year. Purple intensity encodes reported cases per 100,000 people on a symmetric log scale; gray cells are missing. Point to the 1963 vaccine marker, then the much paler region after it, then the recent cells in 2025-2026.
+- **Compare with the WSJ version (design discussion):** a single-hue sequential scale instead of the rainbow, and a log scale so low recent rates are still distinguishable from zero while the historical range still fits. Ask which reads more honestly, and what the log scale costs (differences look smaller than they are).
+- **Emphasize:** the chart shows timing and association, not a causal estimate.
+- **Source detail:** the 2023 column is missing because the sources lack comparable state-year totals for that year. Recent CDC counts are for U.S. residents assigned to a reporting jurisdiction; New York City is combined with New York State. 2026 uses provisional counts through November 12, divided by 2025 Census population estimates.
+:::
+
+## Variation: Size Instead of Color
+
+**The sub-category × day-of-month grid again, with square size encoding sales.**
+
+![](figs/week11/subcategory-day-size-grid.png){fig-align="center"}
 
 ## Example: FT European Football Visualization
 
-Goals scored over careers - heat map shows performance patterns across age/seasons
+:::: {.columns}
+::: {.column width="40%"}
+**How to read it:**
 
-![Image](figs/week11/ft-football-heatmap.png)
+- **x**: player's age
+- **Rows**: one player each
+- **Length**: career span
+- **Color**: non-penalty goalscoring rate (darker = higher)
+- **Square size**: share of minutes played
+:::
+::: {.column width="60%"}
+![](figs/week11/ft-football-heatmap.png){height="760" fig-align="center"}
+:::
+::::
 
-**How to read this visualization:**
-
-- **X-axis**: Player's age
-- **Y-axis**: Individual players (one row per player)
-- **Length**: Career duration
-- **Color**: Goal-scoring rate (darker = more goals)
-
-Dense but information-rich: shows career trajectories and productivity over time
-
-
----
+::: notes
+- Goals over careers: the heat map shows performance across age and seasons
+- Dense but information-rich: career trajectories and productivity over time in one view
+:::
 
 # Periodic Patterns
 
@@ -952,8 +911,6 @@ Calendars, radial layouts, and spirals
 - Spirals are interesting but not essential
 :::
 
----
-
 ## Understanding Periodicity
 
 Often the focus is on investigating and presenting periodical patterns:
@@ -961,26 +918,27 @@ Often the focus is on investigating and presenting periodical patterns:
 - Yearly, seasonal, monthly
 - Weekly, daily, hourly
 
-
----
-
 ## Alternative Approaches
 
-Beyond line charts: What are other solutions for periodic data?
+**One line per year across the week: what else could show this periodic pattern?**
 
-![Image](figs/week11/periodic-alternatives.png)
-
----
+![](figs/week11/periodic-alternatives.png){fig-align="center"}
 
 ## Calendar-Based Visualizations
 
-**Key difference from heat maps**: Time is laid out by day-of-week and month structure
+:::: {.columns}
+::: {.column width="40%"}
+**Key difference from heat maps**: time is laid out by day-of-week and month
 
-- **Heat maps**: Linear/vertical time progression
-- **Calendar views**: Explicit cyclic layout (7-day weeks, 12 months)
-- Better for revealing weekly/seasonal patterns
-
-![Image](figs/week11/calendar-visualization.png)
+- **Heat maps**: linear time progression
+- **Calendar views**: explicit cyclic layout (7-day weeks, 12 months)
+- Better for weekly and seasonal patterns
+- Here: Divvy bike-share rides per day, 2014-2017
+:::
+::: {.column width="60%"}
+![](figs/week11/calendar-visualization.png){height="760" fig-align="center"}
+:::
+::::
 
 ::: notes
 - Calendar views leverage our familiarity with calendar structure
@@ -1000,33 +958,37 @@ Beyond line charts: What are other solutions for periodic data?
 - Ask: "What apps use calendar views? Why does it work for them?"
 :::
 
----
-
 ## Calendar Variations
 
-Different ways to encode values: size, color intensity, or position within cells
+:::: {.columns}
+::: {.column width="50%"}
+![](figs/week11/calendar-variation-1.png){height="760" fig-align="center"}
+:::
+::: {.column width="50%"}
+![](figs/week11/calendar-variation-2.png){height="760" fig-align="center"}
+:::
+::::
 
-![Image](figs/week11/calendar-variation-1.png)
-
-![Image](figs/week11/calendar-variation-2.png)
-
----
+**Month × hour of day, two ways: a grid of marks (left) and a continuous heat map (right).**
 
 ## Radial Layouts for Periodic Data
 
 Periodic phenomena are cyclical. Radial layouts can reduce temporal discontinuities
 
-
----
-
 ## Spiral Plots
 
-**Key insight**: Spirals show BOTH cycles AND progression simultaneously
+:::: {.columns}
+::: {.column width="40%"}
+**Key insight**: spirals show cycles and progression at the same time
 
-- **Cycles**: Annual patterns repeat at the same angle
-- **Progression**: Long-term trend shows as spiral expanding/contracting outward
-
-![Image](figs/week11/spiral-plot-concept.png)
+- **Cycles**: the same phase of each period sits at the same angle
+- **Progression**: each turn moves outward in time
+- Weber et al.: the same periodic series as a line (left) and a spiral (right)
+:::
+::: {.column width="60%"}
+![](figs/week11/spiral-plot-concept.png){width="100%" fig-align="center"}
+:::
+::::
 
 :::footer
 Weber, M., Alexa, M., & Müller, W. (2001). [*Visualizing time-series on spirals*](https://doi.org/10.1109/INFVIS.2001.963273). IEEE InfoVis.
@@ -1038,30 +1000,44 @@ Weber, M., Alexa, M., & Müller, W. (2001). [*Visualizing time-series on spirals
   - **Sequential structure**: As you spiral outward = progression through time
 - Temperature example (next slide):
   - Angle = month of year (seasonal cycle)
-  - Radius = which year (progression)
-  - Can immediately see: seasonal patterns + long-term warming trend
-- Climate spiral makes this vivid: spiraling outward = getting warmer over time
+  - Radius = temperature anomaly, NOT year; color = year (purple 1850s to yellow 2010s)
+  - So Hawkins' spiral is a radial line chart with one loop per year rather than a Weber spiral: outward = warmer
+- The climate spiral makes the warming vivid: later (yellow) loops sit further out
 - Trade-off: Harder to read precise values (radial layout limitations)
 - Use when: The dual encoding (cycle + trend) is more important than precision
 :::
 
----
-
 ## Spiral Example: Temperature Data
 
-Annual cycles spiral outward - revealing both seasonal patterns and long-term trends
+:::: {.columns}
+::: {.column width="40%"}
+- **Angle**: month of the year
+- **Radius**: temperature anomaly vs. 1850-1900 (red rings at 1.5 °C and 2.0 °C)
+- **Color**: year, purple (1850) to yellow (2016)
+- Later loops sit further out: warming
+:::
+::: {.column width="60%"}
+![](figs/week11/spiral-temperature-data.png){height="760" fig-align="center"}
+:::
+::::
 
-![Image](figs/week11/spiral-temperature-data.png)
-
----
+:::footer
+Hawkins, E. (2016). [*Climate spirals*](https://www.climate-lab-book.ac.uk/spirals/). Climate Lab Book. Data: HadCRUT4.
+:::
 
 ## Climate Spiral Visualization
 
-Famous example: Global temperature anomalies spiraling toward crisis thresholds
+:::: {.columns}
+::: {.column width="40%"}
+**The animated version** draws one loop per year, month by month, from 1850 to 2017
 
-![Image](figs/week11/climate-spiral.png)
-
----
+- This still is its first frame, before any data is drawn
+- [Play the animation](https://www.climate-lab-book.ac.uk/spirals/) to watch the loops push toward the 1.5 °C ring
+:::
+::: {.column width="60%"}
+![](figs/week11/climate-spiral.png){height="760" fig-align="center"}
+:::
+::::
 
 ## Caution: Radial Layout Limitations
 
@@ -1086,15 +1062,18 @@ Comparing values radially is harder than in Cartesian space - use only when cycl
 - Common misuse: Corporate dashboards with radial charts just because they look fancy
 :::
 
----
-
 ## Comparison: Linear vs Radial
 
-![Image](figs/week11/linear-vs-radial-1.png)
+:::: {.columns}
+::: {.column width="50%"}
+![](figs/week11/linear-vs-radial-1.png){height="720" fig-align="center"}
+:::
+::: {.column width="50%"}
+![](figs/week11/linear-vs-radial-2.png){height="720" fig-align="center"}
+:::
+::::
 
-![Image](figs/week11/linear-vs-radial-2.png)
-
----
+**Arab Spring timeline, radial (left) vs. linear (right): which makes durations easier to compare?**
 
 # Scalable Visualizations
 
@@ -1108,15 +1087,11 @@ Horizon charts and sparklines for dense temporal data
 - Students don't NEED to build horizon charts, but should know they exist
 :::
 
----
-
 ## Horizon Charts
 
-**Purpose**: Maximum data density with minimal height
+**Maximum density in minimal height: dozens of time series compared at once.**
 
-Allows comparison of many time series in limited vertical space
-
-![Image](figs/week11/horizon-chart-intro.png)
+![](figs/week11/horizon-chart-intro.png){fig-align="center"}
 
 :::footer
 Heer, J., Kong, N., & Agrawala, M. (2009). [*Sizing the horizon: The effects of chart size and layering on the graphical perception of time series visualizations*](https://doi.org/10.1145/1518701.1518897). CHI.
@@ -1139,21 +1114,17 @@ Heer, J., Kong, N., & Agrawala, M. (2009). [*Sizing the horizon: The effects of 
 - When to use: When you have >20 time series and need to see them all simultaneously
 :::
 
----
+## Why Not Line Charts? Same Series, Same Height
 
-## Horizon Charts: Multiple Series
+**The same series as plain line charts at this height: almost flat, nothing to read.**
 
-Dozens of time series in the space where only a few line charts would fit
-
-![Image](figs/week11/horizon-chart-multiple.png)
-
----
+![](figs/week11/horizon-chart-multiple.png){fig-align="center"}
 
 ## How Horizon Charts Work: Step 1
 
-Start with a standard area chart
+**Start with a standard area chart.**
 
-![Image](figs/week11/horizon-step1-area.png)
+![](figs/week11/horizon-step1-area.png){fig-align="center"}
 
 ::: notes
 - **SLOW DOWN**: Take your time with these construction slides
@@ -1162,13 +1133,11 @@ Start with a standard area chart
 - Make sure students understand this baseline before moving forward
 :::
 
----
-
 ## Step 2: Discretizing into Bands
 
-Divide values into equal-height bands (e.g., 0-1, 1-2, 2-3)
+**Divide values into equal-height bands (e.g., 0-1, 1-2, 2-3).**
 
-![Image](figs/week11/horizon-step2-bands.png)
+![](figs/week11/horizon-step2-bands.png){fig-align="center"}
 
 ::: notes
 - **Key transformation #1**: Chop the area into horizontal slices
@@ -1178,31 +1147,32 @@ Divide values into equal-height bands (e.g., 0-1, 1-2, 2-3)
 - Make sure students see: Same data, just segmented into layers
 :::
 
----
-
 ## Step 3: Flipping Negative Values
 
-Mirror negative values above the baseline (differentiated by color/saturation)
+**Mirror negative values above the baseline, told apart by hue.**
 
-![Image](figs/week11/horizon-step3-flip.png)
+![](figs/week11/horizon-step3-flip.png){fig-align="center"}
 
 ::: notes
 - **Key transformation #2**: Handle negative values
 - "Notice negative values? We flip them UP above the baseline"
 - Use different color (or saturation) to distinguish positive from negative
-- "Red/orange for positive, blue for negative" is common convention
+- In this figure blue = positive, red = negative
 - Why flip? Because next step collapses everything - we need both directions in same vertical space
 :::
 
----
-
 ## Step 4: Collapsing Bands
 
-Stack all bands on top of each other using color intensity to show magnitude
+**Overlay the bands in one strip (left to right): darker = larger magnitude.**
 
-![Image](figs/week11/horizon-step4-collapse-1.png)
-
-![Image](figs/week11/horizon-step4-collapse-2.png)
+:::: {.columns}
+::: {.column width="50%"}
+![](figs/week11/horizon-step4-collapse-1.png){width="100%"}
+:::
+::: {.column width="50%"}
+![](figs/week11/horizon-step4-collapse-2.png){width="100%"}
+:::
+::::
 
 ::: notes
 - **THE MAGIC STEP**: Now we collapse all the bands into the same vertical space
@@ -1216,13 +1186,11 @@ Stack all bands on top of each other using color intensity to show magnitude
 - This is why color intensity = magnitude in horizon charts
 :::
 
----
-
 ## Final Result: Horizon Chart
 
-Compact visualization preserving temporal patterns in minimal vertical space
+**A compact view that keeps temporal patterns in minimal height.**
 
-![Image](figs/week11/horizon-final-result.png)
+![](figs/week11/horizon-final-result.png){fig-align="center"}
 
 ::: notes
 - **Recap the transformation**: "We went from area chart → banded → flipped → collapsed"
@@ -1234,11 +1202,18 @@ Compact visualization preserving temporal patterns in minimal vertical space
 - **Reference Heer's work**: "The original CHI paper and video show this animation - highly recommended"
 :::
 
----
-
 ## Sparklines
 
-"Small, intense, word-sized graphics with typographic resolution. Sparklines can be placed anywhere that words or numbers can be: in sentences, maps, graphics, tables."
+:::: {.columns}
+::: {.column width="55%"}
+> "Small, intense, word-sized graphics with typographic resolution. Sparklines can be placed anywhere that words or numbers can be: in sentences, maps, graphics, tables."
+>
+> — Edward Tufte
+:::
+::: {.column width="45%"}
+![](figs/week11/sparkline-definition.png){height="760" fig-align="center"}
+:::
+::::
 
 ::: notes
 - **Edward Tufte's concept** - minimal, inline visualizations
@@ -1256,50 +1231,40 @@ Compact visualization preserving temporal patterns in minimal vertical space
 - Common examples: Google Finance, Twitter analytics, GitHub contribution graphs
 :::
 
-— Edward Tufte
-
-![Image](figs/week11/sparkline-definition.png)
-
 :::footer
 Tufte, E. R. (2006). [*Beautiful Evidence*](http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR). Graphics Press.
 :::
 
----
-
 ## Sparklines in Context
 
-Embedded in text and tables - data becomes part of the narrative
+**In a table (top) and a dashboard summary (bottom): the data becomes part of the text.**
 
-![Image](figs/week11/sparkline-context-1.png)
+![](figs/week11/sparkline-context-1.png){.nostretch width="50%" fig-align="center"}
 
-![Image](figs/week11/sparkline-context-2.png)
-
----
+![](figs/week11/sparkline-context-2.png){.nostretch width="90%" fig-align="center"}
 
 ## Sparkline Examples
 
-Real-world applications in dashboards and reports
+:::: {.columns}
+::: {.column width="40%"}
+![](figs/week11/sparkline-example-1.png){height="700" fig-align="center"}
+:::
+::: {.column width="60%"}
+![](figs/week11/sparkline-example-2.png){width="100%" fig-align="center"}
+:::
+::::
 
-![Image](figs/week11/sparkline-example-1.png)
-
-![Image](figs/week11/sparkline-example-2.png)
-
----
+**On a watch face (left) and in Tufte's mutual-fund table (right).**
 
 # Alternative Encodings
 
 Beyond position: animation, color, and trajectories
-
-
----
 
 ## When Position is Already Used
 
 All methods so far use **space** to represent time.
 
 What if position is already taken (e.g., maps)?
-
----
 
 ## Three Alternative Encodings
 
@@ -1323,9 +1288,6 @@ Draw paths showing movement
 :::
 :::
 
-
----
-
 ## Caution: Animation Limitations
 
 While animation can be effective, it has significant drawbacks:
@@ -1343,13 +1305,7 @@ While animation can be effective, it has significant drawbacks:
 - Combine with static "key frames"
 - Consider small multiples instead of animation
 
-
----
-
 # Summary
-
-
----
 
 ## Key Topics Covered
 
@@ -1358,9 +1314,6 @@ While animation can be effective, it has significant drawbacks:
 1. Heat maps/grids, calendars, circular layouts
 1. Event data (dot/bubble charts, gantt)
 1. Scalable visualizations: horizon, sparklines
-
-
----
 
 ## Key Takeaways
 
@@ -1371,8 +1324,6 @@ While animation can be effective, it has significant drawbacks:
 - Test different aspect ratios for line charts
 - Use circular layouts carefully (harder to compare values)
 - Choose the right technique for the data density
-
----
 
 ## Key References (1/2)
 
@@ -1398,9 +1349,6 @@ While animation can be effective, it has significant drawbacks:
 - User study on effectiveness of Horizon Charts
 :::
 
-
----
-
 ## Key References (2/2)
 
 ::: {style="font-size: 0.7em;"}
@@ -1411,12 +1359,18 @@ While animation can be effective, it has significant drawbacks:
 - Visualizing Time with the Infinity Hour Chart | Doug McCune
 :::
 
+## Next Class: Friday, December 4
 
----
+**No class on November 27 (Thanksgiving).** Week 13: Visualizing Network Data
+
+- Node-link diagrams, force-directed layouts, adjacency matrices
+- Trees: treemaps, sunbursts, dendrograms; edge bundling
+
+**Required readings:**
+
+- Holten (2006). [*Hierarchical Edge Bundles*](http://www.aviz.fr/wiki/uploads/Teaching2014/bundles_infovis.pdf). IEEE InfoVis.
+- Bruls, Huizing & van Wijk (2000). [*Squarified Treemaps*](https://courses.cs.washington.edu/courses/cse512/25sp/uwnetid/readings/trees/Bruls_SquarifiedTreemaps.pdf).
+
+**Mini-project 3** (network visualization): due date as announced in lab.
 
 ## Thank You!
-
-![Image](figs/week11/thank-you.png)
-
----
-
