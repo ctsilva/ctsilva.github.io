@@ -35,6 +35,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="llm-interpretability_files/libs/revealjs/dist/theme/quarto-301a79802fc6fcd8a59c67ad00211b93.css">
   <link rel="stylesheet" href="lab-light-theme.css">
@@ -129,6 +195,12 @@
       margin-right: 0; 
     }
   </style>
+  <style>
+    #inceptionv1-architecture .cell-output-display img {
+      width: 74%;
+      height: auto;
+    }
+  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -154,21 +226,18 @@ Claudio Silva
 <section class="slide level2">
 <h2>Today</h2>
 <ol type="1">
-<li><strong>Why look inside?</strong> From explaining an output to understanding a mechanism</li>
-<li><strong>Superposition</strong>: why single neurons are hard to read</li>
-<li><strong>From neurons to features</strong>: dictionary learning and the replacement model</li>
-<li><strong>Are networks already clean?</strong> A dissent: study the neurons directly (main reading)</li>
-<li><strong>Attribution graphs</strong>: drawing one prompt’s computation as a graph</li>
-<li><strong>Case studies</strong>: reasoning, planning, hallucination, chain of thought</li>
-<li><strong>Attention</strong>: the part those graphs leave out, and filter heads</li>
-<li><strong>Limits</strong>: what these pictures can and cannot claim</li>
+<li>What can a mechanistic explanation tell us about a prediction?</li>
+<li>How can a network fit more features than it has dimensions?</li>
+<li>What does sparse dictionary learning recover?</li>
+<li>What can we learn by studying the original neurons?</li>
+<li>How do we test a mechanism suggested by an attribution graph?</li>
 </ol>
+<p>The main reading is Cammarata’s <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a> (2026).</p>
 <p><em>This is the last regular lecture. It replaces the session on fairness.</em></p>
 <aside class="notes">
-<p>ORIGINAL TIMING (before part 4 was added; parts 4-7 below are now 5-8): part 1 about 10 min, part 2 about 25, part 3 about 15, attribution graphs about 20, case studies about 25, attention about 15, limits about 10.</p>
-<p>REVISED Nov 24: part 4 (Cammarata, Neural Networks Are Already Clean) is the main reading, about 45 min (first 10 on the six vocabulary slides). To make room: part 1 about 5, part 2 about 20, part 3 about 10, part 5 attribution graphs about 15, part 6 case studies about 15 (skip some), part 7 attention / filter heads SKIP, part 8 limits about 10.</p>
-<p>Five sources carry the lecture. Toy Models of Superposition (Elhage et al., 2022) for part 2. Circuit Tracing (Ameisen et al., 2025) for parts 3 and 5. Neural Networks Are Already Clean (Cammarata, 2026) for part 4. On the Biology of a Large Language Model (Lindsey et al., 2025) for part 6. LLMs Process Lists With General Filter Heads (Sen Sharma et al., 2025) for part 7. Toy Models, Circuit Tracing and Biology are from Anthropic’s interpretability team; Cammarata’s essay is from Goodfire; filter heads is from David Bau’s lab at Northeastern.</p>
-<p>The charts in part 2 are computed in this deck from a model small enough to train in seconds. Everything in parts 4 to 6 is a figure from the papers.</p>
+<p>Two-hour lecture. Budget 5 min for the recap, 20 for superposition, 10 for dictionary learning, 40 for the main reading, 15 for attribution graphs, 15 for case studies, and 10 for attention and the closing discussion. That leaves 5 min for questions or transitions.</p>
+<p>In the main reading, prioritize 4e:55, the training checkpoints, the 480-to-10 channel experiment, and the language-model evidence. In the case studies, teach Dallas and the poem. Use the familiar-name and chain-of-thought examples if time permits. Show the first attention slide before the limits. The filter-head examples are optional.</p>
+<p>The toy-model figures are computed in this deck. The essay section mixes labeled illustrations with empirical figures from the cited sources.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -192,7 +261,7 @@ Claudio Silva
 <div class="column" style="width:50%;">
 <p><strong>What we had</strong></p>
 <ul>
-<li><strong>Embeddings</strong>: words as points, neighbors as meaning</li>
+<li><strong>Embeddings</strong>: words as vectors, with neighborhoods that can capture semantic similarity</li>
 <li><strong>Attention maps</strong>: which tokens a head looks at</li>
 <li><strong>LIME</strong>: which input words move the output</li>
 </ul>
@@ -238,7 +307,7 @@ Claudio Silva
 <li>At the last position, the final vector is turned into scores (<strong>logits</strong>) for the next token.</li>
 </ul>
 <p><strong>So there are two things to explain: what is represented in those vectors, and how each layer transforms it.</strong></p>
-</div><div class="column" style="width:45%;">
+</div><div class="column" style="width: 45%; min-width: 0; padding-right: 2em;">
 <pre><code> logits  -&gt;  next token
     ^
  [ layer L ]   attention + MLP
@@ -273,18 +342,18 @@ Claudio Silva
 
 </section>
 <section class="slide level2">
-<h2>The hope: one neuron, one concept</h2>
+<h2>One neuron, several responses</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>If it held</strong></p>
+<p><strong>When one description fits</strong></p>
 <ul>
-<li>Read a neuron’s top-activating examples, name it, done</li>
-<li>Some neurons really are like this: curve detectors in vision models, for example</li>
+<li>A short description predicts which examples strongly activate the neuron</li>
+<li>Curve detectors in vision models are a familiar example</li>
 </ul>
-<p><strong>What people found in language models</strong></p>
+<p><strong>When responses appear mixed</strong></p>
 <ul>
-<li>Most neurons are <strong>polysemantic</strong>: one neuron responds to several unrelated things</li>
-<li>Top activations can look clean while weaker activations mean something else</li>
+<li>Some neurons respond to several apparently unrelated patterns, a property called <strong>polysemanticity</strong></li>
+<li>The apparent mix depends on which inputs and activation ranges we look at</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><strong>Two questions from the paper</strong></p>
@@ -292,14 +361,14 @@ Claudio Silva
 <li>Why do neurons sometimes line up with concepts and sometimes not?</li>
 <li>Can a network represent <strong>more features than it has neurons</strong>?</li>
 </ul>
-<p><strong>The answer to the second is yes, and it explains the first.</strong></p>
+<p><strong>The toy model demonstrates one way an apparently mixed neuron can arise.</strong></p>
 </div></div>
 <div class="footer">
 <p>Elhage, N., et al.&nbsp;(2022). <a href="https://transformer-circuits.pub/2022/toy_model/index.html"><em>Toy Models of Superposition</em></a>. Transformer Circuits Thread.</p>
 </div>
 <aside class="notes">
 <p>The simplest plan for interpretability is to look at neurons one at a time. In early vision models this worked surprisingly often.</p>
-<p>In language models it mostly fails. A typical neuron fires on, say, academic citations, Korean text and HTTP requests. That is what ‘polysemantic’ means. There is no single label for it.</p>
+<p>One neuron in the 2023 <em>Towards Monosemanticity</em> study responded to examples including citations, Korean text and HTTP requests. That observation motivates a question about what those inputs share. Cammarata returns to this example later in the lecture.</p>
 <p>Toy Models of Superposition asks why. Its move is to stop studying real networks, where nobody knows what the true features are, and build a tiny one where the features are known by construction.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -321,8 +390,8 @@ Claudio Silva
 </ul>
 <p><span class="math display">\[\text{activation} \;=\; x_1 W_1 + x_2 W_2 + \dots\]</span></p>
 <ul>
-<li>The classic evidence: <code>king - man + woman ≈ queen</code> in word embeddings</li>
-<li>A <strong>neuron</strong> is one particular direction: a coordinate axis. Nothing forces features to lie along the axes.</li>
+<li>Word-embedding analogies such as <code>king - man + woman ≈ queen</code> illustrate what a direction can encode</li>
+<li>In MLP hidden activation space, a <strong>neuron</strong> is a coordinate axis. Candidate feature directions can span several coordinates.</li>
 </ul>
 <p><strong>With m dimensions there are only m orthogonal directions. But there are far more than m features worth representing.</strong></p>
 <aside class="notes">
@@ -344,7 +413,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>How many directions fit in d dimensions?</h2>
-<div id="235810f7" class="cell" data-execution_count="2">
+<div id="80f454cc" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -386,8 +455,8 @@ Claudio Silva
 <p><strong>How to read the result</strong></p>
 <ul>
 <li>Column <span class="math inline">\(W_i\)</span> is the <strong>direction</strong> given to feature <em>i</em></li>
-<li>Its <strong>length</strong> says whether the feature is represented at all</li>
-<li>The <strong>angles</strong> between columns say which features interfere</li>
+<li>Its <strong>length</strong> measures how strongly the encoder represents that feature</li>
+<li>The <strong>dot products</strong> between columns determine the cross-talk before bias and ReLU</li>
 </ul>
 <p><strong>We know the true features, so we can see exactly what the network did with them.</strong></p>
 </div></div>
@@ -399,7 +468,7 @@ Claudio Silva
 <p>The inputs stand for the features of an imagined, much larger network in which every feature has its own neuron. The question is what a small network does when it has to carry those features through fewer dimensions.</p>
 <p>Two knobs. Sparsity S: how rarely each feature is active. Real features are sparse: most tokens are not about Texas. Importance: some features reduce the loss more than others.</p>
 <p>The same matrix W is used to encode and to decode, so column i of W is unambiguously ‘the direction of feature i’.</p>
-<p>Without the ReLU this is a linear autoencoder and the answer is known: it keeps the top m features, like PCA, and drops the rest. The ReLU changes that.</p>
+<p>With a linear decoder, the paper’s corresponding independent-feature model keeps the highest-priority axes, as in PCA. ReLU lets the decoder remove negative cross-talk.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -414,7 +483,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Five features in two dimensions</h2>
-<div id="911b6641" class="cell" data-execution_count="3">
+<div id="80701b5f" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -425,10 +494,10 @@ Claudio Silva
 </div>
 <p><strong>Dense features: the model keeps two, at right angles, and drops three. Sparse features: it keeps all five, as a pentagon.</strong></p>
 <aside class="notes">
-<p>Computed in this deck: the same model trained three times, changing only how often the features are active. Each line is the direction the model assigned to one feature; a feature with no line was given length zero.</p>
+<p>Computed in this deck: one model selected at each of three sparsity levels, using the lowest reconstruction loss across four random starts. Each line is the direction the model assigned to one feature. The displayed count uses a column norm threshold of 0.5.</p>
 <p>Left, features always on: two dimensions, two features, orthogonal. The three least important features are not represented. This is what PCA would do.</p>
 <p>Middle, each feature on 20 percent of the time: four features, in two opposite pairs. A pair shares one dimension, pointing in opposite directions.</p>
-<p>Right, 10 percent: all five, evenly spaced around a circle.</p>
+<p>Right, 10 percent: all five, in an approximately pentagonal arrangement.</p>
 <p>This is superposition: more features than dimensions. Nobody told the model to do it. It falls out of gradient descent once the features are sparse enough. The paper reports the same pentagon.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -444,7 +513,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>What the hidden activations look like</h2>
-<div id="4c836a85" class="cell" data-execution_count="4">
+<div id="8a2e2aaf" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -473,7 +542,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>The price: interference</h2>
-<div id="89eaac7d" class="cell" data-execution_count="5">
+<div id="818497b3" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -487,7 +556,7 @@ Claudio Silva
 <p>The pentagon model again. The input has feature 1 set to 1 and everything else at zero.</p>
 <p>Left: the model’s output before the ReLU. Feature 1 comes back near 1. The other four are not zero, because their directions are not orthogonal to feature 1’s. The two features on the far side of the pentagon get a large negative value, and the two adjacent ones a small positive one.</p>
 <p>Right: after the ReLU. Negative interference is erased for free. The small positive interference is still there, reduced by the negative bias the model learned: that leftover is the error the model accepts in exchange for storing five features.</p>
-<p>That is why the ReLU matters and why a linear model cannot do this: the nonlinearity is a noise filter. And it is why sparsity matters: interference only does damage when two interfering features are active together, which is rare when features are sparse.</p>
+<p>ReLU and the learned bias can suppress spurious responses on inactive features, although positive leakage can remain even when just one feature is active. When two features overlap in an input, suppressing interference becomes harder because both have values the decoder needs to recover. Sparsity makes these collisions rarer.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -502,7 +571,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>More features, more sparsity</h2>
-<div id="45f64c64" class="cell" data-execution_count="6">
+<div id="d9f7c5a1" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -515,7 +584,7 @@ Claudio Silva
 <aside class="notes">
 <p>The same experiment, larger: 20 features of decreasing importance and 5 hidden dimensions. Each panel is the matrix W-transpose-W, feature by feature. Red on the diagonal means that feature is represented. Color off the diagonal means two features share a direction: blue is opposite directions, red is the same direction.</p>
 <p>Leftmost, dense: five features, a clean diagonal, nothing else. One feature per dimension.</p>
-<p>Moving right, as the features get sparser, more of the diagonal fills in and off-diagonal entries appear. The model packs in the less important features first, and prefers blue, opposite directions, because the ReLU removes negative interference.</p>
+<p>Moving right, as the features get sparser, more of the diagonal fills in and off-diagonal entries appear. Lower-priority features that were dropped in the dense setting start to appear. Opposite directions can share a dimension because the ReLU clips negative interference.</p>
 <p>This is a matrix view with a diverging color scale: the reordering and color lessons from earlier in the course are doing the work here.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -543,7 +612,7 @@ Claudio Silva
 <li><strong>Computation in superposition.</strong> A small network can compute a function (absolute value) on more features than it has neurons.</li>
 <li><strong>The authors’ caution.</strong> These are tiny ReLU networks. They expect superposition itself to carry over to real models, and are much less sure about the geometry.</li>
 </ul>
-<p><strong>For interpretability: a network may be simulating a much larger, sparser network. Its neurons are the wrong unit to read.</strong></p>
+<p><strong>The toy model shows how a single coordinate can mix independently sampled features. How much this explains in trained language models is an empirical question.</strong></p>
 </div></div>
 <div class="footer">
 <p>Elhage, N., et al.&nbsp;(2022). <a href="https://transformer-circuits.pub/2022/toy_model/index.html"><em>Toy Models of Superposition</em></a>. Transformer Circuits Thread.</p>
@@ -552,7 +621,7 @@ Claudio Silva
 <p>The paper is long. These are the results beyond the two experiments we just reproduced.</p>
 <p>The phase change is the most useful idea to remember: whether a feature gets its own dimension is not gradual. In the paper’s phase diagrams the regions have sharp borders.</p>
 <p>The geometry is the most surprising. With equally important features the model produces specific polytopes, and the paper connects this to the Thomson problem of spacing points on a sphere. The pentagon you saw is one of them.</p>
-<p>The last bullet on the right is the honest framing: superposition is demonstrated in a toy setting and hypothesized for real models. What made it more than a hypothesis is the next section, where assuming superposition and undoing it turns out to work on real language models.</p>
+<p>The next section asks what a sparse dictionary can recover. A useful dictionary can give us a new way to describe the computation. Its usefulness alone cannot establish how the original model learned or organized its representations.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -571,19 +640,14 @@ Claudio Silva
 
 </section>
 <section class="slide level2">
-<h2>Three ways out</h2>
-<ol type="1">
-<li><strong>Build models without superposition.</strong> Possible in the toy model, by penalizing activations. Likely to cost performance in a real one.</li>
-<li><strong>Find the feature directions after the fact.</strong> Take a trained model, record activations, and solve for an <em>overcomplete</em> set of directions, more directions than dimensions, such that each activation is a <strong>sparse</strong> combination of them.</li>
-<li><strong>Something in between.</strong></li>
-</ol>
-<p><strong>Option 2 is dictionary learning. It leaves the model untouched, and it is what the field has built on since.</strong></p>
+<h2>Sparse dictionaries</h2>
+<p>Record activations from a trained model. Learn an <strong>overcomplete dictionary</strong> with more directions than the space has dimensions, so that each input uses only a few directions at once.</p>
 <ul>
-<li>A <strong>sparse autoencoder</strong> learns a dictionary that reconstructs a layer’s activations</li>
-<li>A <strong>transcoder</strong> learns one that reproduces what an MLP layer <em>computes</em>: it reads the layer’s input and predicts its output</li>
+<li>A <strong>sparse autoencoder (SAE)</strong> reads a layer’s activations and reconstructs those same activations through sparse features</li>
+<li>A <strong>transcoder</strong> reads an MLP’s input and predicts its output through sparse features</li>
 </ul>
+<p><strong>The training objective favors accurate reconstruction and sparse activations. People still have to test what the learned features mean.</strong></p>
 <aside class="notes">
-<p>The superposition paper ends with these three strategies. The second one won, at least so far.</p>
 <p>Dictionary learning is an old idea from signal processing and neuroscience: find a set of atoms such that every signal is a combination of a few of them. Here the signals are activation vectors and the atoms are candidate feature directions.</p>
 <p>Two variants matter today. A sparse autoencoder explains what is stored at one point in the model. A transcoder replaces a computation: it takes what goes into an MLP and predicts what comes out, through a wide, sparse hidden layer. The units of that hidden layer are the ‘features’ in the rest of this lecture. A transcoder is what lets you connect features to one another, which is what a circuit needs.</p>
 <style type="text/css">
@@ -599,8 +663,8 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Dictionary learning recovers the directions</h2>
-<div id="db799638" class="cell" data-execution_count="7">
+<h2>Recovering the toy model’s directions</h2>
+<div id="d6a4e73a" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -613,8 +677,8 @@ Claudio Silva
 <aside class="notes">
 <p>Computed here, on the pentagon model from part 2.</p>
 <p>Left is all the method gets: a few thousand activation vectors. No feature labels, no weights.</p>
-<p>Right: sparse dictionary learning asked for five directions such that every point is a non-negative combination of few of them. The black lines are what it found. The thick colored lines underneath are the true feature directions from the model’s weights. The title says how many of the five it recovered to within a small angle.</p>
-<p>Two things to say. First, it works because of sparsity: the spokes are in the data. Second, it is an optimization with its own failure modes. I ran several random starts and kept the best; some starts merge two features or split one. On a real model there is no ground truth to check against, and you have to choose the number of directions yourself. Both problems come back in part 7.</p>
+<p>Right: sparse dictionary learning looks for five directions that reconstruct points as non-negative combinations of a few of them. The black lines show the learned directions. The thick colored lines show the toy encoder’s true directions. The recovery count pairs directions one-to-one and counts matches with cosine similarity above 0.95.</p>
+<p>Sparsity makes the spokes visible in the data. Fit six random starts and select by the sparse reconstruction objective on held-out activations. Use the true feature directions only to score recovery after selection. This toy also gives us the number of features in advance. In a language model, the number is a modeling choice and a lower reconstruction error may still leave multiple plausible dictionaries.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -629,8 +693,12 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>The replacement model</h2>
-
-<img data-src="figs/llm-interp/methods-diagram.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Swap every MLP for a wide layer of sparse features (left). Then trace how features influence one another on a prompt (right).</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/methods-diagram.png" class="quarto-figure quarto-figure-center" alt="A cross-layer transcoder replaces MLPs with sparse features that write to multiple layers. The attribution graph links active features across layers and token positions." height="650"></p>
+</figure>
+</div>
+<p><strong>Swap every MLP for a wide layer of sparse features (left). Then trace how features influence one another on a prompt (right).</strong></p>
 <div class="footer">
 <p>Ameisen, E., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html"><em>Circuit Tracing: Revealing Computational Graphs in Language Models</em></a>. Transformer Circuits Thread.</p>
 </div>
@@ -662,25 +730,24 @@ Claudio Silva
 </ul>
 <p><strong>Fidelity</strong></p>
 <ul>
-<li>The features miss part of each MLP’s output: about <strong>22% normalized error</strong> on Haiku, about 11.5% on the 18-layer model</li>
-<li>Run on its own, the replacement gives the 18-layer model’s top next token in about <strong>50%</strong> of cases</li>
+<li>Mean normalized reconstruction error across layers: <strong>21.7%</strong> on Haiku and <strong>11.5%</strong> on the 18-layer model</li>
+<li>Run on its own, the replacement agrees with the 18-layer model’s next-token prediction on <strong>50%</strong> of the evaluated prompts</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<p><strong>So the replacement is an approximation, and a rough one.</strong></p>
-<p>The fix, for one prompt at a time:</p>
+<p><strong>The local replacement model, for one prompt</strong></p>
 <ul>
 <li>Add an <strong>error node</strong> at every layer and position holding exactly what the features missed</li>
-<li><strong>Freeze</strong> the attention patterns to what the real model did on this prompt</li>
+<li><strong>Freeze</strong> the attention patterns and normalization denominators at their original values</li>
 </ul>
-<p><strong>With both, the replacement reproduces the real model’s output on that prompt exactly. What is unexplained is on the page, as error nodes.</strong></p>
+<p><strong>This reproduces the original logits at baseline. Interventions test whether the proposed mechanism also predicts what happens when we change an activation.</strong></p>
 </div></div>
 <div class="footer">
 <p>Ameisen, E., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html"><em>Circuit Tracing</em></a>. Transformer Circuits Thread.</p>
 </div>
 <aside class="notes">
 <p>Numbers from the methods paper, and they are worth saying plainly because the pictures later look very clean.</p>
-<p>Thirty million features sounds like a lot, and it is still not enough to capture everything the MLPs do. A fifth of the signal is missing on the production model. If you let the replacement model run by itself, errors compound from layer to layer and half the time it does not even predict the same next token.</p>
-<p>The authors’ response is a good piece of design. They do not hide the gap. For the one prompt being studied, they compute the difference between the real MLP output and the features’ reconstruction and add it back in as a named node. The arithmetic is then exact, and the cost is that some nodes in the graph are labeled ‘error’ and cannot be interpreted or traced further.</p>
+<p>The error is a normalized reconstruction metric. The next-token agreement rate is a separate measurement from the 18-layer model, evaluated on pretraining-style examples where the original model correctly predicted the target with less than 80% confidence.</p>
+<p>For the prompt being studied, the authors add back the difference between the MLP output and its reconstruction at each position and layer. The graph attributes part of the computation to these error nodes, where the trace ends.</p>
 <p>They call the result the local replacement model: local because it is only valid for this prompt.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -697,7 +764,7 @@ Claudio Silva
 <section>
 <section class="title-slide slide level1 center">
 <h1>Are Networks Already Clean?</h1>
-
+<p>Nick Cammarata (Goodfire), <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a> (2026)</p>
 </section>
 <section class="slide level2">
 <h2>Vocabulary for the essay</h2>
@@ -716,7 +783,7 @@ Claudio Silva
 <tbody>
 <tr class="odd">
 <td>Neuron</td>
-<td>One unit of an MLP layer: one coordinate of the layer’s output, a direction the architecture singles out</td>
+<td>One hidden unit inside an MLP, with an activation that contributes to the layer’s output</td>
 </tr>
 <tr class="even">
 <td>Activation, pole</td>
@@ -732,19 +799,19 @@ Claudio Silva
 </tr>
 <tr class="odd">
 <td>Superposition (geometry)</td>
-<td>More features than dimensions, stored as almost-orthogonal directions</td>
+<td>More feature directions than dimensions, which requires some overlap</td>
 </tr>
 <tr class="even">
-<td>Superposition (learning principle)</td>
-<td>Packing <strong>unrelated</strong> things into one neuron <em>because</em> they rarely occur together</td>
+<td>Superposition (learning hypothesis)</td>
+<td>The model learns to share representational capacity across unrelated features that rarely co-occur</td>
 </tr>
 <tr class="odd">
 <td>Recursive generalization</td>
 <td>A neuron grows from one core meaning into nearby territory, then from there into further territory</td>
 </tr>
 <tr class="even">
-<td>Dictionary (SAE, transcoder)</td>
-<td>A second model trained to rewrite activations as a sparse sum of many learned features</td>
+<td>Dictionary</td>
+<td>A learned set of feature directions whose sparse combinations reconstruct activations or MLP outputs</td>
 </tr>
 <tr class="odd">
 <td>Circuit</td>
@@ -781,7 +848,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Neurons, activations and poles</h2>
-<div id="d90d1a35" class="cell" data-execution_count="8">
+<div id="223fed0e" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -790,11 +857,11 @@ Claudio Silva
 </div>
 </div>
 </div>
-<p><strong>Most tokens barely move a neuron. Its meaning is read from the tails: the strong positive firings, and the strong negative ones.</strong></p>
+<p><strong>Illustrative distribution. Strong positive and negative activations can reveal different roles. Ablation tests how much weaker activations contribute.</strong></p>
 <aside class="notes">
 <p>Illustrative data, generated in this deck, shaped like the essay’s histogram of 100 million tokens through one Qwen3-32B neuron, where almost all sit near zero and about 160 reach the strong half of the range.</p>
 <p>Three regions. The gray middle is weak activations: nearly every token. The orange right tail is the positive pole: the examples people look at when they label a neuron. The teal left tail is the negative pole.</p>
-<p>Two claims from the essay to flag now, and test later. First, the negative pole matters about as much as the positive: for the cat-and-car neuron the negative pole is round things, and in Qwen a Santa circuit lives on the negative poles of eight neurons. Second, the weak activations mostly do not matter: you can remove most of them with little effect.</p>
+<p>The essay finds cases where the negative pole matters. For 4e:55 the negative pre-activations are associated with round shapes, and in Qwen eight neurons have negative activations that matter for the Santa example. The weak-activation ablations later test the contribution of the center of the distribution.</p>
 <p>The essay also argues against percentiles. The 99th percentile sounds rare, but 1 token in 100 is about four times a page of text, far too often for a neuron about a niche feeling. Thinking in pages helps: the 99.9th percentile is every two or three pages.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -810,7 +877,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Monosemantic and polysemantic</h2>
-<div id="e056bcb3" class="cell" data-execution_count="9">
+<div id="39faef2f" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -819,7 +886,7 @@ Claudio Silva
 </div>
 </div>
 </div>
-<p><strong>Left: every strong example has one meaning. Middle: two unrelated meanings, the textbook polysemantic neuron. Right: the same firings as the middle, described as one visual pattern.</strong></p>
+<p><strong>Illustrative examples. The middle and right panels show the same responses under two descriptions: separate object categories and a shared visual pattern.</strong></p>
 <aside class="notes">
 <p>Illustrative, generated in this deck. Each bar is one of a neuron’s top 24 examples, colored by the label a person gives it.</p>
 <p>Left: monosemantic. All strong firings share one meaning, like the ConvNeXt ladybug neuron coming up later.</p>
@@ -840,7 +907,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Superposition: two different claims</h2>
-<div id="64c8b97d" class="cell" data-execution_count="10">
+<div id="acba0e30" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -870,7 +937,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Recursive generalization</h2>
-<div id="b851b0ec" class="cell" data-execution_count="11">
+<div id="bf64d3e9" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -885,7 +952,7 @@ Claudio Silva
 <p>Left: the neuron begins on rapeseed fields. Photos of fields sometimes contain green balls and dogs, so the neuron also responds to those; then to balls and fruit without fields; then to dogs anywhere; then to broccoli, which is green and textured like the fields. Every step is local, a branch off a branch. At the end, the strongest examples read as ‘fields, balls, fruit, dogs, broccoli’, which looks polysemantic.</p>
 <p>Right: what packing predicts. Groups with no connection to the core, here Latin text and hard drives, appear without passing through anything related.</p>
 <p>The language example in the essay: a neuron for the letter pair ‘iy’, as in Miyazaki, grows to ‘diy’, then to ‘do it yourself’, which contains no ‘iy’ at all.</p>
-<p>The test is to watch training. With checkpoints you can see whether each new group arrived through a neighbor or out of nowhere. The essay says every neuron it followed grew like the left panel, and that modern architectures show the same pattern with less spread.</p>
+<p>Training checkpoints provide evidence about when a response appeared and which input groups bridged the change. The curves on this slide are illustrative. The later checkpoint figure shows measured examples.</p>
 <p>The essay credits an earlier name, ‘conjoined features’, from the 2021 Multimodal Neurons paper.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -939,40 +1006,101 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 </section>
+<section id="fv-method" class="slide level2">
+<h2>Feature visualization: ask the network what it wants to see</h2>
+<div class="columns">
+<div class="column" style="width:38%;">
+<p><strong>The method</strong></p>
+<ul>
+<li>Start from random noise</li>
+<li>Run gradient ascent <strong>on the image</strong>, holding the weights fixed, to maximize one neuron’s activation</li>
+<li>Without regularization the result is high-frequency noise that fools the neuron. Jitter, rotation, scaling and a decorrelated color space keep it image-like</li>
+</ul>
+<p><strong>What it showed in InceptionV1</strong></p>
+<p>Early layers want edges and textures; later layers want parts and objects.</p>
+</div><div class="column" style="width:62%;">
+<p><img data-src="figs/llm-interp/fv-layer-progression.png" style="width:100.0%" alt="Feature visualizations of InceptionV1 neurons in five layer groups: striped edge patterns in conv2d0, textures in mixed3a, repeated patterns in mixed4a, flowers and dog snouts in mixed4b-4c, and legs, spiders and dog faces in mixed4d-4e."></p>
+</div></div>
+<div class="footer">
+<p>Olah, C., Mordvintsev, A., &amp; Schubert, L. (2017). <a href="https://distill.pub/2017/feature-visualization/"><em>Feature Visualization</em></a>. Distill. <a href="https://doi.org/10.23915/distill.00007">doi:10.23915/distill.00007</a>. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “The main reading’s hypothesis”</p>
+<p>This is the 2017 Distill article that made feature visualization the field’s standard way of looking at a neuron, and the source of the pictures in every Circuits figure later in the lecture. Chris Olah, Alexander Mordvintsev (of DeepDream) and Ludwig Schubert.</p>
+<p>The method in one sentence: training adjusts the weights to fit the images; feature visualization turns that around and adjusts the image to excite a neuron. Same backpropagation, different variable. The objective can be one neuron at one position, a whole channel, a layer (that is DeepDream), or a class logit.</p>
+<p>The hard part is regularization. Optimize naively and you get an adversarial-looking pattern of high-frequency noise: the neuron fires strongly, but nothing a human recognizes. The article’s main technical contribution is a catalogue of fixes, chiefly transformation robustness (the image must keep working when jittered, rotated, scaled) and optimizing in a decorrelated, Fourier-based parameterization.</p>
+<p>Figure: three example neurons from each of five layer groups of InceptionV1 (GoogLeNet). The article’s own labels: edges, textures, patterns, parts, objects. Read across a row to see the hierarchy.</p>
+<p>Link back to the previous slide: this is the ‘feature visualization’ item in the Looking column, and the source of the reward-hacking caveat. Because the image is chosen by an optimizer, it shows whatever is easiest to excite the neuron, which is not the same as what the neuron does on real images. That is why the article always pairs it with dataset examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fv-4e55" class="slide level2">
+<h2>One neuron, three views: 4e:55</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/fv-4e55-three-views.png" class="quarto-figure quarto-figure-center" alt="InceptionV1 neuron mixed4e:55. Simple optimization shows cat and fox faces over a car-like shape. Four diverse optimizations show cat faces, a car body, striped fur and fox faces. Dataset examples show car fronts, foxes and cats." width="1800"></p>
+</figure>
+</div>
+<p><strong>Diversity optimization and dataset examples split the neuron into cats, foxes and cars. The 2017 conclusion: “neurons are not necessarily the right semantic units for understanding neural nets.”</strong></p>
+<p>The essay comes back to this exact neuron and reads it differently.</p>
+<div class="footer">
+<p>Olah, C., Mordvintsev, A., &amp; Schubert, L. (2017). <a href="https://distill.pub/2017/feature-visualization/"><em>Feature Visualization</em></a>. Distill. <a href="https://doi.org/10.23915/distill.00007">doi:10.23915/distill.00007</a>. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “The main reading’s hypothesis”</p>
+<p>Left: one optimized image. You can see cat and fox faces, and if you look carefully a smooth car-like surface underneath. Middle: the article’s diversity trick, which optimizes a batch of images and penalizes them for being similar to each other, so the batch spreads over the different things that excite the neuron. One comes out as a car body. Right: the real ImageNet images that fire it most: car fronts, foxes, cats.</p>
+<p>This is the original ‘polysemantic neuron’ example. The article’s conclusion from it was that individual neurons are not the right unit, and that directions in activation space, combinations of neurons, may be better. That line of thinking leads straight to superposition and to the sparse dictionaries in part 3.</p>
+<p>Set up the essay: this is neuron 4e:55, the cat/car neuron. Cammarata was on the Circuits team that used it as the textbook example of polysemanticity. In ‘The cat-and-car neuron, looked at again’ he looks at its inputs, outputs and negative pole, and argues it has one coherent role, pointed shapes, that the cat/car description missed. Ask the class to keep these three pictures in mind and decide later which reading they believe.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section class="slide level2">
-<h2>A dissent from October 2026</h2>
+<h2>The main reading’s hypothesis</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>The story so far today</strong></p>
-<ol type="1">
-<li>Neurons are polysemantic</li>
-<li>Because of <strong>superposition</strong>: more features than neurons, packed in because they rarely collide</li>
-<li>So <strong>untangle first</strong>: train a dictionary, study the replacement model</li>
-</ol>
+<p><strong>The question from the toy model</strong></p>
+<p>The toy model packs independent sparse features into overlapping directions. How much of the apparent polysemanticity in trained models comes from this kind of packing?</p>
 <p><strong>Cammarata (Goodfire), <em>Neural Networks Are Already Clean</em></strong></p>
 <ul>
-<li>Polysemanticity was mostly <strong>bad tools, bad architectures, and generalization we had not understood</strong></li>
-<li>Superposition, in the sense of packing unrelated things, has <strong>little real-world evidence</strong></li>
-<li>So study the <strong>network’s own neurons and circuits directly</strong></li>
+<li>Some canonical examples have shared structure that earlier descriptions missed</li>
+<li>Tools and architecture affect which roles we can identify</li>
+<li>The original neurons and their connections are a starting point for testing these explanations</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><strong>Why take it seriously</strong></p>
 <ul>
-<li>The author co-wrote <em>Zoom In</em> (2020) and <em>Multimodal Neurons</em> (2021), which introduced the canonical examples. He is retracting his own evidence.</li>
-<li>It makes <strong>testable</strong> claims, with retrained models and ablations</li>
+<li>The author revisits examples from his own earlier work</li>
+<li>Retrained models and ablations provide specific tests</li>
 </ul>
 <p><strong>Why be careful</strong></p>
 <ul>
-<li>An informal essay, “a working hypothesis”, not peer reviewed</li>
-<li>Numbers are preliminary, from small audits, many done by AI agents</li>
-<li>Goodfire is a company whose method is neuron-level study</li>
+<li>The essay presents a working hypothesis</li>
+<li>Some estimates use small audits and agent-generated labels</li>
 </ul>
 </div></div>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire. Revised Oct 30, 2026.</p>
 </div>
 <aside class="notes">
-<p>This is the main reading for today, and it argues against the framework the first half of today built. That is on purpose. Superposition and dictionary learning are the dominant view; this essay is the strongest recent case against it, written by someone who helped build the dominant view.</p>
+<p>This is the main reading. It re-examines the inference from apparent polysemanticity to arbitrary packing. The evidence for a useful sparse dictionary and the evidence for a learning principle answer different questions.</p>
 <p>The essay’s own framing: there are two ways to do mechanistic interpretability. One is ordinary science on the network itself: look at neurons, circuits, data flowing through them, and test explanations. The other starts from a list of hypothesized features and tries to extract them with a decomposition such as a sparse autoencoder, mostly ignoring the original network. The field started with the first and moved to the second because networks looked like tangled knots. The essay says the knots were mostly misreadings.</p>
 <p>The four-step argument, in his words: networks use one learning principle, not two; with modern models and tools, ordinary science goes much better than expected; understanding compounds, so it gets easier as the map fills in; and, flagged as highly speculative, this might be most of what we need. He calls it a possible bitter lesson for interpretability: scaling ordinary investigation beats engineering a clever new decomposition.</p>
 <p>The right column is how I want you to read it. It is an essay, it says so, and its numbers come with caveats the author states himself. Hold it to the checklist at the end of the lecture, the same as the Anthropic papers.</p>
@@ -1059,18 +1187,18 @@ Claudio Silva
           display:block!important;
       }</style></aside>
 </section>
-<section class="slide level2">
+<section id="inceptionv1-architecture" class="slide level2">
 <h2>InceptionV1, the field’s model organism</h2>
-<div id="54f9a7e3" class="cell" data-execution_count="12">
+<div id="6429f109" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="llm-interpretability_files/figure-revealjs/cell-13-output-1.png" class="quarto-figure quarto-figure-center" width="1619" height="815"></p>
+<p><img data-src="llm-interpretability_files/figure-revealjs/cell-13-output-1.png" class="quarto-figure quarto-figure-center" alt="The network has a convolutional stem, nine Inception modules, global average pooling, and a linear classifier. The 5b module concatenates outputs from four parallel branches." width="1619" height="815"></p>
 </figure>
 </div>
 </div>
 </div>
-<p><strong>GoogLeNet (Szegedy et al., 2014), about 7M parameters, ImageNet winner in 2014. Nine Inception modules in sequence, with no residual connections. Box height shows the number of channels.</strong></p>
+<p><strong>GoogLeNet won the 2014 ImageNet classification challenge. Its nine Inception modules have no residual bypass. Box height encodes channel count.</strong></p>
 <div class="footer">
 <p>Szegedy, C., et al.&nbsp;(2015). <a href="https://arxiv.org/abs/1409.4842"><em>Going Deeper with Convolutions</em></a>. CVPR. Layer names follow the Lucid / Distill <em>Circuits</em> convention.</p>
 </div>
@@ -1094,7 +1222,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>What “one neuron in the last layer” means</h2>
-<div id="099e3655" class="cell" data-execution_count="13">
+<div id="65906ef3" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1132,8 +1260,8 @@ Claudio Silva
 </div>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>A circuit</strong> is a small subgraph of the network: a few features (usually neurons) and <strong>the weights between them</strong>, read straight from the trained model.</p>
-<p>Because the weights are fixed, a circuit is the same for every input: it shows <strong>how</strong> a neuron is computed, not just what it fires on.</p>
+<p><strong>A circuit</strong> is a subgraph of the computation. In these examples the nodes are native neurons and the edges are learned weights.</p>
+<p>The weights are fixed. The signals that travel through those weights depend on the input.</p>
 </div><div class="column" style="width:50%;">
 <p><strong><em>Zoom In</em>’s three “speculative claims” (2020)</strong></p>
 <ol type="1">
@@ -1149,7 +1277,7 @@ Claudio Silva
 <p>Zoom In is the 2020 Distill article that started the Circuits thread, written by Olah, Cammarata (the essay’s author) and colleagues. It is where ‘circuit’ gets its meaning in this field, and where the cat/car neuron and the first superposition example were published.</p>
 <p>The figure: InceptionV1’s curve detectors in layer 3b (middle) are built from early curve detectors and line detectors in the layers before (left), and feed more complex shape and curvature detectors after (right). The faded boxes are the parts of the circuit not shown in detail.</p>
 <p>The definition, in their words: a circuit is a computational subgraph of a neural network, consisting of a set of features and the weighted edges between them in the original network. They usually study small ones, fewer than a dozen features.</p>
-<p>The difference from an attribution graph, which comes later in the lecture: an attribution graph is computed for one prompt, from activations times weights. A circuit is read from the weights alone, so it holds for every input. The cost is that you need to understand the neurons at both ends of each edge before the weights mean anything; that is the crossword point from the essay.</p>
+<p>An attribution graph later in the lecture is computed for one prompt and its edges depend on activations. Here the displayed weights describe possible influence. Check actual activations or interventions to see which parts matter on an input.</p>
 <p>The analogy they open with: Schwann’s three claims about cells in 1839, that cells are the unit of structure, are building blocks, and form in a common way. Their three claims are modeled on that, and they call them speculative.</p>
 <p>Claim 1 is where ‘feature’ as a direction comes from, which is the word the dictionary-learning work later builds on. Note it already says ‘often single neurons’.</p>
 <style type="text/css">
@@ -1250,15 +1378,15 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>The original superposition circuit was pose</h2>
+<h2>Pose in the car-and-dog circuit</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/llm-interp/cammarata-car-dog-circuit.png" class="nostretch quarto-figure quarto-figure-center" height="250"></p>
+<p><img data-src="figs/llm-interp/cammarata-car-dog-circuit.png" class="nostretch quarto-figure quarto-figure-center" height="190"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/llm-interp/cammarata-pose-neurons.png" class="nostretch quarto-figure quarto-figure-center" height="500"></p>
+<p><img data-src="figs/llm-interp/cammarata-pose-neurons.png" class="nostretch quarto-figure quarto-figure-center" height="420"></p>
 </figure>
 </div>
 <p><strong>Top: what <em>Zoom In</em> showed (a car stored in four dog neurons) and what the essay finds (two car neurons, two car-and-dog pose neurons). Bottom: a “faces the camera” neuron in DINOv2 and large, medium, small ConvNeXts.</strong></p>
@@ -1266,7 +1394,7 @@ Claudio Silva
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
 <aside class="notes">
-<p>SKIPPABLE - if running long, jump to “InceptionV1’s last layer was an architecture problem”</p>
+<p>Optional. Continue at “Tools, architecture, and the last layer” if time is short.</p>
 <p>The author found this circuit in 2019 and, with Chris Olah, called it superposition: a car feature seemed to spread into unrelated dog neurons, as if the dogs were a high-dimensional storage place from which the car could be read out later. He says it is the only such circuit anyone has published, and that nothing downstream reads the combination out.</p>
 <p>Two errors. First, the dogs and cars share a pose. InceptionV1 has more than a hundred generalized pose neurons that nobody had noticed. Second, feature visualization reward-hacks in deep layers: gradient ascent takes the easiest path, and InceptionV1 has a lot of dog neurons, so the renders fell into dogs. Biased lightly toward the paths real images take, the same neurons render as cars, and some as cars and dogs together.</p>
 <p>Bottom figure: the same kind of neuron in DINOv2 (12 times InceptionV1’s size) and in their large and medium ConvNeXts: dogs and vehicles grouped by the way they face the camera. The smallest model has only a rough version, cars and dogs together but not by pose. So it is not just lack of room: bigger models keep generalized pose neurons.</p>
@@ -1284,19 +1412,19 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>InceptionV1’s last layer was an architecture problem</h2>
+<h2>Tools, architecture, and the last layer</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/llm-interp/cammarata-inception-late-neuron.png" class="nostretch quarto-figure quarto-figure-center" height="300"></p>
+<p><img data-src="figs/llm-interp/cammarata-inception-late-neuron.png" class="nostretch quarto-figure quarto-figure-center" height="240"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/llm-interp/cammarata-convnext-ladybug.png" class="nostretch quarto-figure quarto-figure-center" height="360"></p>
+<p><img data-src="figs/llm-interp/cammarata-convnext-ladybug.png" class="nostretch quarto-figure quarto-figure-center" height="320"></p>
 </figure>
 </div>
 <p><strong>Top: InceptionV1 (2014), a typical last-layer neuron. Bottom: ConvNeXt, same 7.06M parameters and data, plus residuals and LayerNorm: a ladybug neuron’s 20 strongest of 50,000 images.</strong></p>
-<p><strong>Share of easily interpretable last-layer neurons: about 5% (2014 tools) → 50% (better tools, same network) → 70% (same architecture retrained) → 99% (ConvNeXt).</strong></p>
+<p>Cammarata estimates that about <strong>5%</strong> were easily interpretable with earlier tools, <strong>50%</strong> on the same model with updated tools, <strong>70%</strong> after retraining InceptionV1, and <strong>99%</strong> in ConvNeXt.</p>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
@@ -1321,8 +1449,12 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Recursive generalization: watching a neuron grow</h2>
-
-<img data-src="figs/llm-interp/cammarata-recursive-growth.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>The same neuron’s strongest images across training (epochs 0.7 to 12). Top: InceptionV1 spreads from rapeseed fields to balls, fruit, dogs and broccoli. Bottom: ConvNeXt, same data, lets the offshoots go and stays on fields.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-recursive-growth.png" class="quarto-figure quarto-figure-center" height="685"></p>
+</figure>
+</div>
+<p><strong>The same neuron’s strongest images across training (epochs 0.7 to 12). Top: InceptionV1 spreads from rapeseed fields to balls, fruit, dogs and broccoli. Bottom: ConvNeXt, same data, lets the offshoots go and stays on fields.</strong></p>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
@@ -1331,7 +1463,7 @@ Claudio Silva
 <p>Read the top panel left to right. Columns are training checkpoints, epochs 0.7, 1.5, 3, 6 and 12. Rows are groups of the neuron’s strongest images; the gray band behind each row is that group’s share. InceptionV1’s neuron 338 starts on yellow rapeseed fields, in photos that sometimes include a dog or a ball. It then grows along each facet of those photos: green balls, green fruit, dogs without fields, and finally broccoli. By the end the fields are a small share. The final neuron looks like ‘fields, tennis balls, fruit, dogs, broccoli’, a classic polysemantic list. But every step was local and easy to follow.</p>
 <p>Bottom: the ConvNeXt neuron trained on the same data starts the same way, reaches for balls and fruit early, then drops them and stays on fields.</p>
 <p>Recursive generalization: a neuron generalizes along one axis, then sprouts offshoots along others, each step locally sensible, until it is no longer monosemantic. He says this appeared once before as ‘conjoined features’ in Multimodal Neurons.</p>
-<p>The key point is that this predicts the opposite of superposition. Generalization groups similar things; superposition groups things because they are unrelated. You can tell them apart by watching training.</p>
+<p>Ask which checkpoint would count against the proposed progression. These examples support shared structure as an explanation for these responses. A checkpoint sequence also leaves room for more than one mechanism to contribute to the same neuron.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1345,18 +1477,18 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Two explanations that predict opposite things</h2>
+<h2>Packing and generalization under a bottleneck</h2>
 <div class="columns">
 <div class="column" style="width:45%;">
 <p><img data-src="figs/llm-interp/cammarata-iy-neuron.png" style="width:100.0%"></p>
-<p>A language-model neuron for <strong>“iy”</strong> (as in Miyazaki) grows to <strong>“diy”</strong>, then to <strong>“do it yourself”</strong>, which contains no “iy” at all.</p>
+<p>The essay’s schematic links responses to <strong>“iy”</strong> (as in Miyazaki), <strong>“diy”</strong>, and <strong>“do it yourself”</strong>. The links suggest a possible learning history.</p>
 </div><div class="column" style="width:55%;">
 <p><img data-src="figs/llm-interp/cammarata-packing-vs-generalization.png" style="width:100.0%"></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
-<th>Superposition</th>
+<th>Arbitrary packing</th>
 <th>Recursive generalization</th>
 </tr>
 </thead>
@@ -1372,19 +1504,9 @@ Claudio Silva
 <td>shared pattern, useful to build on</td>
 </tr>
 <tr class="odd">
-<td>Locality</td>
-<td>non-local</td>
-<td>local</td>
-</tr>
-<tr class="even">
 <td>With fewer neurons</td>
 <td>more packing</td>
 <td>coarser neurons</td>
-</tr>
-<tr class="odd">
-<td>What the grouping tells you</td>
-<td>nothing</td>
-<td>how the network thinks</td>
 </tr>
 </tbody>
 </table>
@@ -1411,7 +1533,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>“Superposition of the gaps”</h2>
-<p><strong>Polysemantic means “no good explanation yet”. Five possible reasons:</strong></p>
+<p><strong>A neuron with several apparent roles invites competing explanations.</strong></p>
 <ol type="1">
 <li><strong>Bad tools</strong>: the microscope is not good enough (feature visualization reward-hacking)</li>
 <li><strong>Bad explanations</strong> built from those tools (lists of nouns instead of a shared pattern)</li>
@@ -1419,7 +1541,7 @@ Claudio Silva
 <li><strong>Recursive generalization</strong> you have not followed yet (“iy” to “do it yourself”)</li>
 <li><strong>Superposition</strong>: the network changed learning principle</li>
 </ol>
-<p><strong>The essay’s claim: the field made 5 the null hypothesis. It should be the last one, because it is the most radical and the least testable. 1 to 4 can each be tested; 5’s only symptom is that something doesn’t make sense.</strong></p>
+<p><strong>What evidence would distinguish missing context in our explanation from unrelated uses of the same neuron?</strong></p>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
@@ -1445,12 +1567,12 @@ Claudio Silva
 <h2>Neurons as gates: what the negative pole does</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/llm-interp/cammarata-gate.png" class="nostretch quarto-figure quarto-figure-center" height="250"></p>
+<p><img data-src="figs/llm-interp/cammarata-gate.png" class="nostretch quarto-figure quarto-figure-center" height="195"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figs/llm-interp/cammarata-sports-car-path.png" class="nostretch quarto-figure quarto-figure-center" height="500"></p>
+<p><img data-src="figs/llm-interp/cammarata-sports-car-path.png" class="nostretch quarto-figure quarto-figure-center" height="425"></p>
 </figure>
 </div>
 <p><strong>Top (schematic): a gate lets cars through to the car detectors and turns dogs away with its negative side. Bottom: one sports car through ConvNeXt blocks 14-18; above the line what it is grouped with, below what it is separated from.</strong></p>
@@ -1477,8 +1599,12 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Squeeze a layer from 480 neurons to 10</h2>
-
-<img data-src="figs/llm-interp/cammarata-crushed-3b-neurons.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>InceptionV1 retrained with layer 3b cut from 480 neurons to 10, and no path around it. Each row is one neuron and its five strongest crops. The model still reaches 58% top-1 on ImageNet.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-crushed-3b-neurons.png" class="quarto-figure quarto-figure-center" height="650"></p>
+</figure>
+</div>
+<p><strong>InceptionV1 retrained with 10 channels in layer 3b, down from 480, with no bypass. Each row shows a channel’s five strongest crops. The model reaches 58% top-1 accuracy on held-out ImageNet images.</strong></p>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
@@ -1512,7 +1638,7 @@ Claudio Silva
 <p>SKIPPABLE - if running long, jump to “Do weak activations hide anything?”</p>
 <p>If the curves were still in the squeezed layer, packed into combinations of the ten neurons, a dictionary should get them back. That is exactly the premise of the dictionary-learning section.</p>
 <p>Left: the ten original curve detectors, arranged by orientation, with their tuning curves overlaid in the middle: ten clean petals. Middle: the ten squeezed neurons, with ‘curves and loops’ outlined. Right: for each original curve detector, the closest sparse-autoencoder feature. The overlaid tuning curves are a tangle, not ten petals.</p>
-<p>So the curves were not hidden; the network learned something coarser.</p>
+<p>The observed responses support the coarser-detector account. Failure to recover the original curves with this SAE is evidence about this model and dictionary. Students can ask what other decoders or held-out curve stimuli might still detect.</p>
 <p>On real layers, he reports that 88 percent of an SAE’s activity on the last ConvNeXt layer is near-copies of single neurons, that removing every dictionary direction that matches no neuron leaves accuracy unchanged, and that the extra SAE features were loose groupings of existing neurons (‘animals at the water’s surface’). With spiders, the SAE units were spiders in different settings; the neurons were leg patterns and webs.</p>
 <p>Contrast with the pentagon toy model earlier, where the dictionary recovered all five directions. In the toy, the directions were there by construction.</p>
 <style type="text/css">
@@ -1530,7 +1656,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>Do weak activations hide anything?</h2>
 
-<img data-src="figs/llm-interp/cammarata-weak-activations.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Medium ConvNeXt, all 18 blocks. Removing the weakest 75% of activations changes 1 answer in 10, all near ties. Removing the strongest 7%, the same total activation, drops accuracy from 72% to 4%.</strong></p>
+<img data-src="figs/llm-interp/cammarata-weak-activations.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Medium ConvNeXt, all 18 blocks. Removing the weakest 75% moves accuracy from 72% to 71%. Removing the strongest 7% removes the same total activation and moves accuracy to 4%.</strong></p>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
@@ -1538,8 +1664,8 @@ Claudio Silva
 <p>The usual retreat for superposition: the strong activations look clean, but unrelated features hide in the weak ones, spread across many neurons.</p>
 <p>The test: zero out activations and see what breaks. Left: remove the weakest 75 percent across the whole network. Accuracy goes from 72 to 71 percent; one answer in ten changes, and the changed answers are near ties: Eskimo dog becomes Siberian husky, grasshopper becomes cricket, whippet becomes Saluki, tiger cat becomes tabby. The bars under each image split the model’s top two answers before anything was removed.</p>
 <p>Right: remove the strongest 7 percent, chosen to be the same total activation. Accuracy drops to 4 percent; 96 answers in 100 change, and the sure answers break: garbage truck becomes shovel, hummingbird becomes Granny Smith.</p>
-<p>So critical common things cannot live in the weak activations, since you can remove them. The places where weak activations matter most are among the easiest to understand: early vision layers that act like dials, and an LLM’s last layer, which suppresses specific tokens.</p>
-<p>Methodological note for your projects: matching the total activation removed, rather than the count, is what makes this a fair comparison.</p>
+<p>The aggregate accuracy supports the claim that strong activations matter more in this setting. The model still changes about one in ten predictions under weak-activation ablation. The figure illustrates several near ties. A separate test would be needed to find effects on rare inputs or on other models.</p>
+<p>The interventions match the total activation removed. Compare accuracy and prediction changes because the two measurements capture different effects.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1569,7 +1695,7 @@ Claudio Silva
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
 <aside class="notes">
-<p>SKIPPABLE - if running long, jump to “Language models: how clean?”</p>
+<p>Optional. Continue at “How many roles do language-model neurons have?” if time is short.</p>
 <p>Rare things are where superposition is supposed to be most likely: they rarely collide with anything and may not seem worth a neuron.</p>
 <p>So they made a rare route on purpose. If memorization worked by a hidden feature that latches onto these exact pixels and says ‘bee’, cut off from the rest of the network, that would be bad news. Instead, top figure: the umbrella neurons in blocks 16 to 18 (domes and tents, umbrellas, umbrellas) fade, and existing small-creatures, insects-on-flowers and bee neurons come on. The top guess went umbrella, maypole, bee. Nearly all the change is in the last three blocks: swap just those into the original model and it says ‘bee’.</p>
 <p>Bottom: the essay’s schematic. Left, a stray superposed feature, connected to nothing. Right, what they see: a small off-ramp from the umbrella route to the bee route.</p>
@@ -1587,36 +1713,31 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Language models: how clean?</h2>
+<h2>How many roles do language-model neurons have?</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Qwen3-32B, preliminary audits of neuron “poles”</strong></p>
+<p><strong>The essay’s Qwen3-32B audit</strong></p>
 <ul>
-<li>about <strong>90%</strong>: one main job, with small related offshoots</li>
-<li>about <strong>7%</strong>: two related jobs</li>
-<li>about <strong>2-4%</strong>: not yet understood</li>
+<li>Cammarata estimates that roughly <strong>90%</strong> of the poles reviewed have one main role, often with related secondary responses</li>
+<li>The estimate depends on which activations are included and how related responses are grouped</li>
 </ul>
-<p>Similar for mixture-of-experts models, and so far for Kimi K3 (trillions of parameters).</p>
-<p><strong>GPT-2 XL, revisited</strong>: under 2% clean in 2023; with 500 agent-written “neuron papers”, about <strong>70%</strong> roughly one thing, about <strong>5%</strong> pristine.</p>
+<p><strong>A pole is one side of the neuron’s signed activation range.</strong> Positive and negative activations can serve different roles.</p>
 </div><div class="column" style="width:50%;">
-<p><strong>What changed since 2023</strong></p>
+<p><strong>The companion study’s Qwen3.6-35B-A3B sample</strong></p>
 <ul>
-<li>Explainer models can now run <strong>conjecture and test</strong>, not just summarize top examples</li>
-<li>Metrics: scoring by <strong>simulating activations</strong> rewarded explanations that predict well, not ones that are right</li>
-<li>Known <strong>motifs</strong>: summaries stored on commas, “don’t say a dot” neurons, a neuron’s <strong>negative pole</strong></li>
-<li><strong>Bigger models have narrower neurons</strong></li>
+<li>Of <strong>5,468 poles</strong>, <strong>47%</strong> had one readable mode under the study’s rubric</li>
+<li>In about half the poles with multiple modes, one accounted for at least <strong>90%</strong> of the effect of ablating that pole, measured by KL divergence between output distributions</li>
+<li>One neuron responded in both <strong>oral surgery</strong> and <strong>marine</strong> contexts. Different downstream neurons responded to its signal in each context.</li>
 </ul>
-<p><strong>The author’s caveat: the number depends on thresholds, such as whether two related idioms in two languages count as one thing.</strong></p>
 </div></div>
 <div class="footer">
-<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>; Goodfire (2026). <a href="https://www.goodfire.com/research/neurons-as-an-interpretable-basis"><em>Neurons as an Interpretable Basis</em></a>.</p>
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Tigges, C., et al.&nbsp;(2026). <a href="https://www.goodfire.com/research/neurons-as-an-interpretable-basis"><em>Neurons as an Interpretable Basis</em></a>.</p>
 </div>
 <aside class="notes">
-<p>This section of the essay was done with Curt Tigges, and draws on a companion technical paper.</p>
-<p>Poles: in modern gated MLPs a neuron’s strong positive and strong negative activations can mean different things, so they audit each side.</p>
-<p>The numbers are from preliminary audits. A footnote says that on strong activations in the sets he looked at most closely it is closer to 97 percent non-arbitrary, on small samples, and that a single cleanliness score should be read as a pointer to the regime a network is in, not a precise number. He says reviewers asked for a number anyway.</p>
+<p>The left column reports an informal audit of the dense Qwen3-32B model. The right reports a study of a different, mixture-of-experts model, with separate criteria for a readable mode and causal dominance. The companion study’s KL statistic weights examples within a sample stratified by activation strength. Ask how changing the sampling or relying on the strongest examples alone could change the counts.</p>
+<p>The oral-surgery and marine example comes from Figure 11 of the companion study. The neuron writes in the same direction in both contexts. The authors trace how context-specific inputs enable different downstream neurons to respond to that shared signal. The case shows that studying a neuron directly can be useful even when it has unrelated roles. It leaves open how those roles formed during training.</p>
 <p>The ‘don’t say a dot’ example: Towards Monosemanticity opened with a neuron firing on ‘academic citations, English dialogue, HTTP requests, and Korean text’. He argues most of those fire on or near a period, eight of its ten strongest negative logit connections start with a dot, and the Korean examples fire partway through an unfinished syllable, a reasonable place not to want a period. Without the model he cannot test further. Either way, it is one or two related syntactic jobs, not four unrelated ones.</p>
-<p>A double-negative regime in SwiGLU units: when both gate and value are negative, activations land on the positive pole and look like the negative pole. For about 4 percent of neurons this echo dominates the top of the list, a tool-side source of apparent polysemanticity.</p>
+<p>A double-negative regime in SwiGLU units can produce a positive output from two negative factors. Check both factors when interpreting examples retrieved from a signed tail.</p>
 <p>Critical point to raise: many of these labels were written by AI agents. He describes tests against that, such as a ‘blind maximum’: one agent writes an explanation, a second agent who never sees the neuron writes a sentence from that explanation alone, and the sentence often fires the neuron harder than anything in 10 billion tokens.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1631,19 +1752,19 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>The same circuit, in features and in neurons</h2>
+<h2>The same prompt, with features and with neurons</h2>
 
-<img data-src="figs/llm-interp/cammarata-features-vs-neurons.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Left: Anthropic’s preeclampsia graph in Claude 3.5 Haiku, built from transcoder features. Right: the same prompt in Qwen3-32B, built from MLP neurons, no replacement model. Both decide to ask about visual disturbances.</strong></p>
+<img data-src="figs/llm-interp/cammarata-features-vs-neurons.png" class="quarto-figure quarto-figure-center r-stretch" alt="Two graphs for the same prompt link symptoms to a preeclampsia node and then to a question about visual disturbances. The left graph uses Haiku transcoder features, and the right graph uses native Qwen neurons."><p><strong>Left: a transcoder-feature graph for Claude 3.5 Haiku. Right: a native-neuron graph for Qwen3-32B on the same prompt. Both models ask about visual disturbances.</strong></p>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>; Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>.</p>
 </div>
 <aside class="notes">
-<p>This connects directly to the attribution graphs we just saw. The left is a medical-diagnosis case from the Biology paper: a prompt describing a pregnant patient’s symptoms; the model’s internal diagnosis is preeclampsia, and it decides the next thing to ask about is visual disturbances. Rows: symptoms, diagnosis, what to ask, answer.</p>
+<p>This previews attribution graphs. The left graph is from the Biology paper. The nodes trace a reported pathway from the symptoms in the prompt through a preeclampsia-related group to the next question. Rows: symptoms, possible diagnosis, what to ask, answer.</p>
 <p>Right: the essay’s version in Qwen3-32B using the model’s own MLP neurons. Numbers on the nodes are how many neurons are in each group; the diagnosis hub is four neurons. Remove them and the model asks about itching instead, a telltale sign of a different liver condition of pregnancy, as if it moved to its next guess. Output probability for ‘visual’ is 0.90.</p>
-<p>His argument for neurons here: no reconstruction loss, no extra training, no error nodes. Recall from the replacement-model slide that the transcoder alone gives the same next token about half the time.</p>
+<p>Native neurons let the researchers study the original MLP computation directly. The plotted graph still reflects choices about which interactions to trace, which nodes to show and which neurons to group.</p>
 <p>The negative pole matters. In their Santa graph, top-k automated labels make some key neurons look like ‘capital cities’ because they ignore the negative side, which carries Santa lore. Remove the eight neurons with a Santa negative side and P(Santa) drops from near certain to 6 percent; remove the twenty neurons actually labeled Christmas or Santa and it only drops to 76 percent.</p>
 <p>Also from the essay: a found-wallet graph in Kimi K3, which they call the first published attribution graph of a multi-trillion-parameter model.</p>
-<p>What to notice: the two graphs are different models, so this shows the neuron approach can produce a readable graph, not that the two methods agree on one model.</p>
+<p>The graphs differ in both model and method. To compare methods, use the same model and prompt and check whether each graph predicts the effect of a targeted intervention.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1774,7 +1895,7 @@ Claudio Silva
 <li>Not peer reviewed; the company’s method is neuron study</li>
 </ul>
 </div></div>
-<p><strong>Discussion: does the essay refute <em>Toy Models of Superposition</em>, or argue that real networks are not in the toy’s regime?</strong></p>
+<p><strong>Discussion: which assumptions in the toy model make arbitrary packing useful? Which of those assumptions would you test in a trained network?</strong></p>
 <div class="footer">
 <p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
 </div>
@@ -1802,8 +1923,12 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>From the local replacement model to a graph</h2>
-
-<img data-src="figs/llm-interp/local-replacement-and-graph.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Nodes: active features, input tokens, error nodes (diamonds), and the output. Edges: how much one node contributes to another on this prompt. Then prune.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/local-replacement-and-graph.png" class="quarto-figure quarto-figure-center" alt="The left panel shows a local replacement model with feature circles, error diamonds, and frozen attention in pink. The right panel traces the Austin output back to selected features, error terms, and input tokens." height="665"></p>
+</figure>
+</div>
+<p><strong>Nodes represent active features at token positions, input tokens, error terms, and output logits. A signed edge measures a contribution to the target’s pre-activation or logit.</strong></p>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
@@ -1811,7 +1936,7 @@ Claudio Silva
 <p>Left: the local replacement model for a three-token prompt. Circles are features, filled when active. Diamonds are the error nodes. The pink lines are the frozen attention, which carries information between token positions.</p>
 <p>Right: the attribution graph. Start at the output token, here ‘Austin’, and trace backward: which features contributed to it, which features contributed to those, down to the input tokens.</p>
 <p>Why this is tractable: with attention and normalization frozen, the only nonlinearity left is each feature’s own activation. So a feature’s input is a sum of contributions from earlier nodes, and each contribution is an edge with a number on it.</p>
-<p>The raw graph is far too big to read. A short prompt has a couple of hundred active features per token, and the paper notes this produces graphs with millions of edges. Pruning keeps the nodes and edges that matter most for the output. With default settings it removes about nine nodes in ten and keeps about 80 percent of the explained behavior.</p>
+<p>An edge’s value is the source activation times the effective weight from source to target. Frozen attention and normalization make this weight well-defined for this prompt. Pruning selects nodes and edges by their estimated influence on the target logits. The paper’s default node threshold is roughly 80% of measured logit influence, a property of the graph’s scoring rule.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1830,7 +1955,7 @@ Claudio Silva
 <div class="column" style="width:42%;">
 <ul>
 <li>Prompt: <strong>The National Digital Analytics Group (N</strong></li>
-<li>The model continues with <strong>DAG</strong></li>
+<li>The model continues with <strong>DAG</strong>, one token in this model’s tokenizer</li>
 <li>Read from the bottom: the words <em>Digital</em>, <em>Analytics</em>, <em>Group</em> each activate a feature for their own first letter</li>
 <li>“say D” and “say A” combine into “say DA_”</li>
 <li>Each box is a <strong>supernode</strong>: several features with the same role, grouped by hand</li>
@@ -1847,7 +1972,7 @@ Claudio Silva
 </div>
 <aside class="notes">
 <p>The methods paper’s worked example, on its 18-layer research model. The organization is made up, so the model cannot have memorized the acronym; it has to compose it.</p>
-<p>Reading conventions, which every figure from here on shares. Input tokens run along the bottom, the output is at the top right, and arrows point upward from cause to effect. Features sit above the token where they are active.</p>
+<p>Read this graph from the inputs at the bottom toward the output at the top. Check the layout for each subsequent figure, particularly when the authors rearrange supernodes to show intervention results.</p>
 <p>The story the graph tells is small and believable: each word contributes its initial, and the initials are assembled. There is also a ‘say or continue an acronym’ node on the right, triggered by the open parenthesis and the N.</p>
 <p>Two caveats that are visible if you look. The boxes are supernodes. The method produces individual features, and a person decided which ones belong together and what to call them. And this is the simplified drawing; the full pruned graph is much larger.</p>
 <style type="text/css">
@@ -1863,17 +1988,21 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Is the graph true? Intervene</h2>
-
-<img data-src="figs/llm-interp/acronym-intervention.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Suppress the “Group” features in the real model. “say G” goes to 0%, and the output changes from DAG to acronyms without the G.</strong></p>
+<h2>Intervention on the acronym graph</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/acronym-intervention.png" class="quarto-figure quarto-figure-center" height="700"></p>
+</figure>
+</div>
+<p><strong>The patch suppresses the “Group” features with attention held fixed. The “say G” group drops to 0% of baseline and the top prediction changes from DAG to ADA.</strong></p>
 <div class="footer">
 <p>Ameisen, E., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html"><em>Circuit Tracing</em></a>. Transformer Circuits Thread.</p>
 </div>
 <aside class="notes">
 <p>A graph drawn from a replacement model is a hypothesis about the real model. This is how it gets tested.</p>
 <p>Left, baseline: every supernode at 100 percent of its normal activation, and the model says DAG with 99 percent probability.</p>
-<p>Right: the features in the ‘Group’ supernode are multiplied by minus one inside the actual model, and the model is run forward. The percentages show what happened downstream. ‘say G’ drops to zero. ‘say A’ drops to 66 percent. The top output becomes ADA at 85 percent, and DAG falls to 1 percent.</p>
-<p>The graph predicted that removing ‘Group’ should remove the G and leave the D and A. That is what happened. An intervention like this is the difference between a picture that is suggestive and a claim that has been checked. Every case study in the next section comes with one.</p>
+<p>Right: the authors use the transcoder to estimate the selected features’ contributions and patch a factor of −1 into the original model over a chosen layer range. They keep the original attention patterns fixed. Percentages on nodes are relative activations. Percentages next to outputs are token probabilities. The top output becomes ADA at 85%, and DAG falls to 1%.</p>
+<p>The output change supports the predicted role of the Group features under this patch. Ask what a comparable patch to an unrelated group would do. The authors choose the patch range that most suppresses the DAG logit, which matters when judging the size of the effect.</p>
 <p>In visualization terms this is linked views again: a graph on top, and the output distribution it produces underneath.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1898,7 +2027,7 @@ Claudio Silva
 <li><strong>Find the path</strong> that matters among many</li>
 <li><strong>Test it</strong> with interventions</li>
 </ul>
-<p><strong>How long it takes:</strong> the authors report that the main mechanism can stand out in about ten minutes, and the overall picture takes one to two hours per prompt, before validation.</p>
+<p><strong>How long it takes:</strong> in successful cases, the researchers report finding key mechanisms in minutes and forming an overview in one to two hours, with additional time for validation.</p>
 </div><div class="column" style="width:50%;">
 <p><strong>What the tool gives them</strong></p>
 <ul>
@@ -1906,11 +2035,11 @@ Claudio Silva
 <li>Top inputs and outputs of the selected node, ranked by edge strength</li>
 <li>A panel of dataset examples for each feature</li>
 </ul>
-<p><em>“We find that our raw data of attribution graphs is not particularly useful on its own – investing in an ergonomic, interactive interface for exploring them has been essential.”</em> (Lindsey et al., 2025)</p>
+<p><a href="https://transformer-circuits.pub/2025/attribution-graphs/static_js/attribution_graphs/index.html?slug=capital-state-dallas">Explore the Dallas attribution graph</a>.</p>
 </div></div>
 <aside class="notes">
 <p>This slide is the link to the rest of the course. The method produces a large labeled graph, and the science happens in a person’s head while they explore it.</p>
-<p>Everything on the right is a technique you know: details on demand, linked views, a ranked list next to a node-link diagram, direct manipulation to arrange and group. The quote is from the discussion section of the Biology paper. The authors list the interface among their main contributions.</p>
+<p>Everything on the right is a technique you know: details on demand, linked views, a ranked list next to a node-link diagram, direct manipulation to arrange and group. The authors describe the interface in the discussion section of the Biology paper.</p>
 <p>Everything on the left is manual, and that is a real limitation. Labels are a person’s reading of top-activating examples, which is the same procedure that was misleading for neurons. Grouping is subjective. Two analysts could draw different supernodes from the same graph.</p>
 <p>The papers’ pages are interactive: every figure in them can be hovered and opened in the full graph viewer. I recommend opening one after class.</p>
 <style type="text/css">
@@ -1942,7 +2071,7 @@ Claudio Silva
 <li>There is also a direct Dallas-to-Austin shortcut. Both paths exist.</li>
 </ul>
 </div><div class="column" style="width:68%;">
-<p><img data-src="figs/llm-interp/dallas-graph.png" style="width:100.0%"></p>
+<p><img data-src="figs/llm-interp/dallas-graph.png" style="width:100.0%" alt="Dallas promotes Texas features, and capital promotes features that favor naming a capital. Both pathways contribute to the Austin output, alongside a direct Dallas contribution."></p>
 </div></div>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
@@ -1950,7 +2079,7 @@ Claudio Silva
 <aside class="notes">
 <p>The introductory example of the Biology paper, now on a production model.</p>
 <p>The question behind it has been argued about for years: when a model answers a two-step question in one token, did it do two steps internally, or did it memorize the pair? The prompt never mentions Texas.</p>
-<p>The graph shows an intermediate Texas representation that is caused by ‘Dallas’ and that in turn helps cause ‘say Austin’. So for this prompt there is a real intermediate step.</p>
+<p>The graph attributes part of the Austin logit to an intermediate Texas representation. The interventions on the next slides test this pathway.</p>
 <p>Note what the authors do not claim. They also find direct edges from Dallas to Austin. Both mechanisms run in parallel, and they describe parallel pathways as the rule in everything they looked at. And this is one prompt: an existence proof, in their words, with no claim about how often the model reasons this way.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1965,9 +2094,13 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Testing it: remove a step</h2>
-
-<img data-src="figs/llm-interp/dallas-ablations.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Each panel suppresses one supernode (orange) and shows the effect on the rest and on the top outputs.</strong></p>
+<h2>Suppressing part of the Dallas circuit</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/dallas-ablations.png" class="quarto-figure quarto-figure-center" height="750"></p>
+</figure>
+</div>
+<p><strong>Each panel suppresses one supernode (orange) and shows the effect on the rest and on the top outputs.</strong></p>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
@@ -1991,16 +2124,20 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Testing it: swap the state</h2>
-
-<img data-src="figs/llm-interp/dallas-swaps.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Replace the Texas features with another place’s features. The model names that place’s capital: Sacramento, Atlanta, Victoria, Beijing.</strong></p>
+<h2>Replacing the state in the Dallas circuit</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/dallas-swaps.png" class="quarto-figure quarto-figure-center" height="750"></p>
+</figure>
+</div>
+<p><strong>Replace the Texas features with another place’s features. The model names that place’s capital: Sacramento, Atlanta, Victoria, Beijing.</strong></p>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
 <aside class="notes">
 <p>A stronger test than deletion. The prompt still says Dallas. The Texas features are suppressed and the features for another region, taken from a different prompt, are added in their place.</p>
 <p>California in: Sacramento at 97 percent. Georgia: Atlanta at 78. British Columbia: Victoria at 92. China: Beijing. The Byzantine Empire: Constantinople.</p>
-<p>So the intermediate node is not decoration. It is a variable in the computation, and changing its value changes the answer the way it should.</p>
+<p>The patched model’s output changes in the direction predicted by the Texas pathway hypothesis.</p>
 <p>Look at the multipliers in orange. The US states are injected at 2 times their usual strength; the province, the country and the empire need 8 times. The paper says so. The intervention works, and it works less naturally the further the substitute is from what the circuit normally handles. Small numbers like these multipliers are where the honesty of a figure lives.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2035,7 +2172,7 @@ Claudio Silva
 <p>The model generates one token at a time. The natural guess is that it writes the line and only at the last word looks for something that rhymes with ‘grab it’.</p>
 <p>The graph says otherwise for this poem. On the newline token at the end of the first line, features for candidate final words are active: rabbit and habit. They then influence the words in between, so the line is written to arrive at the chosen word.</p>
 <p>The paper calls the first part forward planning and the second backward planning. It is one of the clearest examples of the model representing something about its own future output.</p>
-<p>Scope, again from the paper: they found planned-word features in about half of the poems they examined.</p>
+<p>They identified planned-word features in about half of the poems examined. The paper gives two possible explanations for the other half: variation in the model’s planning behavior and incomplete feature recovery.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2050,8 +2187,13 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Changing the plan</h2>
-
-<img data-src="figs/llm-interp/poem-interventions.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Suppress “rabbit” at the line break and the line ends in “habit”. Inject “green” and the model writes a line that ends in “green”.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/poem-interventions.png" class="quarto-figure quarto-figure-center" height="705"></p>
+</figure>
+</div>
+<p><strong>Suppressing “rabbit” makes “habit” the likeliest ending. Suppressing both and injecting “green” can make the model end the line with “green”.</strong></p>
+<p><a href="#/attention-freezing">Continue to attention and the limits of tracing</a></p>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
@@ -2126,15 +2268,14 @@ Claudio Silva
 <blockquote>
 <p>“I added the ones (6+9=15), carried the 1, then added the tens (3+5+1=9), resulting in 95.”</p>
 </blockquote>
-<p><strong>The explanation is the schoolbook algorithm. The graph shows a different mechanism.</strong></p>
-<p>The model’s account of its own reasoning is one more output. It can be checked against the mechanism, and here it does not match.</p>
+<p><strong>The written explanation describes carrying. The graph traces contributions from magnitude and last-digit features.</strong></p>
 </div></div>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
 <aside class="notes">
 <p>No figure here, because the paper’s diagram depends on interactive plots that do not survive as a still image. The structure is simple to state.</p>
-<p>The model does not carry. It runs approximate and exact computations side by side: one set of features tracks the size of the answer with low precision, and another works out the last digit from the last digits of the operands, using what the authors call lookup-table features. The answer is the number of about the right size that ends in the right digit.</p>
+<p>The authors trace parallel contributions: one set of features tracks the approximate magnitude of the answer. Another promotes the correct last digit using what the authors call lookup-table features. The graph supports this account for the prompt and leaves some computation unresolved.</p>
 <p>Then the authors ask the model how it got 95, and it describes carrying the one. The quote is the model’s answer as printed in the paper.</p>
 <p>This is the cleanest example in the lecture of why level 3 matters. An LLM’s explanation of itself is generated the same way as everything else it says: it is what an explanation would plausibly look like. It is not a readout of the computation.</p>
 <style type="text/css">
@@ -2150,19 +2291,19 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Hallucination: “I don’t know” is the default</h2>
+<h2>Entity familiarity and hallucination</h2>
 <div class="columns">
 <div class="column" style="width:45%;">
 <p><img data-src="figs/llm-interp/known-answer-circuit.png" style="width:100.0%"></p>
 </div><div class="column" style="width:55%;">
 <ul>
-<li>Ask about a person and a <strong>can’t answer</strong> pathway is on <strong>by default</strong></li>
+<li>In the reported assistant prompts, a <strong>can’t answer</strong> pathway tends to activate</li>
 <li>A name the model recognizes activates <strong>known answer</strong> features</li>
 <li>Those <strong>inhibit</strong> the default (blue, T-shaped ends), and the model answers</li>
 <li><em>Michael Jordan</em>: known, so it answers “basketball”</li>
 <li><em>Michael Batkin</em> (made up): unknown, so it declines</li>
 </ul>
-<p><strong>A hallucination, on this account, is the “known” signal firing when the knowledge is not there.</strong></p>
+<p><strong>One route to hallucination: recognizing a name can suppress the “can’t answer” pathway even when the model lacks the requested fact.</strong></p>
 </div></div>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
@@ -2186,8 +2327,12 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Turning the circuit by hand</h2>
-
-<img data-src="figs/llm-interp/jordan-batkin-interventions.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Top: make the model doubt Michael Jordan. Bottom: make it “recognize” Michael Batkin, and it names a sport for a person who does not exist.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/jordan-batkin-interventions.png" class="quarto-figure quarto-figure-center" height="700"></p>
+</figure>
+</div>
+<p><strong>Top: make the model doubt Michael Jordan. Bottom: make it “recognize” Michael Batkin, and it names a sport for a person who does not exist.</strong></p>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
@@ -2210,8 +2355,12 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>A hallucination in the wild</h2>
-
-<img data-src="figs/llm-interp/karpathy-hallucination.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>“Name one paper written by Andrej Karpathy.” The name is familiar, so the default is suppressed, and the model names a paper he did not write.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/karpathy-hallucination.png" class="quarto-figure quarto-figure-center" height="700"></p>
+</figure>
+</div>
+<p><strong>“Name one paper written by Andrej Karpathy.” The name is familiar, so the default is suppressed, and the model names a paper he did not write.</strong></p>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
@@ -2220,7 +2369,7 @@ Claudio Silva
 <p>Left, unmodified: the model attributes the AlexNet paper to Andrej Karpathy. It is by Krizhevsky, Sutskever and Hinton. In the graph the ‘can’t answer’ node is nearly off: the model knows the name well enough to suppress the default, and does not know his papers well enough to name one.</p>
 <p>Middle and right: suppress the ‘known answer’ features by increasing amounts. ‘Can’t answer’ comes back, and the model first gives a hedged, different answer and then, at the stronger setting, apologizes and declines.</p>
 <p>The paper’s control: ask the same question about one of the authors, a much less famous name, and the model declines unprompted.</p>
-<p>The practical reading is that a model is most likely to make things up about subjects it half knows.</p>
+<p>This case illustrates one failure mode. Estimating how common it is would require testing people and questions across levels of model familiarity.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2236,7 +2385,7 @@ Claudio Silva
 <section class="slide level2">
 <h2>Chain of thought: is the written reasoning the real reasoning?</h2>
 
-<img data-src="figs/llm-interp/cot-faithfulness-3col.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Left: the written steps match the computation. Middle: a claimed calculation with nothing behind it. Right: the steps are built backward from the answer the user suggested.</strong></p>
+<img data-src="figs/llm-interp/cot-faithfulness-3col.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Left: the trace supports the written square-root step. Middle: the trace gives little support for the claimed calculation. Right: the trace links the numerical step to the answer in the user’s hint.</strong></p>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</p>
 </div>
@@ -2263,15 +2412,20 @@ Claudio Silva
 <h1>Attention</h1>
 
 </section>
-<section class="slide level2">
-<h2>What attribution graphs do not explain</h2>
-
-<img data-src="figs/llm-interp/limitation-attention.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>The attention patterns were frozen. The graph shows that information moved from one token to another (left), and cannot show why the model looked there (right).</strong></p>
+<section id="attention-freezing" class="slide level2">
+<h2>What attention freezing removes</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/limitation-attention.png" class="quarto-figure quarto-figure-center" alt="The attribution graph connects an earlier occurrence of Sally to the output. The attention circuit shows how matching the repeated word Aunt points the model to Sally." height="650"></p>
+</figure>
+</div>
+<p><strong>The graph traces information along a fixed attention pattern (left). Explaining how the model chose that pattern requires tracing the attention circuit (right).</strong></p>
+<p><a href="#/attribution-limits">Continue to the limits of attribution graphs</a></p>
 <div class="footer">
 <p>Ameisen, E., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html"><em>Circuit Tracing</em></a>. Transformer Circuits Thread.</p>
 </div>
 <aside class="notes">
-<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
+<p>Teach this slide as part of the core lecture. Use the link below the figure to skip the optional filter-head examples.</p>
 <p>The first item in the methods paper’s limitations section, with the authors’ own illustration.</p>
 <p>The prompt is a repeated name: ‘Aunt Sally’ appears early, and later the text says ‘Aunt’ again. The model predicts ‘Sally’ by looking back at what followed ‘Aunt’ the first time. This is called induction, and it is one of the best understood attention circuits.</p>
 <p>Left is what the attribution graph shows for it: an edge from the earlier ‘Sally’ to the output. True, and nearly empty.</p>
@@ -2297,12 +2451,143 @@ Claudio Silva
 <p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784.</p>
 </div>
 <aside class="notes">
-<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
+<p>Optional. Jump to “Limits of attribution graphs” if time is short.</p>
 <p>A different group, a different model (Llama with 70 billion parameters, 80 layers), and a method aimed at exactly the gap on the previous slide.</p>
 <p>The task is filtering: here is a list, find the fruit. The authors find attention heads whose attention, from the final token, lands on the item that satisfies the condition. Panel b: the head looks at ‘Cherry’.</p>
 <p>The experiment is activation patching. An attention head compares a query vector, from the token doing the looking, with key vectors from the tokens being looked at. Take the query vector from the fruit prompt, panel a, and insert it into the same head while the model reads a different prompt that asks for a vehicle, panel c.</p>
 <p>Panel e, unpatched: the head attends to ‘Scooter’ and the model answers Scooter. Panel f, patched: it attends to ‘Peach’ and the model answers Peach.</p>
 <p>So the query vector carries the condition, ‘is a fruit’, in a form that is independent of the particular list. Panel g is a heat map of heads by layer: the ones with a strong effect are few, and sit in the middle layers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="filter-program" class="slide level2">
+<h2>Filtering as a program</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>The authors’ framing: a functional-programming pipeline</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a>items   <span class="op">=</span> [<span class="st">"Binder"</span>, <span class="st">"Peach"</span>, <span class="st">"Watch"</span>, <span class="st">"Scooter"</span>, <span class="st">"Phone"</span>]</span>
+<span id="cb2-2"><a href="" aria-label="2"></a>latents <span class="op">=</span> <span class="bu">map</span>(recall_facts, items)    <span class="co"># earlier layers</span></span>
+<span id="cb2-3"><a href="" aria-label="3"></a>chosen  <span class="op">=</span> <span class="bu">filter</span>(is_fruit, latents)   <span class="co"># filter heads</span></span>
+<span id="cb2-4"><a href="" aria-label="4"></a>answer  <span class="op">=</span> <span class="bu">reduce</span>(select_one, chosen)  <span class="co"># later layers</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong>map</strong>: each item’s vector gets filled in with what the model knows about it</li>
+<li><strong>filter</strong>: a few attention heads pick out the items that satisfy the predicate</li>
+<li><strong>reduce</strong>: return one item, the first, the last, a count, yes or no</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>How one attention head can run a predicate</strong></p>
+<p><span class="math display">\[\text{score}_i = q_{\text{last}} \cdot k_i\]</span></p>
+<ul>
+<li>The <strong>query</strong> at the final token encodes the predicate: <em>is this a fruit?</em></li>
+<li>Each item’s <strong>key</strong> encodes what the item is</li>
+<li>Softmax over the scores puts the attention on the matching item</li>
+</ul>
+<p><strong>Prediction: the query should be movable to another prompt and still mean <em>fruit</em>. The previous slide is that test.</strong></p>
+</div></div>
+<div class="footer">
+<p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Limits of attribution graphs”</p>
+<p>This is the paper’s own framing, from Marr’s three levels. Computational level: select the items that satisfy a predicate. Algorithmic level: map, filter, reduce, in that order. Implementation level: attention heads in the middle layers.</p>
+<p>The map step is not new; earlier work (Geva et al.&nbsp;2023, Meng et al.&nbsp;2022, the ROME paper) showed that the model loads facts about an entity into that entity’s token positions. This paper is about the filter step that follows.</p>
+<p>The right column is the attention formula from the transformer lecture, read as a program. A head’s attention from the last token to item i is a softmax over dot products of one query with each key. If the query is a direction meaning ‘fruit’ and the keys are directions meaning ‘what this item is’, the dot product is a fruit detector, and the head’s attention is the filter’s output.</p>
+<p>The prediction on the bottom is what the patching experiment on the previous slide tested: if the query really carries the predicate, it should work in a prompt it did not come from. It does.</p>
+<p>A detail from the paper: they cache the query before the rotary position embedding is applied, and it still works. That says the head is matching on meaning, not on position.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="filter-ablation" class="slide level2">
+<h2>Finding the heads, and checking the model needs them</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><strong>Locating them</strong></p>
+<ul>
+<li>Patch the final-token <strong>query</strong> of every head from the source prompt into the destination prompt, through a learned <strong>binary mask</strong></li>
+<li>Train the mask to raise the transplanted answer, with a sparsity penalty so only a few heads stay on</li>
+<li><strong>Causality score</strong>: share of prompts where the patched model picks the item that matches the <em>source</em> predicate</li>
+</ul>
+<p>Attention patterns were <strong>not</strong> used to select the heads. They line up with the filtering picture afterward.</p>
+<p><strong>Other known head types, same number of heads (79)</strong>: causality 0.00 to 0.08, against 0.86 for filter heads.</p>
+</div><div class="column" style="width:55%;">
+<div class="smaller">
+<p><strong>Ablate them</strong>: the last token may only attend to the start token</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 46%">
+<col style="width: 27%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task (filter heads)</th>
+<th>Filter heads ablated</th>
+<th>Random heads ablated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SelectOne (79)</td>
+<td><strong>22.5%</strong></td>
+<td>99.6%</td>
+</tr>
+<tr class="even">
+<td>SelectOne, multiple choice (45)</td>
+<td><strong>0.4%</strong></td>
+<td>100%</td>
+</tr>
+<tr class="odd">
+<td>SelectFirst (81)</td>
+<td><strong>13.1%</strong></td>
+<td>97.3%</td>
+</tr>
+<tr class="even">
+<td>SelectLast (145)</td>
+<td><strong>9.2%</strong></td>
+<td>99.4%</td>
+</tr>
+<tr class="odd">
+<td>Count (64)</td>
+<td>89.8%</td>
+<td>99.2%</td>
+</tr>
+<tr class="even">
+<td>CheckExistence (21)</td>
+<td>98.6%</td>
+<td>99.2%</td>
+</tr>
+</tbody>
+</table>
+<p>Accuracy on 512 prompts the model answered correctly before ablation. 79 heads is under 2% of Llama-70B’s heads.</p>
+</div>
+</div></div>
+<div class="footer">
+<p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Limits of attribution graphs”</p>
+<p>How the heads were found. Patching one head at a time does not work well: the other filter heads and backup mechanisms correct for a single change. So they patch all heads at once through a mask, one binary switch per head, and learn the mask to maximize the logit of the item that satisfies the source predicate while suppressing the others. A sparsity penalty keeps the mask small. Note what this selects for: heads whose query is causally sufficient to move the answer. The attention pattern is checked only afterward, which is the right order given everything we said about attention maps not being explanations.</p>
+<p>Necessity is the other half. Ablation here means editing the attention so that the last token can only look at the beginning-of-sequence token, so the head brings in nothing from the list. For the four selection tasks accuracy collapses: from 100 to 22.5 percent on SelectOne, to under 1 percent on multiple choice. Ablating the same number of random heads does almost nothing.</p>
+<p>The last two rows matter as much as the first four. Counting and checking whether something is present barely care. So the model has another way to do those tasks, and the authors say so. This connects to the portability heat map coming next: counting borrows some of the filter-head circuit but not all of it.</p>
+<p>Bottom left: are these just heads we already knew about? They compared 79 function-vector heads (Todd et al.&nbsp;2024), concept-induction heads (Feucht et al.&nbsp;2025), token-induction heads (Olsson et al.&nbsp;2022) and random heads. None comes close: causality 0.002, 0.08, 0 and 0.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2323,12 +2608,84 @@ Claudio Silva
 <p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784.</p>
 </div>
 <aside class="notes">
-<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
+<p>Optional. Jump to “Limits of attribution graphs” if time is short.</p>
 <p>How general is that representation? The score in every cell is the fraction of patched runs in which the model gave the answer the transplanted condition implies.</p>
 <p>Left table: take the condition from a prompt in one language and patch it into a prompt in another. English to Thai, 0.95. Hindi to French, 0.89. The lowest entries are still near 0.78. Whatever the head’s query encodes, it is not tied to English words.</p>
 <p>Middle top: single-line list versus bulleted list, about 0.84 to 0.86 in every direction.</p>
 <p>Right: a heat map across six tasks that all involve filtering followed by a different final step: select one, select the first match, count, and so on. Transfer is strong between the selection tasks and near zero for yes/no questions. So the same sub-circuit is reused by some tasks and not others.</p>
 <p>As a figure: three tables and a heat map carrying the same kind of number. The heat map on the right is the one you can read at a glance, and the red-green scale is a poor choice for color-blind readers (Week 2).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="filter-keys" class="slide level2">
+<h2>Queries carry the predicate, keys carry the item</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="figs/llm-interp/filter_key_swap.png" style="width:100.0%" alt="Left: a list Binder, Peach, Watch, Scooter, Phone, with arrows showing the key states of Peach and Phone being swapped. Right: after the swap, the filter head's attention lands on Phone."></p>
+<p>With the fruit query patched in, also <strong>swap the keys</strong> of Peach and Phone. The head now attends to Phone, and the model answers Phone (causality 0.78).</p>
+</div><div class="column" style="width:60%;">
+<p><strong>More tests of the same claim</strong></p>
+<ul>
+<li><strong>No answer needed</strong>: take the query from a prompt whose list has <strong>no</strong> fruit. It still finds the fruit elsewhere (0.80). The query is the predicate, not a copied answer</li>
+<li><strong>Predicates add</strong>: query(<em>fruit</em>) + query(<em>vehicle</em>) finds a fruit <strong>or</strong> a vehicle (0.65)</li>
+</ul>
+<div class="smaller">
+<p><strong>Heads found on object categories, tested on other predicates</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 70%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Predicate</th>
+<th>Causality</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Object category (<em>find the fruit</em>)</td>
+<td>0.86</td>
+</tr>
+<tr class="even">
+<td>Profession (<em>find the actor</em>)</td>
+<td>0.84</td>
+</tr>
+<tr class="odd">
+<td>Landmark in country</td>
+<td>0.58</td>
+</tr>
+<tr class="even">
+<td>Nationality</td>
+<td>0.50</td>
+</tr>
+<tr class="odd">
+<td>Rhymes with</td>
+<td><strong>0.04</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+<div class="footer">
+<p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Limits of attribution graphs”</p>
+<p>The portability slide showed that the query carries the condition. This slide asks what the other side of the dot product carries.</p>
+<p>Key swap, left: run the destination prompt with the fruit query patched in, as before, so the head would attend to Peach. Then, in the same forward pass, swap the key vectors of Peach and Phone, an item that is neither a fruit nor the destination answer. The head follows the key and attends to Phone, and the model says Phone in 78 percent of cases. So the key at an item position is what the predicate is tested against, and it carries the item’s meaning.</p>
+<p>No answer needed: if the query just stored ‘the answer was Peach’, it would be useless in a new list. They took queries from prompts with no fruit at all; it still works, 0.80.</p>
+<p>Predicates add: adding the fruit query and the vehicle query gives a query that picks whichever of the two is present. Vector arithmetic on a predicate, the same kind of linear structure as the word-embedding analogies from the NLP week.</p>
+<p>Table: the heads were found with object categories only. They transfer to professions almost as well. Nationality and landmarks are weaker, and the paper reports about 10 points better when a prefix primes the model to recall those facts, consistent with the map step having to load them first. Rhymes fail. Rhyming depends on sound, not meaning, and these heads work on meaning.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2349,11 +2706,48 @@ Claudio Silva
 <p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784.</p>
 </div>
 <aside class="notes">
-<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
+<p>Optional. Jump to “Limits of attribution graphs” if time is short.</p>
 <p>Go back to the small table on the previous slide, ‘placement of the question’. Question after the list: 0.86. Question before the list, patched into question-before: 0.02. The same task, reordered, and the mechanism is gone.</p>
 <p>The explanation: when the question comes last, the model cannot know what to look for while reading the items, so it filters at the end using the filter heads. The authors call that lazy evaluation. When the question comes first, the model can judge each item as it arrives and store a marker, a flag, on the ones that match. That is eager evaluation.</p>
 <p>This figure tests the flag idea. Take the stored state from the item that matched in one prompt and move it onto an unrelated item, ‘Monkey’, in another. The plot shows, by layer, which answer the model then prefers. Patched at early and middle layers, the purple line is on top: the model picks the item carrying the flag, even though a monkey is neither a fruit nor a vehicle.</p>
 <p>The lesson for interpretability generally: a mechanism found on one prompt format can fail to exist on a trivially different one. Both papers are careful to say that their findings are about specific prompts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="filter-tool-limits" class="slide level2">
+<h2>Filter heads as a tool, and where they fail</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/filter_false_statement.png" class="nostretch quarto-figure quarto-figure-center" alt="A short biography of Carl Sagan, one sentence per line. The filter heads' attention, shown in red, is strongest on the end of the false sentence claiming he won a Pulitzer Prize for The God Delusion." width="1500"></p>
+</figure>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>As a tool</strong>: append <em>which sentence is false?</em> and read the heads’ attention. It lands on the Pulitzer sentence (<em>The God Delusion</em> is Dawkins’s).</p>
+<p>A <strong>probe with no training</strong>: score a vector <span class="math inline">\(h\)</span> against each class query, <span class="math inline">\(\arg\max_c\, q_c \cdot W_K h\)</span>.</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/llm-interp/filter_rhymes_failure.png" class="nostretch" alt="Options brown, fake, that, flight; question: which of these words rhymes with hat? The filter heads attend to hat in the question, not to the rhyming option." width="480"></p>
+<p><strong>Fails</strong> on rhymes, letter counts and alphabetical order. Found in Llama 8B and 70B and Gemma 9B and 27B; less portable in the smaller models.</p>
+</div></div>
+<div class="footer">
+<p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Limits of attribution graphs”</p>
+<p>Top, a use the authors demonstrate in the appendix: a paragraph about Carl Sagan with one false sentence, then a question asking which statement is false. The aggregated attention of the filter heads, located on the simple find-the-fruit task, concentrates on the end of the false sentence. The heads were never trained or selected for fact checking. They show the same thing for negative sentiment. These are qualitative examples, a few prompts, not a benchmark.</p>
+<p>The probe: since the query is a predicate and the key projection turns any hidden vector into something the predicate can be tested against, you can classify a representation by which class query it matches best. No probe training; the classes are defined by writing a filtering prompt. The paper reports strong accuracy on 238 objects from 16 classes, compared against using the model’s output embeddings as probes.</p>
+<p>Bottom right, the failure case: asked which word rhymes with ‘hat’, the heads attend to ‘hat’ itself instead of the rhyming option. Same for counting letters and alphabetical order. Anything that depends on spelling or sound rather than meaning goes through some other mechanism.</p>
+<p>Scope, from the authors’ limitations section: six tasks with fixed templates, four models from two families. The smaller models have filter heads but the predicate is less portable, which the authors attribute to heads doing more jobs at once when capacity is tight. The superposition idea from the start of the lecture, applied to heads.</p>
+<p>For the checklist at the end: this is a good example of question 7, where does it stop working, answered by the authors themselves.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2371,14 +2765,14 @@ Claudio Silva
 <h1>Limits</h1>
 
 </section>
-<section class="slide level2">
-<h2>What these pictures can and cannot claim</h2>
+<section id="attribution-limits" class="slide level2">
+<h2>Limits of attribution graphs</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Stated by the authors</strong></p>
 <ul>
 <li>Graphs gave “satisfying insight” for <strong>about a quarter</strong> of the prompts they tried</li>
-<li>Each graph is about <strong>one prompt and one output token</strong>: an existence proof</li>
+<li>Each graph is specific to <strong>one prompt</strong> and the selected <strong>output logits</strong></li>
 <li><strong>Error nodes</strong>: part of the computation is unexplained, and more so on long or unusual prompts</li>
 <li><strong>Attention</strong> patterns are taken as given</li>
 <li>Features that are <strong>inactive</strong>, and why, do not appear</li>
@@ -2389,18 +2783,18 @@ Claudio Silva
 <ul>
 <li><strong>Feature labels</strong> are a person’s reading of top examples</li>
 <li><strong>Supernodes</strong> are grouped by hand</li>
-<li>The published cases are the ones that <strong>worked</strong></li>
+<li>The published cases illustrate selected successes. Some include unsuccessful interventions.</li>
 <li>Diagrams are <strong>simplified</strong> from pruned graphs, which are pruned from the full graph</li>
 </ul>
-<p><strong>What keeps it honest: interventions on the real model, including the ones that failed.</strong></p>
+<p><strong>Interventions test specific hypotheses from the graph. Prompt variations help establish their scope.</strong></p>
 </div></div>
 <div class="footer">
 <p>Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>; Ameisen, E., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html"><em>Circuit Tracing</em></a>.</p>
 </div>
 <aside class="notes">
 <p>The left column is from the limitations sections of the two papers, which are long and specific. The ‘quarter of prompts’ figure is from the Biology paper’s introduction, with the remark that it is hard to quantify precisely.</p>
-<p>The right column is what a visualization course should add. Between the model and the figure on the slide there are four reductions: features approximate the MLPs, pruning drops nine nodes in ten, a person groups and labels what is left, and an illustrator simplifies it. Each step makes the picture easier to read and adds a place where a judgment call entered.</p>
-<p>None of this means the results are wrong. It means the figure is the end of an argument, and the argument’s strength is in the interventions. When you read work like this, look for the experiment that could have come out the other way.</p>
+<p>The right column traces the visual reductions from model to figure. Features approximate the MLPs, pruning removes less influential nodes and edges, an analyst groups and labels what is left, and the final diagram simplifies the result. Ask which of these choices matters for the claim being made.</p>
+<p>Ask for an intervention with a prediction specific enough to fail. In constrained patching, some changes to intermediate features follow from the patch construction. Changes to the model’s output offer a stronger test.</p>
 <p>The authors’ own summary of where this stands: a stepping stone, not yet a tool that could certify a model is safe, because a clean graph cannot rule out a mechanism the method failed to see.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2444,20 +2838,17 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>What to take away</h2>
-<ul>
-<li><strong>Neurons are the wrong unit.</strong> Networks store more features than they have dimensions, as almost-orthogonal directions, when features are sparse.</li>
-<li><strong>Features can be recovered</strong> by dictionary learning, approximately, and the approximation error should be shown.</li>
-<li><strong>An attribution graph</strong> is one prompt’s computation drawn in those features, pruned and grouped by a person.</li>
-<li><strong>Inside one production model</strong>, for specific prompts: intermediate reasoning steps, plans made in advance, a default of “I don’t know”, and explanations that do not match the mechanism.</li>
-<li><strong>Attention needs its own tools</strong>, and patching shows a reusable “filter” operation that depends on how the prompt is ordered.</li>
-<li><strong>A picture of a mechanism is a hypothesis.</strong> The intervention is the evidence.</li>
-</ul>
+<h2>Comparing neurons and learned features</h2>
+<p>Use <strong>one model</strong> and a family of two-hop prompts. Compare a graph built from native neurons with one built from transcoder features.</p>
+<ol type="1">
+<li>On the Dallas prompt, find the group each graph identifies with <strong>Texas</strong>.</li>
+<li>Predict what will happen to the Austin logit when you suppress each group. Compare with a patch of similar strength to an unrelated group in the same layers.</li>
+<li>Test the predictions on held-out prompts that rephrase the question or use another city in Texas.</li>
+</ol>
+<p><strong>What result would favor one representation? What evidence would support both?</strong></p>
 <aside class="notes">
-<p>One line per part of the lecture.</p>
-<p>If you remember one thing about method: an explanation of a model should come with an experiment in which the explanation could have failed.</p>
-<p>If you remember one thing about visualization: the interface is part of the science here. The graphs are unreadable without pruning, grouping, hovering and linked examples, and the choices made in those steps shape what gets found.</p>
-<p>For the final report: if your project explains a model’s behavior, say which of the three levels your explanation is at, and what you did to test it.</p>
+<p>Give pairs three minutes to design the comparison. This is an exercise in experimental design inspired by the Dallas case study.</p>
+<p>Ask students to match the intervention location and use the norm of the change they apply to the residual stream as one way to match strength. Sweep strengths and measure the Austin logit alongside effects on unrelated outputs. A selective, reproducible effect beyond the matched controls supports the hypothesis. Both representations may identify the same causal pathway. If neither produces a selective effect, inspect the choice of group or the patch.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2471,18 +2862,15 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
-<h2>A second take-away: the unit is still contested</h2>
+<h2>What to take away</h2>
 <ul>
-<li><strong>Today’s first half</strong> says neurons are the wrong unit and features must be extracted. <strong>Cammarata</strong> says most apparent mess was tools, architecture and generalization we had not followed, and that neurons are a fine place to start.</li>
-<li>Both sides agree on <strong>“more features than dimensions”</strong>. They disagree on whether networks <strong>pack unrelated things together</strong>.</li>
-<li>The disagreement is <strong>empirical</strong> and testable: squeeze a layer, ablate weak activations, watch a neuron grow, check whether a dictionary finds anything the neurons lack.</li>
-<li>For your own work: when something looks <strong>polysemantic</strong>, treat it as “no explanation yet” and check the tool, the data and the architecture before concluding the model is a knot.</li>
+<li><strong>Superposition is possible.</strong> The toy model shows why overlapping directions can help when the features are sparse and independent.</li>
+<li><strong>The unit of analysis is an empirical choice.</strong> Native neurons preserve the original coordinates. Learned features can expose patterns spread across them. Each representation needs tests of the roles we assign.</li>
+<li><strong>An attribution graph proposes a mechanism for a specific prompt.</strong> Labels, grouping, pruning, and frozen attention affect what the graph shows.</li>
+<li><strong>A targeted intervention tests a prediction.</strong> Repeat it across inputs to see where the explanation holds.</li>
 </ul>
-<div class="footer">
-<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
-</div>
 <aside class="notes">
-<p>Added with the Cammarata section. Note that the first bullet of the previous slide, “neurons are the wrong unit”, is exactly the claim the essay disputes. I left it as written: say out loud that it is the field’s standard view and that today’s main reading argues against it.</p>
+<p>For the final report, say whether the project explains model behavior, attributes a prediction to inputs, or tests an internal mechanism. Describe the evidence at the level you claim.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2504,12 +2892,12 @@ Claudio Silva
 <li>Lindsey, J., Gurnee, W., Ameisen, E., Chen, B., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</li>
 <li>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://arxiv.org/abs/2510.26784"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784. Project page: <a href="https://filter.baulab.info/" class="uri">https://filter.baulab.info/</a></li>
 <li>Olah, C., Cammarata, N., Schubert, L., Goh, G., Petrov, M., &amp; Carter, S. (2020). <a href="https://distill.pub/2020/circuits/zoom-in/"><em>Zoom In: An Introduction to Circuits</em></a>. Distill.</li>
-<li>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire. Companion paper: <a href="https://www.goodfire.com/research/neurons-as-an-interpretable-basis"><em>Neurons as an Interpretable Basis</em></a></li>
+<li>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire. Main reading.</li>
+<li>Tigges, C., Kowal, M., McGrath, T., Lewis, O., &amp; Cammarata, N. (2026). <a href="https://www.goodfire.com/research/neurons-as-an-interpretable-basis"><em>Neurons as an Interpretable Basis</em></a>. Goodfire.</li>
 </ul>
 </div>
 <aside class="notes">
-<p>All four are free online. The three Transformer Circuits papers are interactive web pages: the figures respond to hovering and link to full graphs.</p>
-<p>A reading order for someone new to this: the introduction and first two experiments of Toy Models of Superposition, then the Biology paper’s introduction and whichever case studies interest you, then the methods paper for how it works. The filter heads project page is short and has interactive attention examples.</p>
+<p>Start with Cammarata’s short version and the sections on revisiting canonical evidence and language models. Read Tigges et al.&nbsp;for the method behind the quantitative neuron study. For circuit tracing, start with the two-hop example in Lindsey et al., then use Ameisen et al.&nbsp;for the replacement model and patching details.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
