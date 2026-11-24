@@ -157,6 +157,7 @@ Claudio Silva
 <li><strong>Why look inside?</strong> From explaining an output to understanding a mechanism</li>
 <li><strong>Superposition</strong>: why single neurons are hard to read</li>
 <li><strong>From neurons to features</strong>: dictionary learning and the replacement model</li>
+<li><strong>Are networks already clean?</strong> A dissent: study the neurons directly (main reading)</li>
 <li><strong>Attribution graphs</strong>: drawing one prompt’s computation as a graph</li>
 <li><strong>Case studies</strong>: reasoning, planning, hallucination, chain of thought</li>
 <li><strong>Attention</strong>: the part those graphs leave out, and filter heads</li>
@@ -164,8 +165,9 @@ Claudio Silva
 </ol>
 <p><em>This is the last regular lecture. It replaces the session on fairness.</em></p>
 <aside class="notes">
-<p>TIMING (120 min): part 1 about 10 min, part 2 about 25, part 3 about 15, part 4 about 20, part 5 about 25, part 6 about 15, part 7 about 10.</p>
-<p>Four sources carry the lecture. Toy Models of Superposition (Elhage et al., 2022) for part 2. Circuit Tracing (Ameisen et al., 2025) for parts 3 and 4. On the Biology of a Large Language Model (Lindsey et al., 2025) for part 5. LLMs Process Lists With General Filter Heads (Sen Sharma et al., 2025) for part 6. The first three are from Anthropic’s interpretability team; the fourth is from David Bau’s lab at Northeastern.</p>
+<p>ORIGINAL TIMING (before part 4 was added; parts 4-7 below are now 5-8): part 1 about 10 min, part 2 about 25, part 3 about 15, attribution graphs about 20, case studies about 25, attention about 15, limits about 10.</p>
+<p>REVISED Nov 24: part 4 (Cammarata, Neural Networks Are Already Clean) is the main reading, about 45 min (first 10 on the six vocabulary slides). To make room: part 1 about 5, part 2 about 20, part 3 about 10, part 5 attribution graphs about 15, part 6 case studies about 15 (skip some), part 7 attention / filter heads SKIP, part 8 limits about 10.</p>
+<p>Five sources carry the lecture. Toy Models of Superposition (Elhage et al., 2022) for part 2. Circuit Tracing (Ameisen et al., 2025) for parts 3 and 5. Neural Networks Are Already Clean (Cammarata, 2026) for part 4. On the Biology of a Large Language Model (Lindsey et al., 2025) for part 6. LLMs Process Lists With General Filter Heads (Sen Sharma et al., 2025) for part 7. Toy Models, Circuit Tracing and Biology are from Anthropic’s interpretability team; Cammarata’s essay is from Goodfire; filter heads is from David Bau’s lab at Northeastern.</p>
 <p>The charts in part 2 are computed in this deck from a model small enough to train in seconds. Everything in parts 4 to 6 is a figure from the papers.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -252,7 +254,7 @@ Claudio Silva
 <aside class="notes">
 <p>A reminder of the architecture, at the level of detail today needs. You saw the full version in the Transformer Explainer lab.</p>
 <p>The picture to keep is a column of vectors per token, with each layer adding its contribution. Attention is the only component that moves information sideways, from one token to another. The MLP works on each position alone.</p>
-<p>Most of today’s work is about the MLPs: that is where the neurons are, and they hold most of the parameters. Attention comes back in part 6 as the thing the main method cannot explain.</p>
+<p>Most of today’s work is about the MLPs: that is where the neurons are, and they hold most of the parameters. Attention comes back in part 7 as the thing the main method cannot explain.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -342,7 +344,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>How many directions fit in d dimensions?</h2>
-<div id="c534460a" class="cell" data-execution_count="2">
+<div id="235810f7" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -412,7 +414,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Five features in two dimensions</h2>
-<div id="36a35bee" class="cell" data-execution_count="3">
+<div id="911b6641" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -442,7 +444,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>What the hidden activations look like</h2>
-<div id="ee83a3f8" class="cell" data-execution_count="4">
+<div id="4c836a85" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -471,7 +473,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>The price: interference</h2>
-<div id="660784f8" class="cell" data-execution_count="5">
+<div id="89eaac7d" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -500,7 +502,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>More features, more sparsity</h2>
-<div id="45b4a092" class="cell" data-execution_count="6">
+<div id="45f64c64" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -598,7 +600,7 @@ Claudio Silva
 </section>
 <section class="slide level2">
 <h2>Dictionary learning recovers the directions</h2>
-<div id="0b45aab9" class="cell" data-execution_count="7">
+<div id="db799638" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -680,6 +682,1107 @@ Claudio Silva
 <p>Thirty million features sounds like a lot, and it is still not enough to capture everything the MLPs do. A fifth of the signal is missing on the production model. If you let the replacement model run by itself, errors compound from layer to layer and half the time it does not even predict the same next token.</p>
 <p>The authors’ response is a good piece of design. They do not hide the gap. For the one prompt being studied, they compute the difference between the real MLP output and the features’ reconstruction and add it back in as a named node. The arithmetic is then exact, and the cost is that some nodes in the graph are labeled ‘error’ and cannot be interpreted or traced further.</p>
 <p>They call the result the local replacement model: local because it is only valid for this prompt.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Are Networks Already Clean?</h1>
+
+</section>
+<section class="slide level2">
+<h2>Vocabulary for the essay</h2>
+<div class="smaller">
+<table class="caption-top">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 76%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning in this essay</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Neuron</td>
+<td>One unit of an MLP layer: one coordinate of the layer’s output, a direction the architecture singles out</td>
+</tr>
+<tr class="even">
+<td>Activation, pole</td>
+<td>How strongly a neuron fires on one input. The <strong>positive pole</strong> is its strongest positive firings, the <strong>negative pole</strong> its strongest negative ones</td>
+</tr>
+<tr class="odd">
+<td>Monosemantic / polysemantic</td>
+<td>A neuron whose strong firings share one meaning / seem to have several unrelated ones</td>
+</tr>
+<tr class="even">
+<td>Feature</td>
+<td>A meaningful direction in activation space. It may line up with one neuron, or be a combination of several</td>
+</tr>
+<tr class="odd">
+<td>Superposition (geometry)</td>
+<td>More features than dimensions, stored as almost-orthogonal directions</td>
+</tr>
+<tr class="even">
+<td>Superposition (learning principle)</td>
+<td>Packing <strong>unrelated</strong> things into one neuron <em>because</em> they rarely occur together</td>
+</tr>
+<tr class="odd">
+<td>Recursive generalization</td>
+<td>A neuron grows from one core meaning into nearby territory, then from there into further territory</td>
+</tr>
+<tr class="even">
+<td>Dictionary (SAE, transcoder)</td>
+<td>A second model trained to rewrite activations as a sparse sum of many learned features</td>
+</tr>
+<tr class="odd">
+<td>Circuit</td>
+<td>A few neurons and the weights between them, read from the trained model (<em>Zoom In</em>, 2020)</td>
+</tr>
+<tr class="even">
+<td>Motif</td>
+<td>A pattern that recurs across many neurons or circuits, such as summaries stored on commas</td>
+</tr>
+<tr class="odd">
+<td>Enumerative / exploratory</td>
+<td>Build a complete list of features to audit / start from questions and move between neurons, circuits and graphs</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+<p>The essay uses these terms constantly, and two of them, superposition and feature, are used in more than one sense in the literature. Ten minutes on vocabulary saves confusion later.</p>
+<p>Neuron: in a transformer, the MLP in each layer has a hidden layer with a nonlinearity; each unit of that hidden layer is a neuron. The nonlinearity acts on each coordinate separately, which is why neurons are a ‘privileged basis’: the architecture treats those directions differently from arbitrary rotations of them. The residual stream has no such basis.</p>
+<p>Pole: in modern gated MLPs (SwiGLU), activations can be strongly negative as well as strongly positive, and the two sides can mean different things. The essay audits them separately.</p>
+<p>Feature is the slipperiest word. Toy Models defines features as the properties a network represents, with directions as their geometry. The essay prefers to talk about mechanisms (neurons, heads) and data, and avoids defining features at all.</p>
+<p>The two senses of superposition are the most important distinction today. The next slides illustrate each term.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Neurons, activations and poles</h2>
+<div id="d90d1a35" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="llm-interpretability_files/figure-revealjs/cell-9-output-1.png" class="quarto-figure quarto-figure-center" width="1592" height="651"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Most tokens barely move a neuron. Its meaning is read from the tails: the strong positive firings, and the strong negative ones.</strong></p>
+<aside class="notes">
+<p>Illustrative data, generated in this deck, shaped like the essay’s histogram of 100 million tokens through one Qwen3-32B neuron, where almost all sit near zero and about 160 reach the strong half of the range.</p>
+<p>Three regions. The gray middle is weak activations: nearly every token. The orange right tail is the positive pole: the examples people look at when they label a neuron. The teal left tail is the negative pole.</p>
+<p>Two claims from the essay to flag now, and test later. First, the negative pole matters about as much as the positive: for the cat-and-car neuron the negative pole is round things, and in Qwen a Santa circuit lives on the negative poles of eight neurons. Second, the weak activations mostly do not matter: you can remove most of them with little effect.</p>
+<p>The essay also argues against percentiles. The 99th percentile sounds rare, but 1 token in 100 is about four times a page of text, far too often for a neuron about a niche feeling. Thinking in pages helps: the 99.9th percentile is every two or three pages.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Monosemantic and polysemantic</h2>
+<div id="e056bcb3" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="llm-interpretability_files/figure-revealjs/cell-10-output-1.png" class="quarto-figure quarto-figure-center" width="1626" height="614"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Left: every strong example has one meaning. Middle: two unrelated meanings, the textbook polysemantic neuron. Right: the same firings as the middle, described as one visual pattern.</strong></p>
+<aside class="notes">
+<p>Illustrative, generated in this deck. Each bar is one of a neuron’s top 24 examples, colored by the label a person gives it.</p>
+<p>Left: monosemantic. All strong firings share one meaning, like the ConvNeXt ladybug neuron coming up later.</p>
+<p>Middle: polysemantic. The strong firings fall into two groups that seem unrelated: cat faces and car fronts. This is how InceptionV1 neuron 4e:55 was described for years, in Feature Visualization (2017), Zoom In (2020) and Towards Monosemanticity (2023).</p>
+<p>Right: the same firings, the same bars. Only the label changed: the essay argues they share a pointed, V-shaped pattern. The middle and right panels are the same neuron.</p>
+<p>That is the essay’s point about the word: ‘polysemantic’ is often a claim about the observer, meaning ‘we have no single explanation yet’, rather than about the neuron. The essay finds that people and automated labelers both tend to describe neurons as lists of nouns, and that a shared pattern is often the better description. It suggests asking: if I could not use nouns, how would I describe this neuron?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Superposition: two different claims</h2>
+<div id="64c8b97d" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="llm-interpretability_files/figure-revealjs/cell-11-output-1.png" class="quarto-figure quarto-figure-center" width="1690" height="658"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Claim 1 is about storing more features than dimensions, and the essay accepts it. Claim 2, that the network packs unrelated things together, is the one it disputes.</strong></p>
+<aside class="notes">
+<p>Left panel is computed: the pentagon from the toy model in part 2, five features in two dimensions. That is superposition in the geometric sense, ‘more features than dimensions’. The essay does not dispute it. It points out that even a perfectly monosemantic network satisfies it, because neurons combine: window, wheel and body neurons together represent a car.</p>
+<p>Middle and right are illustrative, using the essay’s own example: generalization wants a floppy-ear-dog neuron; packing would want a floppy-ear-dog plus Latin poetry neuron. Colors in the middle mark that the items are unrelated; in the right panel each neuron’s items are one family.</p>
+<p>Why the second claim matters: if networks pack unrelated things because they rarely collide, then which things share a neuron tells you nothing, and you must decompose the network before studying it. That is the motivation for sparse autoencoders and transcoders, the dictionary methods from part 3. If things share a neuron because they are similar, the grouping is information about how the network thinks.</p>
+<p>The two predict different things when a layer is squeezed: packing predicts mixtures, generalization predicts coarser neurons (one ‘curves and loops’ neuron instead of ten curve detectors). The essay runs that experiment later in this section.</p>
+<p>Terminology note: the essay says ‘superposition’ is itself ‘in superposition’ between these uses, and uses the word only in sense 2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Recursive generalization</h2>
+<div id="b851b0ec" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="llm-interpretability_files/figure-revealjs/cell-12-output-1.png" class="quarto-figure quarto-figure-center" width="1592" height="614"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Illustrative. Left: a neuron that starts on fields grows, one shared facet at a time, into balls, fruit, dogs and broccoli. Right: what packing would predict instead.</strong></p>
+<aside class="notes">
+<p>Illustrative curves, generated in this deck and modeled on the essay’s real figure for InceptionV1 last-layer neuron 338, which we will see in a few slides.</p>
+<p>Left: the neuron begins on rapeseed fields. Photos of fields sometimes contain green balls and dogs, so the neuron also responds to those; then to balls and fruit without fields; then to dogs anywhere; then to broccoli, which is green and textured like the fields. Every step is local, a branch off a branch. At the end, the strongest examples read as ‘fields, balls, fruit, dogs, broccoli’, which looks polysemantic.</p>
+<p>Right: what packing predicts. Groups with no connection to the core, here Latin text and hard drives, appear without passing through anything related.</p>
+<p>The language example in the essay: a neuron for the letter pair ‘iy’, as in Miyazaki, grows to ‘diy’, then to ‘do it yourself’, which contains no ‘iy’ at all.</p>
+<p>The test is to watch training. With checkpoints you can see whether each new group arrived through a neighbor or out of nowhere. The essay says every neuron it followed grew like the left panel, and that modern architectures show the same pattern with less spread.</p>
+<p>The essay credits an earlier name, ‘conjoined features’, from the 2021 Multimodal Neurons paper.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Tools and tests the essay uses</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Looking</strong></p>
+<ul>
+<li><strong>Top examples</strong>: the inputs that fire a neuron most. The usual way to name a neuron</li>
+<li><strong>Feature visualization</strong>: optimize an image to maximize the neuron. Can be <strong>reward-hacked</strong>: the optimizer finds an easy path (in InceptionV1, often dogs)</li>
+<li><strong>Weak vs strong activations</strong>: the tails versus the crowded middle</li>
+<li><strong>Checkpoints</strong>: the same neuron at several points in training</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Testing</strong></p>
+<ul>
+<li><strong>Ablation</strong>: set a neuron or group to zero and see what the output does</li>
+<li><strong>Steering</strong>: turn a neuron up and see what the model writes</li>
+<li><strong>Attribution graph</strong> with neurons as nodes (part 5, there with features)</li>
+<li><strong>Blind maximum</strong>: one agent writes an explanation; a second, who never sees the neuron, writes an input from it alone. Does it fire the neuron?</li>
+<li><strong>Squeeze a layer</strong>: retrain with far fewer neurons and see what they become</li>
+</ul>
+</div></div>
+<p><strong>A neuron’s explanation is strongest when it predicts something besides its top examples: its negative pole, its connections, an ablation.</strong></p>
+<aside class="notes">
+<p>These are the methods behind every figure in the essay, so it helps to name them once.</p>
+<p>Top examples and feature visualization are how most of the field’s ‘polysemantic’ verdicts were reached. The essay argues both can mislead: top examples get described as lists of nouns, and feature visualization in deep layers falls into whatever path is easiest for the optimizer.</p>
+<p>The testing column is where the essay’s stronger evidence comes from. Ablation and steering are interventions on the real model, the same standard we set for attribution graphs. Blind maximum is a test designed so that a vague explanation cannot pass: if the explanation is ‘multifunctional language neuron’, the second agent cannot write an input that fires it.</p>
+<p>Squeezing a layer is the essay’s direct test of the packing hypothesis, coming up shortly.</p>
+<p>Connect to the checklist at the end of the lecture: question 5, is it causal, and question 6, what would have counted against it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>A dissent from October 2026</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>The story so far today</strong></p>
+<ol type="1">
+<li>Neurons are polysemantic</li>
+<li>Because of <strong>superposition</strong>: more features than neurons, packed in because they rarely collide</li>
+<li>So <strong>untangle first</strong>: train a dictionary, study the replacement model</li>
+</ol>
+<p><strong>Cammarata (Goodfire), <em>Neural Networks Are Already Clean</em></strong></p>
+<ul>
+<li>Polysemanticity was mostly <strong>bad tools, bad architectures, and generalization we had not understood</strong></li>
+<li>Superposition, in the sense of packing unrelated things, has <strong>little real-world evidence</strong></li>
+<li>So study the <strong>network’s own neurons and circuits directly</strong></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Why take it seriously</strong></p>
+<ul>
+<li>The author co-wrote <em>Zoom In</em> (2020) and <em>Multimodal Neurons</em> (2021), which introduced the canonical examples. He is retracting his own evidence.</li>
+<li>It makes <strong>testable</strong> claims, with retrained models and ablations</li>
+</ul>
+<p><strong>Why be careful</strong></p>
+<ul>
+<li>An informal essay, “a working hypothesis”, not peer reviewed</li>
+<li>Numbers are preliminary, from small audits, many done by AI agents</li>
+<li>Goodfire is a company whose method is neuron-level study</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire. Revised Oct 30, 2026.</p>
+</div>
+<aside class="notes">
+<p>This is the main reading for today, and it argues against the framework the first half of today built. That is on purpose. Superposition and dictionary learning are the dominant view; this essay is the strongest recent case against it, written by someone who helped build the dominant view.</p>
+<p>The essay’s own framing: there are two ways to do mechanistic interpretability. One is ordinary science on the network itself: look at neurons, circuits, data flowing through them, and test explanations. The other starts from a list of hypothesized features and tries to extract them with a decomposition such as a sparse autoencoder, mostly ignoring the original network. The field started with the first and moved to the second because networks looked like tangled knots. The essay says the knots were mostly misreadings.</p>
+<p>The four-step argument, in his words: networks use one learning principle, not two; with modern models and tools, ordinary science goes much better than expected; understanding compounds, so it gets easier as the map fills in; and, flagged as highly speculative, this might be most of what we need. He calls it a possible bitter lesson for interpretability: scaling ordinary investigation beats engineering a clever new decomposition.</p>
+<p>The right column is how I want you to read it. It is an essay, it says so, and its numbers come with caveats the author states himself. Hold it to the checklist at the end of the lecture, the same as the Anthropic papers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The argument in four steps</h2>
+<ol type="1">
+<li><strong>One learning principle, not two.</strong> Networks generalize; they do not switch to packing unrelated things when they run out of room. So nothing blocks ordinary science on the network itself.</li>
+<li><strong>That science goes better than expected</strong> with modern models, modern tools, and AI agents running conjecture and test at scale.</li>
+<li><strong>Understanding compounds.</strong> Like a crossword: each neuron you explain constrains its neighbors, and the unexplained remainder points at broken tools. Nearly empty and mostly filled in are the natural places to be.</li>
+<li><strong>Highly speculative:</strong> this might be most of what interpretability needs, possibly in the near term.</li>
+</ol>
+<p><strong>A “bitter lesson” for interpretability: scaling ordinary investigation may beat engineering a clever new decomposition.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>The essay’s own summary, in its own order. Steps 1 and 2 are what the evidence slides that follow try to establish. Step 3 is a claim about method. Step 4 is labeled speculative by the author, and I would present it that way.</p>
+<p>Step 3, the crossword, is worth a minute because it explains why the essay’s numbers moved so much. With 2 percent of a network explained, a hard neuron is a dead end: circuits explain it only in terms of other neurons you do not understand yet. With most of the map filled in, you can read what feeds a neuron and what it feeds, check its negative pole, run steering. His example is a neuron for ‘a sense of righteousness when a bargain purchase turns out better than the expensive alternative’. Its strongest firings are on seemingly random commas. That only makes sense once you know the motif that many feeling and social-context neurons fire on punctuation, where the model summarizes a sentence.</p>
+<p>It also works on the tools: when most of a network is explained, the unexplained part points at the tool. That is how they found the double-negative regime in SwiGLU neurons.</p>
+<p>A further claim: understanding the whole network may be easier than understanding only the parts we care about, such as deception, the way one row of an empty crossword is hard to check without the crossings.</p>
+<p>Bitter lesson: Rich Sutton’s 2019 essay, that general methods plus scale beat clever hand-designed ones. The essay applies it to interpretability methods.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The evidence that convinced the field</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Vision: InceptionV1 (2014), the field’s first model organism</strong></p>
+<ul>
+<li>Neuron <strong>4e:55</strong> fires for <strong>cat faces and fronts of cars</strong>. <em>Zoom In</em> said it “isn’t responding to some commonality of cars and cat faces”</li>
+<li>A <strong>car feature spread into dog neurons</strong>: the original example of superposition (found 2019)</li>
+<li>The <strong>last layer</strong>: “essentially no interpretable neurons”, about 0-5%</li>
+</ul>
+<p><strong>Language</strong></p>
+<ul>
+<li><em>Towards Monosemanticity</em> (2023), one-layer model: median neuron scored <strong>0 out of 14</strong></li>
+<li>OpenAI automated interpretability (2023), GPT-2 XL: about <strong>1.7%</strong> of neurons interpretable</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>The explanation offered: superposition as a learning principle</strong></p>
+<p>When a network runs out of neurons, it stops grouping related things and starts <strong>folding unrelated things together, because they rarely interfere</strong>.</p>
+<p>If that is true, which things share a neuron tells you nothing, and you must <strong>unfold the knot before you can study anything</strong>.</p>
+<p><strong>The essay’s move: go back to each of these examples and look again.</strong></p>
+</div></div>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>These are the specific pieces of evidence. Every one of them has been cited for years as the reason neurons are the wrong unit, including in the papers we read today.</p>
+<p>The essay distinguishes two meanings of superposition. One is ‘more features than dimensions’, which the toy model shows and which even a perfectly monosemantic network satisfies, because neurons compose: a car is a combination of window, wheel and body neurons. The essay does not object to that. The other is a learning principle: when space runs out, the network packs unrelated things together. That second meaning is the one that would be bad news, because it would make the grouping meaningless. That is the one the essay attacks.</p>
+<p>He also notes his joke that superposition is itself in superposition between several uses of the word.</p>
+<p>The next slides take the examples on the left one at a time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>InceptionV1, the field’s model organism</h2>
+<div id="54f9a7e3" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="llm-interpretability_files/figure-revealjs/cell-13-output-1.png" class="quarto-figure quarto-figure-center" width="1619" height="815"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>GoogLeNet (Szegedy et al., 2014), about 7M parameters, ImageNet winner in 2014. Nine Inception modules in sequence, with no residual connections. Box height shows the number of channels.</strong></p>
+<div class="footer">
+<p>Szegedy, C., et al.&nbsp;(2015). <a href="https://arxiv.org/abs/1409.4842"><em>Going Deeper with Convolutions</em></a>. CVPR. Layer names follow the Lucid / Distill <em>Circuits</em> convention.</p>
+</div>
+<aside class="notes">
+<p>InceptionV1 is GoogLeNet, the network that won the ImageNet classification challenge in 2014. The Distill Circuits work (Olah, Cammarata and others, 2017-2021) studied it so closely that it became the field’s model organism: the curve detectors, high-low frequency detectors, the cat/car neuron and the original superposition example all come from it.</p>
+<p>Read the top row left to right. A 224 by 224 RGB image goes through a stem of ordinary convolutions that shrinks it to 56 by 56 with 192 channels. Then nine Inception modules, named by the Circuits papers mixed3a, mixed3b, mixed4a through mixed4e, mixed5a and mixed5b; I drop the ‘mixed’. Max pooling between groups halves the spatial size: 28 by 28 for the 3s, 14 by 14 for the 4s, 7 by 7 for the 5s. Then a global average pool turns each of 5b’s 1024 channels into one number, and a single linear layer maps those 1024 numbers to 1000 ImageNet class scores.</p>
+<p>Bottom: what one module is. Four branches look at the same input at different scales: a 1x1 convolution, a 3x3, a 5x5, and a max pool. The 1x1 convolutions before the larger ones reduce channels to save compute. The four outputs are stacked as channels. For 5b that is 384 + 384 + 128 + 128 = 1024. So 5b’s neuron numbers 0-383 are the 1x1 branch, 384-767 the 3x3 branch, and so on.</p>
+<p>The three highlighted layers are the ones the essay uses. 3b, 480 channels, holds curve detectors; the essay retrains the network with it cut to 10. 4e is where neuron 55, the cat/car neuron, lives. 5b is ‘the last layer’.</p>
+<p>What matters for the essay’s argument: there are no residual connections. Every module’s output is the only path forward, so a late layer cannot pass information around itself. The original also predates batch normalization. ConvNeXt (2022), the essay’s comparison, keeps the convolutional design but adds residual connections and LayerNorm, the changes that came after 2014.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>What “one neuron in the last layer” means</h2>
+<div id="099e3655" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="llm-interpretability_files/figure-revealjs/cell-14-output-1.png" class="quarto-figure quarto-figure-center" width="1717" height="627"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>A neuron in a conv net is a channel: one filter applied everywhere in the image. In 5b, each of the 1024 channels is averaged into one number, and the classifier is a weighted sum of those 1024 numbers.</strong></p>
+<aside class="notes">
+<p>Illustrative numbers, generated in this deck; the structure is exact.</p>
+<p>In a convolutional network the word neuron means a channel. A channel is one learned filter applied at every position of its input, so for one image it produces a map: in 5b, a 7 by 7 grid, each cell a response to an overlapping patch of the photo. Because the weights are shared across positions, the Circuits work treats the whole channel as one neuron, written layer:index, as in 4e:55.</p>
+<p>Panel 2: the network itself averages each 5b channel over the 7 by 7 positions. So for one image, each last-layer neuron is a single number, and the image becomes a vector of 1024 numbers.</p>
+<p>Panel 3: one linear layer turns those 1024 numbers into 1000 class scores. So each last-layer neuron has 1000 weights, one per class; the example shows a hypothetical neuron that votes for ladybug and leaf beetle and against school bus. This is why the last layer is so important for interpretability: it is the representation the classifier reads directly, with nothing in between.</p>
+<p>Panel 4: how the essay and the Circuits papers name a neuron: its top examples among many images (the essay uses 20 strongest out of 50,000), feature visualization, and its connections in both directions.</p>
+<p>Now the essay’s claim about InceptionV1 reads precisely: of 5b’s 1024 neurons, the Circuits-era estimate was that almost none had a clear single meaning when you looked at top examples and feature visualizations. The essay says about 5 percent with 2014-era tools, about 50 percent on the same network with better tools, about 70 percent retraining the architecture with modern regularization, and about 99 percent for a ConvNeXt of the same size.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Circuits: neurons connected by weights</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/zoomin-curve-circuit.png" class="quarto-figure quarto-figure-center" height="420"></p>
+</figure>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>A circuit</strong> is a small subgraph of the network: a few features (usually neurons) and <strong>the weights between them</strong>, read straight from the trained model.</p>
+<p>Because the weights are fixed, a circuit is the same for every input: it shows <strong>how</strong> a neuron is computed, not just what it fires on.</p>
+</div><div class="column" style="width:50%;">
+<p><strong><em>Zoom In</em>’s three “speculative claims” (2020)</strong></p>
+<ol type="1">
+<li><strong>Features</strong> are the fundamental unit; they are directions, often single neurons</li>
+<li><strong>Circuits</strong>: features connected by weights can be studied and understood</li>
+<li><strong>Universality</strong>: similar features and circuits form in different models</li>
+</ol>
+</div></div>
+<div class="footer">
+<p>Olah, C., Cammarata, N., Schubert, L., Goh, G., Petrov, M., &amp; Carter, S. (2020). <a href="https://distill.pub/2020/circuits/zoom-in/"><em>Zoom In: An Introduction to Circuits</em></a>. Distill. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>Zoom In is the 2020 Distill article that started the Circuits thread, written by Olah, Cammarata (the essay’s author) and colleagues. It is where ‘circuit’ gets its meaning in this field, and where the cat/car neuron and the first superposition example were published.</p>
+<p>The figure: InceptionV1’s curve detectors in layer 3b (middle) are built from early curve detectors and line detectors in the layers before (left), and feed more complex shape and curvature detectors after (right). The faded boxes are the parts of the circuit not shown in detail.</p>
+<p>The definition, in their words: a circuit is a computational subgraph of a neural network, consisting of a set of features and the weighted edges between them in the original network. They usually study small ones, fewer than a dozen features.</p>
+<p>The difference from an attribution graph, which comes later in the lecture: an attribution graph is computed for one prompt, from activations times weights. A circuit is read from the weights alone, so it holds for every input. The cost is that you need to understand the neurons at both ends of each edge before the weights mean anything; that is the crossword point from the essay.</p>
+<p>The analogy they open with: Schwann’s three claims about cells in 1839, that cells are the unit of structure, are building blocks, and form in a common way. Their three claims are modeled on that, and they call them speculative.</p>
+<p>Claim 1 is where ‘feature’ as a direction comes from, which is the word the dictionary-learning work later builds on. Note it already says ‘often single neurons’.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>A circuit you can read: the car detector</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/zoomin-car-circuit.png" class="quarto-figure quarto-figure-center" height="640"></p>
+</figure>
+</div>
+<p><strong>Three neurons in 4b feed a car detector in 4c. Each weight is a 5×5 spatial kernel: windows count at the top, the car body and wheels at the bottom. Red excites, blue inhibits.</strong></p>
+<div class="footer">
+<p>Olah, C., Cammarata, N., Schubert, L., Goh, G., Petrov, M., &amp; Carter, S. (2020). <a href="https://distill.pub/2020/circuits/zoom-in/"><em>Zoom In: An Introduction to Circuits</em></a>. Distill. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>The cleanest example in Zoom In, and one you can explain without any of today’s machinery.</p>
+<p>Left: three neurons in layer 4b, shown by feature visualization: windows (4b:237), car body (4b:491), wheels (4b:373). Right: a car detector in 4c (4c:447).</p>
+<p>Middle: the weights connecting each one to the car detector. In a convolutional network the weight between two neurons is not one number but a small spatial kernel, here 5 by 5: how much the input neuron’s response at each relative position pushes the output up (red) or down (blue). Read them: windows excite at the top and inhibit at the bottom; wheels excite at the bottom and inhibit at the top; the car body excites, mostly at the bottom. So the car detector fires when it sees windows above wheels. That is a recipe for a car, written in the weights.</p>
+<p>Technical detail from the paper: these branches are a 1x1 convolution into a small bottleneck followed by a 3x3 or 5x5 convolution, and the weights shown are the two multiplied together.</p>
+<p>This is the kind of understanding the essay wants to scale: neurons you can name, connected by weights you can read, checked against each other. It is also the ‘crossword’ point: the car weights mean something only because the window, body and wheel neurons were understood first.</p>
+<p>Zoom In’s next step, from this same car detector, was the car feature spreading into dog neurons in the following layer. That is the ‘superposition’ circuit the essay revisits.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Circuit motifs: union over cases</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/zoomin-dog-circuit.png" class="quarto-figure quarto-figure-center" height="740"></p>
+</figure>
+</div>
+<p><strong>Left- and right-facing dog-head pathways inhibit each other (blue), then merge into orientation-invariant units: a recurring “motif”.</strong></p>
+<div class="footer">
+<p>Olah, C., Cammarata, N., Schubert, L., Goh, G., Petrov, M., &amp; Carter, S. (2020). <a href="https://distill.pub/2020/circuits/zoom-in/"><em>Zoom In: An Introduction to Circuits</em></a>. Distill. Figures CC-BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “The cat-and-car neuron, looked at again”</p>
+<p>Zoom In’s second circuit. InceptionV1 has a left-facing pathway and a right-facing pathway for dog heads, from oriented fur in 3b to oriented heads in 4a to head-and-neck in 4b. At each step the two pathways inhibit each other, the blue crossing arrows, and excite their own next stage, the red arrows. Then orientation-invariant units in 4b and 4c take the union of both.</p>
+<p>They call this ‘unioning over cases’: detect the cases separately, then combine. They note the network could have just looked for a jumble of eyes, fur and snout; instead it carves left and right apart.</p>
+<p>Zoom In names three circuit motifs: equivariance (the same circuit rotated, as in the curve detectors), unioning over cases (this one), and superposition (the car spreading into dog neurons). The essay keeps the first two and argues the third was a misreading: the car and dogs shared a pose.</p>
+<p>Connect to the essay’s ‘neurons as gates’ slide: the mutual inhibition here is a negative weight doing the gating, keeping left-facing evidence out of the right-facing pathway.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The cat-and-car neuron, looked at again</h2>
+
+<img data-src="figs/llm-interp/cammarata-v-neuron.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>InceptionV1 4e:55. Its inputs are a fox snout, a wolf face and a van front; it feeds flames, a coyote face and a martini glass. Pointed shapes drive it; round shapes push it negative.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>The most famous polysemantic neuron in the field. The author had seen its image grid hundreds of times. What he did differently, in his words, was spend a few seconds asking what one thing it might be. The answer: a shared V, a bilateral pointed shape. Cat and fox faces have it, cars at a particular angle have it, and so do pool tables and the bullet train.</p>
+<p>Read the figure. Top left: its strongest inputs from the layer below, each shown as a dataset example and a feature visualization: a fox snout neuron, a wolf face neuron, a van-front neuron. Top right: the neurons that read from it: flames, a coyote face, a martini glass. Why would an arbitrary mixture of cats and cars feed a flame detector? Line width is connection strength.</p>
+<p>Bottom: what it sees in real photos. Pointed things, whatever their label (dog, fox, cat, car, pool table, bullet train), drive it up. Round things (a dog’s round face, a snail, golf and tennis balls, a clock) drive it negative. The negative side, an O against a V, is a check that the grouping is real.</p>
+<p>The middle: ‘generic’ renders, feature visualizations of what the clustered inputs have in common, which show a pointy shape.</p>
+<p>He revised this claim on October 30. The earlier version said ‘it is a V-shape neuron, not a cat and car neuron’, which he calls too strong. It is a 1x1 convolution, so it really does pull in upstream cat, fox and car detectors. The claim is about why those ones: not an arbitrary mixture.</p>
+<p>Ask the class: the evidence here is the same kind of evidence we said was weak at the end of the attribution-graph section, top examples and a person’s reading. What is the stronger part? The connections and the negative pole, which a ‘cats and cars’ label does not predict.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The original superposition circuit was pose</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-car-dog-circuit.png" class="nostretch quarto-figure quarto-figure-center" height="250"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-pose-neurons.png" class="nostretch quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+<p><strong>Top: what <em>Zoom In</em> showed (a car stored in four dog neurons) and what the essay finds (two car neurons, two car-and-dog pose neurons). Bottom: a “faces the camera” neuron in DINOv2 and large, medium, small ConvNeXts.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “InceptionV1’s last layer was an architecture problem”</p>
+<p>The author found this circuit in 2019 and, with Chris Olah, called it superposition: a car feature seemed to spread into unrelated dog neurons, as if the dogs were a high-dimensional storage place from which the car could be read out later. He says it is the only such circuit anyone has published, and that nothing downstream reads the combination out.</p>
+<p>Two errors. First, the dogs and cars share a pose. InceptionV1 has more than a hundred generalized pose neurons that nobody had noticed. Second, feature visualization reward-hacks in deep layers: gradient ascent takes the easiest path, and InceptionV1 has a lot of dog neurons, so the renders fell into dogs. Biased lightly toward the paths real images take, the same neurons render as cars, and some as cars and dogs together.</p>
+<p>Bottom figure: the same kind of neuron in DINOv2 (12 times InceptionV1’s size) and in their large and medium ConvNeXts: dogs and vehicles grouped by the way they face the camera. The smallest model has only a rough version, cars and dogs together but not by pose. So it is not just lack of room: bigger models keep generalized pose neurons.</p>
+<p>This is the visualization lesson of the essay: the tool that makes a neuron look messy may be the thing that is wrong.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>InceptionV1’s last layer was an architecture problem</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-inception-late-neuron.png" class="nostretch quarto-figure quarto-figure-center" height="300"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-convnext-ladybug.png" class="nostretch quarto-figure quarto-figure-center" height="360"></p>
+</figure>
+</div>
+<p><strong>Top: InceptionV1 (2014), a typical last-layer neuron. Bottom: ConvNeXt, same 7.06M parameters and data, plus residuals and LayerNorm: a ladybug neuron’s 20 strongest of 50,000 images.</strong></p>
+<p><strong>Share of easily interpretable last-layer neurons: about 5% (2014 tools) → 50% (better tools, same network) → 70% (same architecture retrained) → 99% (ConvNeXt).</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>The last layer of InceptionV1 was a main piece of evidence that networks pack unrelated things: the explanation was that late layers need more features than they have neurons.</p>
+<p>Top: a typical late InceptionV1 neuron. Feature visualizations are psychedelic textures; dataset examples are stripes, a tuxedo, a beetle, a car grille. Hard to name.</p>
+<p>Bottom: their ConvNeXt, same parameter count, same ImageNet data, with modern architecture choices that were made to help training, not interpretability. The ladybug neuron’s 20 strongest images out of 50,000 are all ladybugs; the three labeled ‘leaf beetle’ are other ImageNet classes that look like ladybugs.</p>
+<p>The essay’s numbers for the share of easily interpretable last-layer neurons: about 5 percent with the tools of the time (others said about 0); about 50 percent on the same 2014 network with better tools (fixed feature visualization, attribution views); about 70 percent retraining the same architecture with modern regularization; about 99 percent in the ConvNeXt. Same size, same data.</p>
+<p>So two things were needed: a network that learned well, and tools good enough to see it. Neither involved changing the model for interpretability’s sake.</p>
+<p>Fair question to raise: ‘easily interpretable’ is a judgment, and the essay does not give a rubric on the page. The models are browsable at the essay’s microscope link, so the claim can be checked.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Recursive generalization: watching a neuron grow</h2>
+
+<img data-src="figs/llm-interp/cammarata-recursive-growth.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>The same neuron’s strongest images across training (epochs 0.7 to 12). Top: InceptionV1 spreads from rapeseed fields to balls, fruit, dogs and broccoli. Bottom: ConvNeXt, same data, lets the offshoots go and stays on fields.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>This is the essay’s replacement for superposition. If the final neuron looks like a mixture, watch how it formed.</p>
+<p>Read the top panel left to right. Columns are training checkpoints, epochs 0.7, 1.5, 3, 6 and 12. Rows are groups of the neuron’s strongest images; the gray band behind each row is that group’s share. InceptionV1’s neuron 338 starts on yellow rapeseed fields, in photos that sometimes include a dog or a ball. It then grows along each facet of those photos: green balls, green fruit, dogs without fields, and finally broccoli. By the end the fields are a small share. The final neuron looks like ‘fields, tennis balls, fruit, dogs, broccoli’, a classic polysemantic list. But every step was local and easy to follow.</p>
+<p>Bottom: the ConvNeXt neuron trained on the same data starts the same way, reaches for balls and fruit early, then drops them and stays on fields.</p>
+<p>Recursive generalization: a neuron generalizes along one axis, then sprouts offshoots along others, each step locally sensible, until it is no longer monosemantic. He says this appeared once before as ‘conjoined features’ in Multimodal Neurons.</p>
+<p>The key point is that this predicts the opposite of superposition. Generalization groups similar things; superposition groups things because they are unrelated. You can tell them apart by watching training.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Two explanations that predict opposite things</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><img data-src="figs/llm-interp/cammarata-iy-neuron.png" style="width:100.0%"></p>
+<p>A language-model neuron for <strong>“iy”</strong> (as in Miyazaki) grows to <strong>“diy”</strong>, then to <strong>“do it yourself”</strong>, which contains no “iy” at all.</p>
+</div><div class="column" style="width:55%;">
+<p><img data-src="figs/llm-interp/cammarata-packing-vs-generalization.png" style="width:100.0%"></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>Superposition</th>
+<th>Recursive generalization</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Groups</td>
+<td>unrelated things</td>
+<td>similar things, then offshoots</td>
+</tr>
+<tr class="even">
+<td>Why</td>
+<td>they rarely collide</td>
+<td>shared pattern, useful to build on</td>
+</tr>
+<tr class="odd">
+<td>Locality</td>
+<td>non-local</td>
+<td>local</td>
+</tr>
+<tr class="even">
+<td>With fewer neurons</td>
+<td>more packing</td>
+<td>coarser neurons</td>
+</tr>
+<tr class="odd">
+<td>What the grouping tells you</td>
+<td>nothing</td>
+<td>how the network thinks</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>Left: a conceptual illustration from the essay, not data. The ‘do it yourself’ branch is the interesting one: viewed at the end, a neuron that fires on ‘iy’ and on ‘do it yourself’ looks like two unrelated jobs. Viewed as growth, it is one step at a time. Other examples in the essay: a planetary-geology neuron that also fires on code for Cesium, a geospatial JavaScript library; an ‘enemy’ neuron that fires on a Russian poem about enemies.</p>
+<p>Right top: the essay’s conceptual figure. Same 32 things in both panels, similar colors and shapes are similar things. With arbitrary packing each neuron holds a mix; with generalization each holds one kind. His example: generalization wants a floppy-ear-dog neuron; superposition wants a floppy-ear-dog plus Latin poetry neuron.</p>
+<p>The table is my summary. The row that matters most is the last one: if a grouping grew by generalization, following it teaches you something, the way the V taught something. If unrelated things were packed together, there is nothing to learn from which ones.</p>
+<p>The row about fewer neurons is the one he tests next.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>“Superposition of the gaps”</h2>
+<p><strong>Polysemantic means “no good explanation yet”. Five possible reasons:</strong></p>
+<ol type="1">
+<li><strong>Bad tools</strong>: the microscope is not good enough (feature visualization reward-hacking)</li>
+<li><strong>Bad explanations</strong> built from those tools (lists of nouns instead of a shared pattern)</li>
+<li><strong>Bad learning</strong>: architecture or data (InceptionV1’s last layer)</li>
+<li><strong>Recursive generalization</strong> you have not followed yet (“iy” to “do it yourself”)</li>
+<li><strong>Superposition</strong>: the network changed learning principle</li>
+</ol>
+<p><strong>The essay’s claim: the field made 5 the null hypothesis. It should be the last one, because it is the most radical and the least testable. 1 to 4 can each be tested; 5’s only symptom is that something doesn’t make sense.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>This is the methodological heart of the essay, and it is the part I would most like you to keep, whatever you think of the rest.</p>
+<p>Language-model examples he gives for causes 1, 2 and 4: a neuron that fired on ‘pr’, on Base64 URL strings and on Bengali text, which looks like a random mixture until you decode the URLs and transliterate the Bengali: they are ‘pr’ too. A ‘polysemantic comma neuron’ that turned out to track Colorado, firing on commas because that is where the model stores a running summary of the context; steering it made the model want to go hiking. Neurons that looked mixed because the dataset used only two paragraphs of context, so long-context neurons looked random.</p>
+<p>He quotes Anthropic’s own Softmax Linear Units paper from 2022: superposition is often treated as the default hypothesis ‘simply because it seems intuitively more compelling than other explanations, but there is little evidence.’</p>
+<p>He also names the opposite risk: an ‘explanation of the gaps’, assuming every neuron must have a sensible story. His two answers: causes 1 to 4 are each testable (a better tool resolves the neuron or it does not; retraining shows whether learning was the problem; growth can be watched), and real explanations are narrow and falsifiable: if it is a Colorado neuron, steer it and see.</p>
+<p>Discussion question: is ‘least testable’ fair to superposition? The toy model made it testable in a toy. The essay’s reply is the next two slides.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Neurons as gates: what the negative pole does</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-gate.png" class="nostretch quarto-figure quarto-figure-center" height="250"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-sports-car-path.png" class="nostretch quarto-figure quarto-figure-center" height="500"></p>
+</figure>
+</div>
+<p><strong>Top (schematic): a gate lets cars through to the car detectors and turns dogs away with its negative side. Bottom: one sports car through ConvNeXt blocks 14-18; above the line what it is grouped with, below what it is separated from.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>‘How I think about neurons’, in the essay’s words: he used to think of neurons as human-shaped nouns, one is a car, another a curve. Now he thinks of them as control flow. A neuron is less about what it sees than about what it does to the flow coming in, and often its job is to gate a region of the network. Seen that way, monosemanticity is almost the wrong question; a better one is what a neuron lets through and what it keeps out.</p>
+<p>Top: pose neurons group cars and dogs together. Further on there are taxi and ambulance detectors that do not want dogs. So a neuron in front of them responds positively to cars and negatively to dogs: its negative side keeps the dogs out, and the dogs go to their own region. Later, an ambulance neuron may have a taxi on its negative pole.</p>
+<p>Bottom, real data: a red sports car followed through blocks 14 to 18 of the large ConvNeXt. Each column is the neuron that contributes most to the next one on this image. Read the top row: cars and limousines, then tables and cabinets (rectangular shapes), then convertibles. The bottom row is what each step separates it from: buses and trams, snakes and dogs, minibuses, vans and wagons, station wagons. The distinctions get finer as you go up.</p>
+<p>Why the negative side is shaped by learning even in a ReLU network: a neuron’s input is a sum of weighted votes, and each vote gets gradient whenever the neuron is on. The negative side tells you what distinction matters at this point, and it is a quick check of a grouping: the V neuron’s negative side is an O.</p>
+<p>In a smaller model the same path stops at a coarser split: its last layer has one neuron for cars, trains and carts, with boats and planes on its negative side.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Squeeze a layer from 480 neurons to 10</h2>
+
+<img data-src="figs/llm-interp/cammarata-crushed-3b-neurons.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>InceptionV1 retrained with layer 3b cut from 480 neurons to 10, and no path around it. Each row is one neuron and its five strongest crops. The model still reaches 58% top-1 on ImageNet.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>The direct test of what neurons do when they run out of room. Layer 3b of InceptionV1 holds the curve detectors and high-low frequency detectors, which are well understood. InceptionV1 has no residual stream, so nothing can route around the layer.</p>
+<p>Cut it 48-fold, from 480 neurons to 10, and retrain from scratch. If running out of room switched on superposition, we should see overlapping mixtures: a curve plus an orange spiral plus spider webs.</p>
+<p>What comes out, reading the row labels: dark circles, yellow, vertical edges, curves and loops, high frequency, red, slanted edges, eyes and faces, circles, colorful marks. Ten coarse but nameable neurons. One ‘curves and loops’ neuron instead of ten curve detectors.</p>
+<p>58.35 percent top-1 and 81.14 percent top-5 on ImageNet, so the squeezed network still works.</p>
+<p>They repeat it on the last layer of the medium ConvNeXt, cut from 1,024 neurons to 13 with the residual bypass blocked, and report the same broadening.</p>
+<p>Connect this to the toy model from earlier: there, sparse features in too few dimensions went into superposition. The essay’s appendix says it found no problems with those experiments. Its argument is that the toy’s features are independent and nothing downstream builds on what two features share, so it prices interference but not reuse. Real data is full of shared structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Where did the ten curve detectors go?</h2>
+
+<img data-src="figs/llm-interp/cammarata-crushed-3b-sae.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Left: the original ten curve detectors, one per orientation. Middle: the squeezed layer’s ten neurons. Right: a sparse autoencoder trained on the squeezed layer; the closest feature to each original detector is broad and bunched, not ten curves.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Do weak activations hide anything?”</p>
+<p>If the curves were still in the squeezed layer, packed into combinations of the ten neurons, a dictionary should get them back. That is exactly the premise of the dictionary-learning section.</p>
+<p>Left: the ten original curve detectors, arranged by orientation, with their tuning curves overlaid in the middle: ten clean petals. Middle: the ten squeezed neurons, with ‘curves and loops’ outlined. Right: for each original curve detector, the closest sparse-autoencoder feature. The overlaid tuning curves are a tangle, not ten petals.</p>
+<p>So the curves were not hidden; the network learned something coarser.</p>
+<p>On real layers, he reports that 88 percent of an SAE’s activity on the last ConvNeXt layer is near-copies of single neurons, that removing every dictionary direction that matches no neuron leaves accuracy unchanged, and that the extra SAE features were loose groupings of existing neurons (‘animals at the water’s surface’). With spiders, the SAE units were spiders in different settings; the neurons were leg patterns and webs.</p>
+<p>Contrast with the pentagon toy model earlier, where the dictionary recovered all five directions. In the toy, the directions were there by construction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Do weak activations hide anything?</h2>
+
+<img data-src="figs/llm-interp/cammarata-weak-activations.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Medium ConvNeXt, all 18 blocks. Removing the weakest 75% of activations changes 1 answer in 10, all near ties. Removing the strongest 7%, the same total activation, drops accuracy from 72% to 4%.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>The usual retreat for superposition: the strong activations look clean, but unrelated features hide in the weak ones, spread across many neurons.</p>
+<p>The test: zero out activations and see what breaks. Left: remove the weakest 75 percent across the whole network. Accuracy goes from 72 to 71 percent; one answer in ten changes, and the changed answers are near ties: Eskimo dog becomes Siberian husky, grasshopper becomes cricket, whippet becomes Saluki, tiger cat becomes tabby. The bars under each image split the model’s top two answers before anything was removed.</p>
+<p>Right: remove the strongest 7 percent, chosen to be the same total activation. Accuracy drops to 4 percent; 96 answers in 100 change, and the sure answers break: garbage truck becomes shovel, hummingbird becomes Granny Smith.</p>
+<p>So critical common things cannot live in the weak activations, since you can remove them. The places where weak activations matter most are among the easiest to understand: early vision layers that act like dials, and an LLM’s last layer, which suppresses specific tokens.</p>
+<p>Methodological note for your projects: matching the total activation removed, rather than the count, is what makes this a fair comparison.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Memorizing a nonsense label uses existing routes</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-umbrella-bee.png" class="nostretch quarto-figure quarto-figure-center" style="width:75.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/llm-interp/cammarata-offramp.png" class="nostretch quarto-figure quarto-figure-center" style="width:75.0%"></p>
+</figure>
+</div>
+<p><strong>Teach the 7.06M ConvNeXt that one umbrella photo is a bee. In nine steps, “umbrella” goes from 44.2% to 0.03% and “bee” from 0.07% to 52.8%. Bottom: the hypothesized hidden feature (left) versus what happens, an off-ramp between two existing routes (right).</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Language models: how clean?”</p>
+<p>Rare things are where superposition is supposed to be most likely: they rarely collide with anything and may not seem worth a neuron.</p>
+<p>So they made a rare route on purpose. If memorization worked by a hidden feature that latches onto these exact pixels and says ‘bee’, cut off from the rest of the network, that would be bad news. Instead, top figure: the umbrella neurons in blocks 16 to 18 (domes and tents, umbrellas, umbrellas) fade, and existing small-creatures, insects-on-flowers and bee neurons come on. The top guess went umbrella, maypole, bee. Nearly all the change is in the last three blocks: swap just those into the original model and it says ‘bee’.</p>
+<p>Bottom: the essay’s schematic. Left, a stray superposed feature, connected to nothing. Right, what they see: a small off-ramp from the umbrella route to the bee route.</p>
+<p>The appendix turns this into a prediction about language models: the neurons that carry a rare fact should be related to what the fact is about, not unrelated ones chosen because they rarely collide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Language models: how clean?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Qwen3-32B, preliminary audits of neuron “poles”</strong></p>
+<ul>
+<li>about <strong>90%</strong>: one main job, with small related offshoots</li>
+<li>about <strong>7%</strong>: two related jobs</li>
+<li>about <strong>2-4%</strong>: not yet understood</li>
+</ul>
+<p>Similar for mixture-of-experts models, and so far for Kimi K3 (trillions of parameters).</p>
+<p><strong>GPT-2 XL, revisited</strong>: under 2% clean in 2023; with 500 agent-written “neuron papers”, about <strong>70%</strong> roughly one thing, about <strong>5%</strong> pristine.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>What changed since 2023</strong></p>
+<ul>
+<li>Explainer models can now run <strong>conjecture and test</strong>, not just summarize top examples</li>
+<li>Metrics: scoring by <strong>simulating activations</strong> rewarded explanations that predict well, not ones that are right</li>
+<li>Known <strong>motifs</strong>: summaries stored on commas, “don’t say a dot” neurons, a neuron’s <strong>negative pole</strong></li>
+<li><strong>Bigger models have narrower neurons</strong></li>
+</ul>
+<p><strong>The author’s caveat: the number depends on thresholds, such as whether two related idioms in two languages count as one thing.</strong></p>
+</div></div>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>; Goodfire (2026). <a href="https://www.goodfire.com/research/neurons-as-an-interpretable-basis"><em>Neurons as an Interpretable Basis</em></a>.</p>
+</div>
+<aside class="notes">
+<p>This section of the essay was done with Curt Tigges, and draws on a companion technical paper.</p>
+<p>Poles: in modern gated MLPs a neuron’s strong positive and strong negative activations can mean different things, so they audit each side.</p>
+<p>The numbers are from preliminary audits. A footnote says that on strong activations in the sets he looked at most closely it is closer to 97 percent non-arbitrary, on small samples, and that a single cleanliness score should be read as a pointer to the regime a network is in, not a precise number. He says reviewers asked for a number anyway.</p>
+<p>The ‘don’t say a dot’ example: Towards Monosemanticity opened with a neuron firing on ‘academic citations, English dialogue, HTTP requests, and Korean text’. He argues most of those fire on or near a period, eight of its ten strongest negative logit connections start with a dot, and the Korean examples fire partway through an unfinished syllable, a reasonable place not to want a period. Without the model he cannot test further. Either way, it is one or two related syntactic jobs, not four unrelated ones.</p>
+<p>A double-negative regime in SwiGLU units: when both gate and value are negative, activations land on the positive pole and look like the negative pole. For about 4 percent of neurons this echo dominates the top of the list, a tool-side source of apparent polysemanticity.</p>
+<p>Critical point to raise: many of these labels were written by AI agents. He describes tests against that, such as a ‘blind maximum’: one agent writes an explanation, a second agent who never sees the neuron writes a sentence from that explanation alone, and the sentence often fires the neuron harder than anything in 10 billion tokens.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>The same circuit, in features and in neurons</h2>
+
+<img data-src="figs/llm-interp/cammarata-features-vs-neurons.png" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Left: Anthropic’s preeclampsia graph in Claude 3.5 Haiku, built from transcoder features. Right: the same prompt in Qwen3-32B, built from MLP neurons, no replacement model. Both decide to ask about visual disturbances.</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>; Lindsey, J., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>.</p>
+</div>
+<aside class="notes">
+<p>This connects directly to the attribution graphs we just saw. The left is a medical-diagnosis case from the Biology paper: a prompt describing a pregnant patient’s symptoms; the model’s internal diagnosis is preeclampsia, and it decides the next thing to ask about is visual disturbances. Rows: symptoms, diagnosis, what to ask, answer.</p>
+<p>Right: the essay’s version in Qwen3-32B using the model’s own MLP neurons. Numbers on the nodes are how many neurons are in each group; the diagnosis hub is four neurons. Remove them and the model asks about itching instead, a telltale sign of a different liver condition of pregnancy, as if it moved to its next guess. Output probability for ‘visual’ is 0.90.</p>
+<p>His argument for neurons here: no reconstruction loss, no extra training, no error nodes. Recall from the replacement-model slide that the transcoder alone gives the same next token about half the time.</p>
+<p>The negative pole matters. In their Santa graph, top-k automated labels make some key neurons look like ‘capital cities’ because they ignore the negative side, which carries Santa lore. Remove the eight neurons with a Santa negative side and P(Santa) drops from near certain to 6 percent; remove the twenty neurons actually labeled Christmas or Santa and it only drops to 76 percent.</p>
+<p>Also from the essay: a found-wallet graph in Kimi K3, which they call the first published attribution graph of a multi-trillion-parameter model.</p>
+<p>What to notice: the two graphs are different models, so this shows the neuron approach can produce a readable graph, not that the two methods agree on one model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Scale, experts and the residual stream</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Mixture-of-experts as an “anti-superposition” architecture</strong></p>
+<ul>
+<li>A neuron fires only when its expert is chosen by a small linear router</li>
+<li>A packed expert would hold thousands of unrelated things, and the router would have to recognize all of them</li>
+<li>What they see: experts are narrow and get narrower with depth (one is about bosses in RPG board games)</li>
+</ul>
+<p><strong>The residual stream</strong></p>
+<ul>
+<li>The worry: a continuous version of packing, directions woven together</li>
+<li>Squeezing a ConvNeXt’s stream 4× and 8× cut accuracy from 72% to 60% and 39%, and made the map <strong>messier, not cleverly interleaved</strong></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Does scale bring superposition back?</strong></p>
+<ul>
+<li>Bigger models so far have <strong>narrower</strong> neurons, not more packing</li>
+<li>Rare facts are where packing is usually expected. The essay predicts the opposite: a rare fact cannot support a niche of its own, so it rides <strong>related</strong> circuits, like the umbrella’s off-ramp</li>
+<li>“Circuit ecology”: whatever captures the error first wins, and that is usually the region already near the concept</li>
+</ul>
+<p><strong>Attention</strong> is mostly left open. His estimate: naming every head would add about 5% to explanations.</p>
+</div></div>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>SKIPPABLE - if running long, jump to “Already clean: a city, not a knot”</p>
+<p>Four topics from the language-model section and the appendix, for completeness.</p>
+<p>Experts: in a mixture-of-experts layer, a router picks a few experts per token, and an expert’s neurons fire only when it is picked. If experts packed unrelated things, the router, a single small linear layer, would have to recognize all of them. They report experts are far more specialized than previously reported, narrower with depth, and broad experts span related things. Their figure covers all 10,240 experts in Qwen3.6.</p>
+<p>Residual stream: there is no privileged basis there, so the worry is different: features as directions accepting some interference. In vision they visualized the stream as one map, after removing a single unread dimension that carried most of the activation mass and acted as a scale knob through LayerNorm. Then they retrained the medium ConvNeXt with a stream 4 and 8 times narrower, down to 46 dimensions in the last block. Accuracy fell from 72 to 60 and 39 percent. The map got messier, but what leaked into a neuron was the same kind of thing: a dark-bird-on-water neuron also fires on alligators and a swimming retriever, not on clocks.</p>
+<p>Scale: they call this the least certain part. The argument is about learning speed rather than storage: a new niche grows best next to related machinery, which is already there and has gradient. They link it to Anthropic’s finding that knowledge becomes more localized. The prediction is testable: the neurons that carry a rare fact should be related to the fact.</p>
+<p>Attention: he and an agent independently estimated that global names for attention heads would add about 5 percent to explanations, beyond knowing where heads look and which neurons they read and write. This is the part of the model where the filter-heads paper in part 7 says more.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>Already clean: a city, not a knot</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>What “clean” means</strong></p>
+<ul>
+<li>Not that every neuron is monosemantic</li>
+<li>That a network’s parts are <strong>built to be read by its own downstream neurons</strong>. The goal: <strong>become another reader</strong></li>
+<li>A big network is like a big city: easier to navigate than a small town, because things are organized into districts</li>
+</ul>
+<p><strong>Two styles of interpretability</strong></p>
+<ul>
+<li><strong>Enumerative</strong>: a complete list of features to audit</li>
+<li><strong>Exploratory</strong>: start from questions, zoom between neurons, circuits and graphs, keep every view <strong>tethered</strong> to real neurons</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>The risk of fracturing</strong></p>
+<ul>
+<li>An SAE on the V neuron’s layer splits it into a <strong>cat feature and a car feature</strong>, the categories we brought, not the network’s</li>
+<li>Probes only answer questions we already had</li>
+</ul>
+<p><strong>Why assume clean: the mistakes are not symmetric</strong></p>
+<ul>
+<li>Assume clean, and a messy neuron is <strong>a lead</strong> to investigate</li>
+<li>Assume packed, and a messy neuron is <strong>the end</strong> of the investigation</li>
+<li>“I spent most of a decade figuring out how to look at a model rather than looking at it.”</li>
+</ul>
+</div></div>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>This is the ‘Zooming out’ section and the source of the title.</p>
+<p>Clean does not mean monosemantic. It means organized for its readers: each neuron’s output is consumed by later neurons, so it has to be usable by them. If we read the network the way its own readers do, it should look more organized than if we read it through our own categories. He calls a network ‘almost a fractal of explanations’: coherent groupings at the large scale and, through recursive generalization, inside each neuron.</p>
+<p>City versus knot: in a small town, ‘where is the financial district’ barely makes sense; in New York you find it on a map in a minute. They saw this in the ConvNeXts: agents found dog-ear neurons faster in the larger models, where several ear neurons feed one hanging-ears neuron.</p>
+<p>Tokyo and Brooklyn: arriving in Tokyo knowing New York, ‘where is the Brooklyn of Tokyo?’ is a fine first question. But reconstructing Brooklyn from seventy pieces of Tokyo makes Tokyo look messier than it is. That is what a dictionary did to 4e:55: through our categories, cats and cars.</p>
+<p>Enumerative versus exploratory: the big feature list is a means to an end. Exploratory work does not require defining features, which is famously hard, and tolerates some polysemanticity, the way a city study ignores districts that do not matter for the question.</p>
+<p>The asymmetry argument is the one I find most useful for your own projects. He also makes a safety argument: deception might hide from someone reading outputs, but it cannot hide from the model’s own downstream circuits, because they have to read it. His worry is not a hidden activation but that it will be in plain sight and we will not know how to read it.</p>
+<p>His picture of a solution: a laboratory of automated scientists watching a network through training and inference, labeling neurons, finding motifs and testing them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+<h2>How to read this essay</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>What I find convincing</strong></p>
+<ul>
+<li>The <strong>re-examinations</strong>: 4e:55, the car-dog circuit, InceptionV1’s last layer. Concrete, checkable, and against the author’s own earlier claims</li>
+<li><strong>Interventions</strong> with stated numbers: squeezing a layer, ablating weak vs strong activations, the umbrella</li>
+<li>“<strong>Polysemantic</strong>” describes the observer’s state of knowledge, not just the neuron</li>
+<li>Tools (feature visualization, simulation scores) <strong>create</strong> apparent mess</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>What I would check before believing</strong></p>
+<ul>
+<li>Language-model percentages: <strong>preliminary, threshold-dependent</strong>, agent-labeled</li>
+<li>“<strong>Easily interpretable</strong>”: who judged, by what rubric?</li>
+<li>Mostly <strong>vision CNNs</strong>, where he says we can see best; <strong>attention</strong> is largely left open</li>
+<li>Absence of evidence: “no one has found a superposition circuit” is not proof there is none</li>
+<li>Not peer reviewed; the company’s method is neuron study</li>
+</ul>
+</div></div>
+<p><strong>Discussion: does the essay refute <em>Toy Models of Superposition</em>, or argue that real networks are not in the toy’s regime?</strong></p>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>Give the class a few minutes here.</p>
+<p>The answer to the discussion question, from the essay’s appendix: it does not dispute the toy experiments (‘careful work… we found no problems with its experiments’). It argues the toy prices the cost of sharing a neuron, interference, but not the benefit, reuse, because every toy feature is independent and an end in itself. In that world packing happens, as the paper found. The question is which world real networks are in, and in real data almost nothing is related to nothing. They also report that adding correlated inputs and hidden neurons to the toy pushes it toward shared, PCA-like representations.</p>
+<p>So the honest status: two research programs with a real empirical disagreement about large models. Anthropic’s pictures from earlier in the lecture and this essay’s pictures are both figures at the end of arguments. Use the seven-question checklist on both.</p>
+<p>His larger framing, worth one sentence: enumerative interpretability wants a complete list of features to audit; exploratory interpretability starts from questions and moves between neurons, circuits and graphs like zooming a map. He thinks the second is more resilient to polysemanticity. His image: a city versus a knot. A big city is easier to navigate than a small town because things are organized into districts.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1168,6 +2271,7 @@ Claudio Silva
 <p>Ameisen, E., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html"><em>Circuit Tracing</em></a>. Transformer Circuits Thread.</p>
 </div>
 <aside class="notes">
+<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
 <p>The first item in the methods paper’s limitations section, with the authors’ own illustration.</p>
 <p>The prompt is a repeated name: ‘Aunt Sally’ appears early, and later the text says ‘Aunt’ again. The model predicts ‘Sally’ by looking back at what followed ‘Aunt’ the first time. This is called induction, and it is one of the best understood attention circuits.</p>
 <p>Left is what the attribution graph shows for it: an edge from the earlier ‘Sally’ to the output. True, and nearly empty.</p>
@@ -1193,6 +2297,7 @@ Claudio Silva
 <p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784.</p>
 </div>
 <aside class="notes">
+<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
 <p>A different group, a different model (Llama with 70 billion parameters, 80 layers), and a method aimed at exactly the gap on the previous slide.</p>
 <p>The task is filtering: here is a list, find the fruit. The authors find attention heads whose attention, from the final token, lands on the item that satisfies the condition. Panel b: the head looks at ‘Cherry’.</p>
 <p>The experiment is activation patching. An attention head compares a query vector, from the token doing the looking, with key vectors from the tokens being looked at. Take the query vector from the fruit prompt, panel a, and insert it into the same head while the model reads a different prompt that asks for a vehicle, panel c.</p>
@@ -1218,6 +2323,7 @@ Claudio Silva
 <p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784.</p>
 </div>
 <aside class="notes">
+<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
 <p>How general is that representation? The score in every cell is the fraction of patched runs in which the model gave the answer the transplanted condition implies.</p>
 <p>Left table: take the condition from a prompt in one language and patch it into a prompt in another. English to Thai, 0.95. Hindi to French, 0.89. The lowest entries are still near 0.78. Whatever the head’s query encodes, it is not tied to English words.</p>
 <p>Middle top: single-line list versus bulleted list, about 0.84 to 0.86 in every direction.</p>
@@ -1243,6 +2349,7 @@ Claudio Silva
 <p>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://filter.baulab.info/"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784.</p>
 </div>
 <aside class="notes">
+<p>SKIPPABLE (Nov 24) - if running long, jump to “What these pictures can and cannot claim”</p>
 <p>Go back to the small table on the previous slide, ‘placement of the question’. Question after the list: 0.86. Question before the list, patched into question-before: 0.02. The same task, reordered, and the mechanism is gone.</p>
 <p>The explanation: when the question comes last, the model cannot know what to look for while reading the items, so it filters at the end using the filter heads. The authors call that lazy evaluation. When the question comes first, the model can judge each item as it arrives and store a marker, a flag, on the ones that match. That is eager evaluation.</p>
 <p>This figure tests the flag idea. Take the stored state from the item that matched in one prompt and move it onto an unrelated item, ‘Monkey’, in another. The plot shows, by layer, which answer the model then prefers. Patched at early and middle layers, the purple line is on top: the model picks the item carrying the flag, even though a monkey is neither a fruit nor a vehicle.</p>
@@ -1364,6 +2471,31 @@ Claudio Silva
       }</style></aside>
 </section>
 <section class="slide level2">
+<h2>A second take-away: the unit is still contested</h2>
+<ul>
+<li><strong>Today’s first half</strong> says neurons are the wrong unit and features must be extracted. <strong>Cammarata</strong> says most apparent mess was tools, architecture and generalization we had not followed, and that neurons are a fine place to start.</li>
+<li>Both sides agree on <strong>“more features than dimensions”</strong>. They disagree on whether networks <strong>pack unrelated things together</strong>.</li>
+<li>The disagreement is <strong>empirical</strong> and testable: squeeze a layer, ablate weak activations, watch a neuron grow, check whether a dictionary finds anything the neurons lack.</li>
+<li>For your own work: when something looks <strong>polysemantic</strong>, treat it as “no explanation yet” and check the tool, the data and the architecture before concluding the model is a knot.</li>
+</ul>
+<div class="footer">
+<p>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire.</p>
+</div>
+<aside class="notes">
+<p>Added with the Cammarata section. Note that the first bullet of the previous slide, “neurons are the wrong unit”, is exactly the claim the essay disputes. I left it as written: say out loud that it is the field’s standard view and that today’s main reading argues against it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
 <h2>References</h2>
 <div class="smaller">
 <ul>
@@ -1371,6 +2503,8 @@ Claudio Silva
 <li>Ameisen, E., Lindsey, J., Pearce, A., Gurnee, W., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html"><em>Circuit Tracing: Revealing Computational Graphs in Language Models</em></a>. Transformer Circuits Thread.</li>
 <li>Lindsey, J., Gurnee, W., Ameisen, E., Chen, B., et al.&nbsp;(2025). <a href="https://transformer-circuits.pub/2025/attribution-graphs/biology.html"><em>On the Biology of a Large Language Model</em></a>. Transformer Circuits Thread.</li>
 <li>Sen Sharma, A., Rogers, G., Shapira, N., &amp; Bau, D. (2025). <a href="https://arxiv.org/abs/2510.26784"><em>LLMs Process Lists With General Filter Heads</em></a>. arXiv:2510.26784. Project page: <a href="https://filter.baulab.info/" class="uri">https://filter.baulab.info/</a></li>
+<li>Olah, C., Cammarata, N., Schubert, L., Goh, G., Petrov, M., &amp; Carter, S. (2020). <a href="https://distill.pub/2020/circuits/zoom-in/"><em>Zoom In: An Introduction to Circuits</em></a>. Distill.</li>
+<li>Cammarata, N. (2026). <a href="https://already-clean.goodfire.com/"><em>Neural Networks Are Already Clean</em></a>. Goodfire. Companion paper: <a href="https://www.goodfire.com/research/neurons-as-an-interpretable-basis"><em>Neurons as an Interpretable Basis</em></a></li>
 </ul>
 </div>
 <aside class="notes">
